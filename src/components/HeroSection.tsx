@@ -97,8 +97,8 @@ export default function HeroSection() {
         {/* Animated laser + explosion background at 20% opacity */}
         <HeroBackground />
 
-        {/* Hero content — more top space */}
-        <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-start px-4 pt-16 sm:px-6 sm:pt-20 lg:px-8 lg:pt-28">
+        {/* Hero content */}
+        <div className="relative mx-auto flex w-full max-w-7xl items-start px-4 pt-16 sm:px-6 sm:pt-20 lg:px-8 lg:pt-28">
           <div className="grid w-full grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left — headline */}
             <div>
@@ -133,8 +133,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Tagline — tight under hero content */}
-        <div className="relative mt-4 pb-2 text-center sm:mt-6">
+        {/* Tagline — immediately after hero */}
+        <div className="relative mt-2 pb-2 text-center sm:mt-4">
           <div className="flex items-center justify-center gap-1 sm:gap-2">
             <span className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               Work Smarter
