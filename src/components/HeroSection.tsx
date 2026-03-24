@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTheme } from "./ThemeProvider";
 import {
@@ -51,6 +51,9 @@ function ImageLightbox({
 export default function HeroSection() {
   const { theme } = useTheme();
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const intelligenceRef = useRef<HTMLSpanElement>(null);
+  const [laserOrigin, setLaserOrigin] = useState({ x: 30, y: 50 });
 
   const heroImage =
     theme === "dark"
@@ -62,26 +65,57 @@ export default function HeroSection() {
     next?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  // Measure "Intelligence" position relative to hero section
+  useEffect(() => {
+    function measure() {
+      const section = sectionRef.current;
+      const word = intelligenceRef.current;
+      if (!section || !word) return;
+
+      const sRect = section.getBoundingClientRect();
+      const wRect = word.getBoundingClientRect();
+
+      const x = ((wRect.left + wRect.width / 2 - sRect.left) / sRect.width) * 100;
+      const y = ((wRect.top + wRect.height / 2 - sRect.top) / sRect.height) * 100;
+
+      setLaserOrigin({ x, y });
+    }
+
+    measure();
+    window.addEventListener("resize", measure);
+    // Re-measure after fonts load
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(measure);
+    }
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
   return (
     <>
-      <section className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden">
-        {/* Animated laser background — positioned with blue dot at "Intelligence" */}
-        <HeroBackground />
+      <section
+        ref={sectionRef}
+        className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden"
+      >
+        {/* Animated laser background — blue dot tracks "Intelligence" */}
+        <HeroBackground originX={laserOrigin.x} originY={laserOrigin.y} />
 
-        {/* Hero content — responsive sizing with clamp */}
-        <div className="relative mx-auto flex w-full max-w-7xl items-start px-4 pt-[6vh] sm:px-6 sm:pt-[8vh] lg:px-8 lg:pt-[10vh]">
-          <div className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
-            {/* Left — headline with viewport-responsive font */}
+        {/* Hero content — percentage-based width, scales with viewport */}
+        <div
+          className="relative mx-auto flex w-[88%] items-start"
+          style={{ paddingTop: "8vh" }}
+        >
+          <div className="grid w-full grid-cols-1 items-center gap-[4vw] lg:grid-cols-2">
+            {/* Left — headline */}
             <div>
               <h1
                 className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
-                style={{ fontSize: "clamp(3.5rem, 6.5vw, 7rem)" }}
+                style={{ fontSize: "clamp(2.8rem, 5.8vw, 9rem)" }}
               >
                 Legal
                 <br />
                 Operations
                 <br />
-                Intelligence
+                <span ref={intelligenceRef}>Intelligence</span>
               </h1>
             </div>
 
@@ -94,12 +128,12 @@ export default function HeroSection() {
                 height={800}
                 priority
                 className="h-auto w-full rounded-lg shadow-2xl"
-                style={{ maxWidth: "clamp(320px, 38vw, 640px)" }}
+                style={{ maxWidth: "min(90%, 42vw)" }}
               />
               <button
                 type="button"
                 onClick={() => setLightboxOpen(true)}
-                className="absolute right-3 top-3 rounded-md bg-black/50 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
+                className="absolute right-[5%] top-[3%] rounded-md bg-black/50 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
                 aria-label="Expand image"
               >
                 <ArrowExpand24Regular />
@@ -108,18 +142,18 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Tagline — midway between hero content and scroll arrow */}
+        {/* Tagline — centered in remaining space */}
         <div className="relative flex flex-1 items-center justify-center">
           <p
             className="font-semibold tracking-tight text-foreground/80"
-            style={{ fontSize: "clamp(1.75rem, 3.5vw, 3.5rem)" }}
+            style={{ fontSize: "clamp(1.5rem, 3vw, 4.5rem)" }}
           >
             Raise the IQ of Your Legal Work
           </p>
         </div>
 
         {/* Scroll down arrow */}
-        <div className="relative pb-6 text-center">
+        <div className="relative pb-[2vh] text-center">
           <button
             type="button"
             onClick={scrollDown}

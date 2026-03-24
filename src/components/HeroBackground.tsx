@@ -5,8 +5,8 @@ import { useTheme } from "./ThemeProvider";
 
 /**
  * Hero background: SVG laser animation plays once then stays.
- * Blue dot is positioned at the center of "Intelligence" (left ~30%, bottom ~55%).
- * Fades out as user scrolls down.
+ * Origin (blue dot) is positioned dynamically via props (percentage-based).
+ * Fades out on scroll.
  */
 
 const ANIM_DURATION = 2200;
@@ -115,13 +115,7 @@ function LaserAnimation({ isDark }: { isDark: boolean }) {
     <svg
       ref={svgRef}
       viewBox="-4000 -2000 8000 4000"
-      className="absolute h-[200%] w-[200%]"
-      style={{
-        /* Position so origin (0,0 = blue dot) aligns with center of "Intelligence" */
-        left: "28%",
-        top: "52%",
-        transform: "translate(-50%, -50%)",
-      }}
+      className="absolute h-[250%] w-[250%]"
       preserveAspectRatio="xMidYMid slice"
       fill="none"
     >
@@ -161,7 +155,13 @@ function LaserAnimation({ isDark }: { isDark: boolean }) {
   );
 }
 
-export default function HeroBackground() {
+export default function HeroBackground({
+  originX,
+  originY,
+}: {
+  originX: number;
+  originY: number;
+}) {
   const [scrollOpacity, setScrollOpacity] = useState(0.05);
   const { theme } = useTheme();
   const isDark = theme === "dark";
@@ -182,7 +182,19 @@ export default function HeroBackground() {
       style={{ opacity: scrollOpacity }}
       aria-hidden="true"
     >
-      <LaserAnimation isDark={isDark} />
+      {/* Position the SVG so its center (0,0 = blue dot) sits at originX%, originY% */}
+      <div
+        className="absolute"
+        style={{
+          left: `${originX}%`,
+          top: `${originY}%`,
+          transform: "translate(-50%, -50%)",
+          width: "250%",
+          height: "250%",
+        }}
+      >
+        <LaserAnimation isDark={isDark} />
+      </div>
     </div>
   );
 }
