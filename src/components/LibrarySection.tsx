@@ -164,7 +164,7 @@ export default function LibrarySection() {
           </div>
 
           {/* Right — scrollable article cards */}
-          <div className="relative flex-1 overflow-hidden px-[2%] pt-6">
+          <div className="relative flex-1 overflow-hidden px-[2%] pt-10">
             <div
               ref={cardContainerRef}
               className="grid grid-cols-3 gap-4"

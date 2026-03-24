@@ -22,8 +22,8 @@ export default function StickyTagline() {
   return (
     <div
       ref={ref}
-      className="sticky z-40 flex items-center justify-center border-b border-border bg-background py-4"
-      style={{ top: "73px" }}
+      className="sticky z-40 flex items-center justify-center border-b border-border bg-background py-6"
+      style={{ top: "73px", marginTop: "2vh" }}
     >
       <p
         className="font-semibold text-foreground/80"
