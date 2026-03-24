@@ -135,9 +135,9 @@ export default function LibrarySection() {
     >
       {/* Sticky container — pins to viewport */}
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-        {/* Section header — same style as hero tagline, centered */}
-        <div className="flex w-full items-center justify-center border-b border-border bg-background py-8">
-          <h2
+        {/* Sticky tagline header — same as hero tagline */}
+        <div className="flex w-full shrink-0 items-center justify-center border-b border-border bg-background py-6">
+          <p
             className="font-semibold text-foreground/80"
             style={{
               fontSize: "clamp(2rem, 4vw, 12rem)",
@@ -145,7 +145,7 @@ export default function LibrarySection() {
             }}
           >
             Raise the IQ of Your Legal Work
-          </h2>
+          </p>
         </div>
 
         {/* 2/3 split layout — fills remaining height */}
