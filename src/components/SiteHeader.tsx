@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
@@ -11,25 +11,55 @@ const navLinks = [
 
 export default function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    function onScroll() {
+      // Transition completes over the first 300px of scroll
+      const progress = Math.min(1, window.scrollY / 300);
+      setScrollProgress(progress);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        {/* Logo — color for light, white for dark */}
-        <Link href="/" className="flex-shrink-0">
+        {/* Logo — icon slides in from hero center on scroll */}
+        <Link href="/" className="flex flex-shrink-0 items-center">
+          {/* Starburst icon — fades/slides in as user scrolls */}
+          <div
+            className="overflow-hidden transition-none"
+            style={{
+              width: scrollProgress * 36,
+              opacity: scrollProgress,
+            }}
+          >
+            <Image
+              src="/images/logo-icon-color.svg"
+              alt=""
+              width={36}
+              height={36}
+              className="h-8 w-8 sm:h-9 sm:w-9"
+              aria-hidden="true"
+            />
+          </div>
+          {/* Wordmark — always visible */}
           <Image
-            src="/images/logo-color.svg"
+            src="/images/logo-wordmark-color.svg"
             alt="Spaarke"
-            width={140}
-            height={42}
+            width={120}
+            height={36}
             priority
             className="h-8 w-auto sm:h-10 dark:hidden"
           />
           <Image
-            src="/images/logo-white.svg"
+            src="/images/logo-wordmark-white.svg"
             alt="Spaarke"
-            width={140}
-            height={42}
+            width={120}
+            height={36}
             priority
             className="hidden h-8 w-auto sm:h-10 dark:block"
           />

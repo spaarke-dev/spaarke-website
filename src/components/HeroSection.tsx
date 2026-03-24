@@ -133,8 +133,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Tagline — directly under hero content */}
-        <div className="relative mt-8 pb-2 text-center sm:mt-10">
+        {/* Tagline — tight under hero content */}
+        <div className="relative mt-4 pb-2 text-center sm:mt-6">
           <div className="flex items-center justify-center gap-1 sm:gap-2">
             <span className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               Work Smarter

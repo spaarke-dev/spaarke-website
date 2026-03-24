@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTheme } from "./ThemeProvider";
 
 /**
  * One-shot laser animation as hero background.
@@ -22,6 +23,8 @@ function easeOutCubic(t: number) {
 
 export default function HeroBackground() {
   const svgRef = useRef<SVGSVGElement>(null);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -140,19 +143,19 @@ export default function HeroBackground() {
       >
         <defs>
           <linearGradient id="hb-laser-grad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FC0000" stopOpacity="0" />
-            <stop offset="20%" stopColor="#FC0000" />
-            <stop offset="100%" stopColor="#FC0000" />
+            <stop offset="0%" stopColor={isDark ? "#FFFFFF" : "#FC0000"} stopOpacity="0" />
+            <stop offset="20%" stopColor={isDark ? "#FFFFFF" : "#FC0000"} />
+            <stop offset="100%" stopColor={isDark ? "#FFFFFF" : "#FC0000"} />
           </linearGradient>
           <linearGradient id="hb-beam-grad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FFD200" />
-            <stop offset="50%" stopColor="#FC0000" />
-            <stop offset="100%" stopColor="#FFD200" />
+            <stop offset="0%" stopColor={isDark ? "#FFFFFF" : "#FFD200"} />
+            <stop offset="50%" stopColor={isDark ? "#FFFFFF" : "#FC0000"} />
+            <stop offset="100%" stopColor={isDark ? "#FFFFFF" : "#FFD200"} />
           </linearGradient>
           <radialGradient id="hb-spark-grad">
             <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
-            <stop offset="40%" stopColor="#000BFF" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#000BFF" stopOpacity="0" />
+            <stop offset="40%" stopColor={isDark ? "#FFFFFF" : "#000BFF"} stopOpacity="0.6" />
+            <stop offset="100%" stopColor={isDark ? "#FFFFFF" : "#000BFF"} stopOpacity="0" />
           </radialGradient>
         </defs>
 
@@ -182,8 +185,8 @@ export default function HeroBackground() {
         {/* Spark flash */}
         <circle id="hb-spark" cx="0" cy="0" r="25" fill="url(#hb-spark-grad)" opacity="0" />
 
-        {/* Blue dot at center — top layer, larger */}
-        <circle id="hb-blue-dot" cx="0" cy="0" r="50" fill="#000BFF" opacity="0" />
+        {/* Blue dot at center — top layer, larger (white in dark mode) */}
+        <circle id="hb-blue-dot" cx="0" cy="0" r="50" fill={isDark ? "#FFFFFF" : "#000BFF"} opacity="0" />
       </svg>
     </div>
   );
