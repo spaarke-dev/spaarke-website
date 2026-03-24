@@ -71,48 +71,46 @@ export default function HeroSection() {
     <>
       <section className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden">
         {/* Animated laser background — centered */}
-        <HeroBackground originX={50} originY={45} />
+        <HeroBackground originX={50} originY={40} />
 
-        {/* Hero content — percentage-based width, scales with viewport */}
+        {/* Hero content — flanking center with equal margins */}
         <div
-          className="relative mx-auto flex w-[88%] items-start"
-          style={{ paddingTop: "8vh" }}
+          className="relative flex flex-1 items-center justify-center"
+          style={{ gap: "4vw" }}
         >
-          <div className="grid w-full grid-cols-1 items-center gap-[4vw] lg:grid-cols-[2fr_3fr]">
-            {/* Left — headline */}
-            <div>
-              <h1
-                className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
-                style={{ fontSize: "clamp(2.8rem, 5.8vw, 16rem)" }}
-              >
-                Legal
-                <br />
-                Operations
-                <br />
-                Intelligence
-              </h1>
-            </div>
+          {/* Left — headline, right-aligned toward center */}
+          <div className="flex w-[45%] justify-end">
+            <h1
+              className="text-right font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
+              style={{ fontSize: "clamp(2.8rem, 5.8vw, 16rem)" }}
+            >
+              Legal
+              <br />
+              Operations
+              <br />
+              Intelligence
+            </h1>
+          </div>
 
-            {/* Right — screenshot with expand button */}
-            <div className="group relative flex items-start justify-center">
-              <Image
-                src={heroImage}
-                alt="Spaarke Legal Operations Workspace"
-                width={1200}
-                height={800}
-                priority
-                className="h-auto w-full rounded-lg shadow-2xl"
-                style={{ maxWidth: "min(90%, 42vw)" }}
-              />
-              <button
-                type="button"
-                onClick={() => setLightboxOpen(true)}
-                className="absolute right-[5%] top-[3%] rounded-md bg-black/50 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
-                aria-label="Expand image"
-              >
-                <ArrowExpand24Regular />
-              </button>
-            </div>
+          {/* Right — screenshot with expand button, left-aligned toward center */}
+          <div className="group relative w-[45%]">
+            <Image
+              src={heroImage}
+              alt="Spaarke Legal Operations Workspace"
+              width={1200}
+              height={800}
+              priority
+              className="h-auto w-full rounded-lg shadow-2xl"
+              style={{ maxWidth: "min(100%, 42vw)" }}
+            />
+            <button
+              type="button"
+              onClick={() => setLightboxOpen(true)}
+              className="absolute right-[3%] top-[3%] rounded-md bg-black/50 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
+              aria-label="Expand image"
+            >
+              <ArrowExpand24Regular />
+            </button>
           </div>
         </div>
 
