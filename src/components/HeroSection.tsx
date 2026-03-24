@@ -75,13 +75,13 @@ export default function HeroSection() {
 
         {/* Hero content — flanking center with equal margins */}
         <div
-          className="relative flex flex-1 items-center justify-center"
-          style={{ gap: "4vw" }}
+          className="relative flex items-center justify-center"
+          style={{ gap: "8vw", paddingTop: "10vh" }}
         >
-          {/* Left — headline, right-aligned toward center */}
-          <div className="flex w-[45%] justify-end">
+          {/* Left — headline, left-aligned */}
+          <div className="w-[42%]">
             <h1
-              className="text-right font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
+              className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
               style={{ fontSize: "clamp(2.8rem, 5.8vw, 16rem)" }}
             >
               Legal
@@ -92,8 +92,8 @@ export default function HeroSection() {
             </h1>
           </div>
 
-          {/* Right — screenshot with expand button, left-aligned toward center */}
-          <div className="group relative w-[45%]">
+          {/* Right — screenshot with expand button */}
+          <div className="group relative w-[42%]">
             <Image
               src={heroImage}
               alt="Spaarke Legal Operations Workspace"
