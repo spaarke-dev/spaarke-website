@@ -109,7 +109,7 @@ export default function HeroSection() {
             <div>
               <h1
                 className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
-                style={{ fontSize: "clamp(2.8rem, 5.8vw, 9rem)" }}
+                style={{ fontSize: "clamp(2.8rem, 5.8vw, 16rem)" }}
               >
                 Legal
                 <br />
@@ -146,7 +146,7 @@ export default function HeroSection() {
         <div className="relative flex flex-1 items-center justify-center">
           <p
             className="font-semibold tracking-tight text-foreground/80"
-            style={{ fontSize: "clamp(1.5rem, 3vw, 4.5rem)" }}
+            style={{ fontSize: "clamp(1.5rem, 3vw, 10rem)" }}
           >
             Raise the IQ of Your Legal Work
           </p>

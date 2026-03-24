@@ -24,7 +24,7 @@ export default function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex w-[88%] items-center justify-between" style={{ padding: "clamp(0.75rem, 1.2vw, 2.5rem) 0" }}>
         {/* Logo — crossfade from wordmark-only to full logo on scroll */}
         <Link href="/" className="relative flex-shrink-0">
           {/* Wordmark only — visible at top, fades out on scroll */}
@@ -34,8 +34,8 @@ export default function SiteHeader() {
             width={120}
             height={36}
             priority
-            className="h-8 w-auto sm:h-10 dark:hidden"
-            style={{ opacity: 1 - scrollProgress }}
+            className="w-auto dark:hidden"
+            style={{ height: "clamp(2rem, 2.5vw, 5rem)", opacity: 1 - scrollProgress }}
           />
           <Image
             src="/images/logo-wordmark-white.svg"
@@ -43,8 +43,8 @@ export default function SiteHeader() {
             width={120}
             height={36}
             priority
-            className="hidden h-8 w-auto sm:h-10 dark:block"
-            style={{ opacity: 1 - scrollProgress }}
+            className="hidden w-auto dark:block"
+            style={{ height: "clamp(2rem, 2.5vw, 5rem)", opacity: 1 - scrollProgress }}
           />
           {/* Full logo (icon + wordmark) — same height = same text size */}
           <Image
@@ -53,8 +53,8 @@ export default function SiteHeader() {
             width={160}
             height={42}
             priority
-            className="absolute left-0 top-1/2 h-8 w-auto -translate-y-1/2 sm:h-10 dark:hidden"
-            style={{ opacity: scrollProgress }}
+            className="absolute left-0 top-1/2 w-auto -translate-y-1/2 dark:hidden"
+            style={{ opacity: scrollProgress, height: "clamp(2rem, 2.5vw, 5rem)" }}
           />
           <Image
             src="/images/logo-white.svg"
@@ -62,8 +62,8 @@ export default function SiteHeader() {
             width={160}
             height={42}
             priority
-            className="absolute left-0 top-1/2 hidden h-8 w-auto -translate-y-1/2 sm:h-10 dark:block"
-            style={{ opacity: scrollProgress }}
+            className="absolute left-0 top-1/2 hidden w-auto -translate-y-1/2 dark:block"
+            style={{ opacity: scrollProgress, height: "clamp(2rem, 2.5vw, 5rem)" }}
           />
         </Link>
 
@@ -73,14 +73,14 @@ export default function SiteHeader() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+              className="font-medium text-foreground/80 transition-colors hover:text-foreground" style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
             >
               {link.label}
             </Link>
           ))}
           <Link
             href="/signin"
-            className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+            className="font-medium text-foreground/80 transition-colors hover:text-foreground" style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
           >
             Sign In
           </Link>
