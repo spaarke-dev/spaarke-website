@@ -43,7 +43,8 @@ export default function ArticlesSection() {
   const [featured, ...rest] = articles;
 
   return (
-    <section id="articles" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section id="articles" className="relative z-10 bg-background">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <h2 className="mb-12 text-[28px] font-semibold text-foreground sm:text-[34px] lg:text-[38px]">
         Work Smarter.&nbsp; Operate Leaner.&nbsp; Decide Faster.
       </h2>
@@ -73,6 +74,7 @@ export default function ArticlesSection() {
             popoverContent={article.popoverContent}
           />
         ))}
+      </div>
       </div>
     </section>
   );
