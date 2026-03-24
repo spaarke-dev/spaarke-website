@@ -15,7 +15,7 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        {/* Logo — color version for both light and dark */}
+        {/* Logo — color for light, white for dark */}
         <Link href="/" className="flex-shrink-0">
           <Image
             src="/images/logo-color.svg"
@@ -23,7 +23,15 @@ export default function SiteHeader() {
             width={140}
             height={42}
             priority
-            className="h-8 w-auto sm:h-10"
+            className="h-8 w-auto sm:h-10 dark:hidden"
+          />
+          <Image
+            src="/images/logo-white.svg"
+            alt="Spaarke"
+            width={140}
+            height={42}
+            priority
+            className="hidden h-8 w-auto sm:h-10 dark:block"
           />
         </Link>
 
