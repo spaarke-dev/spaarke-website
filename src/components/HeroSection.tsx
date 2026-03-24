@@ -114,18 +114,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Tagline — visible in hero, centered in remaining space */}
-        <div className="relative flex flex-1 items-center justify-center">
-          <p
-            className="font-semibold text-foreground/80"
-            style={{
-              fontSize: "clamp(2rem, 4vw, 12rem)",
-              letterSpacing: "0.04em",
-            }}
-          >
-            Raise the IQ of Your Legal Work
-          </p>
-        </div>
+        {/* Spacer */}
+        <div className="flex-1" />
 
         {/* Scroll down arrow */}
         <div className="relative pb-[2vh] text-center">

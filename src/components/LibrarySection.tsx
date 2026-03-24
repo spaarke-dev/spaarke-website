@@ -116,9 +116,7 @@ export default function LibrarySection() {
       const section = sectionRef.current;
       if (!section) return;
       const rect = section.getBoundingClientRect();
-      // How far past the top of the section we've scrolled
       const scrolled = -rect.top;
-      // Clamp between 0 and cardOverflow
       setScrollOffset(Math.max(0, Math.min(scrolled, cardOverflow)));
     }
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -126,7 +124,6 @@ export default function LibrarySection() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [cardOverflow]);
 
-  // Section height = viewport + card overflow (so sticky container can scroll through cards)
   const sectionHeight = `calc(100vh + ${cardOverflow}px)`;
 
   return (
@@ -138,12 +135,12 @@ export default function LibrarySection() {
     >
       {/* Sticky container — pins to viewport */}
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-        {/* Section header — tagline */}
-        <div className="mx-auto w-[88%] pt-8 pb-6">
+        {/* Section header — same style as hero tagline, centered */}
+        <div className="flex w-full items-center justify-center border-b border-border bg-background py-8">
           <h2
             className="font-semibold text-foreground/80"
             style={{
-              fontSize: "clamp(1.5rem, 3vw, 6rem)",
+              fontSize: "clamp(2rem, 4vw, 12rem)",
               letterSpacing: "0.04em",
             }}
           >
@@ -151,38 +148,36 @@ export default function LibrarySection() {
           </h2>
         </div>
 
-        {/* 2/3 split layout */}
-        <div className="mx-auto flex w-[88%] flex-1 gap-[2vw] overflow-hidden">
-          {/* Left 2 columns — fixed content */}
-          <div className="flex w-[40%] flex-col justify-center">
-            <div className="space-y-6">
-              <h3
-                className="font-semibold leading-tight text-foreground"
-                style={{ fontSize: "clamp(1.2rem, 2.2vw, 4rem)" }}
-              >
-                Work Smarter.
-                <br />
-                Operate Leaner.
-                <br />
-                Decide Faster.
-              </h3>
-              <p
-                className="max-w-[30ch] text-muted-foreground"
-                style={{ fontSize: "clamp(0.875rem, 1vw, 1.5rem)" }}
-              >
-                Legal operations intelligence that transforms how your team
-                captures data, retains knowledge, and makes decisions.
-              </p>
-            </div>
+        {/* 2/3 split layout — fills remaining height */}
+        <div className="flex flex-1 overflow-hidden">
+          {/* Left sidebar — dark gray background, fixed content */}
+          <div className="flex w-[35%] flex-col justify-center bg-neutral-800 px-[4%] text-white dark:bg-neutral-900">
+            <h3
+              className="font-semibold leading-tight"
+              style={{ fontSize: "clamp(1.2rem, 2.2vw, 4rem)" }}
+            >
+              Work Smarter.
+              <br />
+              Operate Leaner.
+              <br />
+              Decide Faster.
+            </h3>
+            <p
+              className="mt-6 max-w-[30ch] text-white/70"
+              style={{ fontSize: "clamp(0.875rem, 1vw, 1.5rem)" }}
+            >
+              Legal operations intelligence that transforms how your team
+              captures data, retains knowledge, and makes decisions.
+            </p>
             {/* Placeholder image */}
             <div
-              className="mt-8 rounded-lg bg-muted/30"
+              className="mt-8 rounded-lg bg-white/10"
               style={{ width: "80%", aspectRatio: "4/3" }}
             />
           </div>
 
-          {/* Right 3 columns — scrollable article cards */}
-          <div className="relative w-[60%] overflow-hidden">
+          {/* Right — scrollable article cards */}
+          <div className="relative flex-1 overflow-hidden px-[3%] py-6">
             <div
               ref={cardContainerRef}
               className="grid grid-cols-3 gap-4"
