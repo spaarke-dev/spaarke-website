@@ -4,19 +4,20 @@ import { useEffect, useRef } from "react";
 
 /**
  * Looping laser + explosion animation as hero background.
- * Laser shoots from left → hits blue center → thick beams explode outward.
- * Matches the Spaarke logo starburst: thick red laser, gold→red beams, blue dot.
+ * Laser shoots from left → hits blue dot at center → beams explode outward.
+ * Colors: blue (#000BFF), red (#FC0000), yellow (#FFD200).
+ * Horizontal laser stops at blue dot — does NOT continue right.
  */
 
 const CYCLE_MS = 5000;
-const LASER_FIRE = 900;    // laser crosses screen
-const SPARK_START = 750;   // spark begins just before laser arrives
-const BEAM_DELAY = 800;    // beams start when laser hits
+const LASER_FIRE = 900;
+const SPARK_START = 750;
+const BEAM_DELAY = 800;
 const BEAM_EXTEND = 350;
 const BEAM_HOLD = 400;
 const BEAM_FADE = 1200;
 const PEAK_WIDTH = 8000;
-const BEAM_THICKNESS = 120; // thick beams like the logo
+const BEAM_THICKNESS = 70;
 
 function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3);
@@ -41,19 +42,16 @@ export default function HeroBackground() {
       if (cancelled) return;
       const elapsed = now % CYCLE_MS;
 
-      // --- Laser: thick red beam from far left to center ---
+      // --- Laser: red beam from far left to center (stops at blue dot) ---
       if (laser) {
         if (elapsed < LASER_FIRE) {
           const progress = elapsed / LASER_FIRE;
-          // Tip moves from far left (-4000) to center (0)
           const tipX = -4000 + progress * 4000;
-          // Tail trails behind
           const tailX = -4000 + Math.max(0, progress - 0.3) / 0.7 * 4000;
           laser.setAttribute("x", String(tailX));
           laser.setAttribute("width", String(Math.max(0, tipX - tailX)));
           laser.setAttribute("opacity", "1");
         } else if (elapsed < LASER_FIRE + 200) {
-          // Quick fade after hitting center
           const fade = 1 - (elapsed - LASER_FIRE) / 200;
           laser.setAttribute("opacity", String(fade));
         } else {
@@ -98,7 +96,7 @@ export default function HeroBackground() {
         }
       }
 
-      // --- Beam explosion: thick beams expand from center ---
+      // --- Beam explosion: beams expand from center outward ---
       const beamElapsed = elapsed - BEAM_DELAY;
       beams.forEach((r) => {
         if (beamElapsed < 0) {
@@ -137,7 +135,7 @@ export default function HeroBackground() {
   return (
     <div
       className="pointer-events-none absolute inset-0 overflow-hidden"
-      style={{ opacity: 0.15 }}
+      style={{ opacity: 0.10 }}
       aria-hidden="true"
     >
       <svg
@@ -148,39 +146,25 @@ export default function HeroBackground() {
         fill="none"
       >
         <defs>
-          {/* Red laser gradient */}
+          {/* Red laser — solid red, fades at tail */}
           <linearGradient id="hb-laser-grad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FF0000" stopOpacity="0" />
-            <stop offset="30%" stopColor="#FF0000" />
-            <stop offset="100%" stopColor="#FF0000" />
+            <stop offset="0%" stopColor="#FC0000" stopOpacity="0" />
+            <stop offset="30%" stopColor="#FC0000" />
+            <stop offset="100%" stopColor="#FC0000" />
           </linearGradient>
-          {/* Beam gradients: gold → red → gold (matching logo) */}
-          <linearGradient id="hb-beam-0" x1="0" y1="0" x2="1" y2="0">
+          {/* Beam gradient: yellow → red → yellow */}
+          <linearGradient id="hb-beam-grad" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor="#FFD200" />
-            <stop offset="50%" stopColor="#FF0000" />
+            <stop offset="50%" stopColor="#FC0000" />
             <stop offset="100%" stopColor="#FFD200" />
           </linearGradient>
-          <linearGradient id="hb-beam-45" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FFD200" />
-            <stop offset="50%" stopColor="#FF0000" />
-            <stop offset="100%" stopColor="#FFD200" />
-          </linearGradient>
-          <linearGradient id="hb-beam-90" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FFD200" />
-            <stop offset="50%" stopColor="#FF0000" />
-            <stop offset="100%" stopColor="#FFD200" />
-          </linearGradient>
-          <linearGradient id="hb-beam-135" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FFD200" />
-            <stop offset="50%" stopColor="#FF0000" />
-            <stop offset="100%" stopColor="#FFD200" />
-          </linearGradient>
-          {/* Spark / flare */}
+          {/* Spark: white center → blue edge */}
           <radialGradient id="hb-spark-grad">
             <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
-            <stop offset="40%" stopColor="#8080FF" stopOpacity="0.6" />
+            <stop offset="40%" stopColor="#000BFF" stopOpacity="0.6" />
             <stop offset="100%" stopColor="#000BFF" stopOpacity="0" />
           </radialGradient>
+          {/* Flare: blue glow */}
           <radialGradient id="hb-flare-grad">
             <stop offset="0%" stopColor="#000BFF" stopOpacity="0.8" />
             <stop offset="30%" stopColor="#000BFF" stopOpacity="0.4" />
@@ -188,35 +172,31 @@ export default function HeroBackground() {
           </radialGradient>
         </defs>
 
-        {/* Thick red laser — shoots from left to center */}
+        {/* Red laser — from far left to center, does NOT extend right */}
         <rect
           id="hb-laser"
-          x="-4000" y={-halfT / 2}
-          width="0" height={t / 2}
+          x="-4000" y={-halfT * 0.6}
+          width="0" height={t * 0.6}
           fill="url(#hb-laser-grad)"
           opacity="0"
         />
 
-        {/* Explosion beams — 8 directions like the logo starburst */}
-        {/* Horizontal (0°) */}
-        <g transform="rotate(0)">
-          <rect className="hb-beam" x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-0)" opacity="0" />
-        </g>
+        {/* Explosion beams — NO horizontal (laser covers left side) */}
         {/* Vertical (90°) */}
         <g transform="rotate(90)">
-          <rect className="hb-beam" x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-90)" opacity="0" />
+          <rect className="hb-beam" x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-grad)" opacity="0" />
         </g>
-        {/* Diagonal 45° */}
+        {/* Diagonal 45° (upper-right / lower-left) */}
         <g transform="rotate(45)">
-          <rect className="hb-beam" x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-45)" opacity="0" />
+          <rect className="hb-beam" x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-grad)" opacity="0" />
         </g>
-        {/* Diagonal -45° */}
+        {/* Diagonal -45° (lower-right / upper-left) */}
         <g transform="rotate(-45)">
-          <rect className="hb-beam" x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-135)" opacity="0" />
+          <rect className="hb-beam" x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-grad)" opacity="0" />
         </g>
 
-        {/* Blue dot at center */}
-        <circle id="hb-blue-dot" cx="0" cy="0" r="40" fill="#000BFF" opacity="0" />
+        {/* Blue dot at center — impact point */}
+        <circle id="hb-blue-dot" cx="0" cy="0" r="35" fill="#000BFF" opacity="0" />
 
         {/* Spark and flare */}
         <circle id="hb-spark" cx="0" cy="0" r="30" fill="url(#hb-spark-grad)" opacity="0" />
