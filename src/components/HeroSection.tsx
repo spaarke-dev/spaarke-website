@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "./ThemeProvider";
 import {
@@ -37,6 +37,60 @@ function SpectralConnector() {
   );
 }
 
+function StarburstBackground({ isDark }: { isDark: boolean }) {
+  const strokeOpacity = isDark ? 0.06 : 0.1;
+  return (
+    <svg
+      viewBox="0 0 1200 1200"
+      className="absolute left-1/2 top-1/2 h-[140%] w-[140%] -translate-x-1/2 -translate-y-1/2"
+      preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
+    >
+      <defs>
+        {/* Gold → Red → Gold gradient matching logo rays */}
+        <linearGradient id="ray-v" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
+          <stop offset="50%" stopColor="#FC0000" stopOpacity={strokeOpacity * 1.2} />
+          <stop offset="100%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
+        </linearGradient>
+        <linearGradient id="ray-h" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
+          <stop offset="50%" stopColor="#FC0000" stopOpacity={strokeOpacity * 1.2} />
+          <stop offset="100%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
+        </linearGradient>
+        <linearGradient id="ray-d1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
+          <stop offset="50%" stopColor="#FC0000" stopOpacity={strokeOpacity * 1.2} />
+          <stop offset="100%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
+        </linearGradient>
+        <linearGradient id="ray-d2" x1="1" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
+          <stop offset="50%" stopColor="#FC0000" stopOpacity={strokeOpacity * 1.2} />
+          <stop offset="100%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
+        </linearGradient>
+        <radialGradient id="center-glow">
+          <stop offset="0%" stopColor={isDark ? "#000BFF" : "#000BFF"} stopOpacity={isDark ? 0.03 : 0.04} />
+          <stop offset="100%" stopColor={isDark ? "#000BFF" : "#000BFF"} stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      {/* Vertical ray */}
+      <rect x="596" y="0" width="8" height="1200" fill="url(#ray-v)" />
+      {/* Horizontal ray */}
+      <rect x="0" y="596" width="1200" height="8" fill="url(#ray-h)" />
+      {/* Diagonal ray (top-left to bottom-right) */}
+      <rect x="-3" y="-3" width="6" height="1700" fill="url(#ray-d1)"
+        transform="rotate(45 600 600)" />
+      {/* Diagonal ray (top-right to bottom-left) */}
+      <rect x="-3" y="-3" width="6" height="1700" fill="url(#ray-d2)"
+        transform="rotate(-45 600 600)" />
+
+      {/* Subtle center glow */}
+      <circle cx="600" cy="600" r="200" fill="url(#center-glow)" />
+    </svg>
+  );
+}
+
 function ImageLightbox({
   src,
   alt,
@@ -46,6 +100,14 @@ function ImageLightbox({
   alt: string;
   onClose: () => void;
 }) {
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
@@ -85,19 +147,14 @@ export default function HeroSection() {
   return (
     <>
       <section className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden">
-        {/* Subtle spectral background gradients */}
+        {/* Starburst background — logo rays as subtle BG */}
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          {/* Warm glow — top left */}
-          <div className="absolute -left-[10%] -top-[20%] h-[70%] w-[50%] rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(255,148,0,0.08)_0%,_transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,_rgba(255,148,0,0.05)_0%,_transparent_70%)]" />
-          {/* Cool glow — right */}
-          <div className="absolute -right-[5%] top-[10%] h-[60%] w-[45%] rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(0,247,255,0.06)_0%,_transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,_rgba(0,247,255,0.04)_0%,_transparent_70%)]" />
-          {/* Deep accent — bottom center */}
-          <div className="absolute -bottom-[10%] left-[20%] h-[50%] w-[60%] rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(0,11,255,0.04)_0%,_transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,_rgba(0,11,255,0.03)_0%,_transparent_70%)]" />
+          <StarburstBackground isDark={theme === "dark"} />
         </div>
 
-        {/* Hero content — pushed higher with items-start + padding */}
-        <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-start px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8 lg:pt-16">
-          <div className="grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        {/* Hero content — pushed higher */}
+        <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-start px-4 pt-6 sm:px-6 sm:pt-10 lg:px-8 lg:pt-14">
+          <div className="grid w-full grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left — headline */}
             <div>
               <h1 className="text-6xl font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white sm:text-7xl lg:text-8xl">
@@ -117,12 +174,12 @@ export default function HeroSection() {
                 width={1200}
                 height={800}
                 priority
-                className="h-auto w-full max-w-[540px] rounded-lg shadow-2xl lg:max-w-[580px]"
+                className="h-auto w-full max-w-[480px] rounded-lg shadow-2xl lg:max-w-[520px]"
               />
               <button
                 type="button"
                 onClick={() => setLightboxOpen(true)}
-                className="absolute bottom-3 right-3 rounded-md bg-black/50 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 lg:right-[calc(50%-290px+12px)]"
+                className="absolute bottom-3 right-3 rounded-md bg-black/50 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
                 aria-label="Expand image"
               >
                 <ArrowExpand24Regular />
@@ -131,8 +188,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Tagline — moved up with margin-top auto removed */}
-        <div className="relative pb-1 text-center">
+        {/* Tagline */}
+        <div className="relative pb-0 text-center">
           <div className="flex items-center justify-center gap-1 sm:gap-2">
             <span className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
               Work Smarter
@@ -148,8 +205,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Scroll down arrow — more spacing from tagline */}
-        <div className="relative pb-4 pt-4 text-center">
+        {/* Scroll down arrow — spacing from tagline */}
+        <div className="relative pb-4 pt-6 text-center">
           <button
             type="button"
             onClick={scrollDown}
