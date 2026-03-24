@@ -133,21 +133,8 @@ export default function LibrarySection() {
       className="relative bg-background"
       style={{ height: sectionHeight }}
     >
-      {/* Sticky container — pins to viewport */}
-      <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-        {/* Sticky tagline header — same as hero tagline */}
-        <div className="flex w-full shrink-0 items-center justify-center border-b border-border bg-background py-4">
-          <p
-            className="font-semibold text-foreground/80"
-            style={{
-              fontSize: "clamp(2rem, 4vw, 12rem)",
-              letterSpacing: "0.04em",
-            }}
-          >
-            Raise the IQ of Your Legal Work
-          </p>
-        </div>
-
+      {/* Sticky container — pins below the sticky tagline header */}
+      <div className="sticky flex flex-col overflow-hidden" style={{ top: "var(--tagline-h, 80px)", height: "calc(100vh - var(--tagline-h, 80px))" }}>
         {/* 2/3 split layout — fills remaining height */}
         <div className="flex flex-1 overflow-hidden">
           {/* Left sidebar — dark gray background, fixed content */}

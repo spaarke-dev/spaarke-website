@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HeroSection from "@/components/HeroSection";
+import StickyTagline from "@/components/StickyTagline";
 import LibrarySection from "@/components/LibrarySection";
 import NextSection from "@/components/NextSection";
 
@@ -13,8 +14,12 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <LibrarySection />
-      <NextSection />
+      {/* Wrapper gives the sticky tagline a shared context with library + next sections */}
+      <div>
+        <StickyTagline />
+        <LibrarySection />
+        <NextSection />
+      </div>
     </>
   );
 }
