@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Use class-based dark mode instead of prefers-color-scheme */
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #0a0a0a;
@@ -9,14 +12,12 @@
   --border: #e5e5e5;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --muted: #1a1a1a;
-    --muted-foreground: #a3a3a3;
-    --border: #262626;
-  }
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --muted: #1a1a1a;
+  --muted-foreground: #a3a3a3;
+  --border: #262626;
 }
 
 @theme inline {
@@ -36,6 +37,7 @@
   --color-spaarke-orange: #FF9400;
   --color-spaarke-red: #FF4600;
   --color-spaarke-deep-red: #FF0000;
+  --color-hero-red: #FC0000;
 
   /* Semantic color mappings */
   --color-primary: #000BFF;

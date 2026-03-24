@@ -3,10 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Library" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -16,7 +15,7 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        {/* Logo */}
+        {/* Logo — color version for both light and dark */}
         <Link href="/" className="flex-shrink-0">
           <Image
             src="/images/logo-color.svg"
@@ -24,20 +23,12 @@ export default function SiteHeader() {
             width={140}
             height={42}
             priority
-            className="h-8 w-auto sm:h-10 dark:hidden"
-          />
-          <Image
-            src="/images/logo-white.svg"
-            alt="Spaarke"
-            width={140}
-            height={42}
-            priority
-            className="hidden h-8 w-auto sm:h-10 dark:block"
+            className="h-8 w-auto sm:h-10"
           />
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -47,26 +38,36 @@ export default function SiteHeader() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/signin"
+            className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+          >
+            Sign In
+          </Link>
+          <ThemeToggle />
         </div>
 
         {/* Mobile menu button */}
-        <button
-          type="button"
-          className="inline-flex items-center justify-center rounded-md p-2 text-foreground/80 hover:text-foreground md:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-expanded={mobileMenuOpen}
-          aria-label="Toggle navigation menu"
-        >
-          {mobileMenuOpen ? (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-            </svg>
-          )}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="inline-flex items-center justify-center rounded-md p-2 text-foreground/80 hover:text-foreground"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-expanded={mobileMenuOpen}
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? (
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            )}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}
@@ -83,6 +84,13 @@ export default function SiteHeader() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/signin"
+              className="block rounded-md px-3 py-2 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Sign In
+            </Link>
           </div>
         </div>
       )}
