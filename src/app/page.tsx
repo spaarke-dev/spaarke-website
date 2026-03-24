@@ -12,14 +12,11 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
+    <div>
       <HeroSection />
-      {/* Wrapper gives the sticky tagline a shared context with library + next sections */}
-      <div>
-        <StickyTagline />
-        <LibrarySection />
-        <NextSection />
-      </div>
-    </>
+      <StickyTagline />
+      <LibrarySection />
+      <NextSection />
+    </div>
   );
 }

@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "./ThemeProvider";
-import {
-  ChevronDown24Regular,
-  ArrowExpand24Regular,
-} from "@fluentui/react-icons";
+import { ArrowExpand24Regular } from "@fluentui/react-icons";
 import HeroBackground from "./HeroBackground";
 
 function ImageLightbox({
@@ -62,23 +59,21 @@ export default function HeroSection() {
       ? "/images/hero/hero-workspace-full-page-dark-mode.png"
       : "/images/hero/hero-workspace-full-page-light-mode.png";
 
-  const scrollDown = useCallback(() => {
-    // Scroll so the tagline reaches the top
-    window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
-  }, []);
-
   return (
     <>
-      <section className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden">
-        {/* Animated laser background — centered */}
-        <HeroBackground originX={50} originY={40} />
+      {/* Hero area — uses min-height, no overflow-hidden on outer */}
+      <div className="relative" style={{ minHeight: "calc(100vh - 73px)" }}>
+        {/* Background with its own clipping */}
+        <div className="absolute inset-0 overflow-hidden">
+          <HeroBackground originX={50} originY={40} />
+        </div>
 
-        {/* Hero content — flanking center with equal margins */}
+        {/* Hero content — flanking center */}
         <div
           className="relative flex items-center justify-center"
           style={{ gap: "8vw", paddingTop: "10vh" }}
         >
-          {/* Left — headline, left-aligned text but pushed right toward center */}
+          {/* Left — headline */}
           <div className="flex w-[42%] justify-end">
             <h1
               className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
@@ -92,7 +87,7 @@ export default function HeroSection() {
             </h1>
           </div>
 
-          {/* Right — screenshot with expand button */}
+          {/* Right — screenshot */}
           <div className="group relative w-[42%]">
             <Image
               src={heroImage}
@@ -113,22 +108,7 @@ export default function HeroSection() {
             </button>
           </div>
         </div>
-
-        {/* Spacer */}
-        <div className="flex-1" />
-
-        {/* Scroll down arrow */}
-        <div className="relative pb-[2vh] text-center">
-          <button
-            type="button"
-            onClick={scrollDown}
-            className="inline-flex animate-bounce text-muted-foreground transition-colors hover:text-foreground"
-            aria-label="Scroll to articles"
-          >
-            <ChevronDown24Regular className="h-8 w-8" />
-          </button>
-        </div>
-      </section>
+      </div>
 
       {/* Lightbox */}
       {lightboxOpen && (

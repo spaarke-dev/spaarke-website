@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
 export default function StickyTagline() {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Set CSS variable for tagline height so other components can reference it
   useEffect(() => {
     function measure() {
       if (ref.current) {
@@ -23,7 +22,8 @@ export default function StickyTagline() {
   return (
     <div
       ref={ref}
-      className="sticky top-0 z-40 flex items-center justify-center border-b border-border bg-background py-4"
+      className="sticky z-40 flex items-center justify-center border-b border-border bg-background py-4"
+      style={{ top: "73px" }}
     >
       <p
         className="font-semibold text-foreground/80"
