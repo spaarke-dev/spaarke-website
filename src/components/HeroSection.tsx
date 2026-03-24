@@ -63,7 +63,7 @@ export default function HeroSection() {
       : "/images/hero/hero-workspace-full-page-light-mode.png";
 
   const scrollDown = useCallback(() => {
-    const next = document.getElementById("tagline-anchor");
+    const next = document.getElementById("library-section");
     next?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
@@ -114,8 +114,18 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Spacer to push scroll arrow down */}
-        <div className="flex-1" />
+        {/* Tagline — visible in hero, centered in remaining space */}
+        <div className="relative flex flex-1 items-center justify-center">
+          <p
+            className="font-semibold text-foreground/80"
+            style={{
+              fontSize: "clamp(2rem, 4vw, 12rem)",
+              letterSpacing: "0.04em",
+            }}
+          >
+            Raise the IQ of Your Legal Work
+          </p>
+        </div>
 
         {/* Scroll down arrow */}
         <div className="relative pb-[2vh] text-center">
@@ -129,19 +139,6 @@ export default function HeroSection() {
           </button>
         </div>
       </section>
-
-      {/* Sticky tagline — stays fixed while articles scroll over it */}
-      <div id="tagline-anchor" className="sticky top-0 z-0 flex h-screen items-center justify-center bg-background">
-        <p
-          className="font-semibold text-foreground/80"
-          style={{
-            fontSize: "clamp(2rem, 4vw, 12rem)",
-            letterSpacing: "0.04em",
-          }}
-        >
-          Raise the IQ of Your Legal Work
-        </p>
-      </div>
 
       {/* Lightbox */}
       {lightboxOpen && (

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HeroSection from "@/components/HeroSection";
-import ArticlesSection from "@/components/ArticlesSection";
+import LibrarySection from "@/components/LibrarySection";
+import NextSection from "@/components/NextSection";
 
 export const metadata: Metadata = {
   title: "Spaarke | Legal Operations Intelligence",
@@ -12,7 +13,8 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <ArticlesSection />
+      <LibrarySection />
+      <NextSection />
     </>
   );
 }
