@@ -78,7 +78,7 @@ export default function HeroSection() {
           className="relative mx-auto flex w-[88%] items-start"
           style={{ paddingTop: "8vh" }}
         >
-          <div className="grid w-full grid-cols-1 items-center gap-[4vw] lg:grid-cols-2">
+          <div className="grid w-full grid-cols-1 items-center gap-[4vw] lg:grid-cols-[2fr_3fr]">
             {/* Left — headline */}
             <div>
               <h1
