@@ -1,20 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useTheme } from "./ThemeProvider";
 
 /**
- * Hero background with two phases:
- * 1. SVG laser animation plays (laser shoots, beams radiate, ~2s)
- * 2. Crossfades to static laser-logo.png which stays as background
- * 3. On scroll, the static image fades out (icon "moves" to header)
- * Dark mode: white version at 5% opacity.
+ * Hero background: SVG laser animation plays once (laser shoots, beams radiate)
+ * then stays as a static background at 5% opacity.
+ * Dark mode: white version.
  */
 
-const ANIM_DURATION = 2200; // animation completes
-const CROSSFADE = 400;      // crossfade to static image
-const SCROLL_DISTANCE = 350;
+const ANIM_DURATION = 2200;
 const BEAM_START = 1100;
 const BEAM_GROW = 800;
 const LASER_FIRE = 1200;
@@ -26,7 +21,7 @@ function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3);
 }
 
-function LaserAnimation({ isDark, onComplete }: { isDark: boolean; onComplete: () => void }) {
+function LaserAnimation({ isDark }: { isDark: boolean }) {
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -103,17 +98,15 @@ function LaserAnimation({ isDark, onComplete }: { isDark: boolean; onComplete: (
         });
       }
 
-      if (elapsed > ANIM_DURATION) {
-        onComplete();
-        return;
-      }
+      // After animation completes, stop — SVG stays as static background
+      if (elapsed > ANIM_DURATION) return;
 
       requestAnimationFrame(tick);
     }
 
     requestAnimationFrame(tick);
     return () => { cancelled = true; };
-  }, [onComplete]);
+  }, []);
 
   const t = BEAM_THICKNESS;
   const halfT = t / 2;
@@ -164,50 +157,12 @@ function LaserAnimation({ isDark, onComplete }: { isDark: boolean; onComplete: (
 }
 
 export default function HeroBackground() {
-  const [animDone, setAnimDone] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  useEffect(() => {
-    function onScroll() {
-      setScrollProgress(Math.min(1, window.scrollY / SCROLL_DISTANCE));
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Animation fades out as static image fades in
-  const animOpacity = animDone ? 0 : 0.05;
-  const staticOpacity = animDone ? 0.05 * (1 - scrollProgress) : 0;
-
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      {/* Phase 1: SVG animation */}
-      {!animDone && (
-        <div
-          className="absolute inset-0 transition-opacity duration-500"
-          style={{ opacity: animOpacity }}
-        >
-          <LaserAnimation isDark={isDark} onComplete={() => setAnimDone(true)} />
-        </div>
-      )}
-
-      {/* Phase 2: Static laser-logo.png — fades out on scroll */}
-      <div
-        className="absolute inset-0 flex items-center justify-center transition-opacity duration-500"
-        style={{ opacity: staticOpacity }}
-      >
-        <Image
-          src="/images/hero/laser-logo.png"
-          alt=""
-          width={800}
-          height={600}
-          className={`h-auto w-[60vw] max-w-[800px] ${isDark ? "brightness-0 invert" : ""}`}
-          priority
-        />
-      </div>
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" style={{ opacity: 0.05 }} aria-hidden="true">
+      <LaserAnimation isDark={isDark} />
     </div>
   );
 }

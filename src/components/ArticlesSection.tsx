@@ -44,8 +44,8 @@ export default function ArticlesSection() {
 
   return (
     <section id="articles" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      <h2 className="mb-12 text-3xl font-bold text-foreground sm:text-4xl">
-        Raising the IQ of Legal Work
+      <h2 className="mb-12 text-[28px] font-semibold text-foreground sm:text-[34px] lg:text-[38px]">
+        Work Smarter.&nbsp; Operate Leaner.&nbsp; Decide Faster.
       </h2>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">

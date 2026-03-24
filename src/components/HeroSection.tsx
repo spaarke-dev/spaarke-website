@@ -9,35 +9,6 @@ import {
 } from "@fluentui/react-icons";
 import HeroBackground from "./HeroBackground";
 
-function SpectralConnector() {
-  return (
-    <svg
-      viewBox="0 0 80 40"
-      className="h-6 w-12 sm:h-8 sm:w-16 lg:h-10 lg:w-20"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id="beam" x1="0%" y1="50%" x2="100%" y2="50%">
-          <stop offset="0%" stopColor="#FF9400" />
-          <stop offset="50%" stopColor="#FFD200" />
-          <stop offset="100%" stopColor="#FF9400" />
-        </linearGradient>
-      </defs>
-      <line x1="8" y1="20" x2="72" y2="20" stroke="url(#beam)" strokeWidth="3" strokeLinecap="round" />
-      <circle cx="8" cy="20" r="4" fill="#FF9400" />
-      <circle cx="72" cy="20" r="4" fill="#FF9400" />
-      <circle cx="8" cy="20" r="7" fill="none" stroke="#FF9400" strokeWidth="1" opacity="0.4">
-        <animate attributeName="r" values="5;10;5" dur="2s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="72" cy="20" r="7" fill="none" stroke="#FF9400" strokeWidth="1" opacity="0.4">
-        <animate attributeName="r" values="5;10;5" dur="2s" repeatCount="indefinite" begin="1s" />
-        <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite" begin="1s" />
-      </circle>
-    </svg>
-  );
-}
-
 function ImageLightbox({
   src,
   alt,
@@ -94,7 +65,7 @@ export default function HeroSection() {
   return (
     <>
       <section className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden">
-        {/* Animated laser + explosion background at 20% opacity */}
+        {/* Animated laser background at 5% opacity */}
         <HeroBackground />
 
         {/* Hero content */}
@@ -133,21 +104,11 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Tagline — immediately after hero */}
-        <div className="relative mt-2 pb-2 text-center sm:mt-4">
-          <div className="flex items-center justify-center gap-1 sm:gap-2">
-            <span className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-              Work Smarter
-            </span>
-            <SpectralConnector />
-            <span className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-              Operate Leaner
-            </span>
-            <SpectralConnector />
-            <span className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-              Decide Faster
-            </span>
-          </div>
+        {/* Tagline — "Raise the IQ of Your Legal Work" */}
+        <div className="relative mt-7 pb-2 text-center sm:mt-9">
+          <p className="text-2xl font-semibold tracking-tight text-foreground/80 sm:text-3xl lg:text-4xl">
+            Raise the IQ of Your Legal Work
+          </p>
         </div>
 
         {/* Scroll down arrow */}
