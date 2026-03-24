@@ -15,8 +15,7 @@ export default function SiteHeader() {
 
   useEffect(() => {
     function onScroll() {
-      const progress = Math.min(1, window.scrollY / 350);
-      setScrollProgress(progress);
+      setScrollProgress(Math.min(1, window.scrollY / 350));
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -26,28 +25,9 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        {/* Logo — laser icon flies up from hero on scroll */}
-        <Link href="/" className="flex flex-shrink-0 items-center gap-0.5">
-          {/* Laser icon — slides up from below and fades in */}
-          <div
-            className="overflow-hidden"
-            style={{
-              width: scrollProgress > 0.1 ? 36 : 0,
-              opacity: Math.max(0, (scrollProgress - 0.3) / 0.7),
-              transform: `translateY(${(1 - scrollProgress) * 20}px)`,
-              transition: "width 0.3s ease-out",
-            }}
-          >
-            <Image
-              src="/images/hero/laser-logo.png"
-              alt=""
-              width={36}
-              height={28}
-              className="h-8 w-auto sm:h-9"
-              aria-hidden="true"
-            />
-          </div>
-          {/* Wordmark — always visible */}
+        {/* Logo — crossfade from wordmark-only to full logo on scroll */}
+        <Link href="/" className="relative flex-shrink-0">
+          {/* Wordmark only — visible at top, fades out on scroll */}
           <Image
             src="/images/logo-wordmark-color.svg"
             alt="Spaarke"
@@ -55,6 +35,7 @@ export default function SiteHeader() {
             height={36}
             priority
             className="h-8 w-auto sm:h-10 dark:hidden"
+            style={{ opacity: 1 - scrollProgress }}
           />
           <Image
             src="/images/logo-wordmark-white.svg"
@@ -63,6 +44,26 @@ export default function SiteHeader() {
             height={36}
             priority
             className="hidden h-8 w-auto sm:h-10 dark:block"
+            style={{ opacity: 1 - scrollProgress }}
+          />
+          {/* Full logo — fades in on scroll */}
+          <Image
+            src="/images/logo-color.svg"
+            alt="Spaarke"
+            width={140}
+            height={42}
+            priority
+            className="absolute left-0 top-0 h-8 w-auto sm:h-10 dark:hidden"
+            style={{ opacity: scrollProgress }}
+          />
+          <Image
+            src="/images/logo-white.svg"
+            alt="Spaarke"
+            width={140}
+            height={42}
+            priority
+            className="absolute left-0 top-0 hidden h-8 w-auto sm:h-10 dark:block"
+            style={{ opacity: scrollProgress }}
           />
         </Link>
 
