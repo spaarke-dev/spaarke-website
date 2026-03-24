@@ -1,30 +1,33 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useTheme } from "./ThemeProvider";
 
 /**
- * One-shot laser animation as hero background.
- * 1. Red laser shoots from left → hits blue dot at center
- * 2. Laser stays visible
- * 3. Blue dot appears at impact
- * 4. Beams radiate outward FROM center (grow from 0 to full length)
- * 5. Everything stays as a static background
+ * Hero background with two phases:
+ * 1. SVG laser animation plays (laser shoots, beams radiate, ~2s)
+ * 2. Crossfades to static laser-logo.png which stays as background
+ * 3. On scroll, the static image fades out (icon "moves" to header)
+ * Dark mode: white version at 5% opacity.
  */
 
-const LASER_FIRE = 1200;
-const SPARK_START = 1000;
+const ANIM_DURATION = 2200; // animation completes
+const CROSSFADE = 400;      // crossfade to static image
+const SCROLL_DISTANCE = 350;
 const BEAM_START = 1100;
 const BEAM_GROW = 800;
+const LASER_FIRE = 1200;
+const SPARK_START = 1000;
+const BEAM_THICKNESS = 50;
+const PEAK_WIDTH = 8000;
 
 function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3);
 }
 
-export default function HeroBackground() {
+function LaserAnimation({ isDark, onComplete }: { isDark: boolean; onComplete: () => void }) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -37,30 +40,25 @@ export default function HeroBackground() {
 
     let cancelled = false;
     const startTime = performance.now();
-    let done = false;
 
     function tick(now: number) {
       if (cancelled) return;
       const elapsed = now - startTime;
 
-      // --- Laser: line draws from left to center (tail stays at left edge) ---
       if (laser) {
         if (elapsed < LASER_FIRE) {
           const progress = easeOutCubic(elapsed / LASER_FIRE);
-          // Tip advances from left edge toward center; tail stays at -4000
           const tipX = -4000 + progress * 4000;
           laser.setAttribute("x", "-4000");
           laser.setAttribute("width", String(Math.max(0, tipX + 4000)));
           laser.setAttribute("opacity", "1");
         } else {
-          // Stays visible — full length from left edge to center
           laser.setAttribute("x", "-4000");
           laser.setAttribute("width", "4000");
           laser.setAttribute("opacity", "1");
         }
       }
 
-      // --- Blue dot: appears at impact, stays ---
       if (blueDot) {
         if (elapsed >= SPARK_START) {
           const fadeIn = Math.min(1, (elapsed - SPARK_START) / 200);
@@ -68,7 +66,6 @@ export default function HeroBackground() {
         }
       }
 
-      // --- Spark flash at impact ---
       if (spark) {
         const sparkDur = 500;
         if (elapsed >= SPARK_START && elapsed < SPARK_START + sparkDur) {
@@ -82,40 +79,33 @@ export default function HeroBackground() {
         }
       }
 
-      // --- Beams: grow outward from center, then stay ---
       if (elapsed >= BEAM_START) {
         const beamElapsed = elapsed - BEAM_START;
         beamGroups.forEach((g, i) => {
           const rect = g.querySelector("rect");
           if (!rect) return;
-          // Stagger each beam slightly
           const stagger = i * 80;
           const localElapsed = beamElapsed - stagger;
-
           if (localElapsed < 0) {
             rect.setAttribute("width", "0");
             rect.setAttribute("opacity", "0");
           } else if (localElapsed < BEAM_GROW) {
-            // Grow from center outward
             const progress = easeOutCubic(localElapsed / BEAM_GROW);
-            const w = 4000 * progress;
+            const w = PEAK_WIDTH * progress;
             rect.setAttribute("x", String(-w / 2));
             rect.setAttribute("width", String(w));
             rect.setAttribute("opacity", "1");
-          } else if (!done) {
-            // Final state — stays
-            rect.setAttribute("x", "-2000");
-            rect.setAttribute("width", "4000");
+          } else {
+            rect.setAttribute("x", String(-PEAK_WIDTH / 2));
+            rect.setAttribute("width", String(PEAK_WIDTH));
             rect.setAttribute("opacity", "1");
           }
         });
+      }
 
-        // Check if all beams are done
-        const lastBeamEnd = BEAM_START + (beamGroups.length - 1) * 80 + BEAM_GROW;
-        if (elapsed > lastBeamEnd + 100) {
-          done = true;
-          return; // Stop animation loop
-        }
+      if (elapsed > ANIM_DURATION) {
+        onComplete();
+        return;
       }
 
       requestAnimationFrame(tick);
@@ -123,71 +113,101 @@ export default function HeroBackground() {
 
     requestAnimationFrame(tick);
     return () => { cancelled = true; };
-  }, []);
+  }, [onComplete]);
 
-  const t = 50;
+  const t = BEAM_THICKNESS;
   const halfT = t / 2;
+  const color = isDark ? "#FFFFFF" : undefined;
 
   return (
-    <div
-      className="pointer-events-none absolute inset-0 overflow-hidden"
-      style={{ opacity: 0.05 }}
-      aria-hidden="true"
+    <svg
+      ref={svgRef}
+      viewBox="-4000 -2000 8000 4000"
+      className="absolute left-1/2 top-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2"
+      preserveAspectRatio="xMidYMid slice"
+      fill="none"
     >
-      <svg
-        ref={svgRef}
-        viewBox="-4000 -2000 8000 4000"
-        className="absolute left-1/2 top-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2"
-        preserveAspectRatio="xMidYMid slice"
-        fill="none"
+      <defs>
+        <linearGradient id="hb-laser-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor={color || "#FC0000"} stopOpacity="0" />
+          <stop offset="20%" stopColor={color || "#FC0000"} />
+          <stop offset="100%" stopColor={color || "#FC0000"} />
+        </linearGradient>
+        <linearGradient id="hb-beam-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor={color || "#FFD200"} />
+          <stop offset="50%" stopColor={color || "#FC0000"} />
+          <stop offset="100%" stopColor={color || "#FFD200"} />
+        </linearGradient>
+        <radialGradient id="hb-spark-grad">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
+          <stop offset="40%" stopColor={color || "#000BFF"} stopOpacity="0.6" />
+          <stop offset="100%" stopColor={color || "#000BFF"} stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      <rect id="hb-laser" x="-4000" y={-halfT} width="0" height={t} fill="url(#hb-laser-grad)" opacity="0" />
+
+      <g className="hb-beam-g" transform="rotate(90)">
+        <rect x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-grad)" opacity="0" />
+      </g>
+      <g className="hb-beam-g" transform="rotate(45)">
+        <rect x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-grad)" opacity="0" />
+      </g>
+      <g className="hb-beam-g" transform="rotate(-45)">
+        <rect x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-grad)" opacity="0" />
+      </g>
+
+      <circle id="hb-spark" cx="0" cy="0" r="25" fill="url(#hb-spark-grad)" opacity="0" />
+      <circle id="hb-blue-dot" cx="0" cy="0" r="50" fill={color || "#000BFF"} opacity="0" />
+    </svg>
+  );
+}
+
+export default function HeroBackground() {
+  const [animDone, setAnimDone] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  useEffect(() => {
+    function onScroll() {
+      setScrollProgress(Math.min(1, window.scrollY / SCROLL_DISTANCE));
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Animation fades out as static image fades in
+  const animOpacity = animDone ? 0 : 0.05;
+  const staticOpacity = animDone ? 0.05 * (1 - scrollProgress) : 0;
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      {/* Phase 1: SVG animation */}
+      {!animDone && (
+        <div
+          className="absolute inset-0 transition-opacity duration-500"
+          style={{ opacity: animOpacity }}
+        >
+          <LaserAnimation isDark={isDark} onComplete={() => setAnimDone(true)} />
+        </div>
+      )}
+
+      {/* Phase 2: Static laser-logo.png — fades out on scroll */}
+      <div
+        className="absolute inset-0 flex items-center justify-center transition-opacity duration-500"
+        style={{ opacity: staticOpacity }}
       >
-        <defs>
-          <linearGradient id="hb-laser-grad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor={isDark ? "#FFFFFF" : "#FC0000"} stopOpacity="0" />
-            <stop offset="20%" stopColor={isDark ? "#FFFFFF" : "#FC0000"} />
-            <stop offset="100%" stopColor={isDark ? "#FFFFFF" : "#FC0000"} />
-          </linearGradient>
-          <linearGradient id="hb-beam-grad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor={isDark ? "#FFFFFF" : "#FFD200"} />
-            <stop offset="50%" stopColor={isDark ? "#FFFFFF" : "#FC0000"} />
-            <stop offset="100%" stopColor={isDark ? "#FFFFFF" : "#FFD200"} />
-          </linearGradient>
-          <radialGradient id="hb-spark-grad">
-            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
-            <stop offset="40%" stopColor={isDark ? "#FFFFFF" : "#000BFF"} stopOpacity="0.6" />
-            <stop offset="100%" stopColor={isDark ? "#FFFFFF" : "#000BFF"} stopOpacity="0" />
-          </radialGradient>
-        </defs>
-
-        {/* Red laser — left to center, same thickness as beams */}
-        <rect
-          id="hb-laser"
-          x="-4000" y={-halfT}
-          width="0" height={t}
-          fill="url(#hb-laser-grad)"
-          opacity="0"
+        <Image
+          src="/images/hero/laser-logo.png"
+          alt=""
+          width={800}
+          height={600}
+          className={`h-auto w-[60vw] max-w-[800px] ${isDark ? "brightness-0 invert" : ""}`}
+          priority
         />
-
-        {/* Beams radiate from center — staggered, grow outward */}
-        {/* Vertical */}
-        <g className="hb-beam-g" transform="rotate(90)">
-          <rect x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-grad)" opacity="0" />
-        </g>
-        {/* Diagonal 45° */}
-        <g className="hb-beam-g" transform="rotate(45)">
-          <rect x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-grad)" opacity="0" />
-        </g>
-        {/* Diagonal -45° */}
-        <g className="hb-beam-g" transform="rotate(-45)">
-          <rect x="0" y={-halfT} width="0" height={t} fill="url(#hb-beam-grad)" opacity="0" />
-        </g>
-
-        {/* Spark flash */}
-        <circle id="hb-spark" cx="0" cy="0" r="25" fill="url(#hb-spark-grad)" opacity="0" />
-
-        {/* Blue dot at center — top layer, larger (white in dark mode) */}
-        <circle id="hb-blue-dot" cx="0" cy="0" r="50" fill={isDark ? "#FFFFFF" : "#000BFF"} opacity="0" />
-      </svg>
+      </div>
     </div>
   );
 }

@@ -15,8 +15,7 @@ export default function SiteHeader() {
 
   useEffect(() => {
     function onScroll() {
-      // Transition completes over the first 300px of scroll
-      const progress = Math.min(1, window.scrollY / 300);
+      const progress = Math.min(1, window.scrollY / 350);
       setScrollProgress(progress);
     }
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -27,22 +26,24 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        {/* Logo — icon slides in from hero center on scroll */}
-        <Link href="/" className="flex flex-shrink-0 items-center">
-          {/* Starburst icon — fades/slides in as user scrolls */}
+        {/* Logo — laser icon flies up from hero on scroll */}
+        <Link href="/" className="flex flex-shrink-0 items-center gap-0.5">
+          {/* Laser icon — slides up from below and fades in */}
           <div
-            className="overflow-hidden transition-none"
+            className="overflow-hidden"
             style={{
-              width: scrollProgress * 36,
-              opacity: scrollProgress,
+              width: scrollProgress > 0.1 ? 36 : 0,
+              opacity: Math.max(0, (scrollProgress - 0.3) / 0.7),
+              transform: `translateY(${(1 - scrollProgress) * 20}px)`,
+              transition: "width 0.3s ease-out",
             }}
           >
             <Image
-              src="/images/logo-icon-color.svg"
+              src="/images/hero/laser-logo.png"
               alt=""
               width={36}
-              height={36}
-              className="h-8 w-8 sm:h-9 sm:w-9"
+              height={28}
+              className="h-8 w-auto sm:h-9"
               aria-hidden="true"
             />
           </div>
