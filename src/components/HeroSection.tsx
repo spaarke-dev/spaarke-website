@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "./ThemeProvider";
 import {
@@ -51,54 +51,27 @@ function ImageLightbox({
 export default function HeroSection() {
   const { theme } = useTheme();
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-  const intelligenceRef = useRef<HTMLSpanElement>(null);
-  const [laserOrigin, setLaserOrigin] = useState({ x: 30, y: 50 });
 
   const heroImage =
     theme === "dark"
-      ? "/images/hero/workspace-dark-mode.png"
-      : "/images/hero/workspace-light-mode.png";
+      ? "/images/hero/hero-workspace-zoom-in-dark-mode.png"
+      : "/images/hero/hero-workspace-zoom-in-light-mode.png";
+
+  const fullPageImage =
+    theme === "dark"
+      ? "/images/hero/hero-workspace-full-page-dark-mode.png"
+      : "/images/hero/hero-workspace-full-page-light-mode.png";
 
   const scrollDown = useCallback(() => {
     const next = document.getElementById("articles");
     next?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  // Measure "Intelligence" position relative to hero section
-  useEffect(() => {
-    function measure() {
-      const section = sectionRef.current;
-      const word = intelligenceRef.current;
-      if (!section || !word) return;
-
-      const sRect = section.getBoundingClientRect();
-      const wRect = word.getBoundingClientRect();
-
-      // Center of "Intelligence" word relative to section
-      const x = ((wRect.left + wRect.width * 0.5 - sRect.left) / sRect.width) * 100;
-      const y = ((wRect.top + wRect.height * 0.5 - sRect.top) / sRect.height) * 100;
-
-      setLaserOrigin({ x, y });
-    }
-
-    measure();
-    window.addEventListener("resize", measure);
-    // Re-measure after fonts load
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(measure);
-    }
-    return () => window.removeEventListener("resize", measure);
-  }, []);
-
   return (
     <>
-      <section
-        ref={sectionRef}
-        className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden"
-      >
-        {/* Animated laser background — blue dot tracks "Intelligence" */}
-        <HeroBackground originX={laserOrigin.x} originY={laserOrigin.y} />
+      <section className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden">
+        {/* Animated laser background — centered */}
+        <HeroBackground originX={50} originY={45} />
 
         {/* Hero content — percentage-based width, scales with viewport */}
         <div
@@ -116,7 +89,7 @@ export default function HeroSection() {
                 <br />
                 Operations
                 <br />
-                <span ref={intelligenceRef}>Intelligence</span>
+                Intelligence
               </h1>
             </div>
 
@@ -172,8 +145,8 @@ export default function HeroSection() {
       {/* Lightbox */}
       {lightboxOpen && (
         <ImageLightbox
-          src={heroImage}
-          alt="Spaarke Legal Operations Workspace"
+          src={fullPageImage}
+          alt="Spaarke Legal Operations Workspace — Full Page"
           onClose={() => setLightboxOpen(false)}
         />
       )}
