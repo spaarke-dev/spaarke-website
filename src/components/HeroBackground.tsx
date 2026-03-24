@@ -115,8 +115,8 @@ function LaserAnimation({ isDark }: { isDark: boolean }) {
     <svg
       ref={svgRef}
       viewBox="-4000 -2000 8000 4000"
-      className="h-full w-full"
-      preserveAspectRatio="xMidYMid slice"
+      className="absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2"
+      preserveAspectRatio="xMidYMid meet"
       fill="none"
     >
       <defs>

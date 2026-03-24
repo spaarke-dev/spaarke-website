@@ -145,8 +145,11 @@ export default function HeroSection() {
         {/* Tagline — centered in remaining space */}
         <div className="relative flex flex-1 items-center justify-center">
           <p
-            className="font-semibold tracking-tight text-foreground/80"
-            style={{ fontSize: "clamp(1.5rem, 3vw, 10rem)" }}
+            className="font-semibold text-foreground/80"
+            style={{
+              fontSize: "clamp(2rem, 4vw, 12rem)",
+              letterSpacing: "0.12em",
+            }}
           >
             Raise the IQ of Your Legal Work
           </p>
