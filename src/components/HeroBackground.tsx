@@ -40,14 +40,14 @@ export default function HeroBackground() {
       if (cancelled) return;
       const elapsed = now - startTime;
 
-      // --- Laser: shoots from left to center, stays ---
+      // --- Laser: line draws from left to center (tail stays at left edge) ---
       if (laser) {
         if (elapsed < LASER_FIRE) {
-          const progress = elapsed / LASER_FIRE;
+          const progress = easeOutCubic(elapsed / LASER_FIRE);
+          // Tip advances from left edge toward center; tail stays at -4000
           const tipX = -4000 + progress * 4000;
-          const tailX = -4000 + Math.max(0, progress - 0.25) / 0.75 * 4000;
-          laser.setAttribute("x", String(tailX));
-          laser.setAttribute("width", String(Math.max(0, tipX - tailX)));
+          laser.setAttribute("x", "-4000");
+          laser.setAttribute("width", String(Math.max(0, tipX + 4000)));
           laser.setAttribute("opacity", "1");
         } else {
           // Stays visible — full length from left edge to center
@@ -128,7 +128,7 @@ export default function HeroBackground() {
   return (
     <div
       className="pointer-events-none absolute inset-0 overflow-hidden"
-      style={{ opacity: 0.10 }}
+      style={{ opacity: 0.05 }}
       aria-hidden="true"
     >
       <svg
@@ -156,11 +156,11 @@ export default function HeroBackground() {
           </radialGradient>
         </defs>
 
-        {/* Red laser — left to center, stays */}
+        {/* Red laser — left to center, same thickness as beams */}
         <rect
           id="hb-laser"
-          x="-4000" y={-halfT * 0.6}
-          width="0" height={t * 0.6}
+          x="-4000" y={-halfT}
+          width="0" height={t}
           fill="url(#hb-laser-grad)"
           opacity="0"
         />

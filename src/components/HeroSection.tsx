@@ -111,7 +111,7 @@ export default function HeroSection() {
               </h1>
             </div>
 
-            {/* Right — screenshot with expand button */}
+            {/* Right — screenshot with expand button (top-right) */}
             <div className="group relative flex items-start justify-center">
               <Image
                 src={heroImage}
@@ -119,12 +119,12 @@ export default function HeroSection() {
                 width={1200}
                 height={800}
                 priority
-                className="h-auto w-full max-w-[480px] rounded-lg shadow-2xl lg:max-w-[520px]"
+                className="h-auto w-full max-w-[530px] rounded-lg shadow-2xl lg:max-w-[572px]"
               />
               <button
                 type="button"
                 onClick={() => setLightboxOpen(true)}
-                className="absolute bottom-3 right-3 rounded-md bg-black/50 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
+                className="absolute right-3 top-3 rounded-md bg-black/50 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
                 aria-label="Expand image"
               >
                 <ArrowExpand24Regular />
@@ -133,25 +133,25 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Tagline — pulled up closer to hero */}
-        <div className="relative mt-auto pb-8 text-center">
+        {/* Tagline — directly under hero content */}
+        <div className="relative mt-8 pb-2 text-center sm:mt-10">
           <div className="flex items-center justify-center gap-1 sm:gap-2">
-            <span className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+            <span className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               Work Smarter
             </span>
             <SpectralConnector />
-            <span className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+            <span className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               Operate Leaner
             </span>
             <SpectralConnector />
-            <span className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+            <span className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               Decide Faster
             </span>
           </div>
         </div>
 
         {/* Scroll down arrow */}
-        <div className="relative pb-6 text-center">
+        <div className="relative mt-auto pb-6 text-center">
           <button
             type="button"
             onClick={scrollDown}
