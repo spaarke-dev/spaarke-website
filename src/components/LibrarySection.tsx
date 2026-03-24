@@ -136,7 +136,7 @@ export default function LibrarySection() {
       {/* Sticky container — pins to viewport */}
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         {/* Sticky tagline header — same as hero tagline */}
-        <div className="flex w-full shrink-0 items-center justify-center border-b border-border bg-background py-6">
+        <div className="flex w-full shrink-0 items-center justify-center border-b border-border bg-background py-4">
           <p
             className="font-semibold text-foreground/80"
             style={{
@@ -177,7 +177,7 @@ export default function LibrarySection() {
           </div>
 
           {/* Right — scrollable article cards */}
-          <div className="relative flex-1 overflow-hidden px-[3%] py-6">
+          <div className="relative flex-1 overflow-hidden px-[2%] pt-4">
             <div
               ref={cardContainerRef}
               className="grid grid-cols-3 gap-4"
