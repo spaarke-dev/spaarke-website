@@ -65,15 +65,18 @@ export default function HeroSection() {
   return (
     <>
       <section className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden">
-        {/* Animated laser background at 5% opacity */}
+        {/* Animated laser background — positioned with blue dot at "Intelligence" */}
         <HeroBackground />
 
-        {/* Hero content */}
-        <div className="relative mx-auto flex w-full max-w-7xl items-start px-4 pt-16 sm:px-6 sm:pt-20 lg:px-8 lg:pt-28">
-          <div className="grid w-full grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
-            {/* Left — headline */}
+        {/* Hero content — responsive sizing with clamp */}
+        <div className="relative mx-auto flex w-full max-w-7xl items-start px-4 pt-[6vh] sm:px-6 sm:pt-[8vh] lg:px-8 lg:pt-[10vh]">
+          <div className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+            {/* Left — headline with viewport-responsive font */}
             <div>
-              <h1 className="text-6xl font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white sm:text-7xl lg:text-8xl">
+              <h1
+                className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
+                style={{ fontSize: "clamp(3.5rem, 6.5vw, 7rem)" }}
+              >
                 Legal
                 <br />
                 Operations
@@ -82,7 +85,7 @@ export default function HeroSection() {
               </h1>
             </div>
 
-            {/* Right — screenshot with expand button (top-right) */}
+            {/* Right — screenshot with expand button */}
             <div className="group relative flex items-start justify-center">
               <Image
                 src={heroImage}
@@ -90,7 +93,8 @@ export default function HeroSection() {
                 width={1200}
                 height={800}
                 priority
-                className="h-auto w-full max-w-[530px] rounded-lg shadow-2xl lg:max-w-[572px]"
+                className="h-auto w-full rounded-lg shadow-2xl"
+                style={{ maxWidth: "clamp(320px, 38vw, 640px)" }}
               />
               <button
                 type="button"
@@ -104,15 +108,18 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Tagline — "Raise the IQ of Your Legal Work" */}
-        <div className="relative mt-7 pb-2 text-center sm:mt-9">
-          <p className="text-2xl font-semibold tracking-tight text-foreground/80 sm:text-3xl lg:text-4xl">
+        {/* Tagline — midway between hero content and scroll arrow */}
+        <div className="relative flex flex-1 items-center justify-center">
+          <p
+            className="font-semibold tracking-tight text-foreground/80"
+            style={{ fontSize: "clamp(1.75rem, 3.5vw, 3.5rem)" }}
+          >
             Raise the IQ of Your Legal Work
           </p>
         </div>
 
         {/* Scroll down arrow */}
-        <div className="relative mt-auto pb-6 text-center">
+        <div className="relative pb-6 text-center">
           <button
             type="button"
             onClick={scrollDown}

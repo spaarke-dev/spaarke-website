@@ -46,14 +46,14 @@ export default function SiteHeader() {
             className="hidden h-8 w-auto sm:h-10 dark:block"
             style={{ opacity: 1 - scrollProgress }}
           />
-          {/* Full logo (icon + wordmark) — fades in on scroll, sized so text matches wordmark */}
+          {/* Full logo (icon + wordmark) — same height = same text size */}
           <Image
             src="/images/logo-color.svg"
             alt="Spaarke"
             width={160}
             height={42}
             priority
-            className="absolute left-0 top-1/2 h-9 w-auto -translate-y-1/2 sm:h-11 dark:hidden"
+            className="absolute left-0 top-1/2 h-8 w-auto -translate-y-1/2 sm:h-10 dark:hidden"
             style={{ opacity: scrollProgress }}
           />
           <Image
@@ -62,7 +62,7 @@ export default function SiteHeader() {
             width={160}
             height={42}
             priority
-            className="absolute left-0 top-1/2 hidden h-9 w-auto -translate-y-1/2 sm:h-11 dark:block"
+            className="absolute left-0 top-1/2 hidden h-8 w-auto -translate-y-1/2 sm:h-10 dark:block"
             style={{ opacity: scrollProgress }}
           />
         </Link>

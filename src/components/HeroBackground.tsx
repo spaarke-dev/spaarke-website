@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { useTheme } from "./ThemeProvider";
 
 /**
- * Hero background: SVG laser animation plays once (laser shoots, beams radiate)
- * then stays as a static background at 5% opacity.
- * Dark mode: white version.
+ * Hero background: SVG laser animation plays once then stays.
+ * Blue dot is positioned at the center of "Intelligence" (left ~30%, bottom ~55%).
+ * Fades out as user scrolls down.
  */
 
 const ANIM_DURATION = 2200;
@@ -16,6 +16,7 @@ const LASER_FIRE = 1200;
 const SPARK_START = 1000;
 const BEAM_THICKNESS = 50;
 const PEAK_WIDTH = 8000;
+const SCROLL_FADE = 400;
 
 function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3);
@@ -98,9 +99,7 @@ function LaserAnimation({ isDark }: { isDark: boolean }) {
         });
       }
 
-      // After animation completes, stop — SVG stays as static background
       if (elapsed > ANIM_DURATION) return;
-
       requestAnimationFrame(tick);
     }
 
@@ -116,7 +115,13 @@ function LaserAnimation({ isDark }: { isDark: boolean }) {
     <svg
       ref={svgRef}
       viewBox="-4000 -2000 8000 4000"
-      className="absolute left-1/2 top-1/2 h-[200%] w-[200%] -translate-x-1/2 -translate-y-1/2"
+      className="absolute h-[200%] w-[200%]"
+      style={{
+        /* Position so origin (0,0 = blue dot) aligns with center of "Intelligence" */
+        left: "28%",
+        top: "52%",
+        transform: "translate(-50%, -50%)",
+      }}
       preserveAspectRatio="xMidYMid slice"
       fill="none"
     >
@@ -157,11 +162,26 @@ function LaserAnimation({ isDark }: { isDark: boolean }) {
 }
 
 export default function HeroBackground() {
+  const [scrollOpacity, setScrollOpacity] = useState(0.05);
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
+  useEffect(() => {
+    function onScroll() {
+      const progress = Math.min(1, window.scrollY / SCROLL_FADE);
+      setScrollOpacity(0.05 * (1 - progress));
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" style={{ opacity: 0.05 }} aria-hidden="true">
+    <div
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+      style={{ opacity: scrollOpacity }}
+      aria-hidden="true"
+    >
       <LaserAnimation isDark={isDark} />
     </div>
   );
