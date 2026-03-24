@@ -78,8 +78,8 @@ export default function HeroSection() {
           className="relative flex items-center justify-center"
           style={{ gap: "8vw", paddingTop: "10vh" }}
         >
-          {/* Left — headline, left-aligned */}
-          <div className="w-[42%]">
+          {/* Left — headline, left-aligned text but pushed right toward center */}
+          <div className="flex w-[42%] justify-end">
             <h1
               className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
               style={{ fontSize: "clamp(2.8rem, 5.8vw, 16rem)" }}
