@@ -7,6 +7,7 @@ import {
   ChevronDown24Regular,
   ArrowExpand24Regular,
 } from "@fluentui/react-icons";
+import HeroBackground from "./HeroBackground";
 
 function SpectralConnector() {
   return (
@@ -33,60 +34,6 @@ function SpectralConnector() {
         <animate attributeName="r" values="5;10;5" dur="2s" repeatCount="indefinite" begin="1s" />
         <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite" begin="1s" />
       </circle>
-    </svg>
-  );
-}
-
-function StarburstBackground({ isDark }: { isDark: boolean }) {
-  const strokeOpacity = isDark ? 0.06 : 0.1;
-  return (
-    <svg
-      viewBox="0 0 1200 1200"
-      className="absolute left-1/2 top-1/2 h-[140%] w-[140%] -translate-x-1/2 -translate-y-1/2"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-    >
-      <defs>
-        {/* Gold → Red → Gold gradient matching logo rays */}
-        <linearGradient id="ray-v" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
-          <stop offset="50%" stopColor="#FC0000" stopOpacity={strokeOpacity * 1.2} />
-          <stop offset="100%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
-        </linearGradient>
-        <linearGradient id="ray-h" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
-          <stop offset="50%" stopColor="#FC0000" stopOpacity={strokeOpacity * 1.2} />
-          <stop offset="100%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
-        </linearGradient>
-        <linearGradient id="ray-d1" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
-          <stop offset="50%" stopColor="#FC0000" stopOpacity={strokeOpacity * 1.2} />
-          <stop offset="100%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
-        </linearGradient>
-        <linearGradient id="ray-d2" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
-          <stop offset="50%" stopColor="#FC0000" stopOpacity={strokeOpacity * 1.2} />
-          <stop offset="100%" stopColor="#FFD200" stopOpacity={strokeOpacity} />
-        </linearGradient>
-        <radialGradient id="center-glow">
-          <stop offset="0%" stopColor={isDark ? "#000BFF" : "#000BFF"} stopOpacity={isDark ? 0.03 : 0.04} />
-          <stop offset="100%" stopColor={isDark ? "#000BFF" : "#000BFF"} stopOpacity="0" />
-        </radialGradient>
-      </defs>
-
-      {/* Vertical ray */}
-      <rect x="596" y="0" width="8" height="1200" fill="url(#ray-v)" />
-      {/* Horizontal ray */}
-      <rect x="0" y="596" width="1200" height="8" fill="url(#ray-h)" />
-      {/* Diagonal ray (top-left to bottom-right) */}
-      <rect x="-3" y="-3" width="6" height="1700" fill="url(#ray-d1)"
-        transform="rotate(45 600 600)" />
-      {/* Diagonal ray (top-right to bottom-left) */}
-      <rect x="-3" y="-3" width="6" height="1700" fill="url(#ray-d2)"
-        transform="rotate(-45 600 600)" />
-
-      {/* Subtle center glow */}
-      <circle cx="600" cy="600" r="200" fill="url(#center-glow)" />
     </svg>
   );
 }
@@ -147,13 +94,11 @@ export default function HeroSection() {
   return (
     <>
       <section className="relative flex h-[calc(100vh-73px)] flex-col overflow-hidden">
-        {/* Starburst background — logo rays as subtle BG */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <StarburstBackground isDark={theme === "dark"} />
-        </div>
+        {/* Animated laser + explosion background at 20% opacity */}
+        <HeroBackground />
 
-        {/* Hero content — pushed higher */}
-        <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-start px-4 pt-6 sm:px-6 sm:pt-10 lg:px-8 lg:pt-14">
+        {/* Hero content — more top space */}
+        <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-start px-4 pt-16 sm:px-6 sm:pt-20 lg:px-8 lg:pt-28">
           <div className="grid w-full grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left — headline */}
             <div>
@@ -188,8 +133,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Tagline */}
-        <div className="relative pb-0 text-center">
+        {/* Tagline — pulled up closer to hero */}
+        <div className="relative mt-auto pb-8 text-center">
           <div className="flex items-center justify-center gap-1 sm:gap-2">
             <span className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
               Work Smarter
@@ -205,8 +150,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Scroll down arrow — spacing from tagline */}
-        <div className="relative pb-4 pt-6 text-center">
+        {/* Scroll down arrow */}
+        <div className="relative pb-6 text-center">
           <button
             type="button"
             onClick={scrollDown}
