@@ -53,8 +53,8 @@ export default function SiteHeader() {
             width={160}
             height={42}
             priority
-            className="absolute left-0 top-1/2 w-auto -translate-y-1/2 dark:hidden"
-            style={{ opacity: scrollProgress, height: "clamp(3.44rem, 4.3vw, 8.6rem)" }}
+            className="absolute left-0 top-1/2 w-auto max-w-none -translate-y-1/2 dark:hidden"
+            style={{ opacity: scrollProgress, height: "clamp(2rem, 2.5vw, 5rem)" }}
           />
           <Image
             src="/images/logo-white.svg"
@@ -62,8 +62,8 @@ export default function SiteHeader() {
             width={160}
             height={42}
             priority
-            className="absolute left-0 top-1/2 hidden w-auto -translate-y-1/2 dark:block"
-            style={{ opacity: scrollProgress, height: "clamp(3.44rem, 4.3vw, 8.6rem)" }}
+            className="absolute left-0 top-1/2 hidden w-auto max-w-none -translate-y-1/2 dark:block"
+            style={{ opacity: scrollProgress, height: "clamp(2rem, 2.5vw, 5rem)" }}
           />
         </Link>
 

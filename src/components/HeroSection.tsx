@@ -75,8 +75,9 @@ export default function HeroSection() {
       const sRect = section.getBoundingClientRect();
       const wRect = word.getBoundingClientRect();
 
-      const x = ((wRect.left + wRect.width / 2 - sRect.left) / sRect.width) * 100;
-      const y = ((wRect.top + wRect.height / 2 - sRect.top) / sRect.height) * 100;
+      // Center of "Intelligence" word relative to section
+      const x = ((wRect.left + wRect.width * 0.5 - sRect.left) / sRect.width) * 100;
+      const y = ((wRect.top + wRect.height * 0.5 - sRect.top) / sRect.height) * 100;
 
       setLaserOrigin({ x, y });
     }
@@ -148,7 +149,7 @@ export default function HeroSection() {
             className="font-semibold text-foreground/80"
             style={{
               fontSize: "clamp(2rem, 4vw, 12rem)",
-              letterSpacing: "0.12em",
+              letterSpacing: "0.04em",
             }}
           >
             Raise the IQ of Your Legal Work
