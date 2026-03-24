@@ -61,8 +61,8 @@ export default function HeroSection() {
 
   return (
     <>
-      {/* Hero area — uses min-height, no overflow-hidden on outer */}
-      <div className="relative" style={{ minHeight: "calc(100vh - 73px)" }}>
+      {/* Hero area — shorter so tagline fits in viewport below */}
+      <div className="relative" style={{ height: "calc(100vh - 73px - 12vh)" }}>
         {/* Background with its own clipping */}
         <div className="absolute inset-0 overflow-hidden">
           <HeroBackground originX={50} originY={40} />
