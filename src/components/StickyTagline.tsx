@@ -26,11 +26,8 @@ export default function StickyTagline() {
     function onScroll() {
       if (!ref.current) return;
       const rect = ref.current.getBoundingClientRect();
-      const stuck = rect.top <= 74;
-      setIsStuck(stuck);
-      // Arrow fades out over first 150px of scroll
-      const progress = Math.min(1, window.scrollY / 150);
-      setScrollProgress(progress);
+      setIsStuck(rect.top <= 74);
+      setScrollProgress(Math.min(1, window.scrollY / 150));
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -40,10 +37,14 @@ export default function StickyTagline() {
   return (
     <div
       ref={ref}
-      className={`sticky z-40 flex flex-col items-center justify-center transition-colors duration-200 ${
-        isStuck ? "border-b border-border bg-background" : ""
+      className={`sticky z-40 flex flex-col items-center transition-colors duration-200 ${
+        isStuck ? "border-b border-border bg-background py-4" : "py-2"
       }`}
-      style={{ top: "73px", paddingTop: isStuck ? "1rem" : "0.5rem", paddingBottom: isStuck ? "1rem" : "0" }}
+      style={{
+        top: "73px",
+        /* Pull up into the hero viewport area */
+        marginTop: "-28vh",
+      }}
     >
       <p
         className="font-semibold text-foreground/80"
@@ -58,8 +59,8 @@ export default function StickyTagline() {
       {/* Scroll arrow — fades out as user scrolls */}
       <button
         type="button"
-        onClick={() => window.scrollBy({ top: window.innerHeight * 0.5, behavior: "smooth" })}
-        className="mt-3 inline-flex animate-bounce text-muted-foreground transition-opacity hover:text-foreground"
+        onClick={() => window.scrollBy({ top: window.innerHeight * 0.4, behavior: "smooth" })}
+        className="mt-2 inline-flex animate-bounce text-muted-foreground transition-opacity hover:text-foreground"
         style={{ opacity: 1 - scrollProgress }}
         aria-label="Scroll to articles"
       >
