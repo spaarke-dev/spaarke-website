@@ -78,11 +78,17 @@ function ArticleCard({
       {/* Placeholder image area */}
       <div className="flex-1 bg-muted/40 transition-colors group-hover:bg-muted/60" />
       {/* Content */}
-      <div className="flex flex-col gap-2 p-4">
-        <h3 className="text-sm font-semibold leading-tight text-hero-red group-hover:underline">
+      <div className="flex flex-col gap-2" style={{ padding: "clamp(0.5rem, 1vw, 1.5rem)" }}>
+        <h3
+          className="font-semibold leading-tight text-hero-red group-hover:underline"
+          style={{ fontSize: "clamp(0.75rem, 0.9vw, 1.25rem)" }}
+        >
           {title}
         </h3>
-        <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+        <p
+          className="line-clamp-2 leading-relaxed text-muted-foreground"
+          style={{ fontSize: "clamp(0.65rem, 0.75vw, 1rem)" }}
+        >
           {excerpt}
         </p>
       </div>
@@ -167,7 +173,8 @@ export default function LibrarySection() {
           <div className="relative flex-1 overflow-hidden px-[2%] pt-10">
             <div
               ref={cardContainerRef}
-              className="grid grid-cols-3 gap-4"
+              className="grid grid-cols-3"
+              style={{ gap: "clamp(0.5rem, 1vw, 1.5rem)" }}
               style={{
                 transform: `translateY(-${scrollOffset}px)`,
                 willChange: "transform",

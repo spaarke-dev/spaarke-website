@@ -39,7 +39,7 @@ export default function SiteHeader() {
   }, []);
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
+    <header ref={headerRef} className="sticky top-0 z-50 border-b border-border bg-background backdrop-blur-sm">
       <nav className="mx-auto flex w-[88%] items-center justify-between" style={{ padding: "clamp(0.75rem, 1.2vw, 2.5rem) 0" }}>
         {/* Logo — crossfade from wordmark-only to full logo on scroll */}
         <Link href="/" className="relative flex-shrink-0">
