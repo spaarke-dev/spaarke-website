@@ -31,13 +31,14 @@ function ImageLightbox({
       aria-modal="true"
       aria-label="Expanded workspace image"
     >
-      <div className="relative max-h-[90vh] max-w-[92vw]">
+      <div className="relative" style={{ maxHeight: "90vh", maxWidth: "92vw" }}>
         <Image
           src={src}
           alt={alt}
-          width={2400}
-          height={1600}
-          className="h-auto max-h-[90vh] w-auto rounded-lg object-contain"
+          width={3840}
+          height={2160}
+          className="rounded-lg object-contain"
+          style={{ width: "88vw", height: "auto", maxHeight: "88vh" }}
           onClick={(e) => e.stopPropagation()}
         />
       </div>
