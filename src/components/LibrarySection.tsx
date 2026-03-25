@@ -81,13 +81,13 @@ function ArticleCard({
       <div className="flex flex-col gap-2" style={{ padding: "clamp(0.5rem, 1vw, 1.5rem)" }}>
         <h3
           className="font-semibold leading-tight text-hero-red group-hover:underline"
-          style={{ fontSize: "clamp(0.75rem, 0.9vw, 1.25rem)" }}
+          style={{ fontSize: "clamp(0.85rem, 1.1vw, 1.5rem)" }}
         >
           {title}
         </h3>
         <p
           className="line-clamp-2 leading-relaxed text-muted-foreground"
-          style={{ fontSize: "clamp(0.65rem, 0.75vw, 1rem)" }}
+          style={{ fontSize: "clamp(0.75rem, 0.9vw, 1.25rem)" }}
         >
           {excerpt}
         </p>

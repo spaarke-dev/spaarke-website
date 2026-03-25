@@ -9,9 +9,9 @@ import { useTheme } from "./ThemeProvider";
  * Fades out on scroll.
  */
 
-const ANIM_DURATION = 2200;
+const ANIM_DURATION = 2800;
 const BEAM_START = 1100;
-const BEAM_GROW = 800;
+const BEAM_GROW = 1400;
 const LASER_FIRE = 1200;
 const SPARK_START = 1000;
 const BEAM_THICKNESS = 50;
@@ -88,9 +88,11 @@ function LaserAnimation({ isDark }: { isDark: boolean }) {
           } else if (localElapsed < BEAM_GROW) {
             const progress = easeOutCubic(localElapsed / BEAM_GROW);
             const w = PEAK_WIDTH * progress;
+            // Radiate outward from center in both directions
             rect.setAttribute("x", String(-w / 2));
             rect.setAttribute("width", String(w));
-            rect.setAttribute("opacity", "1");
+            // Fade in as they grow
+            rect.setAttribute("opacity", String(Math.min(1, progress * 3)));
           } else {
             rect.setAttribute("x", String(-PEAK_WIDTH / 2));
             rect.setAttribute("width", String(PEAK_WIDTH));
