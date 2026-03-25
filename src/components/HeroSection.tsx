@@ -63,7 +63,7 @@ export default function HeroSection() {
     <>
       {/* Hero area — shorter so tagline fits in viewport below */}
       {/* Hero height: leaves room for tagline + arrow at bottom of viewport */}
-      <div className="relative" style={{ height: "calc(100vh - 73px - 18vh)" }}>
+      <div className="relative" style={{ height: "calc(100vh - 73px - 22vh)" }}>
         {/* Background with its own clipping */}
         <div className="absolute inset-0 overflow-hidden">
           <HeroBackground originX={50} originY={40} />
