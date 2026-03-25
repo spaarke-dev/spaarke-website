@@ -62,7 +62,7 @@ export default function HeroSection() {
   return (
     <>
       {/* Full viewport hero — tagline positioned inside, no bleed possible */}
-      <div className="relative" style={{ height: "calc(100vh - 73px)" }}>
+      <div className="relative" style={{ height: "calc(100vh - var(--header-h, 73px))" }}>
         {/* Background with its own clipping */}
         <div className="absolute inset-0 overflow-hidden">
           <HeroBackground originX={50} originY={40} />

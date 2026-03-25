@@ -134,7 +134,7 @@ export default function LibrarySection() {
       style={{ height: sectionHeight }}
     >
       {/* Sticky container — pins below the sticky tagline header */}
-      <div className="sticky flex flex-col overflow-hidden" style={{ top: "calc(73px + var(--tagline-h, 80px))", height: "calc(100vh - 73px - var(--tagline-h, 80px))" }}>
+      <div className="sticky flex flex-col overflow-hidden" style={{ top: "calc(var(--header-h, 73px) + var(--tagline-h, 80px))", height: "calc(100vh - var(--header-h, 73px) - var(--tagline-h, 80px))" }}>
         {/* 2/3 split layout — fills remaining height */}
         <div className="flex flex-1 overflow-hidden">
           {/* Left sidebar — dark gray background, fixed content */}

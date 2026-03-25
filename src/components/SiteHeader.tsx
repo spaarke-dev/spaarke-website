@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
@@ -12,6 +12,7 @@ const navLinks = [
 export default function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     function onScroll() {
@@ -22,8 +23,23 @@ export default function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Set CSS variable for header height so other components can reference it
+  useEffect(() => {
+    function measure() {
+      if (headerRef.current) {
+        document.documentElement.style.setProperty(
+          "--header-h",
+          `${headerRef.current.offsetHeight}px`
+        );
+      }
+    }
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
+    <header ref={headerRef} className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
       <nav className="mx-auto flex w-[88%] items-center justify-between" style={{ padding: "clamp(0.75rem, 1.2vw, 2.5rem) 0" }}>
         {/* Logo — crossfade from wordmark-only to full logo on scroll */}
         <Link href="/" className="relative flex-shrink-0">

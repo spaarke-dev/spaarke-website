@@ -26,7 +26,8 @@ export default function StickyTagline() {
     function onScroll() {
       if (!ref.current) return;
       const rect = ref.current.getBoundingClientRect();
-      setIsStuck(rect.top <= 74);
+      const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--header-h") || "73", 10);
+      setIsStuck(rect.top <= headerH + 1);
       setScrollProgress(Math.min(1, window.scrollY / 150));
     }
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -41,7 +42,7 @@ export default function StickyTagline() {
         isStuck ? "border-b border-border bg-background py-4" : "py-2"
       }`}
       style={{
-        top: "73px",
+        top: "var(--header-h, 73px)",
         /* Pull tagline up into hero viewport, but cancel out for elements below */
         marginTop: "-28vh",
         marginBottom: "28vh",
