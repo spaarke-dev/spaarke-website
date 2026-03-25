@@ -174,8 +174,8 @@ export default function LibrarySection() {
             <div
               ref={cardContainerRef}
               className="grid grid-cols-3"
-              style={{ gap: "clamp(0.5rem, 1vw, 1.5rem)" }}
               style={{
+                gap: "clamp(0.5rem, 1vw, 1.5rem)",
                 transform: `translateY(-${scrollOffset}px)`,
                 willChange: "transform",
               }}
