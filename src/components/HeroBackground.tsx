@@ -80,7 +80,7 @@ function LaserAnimation({ isDark }: { isDark: boolean }) {
         beamGroups.forEach((g, i) => {
           const rect = g.querySelector("rect");
           if (!rect) return;
-          const stagger = i * 80;
+          const stagger = 0; // all beams fire simultaneously
           const localElapsed = beamElapsed - stagger;
           if (localElapsed < 0) {
             rect.setAttribute("width", "0");
@@ -150,7 +150,7 @@ function LaserAnimation({ isDark }: { isDark: boolean }) {
       </g>
 
       <circle id="hb-spark" cx="0" cy="0" r="25" fill="url(#hb-spark-grad)" opacity="0" />
-      <circle id="hb-blue-dot" cx="0" cy="0" r="50" fill={color || "#000BFF"} opacity="0" />
+      <circle id="hb-blue-dot" cx="0" cy="0" r="50" fill="#000BFF" opacity="0" />
     </svg>
   );
 }

@@ -101,10 +101,11 @@ export default function HeroSection() {
             <button
               type="button"
               onClick={() => setLightboxOpen(true)}
-              className="absolute right-[3%] top-[3%] rounded-md bg-black/50 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
+              className="absolute right-[3%] top-[3%] rounded-md bg-black/50 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100"
+              style={{ padding: "clamp(0.25rem, 0.5vw, 1rem)" }}
               aria-label="Expand image"
             >
-              <ArrowExpand24Regular />
+              <ArrowExpand24Regular style={{ width: "clamp(1rem, 1.8vw, 2.5rem)", height: "clamp(1rem, 1.8vw, 2.5rem)" }} />
             </button>
           </div>
         </div>
