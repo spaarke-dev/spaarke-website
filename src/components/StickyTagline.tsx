@@ -42,8 +42,9 @@ export default function StickyTagline() {
       }`}
       style={{
         top: "73px",
-        /* Pull up into the hero viewport area */
+        /* Pull tagline up into hero viewport, but cancel out for elements below */
         marginTop: "-28vh",
+        marginBottom: "28vh",
       }}
     >
       <p
