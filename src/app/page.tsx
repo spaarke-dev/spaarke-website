@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import StickyTagline from "@/components/StickyTagline";
 import LibrarySection from "@/components/LibrarySection";
 import NextSection from "@/components/NextSection";
+import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "Spaarke | Legal Operations Intelligence",
@@ -11,11 +12,20 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
+  const posts = getAllPosts();
+
+  // Map blog posts to the shape LibrarySection expects
+  const articles = posts.map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.summary ?? post.description,
+  }));
+
   return (
     <div>
       <HeroSection />
       <StickyTagline />
-      <LibrarySection />
+      <LibrarySection articles={articles} />
       <NextSection />
     </div>
   );

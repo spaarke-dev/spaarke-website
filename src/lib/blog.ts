@@ -6,13 +6,23 @@ import matter from "gray-matter";
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
+/** Structured tag categories for article classification. */
+export type TagCategories = {
+  organization: string[];
+  function: string[];
+  topic: string[];
+  theme: string[];
+};
+
 export type BlogPost = {
   slug: string;
   title: string;
   description: string;
+  summary?: string;
   date: string;
+  posted?: string;
   author: string;
-  tags: string[];
+  tags: TagCategories;
   draft: boolean;
   heroImage?: string;
   content: string;
@@ -28,8 +38,55 @@ const BLOG_DIR = path.join(process.cwd(), "content", "blog");
 
 /** Derive a URL-friendly slug from the MDX filename. */
 function fileNameToSlug(fileName: string): string {
-  // Remove .mdx extension, then strip leading date prefix (YYYY-MM-DD-)
   return fileName.replace(/\.mdx$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, "");
+}
+
+/** Empty tag categories. */
+function emptyTags(): TagCategories {
+  return { organization: [], function: [], topic: [], theme: [] };
+}
+
+/**
+ * Normalize tags from frontmatter.
+ * Supports both structured (object with categories) and flat (string array) formats.
+ * Flat arrays are treated as theme tags for backward compatibility.
+ */
+function normalizeTags(raw: unknown): TagCategories {
+  if (!raw) return emptyTags();
+
+  // Flat array — legacy format: treat all as theme tags
+  if (Array.isArray(raw)) {
+    return {
+      ...emptyTags(),
+      theme: raw.filter((t): t is string => typeof t === "string"),
+    };
+  }
+
+  // Structured object
+  if (typeof raw === "object" && raw !== null) {
+    const obj = raw as Record<string, unknown>;
+    const toArr = (v: unknown): string[] =>
+      Array.isArray(v) ? v.filter((t): t is string => typeof t === "string") : [];
+
+    return {
+      organization: toArr(obj.organization),
+      function: toArr(obj.function),
+      topic: toArr(obj.topic),
+      theme: toArr(obj.theme),
+    };
+  }
+
+  return emptyTags();
+}
+
+/** Flatten structured tags into a single string array (for SEO, RSS, etc.). */
+export function flattenTags(tags: TagCategories): string[] {
+  return [
+    ...tags.organization,
+    ...tags.function,
+    ...tags.topic,
+    ...tags.theme,
+  ];
 }
 
 /** Validate that required frontmatter fields are present. */
@@ -50,6 +107,25 @@ function validateFrontmatter(
   }
 
   return valid;
+}
+
+/** Build a BlogPostMeta from parsed frontmatter. */
+function buildMeta(
+  slug: string,
+  data: Record<string, unknown>,
+): BlogPostMeta {
+  return {
+    slug,
+    title: data.title as string,
+    description: data.description as string,
+    summary: (data.summary as string) ?? undefined,
+    date: data.date as string,
+    posted: (data.posted as string) ?? undefined,
+    author: data.author as string,
+    tags: normalizeTags(data.tags),
+    draft: data.draft === true,
+    heroImage: (data.heroImage as string) ?? undefined,
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -77,24 +153,13 @@ export function getAllPosts(): BlogPostMeta[] {
       continue;
     }
 
-    // Skip drafts
     if (data.draft === true) {
       continue;
     }
 
-    posts.push({
-      slug: fileNameToSlug(fileName),
-      title: data.title as string,
-      description: data.description as string,
-      date: data.date as string,
-      author: data.author as string,
-      tags: (data.tags as string[]) ?? [],
-      draft: false,
-      heroImage: (data.heroImage as string) ?? undefined,
-    });
+    posts.push(buildMeta(fileNameToSlug(fileName), data));
   }
 
-  // Sort by date descending (newest first)
   posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return posts;
@@ -124,14 +189,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
     }
 
     return {
-      slug,
-      title: data.title as string,
-      description: data.description as string,
-      date: data.date as string,
-      author: data.author as string,
-      tags: (data.tags as string[]) ?? [],
-      draft: data.draft === true,
-      heroImage: (data.heroImage as string) ?? undefined,
+      ...buildMeta(slug, data),
       content,
     };
   }
@@ -139,16 +197,31 @@ export function getPostBySlug(slug: string): BlogPost | null {
   return null;
 }
 
-/** Return a sorted array of unique tags across all published posts. */
-export function getAllTags(): string[] {
+/** Return a sorted array of unique tags across all published posts, organized by category. */
+export function getAllTags(): TagCategories {
   const posts = getAllPosts();
-  const tagSet = new Set<string>();
+  const result = emptyTags();
 
   for (const post of posts) {
-    for (const tag of post.tags) {
-      tagSet.add(tag);
+    for (const cat of Object.keys(result) as (keyof TagCategories)[]) {
+      for (const tag of post.tags[cat]) {
+        if (!result[cat].includes(tag)) {
+          result[cat].push(tag);
+        }
+      }
     }
   }
 
-  return Array.from(tagSet).sort();
+  for (const cat of Object.keys(result) as (keyof TagCategories)[]) {
+    result[cat].sort();
+  }
+
+  return result;
+}
+
+/** Return a flat sorted array of all unique tags (for backward compatibility). */
+export function getAllTagsFlat(): string[] {
+  const tags = getAllTags();
+  const all = new Set(flattenTags(tags));
+  return Array.from(all).sort();
 }

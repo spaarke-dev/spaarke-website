@@ -7,10 +7,12 @@ const siteUrl = process.env.SITE_URL ?? "https://www.spaarke.com";
 
 export const metadata: Metadata = {
   title: "Library",
-  description: "Insights and updates from the Spaarke team.",
+  description:
+    "Insights on Legal Operations Intelligence, AI strategy, data sovereignty, and the Microsoft-native approach to raising the IQ of legal work.",
   openGraph: {
     title: "Library | Spaarke",
-    description: "Insights and updates from the Spaarke team.",
+    description:
+      "Insights on Legal Operations Intelligence, AI strategy, data sovereignty, and the Microsoft-native approach to raising the IQ of legal work.",
     url: `${siteUrl}/blog`,
     siteName: "Spaarke",
     type: "website",
@@ -28,7 +30,8 @@ export default function BlogIndex() {
             Library
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Insights and updates from the Spaarke team.
+            Insights on Legal Operations Intelligence, AI strategy, and the
+            Microsoft-native approach to raising the IQ of legal work.
           </p>
 
           {posts.length === 0 ? (

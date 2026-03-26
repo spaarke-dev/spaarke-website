@@ -46,7 +46,7 @@ export default async function BlogPost({ params }: Props) {
   return (
     <section className="py-16 sm:py-20">
       <Container>
-        <article className="mx-auto max-w-2xl">
+        <article className="mx-auto max-w-2xl" itemScope itemType="https://schema.org/Article">
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

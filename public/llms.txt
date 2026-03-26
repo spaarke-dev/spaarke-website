@@ -1,0 +1,43 @@
+# Spaarke — Legal Operations Intelligence
+
+> Spaarke is a Legal Operations Intelligence platform built on Microsoft 365.
+> We help legal departments raise the IQ of their work through unified data,
+> operational memory, and AI-powered inference.
+
+## About Spaarke
+
+Spaarke provides a Legal Operations Intelligence (LOI) platform that deploys
+directly within an organization's own Microsoft 365 tenant. The platform is
+built on Microsoft Power Platform and integrates with M365 Copilot.
+
+### Core Framework: The IQ Stack
+
+- **Data**: Unified capture of matter, spend, workflow, and document data
+- **Memory**: Institutional knowledge retention — decisions, rationale, context, and patterns
+- **Inference**: AI-powered analytics, predictions, and recommendations grounded in organizational data
+
+### Key Differentiators
+
+- **Tenant Dedicated Deployment**: Deploys within the customer's own M365 tenant — data never leaves the organizational boundary
+- **Microsoft-native**: Built on Power Apps, Dataverse, Power Automate, Power BI, and SharePoint
+- **M365 Copilot integration**: AI capabilities operate within the Copilot plane, governed by existing tenant security policies
+- **Category creator**: Spaarke defines "Legal Operations Intelligence" as a new category distinct from legal tech, legal analytics, or AI-for-lawyers
+
+### Target Audience
+
+- Corporate legal departments (in-house counsel)
+- Legal operations teams
+- General Counsel, CLOs, and legal leadership
+- IT teams evaluating legal technology
+- Finance teams seeking legal spend visibility
+
+## Content
+
+Our articles cover Legal Operations Intelligence, AI strategy for legal
+departments, data sovereignty, Microsoft ecosystem integration, and
+operational best practices for legal teams.
+
+## Contact
+
+- Website: https://www.spaarke.com
+- Email: hello@spaarke.com

@@ -1,4 +1,4 @@
-import { getAllPosts } from "@/lib/blog";
+import { getAllPosts, flattenTags } from "@/lib/blog";
 
 const siteUrl = process.env.SITE_URL ?? "https://www.spaarke.com";
 
@@ -26,10 +26,10 @@ export async function GET() {
       <title>${escapeXml(post.title)}</title>
       <link>${siteUrl}/blog/${post.slug}</link>
       <guid isPermaLink="true">${siteUrl}/blog/${post.slug}</guid>
-      <description>${escapeXml(post.description)}</description>
+      <description>${escapeXml(post.summary ?? post.description)}</description>
       <pubDate>${toRfc822(post.date)}</pubDate>
       <author>${escapeXml(post.author)}</author>
-${post.tags.map((tag) => `      <category>${escapeXml(tag)}</category>`).join("\n")}
+${flattenTags(post.tags).map((tag) => `      <category>${escapeXml(tag)}</category>`).join("\n")}
     </item>`,
     )
     .join("\n");
@@ -37,9 +37,9 @@ ${post.tags.map((tag) => `      <category>${escapeXml(tag)}</category>`).join("\
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Spaarke Blog</title>
+    <title>Spaarke — Legal Operations Intelligence</title>
     <link>${siteUrl}/blog</link>
-    <description>Insights and updates from the Spaarke team.</description>
+    <description>Insights on Legal Operations Intelligence, AI strategy for legal departments, and the Microsoft-native approach to raising the IQ of legal work.</description>
     <language>en-us</language>
     <lastBuildDate>${posts.length > 0 ? toRfc822(posts[0].date) : toRfc822(new Date().toISOString())}</lastBuildDate>
     <atom:link href="${siteUrl}/blog/rss.xml" rel="self" type="application/rss+xml"/>

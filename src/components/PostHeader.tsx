@@ -33,8 +33,23 @@ export default function PostHeader({ post }: PostHeaderProps) {
         </span>
       </div>
 
-      <div className="mt-4">
-        <TagPills tags={post.tags} />
+      {/* Summary block — the "Why This Matters" tl;dr for SEO + AI extraction */}
+      {post.summary && (
+        <div
+          data-summary
+          className="mt-6 rounded-lg border border-border bg-muted/50 px-6 py-5"
+        >
+          <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            Why This Matters
+          </p>
+          <p className="mt-2 text-base leading-relaxed text-foreground/90">
+            {post.summary}
+          </p>
+        </div>
+      )}
+
+      <div className="mt-5">
+        <TagPills tags={post.tags} variant="full" />
       </div>
 
       {post.heroImage && (

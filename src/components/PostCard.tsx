@@ -28,7 +28,10 @@ export default function PostCard({ post }: PostCardProps) {
           <time dateTime={post.date}>{formattedDate}</time>
         </div>
 
-        <p className="mt-3 text-muted-foreground">{post.description}</p>
+        {/* Summary (Why This Matters) takes priority over description */}
+        <p className="mt-3 text-muted-foreground">
+          {post.summary ?? post.description}
+        </p>
 
         <div className="mt-4">
           <TagPills tags={post.tags} />

@@ -3,94 +3,54 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
-const articles = [
-  {
-    slug: "raising-the-iq-of-legal-work",
-    title: "Raising the IQ of Legal Work",
-    excerpt:
-      "Work IQ is a three-part stack: Data, Memory, and Inference. Data captures how work gets done.",
-  },
-  {
-    slug: "the-case-for-unified-legal-data",
-    title: "The Case for Unified Legal Data",
-    excerpt:
-      "Fragmented systems create blind spots. Unifying matter, spend, and workflow data unlocks visibility.",
-  },
-  {
-    slug: "from-reactive-to-predictive-operations",
-    title: "From Reactive to Predictive Operations",
-    excerpt:
-      "Intelligence-driven operations shift the paradigm — anticipating workload, forecasting spend.",
-  },
-  {
-    slug: "operational-memory-for-legal-teams",
-    title: "Operational Memory for Legal Teams",
-    excerpt:
-      "Institutional knowledge walks out the door. Operational memory captures decisions and context.",
-  },
-  {
-    slug: "intelligent-workflow-automation",
-    title: "Intelligent Workflow Automation",
-    excerpt:
-      "Automation without intelligence just moves tasks faster. Intelligent workflows adapt to context.",
-  },
-  {
-    slug: "matter-lifecycle-intelligence",
-    title: "Matter Lifecycle Intelligence",
-    excerpt:
-      "Every matter follows a lifecycle. Intelligence surfaces patterns that improve outcomes over time.",
-  },
-  {
-    slug: "legal-spend-analytics",
-    title: "Legal Spend Analytics",
-    excerpt:
-      "Move beyond accruals and invoices. Understand the true cost of legal operations at every level.",
-  },
-  {
-    slug: "ai-powered-document-understanding",
-    title: "AI-Powered Document Understanding",
-    excerpt:
-      "Transform unstructured legal documents into structured, searchable, actionable intelligence.",
-  },
-  {
-    slug: "cross-functional-legal-collaboration",
-    title: "Cross-Functional Legal Collaboration",
-    excerpt:
-      "Legal doesn't operate in a vacuum. Break down silos between legal, finance, and business teams.",
-  },
-];
+type Article = {
+  slug: string;
+  title: string;
+  excerpt: string;
+};
+
+type LibrarySectionProps = {
+  articles: Article[];
+};
 
 function ArticleCard({
   slug,
   title,
   excerpt,
-}: {
-  slug: string;
-  title: string;
-  excerpt: string;
-}) {
+}: Article) {
   return (
     <Link
-      href={`/library/${slug}`}
+      href={`/blog/${slug}`}
       className="group flex flex-col overflow-hidden rounded-lg border border-border bg-background transition-shadow hover:shadow-lg"
       style={{ aspectRatio: "3/4" }}
     >
-      {/* Placeholder image area */}
-      <div className="flex-1 bg-muted/40 transition-colors group-hover:bg-muted/60" />
-      {/* Content */}
-      <div className="flex flex-col gap-2" style={{ padding: "clamp(0.5rem, 1vw, 1.5rem)" }}>
-        <h3 className="text-sm font-semibold leading-tight text-hero-red group-hover:underline sm:text-base">
+      {/* Content — fills entire card, title at top */}
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden" style={{ padding: "clamp(1rem, 1.4vw, 1.75rem)" }}>
+        <h3 className="shrink-0 text-sm font-semibold leading-snug tracking-tight text-foreground group-hover:underline dark:text-white sm:text-base">
           {title}
         </h3>
-        <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+        <p className="mt-3 min-h-0 flex-1 overflow-hidden text-xs leading-relaxed text-muted-foreground dark:text-white/70 sm:text-sm"
+          style={{
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 999,
+            maskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
+          }}
+        >
           {excerpt}
         </p>
+        <div className="shrink-0 pt-3">
+          <span className="text-xs font-medium text-muted-foreground/60 transition-colors group-hover:text-foreground dark:text-white/40 dark:group-hover:text-white/70">
+            Read more &rarr;
+          </span>
+        </div>
       </div>
     </Link>
   );
 }
 
-export default function LibrarySection() {
+export default function LibrarySection({ articles }: LibrarySectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const cardContainerRef = useRef<HTMLDivElement>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
