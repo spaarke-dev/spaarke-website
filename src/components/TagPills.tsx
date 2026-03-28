@@ -101,14 +101,53 @@ function TagPillsFull({ tags }: TagPillsFullProps) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Inline variant — serial text, categories separated by semicolons   */
+/* ------------------------------------------------------------------ */
+
+/** Text colors per category for inline variant. */
+const CATEGORY_TEXT: Record<keyof TagCategories, string> = {
+  organization: "text-blue-600 dark:text-blue-400",
+  function: "text-emerald-600 dark:text-emerald-400",
+  topic: "text-amber-600 dark:text-amber-400",
+  theme: "text-violet-600 dark:text-violet-400",
+};
+
+function TagPillsInline({ tags }: { tags: TagCategories }) {
+  const categories = (
+    Object.keys(CATEGORY_LABELS) as (keyof TagCategories)[]
+  ).filter((cat) => tags[cat].length > 0);
+
+  if (categories.length === 0) return null;
+
+  return (
+    <p className="text-[11px] leading-relaxed text-muted-foreground">
+      {categories.map((cat, i) => (
+        <span key={cat}>
+          {i > 0 && (
+            <span className="mx-1.5 text-muted-foreground/30">;</span>
+          )}
+          <span className="font-semibold uppercase tracking-wider">
+            {CATEGORY_LABELS[cat]}:
+          </span>{" "}
+          <span className={CATEGORY_TEXT[cat]}>
+            {tags[cat].map(formatTag).join(", ")}
+          </span>
+        </span>
+      ))}
+    </p>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Exported component                                                 */
 /* ------------------------------------------------------------------ */
 
 type TagPillsProps = {
   tags: TagCategories;
-  /** "compact" (default) shows theme + topic in a single row.
-   *  "full" shows all categories with labels. */
-  variant?: "compact" | "full";
+  /** "compact" (default) shows theme + topic pills in a single row.
+   *  "full" shows all categories with colored pill labels.
+   *  "inline" shows serial text with categories separated by semicolons. */
+  variant?: "compact" | "full" | "inline";
 };
 
 export default function TagPills({
@@ -117,6 +156,9 @@ export default function TagPills({
 }: TagPillsProps) {
   if (variant === "full") {
     return <TagPillsFull tags={tags} variant="full" />;
+  }
+  if (variant === "inline") {
+    return <TagPillsInline tags={tags} />;
   }
   return <TagPillsCompact tags={tags} />;
 }

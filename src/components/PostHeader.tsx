@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { CalendarLtr20Regular, Person20Regular } from "@fluentui/react-icons";
 import type { BlogPostMeta } from "@/lib/blog";
-import TagPills from "@/components/TagPills";
 
 type PostHeaderProps = {
   post: BlogPostMeta;
@@ -47,10 +46,6 @@ export default function PostHeader({ post }: PostHeaderProps) {
           </p>
         </div>
       )}
-
-      <div className="mt-5">
-        <TagPills tags={post.tags} variant="full" />
-      </div>
 
       {post.heroImage && (
         <div className="relative mt-8 aspect-video overflow-hidden rounded-xl">

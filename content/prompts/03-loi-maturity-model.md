@@ -1,4 +1,4 @@
-# Article 3: From Reactive to Predictive — The LOI Maturity Model
+# Article 3: From Reactive to Predictive — How LOI Aligns with Legal Operations Maturity
 
 > **Read `content/EDITORIAL-PLAN.md` first** for voice guidelines, tag taxonomy, template structure, and cross-reference rules.
 

@@ -1,0 +1,176 @@
+---
+title: "Spaarke for Your IT Team: Architecture & Deployment Q&A"
+description: "A technical brief for IT leaders evaluating Spaarke — covering architecture, deployment, security, licensing, and common questions about the Power Platform."
+summary: "When legal operations evaluates a new platform, IT needs to weigh in — and rightly so. Security posture, data residency, licensing requirements, integration surface, and ongoing administration all fall within IT's remit. Yet most legal technology vendors make IT evaluation harder than it needs to be, burying technical details behind marketing language and sales calls. This article is designed to answer the questions your IT team will ask about Spaarke: how it deploys, where data lives, what it requires from your existing Microsoft infrastructure, and how it fits within the security and compliance framework you have already built. Consider it a technical brief you can hand directly to your IT leadership — no marketing language, no vague assurances, just architecture and facts."
+date: "2026-03-28"
+posted: "2026-04-01"
+author: "Spaarke Team"
+tags:
+  organization: [corporate-legal]
+  function: [it, operations, executive]
+  topic: [compliance, ai-copilot, dms, workflow]
+  theme: [tenant-dedicated-deployment, microsoft-ecosystem, data-sovereignty, buyer-enablement, platform]
+draft: false
+---
+
+Throughout this series, we have covered the strategic rationale for building on Microsoft, the principles of data sovereignty, and the business case for Tenant Dedicated Deployment. Those articles were written primarily for legal operations leaders and executives. This one is different.
+
+This article is written for the IT team that will be asked to evaluate, approve, and support Spaarke. It consolidates the technical architecture, deployment model, security posture, licensing requirements, and operational details into a single reference — the kind of document that shortens evaluation cycles and eliminates the back-and-forth between legal ops and IT.
+
+If you are in legal operations and your IT team has questions about Spaarke, send them this article.
+
+---
+
+## Architecture Overview
+
+Spaarke is built entirely on the Microsoft Power Platform and deploys within your organization's own Microsoft 365 tenant. There is no external infrastructure, no vendor-hosted environment, and no data egress.
+
+Here is the technology stack:
+
+- **Runtime**: Model-driven and canvas apps built on Microsoft Power Apps, running on Dataverse
+- **Data layer**: Microsoft Dataverse — all Spaarke data (matters, invoices, workflows, operational memory) is stored within tables in your tenant's Dataverse environment
+- **AI layer**: Microsoft 365 Copilot integration — AI capabilities operate within the tenant boundary, grounded in structured legal data stored in Dataverse
+- **Document storage**: SharePoint Online — native integration for matter documents with full versioning, metadata, and co-authoring support. No separate document management system required
+- **Communication**: Microsoft Teams and Outlook — notifications, collaboration spaces, email capture, and calendar integration for deadlines
+- **Automation**: Power Automate — workflow engine handling matter routing, approval chains, notification triggers, and connectors to external systems
+- **Analytics**: Power BI — embedded dashboards and executive reporting built on the same data model
+
+This architecture means Spaarke is not a separate system that integrates with Microsoft. It is a Microsoft-native application that runs inside your existing environment. The distinction matters: there are no API bridges to maintain, no data synchronization to monitor, and no additional infrastructure to secure.
+
+For the business context behind this architectural decision, see [Why We Built on Microsoft](/blog/why-we-built-on-microsoft) and [Tenant Dedicated Deployment: The New On-Premises](/blog/tenant-dedicated-deployment).
+
+---
+
+## Deployment Model
+
+Spaarke follows what we call [Tenant Dedicated Deployment](/blog/tenant-dedicated-deployment) — a model where the platform runs entirely within your organization's own M365 tenant rather than on vendor-managed infrastructure.
+
+Here is what deployment looks like in practice:
+
+**Provisioning.** Spaarke is delivered as a managed solution package deployed into your Dataverse environment. Managed solutions are the standard Power Platform mechanism for distributing applications — your team likely already uses them for other business applications. The solution package contains the data model, application components, workflows, and configuration.
+
+**Environment strategy.** Spaarke supports standard Power Platform environment separation. Most organizations deploy across development, test, and production environments. Solution promotion follows the same ALM (Application Lifecycle Management) practices your team already uses for other Power Platform solutions.
+
+**Deployment timeline.** Typical deployments complete in weeks, not months. The primary timeline driver is not technical complexity — it is configuration scope. Defining matter taxonomies, workflow rules, security roles, and migration requirements takes longer than the technical deployment itself.
+
+**IT responsibilities during deployment:**
+
+- Provision the Dataverse environment (or environments, if following a dev/test/prod strategy)
+- Assign Power Platform licenses to users
+- Configure security roles and access policies
+- Review and approve DLP policies for the environment
+- Coordinate with Spaarke on any tenant-specific security configurations
+
+**Spaarke responsibilities during deployment:**
+
+- Deploy and configure the managed solution
+- Set up the data model and initial configuration
+- Migrate existing data (matter history, spend data, document libraries) where applicable
+- Deliver administrator and end-user training
+
+No virtual machines to provision. No databases to administer. No network configurations to design. No vendor servers to include in your penetration testing scope.
+
+---
+
+## Security and Compliance
+
+Spaarke inherits your existing Microsoft 365 security posture. This is not a figure of speech — it is an architectural consequence of running inside your tenant.
+
+**Identity and access management.** Microsoft Entra ID (formerly Azure AD) handles all authentication. Your existing SSO configuration, multi-factor authentication requirements, and Conditional Access policies apply to Spaarke automatically. There is no separate identity provider, no parallel user directory, and no additional credentials for users to manage.
+
+**Data governance.** Microsoft Purview extends to all Spaarke data natively. Sensitivity labels, data classification policies, retention rules, and Data Loss Prevention (DLP) configurations that your compliance team has already implemented cover Spaarke data without additional setup.
+
+**Role-based access control.** Dataverse security roles provide granular access control within the application. You define who can see which matters, approve which invoices, and access which reports — using the same role-based model that governs other Dataverse applications in your environment.
+
+**Encryption.** Data is encrypted at rest and in transit using Microsoft's standard M365 encryption. Customer-managed encryption keys (CMEK) are supported for organizations that require them.
+
+**Audit logging.** Spaarke activities are captured in the Microsoft 365 unified audit log and in Dataverse audit tables. Your security team monitors Spaarke activity through the same compliance center and audit tools they already use — no separate logging infrastructure to configure or query.
+
+**Compliance certifications.** Because Spaarke data resides within your M365 tenant, it is covered by your tenant-level compliance certifications. SOC 2, ISO 27001, HIPAA, FedRAMP, GDPR — whatever certifications your Microsoft environment carries, Spaarke data inherits.
+
+The net effect: there is no additional security perimeter to evaluate. No separate vendor infrastructure to include in your risk assessment. No new attack surface introduced. The security review for Spaarke is a Power Platform solution review, not a full vendor infrastructure assessment.
+
+As we explored in [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you), data sovereignty is not a policy commitment — it is a structural outcome of where the platform runs. For IT teams, this means the governance model you have already built for Microsoft 365 extends to your legal operations platform without modification.
+
+---
+
+## Integration Points
+
+Spaarke's integrations are native to the Microsoft ecosystem, not bolted on through middleware or third-party connectors.
+
+**Microsoft 365 Copilot.** Spaarke exposes structured legal data — matter history, spend patterns, workflow context, institutional memory — to Copilot. Users can query legal operations data through natural language within Copilot, grounded in structured data that produces far more relevant outputs than Copilot applied to unstructured email and documents alone. All Copilot processing occurs within the tenant boundary.
+
+**SharePoint Online.** Matter documents are stored in SharePoint document libraries with native versioning, metadata tagging, and co-authoring. No separate DMS to license, deploy, or maintain. Documents remain within the same governance and retention framework that covers all SharePoint content in your tenant.
+
+**Outlook.** Email capture for matter-related correspondence, notification delivery for workflow events, and calendar integration for deadlines and key dates. Users interact with matter data without leaving their inbox.
+
+**Teams.** Dedicated matter channels, collaboration spaces tied to active matters, and notification bots that surface workflow events and approvals directly in Teams.
+
+**Power Automate.** The workflow engine behind Spaarke's automation — matter routing, approval chains, escalation rules, notification triggers, and integration with external systems through Power Automate's library of standard and custom connectors.
+
+**Power BI.** Embedded analytics and executive dashboards built on the Dataverse data model. Your team can extend or customize reports using the same Power BI tools and skills they already have.
+
+**Dataverse Web API.** A standard REST API for custom integrations, data exchange with external systems, and programmatic access to Spaarke data. This is the same API surface that all Dataverse applications expose — no proprietary interface to learn.
+
+---
+
+## Licensing and Requirements
+
+Transparency on licensing is important. Here is how Spaarke's licensing model works.
+
+**Microsoft prerequisites:**
+
+- **Microsoft 365 E3 or E5** (or equivalent licensing that includes core M365 services). Most enterprise legal departments already have this in place.
+- **Power Apps licenses**: Either per-user licenses (for users who need broad access across the platform) or per-app licenses (for users who only need access to specific Spaarke applications). The right mix depends on the number of users and their access patterns.
+- **Dataverse storage capacity**: Spaarke data resides in Dataverse, which requires storage capacity. The base capacity included with Power Apps licenses is typically sufficient for initial deployment; larger organizations with extensive matter histories may need additional database and file storage capacity.
+- **Microsoft 365 Copilot licenses** (optional): Required for AI features — natural language queries, AI-generated insights, and intelligent search across legal operations data. The core Spaarke platform operates fully without Copilot licenses; AI capabilities are additive, not required.
+
+**Spaarke licensing:**
+
+Spaarke is licensed on a per-user basis. Licensing includes the managed solution, configuration support, updates, and standard support. Implementation services — data migration, custom configuration, and training — are scoped separately based on organizational requirements.
+
+Specific pricing is determined based on user count, deployment scope, and implementation complexity. Contact Spaarke for a detailed quote aligned to your organization's requirements.
+
+**Important note on cost structure:** Because Spaarke runs on your existing Microsoft infrastructure, there are no hidden compute costs, no separate hosting fees, and no infrastructure markups. Your Microsoft licensing investment carries the platform — Spaarke licensing covers the application and services layer on top.
+
+---
+
+## Common IT Questions
+
+These are the questions IT teams ask most frequently during evaluation. Direct questions, direct answers.
+
+**Where is data stored?**
+In your Microsoft 365 tenant, within Dataverse. Data residency follows your tenant's geographic configuration. If your tenant is provisioned in the EU, your Spaarke data resides in the EU. No data leaves your tenant boundary.
+
+**What is the backup and recovery model?**
+Standard Dataverse backup. System backups run automatically every 24 hours. Manual (on-demand) backups are available at any time. Point-in-time restore is supported within the retention window. All backup operations run through the Power Platform admin center — no separate backup infrastructure required.
+
+**What is the uptime SLA?**
+Spaarke inherits the Microsoft Power Platform SLA of 99.9% uptime. This is Microsoft's commitment, not a third-party promise layered on top.
+
+**How are admin controls managed?**
+Through the Power Platform admin center — the same console your team uses for environment management, capacity monitoring, DLP policy enforcement, and solution lifecycle management. No separate Spaarke admin portal.
+
+**How does user provisioning work?**
+Through Microsoft Entra ID. Assign users to the appropriate Dataverse security roles and they have access. No separate user directory. No sync to manage. Offboarding follows the same process as any other M365 application — remove the role assignment or disable the account.
+
+**How does audit logging work?**
+Two layers. The Microsoft 365 unified audit log captures platform-level activity. Dataverse audit tables capture data-level changes — who modified which record, when, and what the previous value was. Both are accessible through your existing compliance and monitoring tools.
+
+**What is the update cadence?**
+Spaarke delivers updates as managed solution packages through standard Dataverse solution management. Your team controls the timing of updates — solutions are not force-pushed. You review release notes, test in a non-production environment if desired, and apply the update on your schedule.
+
+**What is the support model?**
+Spaarke provides direct support with defined response times based on severity. Critical issues (platform unavailable) receive priority response. Standard issues are handled through a dedicated support channel. Your team always has direct access to Spaarke's technical team — no ticket queue intermediary.
+
+**Does Spaarke support multi-environment strategies?**
+Yes. Development, test, and production environment separation follows standard Power Platform ALM practices. Solutions promote through environments using the same managed solution framework your team already uses.
+
+**How does data migration work?**
+Spaarke provides import tools and migration services for existing matter data, spend and invoice history, and document libraries. Migration is scoped during implementation planning and executed in coordination with your IT team to validate data integrity at each stage.
+
+---
+
+## Where to Go Next
+
+This article is the technical reference for IT teams evaluating Spaarke. For the strategic context behind the architectural decisions described here, see [Why We Built on Microsoft](/blog/why-we-built-on-microsoft). For the business case for Tenant Dedicated Deployment, see [Tenant Dedicated Deployment: The New On-Premises](/blog/tenant-dedicated-deployment). For the data sovereignty principles that this architecture enforces, see [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you).

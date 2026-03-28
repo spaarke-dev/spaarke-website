@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "./ThemeProvider";
+import Link from "next/link";
 import { ArrowExpand24Regular } from "@fluentui/react-icons";
 import HeroBackground from "./HeroBackground";
 
@@ -64,28 +65,40 @@ export default function HeroSection() {
     <>
       {/* Full viewport hero — tagline positioned inside, no bleed possible */}
       <div className="relative" style={{ height: "calc(100vh - var(--header-h, 73px))" }}>
-        {/* Background with its own clipping */}
-        <div className="absolute inset-0 overflow-hidden">
+        {/* Background — hidden per user feedback */}
+        {/* <div className="absolute inset-0 overflow-hidden">
           <HeroBackground originX={50} originY={40} />
-        </div>
+        </div> */}
 
         {/* Hero content — vertically centered in top ~70% */}
         <div
           className="relative flex items-center justify-center"
           style={{ gap: "8vw", paddingTop: "6vh", height: "68%" }}
         >
-          {/* Left — headline */}
-          <div className="flex w-[42%] justify-end">
-            <h1
-              className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
-              style={{ fontSize: "clamp(2.8rem, 5.8vw, 16rem)" }}
-            >
-              Legal
-              <br />
-              Operations
-              <br />
-              Intelligence
-            </h1>
+          {/* Left — headline + CTA centered below */}
+          <div className="flex w-[42%] flex-col items-end">
+            <div className="flex flex-col items-center">
+              <h1
+                className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
+                style={{ fontSize: "clamp(2.8rem, 5.8vw, 16rem)" }}
+              >
+                Legal
+                <br />
+                Operations
+                <br />
+                Intelligence
+              </h1>
+              <Link
+                href="/contact"
+                className="mt-8 inline-block rounded-md bg-[#000BFF] text-white font-medium transition-colors hover:bg-[#0009DD]"
+                style={{
+                  fontSize: "clamp(0.65rem, 0.85vw, 0.95rem)",
+                  padding: "clamp(0.3rem, 0.5vw, 0.5rem) clamp(0.75rem, 1.2vw, 1.25rem)",
+                }}
+              >
+                Request Early Access
+              </Link>
+            </div>
           </div>
 
           {/* Right — screenshot */}

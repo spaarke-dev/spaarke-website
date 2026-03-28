@@ -7,41 +7,81 @@ type Article = {
   slug: string;
   title: string;
   excerpt: string;
+  date: string;
+  author: string;
+  tags: string[];
 };
 
 type LibrarySectionProps = {
   articles: Article[];
 };
 
+/** Format a kebab-case tag for display. */
+function formatTag(tag: string): string {
+  return tag
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
 function ArticleCard({
   slug,
   title,
   excerpt,
+  date,
+  author,
+  tags,
 }: Article) {
+  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
   return (
     <Link
       href={`/blog/${slug}`}
       className="group flex flex-col overflow-hidden rounded-lg border border-border bg-background transition-shadow hover:shadow-lg"
-      style={{ aspectRatio: "3/4" }}
+      style={{ aspectRatio: "2/3" }}
     >
-      {/* Content — fills entire card, title at top */}
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden" style={{ padding: "clamp(1rem, 1.4vw, 1.75rem)" }}>
-        <h3 className="shrink-0 text-sm font-semibold leading-snug tracking-tight text-foreground group-hover:underline dark:text-white sm:text-base">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden" style={{ padding: "clamp(0.75rem, 1.2vw, 1.5rem)" }}>
+        {/* Title */}
+        <h3 className="shrink-0 text-sm font-semibold leading-snug tracking-tight text-foreground dark:text-white sm:text-base">
           {title}
         </h3>
-        <p className="mt-3 min-h-0 flex-1 overflow-hidden text-xs leading-relaxed text-muted-foreground dark:text-white/70 sm:text-sm"
+
+        {/* Date + Author */}
+        <p className="mt-1.5 shrink-0 text-[10px] text-muted-foreground/70 dark:text-white/40 sm:text-[11px]">
+          {formattedDate} &middot; {author}
+        </p>
+
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div className="mt-2 flex shrink-0 flex-wrap gap-1">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-block rounded-full bg-muted/60 px-1.5 py-px text-[9px] font-medium text-muted-foreground dark:bg-white/10 dark:text-white/50 sm:text-[10px]"
+              >
+                {formatTag(tag)}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Excerpt with fade */}
+        <p className="mt-2.5 min-h-0 flex-1 overflow-hidden text-xs leading-relaxed text-muted-foreground dark:text-white/70 sm:text-sm"
           style={{
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 999,
-            maskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 75%, transparent 100%)",
+            maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
           }}
         >
           {excerpt}
         </p>
-        <div className="shrink-0 pt-3">
-          <span className="text-xs font-medium text-muted-foreground/60 transition-colors group-hover:text-foreground dark:text-white/40 dark:group-hover:text-white/70">
+
+        {/* Read more */}
+        <div className="shrink-0 pt-2">
+          <span className="text-[10px] font-medium text-muted-foreground/60 transition-colors group-hover:text-foreground dark:text-white/40 dark:group-hover:text-white/70 sm:text-xs">
             Read more &rarr;
           </span>
         </div>
@@ -95,10 +135,12 @@ export default function LibrarySection({ articles }: LibrarySectionProps) {
     >
       {/* Sticky container — pins below the sticky tagline header */}
       <div className="sticky flex flex-col overflow-hidden" style={{ top: "calc(var(--header-h, 73px) + var(--tagline-h, 80px))", height: "calc(100vh - var(--header-h, 73px) - var(--tagline-h, 80px))" }}>
+        {/* Top spacer so the dark sidebar doesn't bleed above the cards */}
+        <div className="h-10 shrink-0 bg-background" />
         {/* 2/3 split layout — fills remaining height */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Left sidebar — dark gray background, fixed content */}
-          <div className="flex w-[35%] flex-col justify-center bg-neutral-800 px-[4%] text-white dark:bg-neutral-900">
+          {/* Left sidebar — narrower to give cards more room */}
+          <div className="flex w-[30%] flex-col rounded-tr-2xl bg-neutral-800 px-[3%] pt-8 text-white dark:bg-neutral-900">
             <h3
               className="font-semibold leading-tight"
               style={{ fontSize: "clamp(1.2rem, 2.2vw, 4rem)" }}
@@ -124,7 +166,7 @@ export default function LibrarySection({ articles }: LibrarySectionProps) {
           </div>
 
           {/* Right — scrollable article cards */}
-          <div className="relative flex-1 overflow-hidden px-[2%] pt-10">
+          <div className="relative flex-1 overflow-hidden px-[2%]">
             <div
               ref={cardContainerRef}
               className="grid grid-cols-3"
@@ -137,9 +179,7 @@ export default function LibrarySection({ articles }: LibrarySectionProps) {
               {articles.map((article) => (
                 <ArticleCard
                   key={article.slug}
-                  slug={article.slug}
-                  title={article.title}
-                  excerpt={article.excerpt}
+                  {...article}
                 />
               ))}
             </div>

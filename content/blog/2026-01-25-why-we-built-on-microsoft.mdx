@@ -1,0 +1,103 @@
+---
+title: "Why We Built on Microsoft (and Why It Matters for Legal)"
+description: "Spaarke is built on the Microsoft 365 ecosystem — not as a technology choice, but as a strategic decision about data sovereignty, security, and AI readiness."
+summary: "When we chose to build Spaarke on the Microsoft ecosystem, it was not a technology decision — it was a strategic one. More than 85% of Fortune 500 companies run on Microsoft 365. Legal departments already live in Outlook, Teams, SharePoint, and Word. Building on this foundation means Spaarke works where your people already work, inside the security and compliance boundaries your organization already trusts. This is not about preference. It is about alignment — with the tools your teams use daily, the infrastructure your CISO has already vetted, and the AI platform your organization is investing in. Platform choice determines your data boundaries, your AI capabilities, and your total cost of ownership."
+date: "2026-01-25"
+posted: "2026-04-01"
+author: "Spaarke Team"
+tags:
+  organization: [corporate-legal]
+  function: [operations, it, executive]
+  topic: [compliance, dms, ai-copilot]
+  theme: [microsoft-ecosystem, tenant-dedicated-deployment, platform, data-sovereignty]
+draft: false
+---
+
+In our first three articles, we defined [Legal Operations Intelligence](/blog/what-is-legal-operations-intelligence) as a category, introduced the [IQ Stack](/blog/the-iq-stack) as its architectural foundation, and mapped how intelligence depth complements [established maturity frameworks](/blog/loi-maturity-model). Those articles answered the questions of what LOI is, how it works, and where your organization stands.
+
+This article answers a different question: where does it run?
+
+Platform choice is not a technical detail. For legal departments handling the most sensitive information in the organization — privileged communications, litigation strategy, M&A intelligence, regulatory filings — the platform decision is a governance decision. It determines your data boundaries, your AI capabilities, and your total cost of ownership. It defines who controls your data and under what terms. Get this wrong and every capability you build on top inherits that structural weakness.
+
+We chose Microsoft. Here is why.
+
+---
+
+## Where Legal Work Already Lives
+
+Most legal work already happens inside Microsoft 365. Contracts are drafted in Word. Communications flow through Outlook and Teams. Documents are stored and collaborated on in SharePoint. Approvals, scheduling, calendar management — all within the Microsoft ecosystem.
+
+This is not a hypothesis. It is the reality of how enterprise legal departments operate today. More than 85% of Fortune 500 companies run on Microsoft 365. For most in-house legal teams, M365 is not one of their tools — it is the environment where work gets done.
+
+Any legal operations platform that ignores this reality creates friction. Adding a system outside the Microsoft ecosystem means:
+
+- **Duplicate logins and context switching** — attorneys toggling between environments lose time and attention on every interaction
+- **Copy-paste workflows** — data manually moved from the platform where work happens to the platform where it is tracked, introducing errors and lag
+- **Data fragmentation** — the same information living in two places, with no guarantee of consistency, and no single source of truth
+
+Spaarke runs natively within Microsoft 365. There is no context switching. No data duplication. No parallel universe where legal operations lives separately from where legal work actually happens. When an attorney drafts a document in Word, reviews an invoice in Outlook, or collaborates on a matter in Teams, Spaarke is already there — capturing, connecting, and learning from every interaction.
+
+This is what we mean when we say Spaarke works where your people already work. Not integration with Microsoft. Operation within Microsoft.
+
+---
+
+## The Enterprise Trust Factor: Inherited Security Posture
+
+Legal departments handle some of the most sensitive information any organization possesses. Attorney-client privileged communications. Merger and acquisition strategy. Litigation exposure assessments. Regulatory investigation files. The security requirements for a platform that touches this data are not negotiable.
+
+Microsoft has spent decades and billions of dollars building an enterprise security and compliance infrastructure that is trusted by the most regulated industries on earth. The compliance portfolio speaks for itself:
+
+- **SOC 2 Type II** — independently audited operational controls
+- **ISO 27001** — international information security management standard
+- **HIPAA** — healthcare data protection compliance
+- **FedRAMP** — federal government cloud security authorization
+- **GDPR** — European data protection regulation compliance
+
+For most enterprise legal departments, the security and compliance vetting of Microsoft has already been completed. Your CISO has evaluated the platform. Your procurement team has negotiated the enterprise agreement. Your IT team manages the tenant. The vendor risk assessment is done.
+
+Building on Microsoft means inheriting a security posture that has been validated by the most demanding buyers in the world — financial services, healthcare, government, and defense. When Spaarke operates within your Microsoft environment, it does not introduce a new security perimeter to evaluate. It operates inside the one your organization already trusts.
+
+This is what we call the inherited security posture. Rather than asking your security team to vet an entirely new vendor infrastructure, Spaarke leverages the investment your organization has already made. Your existing security policies, conditional access rules, data loss prevention configurations, and retention policies apply automatically — because Spaarke runs inside the same boundary they already govern.
+
+---
+
+## Tenant Dedicated Deployment: Your Data Stays in Your Environment
+
+Here is where Spaarke's approach diverges most sharply from conventional legal technology platforms.
+
+Most SaaS vendors operate on a multi-tenant model. Your data lives on their infrastructure, commingled with other customers' data, separated by logical partitions that the vendor controls. You trust the vendor to maintain those boundaries. You trust the vendor's security team. You trust the vendor's compliance posture. And if that vendor is acquired, breached, or changes its terms of service, you discover how much of that trust was contractual and how much was structural.
+
+Spaarke takes a fundamentally different approach. We call it Tenant Dedicated Deployment.
+
+Spaarke deploys within your organization's own Microsoft 365 tenant, built on Power Platform. This means:
+
+- **Your data never leaves your environment.** Legal matter data, spend data, workflow data, and documents remain within your organizational boundary — the same boundary that houses your email, your files, and your Teams conversations.
+- **Your IT team controls access.** Identity and access management runs through your existing Entra ID (Azure Active Directory). The same user provisioning, role-based access, and conditional access policies that govern the rest of your Microsoft environment govern Spaarke.
+- **Your compliance policies apply automatically.** Data loss prevention rules, retention policies, sensitivity labels, and information barriers that your compliance team has configured for your tenant extend to Spaarke without additional configuration.
+- **No vendor-controlled infrastructure.** There is no separate Spaarke cloud environment where your legal data is hosted. Your data lives where all your data lives — in your tenant, under your control.
+
+This is fundamentally different from multi-tenant SaaS platforms that host your data on their infrastructure and ask you to trust their security controls. Tenant Dedicated Deployment means your data stays within the boundary your organization already governs.
+
+We will explore the full architecture and implications of Tenant Dedicated Deployment in depth in an upcoming article. For now, the principle is straightforward: your legal data belongs in your environment, governed by your policies, controlled by your team.
+
+---
+
+## The Copilot Advantage: AI That Operates Within Your Boundary
+
+More than 50% of legal organizations are now using Microsoft Copilot as their AI tool. This adoption is accelerating — and it has significant implications for how legal departments should think about AI architecture.
+
+Spaarke's AI capabilities are built to operate within the Microsoft 365 Copilot plane. This is not a separate AI silo bolted onto a legal ops platform. It is intelligence that flows through the tools your team already uses, grounded in structured legal data that makes the output dramatically more relevant.
+
+Consider the difference. Generic Copilot applied to unstructured email and documents can summarize and search. Copilot grounded in Spaarke's structured legal data — matter history, spend patterns, workflow context, institutional memory from the [IQ Stack](/blog/the-iq-stack) — produces insight that reflects your organization's actual operations and decisions.
+
+Critically, this AI operates within your tenant, governed by your policies. Your data does not leave your environment to be processed. Your organizational context is not used to train models that serve other customers. The data boundaries that protect your most sensitive legal information remain intact.
+
+We will expand on this AI architecture — and how to capture AI's value without compromising data sovereignty — in a future article. The key point here is alignment: when your legal ops platform, your productivity tools, and your AI all operate within the same environment and the same security boundary, you eliminate an entire category of risk.
+
+---
+
+## Where to Go Next
+
+This article explained why Spaarke is built on the Microsoft ecosystem — and why that decision is about governance, security, and strategic alignment, not just technology preference. It introduced Tenant Dedicated Deployment as the model that keeps your legal data within your organizational boundary and the inherited security posture that comes from building inside an environment your organization already trusts.
+
+To understand the LOI category and the IQ Stack architecture that Spaarke delivers within this environment, start with [What is Legal Operations Intelligence?](/blog/what-is-legal-operations-intelligence). For a deeper exploration of data sovereignty and why your legal data should belong to you, look for our next article in this series. And for the full technical and architectural picture of Tenant Dedicated Deployment, that is coming soon as well.

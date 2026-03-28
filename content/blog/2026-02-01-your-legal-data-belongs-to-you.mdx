@@ -1,0 +1,88 @@
+---
+title: "Your Legal Data Belongs to You"
+description: "Legal departments face hidden data sovereignty risks from multi-tenant SaaS platforms and AI tools. Learn where your data goes and how to regain control."
+summary: "In the rush to adopt AI and modernize operations, legal departments are making a decision many have not fully considered: where does your data go, and who else can access it? Every time you upload a contract to a third-party platform, send matter data to an external AI service, or store privileged communications outside your controlled environment, you are making a choice about sovereignty. Most legal teams cannot fully map their own data flows. They do not know which sub-processors handle their documents, which jurisdictions store their files, or whether their privileged communications are being used to train someone else's AI model. In the era of AI, that uncertainty carries real risk to privilege, compliance, and competitive position. It is time to make that choice deliberately."
+date: "2026-02-01"
+posted: "2026-04-01"
+author: "Spaarke Team"
+tags:
+  organization: [corporate-legal, law-firm]
+  function: [attorney, operations, it, executive]
+  topic: [compliance, dms, ai-copilot]
+  theme: [data-sovereignty, tenant-dedicated-deployment, ai-strategy, microsoft-ecosystem]
+draft: false
+---
+
+Legal data is not ordinary enterprise data. It includes privileged attorney-client communications, litigation strategy documents, M&A due diligence files, regulatory investigation materials, and settlement positions that could move markets if disclosed. This is the most sensitive information in any organization — and yet most legal departments cannot tell you exactly where all of it resides, who can access it, or what happens to it when it passes through the tools they use every day.
+
+This is not fearmongering. It is a governance question that deserves a direct answer. And for most legal teams, the honest answer is uncomfortable.
+
+---
+
+## The Hidden Data Flows Behind Your Legal Technology
+
+Ask your legal operations team a simple question: where does our data actually go? Not where you think it goes. Not where the vendor's marketing page says it goes. Where does it physically reside, who can touch it, and under what circumstances?
+
+Most legal departments cannot fully answer this. Here is why.
+
+**Multi-tenant SaaS platforms** store your matter data, invoices, and privileged communications on shared infrastructure alongside data from other organizations — including, potentially, your competitors. The separation is logical, not physical. Your data sits in the same databases, on the same servers, governed by someone else's access controls.
+
+**Third-party AI integrations** create data flows that traditional security reviews were never designed to catch. When your contract review tool sends a document to an external model for analysis, that document leaves your boundary. It may be processed on infrastructure in a jurisdiction you did not choose, retained for a duration you did not agree to, or handled under terms buried deep in a sub-processor agreement.
+
+**Analytics and benchmarking services** aggregate your legal spend data — often with your consent, buried in a terms-of-service update — to produce industry benchmarks. Your competitive intelligence becomes someone else's product.
+
+**Integration middleware** routes data between your systems through third-party infrastructure. That iPaaS platform connecting your matter management system to your e-billing tool? Your data passes through their servers on every sync.
+
+Even "cloud" document storage may mean your files live on servers in a geography you did not select, subject to data access laws you have not evaluated. For a department that advises the rest of the business on risk, this level of uncertainty about its own data is a significant exposure.
+
+---
+
+## Why Artificial Intelligence Makes Data Sovereignty Urgent
+
+The data sovereignty question has existed since the first SaaS legal tech platform. But AI has transformed it from a background concern into a front-page risk.
+
+AI tools need data to be useful. The more data, the better the output. This creates a fundamental tension: the same information that makes AI powerful — your matter histories, your negotiation patterns, your privileged communications — is precisely the information you most need to protect.
+
+Many AI integrations create exposures that do not appear in standard vendor security questionnaires. Some platforms send your documents to external large language models for processing. The documents may be retained temporarily, but "temporarily" is defined by the vendor, not by you. Some platforms use customer data to improve their models — meaning your privileged legal work product could influence outputs delivered to other customers. Most vendor agreements address this obliquely if at all.
+
+Then there is the privilege question. Attorney-client privilege depends on maintaining confidentiality. If privileged communications are transmitted to a third-party AI service for processing, analyzed on shared infrastructure, and potentially retained in model training pipelines, the argument for maintained privilege becomes difficult to sustain. This is not a hypothetical risk. It is an active area of concern among ethics committees and bar associations.
+
+The question is not whether your legal department should use AI. It should. As we discussed in [The IQ Stack: Data, Memory, Inference](/blog/the-iq-stack), the Inference layer is what transforms accumulated data and institutional memory into genuine organizational intelligence. The question is whose AI, running where, with what data boundaries — and whether your current tools can give you a satisfactory answer. We will explore the architectural dimensions of this question in depth in an upcoming article on what attorneys need to know about AI architecture.
+
+---
+
+## The Tenant-First Approach to Legal Data Sovereignty
+
+There is an architectural answer to this problem, and it starts with a simple principle: your legal data should never leave your environment.
+
+In [Why We Built on Microsoft](/blog/why-we-built-on-microsoft), we introduced the concept of Tenant Dedicated Deployment — a model where the legal operations platform runs entirely within your organization's own Microsoft 365 tenant. This is not a marketing distinction. It is a fundamentally different architecture with direct implications for data sovereignty.
+
+When your legal ops platform operates inside your tenant, your existing data governance policies apply automatically. There is no separate security perimeter to evaluate, no additional data processing agreement to negotiate, no sub-processor list to monitor. Your IT team controls access through the same Entra ID policies that govern the rest of your Microsoft environment. Your Data Loss Prevention rules, your retention policies, your Purview classification labels — all of them extend to your legal operations data without additional configuration.
+
+This matters enormously for AI. When Spaarke's intelligence capabilities operate through the Microsoft 365 Copilot plane within your tenant, there is no data egress for AI processing. Your privileged documents are not sent to an external model. Your matter data does not leave your boundary. The Inference layer of the IQ Stack — first introduced in [What is Legal Operations Intelligence?](/blog/what-is-legal-operations-intelligence) — runs on your data, in your environment, under your control.
+
+This is not a workaround or a compromise. It is the architecture designed for exactly this concern. And it is the foundation on which trustworthy Data and Memory layers, as described in the [IQ Stack](/blog/the-iq-stack), must be built. Without data sovereignty, there is no reliable operational memory — because you cannot build institutional knowledge on infrastructure you do not control.
+
+---
+
+## Seven Questions to Ask Every Legal Technology Vendor
+
+Data sovereignty is not about rejecting technology. It is about making informed decisions. The next time you evaluate a legal technology platform — or reassess one you already use — ask these questions directly:
+
+1. **Where is my data physically stored?** Which regions, which data centers, and under which jurisdictions' data access laws?
+2. **Is my data used to train or improve your AI models?** If so, can I opt out completely, and how do I verify compliance?
+3. **Can I fully delete my data upon contract termination?** What is the process, what is the timeline, and what residual copies remain in backups or model weights?
+4. **Who within your organization can access my data?** Under what circumstances, with what logging, and with what notice to me?
+5. **How is my data isolated from other customers' data?** Logical separation or physical separation? Shared databases or dedicated infrastructure?
+6. **What happens to my data if your company is acquired?** Do data processing terms survive an acquisition, or do they transfer to the acquiring entity's policies?
+7. **Does your AI processing occur within my environment or yours?** If yours, what data leaves my boundary, for how long, and where does it go?
+
+Vendors who take data sovereignty seriously will answer these questions directly and specifically. Vague assurances about "enterprise-grade security" or "SOC 2 compliance" are not answers to these questions. They are deflections. SOC 2 certifies that a vendor follows its own security policies — it says nothing about where your data goes or who can access it.
+
+These are not adversarial questions. They are governance questions. And for a department that handles privileged communications, litigation strategy, and regulatory intelligence, they are non-negotiable.
+
+---
+
+## Where to Go Next
+
+Data sovereignty is the prerequisite for everything else in legal operations intelligence. Without confidence in where your data resides and who controls it, the [IQ Stack](/blog/the-iq-stack) cannot deliver its full value — because the Data and Memory layers depend on an environment you trust completely. For the platform architecture that makes this possible, read [Why We Built on Microsoft](/blog/why-we-built-on-microsoft), which introduces Tenant Dedicated Deployment and explains why the Microsoft 365 ecosystem is the foundation for secure, intelligent legal operations.

@@ -1,0 +1,106 @@
+---
+title: "What Attorneys Need to Know About AI Architecture"
+description: "Three AI architecture decisions determine whether your legal data stays private, your outputs are reliable, and your costs stay predictable. What to ask."
+summary: "You do not need to understand how large language models work at a technical level. But you absolutely need to understand how your AI tools are architected — because that architecture determines whether your privileged data stays private, whether your AI outputs are grounded in reliable information, and how much you will ultimately pay. Most legal departments are evaluating AI tools based on feature lists and demo impressions. That is the wrong filter. Three architectural decisions matter more than any feature list: where the AI runs, what data grounds its outputs, and what the true cost model looks like at scale. Get these three right, and the features will follow. Get them wrong, and no feature list will save you."
+date: "2026-02-15"
+posted: "2026-04-01"
+author: "Spaarke Team"
+tags:
+  organization: [corporate-legal, law-firm]
+  function: [attorney, executive, operations]
+  topic: [ai-copilot, compliance, legal-spend]
+  theme: [ai-strategy, data-sovereignty, microsoft-ecosystem, thought-leadership]
+draft: false
+---
+
+AI is no longer optional for legal departments. Every major law firm and corporate legal function is either deploying AI tools today or evaluating them for near-term adoption. But adopting AI without understanding its architecture is like signing a contract without reading the key terms. You may get a workable outcome. You may also be accepting exposures you did not intend.
+
+This is not a technical deep dive. You do not need to become an engineer. But you do need to know which architectural decisions carry real consequences for privilege, data governance, and cost — and you need to know what questions to ask before someone else makes those decisions for you.
+
+In [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you), we explored why data sovereignty has become urgent in the era of AI. In [Why We Built on Microsoft](/blog/why-we-built-on-microsoft), we explained the platform decision that shapes everything else. This article builds on both: three architectural decisions that every attorney evaluating AI tools should understand.
+
+---
+
+## Decision One: Where Does the AI Run?
+
+This is the most consequential question, and it is the one most often glossed over in vendor demos. Where AI processing physically occurs determines who can access your data, which jurisdictions govern it, and whether privilege survives the interaction.
+
+There are three models in the market today, each with different implications for legal departments.
+
+**External API processing.** Your data leaves your environment, travels to the AI vendor's infrastructure, is processed there, and returns. The vendor's servers may sit in a jurisdiction you did not choose. Your privileged documents are, for some duration, resident on someone else's infrastructure. Data may be retained temporarily — where "temporarily" is defined by the vendor's policies, not yours.
+
+**Embedded in the vendor's platform.** AI runs within the vendor's application, which is a step better than raw API calls to a third-party model. But your data is still processed on the vendor's infrastructure. The separation between your data and other customers' data is logical, not physical. Your compliance posture depends on the vendor's commitments, not your own controls.
+
+**Within your own tenant.** AI operates inside your Microsoft 365 boundary. Data never crosses your perimeter. Processing is governed by your existing security policies, your Conditional Access rules, your Data Loss Prevention configurations. This is the Microsoft 365 Copilot model, and it is the approach Spaarke uses.
+
+Consider two scenarios that make the distinction concrete.
+
+A litigation team uses an AI tool to analyze privileged strategy documents — case assessments, settlement positions, internal recommendations from outside counsel. Under the external API model, those documents leave the organization's boundary for processing. Under the tenant model, the analysis happens inside the same environment where those documents already reside, governed by the same policies that protect them.
+
+A contracts team asks AI to compare proposed terms against the organization's negotiation history — past positions, concession patterns, counterparty behavior across dozens of prior deals. Under the external model, that institutional knowledge flows to someone else's servers. Under the tenant model, the comparison runs on your data, in your environment, with no egress.
+
+The difference is not theoretical. It is the difference between structural privilege protection and contractual assurance. As we detailed in [Tenant Dedicated Deployment: The New On-Premises](/blog/tenant-dedicated-deployment), structural compliance — where your architecture enforces the boundary — is fundamentally more reliable than promissory compliance, where a vendor agreement is the only thing standing between your privileged data and exposure.
+
+---
+
+## Decision Two: What Data Grounds the AI?
+
+Where the AI runs determines data security. What data grounds the AI determines output quality. These are separate questions, and conflating them is a common mistake.
+
+There are three approaches in the market, and they produce fundamentally different results.
+
+**Public training data.** The AI knows what the internet knows. It can summarize general legal concepts, draft boilerplate language, and answer questions about publicly available case law. Useful for general tasks. Unreliable for anything specific to your organization, your matters, or your business context.
+
+**Retrieval-augmented generation with your documents.** The AI retrieves your documents at query time and uses them to inform its responses. This is better — the outputs reflect your actual files rather than generic knowledge. But quality depends heavily on which documents are indexed, how well they are organized, and whether the retrieval mechanism finds the right materials. Garbage in, garbage out still applies.
+
+**Grounded in structured operational data.** The AI draws on your organization's matter history, spend patterns, negotiation precedents, outside counsel performance data, and accumulated institutional context. This is not document retrieval. It is reasoning over the structured Memory layer that captures how your organization actually operates — decisions made, outcomes achieved, patterns observed over years of practice.
+
+This third approach is what the Inference layer of the [IQ Stack](/blog/the-iq-stack) delivers. When AI is grounded in your organization's operational memory, the difference in output quality is not incremental. It is categorical.
+
+A generic AI tool asked to estimate the cost of an employment matter will give you an industry range. An AI grounded in your operational data will tell you what your department has historically spent on similar matters, with which firms, at what stage costs typically escalate, and where your estimates have historically been optimistic. One gives you a number. The other gives you a decision framework built on your own experience.
+
+The IQ Stack's [Memory layer](/blog/the-iq-stack) — the accumulated decisions, rationale, and institutional context described in our earlier article — is what makes this possible. Without it, AI is just a faster way to process documents. With it, AI becomes a genuine extension of your organization's collective judgment.
+
+---
+
+## Decision Three: What Is the True Cost Model?
+
+AI pricing in legal technology is opaque by design. Understanding the real cost structure — not just the line item on the quote — is essential for evaluating long-term value and avoiding adoption friction.
+
+Three pricing models dominate the market.
+
+**Per-seat licensing.** Every user pays a fixed fee regardless of how much they use AI capabilities. Predictable for budgeting, but potentially wasteful if adoption is uneven. Some seats may generate hundreds of AI interactions per month while others generate none.
+
+**Per-query or per-token pricing.** You pay based on usage — every question asked, every document analyzed, every summary generated. This scales with actual consumption, but it creates a chilling effect on adoption. When every query has a visible cost, teams self-censor. Attorneys hesitate to ask exploratory questions. Legal ops professionals avoid running analyses that might not yield immediate results. The tool that was supposed to drive efficiency becomes something people use sparingly to avoid budget scrutiny.
+
+**Bundled within existing licensing.** AI capabilities are delivered as part of an existing enterprise agreement — in Spaarke's case, through the Microsoft 365 ecosystem. The incremental cost is absorbed within licensing your organization already manages. No per-query anxiety. No adoption friction.
+
+Beyond the headline pricing model, watch for hidden costs that compound at scale:
+
+- **Data egress fees** — charges for moving your data to external AI services for processing, which can grow substantially as usage increases
+- **API call charges** — per-interaction fees for AI queries that accumulate faster than initial projections suggest
+- **Storage costs** — fees for AI-generated content, analysis outputs, and cached results that persist in the vendor's environment
+- **Integration costs** — the expense of connecting external AI capabilities to your existing data sources, which often requires middleware, custom development, or both
+
+The key insight: usage-based pricing is structurally hostile to AI adoption. The entire value proposition of AI in legal operations depends on broad, frequent use — asking more questions, running more analyses, surfacing more patterns. A pricing model that penalizes usage undermines the very behavior that generates value. The bundled model within existing Microsoft licensing removes this friction entirely.
+
+---
+
+## The Questions You Should Be Asking
+
+Every legal department evaluating AI-enabled tools should be asking these questions. They are not technical questions. They are governance questions — and they belong in the room where procurement decisions are made.
+
+- **Where does AI processing occur — your environment or theirs?** If theirs, what data leaves your boundary, and for how long?
+- **Is your data used to train models that serve other customers?** Can you opt out, and how do you verify?
+- **What data sources ground the AI's outputs?** Public data, your documents, or your structured operational data? The answer determines output reliability.
+- **What is the pricing model, and what are the hidden costs at scale?** Ask for a three-year total cost projection that includes data egress, API calls, storage, and integration.
+- **Can you audit AI interactions?** Are AI queries and responses logged within your compliance and audit framework?
+- **What happens to AI-processed data after the query completes?** Is it retained, cached, or used for model improvement?
+
+You will be in the room when these decisions are made — or you should be. AI adoption in legal is not an IT project. It is a governance decision with direct implications for privilege, compliance, cost, and competitive position. These are the questions that separate informed adoption from risky experimentation.
+
+---
+
+## Where to Go Next
+
+For the data sovereignty foundation behind these architectural questions, read [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you). For the three-layer architecture that makes AI grounding work — how Data, Memory, and Inference compound to produce organizational intelligence — see [The IQ Stack: Data, Memory, Inference](/blog/the-iq-stack). In our next article, we will explore how Spaarke implements these principles within the Microsoft 365 Copilot plane — delivering AI capabilities without requiring you to give away the keys to your data.

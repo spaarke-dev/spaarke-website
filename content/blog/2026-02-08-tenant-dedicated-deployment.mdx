@@ -1,0 +1,113 @@
+---
+title: "Tenant Dedicated Deployment: The New On-Premises"
+description: "Tenant Dedicated Deployment gives legal departments on-premises control with cloud simplicity — deployed entirely within your own Microsoft 365 tenant."
+summary: "For decades, 'on-premises' meant control. You owned the servers, you controlled the data, you managed the perimeter. Then cloud SaaS promised simplicity — but quietly moved your most sensitive data to someone else's infrastructure. Tenant Dedicated Deployment is the third option: the control of on-premises with the simplicity of cloud, deployed entirely within your organization's own Microsoft 365 environment. For legal departments handling privileged communications, litigation strategy, and regulatory filings, this is not a technical distinction. It is a governance decision that determines whether your compliance posture is structural or merely contractual. This article defines Tenant Dedicated Deployment, traces the evolution from on-premises to SaaS to this new model, and explains what it means for both IT and legal stakeholders."
+date: "2026-02-08"
+posted: "2026-04-01"
+author: "Spaarke Team"
+tags:
+  organization: [corporate-legal]
+  function: [it, operations, executive]
+  topic: [compliance, ai-copilot]
+  theme: [tenant-dedicated-deployment, microsoft-ecosystem, data-sovereignty, platform, buyer-enablement]
+draft: false
+---
+
+IT leaders and legal leaders face what appears to be an impossible tradeoff. On one side: on-premises deployments that offer full control over data, access, and compliance — but carry enormous infrastructure costs, slow update cycles, and a growing maintenance burden. On the other: multi-tenant SaaS platforms that deliver speed and simplicity — but require you to trust someone else's infrastructure with your most sensitive information.
+
+For years, this was the only choice. Control or convenience. Governance or agility.
+
+Tenant Dedicated Deployment eliminates the tradeoff. As we introduced in [Why We Built on Microsoft](/blog/why-we-built-on-microsoft), Spaarke's decision to build on the Microsoft ecosystem was a strategic one — not just a technology preference. This article explains the deployment model that makes that strategy real: a cloud-native platform that runs entirely within your organization's own Microsoft 365 tenant, giving you the control of on-premises with the simplicity of cloud.
+
+---
+
+## A Brief History of Enterprise Deployment
+
+Understanding Tenant Dedicated Deployment requires understanding what it replaces. Enterprise software deployment has evolved through three distinct phases, each one a response to the limitations of its predecessor.
+
+**On-Premises (1990s-2010s)**
+
+The original model. Your organization purchased software, installed it on your servers, in your data center, behind your firewall. You controlled everything: the hardware, the network, the access policies, the data.
+
+The advantages were real — complete data control, full customization, no dependency on a vendor's infrastructure. But the costs were equally real:
+
+- High capital expenditure for servers, storage, and networking
+- Slow update cycles — major upgrades became multi-month projects
+- Heavy IT burden for maintenance, patching, and security
+- Scaling limitations tied to physical infrastructure capacity
+
+**Multi-Tenant SaaS (2010s-Present)**
+
+Cloud SaaS offered a compelling alternative. No hardware to buy. No infrastructure to manage. Automatic updates. Lower upfront costs. For many functions, the model works well. But for legal departments, multi-tenant SaaS introduced concerns that are difficult to dismiss:
+
+- Your data resides on shared infrastructure, logically separated but physically co-located with other customers' data
+- Compliance becomes contractual — you rely on the vendor's promises, not your own policies
+- Customization is limited to what the vendor's architecture allows
+- Data portability depends on the vendor's willingness to release it
+- As we explored in [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you), the question of where your data goes — and who else can access it — deserves more scrutiny than most procurement processes provide
+
+For departments handling privileged communications, litigation strategy, and M&A intelligence, these are not theoretical concerns. They are governance gaps.
+
+**Tenant Dedicated Deployment (Now)**
+
+Tenant Dedicated Deployment is the third phase. It combines the data control and compliance advantages of on-premises with the operational simplicity of cloud SaaS — without the compromises of either.
+
+In this model, the platform deploys directly into your organization's own Microsoft 365 tenant. Your data stays within your tenant boundary. Your existing security policies apply automatically. Updates are delivered through the platform. There is no separate infrastructure to manage, no vendor servers holding your data, and no compliance ambiguity about where your most sensitive information resides.
+
+This is not a hybrid approach. It is a fundamentally different deployment architecture — one designed for organizations that refuse to choose between control and agility.
+
+---
+
+## How Tenant Dedicated Deployment Works
+
+Spaarke is built on Microsoft Power Platform and deploys directly into the customer's Microsoft 365 tenant. Here is what that means in practice.
+
+**Data stays within your tenant boundary.** All Spaarke data — matters, invoices, workflows, documents, operational memory — is stored in Microsoft Dataverse within your own M365 environment. It does not flow to Spaarke's infrastructure or pass through third-party servers.
+
+**Your security policies apply automatically.** Conditional Access policies, multi-factor authentication requirements, Data Loss Prevention rules, and compliance configurations that your IT team has already implemented extend to Spaarke without additional setup. There is no separate security layer to configure and no vendor-specific controls to learn.
+
+**Entra ID manages identity and access.** Users authenticate through the same Microsoft Entra ID (formerly Azure AD) directory your IT team already governs. No separate user accounts. No additional identity provider. No parallel permission structure.
+
+**Updates are delivered through Power Platform.** Spaarke updates flow through Microsoft's managed update infrastructure. No manual patching. No maintenance windows your IT team must schedule.
+
+**No separate infrastructure to manage.** No virtual machines to provision. No databases to administer. No vendor servers to audit or penetration test.
+
+This is the architecture that makes the data sovereignty principles described in [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you) operationally real. Data sovereignty is not just a policy position — it is a structural outcome of where the platform runs.
+
+---
+
+## What Tenant Dedicated Deployment Means for IT
+
+For IT leaders evaluating Spaarke, Tenant Dedicated Deployment translates into a familiar governance model rather than a new one.
+
+- **Identity management through Entra ID** — the same directory, the same role-based access controls, the same audit trails your team already manages. No separate user provisioning. No sync issues between directories.
+- **Data governance through Microsoft Purview** — classification, retention policies, and DLP rules cover Spaarke data natively. Your existing governance framework extends without gaps.
+- **No new vendor infrastructure to assess** — because Spaarke runs within your tenant, there are no additional servers, databases, or network endpoints to include in your security review. The attack surface does not expand.
+- **Licensing aligned with existing agreements** — Spaarke leverages your organization's existing Microsoft enterprise agreement. No separate infrastructure licensing. No hidden compute costs.
+- **Audit and compliance reporting** — Spaarke activity flows through the same Microsoft 365 compliance center and audit logs your security team already monitors.
+
+The practical result: onboarding Spaarke looks less like a new vendor deployment and more like enabling a new capability within your existing Microsoft environment.
+
+For a complete technical brief — including security architecture, licensing details, and answers to the most common IT evaluation questions — see our upcoming IT Architecture and Deployment Q&A.
+
+---
+
+## What Tenant Dedicated Deployment Means for Legal
+
+For legal leaders, the deployment model answers a question that contracts alone cannot: where does our data actually live, and who controls it?
+
+**Privilege protection is architectural, not contractual.** When privileged communications and litigation strategy documents reside within your own tenant, the boundary is your organization's security perimeter — not a vendor's promise. You are not relying on a third party's access controls to protect work product privilege. Your own policies enforce it.
+
+**AI operates within your boundary.** Spaarke's AI capabilities, built on the Microsoft 365 Copilot plane, operate within the same tenant boundary as the rest of the platform. When Copilot analyzes your matter data, generates spend forecasts, or surfaces patterns from your operational memory, that processing happens inside your environment. No data is sent to external AI services. No training data exposure. No privilege waiver risk from third-party AI processing.
+
+**Compliance is structural, not promissory.** This is perhaps the most important distinction. With multi-tenant SaaS, your compliance posture depends on the vendor's commitments — their certifications, their policies, their audit results. With Tenant Dedicated Deployment, compliance is a function of your own environment. The same Microsoft compliance certifications your organization already relies on — SOC 2, ISO 27001, HIPAA, FedRAMP, GDPR — cover Spaarke data because Spaarke data lives within the environment those certifications protect.
+
+For legal departments that have spent years building compliance frameworks around their Microsoft environment, Tenant Dedicated Deployment means a new legal operations platform does not create a new compliance gap. It inherits the posture you have already built.
+
+As the [IQ Stack](/blog/the-iq-stack) compounds organizational intelligence over time — capturing richer data, building deeper memory, generating sharper inference — the question of where that intelligence resides becomes more important, not less. Tenant Dedicated Deployment ensures the answer is always the same: it belongs to you, inside your environment, governed by your policies.
+
+---
+
+## Where to Go Next
+
+This article is the definitive reference for Tenant Dedicated Deployment — the model that gives legal departments the control of on-premises with the simplicity of cloud. For the strategic foundation behind this architectural choice, see [Why We Built on Microsoft](/blog/why-we-built-on-microsoft). For the data sovereignty principles that this deployment model enforces, see [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you). For the complete technical deep dive — including security architecture, licensing, and common IT evaluation questions — look for our IT Architecture and Deployment Q&A.

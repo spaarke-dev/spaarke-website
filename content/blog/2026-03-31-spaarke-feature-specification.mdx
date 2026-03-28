@@ -1,0 +1,198 @@
+---
+title: "The Spaarke Platform: Feature Specification"
+description: "A complete reference of Spaarke platform capabilities organized by the IQ Stack — Data, Memory, and Inference layers — mapped to legal operations outcomes."
+summary: "This article provides a comprehensive overview of the Spaarke platform's capabilities — organized around the IQ Stack framework of Data, Memory, and Inference. Rather than a feature checklist, each capability is mapped to the operational outcome it produces: faster matter resolution, preserved institutional knowledge, predictive spend management, or cross-functional visibility. The specification covers five areas — Platform Foundation, Data Layer, Memory Layer, Inference Layer, and Cross-Functional capabilities — so readers can see how individual features connect to the compounding intelligence loop that defines Legal Operations Intelligence. Whether you are evaluating Spaarke for the first time or building a business case for adoption, this is your single reference for what the platform does and how each capability connects to measurable results."
+date: "2026-03-31"
+posted: "2026-04-01"
+author: "Spaarke Team"
+tags:
+  organization: [corporate-legal]
+  function: [operations, business-analyst, attorney, legal-professional, it, executive, finance]
+  topic: [matter-management, invoicing, e-billing, legal-spend, dms, workflow, contracts, reporting, ai-copilot, compliance, vendor-management]
+  theme: [iq-stack, legal-operations-intelligence, platform, microsoft-ecosystem, buyer-enablement]
+draft: false
+---
+
+Throughout this series, we have defined [Legal Operations Intelligence](/blog/what-is-legal-operations-intelligence) as a category, described the [IQ Stack](/blog/the-iq-stack) as its architectural foundation, explored why [platform choice matters](/blog/why-we-built-on-microsoft), and addressed [IT architecture and deployment](/blog/spaarke-for-your-it-team) in detail. Each article advanced a piece of the picture. This article assembles the complete view.
+
+What follows is a comprehensive reference for the Spaarke platform — every major capability, organized not by product menu but by how it creates value through the IQ Stack framework. Features are grouped across five sections: Platform Foundation, Data Layer, Memory Layer, Inference Layer, and Cross-Functional capabilities. Each one maps to the business outcome it produces, not just the function it performs.
+
+This is the article to send to your evaluation committee. It is designed to answer the question that procurement teams, IT reviewers, and business stakeholders all ask: what does this platform actually do, and why should we care?
+
+---
+
+## Platform Foundation
+
+Before any capability delivers value, the foundation must be right. Spaarke is built on Microsoft Power Platform — Power Apps, Power Automate, Dataverse, and Power BI — and deploys directly into your organization's Microsoft 365 tenant through [Tenant Dedicated Deployment](/blog/tenant-dedicated-deployment).
+
+This means every capability described in this article runs inside your existing Microsoft environment. Identity management flows through Microsoft Entra ID. Security policies — Conditional Access, Data Loss Prevention, multi-factor authentication — apply automatically. Documents live in SharePoint. Collaboration happens in Teams and Outlook. AI capabilities operate through the Microsoft 365 Copilot plane, within your tenant boundary, with no data egress.
+
+The practical implication: Spaarke does not create a new technology island. It extends the environment your organization already runs, your CISO has already vetted, and your teams already use every day. For the complete technical architecture — including security model, licensing, and common IT evaluation questions — see [Spaarke for Your IT Team](/blog/spaarke-for-your-it-team).
+
+---
+
+## Data Layer Capabilities
+
+The Data layer is the foundation of Legal Operations Intelligence. As we described in [The IQ Stack](/blog/the-iq-stack), data unification is not a nice-to-have — it is the prerequisite for everything that follows. Memory cannot operate on fragmented inputs, and inference cannot generate reliable predictions from incomplete data. What follows are the capabilities that make the Data layer operational.
+
+### Unified Matter Management
+
+Spaarke provides end-to-end matter lifecycle capabilities designed to capture not just status, but the full context of how legal work progresses.
+
+- **Matter intake**: Configurable intake forms allow business units to submit requests through structured channels. Requests route automatically based on matter type, urgency, business unit, and jurisdiction, with auto-assignment based on expertise and capacity.
+- **Matter tracking**: Live record of status, timeline, milestones, and key dates with Outlook calendar integration. Milestone tracking provides visibility without requiring manual status updates.
+- **Lifecycle management**: Configurable stage-gate processes govern how matters move from intake through resolution. Outcome tracking captures results, costs, and key learnings at closure.
+- **Matter taxonomy**: Configurable matter types, practice areas, business units, and custom classifications create the structured vocabulary that makes reporting, search, memory, and inference possible.
+
+### Legal Spend Management
+
+As we explored in [The $20B Blind Spot](/blog/the-20b-blind-spot), the gap between what legal departments spend and what they can see is enormous. The Data layer closes that gap.
+
+- **Invoice capture and processing**: Electronic submission with LEDES format support enables standardized, line-item-level data capture. Automated ingestion eliminates manual data entry.
+- **Billing guideline enforcement**: Configurable rules review invoices automatically. Block billing, excessive hours, unapproved timekeepers, prohibited expense categories — flagged before reaching a human reviewer.
+- **Budget management**: Budgets attach to individual matters and portfolios. Real-time tracking shows budget consumption as invoices arrive, with alerts when spend approaches thresholds.
+- **Accrual tracking**: Real-time accrual estimates based on matter stage, historical patterns, and billing velocity. Quarter-end forecasting becomes data-driven rather than spreadsheet-driven.
+- **Rate management**: Approved rate cards by firm, timekeeper level, and practice area. Rate increase tracking and benchmarking compare rates across comparable matters and firms.
+
+### Document Management
+
+Spaarke does not require a separate document management system. Documents live in SharePoint — the platform your organization already uses.
+
+- **SharePoint-native storage**: All documents reside in SharePoint within your M365 tenant. No separate DMS to license, manage, or integrate.
+- **Matter-linked libraries**: Each matter gets an automatic folder structure organized by document type and workflow stage. Documents are always connected to their operational context.
+- **Metadata and tagging**: Configurable document properties — type, confidentiality level, review status, and custom fields — make retrieval precise beyond folder structure.
+- **Version control and co-authoring**: Native SharePoint capabilities — version history, simultaneous editing, check-in/check-out — work without additional configuration.
+- **Document templates**: Configurable templates by matter type ensure consistency. Recurring documents start from approved templates rather than from scratch.
+
+### Workflow Engine
+
+Legal work follows patterns, but those patterns are rarely simple. The workflow engine handles the routing, approvals, and escalations that keep work moving.
+
+- **Matter workflows**: Configurable stage-gate processes define how matters progress through their lifecycle. Each stage can require specific approvals, document uploads, or data entry before advancement.
+- **Approval chains**: Multi-level, conditional, and parallel approval routing. A high-value matter may require GC sign-off; a routine contract renewal may need only a team lead.
+- **Automated routing**: Rule-based and context-aware routing sends work to the right person based on matter type, dollar value, business unit, or any combination of attributes.
+- **Notification and escalation**: Notifications flow through Teams, Outlook, and in-app alerts. Escalation rules trigger when deadlines approach or approvals stall.
+- **Power Automate integration**: The workflow engine extends through Power Automate's 500+ pre-built connectors to trigger actions in ServiceNow, SAP, Salesforce, and other enterprise systems based on matter events.
+
+### Data Integration
+
+No legal operations platform exists in isolation. Spaarke connects to the systems your organization already runs.
+
+- **M365 native integration**: SharePoint, Teams, Outlook, and Excel are not third-party integrations — they are the platform's native environment. Calendar events, email threads, and document collaboration connect to matter context automatically.
+- **Power Automate connectors**: 500+ pre-built connectors for enterprise systems including SAP, ServiceNow, Salesforce, Workday, and DocuSign. Custom connectors extend to any system with a REST API.
+- **Dataverse Web API**: Full REST API for custom integrations, bulk data operations, and programmatic access.
+- **Data import tools**: Bulk import capabilities support migration from legacy systems with structured templates and validation rules to ensure data quality.
+
+---
+
+## Memory Layer Capabilities
+
+The Memory layer is what separates Spaarke from conventional legal technology. As we explored in [Institutional Knowledge Is Walking Out the Door](/blog/institutional-knowledge), most organizations lose critical context every time an experienced professional leaves. The Memory layer makes that knowledge durable — captured, structured, and available to every person who needs it.
+
+### Matter Context Capture
+
+The Memory layer captures context systematically, not as an afterthought.
+
+- **Decision logging**: At each matter stage, the platform captures decisions, rationale, and constraints. Future attorneys handling similar disputes see not just what was decided but why.
+- **Outcome recording**: Results, key learnings, and cost-versus-budget analysis captured at closure create a feedback loop — every completed matter enriches the organization's understanding.
+- **Key contact and relationship tracking**: Internal and external stakeholders recorded with roles and contributions. Relationship context persists beyond individual matters.
+- **Timeline annotations**: Context notes on key events provide narrative depth beyond status updates. The story of a matter becomes part of the organizational record.
+
+### Precedent Library
+
+Institutional knowledge is only valuable if it is retrievable. The precedent library makes accumulated experience searchable and actionable.
+
+- **Searchable institutional knowledge**: Full-text and metadata search across the complete history of matters, decisions, and outcomes. Relevant precedent surfaces in seconds rather than requiring someone to remember it.
+- **Matter comparison**: "Find similar matters" capabilities match on matter type, counterparty, jurisdiction, and outcome. New matters benefit from the full history of comparable engagements.
+- **Clause library**: Negotiated terms, accepted and rejected language, and counterparty preferences accumulate over time. Contract negotiations start from organizational intelligence.
+- **Playbooks**: Matter-type-specific best practices codified from accumulated experience. A new employment litigation matter triggers the playbook built from every prior engagement of that type.
+
+### Relationship Intelligence
+
+Legal departments manage complex webs of relationships — outside counsel, counterparties, vendors, internal stakeholders. The Memory layer captures relationship context that would otherwise exist only in people's heads.
+
+- **Outside counsel profiles**: Performance, cost, expertise, and relationship history for every firm your organization engages. Selection decisions draw on demonstrated track record, not just reputation.
+- **Counterparty intelligence**: Negotiation history, terms preferences, and key contacts for organizations you deal with repeatedly. Your team knows their patterns before the first meeting.
+- **Vendor performance tracking**: Matter outcomes, billing compliance, responsiveness, and quality metrics for outside counsel. Performance reviews become data-driven conversations.
+- **Internal stakeholder mapping**: Business unit contacts, escalation paths, and relationship history within your own organization.
+
+### Process Templates
+
+The Memory layer does not just store knowledge — it operationalizes it. Process templates turn accumulated experience into repeatable, consistent workflows.
+
+- **Matter type templates**: Pre-configured workflows, document structures, and checklists for each matter type. New matters launch with accumulated best practices built in.
+- **Onboarding accelerators**: Role-based dashboards and context packages for new team members. The platform delivers institutional context that would normally take months to absorb.
+- **Best practice codification**: Informal practices — the things experienced team members "just know" — convert into documented, repeatable processes that scale beyond individual expertise.
+
+---
+
+## Inference Layer Capabilities
+
+The Inference layer is where the IQ Stack delivers its most visible return. Built on the foundation of unified data and rich memory, inference capabilities turn accumulated signals into decisions, predictions, and recommendations. As we discussed in [What Attorneys Need to Know About AI Architecture](/blog/what-attorneys-need-to-know-about-ai), the quality of AI output depends entirely on the quality of the data and context it operates on. The IQ Stack ensures that Spaarke's intelligence is grounded in your organization's actual history — not generic benchmarks.
+
+### Spend Analytics and Forecasting
+
+Legal spend analytics move from backward-looking reports to forward-looking intelligence.
+
+- **Historical spend analysis**: Analyze spend by matter type, firm, practice area, business unit, geography, and time period. Granular visibility replaces the quarterly spreadsheet.
+- **Spend trend visualization**: Pattern detection, seasonality analysis, and year-over-year comparison reveal the dynamics that drive legal costs.
+- **Predictive spend forecasting**: Matter-level and portfolio-level projections based on historical patterns, current stage, and comparable precedent.
+- **Benchmark analysis**: Internal benchmarks across comparable matters replace the industry averages that rarely reflect your organization's circumstances.
+- **Anomaly detection**: Invoices outside historical norms are flagged for review automatically. Billing irregularities surface before they compound.
+
+### Matter Intelligence
+
+Intelligence applied to the full matter lifecycle — from intake to resolution.
+
+- **Matter outcome prediction**: Historical patterns for similar matters inform expected outcomes, enabling earlier strategic decisions.
+- **Duration estimation**: Expected timelines based on matter type, complexity, jurisdiction, and firm performance history. Realistic timelines replace optimistic guesses.
+- **Risk scoring**: Configurable risk factors with weighted scoring produce consistent, defensible risk assessment across the portfolio.
+- **Workload analysis**: Capacity planning and resource allocation recommendations based on current caseloads, deadlines, and historical velocity.
+
+### Copilot Integration
+
+Spaarke's AI capabilities operate through Microsoft 365 Copilot, within your tenant boundary. As we explored in [AI Without Giving Away the Keys](/blog/ai-without-giving-away-the-keys), this architecture ensures that AI processing never moves your data outside your organizational perimeter.
+
+- **Natural language queries**: Ask questions in plain language — "What did we spend on employment litigation in the Northeast last year?" — and receive answers grounded in your actual data, not generic benchmarks.
+- **Document understanding**: Summarization, comparison, and key term extraction across contracts and memoranda, within your environment.
+- **Recommendations**: Suggested outside counsel, estimated budgets, and recommended approaches based on your organization's own precedent — not generic suggestions.
+- **Draft generation**: Matter summaries, board reports, and status updates generated from structured data. A quarterly litigation summary that once took days can be drafted in minutes.
+- **Tenant-boundary processing**: All AI processing occurs within your M365 tenant. No data egress. No third-party model training. No privilege exposure from external processing.
+
+### Reporting and Dashboards
+
+Reporting moves from periodic manual exercises to live, interactive intelligence.
+
+- **Power BI embedded analytics**: Interactive dashboards with drill-down capability, embedded directly in the Spaarke interface.
+- **Executive dashboards**: Portfolio overview, risk summary, and spend snapshots designed for GCs, CLOs, and board-level reporting.
+- **Operational dashboards**: Matter pipeline, workload distribution, and deadline tracking for legal ops managers — day-to-day visibility without manual compilation.
+- **Custom report builder**: Self-service reporting for operations and finance teams. Users build the views they need without waiting for IT or vendor support.
+- **Scheduled report delivery**: Automated distribution via email or Teams. Monthly spend reports, weekly matter summaries, and quarterly board packages deliver themselves.
+
+### Alerts and Automation
+
+Intelligence without action is just information. The Inference layer includes the automation to turn insight into response.
+
+- **Threshold alerts**: Budget limits, approaching deadlines, and risk score triggers generate notifications before problems materialize.
+- **Anomaly notifications**: Billing irregularities and pattern deviations flagged automatically so teams focus where it matters.
+- **Workflow triggers**: Automated actions fire based on data conditions — a matter crossing a spend threshold can escalate for GC review without manual intervention.
+- **Escalation rules**: Configurable paths based on severity, matter type, and response time ensure critical items reach the right person.
+
+---
+
+## Cross-Functional Capabilities
+
+Legal does not operate in isolation — and neither should its platform. As we explored in [Breaking the Silo Between Legal, Finance, and the Business](/blog/breaking-the-silo), the most effective legal departments are those that connect their operations to the rest of the enterprise. Spaarke provides capabilities designed specifically for stakeholders beyond the legal department.
+
+- **Executive dashboards**: Board-ready legal department overview covering spend, risk, volume, and outcomes. GCs and CLOs get a portfolio view that communicates legal's operational health in the language the C-suite expects — without requiring manual deck-building.
+- **Finance integration**: Accrual forecasts, budget-versus-actual reporting, and cost allocation by business unit. Finance teams get the forward-looking data they need for planning, and legal gets credit for the operational discipline that produces it.
+- **Business unit portals**: Self-service matter requests, contract status tracking, and regulatory updates for internal clients. Business units get the visibility they need without creating additional work for the legal team.
+- **Board reporting**: Automated board deck content — litigation summary, spend overview, key metrics, and trend analysis. The quarterly board package becomes a data product rather than a manual assembly project.
+
+These capabilities reflect a principle that runs through the entire [LOI Maturity Model](/blog/loi-maturity-model): as legal operations mature, their value extends beyond the department. The platform should support that trajectory, not constrain it.
+
+---
+
+## Where to Go Next
+
+This article serves as the comprehensive feature reference for the Spaarke platform. For the strategic framework behind these capabilities, start with [What is Legal Operations Intelligence?](/blog/what-is-legal-operations-intelligence) and [The IQ Stack: Data, Memory, Inference](/blog/the-iq-stack). For the technical architecture and deployment details that IT teams need, see [Spaarke for Your IT Team](/blog/spaarke-for-your-it-team).

@@ -35,6 +35,16 @@ export default function StickyTagline() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  function scrollToLibrary() {
+    const library = document.getElementById("library-section");
+    if (library) {
+      const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--header-h") || "73", 10);
+      const taglineH = ref.current?.offsetHeight ?? 80;
+      const top = library.getBoundingClientRect().top + window.scrollY - headerH - taglineH;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  }
+
   return (
     <div
       ref={ref}
@@ -61,7 +71,7 @@ export default function StickyTagline() {
       {/* Scroll arrow — fades out as user scrolls */}
       <button
         type="button"
-        onClick={() => window.scrollBy({ top: window.innerHeight * 0.4, behavior: "smooth" })}
+        onClick={scrollToLibrary}
         className="mt-2 inline-flex animate-bounce text-muted-foreground transition-opacity hover:text-foreground"
         style={{ opacity: 1 - scrollProgress }}
         aria-label="Scroll to articles"
