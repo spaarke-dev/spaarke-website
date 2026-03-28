@@ -55,7 +55,7 @@ export default function StickyTagline() {
         top: "var(--header-h, 73px)",
         /* Pull tagline up into hero viewport, but cancel out for elements below */
         marginTop: "-28vh",
-        marginBottom: "28vh",
+        marginBottom: "16vh",
       }}
     >
       <p

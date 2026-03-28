@@ -48,37 +48,41 @@ export function ArticleSidebarNav({
   return (
     <nav
       aria-label="Article series navigation"
-      className="sticky top-24 space-y-1"
+      className="sticky top-24 max-h-[calc(100vh-8rem)] space-y-1 overflow-y-auto"
+      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
-      <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        In This Series
-      </h2>
+      <style>{`.series-nav::-webkit-scrollbar { display: none; }`}</style>
+      <div className="series-nav">
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          In This Series
+        </h2>
 
-      <ul className="space-y-0.5">
-        {sorted.map((post, idx) => {
-          const isCurrent = post.slug === currentSlug;
+        <ul className="space-y-0.5">
+          {sorted.map((post, idx) => {
+            const isCurrent = post.slug === currentSlug;
 
-          return (
-            <li key={post.slug}>
-              {isCurrent ? (
-                <span
-                  className="block border-l-2 border-[#000BFF] py-1.5 pl-3 text-sm font-bold text-foreground dark:border-blue-400"
-                  aria-current="page"
-                >
-                  {idx + 1}. {post.title}
-                </span>
-              ) : (
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="block border-l-2 border-transparent py-1.5 pl-3 text-sm text-muted-foreground transition-colors hover:border-border hover:text-foreground"
-                >
-                  {idx + 1}. {post.title}
-                </Link>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+            return (
+              <li key={post.slug}>
+                {isCurrent ? (
+                  <span
+                    className="block border-l-2 border-[#000BFF] py-1.5 pl-3 text-sm font-bold text-foreground dark:border-blue-400"
+                    aria-current="page"
+                  >
+                    {idx + 1}. {post.title}
+                  </span>
+                ) : (
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="block border-l-2 border-transparent py-1.5 pl-3 text-sm text-muted-foreground transition-colors hover:border-border hover:text-foreground"
+                  >
+                    {idx + 1}. {post.title}
+                  </Link>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </nav>
   );
 }
@@ -106,31 +110,6 @@ export function ArticleSidebarMeta({
       aria-label="Article metadata"
       className="sticky top-24 space-y-6"
     >
-      {/* Related articles */}
-      {relatedPosts.length > 0 && (
-        <section>
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Related Articles
-          </h2>
-          <div className="space-y-2.5">
-            {relatedPosts.map((related) => (
-              <Link
-                key={related.slug}
-                href={`/blog/${related.slug}`}
-                className="block rounded-lg border border-border bg-muted/30 px-3 py-2.5 transition-colors hover:bg-muted/60 dark:bg-muted/10 dark:hover:bg-muted/25"
-              >
-                <p className="text-sm font-medium leading-snug text-foreground">
-                  {related.title}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {formatDate(related.date)}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
       {/* Tags */}
       {tagCategories.length > 0 && (
         <section>
@@ -169,6 +148,31 @@ export function ArticleSidebarMeta({
           Request Early Access
         </Link>
       </section>
+
+      {/* Related articles */}
+      {relatedPosts.length > 0 && (
+        <section>
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Related Articles
+          </h2>
+          <div className="space-y-2.5">
+            {relatedPosts.map((related) => (
+              <Link
+                key={related.slug}
+                href={`/blog/${related.slug}`}
+                className="block rounded-lg border border-border bg-muted/30 px-3 py-2.5 transition-colors hover:bg-muted/60 dark:bg-muted/10 dark:hover:bg-muted/25"
+              >
+                <p className="text-sm font-medium leading-snug text-foreground">
+                  {related.title}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {formatDate(related.date)}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </aside>
   );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Container from "@/components/Container";
-import PostCard from "@/components/PostCard";
-import { getAllPosts } from "@/lib/blog";
+import BlogFilteredList from "@/components/BlogFilteredList";
+import { getAllPosts, getAllTags } from "@/lib/blog";
 
 const siteUrl = process.env.SITE_URL ?? "https://www.spaarke.com";
 
@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 
 export default function BlogIndex() {
   const posts = getAllPosts();
+  const tagsByCategory = getAllTags();
 
   return (
     <section className="py-16 sm:py-20">
@@ -39,11 +40,7 @@ export default function BlogIndex() {
               No posts yet. Check back soon!
             </p>
           ) : (
-            <div className="mt-12 space-y-6">
-              {posts.map((post) => (
-                <PostCard key={post.slug} post={post} />
-              ))}
-            </div>
+            <BlogFilteredList posts={posts} tagsByCategory={tagsByCategory} />
           )}
         </div>
       </Container>

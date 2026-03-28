@@ -25,6 +25,8 @@ export type BlogPost = {
   tags: TagCategories;
   draft: boolean;
   heroImage?: string;
+  /** Display order for homepage cards. Lower numbers appear first. Posts without order sort after ordered posts by date. */
+  order?: number;
   content: string;
 };
 
@@ -125,6 +127,7 @@ function buildMeta(
     tags: normalizeTags(data.tags),
     draft: data.draft === true,
     heroImage: (data.heroImage as string) ?? undefined,
+    order: typeof data.order === "number" ? data.order : undefined,
   };
 }
 
