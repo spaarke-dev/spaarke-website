@@ -75,12 +75,20 @@ export default function HeroSection() {
           className="relative flex items-center justify-center"
           style={{ gap: "8vw", paddingTop: "6vh", height: "68%" }}
         >
-          {/* Left — headline + CTA centered below */}
+          {/* Left — problem statement + headline + CTA */}
           <div className="flex w-[42%] flex-col items-end">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col">
+              <p
+                className="font-semibold leading-[1.15] tracking-tight text-foreground dark:text-white"
+                style={{ fontSize: "clamp(1rem, 2vw, 5rem)" }}
+              >
+                You don&rsquo;t know
+                <br />
+                what you don&rsquo;t know.
+              </p>
               <h1
-                className="font-bold leading-[1.05] tracking-tight text-hero-red dark:text-white"
-                style={{ fontSize: "clamp(2.8rem, 5.8vw, 16rem)" }}
+                className="mt-4 font-bold leading-[1.05] tracking-tight text-foreground dark:text-white/90"
+                style={{ fontSize: "clamp(2rem, 4vw, 10rem)" }}
               >
                 Legal
                 <br />
@@ -90,13 +98,13 @@ export default function HeroSection() {
               </h1>
               <Link
                 href="/contact"
-                className="mt-8 inline-block rounded-md bg-[#000BFF] text-white font-medium transition-colors hover:bg-[#0009DD]"
+                className="mt-6 self-start rounded-md bg-[#000BFF] text-white font-medium transition-colors hover:bg-[#0009DD]"
                 style={{
                   fontSize: "clamp(0.65rem, 0.85vw, 0.95rem)",
                   padding: "clamp(0.3rem, 0.5vw, 0.5rem) clamp(0.75rem, 1.2vw, 1.25rem)",
                 }}
               >
-                Request Early Access
+                Get Access
               </Link>
             </div>
           </div>

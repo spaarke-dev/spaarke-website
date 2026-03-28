@@ -61,11 +61,11 @@ export default function StickyTagline() {
       <p
         className="font-semibold text-foreground/80"
         style={{
-          fontSize: "clamp(2rem, 4vw, 12rem)",
+          fontSize: "clamp(1.5rem, 3vw, 8rem)",
           letterSpacing: "0.04em",
         }}
       >
-        Raise the IQ of Your Legal Work
+        Work Smarter. Operate Leaner. Decide Faster.
       </p>
 
       {/* Scroll arrow — fades out as user scrolls */}

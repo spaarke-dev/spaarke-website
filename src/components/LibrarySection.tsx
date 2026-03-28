@@ -193,11 +193,17 @@ function ArticleCard({
       style={{ aspectRatio: "2/3" }}
     >
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden" style={{ padding: "clamp(0.75rem, 1.2vw, 1.5rem)" }}>
-        <h3 className="shrink-0 text-sm font-semibold leading-snug tracking-tight text-foreground dark:text-white sm:text-base">
+        <h3
+          className="shrink-0 font-semibold leading-snug tracking-tight text-foreground dark:text-white"
+          style={{ fontSize: "clamp(0.8rem, 0.95vw, 1.25rem)" }}
+        >
           {title}
         </h3>
 
-        <p className="mt-1.5 shrink-0 text-[10px] text-muted-foreground/70 dark:text-white/40 sm:text-[11px]">
+        <p
+          className="mt-1.5 shrink-0 text-muted-foreground/70 dark:text-white/40"
+          style={{ fontSize: "clamp(0.55rem, 0.65vw, 0.8rem)" }}
+        >
           {formattedDate} &middot; {author}
         </p>
 
@@ -206,7 +212,8 @@ function ArticleCard({
             {tagsFlat.slice(0, 4).map((tag) => (
               <span
                 key={tag}
-                className="inline-block rounded-full bg-muted/60 px-1.5 py-px text-[9px] font-medium text-muted-foreground dark:bg-white/10 dark:text-white/50 sm:text-[10px]"
+                className="inline-block rounded-full bg-muted/60 py-px font-medium text-muted-foreground dark:bg-white/10 dark:text-white/50"
+                style={{ fontSize: "clamp(0.5rem, 0.6vw, 0.7rem)", padding: "1px clamp(0.3rem, 0.4vw, 0.5rem)" }}
               >
                 {formatTag(tag)}
               </span>
@@ -214,8 +221,10 @@ function ArticleCard({
           </div>
         )}
 
-        <p className="mt-2.5 min-h-0 flex-1 overflow-hidden text-xs leading-relaxed text-muted-foreground dark:text-white/70 sm:text-sm"
+        <p
+          className="mt-2.5 min-h-0 flex-1 overflow-hidden leading-relaxed text-muted-foreground dark:text-white/70"
           style={{
+            fontSize: "clamp(0.65rem, 0.8vw, 1rem)",
             maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
             WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
           }}
@@ -224,7 +233,10 @@ function ArticleCard({
         </p>
 
         <div className="shrink-0 pt-2">
-          <span className="text-[10px] font-medium text-muted-foreground/60 transition-colors group-hover:text-foreground dark:text-white/40 dark:group-hover:text-white/70 sm:text-xs">
+          <span
+            className="font-medium text-muted-foreground/60 transition-colors group-hover:text-foreground dark:text-white/40 dark:group-hover:text-white/70"
+            style={{ fontSize: "clamp(0.55rem, 0.65vw, 0.8rem)" }}
+          >
             Read more &rarr;
           </span>
         </div>
@@ -327,17 +339,13 @@ export default function LibrarySection({ articles, tagsByCategory }: LibrarySect
               className="font-semibold leading-tight"
               style={{ fontSize: "clamp(1.2rem, 2.2vw, 4rem)" }}
             >
-              Work Smarter.
-              <br />
-              Operate Leaner.
-              <br />
-              Decide Faster.
+              Your systems need to uncover what you&rsquo;re missing.
             </h3>
             <p
               className="mt-6 max-w-[30ch] text-white/70"
               style={{ fontSize: "clamp(0.875rem, 1vw, 1.5rem)" }}
             >
-              Legal operations intelligence that transforms how your team
+              Legal Operations Intelligence transforms how your team
               captures data, retains knowledge, and makes decisions.
             </p>
             <div
