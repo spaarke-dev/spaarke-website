@@ -64,22 +64,22 @@ export default function HeroSection() {
   return (
     <>
       {/* Full viewport hero — tagline positioned inside, no bleed possible */}
-      <div className="relative" style={{ height: "calc(100vh - var(--header-h, 73px))" }}>
+      <div className="relative" style={{ height: "calc(80vh - var(--header-h, 73px))" }}>
         {/* Background — hidden per user feedback */}
         {/* <div className="absolute inset-0 overflow-hidden">
           <HeroBackground originX={50} originY={40} />
         </div> */}
 
-        {/* Hero content — vertically centered in top ~70% */}
+        {/* Hero content — vertically centered */}
         <div
-          className="relative flex items-center justify-center"
-          style={{ gap: "8vw", paddingTop: "6vh", height: "68%" }}
+          className="relative flex h-full flex-col items-center justify-center px-6 py-12 md:flex-row md:px-0 md:py-0"
+          style={{ gap: "clamp(2rem, 8vw, 8vw)" }}
         >
           {/* Left — problem statement + headline + CTA */}
-          <div className="flex w-[42%] flex-col items-end">
-            <div className="flex flex-col">
+          <div className="flex w-full flex-col items-center px-6 md:w-[42%] md:items-end md:px-0">
+            <div className="flex flex-col items-center md:items-start">
               <p
-                className="font-semibold leading-[1.15] tracking-tight text-foreground dark:text-white"
+                className="text-center font-semibold leading-[1.15] tracking-tight text-foreground dark:text-white md:text-left"
                 style={{ fontSize: "clamp(1rem, 2vw, 5rem)" }}
               >
                 You don&rsquo;t know
@@ -87,7 +87,7 @@ export default function HeroSection() {
                 what you don&rsquo;t know.
               </p>
               <h1
-                className="mt-4 font-bold leading-[1.05] tracking-tight text-foreground dark:text-white/90"
+                className="mt-4 text-center font-bold leading-[1.05] tracking-tight text-foreground dark:text-white/90 md:text-left"
                 style={{ fontSize: "clamp(2rem, 4vw, 10rem)" }}
               >
                 Legal
@@ -98,7 +98,7 @@ export default function HeroSection() {
               </h1>
               <Link
                 href="/contact"
-                className="mt-6 self-start rounded-md bg-[#000BFF] text-white font-medium transition-colors hover:bg-[#0009DD]"
+                className="mt-6 self-center rounded-md bg-[#000BFF] text-white font-medium transition-colors hover:bg-[#0009DD] md:self-start"
                 style={{
                   fontSize: "clamp(0.65rem, 0.85vw, 0.95rem)",
                   padding: "clamp(0.3rem, 0.5vw, 0.5rem) clamp(0.75rem, 1.2vw, 1.25rem)",
@@ -109,8 +109,8 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Right — screenshot */}
-          <div className="group relative w-[42%]">
+          {/* Right — screenshot (hidden on mobile) */}
+          <div className="group relative hidden w-[42%] md:block">
             <Image
               src={heroImage}
               alt="Spaarke Legal Operations Workspace"

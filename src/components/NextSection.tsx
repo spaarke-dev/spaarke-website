@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function NextSection() {
   return (
     <section className="relative z-10 bg-neutral-100 dark:bg-neutral-900">
-      <div className="mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center">
+      <div className="mx-auto flex max-w-3xl flex-col items-center px-6 pb-20 pt-12 text-center">
         <h2
           className="font-bold tracking-tight text-foreground"
           style={{ fontSize: "clamp(1.5rem, 3vw, 3rem)" }}

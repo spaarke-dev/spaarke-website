@@ -48,14 +48,11 @@ export default function StickyTagline() {
   return (
     <div
       ref={ref}
-      className={`sticky z-40 flex flex-col items-center transition-colors duration-200 ${
+      className={`sticky z-40 flex flex-col items-center px-6 transition-colors duration-200 ${
         isStuck ? "border-b border-border bg-background py-4" : "py-2"
       }`}
       style={{
         top: "var(--header-h, 73px)",
-        /* Pull tagline up into hero viewport, but cancel out for elements below */
-        marginTop: "-28vh",
-        marginBottom: "16vh",
       }}
     >
       <p

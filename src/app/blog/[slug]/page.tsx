@@ -6,6 +6,7 @@ import PostHeader from "@/components/PostHeader";
 import {
   ArticleSidebarNav,
   ArticleSidebarMeta,
+  ArticleCTA,
 } from "@/components/ArticleSidebar";
 import { getAllPosts, getPostBySlug, flattenTags } from "@/lib/blog";
 import { generateBlogPostMetadata, generateBlogJsonLd } from "@/lib/seo";
@@ -86,6 +87,9 @@ export default async function BlogPost({ params }: Props) {
             <div className="prose prose-neutral max-w-none dark:prose-invert">
               {mdxContent}
             </div>
+
+            {/* Mobile CTA — shown below article on small screens */}
+            <ArticleCTA className="mt-10 max-w-md lg:hidden" />
           </article>
 
           {/* Right sidebar — meta, related, CTA */}

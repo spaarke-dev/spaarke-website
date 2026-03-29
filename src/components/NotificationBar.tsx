@@ -24,7 +24,7 @@ export default function NotificationBar() {
 
   return (
     <div className="relative z-10 flex w-full items-center justify-center bg-neutral-200 px-4 text-sm text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"
-      style={{ minHeight: "36px", padding: "6px 1rem" }}
+      style={{ minHeight: "36px", padding: "6px 2.5rem 6px 1rem" }}
     >
       <p className="text-center text-sm leading-snug">
         Now accepting early access partners&nbsp;&mdash;&nbsp;

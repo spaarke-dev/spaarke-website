@@ -88,6 +88,32 @@ export function ArticleSidebarNav({
 }
 
 /* ------------------------------------------------------------------ */
+/*  CTA card — reusable across desktop sidebar and mobile standalone   */
+/* ------------------------------------------------------------------ */
+
+export function ArticleCTA({ className }: { className?: string }) {
+  return (
+    <section
+      className={`rounded-lg border border-border bg-muted/40 px-4 py-5 dark:bg-muted/15 ${className ?? ""}`}
+    >
+      <h2 className="text-sm font-semibold text-foreground">
+        See Spaarke in Action
+      </h2>
+      <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+        Discover how Legal Operations Intelligence transforms how your team
+        works.
+      </p>
+      <Link
+        href="/contact"
+        className="mt-3 inline-block rounded-md bg-[#000BFF] px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
+      >
+        Request Early Access
+      </Link>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Right sidebar — meta, related posts, tags, CTA                     */
 /* ------------------------------------------------------------------ */
 
@@ -133,21 +159,7 @@ export function ArticleSidebarMeta({
       )}
 
       {/* CTA card */}
-      <section className="rounded-lg border border-border bg-muted/40 px-4 py-5 dark:bg-muted/15">
-        <h2 className="text-sm font-semibold text-foreground">
-          See Spaarke in Action
-        </h2>
-        <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
-          Discover how Legal Operations Intelligence transforms how your team
-          works.
-        </p>
-        <Link
-          href="/contact"
-          className="mt-3 inline-block rounded-md bg-[#000BFF] px-4 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
-        >
-          Request Early Access
-        </Link>
-      </section>
+      <ArticleCTA />
 
       {/* Related articles */}
       {relatedPosts.length > 0 && (

@@ -19,7 +19,6 @@ export default function SiteHeader() {
 
   useEffect(() => {
     if (!isHome) {
-      // Non-homepage: always show full logo (no scroll animation)
       setScrollProgress(1);
       return;
     }
@@ -48,7 +47,7 @@ export default function SiteHeader() {
 
   return (
     <header ref={headerRef} className="sticky top-0 z-50 border-b border-border bg-background backdrop-blur-sm">
-      <nav className="mx-auto flex w-[88%] items-center justify-between" style={{ padding: "clamp(0.75rem, 1.2vw, 2.5rem) 0" }}>
+      <nav className="mx-auto flex items-center justify-between px-4 sm:px-6 md:px-[6%]" style={{ paddingTop: "clamp(0.75rem, 1.2vw, 2.5rem)", paddingBottom: "clamp(0.75rem, 1.2vw, 2.5rem)" }}>
         {/* Logo — crossfade from wordmark-only to full logo on scroll */}
         <Link href="/" className="relative flex-shrink-0">
           {/* Wordmark only — visible at top, fades out on scroll */}
@@ -59,7 +58,7 @@ export default function SiteHeader() {
             height={36}
             priority
             className="w-auto dark:hidden"
-            style={{ height: "clamp(2rem, 2.5vw, 5rem)", opacity: 1 - scrollProgress }}
+            style={{ height: "clamp(1.5rem, 2.5vw, 5rem)", opacity: 1 - scrollProgress, marginLeft: "calc(clamp(1.5rem, 2.5vw, 5rem) * 1.376)" }}
           />
           <Image
             src="/images/logo-wordmark-white.svg"
@@ -68,9 +67,9 @@ export default function SiteHeader() {
             height={36}
             priority
             className="hidden w-auto dark:block"
-            style={{ height: "clamp(2rem, 2.5vw, 5rem)", opacity: 1 - scrollProgress }}
+            style={{ height: "clamp(1.5rem, 2.5vw, 5rem)", opacity: 1 - scrollProgress, marginLeft: "calc(clamp(1.5rem, 2.5vw, 5rem) * 1.376)" }}
           />
-          {/* Full logo (icon + wordmark) — same height = same text size */}
+          {/* Full logo (icon + wordmark) — positioned so icon sits to the left of wordmark */}
           <Image
             src="/images/logo-color.svg"
             alt="Spaarke"
@@ -78,7 +77,7 @@ export default function SiteHeader() {
             height={42}
             priority
             className="absolute left-0 top-1/2 w-auto max-w-none dark:hidden"
-            style={{ opacity: scrollProgress, height: "clamp(2rem, 2.5vw, 5rem)", transform: "translateY(-50%) translateX(-41.75%)" }}
+            style={{ opacity: scrollProgress, height: "clamp(1.5rem, 2.5vw, 5rem)", transform: "translateY(-50%)" }}
           />
           <Image
             src="/images/logo-white.svg"
@@ -87,7 +86,7 @@ export default function SiteHeader() {
             height={42}
             priority
             className="absolute left-0 top-1/2 hidden w-auto max-w-none dark:block"
-            style={{ opacity: scrollProgress, height: "clamp(2rem, 2.5vw, 5rem)", transform: "translateY(-50%) translateX(-41.75%)" }}
+            style={{ opacity: scrollProgress, height: "clamp(1.5rem, 2.5vw, 5rem)", transform: "translateY(-50%)" }}
           />
         </Link>
 

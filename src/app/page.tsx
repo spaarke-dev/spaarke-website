@@ -46,6 +46,8 @@ export default function Home() {
         <StickyTagline />
         <LibrarySection articles={articles} tagsByCategory={tagsByCategory} />
       </div>
+      {/* Bottom spacer after article section */}
+      <div className="h-12 bg-background" />
       <NextSection />
     </div>
   );

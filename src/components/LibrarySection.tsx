@@ -179,7 +179,8 @@ function ArticleCard({
   date,
   author,
   tagsFlat,
-}: Article) {
+  isMobile,
+}: Article & { isMobile?: boolean }) {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -190,30 +191,30 @@ function ArticleCard({
     <Link
       href={`/blog/${slug}`}
       className="group flex flex-col overflow-hidden rounded-lg border border-border bg-background transition-shadow hover:shadow-lg"
-      style={{ aspectRatio: "2/3" }}
+      style={{ aspectRatio: isMobile ? "auto" : "2/3" }}
     >
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden" style={{ padding: "clamp(0.75rem, 1.2vw, 1.5rem)" }}>
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden" style={{ padding: "clamp(0.85rem, 1.4vw, 1.75rem)" }}>
         <h3
           className="shrink-0 font-semibold leading-snug tracking-tight text-foreground dark:text-white"
-          style={{ fontSize: "clamp(0.8rem, 0.95vw, 1.25rem)" }}
+          style={{ fontSize: isMobile ? "0.95rem" : "clamp(0.875rem, 1.1vw, 1.5rem)" }}
         >
           {title}
         </h3>
 
         <p
           className="mt-1.5 shrink-0 text-muted-foreground/70 dark:text-white/40"
-          style={{ fontSize: "clamp(0.55rem, 0.65vw, 0.8rem)" }}
+          style={{ fontSize: isMobile ? "0.7rem" : "clamp(0.6rem, 0.75vw, 0.95rem)" }}
         >
           {formattedDate} &middot; {author}
         </p>
 
         {tagsFlat.length > 0 && (
           <div className="mt-2 flex shrink-0 flex-wrap gap-1">
-            {tagsFlat.slice(0, 4).map((tag) => (
+            {tagsFlat.slice(0, isMobile ? 3 : 4).map((tag) => (
               <span
                 key={tag}
                 className="inline-block rounded-full bg-muted/60 py-px font-medium text-muted-foreground dark:bg-white/10 dark:text-white/50"
-                style={{ fontSize: "clamp(0.5rem, 0.6vw, 0.7rem)", padding: "1px clamp(0.3rem, 0.4vw, 0.5rem)" }}
+                style={{ fontSize: "clamp(0.55rem, 0.7vw, 0.85rem)", padding: "1px clamp(0.35rem, 0.45vw, 0.55rem)" }}
               >
                 {formatTag(tag)}
               </span>
@@ -224,9 +225,17 @@ function ArticleCard({
         <p
           className="mt-2.5 min-h-0 flex-1 overflow-hidden leading-relaxed text-muted-foreground dark:text-white/70"
           style={{
-            fontSize: "clamp(0.65rem, 0.8vw, 1rem)",
-            maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+            fontSize: isMobile ? "0.8rem" : "clamp(0.7rem, 0.9vw, 1.15rem)",
+            ...(isMobile
+              ? {
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical" as const,
+                }
+              : {
+                  maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+                }),
           }}
         >
           {excerpt}
@@ -235,7 +244,7 @@ function ArticleCard({
         <div className="shrink-0 pt-2">
           <span
             className="font-medium text-muted-foreground/60 transition-colors group-hover:text-foreground dark:text-white/40 dark:group-hover:text-white/70"
-            style={{ fontSize: "clamp(0.55rem, 0.65vw, 0.8rem)" }}
+            style={{ fontSize: isMobile ? "0.7rem" : "clamp(0.6rem, 0.75vw, 0.95rem)" }}
           >
             Read more &rarr;
           </span>
@@ -256,6 +265,17 @@ export default function LibrarySection({ articles, tagsByCategory }: LibrarySect
   const [scrollOffset, setScrollOffset] = useState(0);
   const [cardOverflow, setCardOverflow] = useState(0);
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>({});
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile (below lg breakpoint) with resize listener
+  useEffect(() => {
+    function checkMobile() {
+      setIsMobile(window.innerWidth < 1024);
+    }
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const filteredArticles = articles.filter((a) => {
     for (const [cat, tag] of Object.entries(activeFilters)) {
@@ -282,8 +302,12 @@ export default function LibrarySection({ articles, tagsByCategory }: LibrarySect
     setScrollOffset(0);
   }, []);
 
-  // Measure how much the card grid overflows the visible area
+  // Measure how much the card grid overflows the visible area (desktop only)
   useEffect(() => {
+    if (isMobile) {
+      setCardOverflow(0);
+      return;
+    }
     function measure() {
       const container = cardContainerRef.current;
       if (!container) return;
@@ -294,10 +318,14 @@ export default function LibrarySection({ articles, tagsByCategory }: LibrarySect
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [filteredArticles]);
+  }, [filteredArticles, isMobile]);
 
-  // Track scroll position to translate the card grid
+  // Track scroll position to translate the card grid (desktop only)
   useEffect(() => {
+    if (isMobile) {
+      setScrollOffset(0);
+      return;
+    }
     function onScroll() {
       const section = sectionRef.current;
       if (!section) return;
@@ -314,9 +342,9 @@ export default function LibrarySection({ articles, tagsByCategory }: LibrarySect
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, [cardOverflow]);
+  }, [cardOverflow, isMobile]);
 
-  const sectionHeight = `calc(100vh + ${cardOverflow}px)`;
+  const sectionHeight = isMobile ? "auto" : `calc(100vh + ${cardOverflow}px)`;
 
   return (
     <section
@@ -325,14 +353,17 @@ export default function LibrarySection({ articles, tagsByCategory }: LibrarySect
       className="relative bg-background"
       style={{ height: sectionHeight }}
     >
-      {/* Sticky container */}
-      <div className="sticky flex flex-col overflow-hidden" style={{ top: "calc(var(--header-h, 73px) + var(--tagline-h, 80px))", height: "calc(100vh - var(--header-h, 73px) - var(--tagline-h, 80px))" }}>
+      {/* Sticky container (not sticky on mobile) */}
+      <div
+        className={`flex flex-col ${isMobile ? "" : "sticky overflow-hidden"}`}
+        style={isMobile ? {} : { top: "calc(var(--header-h, 73px) + var(--tagline-h, 80px))", height: "calc(100vh - var(--header-h, 73px) - var(--tagline-h, 80px))" }}
+      >
         <div className="h-10 shrink-0 bg-background" />
-        <div className="flex flex-1 overflow-hidden">
-          {/* Left sidebar — scrollable, hidden scrollbar */}
+        <div className="flex flex-1 flex-col lg:flex-row lg:overflow-hidden">
+          {/* Left sidebar — scrollable, hidden on mobile */}
           <div
             ref={leftSidebarRef}
-            className="w-[30%] overflow-y-auto rounded-tr-2xl bg-neutral-800 px-[3%] pt-8 text-white dark:bg-neutral-900"
+            className="hidden w-[30%] overflow-y-auto rounded-tr-2xl bg-neutral-800 px-[3%] pt-8 text-white dark:bg-neutral-900 lg:flex lg:flex-col"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             <h3
@@ -356,7 +387,7 @@ export default function LibrarySection({ articles, tagsByCategory }: LibrarySect
           </div>
 
           {/* Right — filter + cards */}
-          <div className="relative flex flex-1 flex-col overflow-hidden px-[2%]">
+          <div className="relative flex flex-1 flex-col px-[4%] lg:overflow-hidden lg:px-[2%]">
             {/* Category filter dropdowns */}
             <FilterBar
               tagsByCategory={tagsByCategory}
@@ -368,24 +399,29 @@ export default function LibrarySection({ articles, tagsByCategory }: LibrarySect
             />
 
             {/* Cards grid */}
-            <div className="relative min-h-0 flex-1 overflow-hidden">
+            <div className={`relative min-h-0 flex-1 ${isMobile ? "" : "overflow-hidden"}`}>
               <div
                 ref={cardContainerRef}
-                className="grid grid-cols-3"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
                 style={{
                   gap: "clamp(0.5rem, 1vw, 1.5rem)",
-                  transform: `translateY(-${scrollOffset}px)`,
-                  willChange: "transform",
+                  ...(isMobile
+                    ? {}
+                    : {
+                        transform: `translateY(-${scrollOffset}px)`,
+                        willChange: "transform",
+                      }),
                 }}
               >
                 {filteredArticles.length === 0 ? (
-                  <div className="col-span-3 flex items-center justify-center py-20">
+                  <div className="col-span-1 flex items-center justify-center py-20 sm:col-span-2 lg:col-span-3">
                     <p className="text-sm text-muted-foreground">No articles match the selected filters.</p>
                   </div>
                 ) : (
                   filteredArticles.map((article) => (
                     <ArticleCard
                       key={article.slug}
+                      isMobile={isMobile}
                       {...article}
                     />
                   ))
