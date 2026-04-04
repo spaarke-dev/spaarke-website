@@ -6,8 +6,9 @@ import Link from "next/link";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
 
-const navLinks = [
+const navLinks: { href: string; label: string; cta?: boolean }[] = [
   { href: "/contact", label: "Contact" },
+  { href: "/access-request", label: "Request Access", cta: true },
 ];
 
 export default function SiteHeader() {
@@ -96,7 +97,12 @@ export default function SiteHeader() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-medium text-foreground/80 transition-colors hover:text-foreground" style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
+              className={
+                link.cta
+                  ? "rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                  : "font-medium text-foreground/80 transition-colors hover:text-foreground"
+              }
+              style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
             >
               {link.label}
             </Link>
@@ -141,7 +147,11 @@ export default function SiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="block rounded-md px-3 py-2 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                className={
+                  link.cta
+                    ? "block rounded-lg bg-primary px-3 py-2 text-center text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                    : "block rounded-md px-3 py-2 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                }
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}

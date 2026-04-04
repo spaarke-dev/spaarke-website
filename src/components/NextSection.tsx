@@ -24,7 +24,7 @@ export default function NextSection() {
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="/contact"
+            href="/access-request"
             className="rounded-lg bg-[#000BFF] font-semibold text-white transition-colors hover:bg-[#0009DD]"
             style={{
               fontSize: "clamp(0.875rem, 1.1vw, 1.25rem)",
