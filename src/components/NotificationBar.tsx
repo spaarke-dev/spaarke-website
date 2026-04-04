@@ -29,7 +29,7 @@ export default function NotificationBar() {
       <p className="text-center text-sm leading-snug">
         Now accepting early access partners&nbsp;&mdash;&nbsp;
         <Link
-          href="/contact"
+          href="/access-request"
           className="font-medium underline underline-offset-2 transition-opacity hover:opacity-80"
         >
           request access today

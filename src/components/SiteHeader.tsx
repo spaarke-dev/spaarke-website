@@ -8,7 +8,6 @@ import ThemeToggle from "./ThemeToggle";
 
 const navLinks: { href: string; label: string; cta?: boolean }[] = [
   { href: "/contact", label: "Contact" },
-  { href: "/access-request", label: "Request Access", cta: true },
 ];
 
 export default function SiteHeader() {
