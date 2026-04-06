@@ -19,9 +19,10 @@ export default function AccessRequest() {
             Request Demo Access
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Interested in seeing Spaarke in action? Fill out the form below and
-            our team will reach out within 1-2 business days to schedule your
-            personalized demo.
+            Interested in seeing Spaarke in action? Please fill out the form
+            below including a work email (please note that for security reasons
+            a work email is required). Thank you and we look forward to
+            introducing you to Legal Operations Intelligence!
           </p>
 
           <div className="mt-10">

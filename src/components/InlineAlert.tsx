@@ -6,9 +6,10 @@ import {
 interface InlineAlertProps {
   variant: "success" | "error";
   message: string;
+  messageClassName?: string;
 }
 
-export default function InlineAlert({ variant, message }: InlineAlertProps) {
+export default function InlineAlert({ variant, message, messageClassName }: InlineAlertProps) {
   const isSuccess = variant === "success";
 
   return (
@@ -27,7 +28,7 @@ export default function InlineAlert({ variant, message }: InlineAlertProps) {
           <ErrorCircle24Regular aria-hidden="true" />
         )}
       </span>
-      <p className="text-sm font-medium">{message}</p>
+      <p className={`text-sm font-medium ${messageClassName ?? ""}`}>{message}</p>
     </div>
   );
 }

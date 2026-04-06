@@ -194,7 +194,8 @@ export default function DemoRequestForm({
       <div className="space-y-4">
         <InlineAlert
           variant="success"
-          message="Thank you for your interest! Our team will reach out within 1-2 business days to schedule your demo."
+          message="Thank you for your interest in Spaarke. Your request has been submitted. Please look for our follow-up email with additional details shortly."
+          messageClassName="text-black"
         />
         {trackingId && (
           <p className="text-sm text-muted-foreground">
