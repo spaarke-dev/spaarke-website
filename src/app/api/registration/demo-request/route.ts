@@ -157,18 +157,19 @@ export async function POST(request: NextRequest) {
         ? referralSource
         : undefined;
 
-    // Build payload for BFF API
+    // Build payload for BFF API (map website field names to BFF DTO names)
     const payload = {
       firstName: (body.firstName ?? "").trim(),
       lastName: (body.lastName ?? "").trim(),
-      workEmail: (body.workEmail ?? "").trim(),
+      email: (body.workEmail ?? "").trim(),
       organization: (body.organization ?? "").trim(),
       jobTitle: (body.jobTitle ?? "").trim() || undefined,
       phone: (body.phone ?? "").trim() || undefined,
       useCase: (body.useCase ?? "").trim(),
       referralSource: sanitizedReferral,
       notes: (body.notes ?? "").trim() || undefined,
-      consent: body.consent,
+      consentAccepted: body.consent,
+      recaptchaToken: captchaToken,
     };
 
     // Proxy to BFF API
