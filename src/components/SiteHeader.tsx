@@ -6,8 +6,10 @@ import Link from "next/link";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
 
-const navLinks: { href: string; label: string; cta?: boolean }[] = [
-  { href: "/contact", label: "Contact" },
+const navLinks: { href: string; label: string }[] = [
+  { href: "/platform", label: "Platform" },
+  { href: "/why-spaarke", label: "Why Spaarke" },
+  { href: "/blog", label: "Insights" },
 ];
 
 export default function SiteHeader() {
@@ -90,29 +92,37 @@ export default function SiteHeader() {
           />
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden items-center gap-6 md:flex">
-          {navLinks.map((link) => (
+        {/* Desktop nav — left-aligned page links, right-aligned auth/CTA */}
+        <div className="hidden flex-1 items-center justify-between md:flex">
+          <div className="flex items-center gap-6 pl-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="font-medium text-foreground/80 transition-colors hover:text-foreground"
+                style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className="flex items-center gap-6">
             <Link
-              key={link.href}
-              href={link.href}
-              className={
-                link.cta
-                  ? "rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-                  : "font-medium text-foreground/80 transition-colors hover:text-foreground"
-              }
+              href="/signin"
+              className="font-medium text-foreground/80 transition-colors hover:text-foreground"
               style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
             >
-              {link.label}
+              Sign in
             </Link>
-          ))}
-          <Link
-            href="/signin"
-            className="font-medium text-foreground/80 transition-colors hover:text-foreground" style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
-          >
-            Sign In
-          </Link>
-          <ThemeToggle />
+            <Link
+              href="/access-request"
+              className="rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+              style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
+            >
+              Get access
+            </Link>
+            <ThemeToggle />
+          </div>
         </div>
 
         {/* Mobile menu button */}
@@ -146,11 +156,7 @@ export default function SiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={
-                  link.cta
-                    ? "block rounded-lg bg-primary px-3 py-2 text-center text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-                    : "block rounded-md px-3 py-2 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                }
+                className="block rounded-md px-3 py-2 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
@@ -161,7 +167,14 @@ export default function SiteHeader() {
               className="block rounded-md px-3 py-2 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Sign In
+              Sign in
+            </Link>
+            <Link
+              href="/access-request"
+              className="block rounded-lg bg-primary px-3 py-2 text-center text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Get access
             </Link>
           </div>
         </div>
