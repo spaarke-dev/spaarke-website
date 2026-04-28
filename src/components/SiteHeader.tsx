@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
@@ -14,23 +13,7 @@ const navLinks: { href: string; label: string }[] = [
 
 export default function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const headerRef = useRef<HTMLElement>(null);
-  const pathname = usePathname();
-  const isHome = pathname === "/";
-
-  useEffect(() => {
-    if (!isHome) {
-      setScrollProgress(1);
-      return;
-    }
-    function onScroll() {
-      setScrollProgress(Math.min(1, window.scrollY / 350));
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isHome]);
 
   // Set CSS variable for header height so other components can reference it
   useEffect(() => {
@@ -50,36 +33,16 @@ export default function SiteHeader() {
   return (
     <header ref={headerRef} className="sticky top-0 z-50 border-b border-border bg-background backdrop-blur-sm">
       <nav className="mx-auto flex items-center justify-between px-4 sm:px-6 md:px-[6%]" style={{ paddingTop: "clamp(0.75rem, 1.2vw, 2.5rem)", paddingBottom: "clamp(0.75rem, 1.2vw, 2.5rem)" }}>
-        {/* Logo — crossfade from wordmark-only to full logo on scroll */}
-        <Link href="/" className="relative flex-shrink-0">
-          {/* Wordmark only — visible at top, fades out on scroll */}
+        {/* Logo — full logo, black in light mode / white in dark mode */}
+        <Link href="/" className="flex-shrink-0">
           <Image
-            src="/images/logo-wordmark-color.svg"
-            alt="Spaarke"
-            width={120}
-            height={36}
-            priority
-            className="w-auto dark:hidden"
-            style={{ height: "clamp(1.5rem, 2.5vw, 5rem)", opacity: 1 - scrollProgress, marginLeft: "calc(clamp(1.5rem, 2.5vw, 5rem) * 1.376)" }}
-          />
-          <Image
-            src="/images/logo-wordmark-white.svg"
-            alt="Spaarke"
-            width={120}
-            height={36}
-            priority
-            className="hidden w-auto dark:block"
-            style={{ height: "clamp(1.5rem, 2.5vw, 5rem)", opacity: 1 - scrollProgress, marginLeft: "calc(clamp(1.5rem, 2.5vw, 5rem) * 1.376)" }}
-          />
-          {/* Full logo (icon + wordmark) — positioned so icon sits to the left of wordmark */}
-          <Image
-            src="/images/logo-color.svg"
+            src="/images/logo-black.svg"
             alt="Spaarke"
             width={160}
             height={42}
             priority
-            className="absolute left-0 top-1/2 w-auto max-w-none dark:hidden"
-            style={{ opacity: scrollProgress, height: "clamp(1.5rem, 2.5vw, 5rem)", transform: "translateY(-50%)" }}
+            className="w-auto dark:hidden"
+            style={{ height: "clamp(1.5rem, 2.5vw, 5rem)" }}
           />
           <Image
             src="/images/logo-white.svg"
@@ -87,8 +50,8 @@ export default function SiteHeader() {
             width={160}
             height={42}
             priority
-            className="absolute left-0 top-1/2 hidden w-auto max-w-none dark:block"
-            style={{ opacity: scrollProgress, height: "clamp(1.5rem, 2.5vw, 5rem)", transform: "translateY(-50%)" }}
+            className="hidden w-auto dark:block"
+            style={{ height: "clamp(1.5rem, 2.5vw, 5rem)" }}
           />
         </Link>
 
