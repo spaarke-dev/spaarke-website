@@ -3,13 +3,13 @@
 ## Quick Recovery
 | Field | Value |
 |-------|-------|
-| **Task** | 005 |
+| **Task** | 006 |
 | **Step** | 0 (not started) |
 | **Status** | Ready to start |
-| **Next Action** | Build component primitives at `src/components/primitives/` |
+| **Next Action** | Extract content to typed modules at `src/content/` |
 
 ## Details
-- **Task File:** tasks/005-build-shared-primitives.md
+- **Task File:** tasks/006-extract-content-modules.md
 - **Phase:** 0 — Foundations
 - **Started:** —
 
@@ -19,6 +19,7 @@
 - **002 Add semantic design tokens** (2026-04-30) — v2 tokens in `@theme inline`; light slab via `[data-tone="light"]`; sanity page at `/v2-tokens-check` ✓
 - **003 Load fonts** (2026-04-30) — Inter Tight + Inter + JetBrains Mono via `next/font/google`; CSS variables wired ✓
 - **004 Migrate brand assets** (2026-04-30) — `public/brand/` populated with Microsoft logos, Spaarke wordmarks, capability icons, hero screenshot ✓
+- **005 Build component primitives** (2026-04-30) — `Heading`, `Lede`, `Eyebrow`, `Shell`, `Slab`, `Button` at `src/components/primitives/`; Server Components, focus-visible, motion-safe ✓
 
 ## Decisions Made
 

@@ -1,0 +1,17 @@
+import type { ReactNode } from "react";
+
+type EyebrowProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+export function Eyebrow({ children, className }: EyebrowProps) {
+  const merged = [
+    "font-mono-display text-fg-low text-[11px] uppercase tracking-[0.16em]",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return <span className={merged}>{children}</span>;
+}

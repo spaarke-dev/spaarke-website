@@ -1,7 +1,7 @@
 # Task Index — Spaarke Marketing Website (v2)
 
 > **Total Tasks**: 35
-> **Completed**: 4 / 35
+> **Completed**: 5 / 35
 > **Current Phase**: 0 — Foundations
 
 ## All Tasks
@@ -12,7 +12,7 @@
 | 002 | Add semantic design tokens (`@theme inline`) | 0 | **done** | 001 |
 | 003 | Load Inter Tight + Inter + JetBrains Mono via `next/font/google` | 0 | **done** | 001 |
 | 004 | Migrate brand assets to `public/brand/` | 0 | **done** | 001 |
-| 005 | Build component primitives (Heading, Lede, Eyebrow, Shell, Slab, Button) | 0 | not-started | 002, 003 |
+| 005 | Build component primitives (Heading, Lede, Eyebrow, Shell, Slab, Button) | 0 | **done** | 002, 003 |
 | 006 | Extract content to typed modules in `src/content/` | 0 | not-started | 005 |
 | 010 | NotificationBar (dismissible, localStorage) | 1 | not-started | 005 |
 | 011 | SiteHeader (left: nav; right: Contact us + Sign in) | 1 | not-started | 005 |
