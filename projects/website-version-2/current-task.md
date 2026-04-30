@@ -3,23 +3,25 @@
 ## Quick Recovery
 | Field | Value |
 |-------|-------|
-| **Task** | 006 |
+| **Task** | 010 |
 | **Step** | 0 (not started) |
-| **Status** | Ready to start |
-| **Next Action** | Extract content to typed modules at `src/content/` |
+| **Status** | Ready to start (Phase 0 complete) |
+| **Next Action** | Build NotificationBar (or run 010/011/012 in parallel) |
 
 ## Details
-- **Task File:** tasks/006-extract-content-modules.md
-- **Phase:** 0 — Foundations
+- **Task File:** tasks/010-notification-bar.md
+- **Phase:** 1 — Global Components
 - **Started:** —
 
 ## Completed Tasks
 
+**Phase 0 — Foundations (complete)**
 - **001 Create `v2` feature branch** (2026-04-30) — branch + draft PR + SWA preview build verified ✓
 - **002 Add semantic design tokens** (2026-04-30) — v2 tokens in `@theme inline`; light slab via `[data-tone="light"]`; sanity page at `/v2-tokens-check` ✓
 - **003 Load fonts** (2026-04-30) — Inter Tight + Inter + JetBrains Mono via `next/font/google`; CSS variables wired ✓
 - **004 Migrate brand assets** (2026-04-30) — `public/brand/` populated with Microsoft logos, Spaarke wordmarks, capability icons, hero screenshot ✓
 - **005 Build component primitives** (2026-04-30) — `Heading`, `Lede`, `Eyebrow`, `Shell`, `Slab`, `Button` at `src/components/primitives/`; Server Components, focus-visible, motion-safe ✓
+- **006 Extract content to typed modules** (2026-04-30) — `src/content/` with nav, notification-bar, hero, gap, pillars, capabilities, loi-diagram, closing, footer; tuple types enforce structure ✓
 
 ## Decisions Made
 
