@@ -3,13 +3,13 @@
 ## Quick Recovery
 | Field | Value |
 |-------|-------|
-| **Task** | 020 |
-| **Step** | 0 (not started) |
-| **Status** | Ready to start (Phases 0 + 1 complete) |
-| **Next Action** | Build Hero (or run home section tasks in parallel) |
+| **Task** | 022 + 023 (both in-progress, placeholder) |
+| **Step** | Replace placeholders with full implementations |
+| **Status** | Phase 2 substantially complete; finish 022/023 next |
+| **Next Action** | Build Capabilities (5 zigzag rows + Microsoft foundation card) and LOI Diagram (Spaarke ↔ Copilot visual) |
 
 ## Details
-- **Task File:** tasks/020-hero.md
+- **Task Files:** tasks/022-module-grid.md, tasks/023-platform-diagram.md
 - **Phase:** 2 — Home Sections
 - **Started:** —
 
@@ -28,6 +28,18 @@
 - **011 SiteHeader** (2026-04-30) — sticky dark header, left: spaarke logo + Platform/Why Spaarke/Insights; right: Contact us + Sign in; mobile hamburger; replaces v1 SiteHeader in place ✓
 - **012 SiteFooter** (2026-04-30) — dark footer with 3 columns + Get access CTA panel + bottom strip with LinkedIn ✓
 - **013 Wire into root layout** (2026-04-30) — NotificationBar + SiteHeader (replaced v1) + main + SiteFooter (replaced v1) ✓
+
+**Phase 2 — Home Sections (8 of 10 done)**
+- **020 Hero** (2026-04-30) — centered "See all sides of every matter." H1, subhead, CTAs (Watch demo opens modal, Get access → /access-request), full-width screenshot, trust strip ✓
+- **021 GapStats** (2026-04-30) — top hairline, two-column heading+intro / 2×2 stat grid, mockup-version stats with mono italic source attributions ✓
+- **022 Capabilities** — placeholder rendered; full implementation pending
+- **023 LOI Diagram** — placeholder with heading+intro rendered; full diagram pending
+- **024 Closing** (2026-04-30) — dark slab with subtle radial vignette, single-line headline, "Why Spaarke →" text CTA ✓
+- **025 Compose home** (2026-04-30) — `src/app/page.tsx` renders Hero → Gap → Pillars → Capabilities → LOI → Closing in order ✓
+- **026 Hero screenshot prep** (2026-04-30) — asset already at `public/brand/hero/hero-workspace-dark.png` ✓
+- **027 Pillars** (2026-04-30) — light slab with umbrella heading + 3 rounded cards with thin dividers between operational claim and callback ✓
+- **028 Capability screenshots prep** (2026-04-30) — 5 PNGs copied to `public/brand/capabilities/` ✓
+- **029 Watch demo modal** (2026-04-30) — backdrop click + Escape close, body scroll lock, focus restoration, placeholder "Demo coming soon" content ✓
 
 ## Decisions Made
 

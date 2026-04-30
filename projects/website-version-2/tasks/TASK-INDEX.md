@@ -1,7 +1,8 @@
 # Task Index — Spaarke Marketing Website (v2)
 
 > **Total Tasks**: 35
-> **Completed**: 10 / 35
+> **Completed**: 18 / 35
+> **In Progress**: 022 (Capabilities — placeholder), 023 (LOI Diagram — placeholder)
 > **Current Phase**: 2 — Home Sections
 
 ## All Tasks
@@ -18,16 +19,16 @@
 | 011 | SiteHeader (left: nav; right: Contact us + Sign in) | 1 | **done** | 005 |
 | 012 | Footer (dark, columns + Get access CTA panel) | 1 | **done** | 005 |
 | 013 | Wire global components into root layout | 1 | **done** | 010, 011, 012 |
-| 020 | Section 1 — Hero | 2 | not-started | 013, 027 |
-| 021 | Section 2 — Gap stats (mockup version) | 2 | not-started | 013 |
-| 022 | Section 4 — Capabilities + Microsoft foundation | 2 | not-started | 013, 028 |
-| 023 | Section 5 — Legal Operations Intelligence diagram | 2 | not-started | 013, 004 |
-| 024 | Section 6 — Closing CTA | 2 | not-started | 013 |
-| 025 | Compose home page at `/` | 2 | not-started | 020-024, 027, 029 |
-| 026 | Hero screenshot prep | 2 | not-started | 004 |
-| 027 | Section 3 — Pillars (light slab) | 2 | not-started | 005, 006 |
-| 028 | Capability screenshots prep | 2 | not-started | 004 |
-| 029 | Watch demo modal | 2 | not-started | 005 |
+| 020 | Section 1 — Hero | 2 | **done** | 013, 027 |
+| 021 | Section 2 — Gap stats (mockup version) | 2 | **done** | 013 |
+| 022 | Section 4 — Capabilities + Microsoft foundation | 2 | in-progress (placeholder) | 013, 028 |
+| 023 | Section 5 — Legal Operations Intelligence diagram | 2 | in-progress (placeholder) | 013, 004 |
+| 024 | Section 6 — Closing CTA | 2 | **done** | 013 |
+| 025 | Compose home page at `/` | 2 | **done** | 020-024, 027, 029 |
+| 026 | Hero screenshot prep | 2 | **done** | 004 |
+| 027 | Section 3 — Pillars (light slab) | 2 | **done** | 005, 006 |
+| 028 | Capability screenshots prep | 2 | **done** | 004 |
+| 029 | Watch demo modal | 2 | **done** | 005 |
 | 030 | Page template pattern for content pages | 3 | not-started | 013 |
 | 031 | Rename `/blog` → `/insights` + redirect; reskin index | 3 | not-started | 030 |
 | 032 | Reskin Insights post page | 3 | not-started | 031 |
