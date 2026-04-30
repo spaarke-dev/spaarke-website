@@ -8,50 +8,81 @@
 
 ## Goal
 
-Copy the v2 design handoff brand assets into the Next.js public folder under a clean, versioned path so components can reference them with stable URLs.
+Place all v2 brand assets under `public/brand/` with a clean, versioned folder structure so components reference them with stable URLs. Existing `public/images/` (v1 assets) is left untouched.
 
 ## Context
 
-The handoff has logos, hero glow, module screenshots, and substrate logos under [design_handoff_spaarke_website_v2/brand/assets/](../design_handoff_spaarke_website_v2/brand/assets/). These need to land in `public/brand/` so they ship with the site. The existing `public/images/` stays untouched — it holds v1 assets that may still be referenced.
+Assets land in five subfolders under `public/brand/`:
+- `logos/` — Microsoft product logos for Section 4 foundation card and Section 5 diagram
+- `icons/` — Capability icons for the Section 5 LOI diagram
+- `hero/` — Hero workspace screenshot + (optional) hero glow background
+- `capabilities/` — Section 4 per-capability screenshots (placed in Task 028, folder created here)
+- `(spaarke logos)` — Spaarke wordmark/icon SVGs (from the design handoff)
 
-The hero workspace screenshot in the handoff (`hero-workspace-dark-v2.png`) is **superseded** by the cleaner export at [resources/screenshots/spaarke-screenshot-darkmode.png](../../../resources/screenshots/spaarke-screenshot-darkmode.png). Use that one for the hero in Task 020.
+Source assets currently live at:
+- User-provided: `resources/logos/`, `resources/icons/`, `resources/screenshots/`
+- Handoff: `projects/website-version-2/design_handoff_spaarke_website_v2/brand/assets/`
 
 ## Steps
 
-1. Create the destination folders under `public/brand/`:
+1. Create destination folders under `public/brand/`:
    - `public/brand/logos/`
+   - `public/brand/icons/`
    - `public/brand/hero/`
-   - `public/brand/modules/`
-   - `public/brand/substrate/`
-2. Copy contents from the handoff:
-   - `design_handoff_spaarke_website_v2/brand/assets/logos/*` → `public/brand/logos/`
-   - `design_handoff_spaarke_website_v2/brand/assets/hero/hero-glow-bg.png` → `public/brand/hero/hero-glow-bg.png` *(skip the v2 workspace screenshot — see step 3)*
-   - `design_handoff_spaarke_website_v2/brand/assets/modules/*` → `public/brand/modules/`
-   - `design_handoff_spaarke_website_v2/brand/assets/substrate/*` → `public/brand/substrate/`
-3. Copy the hero screenshot from the user's resources folder:
+   - `public/brand/capabilities/` (empty — Task 028 populates)
+
+2. **Microsoft logos** — copy from `resources/logos/` to `public/brand/logos/`:
+   - `Microsoft_Office_Teams.svg`
+   - `azure-256x256-padded.png`
+   - `microsoft-365-apps-logo.png`
+   - `microsoft-365-copilot-badge.svg`
+   - `outlook-512.png`
+   - `powerplatform-scalable.svg`
+   - `sharepoint-512.png`
+
+3. **Section 5 icons** — copy all 17 SVGs from `resources/icons/` to `public/brand/icons/`:
+   `analysis.svg`, `assign.svg`, `charttype.svg`, `client.svg`, `contact.svg`, `document.svg`, `email.svg`, `event.svg`, `invoices.svg`, `kpiassessment.svg`, `matter.svg`, `playbook.svg`, `project.svg`, `task.svg`, `teams.svg`, `timekeeper.svg`, `workassignment.svg`
+   (Task 023 picks the 8 used in the diagram; rest available for Platform page or future use.)
+
+4. **Hero screenshot** — copy from user resources:
    - `resources/screenshots/spaarke-screenshot-darkmode.png` → `public/brand/hero/hero-workspace-dark.png`
-   - Defer optimization (WebP/AVIF, sizing) to Task 042; for now ship the PNG as-is.
-4. Spot-check each folder has the expected files (compare against handoff README §"Inventory").
-5. Do not modify `public/images/`.
-6. Commit: `feat(v2): migrate brand assets to public/brand/`.
-7. Update [TASK-INDEX.md](TASK-INDEX.md): mark this task done.
+
+5. **Spaarke wordmark logos** — copy from the design handoff to `public/brand/logos/`:
+   - `projects/website-version-2/design_handoff_spaarke_website_v2/brand/assets/logos/spaarke-logo-white.svg`
+   - `projects/website-version-2/design_handoff_spaarke_website_v2/brand/assets/logos/spaarke-logo-black.svg`
+   - `projects/website-version-2/design_handoff_spaarke_website_v2/brand/assets/logos/spaarke-icon.svg` (if present — used in footer)
+
+6. **Hero glow** (optional — mockup uses a soft vignette around the screenshot, not the linear-style ellipse from the prototype):
+   - Skip the handoff `hero-glow-bg.png` for now. If we decide later to add a hero glow, copy it then. The mockup's hero is cleaner without it.
+
+7. Spot-check each folder: list contents and verify against the inventory above.
+
+8. Do NOT modify `public/images/`.
+
+9. Verify dev server can resolve `http://localhost:3000/brand/logos/sharepoint-512.png` etc.
+
+10. Commit: `feat(v2): migrate brand assets to public/brand/`.
+
+11. Update [TASK-INDEX.md](TASK-INDEX.md): mark this task done.
 
 ## Expected Outputs
 
-- `public/brand/logos/` populated
-- `public/brand/hero/hero-glow-bg.png` and `public/brand/hero/hero-workspace-dark.png`
-- `public/brand/modules/` populated
-- `public/brand/substrate/` populated
+- `public/brand/logos/` — Microsoft logos + Spaarke wordmarks (~9-10 files)
+- `public/brand/icons/` — 17 capability icon SVGs
+- `public/brand/hero/hero-workspace-dark.png`
+- `public/brand/capabilities/` (empty folder — Task 028 populates)
 
 ## Acceptance Criteria
 
-- [ ] All asset folders match the handoff inventory
-- [ ] Hero screenshot is the cleaned export from `resources/screenshots/`
-- [ ] `public/images/` is untouched
-- [ ] Assets are accessible via `http://localhost:3000/brand/...` paths in dev
+- [ ] All folders match the inventory above
+- [ ] Microsoft logos accessible via `/brand/logos/...` paths in dev
+- [ ] Section 5 icons accessible via `/brand/icons/...` paths
+- [ ] Hero screenshot at `/brand/hero/hero-workspace-dark.png`
+- [ ] Spaarke wordmarks (white + black) at `/brand/logos/`
+- [ ] `public/images/` untouched
 
 ## Notes
 
-- Keep filenames as-is from the handoff so the `.jsx` references in `design_handoff/design/` are easy to translate.
-- Image optimization (WebP/AVIF conversion, build-time resizing) is deferred to Task 042 to keep this task scope small.
-- We do not delete the handoff `brand/` folder — it's the design source and stays in `projects/`.
+- Capability screenshots are placed in Task 028, not here, so we can verify cleanup before they ship.
+- Image format optimization (WebP/AVIF, sizing) is deferred to Task 042 — this task only places source files.
+- The handoff `brand/assets/modules/` and `brand/assets/substrate/` folders are NOT migrated — we use user-provided logos/icons instead, which align with the latest mockup and brief.

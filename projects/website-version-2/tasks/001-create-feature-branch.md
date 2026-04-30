@@ -1,7 +1,7 @@
 # Task 001: Create `v2` feature branch
 
 **Phase:** 0 — Foundations
-**Status:** not-started
+**Status:** **done** (2026-04-30)
 **Estimated:** 15 minutes
 **Dependencies:** none
 **Tags:** git, branching, swa
@@ -10,31 +10,22 @@
 
 Create the `v2` feature branch that all v2 redesign work happens on, so SWA produces preview deploys via PR builds and `main` stays untouched until atomic cutover at merge.
 
-## Context
+## Completed Steps
 
-Branch-based development is the core of our "least risky" strategy. `main` continues to deploy v1 to production; `v2` branch deploys to a SWA preview URL when we open a PR. We replace v1 components in place on the branch (no `V2` filename suffix). Final cutover = merging the PR.
+1. ✓ Verified clean working tree on `main`
+2. ✓ Created `v2` branch from `main`
+3. ✓ Pushed to origin and set upstream tracking
+4. ✓ Made an initial bookkeeping commit on `v2` so a PR could be opened
+5. ✓ Opened draft PR [#2](https://github.com/spaarke-dev/spaarke-website/pull/2) `v2 → main`
+6. ✓ Verified SWA preview build succeeded (5m49s)
 
-## Steps
+## Outputs
 
-1. From `main`, ensure working tree is clean (`git status`).
-2. Create the branch: `git checkout -b v2`.
-3. Push to origin and set upstream: `git push -u origin v2`.
-4. Open a draft PR `v2 → main` titled "v2: full visual redesign" with body summarizing the scope (link to [README.md](../README.md)) — this triggers SWA's preview build for the branch and keeps the preview URL stable.
-5. Verify the SWA preview URL is generated and the v1 site renders there (we have not changed anything yet).
-6. Update [TASK-INDEX.md](TASK-INDEX.md): mark this task done.
-
-## Expected Outputs
-
-- `v2` branch on origin
-- Draft PR open with SWA preview URL active
-
-## Acceptance Criteria
-
-- [ ] `v2` branch exists locally and on origin
-- [ ] Draft PR is open against `main`
-- [ ] SWA preview URL renders the v1 site (sanity check)
+- `v2` branch on origin, tracking
+- Draft PR #2 open against `main`
+- SWA preview URL active and renders v1 site (sanity confirmed)
 
 ## Notes
 
-- Keep the PR in **draft** until Phase 5; converting to "ready for review" signals cutover-ready.
-- All subsequent task commits push to `v2`. Do not commit to `main` during this project except for hot fixes unrelated to v2.
+- The PR stays in **draft** until Task 090. Converting to "ready for review" signals cutover-ready.
+- All subsequent task commits push to `v2`. No commits to `main` during this project except hot fixes unrelated to v2.

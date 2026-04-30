@@ -1,47 +1,73 @@
-# Task 003: Self-host Manrope, load Source Sans 3
+# Task 003: Load fonts via `next/font/google`
 
 **Phase:** 0 — Foundations
 **Status:** not-started
-**Estimated:** 45 minutes
+**Estimated:** 30 minutes
 **Dependencies:** 001
 **Tags:** fonts, performance, next-font
 
 ## Goal
 
-Make Manrope (display) and Source Sans 3 (body) available across the site with `font-display: swap`, optimized for first-paint.
+Load **Inter Tight** (display), **Inter** (body), and **JetBrains Mono** (eyebrows/captions) via `next/font/google` — self-hosted at build time, with `font-display: swap`, subsetting, and preload all handled by Next.js.
 
 ## Context
 
-Handoff calls for Manrope as the primary display face (with Source Sans 3 fallback) and Source Sans 3 as the body face. The Manrope variable TTF lives at [design_handoff_spaarke_website_v2/brand/fonts/Manrope-VariableFont_wght.ttf](../design_handoff_spaarke_website_v2/brand/fonts/Manrope-VariableFont_wght.ttf). Source Sans 3 is loaded from Google Fonts in the handoff CSS.
+The mockup uses Inter Tight + Inter as its display + body pair (matching the prototype's `v2.css`). These are robust, broadly-supported, available via Google Fonts. `next/font/google` self-hosts them at build time, so production has zero runtime dependency on Google's CDN.
 
-Next.js 16 has `next/font` which handles self-hosting + subsetting + `font-display`. Use it for both fonts — even though Source Sans 3 is "from Google Fonts," `next/font/google` self-hosts it at build time, which is faster than a runtime Google request.
+We prefer Inter over Manrope (the brand kit's display face) for v2 because:
+- It matches the actual mockup the designer reviewed
+- Variable Inter offers similar weight flexibility
+- Simpler loader (no local TTF asset to manage)
 
 ## Steps
 
-1. Copy the Manrope variable font into the project: `public/brand/fonts/Manrope-VariableFont_wght.ttf` (or `src/app/fonts/` per Next.js convention — pick the one that matches the project's existing pattern; check whether any existing fonts are loaded).
-2. In [src/app/layout.tsx](../../../src/app/layout.tsx):
-   - Import `localFont` from `next/font/local` for Manrope, pointing at the TTF, declaring weights 400/500/600/700, with `display: 'swap'`, `variable: '--font-manrope'`.
-   - Import Source Sans 3 from `next/font/google` with weights 300/400/500/600/700, italic + non-italic, `display: 'swap'`, `variable: '--font-source-sans'`.
-   - Apply both `variable` class names to the `<html>` element so the variables propagate.
-3. In `src/app/globals.css`, update the `--v2-display` and `--v2-body` token values to reference the Next.js font CSS variables:
-   - `--v2-display: var(--font-manrope), 'Source Sans 3', system-ui, sans-serif;`
-   - `--v2-body: var(--font-source-sans), system-ui, sans-serif;`
-4. Test in dev server: open the `_v2-tokens` page from Task 002; type should render in Manrope (display) and Source Sans 3 (body).
-5. Verify the network tab shows the fonts loading from same-origin (not Google) for both.
-6. Commit: `feat(v2): self-host Manrope and Source Sans 3 via next/font`.
-7. Update [TASK-INDEX.md](TASK-INDEX.md): mark this task done.
+1. Open [src/app/layout.tsx](../../../src/app/layout.tsx).
+2. Import three fonts from `next/font/google`:
+   ```ts
+   import { Inter, Inter_Tight, JetBrains_Mono } from "next/font/google";
+
+   const interTight = Inter_Tight({
+     subsets: ["latin"],
+     weight: ["400", "500", "600"],
+     display: "swap",
+     variable: "--font-display",
+   });
+
+   const inter = Inter({
+     subsets: ["latin"],
+     weight: ["400", "500"],
+     display: "swap",
+     variable: "--font-body",
+   });
+
+   const jetbrainsMono = JetBrains_Mono({
+     subsets: ["latin"],
+     weight: ["400", "500"],
+     display: "swap",
+     variable: "--font-mono",
+   });
+   ```
+3. Apply all three `variable` class names to the `<html>` element (or `<body>`) so the CSS variables propagate.
+4. In `src/app/globals.css`, ensure the font tokens declared in Task 002 reference the Next.js font CSS variables:
+   - `--font-display: var(--font-display), system-ui, -apple-system, sans-serif;`
+   - `--font-body: var(--font-body), system-ui, -apple-system, sans-serif;`
+   - (The `next/font/google` loader sets these CSS variables; our token aliases them with system fallbacks.)
+5. In dev server, open the `_v2-tokens` page from Task 002 and verify the fonts load from same-origin (Network tab — no Google CDN requests).
+6. Run `npm run build` — confirm no regressions; bundle size includes the font files (a few KB per face after subsetting).
+7. Commit: `feat(v2): load Inter Tight + Inter + JetBrains Mono via next/font/google`.
+8. Update [TASK-INDEX.md](TASK-INDEX.md): mark this task done.
 
 ## Expected Outputs
 
-- Manrope variable TTF in the project
-- Updated `src/app/layout.tsx` loading both fonts via `next/font`
-- Updated `--v2-display` and `--v2-body` tokens in `globals.css`
+- Updated `src/app/layout.tsx` loading three fonts
+- `globals.css` font tokens wired to Next.js variable names
 
 ## Acceptance Criteria
 
-- [ ] Both fonts load from same-origin (not Google CDN)
-- [ ] Manrope renders for display utility classes
-- [ ] Source Sans 3 renders for body
+- [ ] All three fonts load from same-origin (not Google CDN) in production
+- [ ] Inter Tight renders for display utility classes
+- [ ] Inter renders for body
+- [ ] JetBrains Mono renders for eyebrow/caption styles
 - [ ] No FOIT/FOUT — `font-display: swap` honored
 - [ ] No console errors about font preload
 
@@ -49,4 +75,4 @@ Next.js 16 has `next/font` which handles self-hosting + subsetting + `font-displ
 
 - `next/font/google` self-hosts at build time despite the name. This is the recommended Next.js pattern.
 - Don't load fonts via `<link>` tags or `@import` — `next/font` handles preload/optimization automatically.
-- Manrope variable font supports a wide weight range; we only declare the four we use.
+- Manrope (from the brand kit `colors_and_type.css`) is intentionally NOT loaded for v2. If a future page needs it, add a separate loader.

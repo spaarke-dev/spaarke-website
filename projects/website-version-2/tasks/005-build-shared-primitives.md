@@ -1,61 +1,111 @@
-# Task 005: Build shared v2 primitives (Shell, Button, Eyebrow)
+# Task 005: Build component primitives
 
 **Phase:** 0 — Foundations
 **Status:** not-started
-**Estimated:** 1.5 hours
+**Estimated:** 2 hours
 **Dependencies:** 002, 003
-**Tags:** components, primitives, ui
+**Tags:** components, primitives, ui, typescript
 
 ## Goal
 
-Reusable React components for the most-used v2 patterns — page shell container, buttons (primary/secondary/text variants), and the eyebrow caption — so every section component can compose them without re-implementing.
+Reusable, type-strict React components for the most-used v2 patterns — typography, container, slab, button — at `src/components/primitives/`. Section components in Phases 2 and 3 compose these without re-implementing.
 
 ## Context
 
-The handoff prototype uses utility classes directly (`.v2-shell`, `.v2-btn-primary`). We could mirror that, but lifting them into typed React components gives us:
-- Better DX (props instead of remembering class names)
-- Single place to add accessibility (focus-visible, aria attributes on buttons)
-- Easier to evolve later
+The mockup prototype uses bespoke utility classes (`.v2-h1`, `.v2-shell`, `.v2-btn-primary`). For production, we use React component primitives instead — single source of styling per pattern, typed props, focus-visible baked in.
 
-Place these in `src/components/v2/` so they're co-located and discoverable. (Don't put them in `src/components/ui/` if that exists — keep the v2 namespace clean for the redesign.)
+No `V2` filename suffix. These are just "the design primitives."
 
 ## Steps
 
-1. Create `src/components/v2/Shell.tsx`:
-   - `<Shell>` wraps children in a `<div>` with class `v2-shell`
+1. Create `src/components/primitives/` and the following files:
+
+2. **`Heading.tsx`** — fluid display headings
+   ```ts
+   type HeadingProps = {
+     level: 1 | 2 | 3;
+     children: React.ReactNode;
+     className?: string;
+   };
+   ```
+   - `level={1}` → `<h1>` with H1 clamp (~`clamp(48px, 7.5vw, 104px)`, weight 500, letter-spacing -0.035em, line-height 0.98)
+   - `level={2}` → `<h2>` (~`clamp(34px, 4.5vw, 64px)`, weight 500, letter-spacing -0.025em, line-height 1.05)
+   - `level={3}` → `<h3>` (~`clamp(20px, 1.6vw, 26px)`, weight 500, letter-spacing -0.015em, line-height 1.2)
+   - Uses Tailwind arbitrary values referencing the type tokens from Task 002
+
+3. **`Lede.tsx`** — section subhead/intro paragraph
+   - `<p>` with `clamp(18px, 1.4vw, 22px)`, `line-height: 1.5`, `color: var(--color-text-mid)`
+   - Optional `tone="dark"|"light"` prop selects the right text-mid token
+
+4. **`Eyebrow.tsx`** — mono uppercase caption
+   - `<span>` with JetBrains Mono, 11px, letter-spacing 0.16em, uppercase, low text color
+   - Optional `tone="dark"|"light"` prop
+
+5. **`Shell.tsx`** — page-width container
+   - Wraps children with horizontal padding (`var(--spacing-shell-x)` from Task 002)
+   - No max-width by default (the prototype's `v2-shell` doesn't constrain max-width — it just sets fluid horizontal padding)
    - Optional `as` prop for tag override (default `div`)
-   - Optional `className` for additional classes
-2. Create `src/components/v2/Button.tsx`:
-   - Props: `variant` ('primary' | 'secondary' | 'text'), `href` (optional — renders Next.js `Link` if present, else `<button>`), `children`, plus standard button/anchor pass-through props
-   - Map variants to `.v2-btn .v2-btn-primary`, `.v2-btn .v2-btn-secondary`, `.v2-btn-text` classes
-   - Text variant includes a `<span class="arrow">→</span>` if `children` ends with a right arrow, OR explicit `arrow` prop — pick whichever is cleaner; check what the handoff prototype does
-   - `aria-disabled` and `disabled` props for button-mode
-3. Create `src/components/v2/Eyebrow.tsx`:
-   - `<Eyebrow>` renders a `<span class="v2-eyebrow">` with the children, uppercased via CSS (already in `.v2-eyebrow`)
-4. Add an `index.ts` barrel export in `src/components/v2/`.
-5. Update the `_v2-tokens` page from Task 002 to use these components instead of raw classes — ensures they render correctly.
-6. Commit: `feat(v2): add Shell, Button, Eyebrow primitives`.
-7. Update [TASK-INDEX.md](TASK-INDEX.md): mark this task done.
+
+6. **`Slab.tsx`** — section background slab with vertical padding
+   - Props: `tone: "dark" | "light"`, `children: React.ReactNode`, optional `className`
+   - Renders a `<section>` with appropriate background (`var(--color-bg-base)` for dark, `var(--color-bg-light)` for light) + foreground text colors + vertical section padding (`var(--spacing-section-y)`)
+   - Wraps content in a `<Shell>` automatically (or accept a `padded={false}` escape)
+
+7. **`Button.tsx`** — primary / outline / text variants
+   ```ts
+   type ButtonProps = {
+     variant: "primary" | "outline" | "text";
+     href?: string;          // renders Next.js Link when present, else <button>
+     onClick?: () => void;
+     children: React.ReactNode;
+     arrow?: boolean;        // text variant: append ←/→ that hover-translates
+     className?: string;
+     "aria-label"?: string;
+     type?: "button" | "submit";
+   };
+   ```
+   - **primary**: blue accent bg, white text, pill (matches mockup hero/closing CTAs)
+   - **outline**: transparent bg, hairline border, foreground-color text
+   - **text**: text-only with optional arrow `<span>` that translates on hover
+   - Focus-visible ring using `--color-accent` with `outline-offset: 2px`
+
+8. **`index.ts`** — barrel export for the primitives folder
+
+9. Update the `_v2-tokens` page from Task 002 to use these components instead of raw classes; ensures they render correctly in dark and light slab contexts.
+
+10. Run `npm run build` and `npx tsc --noEmit` to verify.
+
+11. Commit: `feat(v2): add component primitives (Heading, Lede, Eyebrow, Shell, Slab, Button)`.
+
+12. Update [TASK-INDEX.md](TASK-INDEX.md): mark this task done.
 
 ## Expected Outputs
 
-- `src/components/v2/Shell.tsx`
-- `src/components/v2/Button.tsx`
-- `src/components/v2/Eyebrow.tsx`
-- `src/components/v2/index.ts`
+- `src/components/primitives/Heading.tsx`
+- `src/components/primitives/Lede.tsx`
+- `src/components/primitives/Eyebrow.tsx`
+- `src/components/primitives/Shell.tsx`
+- `src/components/primitives/Slab.tsx`
+- `src/components/primitives/Button.tsx`
+- `src/components/primitives/index.ts`
 - Updated `_v2-tokens` sanity page
 
 ## Acceptance Criteria
 
-- [ ] `<Shell>` constrains content to 1240px with correct fluid padding
-- [ ] `<Button variant="primary">Get access</Button>` renders the white-bg dark-text pill
-- [ ] `<Button variant="secondary">` renders the hairline-border variant
-- [ ] `<Button variant="text">Read why</Button>` renders the text-button with hover-translate arrow
-- [ ] `<Button href="/access-request">` renders a Next.js `Link`
-- [ ] Focus-visible styles present on all interactive variants
+- [ ] `<Heading level={1|2|3}>` renders correct fluid clamps and tracking
+- [ ] `<Lede tone="dark|light">` renders correct color
+- [ ] `<Eyebrow tone="dark|light">` renders mono uppercase
+- [ ] `<Shell>` constrains horizontal padding correctly
+- [ ] `<Slab tone="dark|light">` renders correct bg + fg colors and vertical section padding
+- [ ] `<Button variant="primary">Get access</Button>` renders the blue-bg pill primary CTA
+- [ ] `<Button variant="outline">Watch demo</Button>` renders the hairline-border secondary CTA
+- [ ] `<Button variant="text" arrow>Why Spaarke</Button>` renders text-only with hover-translate arrow
+- [ ] `<Button href="/access-request">` renders a Next.js `<Link>`
+- [ ] Focus-visible styles present and visible on every interactive variant
+- [ ] TypeScript strict checks pass
 
 ## Notes
 
-- Keep these primitives **headless of motion** — section components handle their own animation. These should render the chrome, nothing more.
-- If the handoff prototype uses different markup for text-arrow buttons, mirror it precisely (the `.arrow` translate effect is defined in `v2.css`).
-- Don't reach into Tailwind for these — they're pure utility-class compositions of the v2 layer we set up in Task 002.
+- Keep primitives **headless of motion** — section components handle their own animation.
+- For motion-bearing variants (e.g., button hover scale), use Tailwind's `motion-safe:` / `motion-reduce:` modifiers so reduce-motion users get a static UI.
+- Don't add component-level state. Primitives are presentation-only.

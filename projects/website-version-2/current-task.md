@@ -3,31 +3,58 @@
 ## Quick Recovery
 | Field | Value |
 |-------|-------|
-| **Task** | 001 |
-| **Step** | 4 (open draft PR) |
-| **Status** | In progress |
-| **Next Action** | Open draft PR; verify SWA preview URL |
+| **Task** | 002 |
+| **Step** | 0 (not started) |
+| **Status** | Ready to start |
+| **Next Action** | Add semantic design tokens to `src/app/globals.css` under `@theme inline` |
 
 ## Details
-- **Task File:** tasks/001-create-feature-branch.md
+- **Task File:** tasks/002-add-design-tokens.md
 - **Phase:** 0 — Foundations
-- **Started:** 2026-04-30
+- **Started:** —
 
-## Completed Steps
+## Completed Tasks
 
-- 2026-04-30: Verified clean working tree on `main`
-- 2026-04-30: Created `v2` branch and pushed to origin (tracking set)
+- **001 Create `v2` feature branch** (2026-04-30) — branch + draft PR + SWA preview build verified ✓
 
 ## Decisions Made
 
+### Strategy
 - **Branch strategy**: feature branch `v2`, atomic merge cutover, revert as rollback
-- **No V2 filename suffix**: replace v1 components in place on the branch
-- **Asset path**: `public/brand/` (not `public/images/`) for v2-era assets
-- **Manrope**: self-host the variable TTF from the handoff
-- **Insights URL**: rename `/blog` → `/insights` with a redirect rule
-- **Hero screenshot source**: `resources/screenshots/spaarke-screenshot-darkmode.png` (already cleaned)
+- **No V2 filename suffix**: replace v1 components in place on the branch (clean code, no parallel V1/V2 maintenance)
+- **Asset path**: `public/brand/` for v2-era assets (separate from v1 `public/images/`)
 - **Mobile**: baked into every section task, not deferred to a polish phase
+
+### Foundation
+- **Tokens**: semantic naming (no `--v2-` prefix); live in `globals.css` under `@theme inline` so Tailwind exposes them as utility classes
+- **Fonts**: Inter Tight (display) + Inter (body) + JetBrains Mono via `next/font/google` — self-hosted at build time, no Google Fonts `@import`
+- **Primitives**: typed React components (`<Heading>`, `<Lede>`, `<Eyebrow>`, `<Shell>`, `<Slab>`, `<Button>`) at `src/components/primitives/`
+- **Content layer**: copy in typed modules at `src/content/`, separated from presentation
+
+### Visual / copy decisions (from v1.4 brief + mockup review)
+- **Hero subhead**: "The shared platform for legal departments, business stakeholders, and outside counsel." (overrides "system of record" framing)
+- **Hero CTAs**: secondary "Watch demo" (outline, opens modal) left; primary "Get access" right
+- **Hero screenshot source**: `resources/screenshots/spaarke-screenshot-darkmode.png`
+- **Site nav right side**: Contact us + Sign in (text links). Get access lives in notification banner, hero, closing CTA, and footer panel.
+- **Section 2 stats**: use mockup version (77% / 60% / 79% / 1 in 5)
+- **Section 3 Pillars**: build from v1.4 brief copy + home_03-1 mockup; light slab between dark Sections 2 and 4
+- **Section 4 capability bullets**: use mockup's tight 3-bullet wording (e.g. "Daily briefing / Smart to-dos / Performance tracking"); brief's longer prose lives on the Platform page
+- **Section 4 transitional line**: skip ("Built on Microsoft, designed for legal..." not in mockup)
+- **Section 4 CTA**: skip ("Explore the full platform →" — not in mockup)
+- **Section 4 Microsoft foundation**: seven logos (Power Platform, SharePoint, M365 Apps, Outlook, Teams, M365 Copilot, Azure AI Foundry) — both M365 Apps and Outlook included
+- **Section 5 icons**: 8 icons in 2×4 grid — best-mapped from `resources/icons/` (judgment call)
+- **Section 6 closing secondary**: "Why Spaarke →" (links to `/why-spaarke`)
+- **Insights URL**: rename `/blog` → `/insights` with redirect
+
+### Routing additions
+- **Watch demo**: modal/popup overlay (not a separate route) hosting a placeholder video; opens from hero "Watch demo" CTA
+
+## Open follow-ups (not blockers)
+- Microsoft logos at `resources/logos/` ✓ (in place: 7 logos)
+- Section 5 icons at `resources/icons/` ✓ (17 SVGs available; will pick 8)
+- Capability screenshots: 5 of 5 candidates available in `resources/screenshots/`
+- Demo video: placeholder until production video ready
 
 ## Notes
 
-Project kicks off 2026-04-30. Source of truth for design = [design_handoff_spaarke_website_v2/README.md](design_handoff_spaarke_website_v2/README.md).
+Project kicks off 2026-04-30. Source of truth for copy/positioning = [creative brief v1.4](spaarke-home-page-creative-brief-v1.4.md). Source of truth for visual treatment = [mockup screenshots](v2%20mockup%20screenshots/).

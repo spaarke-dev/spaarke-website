@@ -1,22 +1,36 @@
-# Task 024: Closing (mirrored spotlight CTA)
+# Task 024: Section 6 — Closing CTA
 
 **Phase:** 2 — Home Sections
 **Status:** not-started (stub — to be expanded when Phase 2 begins)
 **Estimated:** 1.5 hours
-**Dependencies:** 020
+**Dependencies:** 013, 006
 **Tags:** component, home
 
 ## Context
 
-Final CTA section that mirrors the hero's spotlight. Dark, full-bleed glow rising from below (`hero-glow-bg.png` flipped via `transform: scaleY(-1)`, anchored to bottom). H1 "See all sides of every matter." (single line, `white-space: nowrap`), lede "Now accepting early access partners.", CTAs primary "Get access" + text "Read why →".
+Build per [mockup `home_05.jpg`](../v2%20mockup%20screenshots/home_05.jpg). The page exhales — generous whitespace, single-line headline, light copy.
 
-Reference: [design_handoff/README.md §"ClosingV2"](../design_handoff_spaarke_website_v2/README.md) and [design_handoff/design/ClosingV2.jsx](../design_handoff_spaarke_website_v2/design/ClosingV2.jsx).
+**Layout:**
+- Dark slab (`<Slab tone="dark">`)
+- Subtle radial vignette behind the type for ambient depth (CSS radial gradient, no animation)
+- Centered content
 
-Reuse the hero's glow asset; flip it.
+**Copy** (from `src/content/home/closing.ts`):
+- **Headline** (single line, large, centered): "See all sides of every matter." — `white-space: nowrap` on desktop; will wrap naturally on mobile
+- **Sub** (centered, text-mid color): "Now accepting early access partners."
+- **CTAs** (centered, side-by-side):
+  - Primary: "Get access" (`<Button variant="primary" href="/access-request">`)
+  - Secondary: "Why Spaarke →" (`<Button variant="text" href="/why-spaarke" arrow>`)
+
+**Mobile (≤640):**
+- Headline wraps if needed (drop `nowrap`)
+- CTAs stack vertically
 
 ## Acceptance (will expand when Phase 2 begins)
 
-- [ ] Glow rises from bottom, full-bleed
-- [ ] H1 stays on one line at desktop
-- [ ] CTAs link correctly
+- [ ] Subtle radial vignette renders behind type (no animation)
+- [ ] Headline stays one line at desktop
+- [ ] CTAs render in correct order with correct variants
+- [ ] "Why Spaarke →" arrow translates on hover (motion-safe)
 - [ ] Mobile renders cleanly
+- [ ] Content sourced from `src/content/home/closing.ts`
