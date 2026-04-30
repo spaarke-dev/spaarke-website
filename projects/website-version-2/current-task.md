@@ -3,14 +3,14 @@
 ## Quick Recovery
 | Field | Value |
 |-------|-------|
-| **Task** | 022 + 023 (both in-progress, placeholder) |
-| **Step** | Replace placeholders with full implementations |
-| **Status** | Phase 2 substantially complete; finish 022/023 next |
-| **Next Action** | Build Capabilities (5 zigzag rows + Microsoft foundation card) and LOI Diagram (Spaarke ↔ Copilot visual) |
+| **Task** | 030 |
+| **Step** | 0 (not started) |
+| **Status** | Ready to start (Phase 2 complete) |
+| **Next Action** | Build page template pattern for content pages |
 
 ## Details
-- **Task Files:** tasks/022-module-grid.md, tasks/023-platform-diagram.md
-- **Phase:** 2 — Home Sections
+- **Task File:** tasks/030-page-template-pattern.md
+- **Phase:** 3 — Reskin Existing Pages
 - **Started:** —
 
 ## Completed Tasks
@@ -32,8 +32,8 @@
 **Phase 2 — Home Sections (8 of 10 done)**
 - **020 Hero** (2026-04-30) — centered "See all sides of every matter." H1, subhead, CTAs (Watch demo opens modal, Get access → /access-request), full-width screenshot, trust strip ✓
 - **021 GapStats** (2026-04-30) — top hairline, two-column heading+intro / 2×2 stat grid, mockup-version stats with mono italic source attributions ✓
-- **022 Capabilities** — placeholder rendered; full implementation pending
-- **023 LOI Diagram** — placeholder with heading+intro rendered; full diagram pending
+- **022 Capabilities** (2026-04-30) — five capability rows in zigzag (Operations, Documents & Knowledge, Collaboration, Agents & Automation, Spend & Performance) with screenshots + KEY FEATURES bullets; Microsoft foundation card with 7 logo tiles ✓
+- **023 LOI Diagram** (2026-04-30) — Spaarke container with chrome bar + 2×4 icon grid using CSS mask-image to render currentColor SVGs; gradient arrow connector; Copilot badge with multi-color radial glow + M365 tag ✓
 - **024 Closing** (2026-04-30) — dark slab with subtle radial vignette, single-line headline, "Why Spaarke →" text CTA ✓
 - **025 Compose home** (2026-04-30) — `src/app/page.tsx` renders Hero → Gap → Pillars → Capabilities → LOI → Closing in order ✓
 - **026 Hero screenshot prep** (2026-04-30) — asset already at `public/brand/hero/hero-workspace-dark.png` ✓

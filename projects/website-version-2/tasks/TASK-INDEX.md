@@ -1,9 +1,8 @@
 # Task Index — Spaarke Marketing Website (v2)
 
 > **Total Tasks**: 35
-> **Completed**: 18 / 35
-> **In Progress**: 022 (Capabilities — placeholder), 023 (LOI Diagram — placeholder)
-> **Current Phase**: 2 — Home Sections
+> **Completed**: 20 / 35
+> **Current Phase**: 3 — Reskin Existing Pages
 
 ## All Tasks
 
@@ -21,8 +20,8 @@
 | 013 | Wire global components into root layout | 1 | **done** | 010, 011, 012 |
 | 020 | Section 1 — Hero | 2 | **done** | 013, 027 |
 | 021 | Section 2 — Gap stats (mockup version) | 2 | **done** | 013 |
-| 022 | Section 4 — Capabilities + Microsoft foundation | 2 | in-progress (placeholder) | 013, 028 |
-| 023 | Section 5 — Legal Operations Intelligence diagram | 2 | in-progress (placeholder) | 013, 004 |
+| 022 | Section 4 — Capabilities + Microsoft foundation | 2 | **done** | 013, 028 |
+| 023 | Section 5 — Legal Operations Intelligence diagram | 2 | **done** | 013, 004 |
 | 024 | Section 6 — Closing CTA | 2 | **done** | 013 |
 | 025 | Compose home page at `/` | 2 | **done** | 020-024, 027, 029 |
 | 026 | Hero screenshot prep | 2 | **done** | 004 |
