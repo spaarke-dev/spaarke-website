@@ -3,19 +3,22 @@
 ## Quick Recovery
 | Field | Value |
 |-------|-------|
-| **Task** | 002 |
+| **Task** | 005 |
 | **Step** | 0 (not started) |
 | **Status** | Ready to start |
-| **Next Action** | Add semantic design tokens to `src/app/globals.css` under `@theme inline` |
+| **Next Action** | Build component primitives at `src/components/primitives/` |
 
 ## Details
-- **Task File:** tasks/002-add-design-tokens.md
+- **Task File:** tasks/005-build-shared-primitives.md
 - **Phase:** 0 — Foundations
 - **Started:** —
 
 ## Completed Tasks
 
 - **001 Create `v2` feature branch** (2026-04-30) — branch + draft PR + SWA preview build verified ✓
+- **002 Add semantic design tokens** (2026-04-30) — v2 tokens in `@theme inline`; light slab via `[data-tone="light"]`; sanity page at `/v2-tokens-check` ✓
+- **003 Load fonts** (2026-04-30) — Inter Tight + Inter + JetBrains Mono via `next/font/google`; CSS variables wired ✓
+- **004 Migrate brand assets** (2026-04-30) — `public/brand/` populated with Microsoft logos, Spaarke wordmarks, capability icons, hero screenshot ✓
 
 ## Decisions Made
 

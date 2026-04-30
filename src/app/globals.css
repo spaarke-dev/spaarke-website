@@ -1,18 +1,40 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Use class-based dark mode instead of prefers-color-scheme */
+/* Class-based dark mode (v1 — controlled by .dark class on <html>) */
 @variant dark (&:where(.dark, .dark *));
 
+/* v2 light-slab variant — flips fg/bg tokens within a marked subtree.
+   Used by the <Slab tone="light"> primitive. */
+@variant tone-light (&:where([data-tone="light"], [data-tone="light"] *));
+
 :root {
+  /* ===== v1 tokens (unchanged — used by existing v1 components) ===== */
   --background: #ffffff;
   --foreground: #0a0a0a;
   --muted: #f5f5f5;
   --muted-foreground: #737373;
   --border: #e5e5e5;
+
+  /* ===== v2 tokens — DARK is the default ===== */
+
+  /* Surfaces */
+  --v2-bg: #0a0a0a;            /* page background */
+  --v2-surface: #111111;       /* elevated surface (cards, modals) */
+  --v2-surface-2: #161616;     /* hover / nested */
+
+  /* Text */
+  --v2-fg: #f5f5f5;            /* primary */
+  --v2-fg-mid: rgba(245, 245, 245, 0.66);   /* secondary */
+  --v2-fg-low: rgba(245, 245, 245, 0.42);   /* tertiary / captions */
+
+  /* Borders / hairlines */
+  --v2-line: rgba(255, 255, 255, 0.10);
+  --v2-line-strong: rgba(255, 255, 255, 0.18);
 }
 
 .dark {
+  /* v1 dark mode flips */
   --background: #0a0a0a;
   --foreground: #ededed;
   --muted: #1a1a1a;
@@ -20,14 +42,28 @@
   --border: #262626;
 }
 
+/* v2 LIGHT slab override — when an ancestor has data-tone="light",
+   v2 fg/bg/line tokens flip to light values. Used by Section 3 + 4. */
+[data-tone="light"] {
+  --v2-bg: #f6f6f4;
+  --v2-surface: #ffffff;
+  --v2-surface-2: #f0f0ee;
+  --v2-fg: #0a0a0a;
+  --v2-fg-mid: rgba(10, 10, 10, 0.62);
+  --v2-fg-low: rgba(10, 10, 10, 0.42);
+  --v2-line: rgba(10, 10, 10, 0.10);
+  --v2-line-strong: rgba(10, 10, 10, 0.18);
+}
+
 @theme inline {
+  /* v1 semantic colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
 
-  /* Spaarke brand colors (spectral palette) */
+  /* Spaarke spectral palette (raw colors — never recolor) */
   --color-spaarke-blue: #000BFF;
   --color-spaarke-cyan: #00F7FF;
   --color-spaarke-green: #1AFF00;
@@ -39,7 +75,7 @@
   --color-spaarke-deep-red: #FF0000;
   --color-hero-red: #FC0000;
 
-  /* Semantic color mappings */
+  /* v1 semantic mappings */
   --color-primary: #000BFF;
   --color-primary-foreground: #ffffff;
   --color-accent: #00F7FF;
@@ -47,8 +83,33 @@
   --color-warning: #FF9400;
   --color-error: #FF4600;
 
+  /* ===== v2 semantic tokens (auto-flip via [data-tone="light"]) ===== */
+  /* Surfaces — utility classes: bg-bg, bg-surface, bg-surface-2 */
+  --color-bg: var(--v2-bg);
+  --color-surface: var(--v2-surface);
+  --color-surface-2: var(--v2-surface-2);
+  /* Text — utility classes: text-fg, text-fg-mid, text-fg-low */
+  --color-fg: var(--v2-fg);
+  --color-fg-mid: var(--v2-fg-mid);
+  --color-fg-low: var(--v2-fg-low);
+  /* Borders — utility classes: border-line, border-line-strong */
+  --color-line: var(--v2-line);
+  --color-line-strong: var(--v2-line-strong);
+  /* Note: v2 accent = Spaarke Blue. Use `bg-spaarke-blue` directly. */
+
+  /* ===== v2 spacing tokens ===== */
+  --spacing-shell-x: clamp(24px, 6vw, 120px);
+  --spacing-section-y: clamp(80px, 12vh, 160px);
+
+  /* ===== Fonts =====
+     v1 (kept for existing v1 components on this branch): */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* v2 (wired in Task 003 — next/font/google sets the variable names below): */
+  --font-display: var(--font-inter-tight);
+  --font-body: var(--font-inter);
+  --font-mono-display: var(--font-jetbrains-mono);
 }
 
 body {
@@ -59,8 +120,8 @@ body {
 
 /* Hide scrollbar while keeping scroll functionality */
 html {
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 html::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none;
 }
