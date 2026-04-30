@@ -2,13 +2,14 @@
 
 > **Total Tasks**: 24
 > **Completed**: 0 / 24
+> **In Progress**: 001
 > **Current Phase**: 0 — Foundations
 
 ## All Tasks
 
 | ID | Title | Phase | Status | Dependencies |
 |----|-------|-------|--------|--------------|
-| 001 | Create `v2` feature branch | 0 | not-started | none |
+| 001 | Create `v2` feature branch | 0 | in-progress | none |
 | 002 | Add v2 CSS tokens and utility classes | 0 | not-started | 001 |
 | 003 | Self-host Manrope, load Source Sans 3 | 0 | not-started | 001 |
 | 004 | Migrate brand assets to `public/brand/` | 0 | not-started | 001 |

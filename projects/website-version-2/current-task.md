@@ -4,18 +4,19 @@
 | Field | Value |
 |-------|-------|
 | **Task** | 001 |
-| **Step** | 0 (not started) |
-| **Status** | Ready to start |
-| **Next Action** | Create `v2` feature branch |
+| **Step** | 4 (open draft PR) |
+| **Status** | In progress |
+| **Next Action** | Open draft PR; verify SWA preview URL |
 
 ## Details
 - **Task File:** tasks/001-create-feature-branch.md
 - **Phase:** 0 — Foundations
-- **Started:** —
+- **Started:** 2026-04-30
 
 ## Completed Steps
 
-(none yet)
+- 2026-04-30: Verified clean working tree on `main`
+- 2026-04-30: Created `v2` branch and pushed to origin (tracking set)
 
 ## Decisions Made
 
