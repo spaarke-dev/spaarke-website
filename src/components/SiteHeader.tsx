@@ -1,145 +1,92 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import ThemeToggle from "./ThemeToggle";
-
-const navLinks: { href: string; label: string }[] = [
-  { href: "/platform", label: "Platform" },
-  { href: "/why-spaarke", label: "Why Spaarke" },
-  { href: "/blog", label: "Insights" },
-];
+import { logo, navLinks } from "@/content/nav";
 
 export default function SiteHeader() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const headerRef = useRef<HTMLElement>(null);
-
-  // Set CSS variable for header height so other components can reference it
-  useEffect(() => {
-    function measure() {
-      if (headerRef.current) {
-        document.documentElement.style.setProperty(
-          "--header-h",
-          `${headerRef.current.offsetHeight}px`
-        );
-      }
-    }
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 border-b border-border bg-background backdrop-blur-sm">
-      <nav className="mx-auto flex items-center justify-between px-4 sm:px-6 md:px-[6%]" style={{ paddingTop: "clamp(0.75rem, 1.2vw, 2.5rem)", paddingBottom: "clamp(0.75rem, 1.2vw, 2.5rem)" }}>
-        {/* Logo — full logo, black in light mode / white in dark mode */}
-        <Link href="/" className="flex-shrink-0">
-          <Image
-            src="/images/logo-black.svg"
-            alt="Spaarke"
-            width={160}
-            height={42}
-            priority
-            className="w-auto dark:hidden"
-            style={{ height: "clamp(1.5rem, 2.5vw, 5rem)" }}
-          />
-          <Image
-            src="/images/logo-white.svg"
-            alt="Spaarke"
-            width={160}
-            height={42}
-            priority
-            className="hidden w-auto dark:block"
-            style={{ height: "clamp(1.5rem, 2.5vw, 5rem)" }}
-          />
-        </Link>
+    <header className="bg-bg border-line sticky top-0 z-50 border-b backdrop-blur-sm">
+      <nav className="px-[var(--spacing-shell-x)] flex items-center justify-between gap-6 py-4 md:py-5">
+        {/* Left group: logo + page nav */}
+        <div className="flex items-center gap-8 md:gap-10">
+          <Link href={logo.href} className="flex-shrink-0" aria-label={logo.alt}>
+            <Image
+              src={logo.src}
+              alt={logo.alt}
+              width={140}
+              height={38}
+              priority
+              className="h-8 w-auto md:h-9"
+            />
+          </Link>
+          <ul className="hidden items-center gap-7 md:flex">
+            {navLinks.left.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-fg-mid hover:text-fg font-display text-[15px] font-medium transition-colors"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-        {/* Desktop nav — left-aligned page links, right-aligned auth/CTA */}
-        <div className="hidden flex-1 items-center justify-between md:flex">
-          <div className="flex items-center gap-6 pl-8">
-            {navLinks.map((link) => (
+        {/* Right group: action links */}
+        <ul className="hidden items-center gap-6 md:flex">
+          {navLinks.right.map((link) => (
+            <li key={link.href}>
               <Link
-                key={link.href}
                 href={link.href}
-                className="font-medium text-foreground/80 transition-colors hover:text-foreground"
-                style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
+                className="text-fg-mid hover:text-fg font-display text-[15px] font-medium transition-colors"
               >
                 {link.label}
               </Link>
-            ))}
-          </div>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/signin"
-              className="font-medium text-foreground/80 transition-colors hover:text-foreground"
-              style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/access-request"
-              className="rounded-lg bg-primary px-4 py-2 font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-              style={{ fontSize: "clamp(0.875rem, 1vw, 1.75rem)" }}
-            >
-              Get access
-            </Link>
-            <ThemeToggle />
-          </div>
-        </div>
+            </li>
+          ))}
+        </ul>
 
-        {/* Mobile menu button */}
-        <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 text-foreground/80 hover:text-foreground"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-expanded={mobileMenuOpen}
-            aria-label="Toggle navigation menu"
-          >
-            {mobileMenuOpen ? (
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-            )}
-          </button>
-        </div>
+        {/* Mobile hamburger */}
+        <button
+          type="button"
+          className="text-fg focus-visible:ring-spaarke-blue inline-flex h-10 w-10 items-center justify-center rounded-md transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 md:hidden"
+          aria-expanded={mobileOpen}
+          aria-label="Toggle navigation menu"
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          {mobileOpen ? (
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          )}
+        </button>
       </nav>
 
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="border-t border-border md:hidden">
-          <div className="mx-auto max-w-7xl space-y-1 px-4 pb-4 pt-2 sm:px-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block rounded-md px-3 py-2 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="border-line border-t md:hidden">
+          <ul className="px-[var(--spacing-shell-x)] flex flex-col gap-1 py-3">
+            {[...navLinks.left, ...navLinks.right].map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-fg-mid hover:text-fg font-display block rounded-md px-2 py-2 text-base font-medium transition-colors hover:bg-surface"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              </li>
             ))}
-            <Link
-              href="/signin"
-              className="block rounded-md px-3 py-2 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/access-request"
-              className="block rounded-lg bg-primary px-3 py-2 text-center text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Get access
-            </Link>
-          </div>
+          </ul>
         </div>
       )}
     </header>

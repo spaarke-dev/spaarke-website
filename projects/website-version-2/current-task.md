@@ -3,14 +3,14 @@
 ## Quick Recovery
 | Field | Value |
 |-------|-------|
-| **Task** | 010 |
+| **Task** | 020 |
 | **Step** | 0 (not started) |
-| **Status** | Ready to start (Phase 0 complete) |
-| **Next Action** | Build NotificationBar (or run 010/011/012 in parallel) |
+| **Status** | Ready to start (Phases 0 + 1 complete) |
+| **Next Action** | Build Hero (or run home section tasks in parallel) |
 
 ## Details
-- **Task File:** tasks/010-notification-bar.md
-- **Phase:** 1 — Global Components
+- **Task File:** tasks/020-hero.md
+- **Phase:** 2 — Home Sections
 - **Started:** —
 
 ## Completed Tasks
@@ -22,6 +22,12 @@
 - **004 Migrate brand assets** (2026-04-30) — `public/brand/` populated with Microsoft logos, Spaarke wordmarks, capability icons, hero screenshot ✓
 - **005 Build component primitives** (2026-04-30) — `Heading`, `Lede`, `Eyebrow`, `Shell`, `Slab`, `Button` at `src/components/primitives/`; Server Components, focus-visible, motion-safe ✓
 - **006 Extract content to typed modules** (2026-04-30) — `src/content/` with nav, notification-bar, hero, gap, pillars, capabilities, loi-diagram, closing, footer; tuple types enforce structure ✓
+
+**Phase 1 — Global Components (complete)**
+- **010 NotificationBar** (2026-04-30) — dismissible, localStorage persistence, hairline bottom border, focus-visible dismiss ✓
+- **011 SiteHeader** (2026-04-30) — sticky dark header, left: spaarke logo + Platform/Why Spaarke/Insights; right: Contact us + Sign in; mobile hamburger; replaces v1 SiteHeader in place ✓
+- **012 SiteFooter** (2026-04-30) — dark footer with 3 columns + Get access CTA panel + bottom strip with LinkedIn ✓
+- **013 Wire into root layout** (2026-04-30) — NotificationBar + SiteHeader (replaced v1) + main + SiteFooter (replaced v1) ✓
 
 ## Decisions Made
 

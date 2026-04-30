@@ -1,8 +1,8 @@
 # Task Index — Spaarke Marketing Website (v2)
 
 > **Total Tasks**: 35
-> **Completed**: 6 / 35
-> **Current Phase**: 1 — Global Components
+> **Completed**: 10 / 35
+> **Current Phase**: 2 — Home Sections
 
 ## All Tasks
 
@@ -14,10 +14,10 @@
 | 004 | Migrate brand assets to `public/brand/` | 0 | **done** | 001 |
 | 005 | Build component primitives (Heading, Lede, Eyebrow, Shell, Slab, Button) | 0 | **done** | 002, 003 |
 | 006 | Extract content to typed modules in `src/content/` | 0 | **done** | 005 |
-| 010 | NotificationBar (dismissible, localStorage) | 1 | not-started | 005 |
-| 011 | SiteHeader (left: nav; right: Contact us + Sign in) | 1 | not-started | 005 |
-| 012 | Footer (dark, columns + Get access CTA panel) | 1 | not-started | 005 |
-| 013 | Wire global components into root layout | 1 | not-started | 010, 011, 012 |
+| 010 | NotificationBar (dismissible, localStorage) | 1 | **done** | 005 |
+| 011 | SiteHeader (left: nav; right: Contact us + Sign in) | 1 | **done** | 005 |
+| 012 | Footer (dark, columns + Get access CTA panel) | 1 | **done** | 005 |
+| 013 | Wire global components into root layout | 1 | **done** | 010, 011, 012 |
 | 020 | Section 1 — Hero | 2 | not-started | 013, 027 |
 | 021 | Section 2 — Gap stats (mockup version) | 2 | not-started | 013 |
 | 022 | Section 4 — Capabilities + Microsoft foundation | 2 | not-started | 013, 028 |
