@@ -1,24 +1,25 @@
 import type { Metadata } from "next";
-import Container from "@/components/Container";
+import { PageHeader, Shell, Slab } from "@/components/primitives";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Spaarke terms of service and conditions of use.",
+  description: "Spaarke terms of service.",
 };
 
 export default function Terms() {
   return (
-    <section className="py-16 sm:py-20">
-      <Container>
-        <div className="prose mx-auto max-w-2xl">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Terms of Service
-          </h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Terms of service content coming soon.
-          </p>
+    <Slab tone="dark">
+      <Shell>
+        <PageHeader
+          eyebrow="Legal"
+          title="Terms of Service"
+          lede="The terms that govern your use of Spaarke."
+        />
+
+        <div className="text-fg-mid mt-12 max-w-2xl space-y-4 text-base leading-relaxed">
+          <p>Terms of service content coming soon.</p>
         </div>
-      </Container>
-    </section>
+      </Shell>
+    </Slab>
   );
 }

@@ -35,7 +35,7 @@ export default function NextSection() {
             Request Early Access
           </Link>
           <Link
-            href="/blog"
+            href="/insights"
             className="rounded-lg border border-current font-semibold text-foreground transition-colors hover:bg-foreground/5"
             style={{
               fontSize: "clamp(0.875rem, 1.1vw, 1.25rem)",

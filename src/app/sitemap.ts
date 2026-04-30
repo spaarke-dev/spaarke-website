@@ -8,28 +8,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/platform",
     "/why-spaarke",
-    "/blog",
+    "/insights",
     "/contact",
     "/access-request",
     "/privacy",
     "/terms",
+    "/signin",
   ];
 
   const staticEntries: MetadataRoute.Sitemap = staticPages.map((path) => ({
     url: `${siteUrl}${path}`,
     lastModified: new Date(),
     changeFrequency: path === "" ? "weekly" : "monthly",
-    priority: path === "" ? 1 : path === "/blog" ? 0.9 : 0.5,
+    priority: path === "" ? 1 : path === "/insights" ? 0.9 : 0.5,
   }));
 
   const posts = getAllPosts();
 
-  const blogEntries: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${siteUrl}/blog/${post.slug}`,
+  const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `${siteUrl}/insights/${post.slug}`,
     lastModified: post.posted ? new Date(post.posted) : new Date(post.date),
     changeFrequency: "monthly",
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...blogEntries];
+  return [...staticEntries, ...postEntries];
 }

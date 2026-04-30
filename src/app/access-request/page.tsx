@@ -1,37 +1,31 @@
 import type { Metadata } from "next";
-import Container from "@/components/Container";
+import { PageHeader, Shell, Slab } from "@/components/primitives";
 import DemoRequestForm from "@/components/DemoRequestForm";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Request Demo Access",
+  title: "Get access",
   description:
-    "Request demo access to Spaarke — Legal Operations Intelligence for document management, AI analysis, and financial intelligence.",
+    "Request early access to Spaarke — the shared platform for legal departments, business stakeholders, and outside counsel.",
 };
 
 export default function AccessRequest() {
   return (
-    <section className="py-16 sm:py-20">
-      <Container>
-        <div className="mx-auto max-w-xl">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Request Demo Access
-          </h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Interested in seeing Spaarke in action? Please fill out the form
-            below including a work email (please note that for security reasons
-            a work email is required). Thank you and we look forward to
-            introducing you to Legal Operations Intelligence!
-          </p>
+    <Slab tone="dark">
+      <Shell>
+        <PageHeader
+          eyebrow="Get access"
+          title="Now accepting early access partners."
+          lede="Tell us a little about you and we'll be in touch. A work email is required for early access."
+        />
 
-          <div className="mt-10">
-            <DemoRequestForm
-              recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
-            />
-          </div>
+        <div className="mt-12 max-w-xl">
+          <DemoRequestForm
+            recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
+          />
         </div>
-      </Container>
-    </section>
+      </Shell>
+    </Slab>
   );
 }

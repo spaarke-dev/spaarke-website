@@ -1,8 +1,8 @@
 # Task Index — Spaarke Marketing Website (v2)
 
 > **Total Tasks**: 35
-> **Completed**: 20 / 35
-> **Current Phase**: 3 — Reskin Existing Pages
+> **Completed**: 28 / 35
+> **Current Phase**: 4 — Polish
 
 ## All Tasks
 
@@ -28,14 +28,14 @@
 | 027 | Section 3 — Pillars (light slab) | 2 | **done** | 005, 006 |
 | 028 | Capability screenshots prep | 2 | **done** | 004 |
 | 029 | Watch demo modal | 2 | **done** | 005 |
-| 030 | Page template pattern for content pages | 3 | not-started | 013 |
-| 031 | Rename `/blog` → `/insights` + redirect; reskin index | 3 | not-started | 030 |
-| 032 | Reskin Insights post page | 3 | not-started | 031 |
-| 033 | Reskin `/contact` and `/access-request` (forms) | 3 | not-started | 030 |
-| 034 | Reskin `/privacy`, `/terms`, `/signin` | 3 | not-started | 030 |
-| 035 | v2-styled `/platform` stub | 3 | not-started | 030 |
-| 036 | v2-styled `/why-spaarke` stub | 3 | not-started | 030 |
-| 037 | Error + 404 pages styled with v2 system | 3 | not-started | 030 |
+| 030 | Page template pattern for content pages | 3 | **done** | 013 |
+| 031 | Rename `/blog` → `/insights` + redirect; reskin index | 3 | **done** | 030 |
+| 032 | Reskin Insights post page | 3 | **done** | 031 |
+| 033 | Reskin `/contact` and `/access-request` (forms) | 3 | **done** | 030 |
+| 034 | Reskin `/privacy`, `/terms`, `/signin` | 3 | **done** | 030 |
+| 035 | v2-styled `/platform` stub | 3 | **done** | 030 |
+| 036 | v2-styled `/why-spaarke` stub | 3 | **done** | 030 |
+| 037 | Error + 404 pages styled with v2 system | 3 | **done** | 030 |
 | 040 | Mobile breakpoint audit + fixes | 4 | not-started | 025, 031–037 |
 | 041 | A11y + reduced-motion audit | 4 | not-started | 025, 031–037 |
 | 042 | Image optimization (WebP/AVIF) | 4 | not-started | 025 |

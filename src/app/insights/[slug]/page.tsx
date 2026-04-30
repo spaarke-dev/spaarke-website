@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
-import Container from "@/components/Container";
+import { Shell, Slab } from "@/components/primitives";
 import PostHeader from "@/components/PostHeader";
 import {
   ArticleSidebarNav,
@@ -65,8 +65,8 @@ export default async function BlogPost({ params }: Props) {
     .map((r) => r.post);
 
   return (
-    <section className="py-16 sm:py-20">
-      <Container>
+    <Slab tone="dark">
+      <Shell>
         <div className="mx-auto flex max-w-7xl justify-center gap-8 lg:gap-10">
           {/* Left sidebar — series nav */}
           <div className="hidden w-52 shrink-0 lg:block">
@@ -84,7 +84,7 @@ export default async function BlogPost({ params }: Props) {
               dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             <PostHeader post={post} />
-            <div className="prose prose-neutral max-w-none dark:prose-invert">
+            <div className="prose prose-invert prose-neutral max-w-none">
               {mdxContent}
             </div>
 
@@ -97,7 +97,7 @@ export default async function BlogPost({ params }: Props) {
             <ArticleSidebarMeta post={post} relatedPosts={related} />
           </div>
         </div>
-      </Container>
-    </section>
+      </Shell>
+    </Slab>
   );
 }

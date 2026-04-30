@@ -3,14 +3,14 @@
 ## Quick Recovery
 | Field | Value |
 |-------|-------|
-| **Task** | 030 |
+| **Task** | 040 |
 | **Step** | 0 (not started) |
-| **Status** | Ready to start (Phase 2 complete) |
-| **Next Action** | Build page template pattern for content pages |
+| **Status** | Ready to start (Phases 0-3 complete) |
+| **Next Action** | Mobile breakpoint audit + fixes |
 
 ## Details
-- **Task File:** tasks/030-page-template-pattern.md
-- **Phase:** 3 — Reskin Existing Pages
+- **Task File:** tasks/040-mobile-audit.md
+- **Phase:** 4 — Polish
 - **Started:** —
 
 ## Completed Tasks
@@ -34,6 +34,16 @@
 - **021 GapStats** (2026-04-30) — top hairline, two-column heading+intro / 2×2 stat grid, mockup-version stats with mono italic source attributions ✓
 - **022 Capabilities** (2026-04-30) — five capability rows in zigzag (Operations, Documents & Knowledge, Collaboration, Agents & Automation, Spend & Performance) with screenshots + KEY FEATURES bullets; Microsoft foundation card with 7 logo tiles ✓
 - **023 LOI Diagram** (2026-04-30) — Spaarke container with chrome bar + 2×4 icon grid using CSS mask-image to render currentColor SVGs; gradient arrow connector; Copilot badge with multi-color radial glow + M365 tag ✓
+
+**Phase 3 — Reskin Existing Pages (complete)**
+- **030 Page template pattern** (2026-04-30) — `PageHeader` primitive (eyebrow + H1 + lede block) ✓
+- **031 Rename /blog → /insights** (2026-04-30) — `git mv src/app/blog src/app/insights`; permanent redirects in `next.config.ts`; sitemap, RSS feed URL, `lib/seo.ts`, ArticleSidebar/PostCard/LibrarySection/NextSection all updated; reskinned index with `<Slab tone="dark">` + `<PageHeader>` ✓
+- **032 Reskin Insights post page** (2026-04-30) — Container → Slab+Shell; switched `prose-neutral dark:prose-invert` to fixed `prose-invert` (v2 is dark-only); JSON-LD and structured data preserved ✓
+- **033 Reskin /contact + /access-request** (2026-04-30) — chrome reskinned with PageHeader; forms preserved (full form-primitive system can come later) ✓
+- **034 Reskin /privacy, /terms, /signin** (2026-04-30) — privacy/terms placeholder content kept; new `/signin` stub with Get access + Contact us CTAs ✓
+- **035 /platform v2 stub** (2026-04-30) — eyebrow + H1 + lede + 6 anchor sections (operations, documents, collaboration, automation, spend-performance, microsoft-foundation) so footer Platform-column links resolve ✓
+- **036 /why-spaarke v2 stub** (2026-04-30) — eyebrow + H1 + lede; matches the Closing CTA destination ✓
+- **037 Error + 404 pages** (2026-04-30) — `src/app/not-found.tsx` and `src/app/error.tsx` (Client Component with `reset()` retry button); both use page template ✓
 - **024 Closing** (2026-04-30) — dark slab with subtle radial vignette, single-line headline, "Why Spaarke →" text CTA ✓
 - **025 Compose home** (2026-04-30) — `src/app/page.tsx` renders Hero → Gap → Pillars → Capabilities → LOI → Closing in order ✓
 - **026 Hero screenshot prep** (2026-04-30) — asset already at `public/brand/hero/hero-workspace-dark.png` ✓

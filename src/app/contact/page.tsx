@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Container from "@/components/Container";
+import { PageHeader, Shell, Slab } from "@/components/primitives";
 import ContactForm from "@/components/ContactForm";
 
 export const dynamic = "force-dynamic";
@@ -11,22 +11,18 @@ export const metadata: Metadata = {
 
 export default function Contact() {
   return (
-    <section className="py-16 sm:py-20">
-      <Container>
-        <div className="mx-auto max-w-xl">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Contact Us
-          </h1>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Have a question or want to work together? Fill out the form below
-            and we&apos;ll get back to you as soon as possible.
-          </p>
+    <Slab tone="dark">
+      <Shell>
+        <PageHeader
+          eyebrow="Contact"
+          title="Get in touch."
+          lede="Have a question, a partnership idea, or want to see Spaarke live? Send us a note and we'll come back to you."
+        />
 
-          <div className="mt-10">
-            <ContactForm recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""} />
-          </div>
+        <div className="mt-12 max-w-xl">
+          <ContactForm recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""} />
         </div>
-      </Container>
-    </section>
+      </Shell>
+    </Slab>
   );
 }
