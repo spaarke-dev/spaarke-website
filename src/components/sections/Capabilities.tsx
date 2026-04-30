@@ -9,6 +9,42 @@ import { capabilitiesContent } from "@/content/home/capabilities";
 type Capability = (typeof capabilitiesContent.capabilities)[number];
 type Foundation = typeof capabilitiesContent.foundation;
 
+/**
+ * Synthetic Spaarke app chrome bar — drawn above each capability screenshot
+ * so the screenshots feel framed in the product without requiring fresh
+ * captures that include the top bar.
+ */
+function ProductChrome() {
+  return (
+    <div
+      data-tone="dark"
+      className="bg-bg flex items-center gap-3 px-4 py-2.5"
+      aria-hidden="true"
+    >
+      {/* 9-dot waffle */}
+      <div className="grid grid-cols-3 gap-[3px]">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <span key={i} className="bg-fg-mid block h-[3px] w-[3px] rounded-[1px]" />
+        ))}
+      </div>
+      <Image
+        src="/brand/logos/spaarke-logo-white.svg"
+        alt=""
+        width={70}
+        height={20}
+        className="h-4 w-auto"
+      />
+      <span className="text-fg-mid text-[11px]">Corporate Counsel</span>
+      <div className="ml-auto flex items-center gap-2">
+        <span className="border-line text-fg-mid rounded-md border px-2 py-0.5 text-[10px] font-medium">
+          Copilot
+        </span>
+        <div className="bg-fg-mid h-2.5 w-2.5 rounded-full" />
+      </div>
+    </div>
+  );
+}
+
 export function Capabilities() {
   const { capabilities, foundation } = capabilitiesContent;
 
@@ -38,7 +74,8 @@ function CapabilityRow({ capability }: { capability: Capability }) {
       <div
         className={isImageLeft ? "order-1" : "order-1 md:order-2"}
       >
-        <div className="bg-bg overflow-hidden rounded-xl shadow-lg">
+        <div className="overflow-hidden rounded-xl shadow-lg ring-1 ring-black/5">
+          <ProductChrome />
           <Image
             src={capability.screenshot.src}
             alt={capability.screenshot.alt}

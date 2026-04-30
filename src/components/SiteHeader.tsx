@@ -10,17 +10,17 @@ export default function SiteHeader() {
 
   return (
     <header className="bg-bg border-line sticky top-0 z-50 border-b backdrop-blur-sm">
-      <nav className="px-[var(--spacing-shell-x)] flex items-center justify-between gap-6 py-4 md:py-5">
+      <nav className="px-[var(--spacing-shell-x)] flex items-center justify-between gap-6 py-[21px] md:py-[26px]">
         {/* Left group: logo + page nav */}
         <div className="flex items-center gap-8 md:gap-10">
           <Link href={logo.href} className="flex-shrink-0" aria-label={logo.alt}>
             <Image
               src={logo.src}
               alt={logo.alt}
-              width={140}
-              height={38}
+              width={186}
+              height={50}
               priority
-              className="h-8 w-auto md:h-9"
+              className="h-11 w-auto md:h-12"
             />
           </Link>
           <ul className="hidden items-center gap-7 md:flex">

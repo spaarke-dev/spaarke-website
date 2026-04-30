@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button, Shell, Slab } from "@/components/primitives";
 import { closingContent } from "@/content/home/closing";
 
@@ -6,20 +7,30 @@ export function Closing() {
 
   return (
     <Slab tone="dark" className="relative overflow-hidden">
-      {/* Subtle radial vignette behind the type */}
+      {/* Stronger radial vignette behind the type */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 70%)",
+            "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.06) 35%, rgba(255,255,255,0) 70%)",
         }}
       />
 
       <Shell>
         <div className="relative mx-auto max-w-5xl text-center">
+          {/* Spaarke wordmark above headline */}
+          <Image
+            src="/brand/logos/spaarke-logo-white.svg"
+            alt="Spaarke"
+            width={220}
+            height={60}
+            priority={false}
+            className="mx-auto h-12 w-auto md:h-14"
+          />
+
           <h2
-            className="font-display text-fg font-medium leading-[0.98] tracking-[-0.035em] whitespace-nowrap overflow-hidden text-ellipsis"
+            className="font-display text-fg mt-6 font-medium leading-[0.98] tracking-[-0.035em] whitespace-nowrap overflow-hidden text-ellipsis"
             style={{ fontSize: "clamp(36px, 6vw, 80px)" }}
           >
             {headline}

@@ -10,7 +10,7 @@ export type HeroCTA = {
 };
 
 export type HeroContent = {
-  headline: { line1: string; line2: string };
+  headline: string;
   subhead: string;
   ctas: [HeroCTA, HeroCTA];
   trustStrip: string;
@@ -23,10 +23,7 @@ export type HeroContent = {
 };
 
 export const heroContent: HeroContent = {
-  headline: {
-    line1: "See all sides of",
-    line2: "every matter.",
-  },
+  headline: "See all sides of every matter.",
   subhead:
     "The shared platform for legal departments, business stakeholders, and outside counsel.",
   ctas: [

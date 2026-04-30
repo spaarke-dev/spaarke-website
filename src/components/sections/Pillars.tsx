@@ -17,7 +17,7 @@ export function Pillars() {
               key={pillar.cardLabel}
               className="bg-surface flex flex-col rounded-3xl p-8 shadow-sm md:p-10"
             >
-              <h3 className="text-fg font-display text-xl font-medium leading-tight tracking-tight md:text-2xl">
+              <h3 className="text-fg font-display text-xl font-medium leading-tight tracking-tight md:text-2xl whitespace-pre-line">
                 {pillar.headline}
               </h3>
               <p className="text-fg-mid mt-5 text-[15px] leading-relaxed md:text-base">

@@ -25,27 +25,24 @@ export const pillarsContent: PillarsContent = {
   pillars: [
     {
       cardLabel: "One platform.",
-      headline: "One platform for the work, the data, and the AI.",
+      headline: "One platform,\nbuilt for legal.",
       operationalClaim:
-        "Matters, projects, documents, spend, and AI — connected on one Microsoft 365-native foundation that serves the business, the legal team, and the firms they work with. Replace four point solutions with one platform that knows what a matter is.",
-      callback:
-        "No more bolt-ons. No more parallel logins. No more which tool was that in again?",
+        "The work, the people, the documents, and the AI — connected on one Microsoft 365 foundation that serves the business, the legal team, and the firms they work with.",
+      callback: "The foundation legal builds on.",
     },
     {
       cardLabel: "All sides.",
-      headline: "All sides of the engagement, finally aligned.",
+      headline: "All sides of the engagement,\nfinally aligned.",
       operationalClaim:
         "Business clients, in-house counsel, and outside counsel — working in shared, secure spaces where the matter, the documents, the tasks, and the outcomes live in one record. Ethical walls and matter-level permissions enforced throughout.",
-      callback:
-        "Partnership replaces reconciliation. The business gets answers. The team gets visibility. The firms get clarity.",
+      callback: "Shared sense of truth across stakeholders.",
     },
     {
       cardLabel: "Every matter.",
-      headline: "Every matter, every project, every detail.",
+      headline: "Every matter,\naccountable end-to-end.",
       operationalClaim:
-        "The full scope of legal work — matters, projects, documents, emails, invoices, deadlines, outcomes — connected, findable, governable. Nothing slips between systems because nothing lives outside the platform.",
-      callback:
-        "The work itself is the record. Visibility and governance built in, not bolted on.",
+        "AI agents, automated workflows, performance signals, and spend visibility — connecting every matter to the people responsible, the work in progress, and the outcomes that matter.",
+      callback: "Legal work becomes visible, connected, and intelligent.",
     },
   ],
 };
