@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Heading, Shell, Slab } from "@/components/primitives";
 import PostCard from "@/components/PostCard";
 import type { BlogPostMeta, TagCategories } from "@/lib/blog";
+
+const PAGE_SIZE = 6;
 
 type Props = {
   posts: BlogPostMeta[];
@@ -26,6 +28,7 @@ export function WhySpaarkeLibrary({ posts, tagsByCategory }: Props) {
     topic: "",
     audience: "",
   });
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Audience options = function (roles) + organization (org type) merged
   const audienceOptions = useMemo(
@@ -52,6 +55,14 @@ export function WhySpaarkeLibrary({ posts, tagsByCategory }: Props) {
       return true;
     });
   }, [posts, search, filters]);
+
+  // Reset to first page whenever search or filters change.
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [search, filters]);
+
+  const visiblePosts = filtered.slice(0, visibleCount);
+  const hasMore = filtered.length > visibleCount;
 
   const update = (key: FilterKey, value: string) =>
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -112,7 +123,8 @@ export function WhySpaarkeLibrary({ posts, tagsByCategory }: Props) {
         </div>
 
         <div className="text-fg-mid mt-3 text-sm">
-          Showing {filtered.length} of {posts.length}
+          Showing {visiblePosts.length} of {filtered.length}
+          {filtered.length !== posts.length && ` (filtered from ${posts.length})`}
         </div>
 
         {/* Cards */}
@@ -121,11 +133,30 @@ export function WhySpaarkeLibrary({ posts, tagsByCategory }: Props) {
             No articles match your filters.
           </p>
         ) : (
-          <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3 lg:gap-12">
-            {filtered.map((post) => (
-              <PostCard key={post.slug} post={post} variant="portrait" />
-            ))}
-          </div>
+          <>
+            <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10 lg:gap-12">
+              {visiblePosts.map((post) => (
+                <PostCard key={post.slug} post={post} variant="portrait" />
+              ))}
+            </div>
+
+            {hasMore && (
+              <div className="mt-12 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setVisibleCount((n) => n + PAGE_SIZE)
+                  }
+                  className="border-line text-fg hover:border-fg focus-visible:ring-spaarke-blue rounded-full border px-6 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2"
+                >
+                  Load more articles
+                  <span className="text-fg-mid ml-2 font-normal">
+                    ({filtered.length - visibleCount} more)
+                  </span>
+                </button>
+              </div>
+            )}
+          </>
         )}
       </Shell>
     </Slab>

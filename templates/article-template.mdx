@@ -1,0 +1,144 @@
+---
+# ============================================================================
+# ARTICLE TEMPLATE
+# ----------------------------------------------------------------------------
+# Copy this file into `content/blog/` with a real filename:
+#
+#     content/blog/<YYYY-MM-DD>-<kebab-case-slug>.mdx
+#
+# Example:
+#     content/blog/2026-05-15-the-iq-stack-explained.mdx
+#
+# The date prefix is dropped automatically when generating the URL slug,
+# so the published URL becomes:
+#
+#     /why-spaarke/the-iq-stack-explained
+#
+# Anything in this comment block is just the YAML doc separator and gets
+# stripped — fields below are real frontmatter that the site reads.
+# ============================================================================
+
+# Page title — used as <h1>, <title>, og:title, twitter:title
+title: "The Article Title Goes Here"
+
+# 1-2 sentence SEO meta description (~150-160 chars). Search engines + social
+# previews use this. Keep it concrete; avoid vague marketing language.
+description: "A precise, search-optimized description that tells a reader exactly what they will learn from this article."
+
+# OPTIONAL: longer narrative summary used as fallback if `keyTakeaways` is
+# absent. AI crawlers also pull from this. Treat as a "tl;dr paragraph".
+summary: "When keyTakeaways is not provided, this paragraph appears under the 'Key Takeaways' header on the article page. Keep it concrete and dense — the reader who never scrolls past it should still understand the thesis."
+
+# RECOMMENDED: 3-5 bullet points shown at the top of the article page.
+# These should let a busy reader skip the body and still know:
+#   - What the article argues
+#   - Why it matters
+#   - The most actionable conclusion
+keyTakeaways:
+  - First takeaway — the headline thesis in one sentence.
+  - Second takeaway — the most important supporting fact or claim.
+  - Third takeaway — what the reader should DO with this information.
+  - Optional fourth bullet for nuance, scope, or caveat.
+
+# Date the article is dated as written (used in JSON-LD as datePublished
+# and in sort order — newest first in the library).
+date: "2026-05-15"
+
+# OPTIONAL: separate "publication" date if you want a delay between writing
+# and going live. Used as dateModified in JSON-LD and sitemap lastModified.
+posted: "2026-05-15"
+
+# Byline shown under the title.
+author: "Spaarke Team"
+
+# Hero image — appears as the 21:9 banner at the top of the article and as
+# the thumbnail on article cards / carousel slides. If omitted, the page
+# uses a brand gradient fallback.
+#
+# Storage convention:
+#   public/articles/<slug>/hero.jpg   (or .png / .webp)
+#
+# Recommended: 1600x900 (16:9) or wider, JPG ~75% quality, < 250 KB.
+# (The 21:9 article banner crops it slightly; social previews use 1200x630
+# centered. A 16:9 hero works for both.)
+heroImage: "/articles/your-slug/hero.jpg"
+
+# OPTIONAL: explicit display order for the homepage / featured slots.
+# Lower numbers appear first; posts without `order` sort by date desc.
+# order: 1
+
+# OPTIONAL: marks this post as one of the rotating "featured" slides on
+# /why-spaarke. Slot 1, 2, or 3 — only three featured posts at any time.
+# featured: true
+# featuredOrder: 2
+
+# Tags — categorical filters powering the library page filters.
+# Use existing values where possible; new values become new filter options.
+#
+#   organization  — type of organization (corporate-legal, law-firm)
+#   function      — role / audience (attorney, operations, executive, it)
+#   topic         — subject matter (matter-management, legal-spend, ...)
+#   theme         — content "track" or series (legal-operations-intelligence,
+#                   iq-stack, thought-leadership, microsoft-ecosystem, ...)
+tags:
+  organization: [corporate-legal, law-firm]
+  function: [attorney, operations]
+  topic: [matter-management]
+  theme: [legal-operations-intelligence, thought-leadership]
+
+# Set to `true` while drafting — the post is excluded from the library,
+# sitemap, and RSS until this is `false` (or the field is removed).
+draft: true
+---
+
+## Opening hook
+
+Start with the concrete claim, scenario, or stat that makes the article
+feel necessary. Not "in today's fast-paced world..." — give the reader a
+reason to keep reading by sentence two.
+
+## Section heading
+
+Each `## ` becomes an entry in the right-side **On this page** TOC if the
+article has 3 or more H2/H3 headings. Use sentence case; aim for 4–8 words
+per heading. Headings are also linkable (each gets an auto-generated `id`).
+
+### Sub-section
+
+`### ` headings appear indented under their H2 in the TOC. Use sparingly —
+deep nesting hurts skimming.
+
+## How to add an inline image
+
+Place the file in the same folder as the hero:
+
+    public/articles/your-slug/diagram-1.png
+
+Reference it in MDX:
+
+```markdown
+![Short, descriptive alt text](/articles/your-slug/diagram-1.png)
+```
+
+If the image is purely decorative, use empty alt text: `![](...)`. If it
+conveys information, describe the information in the alt text — not just
+the visual ("Bar chart of legal spend by department, FY2025").
+
+## How to add code, quotes, callouts
+
+Code fences:
+
+```ts
+function example() {
+  return "Code blocks render with syntax-highlighted prose styling.";
+}
+```
+
+Block quotes:
+
+> Use block quotes for source material or pulled-out emphasis.
+
+## Closing
+
+End with the implication — what the reader should do, watch for, or
+take away. Short paragraphs (2–4 sentences) read better than long ones.

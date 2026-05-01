@@ -19,6 +19,8 @@ export type BlogPost = {
   title: string;
   description: string;
   summary?: string;
+  /** Bullet-list of takeaways shown at the top of the article page. */
+  keyTakeaways?: string[];
   date: string;
   posted?: string;
   author: string;
@@ -85,6 +87,50 @@ function normalizeTags(raw: unknown): TagCategories {
   return emptyTags();
 }
 
+/** Estimated reading time in minutes for the given MDX content (200 wpm). */
+export function readingTimeMinutes(content: string): number {
+  const text = content
+    .replace(/```[\s\S]*?```/g, "") // strip code fences
+    .replace(/`[^`]*`/g, "") // strip inline code
+    .replace(/<[^>]+>/g, ""); // strip JSX tags
+  const words = text.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+/** Convert a heading text into a URL-safe slug (matches rehype-slug output). */
+function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
+export type TocItem = { id: string; text: string; depth: 2 | 3 };
+
+/** Extract H2 + H3 headings from MDX source for table of contents rendering. */
+export function extractToc(content: string): TocItem[] {
+  const items: TocItem[] = [];
+  const lines = content.split("\n");
+  let inFence = false;
+
+  for (const line of lines) {
+    if (line.trim().startsWith("```")) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+
+    const m = /^(#{2,3})\s+(.+?)\s*$/.exec(line);
+    if (!m) continue;
+    const depth = m[1].length === 2 ? 2 : 3;
+    const text = m[2].replace(/[*_`]/g, "");
+    items.push({ id: slugifyHeading(text), text, depth: depth as 2 | 3 });
+  }
+
+  return items;
+}
+
 /** Flatten structured tags into a single string array (for SEO, RSS, etc.). */
 export function flattenTags(tags: TagCategories): string[] {
   return [
@@ -125,6 +171,9 @@ function buildMeta(
     title: data.title as string,
     description: data.description as string,
     summary: (data.summary as string) ?? undefined,
+    keyTakeaways: Array.isArray(data.keyTakeaways)
+      ? data.keyTakeaways.filter((t): t is string => typeof t === "string")
+      : undefined,
     date: data.date as string,
     posted: (data.posted as string) ?? undefined,
     author: data.author as string,

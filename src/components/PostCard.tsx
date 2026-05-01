@@ -22,12 +22,15 @@ export default function PostCard({ post, variant = "list" }: PostCardProps) {
     return (
       <article className="group flex flex-col overflow-hidden rounded-xl border border-border bg-background p-5 transition-all hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-md">
         <Link href={`/why-spaarke/${post.slug}`} className="flex h-full flex-col">
-          {/* Top row: small image + title/meta block */}
-          <div className="flex gap-6 sm:gap-7">
+          {/* Top row: small image + title/meta block. Image stretches to match
+              the text block height so date/author always sit within image bounds
+              even when title wraps to 2-3 lines. */}
+          <div className="flex items-stretch gap-6 sm:gap-7">
             {/* Image / gradient thumbnail — small accent, not the focal point */}
             <div
-              className="relative aspect-square w-24 flex-shrink-0 overflow-hidden rounded-md sm:w-28"
+              className="relative w-24 flex-shrink-0 self-stretch overflow-hidden rounded-md sm:w-28"
               style={{
+                minHeight: "96px",
                 background: post.heroImage
                   ? undefined
                   : "linear-gradient(135deg, #1a1f3a 0%, #2d1f5e 50%, #4a1f4f 100%)",
@@ -62,18 +65,18 @@ export default function PostCard({ post, variant = "list" }: PostCardProps) {
                 {post.title}
               </h3>
               <div
-                className="text-muted-foreground mt-2 flex items-center gap-1.5"
+                className="text-muted-foreground mt-2 flex flex-wrap items-center gap-x-2 gap-y-1"
                 style={{ fontSize: "clamp(13px, 0.85vw, 15px)" }}
               >
-                <CalendarLtr20Regular className="h-3.5 w-3.5" />
-                <time dateTime={post.date}>{formattedDate}</time>
+                <span className="flex items-center gap-1.5">
+                  <CalendarLtr20Regular className="h-3.5 w-3.5" />
+                  <time dateTime={post.date}>{formattedDate}</time>
+                </span>
+                <span aria-hidden="true" className="opacity-50">
+                  ·
+                </span>
+                <span>{post.author}</span>
               </div>
-              <p
-                className="text-muted-foreground mt-1"
-                style={{ fontSize: "clamp(13px, 0.85vw, 15px)" }}
-              >
-                {post.author}
-              </p>
             </div>
           </div>
 
