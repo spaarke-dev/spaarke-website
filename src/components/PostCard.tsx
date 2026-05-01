@@ -43,6 +43,7 @@ export default function PostCard({ post, variant = "list" }: PostCardProps) {
                   fill
                   sizes="120px"
                   className="object-cover"
+                  style={{ objectPosition: post.heroImagePosition ?? "center" }}
                 />
               ) : (
                 <div

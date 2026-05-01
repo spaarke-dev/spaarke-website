@@ -86,6 +86,7 @@ export function ArticleHeader({ post, readingTimeMin }: Props) {
             priority
             sizes="(max-width: 768px) 100vw, 800px"
             className="object-cover"
+            style={{ objectPosition: post.heroImagePosition ?? "center" }}
           />
         ) : (
           <div

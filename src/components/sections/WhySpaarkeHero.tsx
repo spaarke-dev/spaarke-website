@@ -88,6 +88,7 @@ export function WhySpaarkeHero({ posts }: Props) {
                   fill
                   sizes="(max-width: 768px) 100vw, 600px"
                   className="object-cover"
+                  style={{ objectPosition: slide.heroImagePosition ?? "center" }}
                   priority={active === 0}
                 />
               ) : (

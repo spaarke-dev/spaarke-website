@@ -46,6 +46,7 @@ export function ArticleRelated({ posts }: Props) {
                   fill
                   sizes="64px"
                   className="object-cover"
+                  style={{ objectPosition: post.heroImagePosition ?? "center" }}
                 />
               )}
             </div>

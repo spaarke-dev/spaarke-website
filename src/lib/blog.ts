@@ -27,6 +27,8 @@ export type BlogPost = {
   tags: TagCategories;
   draft: boolean;
   heroImage?: string;
+  /** CSS object-position value for hero crops (e.g. "right", "center", "30% 50%"). Defaults to "center". */
+  heroImagePosition?: string;
   /** Display order for homepage cards. Lower numbers appear first. Posts without order sort after ordered posts by date. */
   order?: number;
   /** Marks the post as one of the rotating featured slides on /why-spaarke. */
@@ -180,6 +182,10 @@ function buildMeta(
     tags: normalizeTags(data.tags),
     draft: data.draft === true,
     heroImage: (data.heroImage as string) ?? undefined,
+    heroImagePosition:
+      typeof data.heroImagePosition === "string"
+        ? data.heroImagePosition
+        : undefined,
     order: typeof data.order === "number" ? data.order : undefined,
     featured: data.featured === true,
     featuredOrder:
