@@ -29,7 +29,7 @@ files in this repo.
 | `content/blog/<YYYY-MM-DD>-<slug>.mdx` | Article source. The date prefix is dropped from the URL — `2026-05-15-the-iq-stack.mdx` becomes `/why-spaarke/the-iq-stack`. |
 | `templates/article-template.mdx` | Starting-point template. Has every frontmatter field commented + body scaffolding. |
 | `templates/README.md` | This file. |
-| `resources/articles/` | **Raw, unshipped image library.** Source images at full resolution. Not served by the site. |
+| `resources/articles/` | **Raw, unshipped image library — local only, gitignored.** Source images at full resolution. Not served by the site, not committed to the repo (would inflate deploy artifacts). |
 | `public/articles/<slug>/` | **Published images** for a specific article. Served at `/articles/<slug>/...`. Claude (or you) copy from `resources/articles/` to here when writing the post. |
 
 ---
