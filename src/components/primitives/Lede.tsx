@@ -7,7 +7,7 @@ type LedeProps = {
 
 export function Lede({ children, className }: LedeProps) {
   const merged = [
-    "font-body text-fg-mid text-[clamp(18px,1.4vw,22px)] leading-[1.5] tracking-[-0.005em]",
+    "font-body text-fg-mid text-[clamp(18px,1.4vw,25px)] leading-[1.5] tracking-[-0.005em]",
     className,
   ]
     .filter(Boolean)

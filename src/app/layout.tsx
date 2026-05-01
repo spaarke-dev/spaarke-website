@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   alternates: {
     types: {
-      "application/rss+xml": "/insights/rss.xml",
+      "application/rss+xml": "/why-spaarke/rss.xml",
     },
   },
   openGraph: {
@@ -97,9 +97,18 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${interTight.variable} ${inter.variable} ${jetbrainsMono.variable} flex min-h-screen flex-col antialiased`}
       >
         <ThemeProvider>
+          {/* Skip link — first focusable element, hidden until focused */}
+          <a
+            href="#main-content"
+            className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-[100] focus-visible:rounded-md focus-visible:bg-foreground focus-visible:px-4 focus-visible:py-2 focus-visible:text-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spaarke-blue"
+          >
+            Skip to main content
+          </a>
           <NotificationBar />
           <SiteHeader />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
           <SiteFooter />
         </ThemeProvider>
       </body>

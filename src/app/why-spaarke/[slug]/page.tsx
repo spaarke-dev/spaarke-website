@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return generateBlogPostMetadata(post, siteUrl);
 }
 
-export default async function BlogPost({ params }: Props) {
+export default async function WhySpaarkeArticle({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
@@ -48,10 +48,8 @@ export default async function BlogPost({ params }: Props) {
 
   const jsonLd = generateBlogJsonLd(post, siteUrl);
 
-  // Fetch all posts for series nav + related posts
   const allPosts = getAllPosts();
 
-  // Compute related posts: rank by shared tags, exclude current, take top 3
   const currentTags = new Set(flattenTags(post.tags));
   const related = allPosts
     .filter((p) => p.slug !== slug)
@@ -68,12 +66,10 @@ export default async function BlogPost({ params }: Props) {
     <Slab tone="dark">
       <Shell>
         <div className="mx-auto flex max-w-7xl justify-center gap-8 lg:gap-10">
-          {/* Left sidebar — series nav */}
           <div className="hidden w-52 shrink-0 lg:block">
             <ArticleSidebarNav currentSlug={slug} posts={allPosts} />
           </div>
 
-          {/* Center — article content */}
           <article
             className="min-w-0 max-w-2xl flex-1"
             itemScope
@@ -88,11 +84,9 @@ export default async function BlogPost({ params }: Props) {
               {mdxContent}
             </div>
 
-            {/* Mobile CTA — shown below article on small screens */}
             <ArticleCTA className="mt-10 max-w-md lg:hidden" />
           </article>
 
-          {/* Right sidebar — meta, related, CTA */}
           <div className="hidden w-60 shrink-0 lg:block">
             <ArticleSidebarMeta post={post} relatedPosts={related} />
           </div>

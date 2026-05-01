@@ -24,8 +24,8 @@ export async function GET() {
     .map(
       (post) => `    <item>
       <title>${escapeXml(post.title)}</title>
-      <link>${siteUrl}/insights/${post.slug}</link>
-      <guid isPermaLink="true">${siteUrl}/insights/${post.slug}</guid>
+      <link>${siteUrl}/why-spaarke/${post.slug}</link>
+      <guid isPermaLink="true">${siteUrl}/why-spaarke/${post.slug}</guid>
       <description>${escapeXml(post.summary ?? post.description)}</description>
       <pubDate>${toRfc822(post.date)}</pubDate>
       <author>${escapeXml(post.author)}</author>
@@ -38,11 +38,11 @@ ${flattenTags(post.tags).map((tag) => `      <category>${escapeXml(tag)}</catego
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Spaarke — Legal Operations Intelligence</title>
-    <link>${siteUrl}/insights</link>
+    <link>${siteUrl}/why-spaarke</link>
     <description>Insights on Legal Operations Intelligence, AI strategy for legal departments, and the Microsoft-native approach to raising the IQ of legal work.</description>
     <language>en-us</language>
     <lastBuildDate>${posts.length > 0 ? toRfc822(posts[0].date) : toRfc822(new Date().toISOString())}</lastBuildDate>
-    <atom:link href="${siteUrl}/insights/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="${siteUrl}/why-spaarke/rss.xml" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>
 </rss>`;

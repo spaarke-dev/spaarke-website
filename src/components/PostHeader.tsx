@@ -51,7 +51,7 @@ export default function PostHeader({ post }: PostHeaderProps) {
         <div className="relative mt-8 aspect-video overflow-hidden rounded-xl">
           <Image
             src={post.heroImage}
-            alt={post.title}
+            alt=""
             fill
             className="object-cover"
             priority

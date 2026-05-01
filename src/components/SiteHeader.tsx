@@ -13,7 +13,11 @@ export default function SiteHeader() {
       <nav className="px-[var(--spacing-shell-x)] flex items-center justify-between gap-6 py-[21px] md:py-[26px]">
         {/* Left group: logo + page nav */}
         <div className="flex items-center gap-8 md:gap-10">
-          <Link href={logo.href} className="flex-shrink-0" aria-label={logo.alt}>
+          <Link
+            href={logo.href}
+            className="focus-visible:ring-spaarke-blue flex-shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2"
+            aria-label={logo.alt}
+          >
             <Image
               src={logo.src}
               alt={logo.alt}
@@ -28,7 +32,7 @@ export default function SiteHeader() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-fg-mid hover:text-fg font-display text-[15px] font-medium transition-colors"
+                  className="text-fg-mid hover:text-fg focus-visible:ring-spaarke-blue font-display rounded-sm px-1 py-1 text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2"
                 >
                   {link.label}
                 </Link>
@@ -79,7 +83,7 @@ export default function SiteHeader() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-fg-mid hover:text-fg font-display block rounded-md px-2 py-2 text-base font-medium transition-colors hover:bg-surface"
+                  className="text-fg-mid hover:text-fg hover:bg-surface focus-visible:ring-spaarke-blue font-display block rounded-md px-2 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}

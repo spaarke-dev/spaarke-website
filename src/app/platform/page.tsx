@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Platform",
   description:
     "The Spaarke platform — Operations, Documents & Knowledge, Collaboration, Agents & Automation, Spend & Performance, and the Microsoft foundation.",
+  robots: { index: false, follow: false },
 };
 
 const SECTIONS = [

@@ -98,9 +98,9 @@ function FoundationCard({ foundation }: { foundation: Foundation }) {
         {/* Left: copy */}
         <div>
           <Eyebrow>{foundation.eyebrow}</Eyebrow>
-          <h3 className="font-display text-fg mt-4 text-2xl font-medium leading-tight tracking-tight md:text-3xl">
+          <h2 className="font-display text-fg mt-4 text-2xl font-medium leading-tight tracking-tight md:text-3xl">
             {foundation.heading}
-          </h3>
+          </h2>
           <p className="text-fg-mid mt-5 max-w-md text-[15px] leading-relaxed">
             {foundation.body}
           </p>

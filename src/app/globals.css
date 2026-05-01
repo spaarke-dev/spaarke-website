@@ -26,7 +26,7 @@
   /* Text */
   --v2-fg: #f5f5f5;            /* primary */
   --v2-fg-mid: rgba(245, 245, 245, 0.66);   /* secondary */
-  --v2-fg-low: rgba(245, 245, 245, 0.42);   /* tertiary / captions */
+  --v2-fg-low: rgba(245, 245, 245, 0.55);   /* tertiary / captions — WCAG AA 4.5:1 over bg */
 
   /* Borders / hairlines */
   --v2-line: rgba(255, 255, 255, 0.10);
@@ -50,7 +50,7 @@
   --v2-surface-2: #f0f0ee;
   --v2-fg: #0a0a0a;
   --v2-fg-mid: rgba(10, 10, 10, 0.62);
-  --v2-fg-low: rgba(10, 10, 10, 0.42);
+  --v2-fg-low: rgba(10, 10, 10, 0.60); /* WCAG AA 4.5:1 over light bg */
   --v2-line: rgba(10, 10, 10, 0.10);
   --v2-line-strong: rgba(10, 10, 10, 0.18);
 }

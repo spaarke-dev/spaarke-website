@@ -72,7 +72,7 @@ export function ArticleSidebarNav({
                   </span>
                 ) : (
                   <Link
-                    href={`/insights/${post.slug}`}
+                    href={`/why-spaarke/${post.slug}`}
                     className="block border-l-2 border-transparent py-1.5 pl-3 text-sm text-muted-foreground transition-colors hover:border-border hover:text-foreground"
                   >
                     {idx + 1}. {post.title}
@@ -171,7 +171,7 @@ export function ArticleSidebarMeta({
             {relatedPosts.map((related) => (
               <Link
                 key={related.slug}
-                href={`/insights/${related.slug}`}
+                href={`/why-spaarke/${related.slug}`}
                 className="block rounded-lg border border-border bg-muted/30 px-3 py-2.5 transition-colors hover:bg-muted/60 dark:bg-muted/10 dark:hover:bg-muted/25"
               >
                 <p className="text-sm font-medium leading-snug text-foreground">

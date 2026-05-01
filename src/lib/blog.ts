@@ -27,6 +27,10 @@ export type BlogPost = {
   heroImage?: string;
   /** Display order for homepage cards. Lower numbers appear first. Posts without order sort after ordered posts by date. */
   order?: number;
+  /** Marks the post as one of the rotating featured slides on /why-spaarke. */
+  featured?: boolean;
+  /** Slot 1, 2, or 3 in the featured carousel. */
+  featuredOrder?: number;
   content: string;
 };
 
@@ -128,6 +132,9 @@ function buildMeta(
     draft: data.draft === true,
     heroImage: (data.heroImage as string) ?? undefined,
     order: typeof data.order === "number" ? data.order : undefined,
+    featured: data.featured === true,
+    featuredOrder:
+      typeof data.featuredOrder === "number" ? data.featuredOrder : undefined,
   };
 }
 
@@ -198,6 +205,17 @@ export function getPostBySlug(slug: string): BlogPost | null {
   }
 
   return null;
+}
+
+/** Return only the posts marked `featured: true`, sorted by `featuredOrder` ascending. */
+export function getFeaturedPosts(): BlogPostMeta[] {
+  return getAllPosts()
+    .filter((p) => p.featured)
+    .sort(
+      (a, b) =>
+        (a.featuredOrder ?? Number.POSITIVE_INFINITY) -
+        (b.featuredOrder ?? Number.POSITIVE_INFINITY),
+    );
 }
 
 /** Return a sorted array of unique tags across all published posts, organized by category. */

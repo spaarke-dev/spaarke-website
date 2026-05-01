@@ -47,7 +47,7 @@ export function generateBlogPostMetadata(
   post: BlogPostMeta,
   siteUrl: string,
 ): Metadata {
-  const url = `${siteUrl}/insights/${post.slug}`;
+  const url = `${siteUrl}/why-spaarke/${post.slug}`;
   const ogImage = post.heroImage ?? `${siteUrl}/images/og-default.png`;
   const allTags = flattenTags(post.tags);
 
@@ -133,7 +133,7 @@ export function generateBlogJsonLd(
   post: BlogPostMeta,
   siteUrl: string,
 ): ArticleJsonLd {
-  const url = `${siteUrl}/insights/${post.slug}`;
+  const url = `${siteUrl}/why-spaarke/${post.slug}`;
   const allTags = flattenTags(post.tags);
 
   // Build "about" entities from topic and theme tags for AI understanding

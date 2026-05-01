@@ -189,7 +189,7 @@ function ArticleCard({
 
   return (
     <Link
-      href={`/insights/${slug}`}
+      href={`/why-spaarke/${slug}`}
       className="group flex flex-col overflow-hidden rounded-lg border border-border bg-background transition-shadow hover:shadow-lg"
       style={{ aspectRatio: isMobile ? "auto" : "2/3" }}
     >

@@ -12,12 +12,9 @@ export type NavLink = {
 };
 
 export const navLinks: { left: NavLink[]; right: NavLink[] } = {
-  left: [
-    { label: "Platform", href: "/platform" },
-    { label: "Why Spaarke", href: "/why-spaarke" },
-    { label: "Insights", href: "/insights" },
-  ],
+  left: [],
   right: [
+    { label: "Why Spaarke", href: "/why-spaarke" },
     { label: "Contact us", href: "/contact" },
     { label: "Sign in", href: "/signin" },
   ],

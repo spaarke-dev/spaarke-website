@@ -21,7 +21,7 @@ export default function SiteFooter() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-fg-mid hover:text-fg text-sm transition-colors"
+                      className="text-fg-mid hover:text-fg focus-visible:ring-spaarke-blue rounded-sm text-sm transition-colors focus-visible:outline-none focus-visible:ring-2"
                     >
                       {link.label}
                     </Link>

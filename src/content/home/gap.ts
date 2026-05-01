@@ -27,7 +27,7 @@ export const gapContent: GapContent = {
   stats: [
     {
       value: "77%",
-      label: "of in-house teams face increasing workload",
+      label: "report increasing workloads",
       detail:
         "— while business clients seek greater visibility and quicker turnaround",
       source: "Axiom 2026 Global In-House Legal Study",
@@ -40,13 +40,13 @@ export const gapContent: GapContent = {
     },
     {
       value: "79%",
-      label: "are pressured to cut outside counsel spend",
+      label: "must reduce outside counsel spend",
       detail: "—but 57% can’t quantify the savings they achieve",
       source: "LegalBillReview / In-House Connect, 2025",
     },
     {
       value: "1 in 5",
-      label: "legal departments has reached AI maturity",
+      label: "have reached AI maturity",
       detail:
         "— even as 75% have raised AI budgets and 66% are accelerating adoption.",
       source: "Axiom 2025 Legal AI Report",

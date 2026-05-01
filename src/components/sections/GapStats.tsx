@@ -1,4 +1,4 @@
-import { Heading, Shell, Slab } from "@/components/primitives";
+import { Shell, Slab } from "@/components/primitives";
 import { gapContent } from "@/content/home/gap";
 
 export function GapStats() {
@@ -11,11 +11,14 @@ export function GapStats() {
           <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.6fr] md:gap-16 lg:gap-24">
             {/* Left: heading + intro */}
             <div>
-              <Heading level={2}>
-                {heading.line1}
+              <h2
+                className="font-display text-fg font-medium leading-[1.05] tracking-[-0.025em]"
+                style={{ fontSize: "clamp(32px, 3.4vw, 52px)" }}
+              >
+                <span className="md:whitespace-nowrap">{heading.line1}</span>
                 <br />
-                {heading.line2}
-              </Heading>
+                <span className="md:whitespace-nowrap">{heading.line2}</span>
+              </h2>
               <p className="text-fg-mid mt-6 max-w-[36ch] text-lg leading-relaxed md:text-xl">
                 {intro}
               </p>
