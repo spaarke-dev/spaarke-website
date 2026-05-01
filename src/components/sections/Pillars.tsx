@@ -1,17 +1,13 @@
-import { Heading, Shell, Slab } from "@/components/primitives";
+import { Shell, Slab } from "@/components/primitives";
 import { pillarsContent } from "@/content/home/pillars";
 
 export function Pillars() {
-  const { umbrellaHeading, pillars } = pillarsContent;
+  const { pillars } = pillarsContent;
 
   return (
-    <Slab tone="light">
+    <Slab tone="light" className="pt-12 pb-8 md:pt-16 md:pb-12">
       <Shell>
-        <div className="mx-auto max-w-5xl text-center">
-          <Heading level={2}>{umbrellaHeading}</Heading>
-        </div>
-
-        <div className="mt-12 grid grid-cols-1 gap-6 md:mt-16 md:grid-cols-3 md:gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
           {pillars.map((pillar) => (
             <article
               key={pillar.cardLabel}

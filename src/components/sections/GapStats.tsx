@@ -7,8 +7,7 @@ export function GapStats() {
   return (
     <Slab tone="dark">
       <Shell>
-        {/* Top hairline */}
-        <div className="border-line border-t pt-12 md:pt-16">
+        <div>
           <div className="grid grid-cols-1 gap-12 md:grid-cols-[1fr_1.6fr] md:gap-16 lg:gap-24">
             {/* Left: heading + intro */}
             <div>

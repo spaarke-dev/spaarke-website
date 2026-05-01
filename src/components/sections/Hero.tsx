@@ -1,18 +1,25 @@
 import Image from "next/image";
-import { Heading, Lede, Shell, Slab } from "@/components/primitives";
+import { Lede, Shell, Slab } from "@/components/primitives";
 import { heroContent } from "@/content/home/hero";
 import { HeroCTAs } from "./HeroCTAs";
 
 export function Hero() {
-  const { headline, subhead, ctas, trustStrip, screenshot } = heroContent;
+  const { headline, subhead, ctas, screenshot } = heroContent;
 
   return (
     <Slab tone="dark" className="pt-24 md:pt-32 pb-0">
       <Shell>
-        <div className="mx-auto max-w-5xl text-center">
-          <Heading level={1}>{headline}</Heading>
-          <div className="mt-8 mx-auto max-w-2xl">
-            <Lede>{subhead}</Lede>
+        <div className="mx-auto max-w-6xl text-center">
+          <h1
+            className="font-display text-fg font-medium leading-[0.98] tracking-[-0.035em]"
+            style={{ fontSize: "clamp(40px, 7vw, 104px)" }}
+          >
+            {headline.line1}
+            <br />
+            {headline.line2}
+          </h1>
+          <div className="mt-8">
+            <Lede className="md:whitespace-nowrap">{subhead}</Lede>
           </div>
           <div className="mt-12">
             <HeroCTAs ctas={ctas} />
@@ -20,43 +27,42 @@ export function Hero() {
         </div>
       </Shell>
 
-      {/* Full-width product screenshot — depth effect via layered shadow + subtle inner gradient */}
-      <div className="px-[var(--spacing-shell-x)] mt-20 md:mt-28">
-        <div
-          className="relative mx-auto max-w-6xl overflow-hidden rounded-xl border border-line"
-          style={{
-            backgroundColor: "var(--v2-bg)",
-            boxShadow:
-              "0 50px 100px -20px rgba(0,0,0,0.85), 0 30px 60px -30px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06)",
-          }}
-        >
-          <Image
-            src={screenshot.src}
-            alt={screenshot.alt}
-            width={screenshot.width}
-            height={screenshot.height}
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
-            className="h-auto w-full"
-          />
-          {/* Soft inner bottom gradient — adds depth/grounding to the frame */}
+      {/* Full-width product screenshot — soft white-blue footlight glow beneath, clean dark on top/sides, hard black cutoff at bottom */}
+      <div className="relative overflow-hidden px-[var(--spacing-shell-x)] mt-20 md:mt-28 pb-20 md:pb-32">
+        <div className="relative mx-auto max-w-7xl">
+          {/* Footlight glow — wider, pooled white-blue ambient light beneath the screenshot */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3"
+            className="pointer-events-none absolute left-1/2 -translate-x-1/2"
             style={{
+              width: "180%",
+              height: "120%",
+              bottom: "-65%",
               background:
-                "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.18) 100%)",
+                "radial-gradient(ellipse 60% 55% at 50% 48%, rgba(235,242,255,0.78) 0%, rgba(210,225,255,0.55) 22%, rgba(175,200,250,0.32) 45%, rgba(130,165,235,0.14) 68%, rgba(80,120,220,0.04) 85%, rgba(0,0,0,0) 100%)",
+              filter: "blur(36px)",
             }}
           />
+          {/* Screenshot frame — sits on top of the glow, dark frame floats over it */}
+          <div
+            className="relative overflow-hidden rounded-xl"
+            style={{
+              boxShadow:
+                "0 30px 60px -10px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.08)",
+            }}
+          >
+            <Image
+              src={screenshot.src}
+              alt={screenshot.alt}
+              width={screenshot.width}
+              height={screenshot.height}
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
+              className="h-auto w-full"
+            />
+          </div>
         </div>
       </div>
-
-      {/* Trust strip */}
-      <Shell>
-        <p className="text-fg-low mt-10 mb-12 text-center text-sm md:text-[15px]">
-          {trustStrip}
-        </p>
-      </Shell>
     </Slab>
   );
 }

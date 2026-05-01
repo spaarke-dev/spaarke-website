@@ -7,26 +7,36 @@ export function Closing() {
 
   return (
     <Slab tone="dark" className="relative overflow-hidden">
-      {/* Stronger radial vignette behind the type */}
+      {/* Strong radial vignette — primary glow behind the wordmark */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.06) 35%, rgba(255,255,255,0) 70%)",
+            "radial-gradient(ellipse 70% 65% at 50% 45%, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.14) 28%, rgba(255,255,255,0.04) 55%, rgba(255,255,255,0) 75%)",
+        }}
+      />
+      {/* Secondary blue-tinted halo for added depth */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 45% at 50% 40%, rgba(0,11,255,0.18) 0%, rgba(0,11,255,0) 60%)",
+          filter: "blur(20px)",
         }}
       />
 
       <Shell>
         <div className="relative mx-auto max-w-5xl text-center">
-          {/* Spaarke wordmark above headline */}
+          {/* Spaarke wordmark above headline — much larger */}
           <Image
             src="/brand/logos/spaarke-logo-white.svg"
             alt="Spaarke"
-            width={220}
-            height={60}
+            width={520}
+            height={140}
             priority={false}
-            className="mx-auto h-12 w-auto md:h-14"
+            className="mx-auto h-24 w-auto md:h-32 lg:h-36"
           />
 
           <h2
