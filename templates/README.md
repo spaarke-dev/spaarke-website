@@ -212,6 +212,38 @@ Copy/paste-friendly prompts for common tasks:
 
 ---
 
+## Replacing an existing hero — IMPORTANT
+
+If you're publishing a *new* article, just save the hero as `hero.jpg` (or
+`.svg`) and you're done. The URL is brand new, no caching to worry about.
+
+If you're **replacing the hero on an article that's already deployed**, you
+must change the filename or browsers and Azure's CDN will keep serving
+the old image for up to a year (they cache by URL, not by content).
+
+Use a version suffix:
+
+```
+public/articles/welcome-to-spaarke/hero.jpg     ← original (deployed)
+public/articles/welcome-to-spaarke/hero-v2.jpg  ← replacement
+```
+
+And update the frontmatter to match:
+
+```yaml
+heroImage: "/articles/welcome-to-spaarke/hero-v2.jpg"
+```
+
+Why: Next's `<Image>` optimizer keys its cached output (and the
+`Cache-Control` header) by the source URL. Same URL + new content = stale
+delivery from every cache layer (browser, Azure SWA edge, even our own
+local Turbopack dev cache at `.next/dev/cache/images/`). New URL = clean
+slate, no stale variants.
+
+You can delete the old `hero.jpg` from `public/articles/<slug>/` once the
+deploy that uses `hero-v2.jpg` is live — but it's also fine to leave it
+(small file, no harm).
+
 ## Publishing
 
 1. Make sure `draft: false` (or remove the field) in the frontmatter

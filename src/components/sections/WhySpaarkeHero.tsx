@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Shell, Slab } from "@/components/primitives";
@@ -10,8 +10,29 @@ type Props = {
   posts: BlogPostMeta[];
 };
 
+const ROTATE_MS = 7000;
+
 export function WhySpaarkeHero({ posts }: Props) {
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  // Auto-advance every ROTATE_MS unless paused (hover/focus) or only one slide.
+  useEffect(() => {
+    if (paused || posts.length <= 1) return;
+    const id = setInterval(() => {
+      setActive((i) => (i + 1) % posts.length);
+    }, ROTATE_MS);
+    return () => clearInterval(id);
+  }, [paused, posts.length, active]);
+
+  // Honor reduced-motion preference — no auto-rotation if the user opts out.
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) setPaused(true);
+    const listener = (e: MediaQueryListEvent) => setPaused(e.matches);
+    mq.addEventListener("change", listener);
+    return () => mq.removeEventListener("change", listener);
+  }, []);
 
   if (posts.length === 0) return null;
 
@@ -30,7 +51,15 @@ export function WhySpaarkeHero({ posts }: Props) {
       />
 
       <Shell>
-        <div className="relative grid grid-cols-1 items-center gap-10 md:min-h-[480px] md:grid-cols-2 md:gap-16 lg:min-h-[520px]">
+        <div
+          className="relative grid grid-cols-1 items-center gap-10 md:min-h-[480px] md:grid-cols-2 md:gap-16 lg:min-h-[520px]"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
+          aria-roledescription="carousel"
+          aria-label="Featured articles"
+        >
           {/* Left: copy */}
           <div className="order-2 md:order-1">
             <p className="text-fg-low font-mono text-[11px] uppercase tracking-[0.18em]">
