@@ -12,6 +12,8 @@
 
 export type Capability = {
   number: string;
+  /** Anchor id used by /platform deep-links (e.g. footer column). */
+  id: string;
   name: string;
   body: string;
   bullets: [string, string, string];
@@ -54,6 +56,7 @@ export const capabilitiesContent: CapabilitiesContent = {
   capabilities: [
     {
       number: "01",
+      id: "operations",
       name: "Operations",
       body: "Matters, projects, tasks, and people — the operational backbone for the legal team and the work they own.",
       bullets: ["Daily briefing", "Smart to-dos", "Performance tracking"],
@@ -67,6 +70,7 @@ export const capabilitiesContent: CapabilitiesContent = {
     },
     {
       number: "02",
+      id: "documents",
       name: "Documents & Knowledge",
       body: "Every document, email, and contract — connected, searchable, and AI-aware. Built on SharePoint Embedded with Azure AI semantic search and Find Similar.",
       bullets: ["Matter-aware search", "SharePoint-native", "Privilege-safe AI"],
@@ -80,6 +84,7 @@ export const capabilitiesContent: CapabilitiesContent = {
     },
     {
       number: "03",
+      id: "collaboration",
       name: "Collaboration",
       body: "Secure shared workspaces for outside counsel, business clients, and anyone working a matter — without sending another email attachment.",
       bullets: ["Shared matters", "Tasks & invoices", "Cross-firm access"],
@@ -93,6 +98,7 @@ export const capabilitiesContent: CapabilitiesContent = {
     },
     {
       number: "04",
+      id: "automation",
       name: "Agents & Automation",
       body: "AI agents, automated workflows, and event-driven rules — the operational intelligence that runs in the background and shows up in Copilot.",
       bullets: ["Copilot-native", "Azure AI Foundry", "Context-aware"],
@@ -106,6 +112,7 @@ export const capabilitiesContent: CapabilitiesContent = {
     },
     {
       number: "05",
+      id: "spend-performance",
       name: "Spend & Performance",
       body: "Invoices, budgets, OCG compliance, and matter outcomes — the financial and operational truth about every matter and every firm.",
       bullets: ["OCG compliance", "Spend signals", "Cross-firm view"],

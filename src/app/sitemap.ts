@@ -4,9 +4,9 @@ import { getAllPosts } from "@/lib/blog";
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.SITE_URL ?? "https://www.spaarke.com";
 
-  // /platform intentionally omitted — de-indexed via per-page robots metadata.
   const staticPages = [
     "",
+    "/platform",
     "/why-spaarke",
     "/about",
     "/contact",
@@ -20,7 +20,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteUrl}${path}`,
     lastModified: new Date(),
     changeFrequency: path === "" ? "weekly" : "monthly",
-    priority: path === "" ? 1 : path === "/why-spaarke" ? 0.9 : 0.5,
+    priority:
+      path === ""
+        ? 1
+        : path === "/platform" || path === "/why-spaarke"
+          ? 0.9
+          : 0.5,
   }));
 
   const posts = getAllPosts();

@@ -1,60 +1,27 @@
 import type { Metadata } from "next";
-import {
-  Eyebrow,
-  Heading,
-  Lede,
-  PageHeader,
-  Shell,
-  Slab,
-} from "@/components/primitives";
+import { Heading, Shell, Slab } from "@/components/primitives";
+import { Pillars, Capabilities, Foundation } from "@/components/sections";
+import { pillarsContent } from "@/content/home/pillars";
 
 export const metadata: Metadata = {
   title: "Platform",
   description:
-    "The Spaarke platform — Operations, Documents & Knowledge, Collaboration, Agents & Automation, Spend & Performance, and the Microsoft foundation.",
-  robots: { index: false, follow: false },
+    "The Spaarke platform — one platform, all sides, every matter. Operations, Documents & Knowledge, Collaboration, Agents & Automation, Spend & Performance, on a Microsoft 365 foundation.",
 };
-
-const SECTIONS = [
-  { id: "operations", name: "Operations" },
-  { id: "documents", name: "Documents & Knowledge" },
-  { id: "collaboration", name: "Collaboration" },
-  { id: "automation", name: "Agents & Automation" },
-  { id: "spend-performance", name: "Spend & Performance" },
-  { id: "microsoft-foundation", name: "Microsoft foundation" },
-] as const;
 
 export default function Platform() {
   return (
     <>
-      <Slab tone="dark">
+      <Slab tone="light" className="pb-0 pt-12 md:pt-16">
         <Shell>
-          <PageHeader
-            eyebrow="Platform"
-            title="One platform. All sides. Every matter."
-            lede="The shared platform for legal departments, business stakeholders, and outside counsel — with five capabilities and a Microsoft foundation underneath."
-          />
+          <div className="mx-auto max-w-4xl text-center">
+            <Heading level={1}>{pillarsContent.umbrellaHeading}</Heading>
+          </div>
         </Shell>
       </Slab>
-
-      {SECTIONS.map((section) => (
-        <Slab key={section.id} tone="dark" className="border-line border-t py-16 md:py-20">
-          <Shell>
-            <section id={section.id} className="max-w-3xl">
-              <Eyebrow>{section.name}</Eyebrow>
-              <div className="mt-4">
-                <Heading level={2}>{section.name}</Heading>
-              </div>
-              <div className="mt-5 max-w-xl">
-                <Lede>
-                  Detailed walkthrough coming soon. The home page summarizes
-                  this capability — a deeper section lands here next.
-                </Lede>
-              </div>
-            </section>
-          </Shell>
-        </Slab>
-      ))}
+      <Pillars />
+      <Capabilities />
+      <Foundation />
     </>
   );
 }

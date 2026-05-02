@@ -41,7 +41,10 @@ function CapabilityRow({ capability }: { capability: Capability }) {
   const isImageLeft = capability.imagePosition === "left";
 
   return (
-    <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-16">
+    <div
+      id={capability.id}
+      className="scroll-mt-28 grid grid-cols-1 items-start gap-10 md:grid-cols-2 md:gap-16"
+    >
       {/* Image */}
       <div
         className={isImageLeft ? "order-1" : "order-1 md:order-2"}
@@ -93,7 +96,10 @@ function CapabilityRow({ capability }: { capability: Capability }) {
 
 function FoundationCard({ foundation }: { foundation: Foundation }) {
   return (
-    <div className="bg-surface rounded-3xl p-8 shadow-sm md:p-12">
+    <div
+      id="microsoft-foundation"
+      className="bg-surface scroll-mt-28 rounded-3xl p-8 shadow-sm md:p-12"
+    >
       <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_auto] md:gap-16 md:items-center">
         {/* Left: copy */}
         <div>
