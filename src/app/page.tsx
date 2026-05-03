@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {
   Hero,
   GapStats,
+  ExistingSystems,
   LOIDiagram,
   Closing,
 } from "@/components/sections";
@@ -17,6 +18,7 @@ export default function Home() {
     <>
       <Hero />
       <GapStats />
+      <ExistingSystems />
       <LOIDiagram />
       <Closing />
     </>

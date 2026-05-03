@@ -1,5 +1,5 @@
 /**
- * Section 2 — The gap (Demand is rising. Visibility isn't.)
+ * Section 2 — The gap (Demand is rising. Resources are not.)
  *
  * Stats per the v2 mockup decision (mockup version supersedes the v1.4 brief).
  */
@@ -20,7 +20,7 @@ export type GapContent = {
 export const gapContent: GapContent = {
   heading: {
     line1: "Demand is rising.",
-    line2: "Visibility isn’t.",
+    line2: "Resources are not.",
   },
   intro:
     "Legal departments and their outside counsel are working harder than ever — and operating with less of the data they need to do it well.",

@@ -4,7 +4,7 @@ import { heroContent } from "@/content/home/hero";
 import { HeroCTAs } from "./HeroCTAs";
 
 export function Hero() {
-  const { headline, subhead, ctas, screenshot } = heroContent;
+  const { headline, subhead, kicker, ctas, screenshot } = heroContent;
 
   return (
     <Slab tone="dark" className="pt-24 md:pt-32 pb-0">
@@ -18,8 +18,18 @@ export function Hero() {
             <br />
             {headline.line2}
           </h1>
-          <div className="mt-8">
-            <Lede className="md:whitespace-nowrap">{subhead}</Lede>
+          <div className="mx-auto mt-8 max-w-3xl">
+            <Lede>{subhead}</Lede>
+          </div>
+          <div className="mx-auto mt-10 max-w-3xl">
+            <p
+              className="font-display font-medium tracking-[-0.005em]"
+              style={{ fontSize: "clamp(18px, 1.4vw, 25px)", lineHeight: 1.4 }}
+            >
+              <span className="text-fg">{kicker.strong}</span>
+              <br />
+              <span className="text-fg-mid">{kicker.muted}</span>
+            </p>
           </div>
           <div className="mt-12">
             <HeroCTAs ctas={ctas} />

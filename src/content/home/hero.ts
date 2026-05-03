@@ -12,6 +12,11 @@ export type HeroCTA = {
 export type HeroContent = {
   headline: { line1: string; line2: string };
   subhead: string;
+  /**
+   * Secondary positioning line, rendered as one paragraph in two voices:
+   * `strong` (full-strength fg) followed inline by `muted` (fg-mid).
+   */
+  kicker: { strong: string; muted: string };
   ctas: [HeroCTA, HeroCTA];
   screenshot: {
     src: string;
@@ -22,9 +27,13 @@ export type HeroContent = {
 };
 
 export const heroContent: HeroContent = {
-  headline: { line1: "See all sides of", line2: "every matter." },
+  headline: { line1: "Legal Operations", line2: "Intelligence." },
   subhead:
-    "The shared platform for legal departments, business stakeholders, and outside counsel.",
+    "The platform for running legal work—connecting matters, documents, spend, and outside counsel.",
+  kicker: {
+    strong: "Built for AI across the entire lifecycle.",
+    muted: "Not bolted on.",
+  },
   ctas: [
     { label: "Watch demo", action: "open-demo-modal", variant: "outline" },
     { label: "Get access", href: "/access-request", variant: "primary" },
