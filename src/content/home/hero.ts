@@ -29,7 +29,7 @@ export type HeroContent = {
 export const heroContent: HeroContent = {
   headline: { line1: "Legal Operations", line2: "Intelligence." },
   subhead:
-    "The platform for running legal work—connecting matters, documents, spend, and outside counsel.",
+    "A unified platform built natively on Microsoft—connecting legal work, data, and AI across matters, documents, spend, and collaboration.",
   kicker: {
     strong: "Built for AI across the entire lifecycle.",
     muted: "Not bolted on.",

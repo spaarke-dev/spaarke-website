@@ -18,8 +18,11 @@ export function Hero() {
             <br />
             {headline.line2}
           </h1>
-          <div className="mx-auto mt-8 max-w-3xl">
-            <Lede>{subhead}</Lede>
+          {/* Wider container + text-balance lets the longer subhead
+              settle into two evenly-weighted lines on desktop without
+              a hard <br>; wraps further on narrower viewports. */}
+          <div className="mx-auto mt-8 max-w-4xl">
+            <Lede className="text-balance">{subhead}</Lede>
           </div>
           <div className="mx-auto mt-10 max-w-3xl">
             <p
@@ -40,10 +43,15 @@ export function Hero() {
       {/* Full-width product screenshot — soft white-blue footlight glow beneath, clean dark on top/sides, hard black cutoff at bottom */}
       <div className="relative overflow-hidden px-[var(--spacing-shell-x)] mt-20 md:mt-28 pb-20 md:pb-32">
         <div className="relative mx-auto max-w-7xl">
-          {/* Footlight glow — wider, pooled white-blue ambient light beneath the screenshot */}
+          {/*
+            Footlight glow — wider, pooled white-blue ambient light
+            beneath the screenshot. Hidden on small phones (below sm)
+            since the heavy 36px blur is expensive on low-end mobile
+            and the glow is mostly clipped by overflow-hidden anyway.
+          */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 -translate-x-1/2"
+            className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 sm:block"
             style={{
               width: "180%",
               height: "120%",

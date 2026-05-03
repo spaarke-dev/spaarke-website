@@ -97,6 +97,12 @@
   --color-line-strong: var(--v2-line-strong);
   /* Note: v2 accent = Spaarke Blue. Use `bg-spaarke-blue` directly. */
 
+  /* CTA blue — sits in the same family as the hero glow + fade
+     palette (#5078DC / #82A5EB). Use for primary buttons so they
+     read as "of the glow" rather than the harder pure-blue brand
+     token. Utility: bg-cta-blue, text-cta-blue, ring-cta-blue. */
+  --color-cta-blue: #4060DC;
+
   /* ===== v2 spacing tokens ===== */
   --spacing-shell-x: clamp(24px, 6vw, 120px);
   --spacing-section-y: clamp(80px, 12vh, 160px);

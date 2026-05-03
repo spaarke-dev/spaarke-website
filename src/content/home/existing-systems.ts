@@ -7,6 +7,11 @@
 
 export type ExistingSystemsCard = {
   id: string;
+  /**
+   * Card title. Use U+00A0 (non-breaking space) inside the string to
+   * glue word groups together — only regular spaces are legal wrap
+   * points. Lets us steer responsive wrap without a hard `<br>`.
+   */
   title: string;
   summary: string;
   detail: string;
@@ -14,17 +19,19 @@ export type ExistingSystemsCard = {
 
 export type ExistingSystemsContent = {
   heading: { line1: string; line2: string };
-  subhead: string;
+  subhead: { line1: string; line2: string };
   cards: [ExistingSystemsCard, ExistingSystemsCard, ExistingSystemsCard];
 };
 
 export const existingSystemsContent: ExistingSystemsContent = {
   heading: {
     line1: "Existing systems",
-    line2: "can't meet the needs.",
+    line2: "aren't meeting the challenge.",
   },
-  subhead:
-    "AI is advancing—but it's not integrated into the systems and workflows that drive legal work.",
+  subhead: {
+    line1: "AI is advancing—but it's not integrated",
+    line2: "into the systems and workflows that drive legal work.",
+  },
   cards: [
     {
       id: "ai-shift",
@@ -36,7 +43,11 @@ export const existingSystemsContent: ExistingSystemsContent = {
     },
     {
       id: "legacy-systems",
-      title: "Legacy systems weren't built for AI.",
+      // Non-breaking spaces glue "Legacy systems weren't" together and
+      // "built for AI." together, so the only legal wrap point is between
+      // "weren't" and "built". Stays responsive — single-line if the card
+      // is wide enough, two lines otherwise.
+      title: "Legacy systems weren't built for AI.",
       summary:
         "Enterprise legal platforms have evolved to manage matters, billing, and operations—but their underlying structures weren't designed for AI to access and operate across the full context of legal work.",
       detail:

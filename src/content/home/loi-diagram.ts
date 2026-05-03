@@ -1,11 +1,9 @@
 /**
- * Section 5 — Introducing Legal Operations Intelligence
+ * Section 5 — Built for the operating model of modern legal teams.
  *
- * Strategic visual: Spaarke container (left) → arrow → M365 Copilot badge (right).
- * Reused across decks, RFPs, analyst conversations.
- *
- * 8 capability icons in 2x4 grid inside the Spaarke container — best-mapped
- * from the available SVGs (mockup is the visual reference).
+ * Centered Spaarke platform mockup (8 capability icons in 2x4 grid) on
+ * a light slab. The earlier diagram form (Spaarke → arrow → Copilot
+ * badge) was retired here.
  */
 
 export type LOIIcon = {
@@ -15,26 +13,24 @@ export type LOIIcon = {
 
 export type LOIContent = {
   heading: { line1: string; line2: string };
-  intro: string;
+  intro: { line1: string; line2: string };
   spaarkeContainer: {
     eyebrow: string;
     wordmark: { src: string; alt: string };
     icons: [LOIIcon, LOIIcon, LOIIcon, LOIIcon, LOIIcon, LOIIcon, LOIIcon, LOIIcon];
   };
-  copilot: {
-    src: string;
-    alt: string;
-    tag: string;
-  };
 };
 
 export const loiContent: LOIContent = {
   heading: {
-    line1: "Introducing",
-    line2: "Legal Operations Intelligence",
+    line1: "Spaarke is built to work",
+    line2: "how you work.",
   },
-  intro:
-    "Spaarke is the legal IQ layer that makes Copilot, your AI agents, and your existing systems fluent in legal work. Decisions, workflows, performance, partnership — not just drafting.",
+  intro: {
+    line1:
+      "Your matters, projects, emails, documents, business requests, invoices, and",
+    line2: "outside counsel collaboration are connected in a single platform.",
+  },
   spaarkeContainer: {
     eyebrow: "Legal IQ Platform",
     wordmark: {
@@ -43,18 +39,13 @@ export const loiContent: LOIContent = {
     },
     icons: [
       { src: "/brand/icons/email.svg", label: "Email" },
-      { src: "/brand/icons/playbook.svg", label: "Playbook" },
-      { src: "/brand/icons/event.svg", label: "Calendar" },
-      { src: "/brand/icons/matter.svg", label: "Matter" },
-      { src: "/brand/icons/kpiassessment.svg", label: "Performance" },
+      { src: "/brand/icons/playbook.svg", label: "Requests" },
+      { src: "/brand/icons/matter.svg", label: "Matters" },
+      { src: "/brand/icons/project.svg", label: "Projects" },
+      { src: "/brand/icons/kpiassessment.svg", label: "Metrics" },
       { src: "/brand/icons/task.svg", label: "Tasks" },
-      { src: "/brand/icons/teams.svg", label: "People" },
+      { src: "/brand/icons/teams.svg", label: "Counsel" },
       { src: "/brand/icons/document.svg", label: "Documents" },
     ],
-  },
-  copilot: {
-    src: "/brand/logos/microsoft-365-copilot-badge.svg",
-    alt: "Microsoft 365 Copilot",
-    tag: "M365",
   },
 };

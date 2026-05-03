@@ -6,6 +6,7 @@
 export { Hero } from "./Hero";
 export { GapStats } from "./GapStats";
 export { ExistingSystems } from "./ExistingSystems";
+export { MicrosoftNative } from "./MicrosoftNative";
 export { Pillars } from "./Pillars";
 export { Capabilities, Foundation } from "./Capabilities";
 export { WhySpaarkeHero } from "./WhySpaarkeHero";

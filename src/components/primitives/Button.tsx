@@ -22,9 +22,15 @@ const baseClasses =
   "disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none";
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-spaarke-blue text-white rounded-full px-6 py-3",
-  outline: "border border-line-strong text-fg rounded-full px-6 py-3 hover:border-fg",
-  text: "text-fg px-2 py-3 hover:text-spaarke-blue",
+  // Primary CTA blue from the hero glow / fade palette (#5078DC),
+  // hover deepens to #3F5FD9. Both via Tailwind arbitrary values so
+  // the rule always compiles regardless of custom-token state.
+  primary:
+    "bg-[#5078DC] hover:bg-[#3F5FD9] text-white rounded-full px-6 py-3",
+  outline:
+    "border border-line-strong text-fg rounded-full px-6 py-3 hover:border-fg",
+  // Soft glow-blue hover instead of bright pure spaarke-blue
+  text: "text-fg px-2 py-3 hover:text-[#82A5EB]",
 };
 
 export function Button({

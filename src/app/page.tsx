@@ -4,6 +4,7 @@ import {
   GapStats,
   ExistingSystems,
   LOIDiagram,
+  MicrosoftNative,
   Closing,
 } from "@/components/sections";
 
@@ -20,6 +21,7 @@ export default function Home() {
       <GapStats />
       <ExistingSystems />
       <LOIDiagram />
+      <MicrosoftNative />
       <Closing />
     </>
   );

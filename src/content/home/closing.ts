@@ -14,13 +14,17 @@ export type ClosingCTA = {
 
 export type ClosingContent = {
   headline: string;
-  sub: string;
+  /** Large positioning line under the headline — split across 2 lines. */
+  tagline: { line1: string; line2: string };
   ctas: [ClosingCTA, ClosingCTA];
 };
 
 export const closingContent: ClosingContent = {
   headline: "See all sides of every matter.",
-  sub: "Now accepting early access partners.",
+  tagline: {
+    line1: "Unify your systems. Activate your AI.",
+    line2: "Work with full context.",
+  },
   ctas: [
     { label: "Get access", href: "/access-request", variant: "primary" },
     { label: "Why Spaarke", href: "/why-spaarke", variant: "text", arrow: true },
