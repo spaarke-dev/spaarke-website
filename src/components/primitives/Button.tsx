@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
 
 type ButtonVariant = "primary" | "outline" | "text";
@@ -11,6 +11,12 @@ type ButtonProps = {
   type?: "button" | "submit";
   arrow?: boolean;
   className?: string;
+  /**
+   * Inline style override — useful when a primary button needs a
+   * guaranteed bg colour and Tailwind's JIT is being inconsistent
+   * about generating an arbitrary-value class for the route.
+   */
+  style?: CSSProperties;
   ariaLabel?: string;
   disabled?: boolean;
 };
@@ -41,12 +47,19 @@ export function Button({
   type = "button",
   arrow,
   className,
+  style,
   ariaLabel,
   disabled,
 }: ButtonProps) {
   const merged = [baseClasses, variantClasses[variant], className]
     .filter(Boolean)
     .join(" ");
+
+  // Belt-and-suspenders: hardcode the primary bg via inline style so
+  // it always renders, even if the Tailwind arbitrary-value class
+  // didn't make it into the route's compiled CSS.
+  const resolvedStyle: CSSProperties | undefined =
+    variant === "primary" ? { backgroundColor: "#5078DC", ...style } : style;
 
   const inner = (
     <>
@@ -64,7 +77,12 @@ export function Button({
 
   if (href) {
     return (
-      <Link href={href} className={merged} aria-label={ariaLabel}>
+      <Link
+        href={href}
+        className={merged}
+        aria-label={ariaLabel}
+        style={resolvedStyle}
+      >
         {inner}
       </Link>
     );
@@ -77,6 +95,7 @@ export function Button({
       className={merged}
       aria-label={ariaLabel}
       disabled={disabled}
+      style={resolvedStyle}
     >
       {inner}
     </button>

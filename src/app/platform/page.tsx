@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Heading, Shell, Slab } from "@/components/primitives";
+import { IsometricScroller } from "@/components/IsometricScroller";
+import { Button } from "@/components/primitives";
 import { Pillars, Capabilities, Foundation } from "@/components/sections";
 
 export const metadata: Metadata = {
@@ -11,25 +12,94 @@ export const metadata: Metadata = {
 export default function Platform() {
   return (
     <>
-      {/* Hero — title left, placeholder image right */}
-      <Slab tone="light" className="py-16 md:py-24">
-        <Shell>
-          <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
-            <div>
-              <Heading level={1} className="whitespace-pre-line">
-                {"One platform.\nAll sides.\nEvery matter."}
-              </Heading>
-            </div>
-            <div className="border-line bg-surface flex aspect-[5/4] items-center justify-center rounded-2xl border">
-              <span className="text-fg-low font-mono text-[11px] uppercase tracking-[0.18em]">
-                Hero image — placeholder
-              </span>
+      {/* Hero — animated isometric scroller backdrop biased to the
+          top-right, headline anchored top-left. Adapted from the
+          design handoff at resources/backgrounds/design_handoff_platform_hero/. */}
+      <section
+        data-tone="light"
+        className="relative isolate overflow-hidden"
+        style={{
+          background: "#f6f6f4",
+          // Taller so the Pillars section starts further down the page.
+          minHeight: "clamp(560px, 80vh, 850px)",
+        }}
+      >
+        {/* Backdrop (z-0) — iso-scroller + left wash */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0"
+        >
+          <IsometricScroller
+            theme="light"
+            height="100%"
+            anchor="top-right"
+          />
+          {/* Left-edge wash so the scroller dissolves into the page
+              behind the headline rather than meeting it as a hard line. */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, #f6f6f4 0%, rgba(246,246,244,0.9) 18%, rgba(246,246,244,0.4) 38%, rgba(246,246,244,0) 58%)",
+            }}
+          />
+        </div>
+
+
+        {/* Foreground */}
+        <div
+          className="relative z-10 mx-auto flex max-w-[1440px] items-start px-[var(--spacing-shell-x)]"
+          style={{
+            paddingTop: "clamp(38px, 5.6vh, 90px)",
+            paddingBottom: "clamp(34px, 5vh, 67px)",
+            minHeight: "inherit",
+          }}
+        >
+          <div>
+            <h1
+              className="font-display"
+              style={{
+                fontSize: "clamp(56px, 7vw, 112px)",
+                lineHeight: 0.98,
+                letterSpacing: "-0.025em",
+                fontWeight: 600,
+                color: "#0a0a0a",
+                margin: 0,
+                maxWidth: "14ch",
+              }}
+            >
+              One platform.
+              <br />
+              All sides.
+              <br />
+              Every matter.
+            </h1>
+            <p
+              className="font-body mt-8 whitespace-nowrap"
+              style={{
+                fontSize: "clamp(20px, 1.6vw, 28px)",
+                lineHeight: 1.4,
+                color: "rgba(10, 10, 10, 0.66)",
+              }}
+            >
+              All your legal work—connected.
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Button variant="primary" href="/access-request">
+                Get access
+              </Button>
+              <Button variant="text" href="/why-spaarke" arrow>
+                Why Spaarke
+              </Button>
             </div>
           </div>
-        </Shell>
-      </Slab>
+        </div>
+      </section>
 
-      <Pillars title="The promise, in three parts." />
+      <Pillars
+        title="Your system of truth."
+        subtitle="All information connected in a single system where everything works together."
+      />
       <Capabilities title="Inside the platform." />
       <Foundation />
     </>
