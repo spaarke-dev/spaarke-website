@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { IsometricScroller } from "@/components/IsometricScroller";
-import { Button } from "@/components/primitives";
+import { PlatformHeroCTAs } from "@/components/PlatformHeroCTAs";
 import { Pillars, Capabilities, Foundation } from "@/components/sections";
 
 export const metadata: Metadata = {
@@ -20,8 +20,9 @@ export default function Platform() {
         className="relative isolate overflow-hidden"
         style={{
           background: "#f6f6f4",
-          // Taller so the Pillars section starts further down the page.
-          minHeight: "clamp(560px, 80vh, 850px)",
+          // Hero fills the first viewport so the dark Pillars section
+          // never peeks in before the user scrolls.
+          minHeight: "100vh",
         }}
       >
         {/* Backdrop (z-0) — iso-scroller + left wash */}
@@ -46,9 +47,11 @@ export default function Platform() {
         </div>
 
 
-        {/* Foreground */}
+        {/* Foreground — vertically centered so the headline + tagline +
+            CTAs sit in the middle of the 100vh hero with breathing
+            room above and below. */}
         <div
-          className="relative z-10 mx-auto flex max-w-[1440px] items-start px-[var(--spacing-shell-x)]"
+          className="relative z-10 mx-auto flex max-w-[1440px] items-center px-[var(--spacing-shell-x)]"
           style={{
             paddingTop: "clamp(38px, 5.6vh, 90px)",
             paddingBottom: "clamp(34px, 5vh, 67px)",
@@ -84,14 +87,7 @@ export default function Platform() {
             >
               All your legal work—connected.
             </p>
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Button variant="primary" href="/access-request">
-                Get access
-              </Button>
-              <Button variant="text" href="/why-spaarke" arrow>
-                Why Spaarke
-              </Button>
-            </div>
+            <PlatformHeroCTAs />
           </div>
         </div>
       </section>
