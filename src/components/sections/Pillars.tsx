@@ -1,9 +1,9 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Heading, Lede, Shell } from "@/components/primitives";
 
 type PillarsProps = {
   /** Centered title displayed above the architecture diagram. */
-  title?: string;
+  title?: ReactNode;
   /** Optional subtitle / lede beneath the title. */
   subtitle?: string;
 };
@@ -59,7 +59,7 @@ export function Pillars({ title, subtitle }: PillarsProps = {}) {
         >
           <div className="p-6 sm:p-8 md:p-10">
             <img
-              src="/brand/diagrams/platform-arch-dark.svg"
+              src="/brand/diagrams/platform-arch-v3-dark.svg"
               alt="Spaarke platform architecture: Microsoft Power Platform foundation, five Spaarke capability modules, Microsoft 365 surfaces, and Microsoft 365 Copilot."
               className="block h-auto w-full"
               loading="lazy"

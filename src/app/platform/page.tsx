@@ -87,16 +87,32 @@ export default function Platform() {
             >
               All your legal work—connected.
             </p>
-            <PlatformHeroCTAs />
+            <PlatformHeroCTAs
+              recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
+            />
           </div>
         </div>
       </section>
 
       <Pillars
-        title="Your system of truth."
-        subtitle="All information connected in a single system where everything works together."
+        title={
+          <>
+            Spaarke is
+            <br />
+            your ultimate system of truth
+          </>
+        }
+        subtitle="All information in a single platform where everything works seamlessly together"
       />
-      <Capabilities title="Inside the platform." />
+
+      {/* Hard cut from the dark Pillars section into the cream
+          Capabilities section. The title + subtitle live inside the
+          Capabilities section so they read as part of the same
+          visual moment as the modules below. */}
+      <Capabilities
+        title="The Legal IQ system of record."
+        subtitle="Modules supporting the full set of core capabilities required for today's legal teams."
+      />
       <Foundation />
     </>
   );

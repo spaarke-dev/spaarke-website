@@ -2,18 +2,20 @@ import Image from "next/image";
 import {
   Eyebrow,
   Heading,
+  Lede,
   Shell,
   Slab,
 } from "@/components/primitives";
-import { ProductChrome } from "@/components/ProductChrome";
+import { CapabilityModule } from "@/components/sections/CapabilityModule";
 import { capabilitiesContent } from "@/content/home/capabilities";
 
-type Capability = (typeof capabilitiesContent.capabilities)[number];
 type Foundation = typeof capabilitiesContent.foundation;
 
 type CapabilitiesProps = {
   /** Centered title displayed above the stacked capability rows. */
   title?: string;
+  /** Optional subtitle / lede beneath the title. */
+  subtitle?: string;
 };
 
 export function Foundation() {
@@ -27,89 +29,59 @@ export function Foundation() {
   );
 }
 
-export function Capabilities({ title }: CapabilitiesProps = {}) {
+export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
   const { capabilities } = capabilitiesContent;
+  const hasHeader = Boolean(title || subtitle);
 
-  return (
-    <Slab tone="light" className="pb-0">
-      {title && (
-        <Shell>
-          <div className="mx-auto mb-12 max-w-3xl text-center md:mb-16">
-            <Heading level={2}>{title}</Heading>
-          </div>
-        </Shell>
-      )}
-      {/*
-        Each row is sticky and stacks on top of the previous one. min-h-[80vh]
-        gives each subsection roughly a viewport of scroll dwell-time before
-        the next row slides up to cover it. bg-bg keeps the row opaque so
-        stacking reads cleanly.
-      */}
-      <div className="relative">
-        {capabilities.map((cap) => (
-          <CapabilityRow key={cap.id} capability={cap} />
-        ))}
-      </div>
-    </Slab>
-  );
-}
-
-function CapabilityRow({ capability }: { capability: Capability }) {
-  const isImageLeft = capability.imagePosition === "left";
-
+  // When there is no title/subtitle the parent page is providing the
+  // intro (e.g. the dark→light gradient slab). Drop both top and
+  // bottom padding so the first sticky module lands directly under
+  // the previous section. Inline padding overrides Slab/Tailwind
+  // arbitrary-value classes that don't always lose specificity to
+  // pt-0/pb-0 utilities.
   return (
     <section
-      id={capability.id}
-      className="bg-bg border-line scroll-mt-28 sticky top-[72px] flex min-h-[640px] items-center border-t md:top-[88px] md:min-h-[80vh]"
+      data-tone="light"
+      className="bg-bg text-fg"
+      style={{
+        paddingTop: hasHeader ? "var(--spacing-section-y)" : 0,
+        paddingBottom: 0,
+      }}
     >
-      <Shell>
-        <div className="grid grid-cols-1 items-center gap-10 py-12 md:grid-cols-2 md:gap-16 md:py-16">
-          {/* Image */}
-          <div className={isImageLeft ? "order-1" : "order-1 md:order-2"}>
-            <div className="overflow-hidden rounded-xl shadow-lg ring-1 ring-black/5">
-              <ProductChrome />
-              <Image
-                src={capability.screenshot.src}
-                alt={capability.screenshot.alt}
-                width={capability.screenshot.width}
-                height={capability.screenshot.height}
-                sizes="(max-width: 768px) 100vw, 600px"
-                className="h-auto w-full"
-              />
+      {hasHeader && (
+        <div
+          // Sticky main-section title — inline styles for position +
+          // top because Tailwind's arbitrary-value `top-[Npx]` classes
+          // can fail to compile under v4 JIT (spec §16). bg covers
+          // capability modules sliding under as user scrolls.
+          className="z-20"
+          style={{
+            position: "sticky",
+            top: 88,
+            backgroundColor: "var(--color-bg)",
+          }}
+        >
+          <Shell>
+            <div className="mx-auto max-w-3xl py-8 text-center md:py-10">
+              {title && <Heading level={2}>{title}</Heading>}
+              {subtitle && (
+                <div className="mt-6">
+                  <Lede>{subtitle}</Lede>
+                </div>
+              )}
             </div>
-          </div>
-
-          {/* Text */}
-          <div className={isImageLeft ? "order-2" : "order-2 md:order-1"}>
-            <div className="text-fg-low font-mono text-[13px] font-medium tracking-[0.18em]">
-              {capability.number}
-            </div>
-            <h3 className="font-display text-fg mt-3 text-3xl font-medium leading-tight tracking-tight md:text-4xl lg:text-5xl">
-              {capability.name}
-            </h3>
-            <p className="text-fg-mid mt-5 max-w-md text-base leading-relaxed md:text-[17px]">
-              {capability.body}
-            </p>
-            <div className="mt-8">
-              <Eyebrow>Key features</Eyebrow>
-            </div>
-            <ul className="mt-4 space-y-2.5">
-              {capability.bullets.map((bullet) => (
-                <li
-                  key={bullet}
-                  className="text-fg flex items-baseline gap-3 text-[15px] font-medium"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="bg-fg mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full"
-                  />
-                  {bullet}
-                </li>
-              ))}
-            </ul>
-          </div>
+          </Shell>
         </div>
-      </Shell>
+      )}
+      {/*
+        Each module is a direct sibling of the title block so all
+        sticky elements share the same containing block (this <section>).
+        Title pins at top-[72]/[88], modules pin at top-[220]/[260],
+        and all stay pinned until the section's bottom is reached.
+      */}
+      {capabilities.map((cap) => (
+        <CapabilityModule key={cap.id} capability={cap} />
+      ))}
     </section>
   );
 }

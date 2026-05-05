@@ -53,7 +53,7 @@ export function MicrosoftNative() {
                   logo pads, transparent bg, drop shadows. Lives in
                   /public/brand/diagrams/. */}
               <img
-                src="/brand/diagrams/microsoft-connect.svg"
+                src="/brand/diagrams/microsoft-connect-v2-light.svg"
                 alt="Spaarke connects into Microsoft 365 Copilot, which radiates out to Outlook, Teams, SharePoint, Microsoft 365 Apps, Power Platform, and Azure AI Foundry."
                 className="h-auto w-full"
                 loading="lazy"

@@ -1,29 +1,64 @@
 /**
- * Section 4 — Capabilities (zigzag) + Microsoft foundation card.
+ * Section 4 — Capabilities (sticky-stack feature carousel) +
+ * Microsoft foundation card.
  *
- * Light slab continues from Section 3 (no break).
+ * Each capability renders as one sticky module: capability title +
+ * one-line description, a screenshot on the left, and a clickable
+ * feature list on the right. Selecting a feature swaps the screenshot.
  *
- * Five capability rows in alternating image-left/image-right layout.
- * Bullet copy per the mockup (tighter than the brief's longer prose).
- *
- * Microsoft foundation card uses seven logos (M365 Apps + Outlook both
- * included per latest decision; brief said Outlook, mockup showed M365 Apps).
+ * Screenshots are static-imported from /resources/screenshots/* so
+ * /resources stays the single source of truth (no public/ copy).
  */
 
-export type Capability = {
-  number: string;
-  /** Anchor id used by /platform deep-links (e.g. footer column). */
+import type { StaticImageData } from "next/image";
+
+import matterRecordDetails from "../../../resources/screenshots/matter-record-details.jpeg";
+import myWorkspace from "../../../resources/screenshots/matter-management/my-workspace-light.png";
+import dailyBriefing from "../../../resources/screenshots/matter-management/daily-briefing-light.png";
+import smartToDo from "../../../resources/screenshots/matter-management/to-do-light.png";
+import quickCreate from "../../../resources/screenshots/matter-management/quick-create-new-matters-light.png";
+
+import documentRecord from "../../../resources/screenshots/documents/document-record-partial-light.png";
+import similarDocuments from "../../../resources/screenshots/documents/similar-documents-light.png";
+import similarGraph from "../../../resources/screenshots/documents/similar-documents-graph-view-light.png";
+import outlookSave from "../../../resources/screenshots/documents/outlook-save-to-spaarke-light.png";
+import wordSave from "../../../resources/screenshots/documents/word-save-to-spaarke-light.png";
+
+import secureProjectWorkspace from "../../../resources/screenshots/collaboration/secure-project-workspace-light.png";
+import outsideCounselAccess from "../../../resources/screenshots/collaboration/outside-counsel-access-light.png";
+import wordCoCreation from "../../../resources/screenshots/collaboration/word-co-creation-light.png";
+import shareMatters from "../../../resources/screenshots/collaboration/share-matters-light.png";
+import teamsSpaarkeApp from "../../../resources/screenshots/collaboration/teams-spaarke-app.png";
+
+import aiMatterSummaries from "../../../resources/screenshots/ai-and-automation/AI generated matter summaries-light.png";
+import m365CopilotIntegration from "../../../resources/screenshots/ai-and-automation/M365-copilot-integration.png";
+import documentSummaries from "../../../resources/screenshots/ai-and-automation/document-summaries-light.png";
+import wordAiCopilot from "../../../resources/screenshots/ai-and-automation/word-ai-copilot-light.png";
+import aiPlaybooks from "../../../resources/screenshots/ai-and-automation/ai-and-automation-playbooks-light.png";
+
+import outsideCounselReportCard from "../../../resources/screenshots/spend-and-performance/Outside-counsel-report-card-light.png";
+import financialPerformanceMetrics from "../../../resources/screenshots/spend-and-performance/financial-performance-metrics-light.png";
+import billingSummary from "../../../resources/screenshots/spend-and-performance/billing-summary-light.png";
+import budgetTracking from "../../../resources/screenshots/spend-and-performance/budget-tracking-light.png";
+import powerbiDashboards from "../../../resources/screenshots/spend-and-performance/powerbi-dashboards-light.png";
+
+export type CapabilityFeature = {
+  /** Stable key for React + active-feature state. */
   id: string;
   name: string;
-  body: string;
-  bullets: [string, string, string];
+  description: string;
   screenshot: {
-    src: string;
+    image: StaticImageData;
     alt: string;
-    width: number;
-    height: number;
   };
-  imagePosition: "left" | "right";
+};
+
+export type Capability = {
+  /** Anchor id used by /platform deep-links. */
+  id: string;
+  name: string;
+  description: string;
+  features: CapabilityFeature[];
 };
 
 export type FoundationLogo = {
@@ -48,81 +83,301 @@ export type FoundationCard = {
 };
 
 export type CapabilitiesContent = {
-  capabilities: [Capability, Capability, Capability, Capability, Capability];
+  capabilities: Capability[];
   foundation: FoundationCard;
 };
 
 export const capabilitiesContent: CapabilitiesContent = {
   capabilities: [
     {
-      number: "01",
-      id: "operations",
-      name: "Operations",
-      body: "Matters, projects, tasks, and people — the operational backbone for the legal team and the work they own.",
-      bullets: ["Daily briefing", "Smart to-dos", "Performance tracking"],
-      screenshot: {
-        src: "/brand/capabilities/operations.png",
-        alt: "Spaarke Operations dashboard — corporate workspace with quick summary, latest updates, my to-do list, and active documents",
-        width: 1800,
-        height: 1100,
-      },
-      imagePosition: "right",
+      id: "matter-management",
+      name: "Matter Management",
+      description:
+        "A unified system for managing matters with complete visibility into work, documents, collaboration, and external counsel.",
+      features: [
+        {
+          id: "matter-records",
+          name: "Matter and project records",
+          description:
+            "Comprehensive matter and project records with AI-generated summaries and full visibility into work, documents, and external counsel.",
+          screenshot: {
+            image: matterRecordDetails,
+            alt: "Spaarke matter record — overview, calendar, contacts, email, billing, and report card with matter information panel",
+          },
+        },
+        {
+          id: "personal-workspaces",
+          name: "Personal workspaces",
+          description:
+            "Configurable personal workspaces surface the information, activity, and insights each user needs to stay on top of their work.",
+          screenshot: {
+            image: myWorkspace,
+            alt: "Spaarke My Workspace — configurable surfaces showing the information and activity each user needs",
+          },
+        },
+        {
+          id: "daily-briefings",
+          name: "Daily briefings report",
+          description:
+            "AI-generated daily briefings provide a real-time view of work, activity, and priorities across all matters.",
+          screenshot: {
+            image: dailyBriefing,
+            alt: "Spaarke daily briefing — AI-generated real-time view of work, activity, and priorities across matters",
+          },
+        },
+        {
+          id: "smart-to-do",
+          name: "Smart 'To Do'",
+          description:
+            "A smart AI monitored to-do system that connects tasks to the underlying work — matters, documents, events, and projects.",
+          screenshot: {
+            image: smartToDo,
+            alt: "Spaarke Smart To Do — AI monitored task list connected to matters, documents, events, and projects",
+          },
+        },
+        {
+          id: "ai-quick-create",
+          name: "AI quick create",
+          description:
+            "AI-powered quick create turns input into fully structured records with summaries and contextual profiles.",
+          screenshot: {
+            image: quickCreate,
+            alt: "Spaarke AI quick create — turns natural-language input into fully structured matter records",
+          },
+        },
+      ],
     },
     {
-      number: "02",
-      id: "documents",
-      name: "Documents & Knowledge",
-      body: "Every document, email, and contract — connected, searchable, and AI-aware. Built on SharePoint Embedded with Azure AI semantic search and Find Similar.",
-      bullets: ["Matter-aware search", "SharePoint-native", "Privilege-safe AI"],
-      screenshot: {
-        src: "/brand/capabilities/documents.png",
-        alt: "Spaarke document record — overview, analysis, and similar-document panel powered by Azure AI semantic search",
-        width: 1800,
-        height: 1100,
-      },
-      imagePosition: "left",
+      id: "documents-email",
+      name: "Documents & Email",
+      description:
+        "Every document and email connected to its matter, AI-summarized, and discoverable through semantic search.",
+      features: [
+        {
+          id: "document-records",
+          name: "Document records",
+          description:
+            "Rich document profiles with AI-generated summaries, metadata, version history, and the matter context they belong to.",
+          screenshot: {
+            image: documentRecord,
+            alt: "Spaarke document record — AI-summarized profile with metadata, version history, and matter linkage",
+          },
+        },
+        {
+          id: "find-similar",
+          name: "Find similar",
+          description:
+            "Azure AI semantic search surfaces similar documents across every matter and counsel — past work, on demand.",
+          screenshot: {
+            image: similarDocuments,
+            alt: "Spaarke Find Similar — semantic-search results showing documents related to the current record",
+          },
+        },
+        {
+          id: "relationship-graph",
+          name: "Relationship graph",
+          description:
+            "Visualize how documents relate so you can discover precedents, prior work, and conflicts at a glance.",
+          screenshot: {
+            image: similarGraph,
+            alt: "Spaarke document relationship graph — visual map of similar documents and their connections",
+          },
+        },
+        {
+          id: "email-capture",
+          name: "Email capture",
+          description:
+            "Save emails to the right matter, project, or document set without leaving Outlook.",
+          screenshot: {
+            image: outlookSave,
+            alt: "Spaarke save-to-Spaarke add-in for Outlook — capture an email to its matter or document set",
+          },
+        },
+        {
+          id: "office-integration",
+          name: "Office integration",
+          description:
+            "Save Word, Excel, and PowerPoint files directly to Spaarke from inside the Office apps your team already uses.",
+          screenshot: {
+            image: wordSave,
+            alt: "Spaarke save-to-Spaarke add-in for Microsoft Word — save documents directly to a matter from Word",
+          },
+        },
+      ],
     },
     {
-      number: "03",
       id: "collaboration",
       name: "Collaboration",
-      body: "Secure shared workspaces for outside counsel, business clients, and anyone working a matter — without sending another email attachment.",
-      bullets: ["Shared matters", "Tasks & invoices", "Cross-firm access"],
-      screenshot: {
-        src: "/brand/capabilities/collaboration.png",
-        alt: "Spaarke external workspace — shared documents and projects accessible to outside counsel",
-        width: 1800,
-        height: 1100,
-      },
-      imagePosition: "right",
+      description:
+        "Secure shared workspaces for everyone working a matter — internal teams, business clients, and outside counsel, in one place.",
+      features: [
+        {
+          id: "secure-workspaces",
+          name: "Secure project workspaces",
+          description:
+            "Granular workspaces for matters, projects, and deals — invite-only, role-aware, and connected to the underlying work.",
+          screenshot: {
+            image: secureProjectWorkspace,
+            alt: "Spaarke secure project workspace — invite-only collaborative space tied to a matter",
+          },
+        },
+        {
+          id: "outside-counsel-access",
+          name: "Outside counsel access",
+          description:
+            "Give outside counsel direct, secure access to the documents and tasks they need — without sending another email attachment.",
+          screenshot: {
+            image: outsideCounselAccess,
+            alt: "Spaarke outside counsel access — external workspace exposing only the documents and tasks counsel need",
+          },
+        },
+        {
+          id: "word-co-creation",
+          name: "Word co-creation and editing",
+          description:
+            "Co-author Word documents in place — multiple stakeholders, real-time edits, every version anchored to its matter.",
+          screenshot: {
+            image: wordCoCreation,
+            alt: "Spaarke + Microsoft Word co-creation — multiple authors editing a document inside its matter",
+          },
+        },
+        {
+          id: "shared-matters",
+          name: "Shared matters and projects",
+          description:
+            "Share entire matters and projects with internal and external collaborators while preserving privilege and audit trails.",
+          screenshot: {
+            image: shareMatters,
+            alt: "Spaarke shared matters and projects — collaborators view with privilege-preserving sharing controls",
+          },
+        },
+        {
+          id: "teams-app",
+          name: "Teams app collaboration",
+          description:
+            "The Spaarke app inside Microsoft Teams brings matter chat, files, and tasks to where your team already collaborates.",
+          screenshot: {
+            image: teamsSpaarkeApp,
+            alt: "Spaarke app inside Microsoft Teams — matter-centric chat, files, and tasks within the Teams client",
+          },
+        },
+      ],
     },
     {
-      number: "04",
-      id: "automation",
-      name: "Agents & Automation",
-      body: "AI agents, automated workflows, and event-driven rules — the operational intelligence that runs in the background and shows up in Copilot.",
-      bullets: ["Copilot-native", "Azure AI Foundry", "Context-aware"],
-      screenshot: {
-        src: "/brand/capabilities/automation.png",
-        alt: "Spaarke playbook builder — visual workflow editor with AI analysis and decision nodes",
-        width: 1800,
-        height: 1100,
-      },
-      imagePosition: "left",
+      id: "ai-automation",
+      name: "AI & Automation",
+      description:
+        "AI summaries, Copilot-native experiences, and event-driven playbooks — operational intelligence that runs in the background.",
+      features: [
+        {
+          id: "matter-summaries",
+          name: "AI generated matter summaries",
+          description:
+            "Real-time AI summaries for every matter — current status, recent activity, and what to look at next.",
+          screenshot: {
+            image: aiMatterSummaries,
+            alt: "Spaarke AI-generated matter summary — status, recent activity, and AI-surfaced priorities",
+          },
+        },
+        {
+          id: "m365-copilot",
+          name: "M365 Copilot integration",
+          description:
+            "Spaarke shows up natively in Microsoft 365 Copilot so your team can ask questions about matters from anywhere.",
+          screenshot: {
+            image: m365CopilotIntegration,
+            alt: "Microsoft 365 Copilot answering a matter-context question using Spaarke as a knowledge source",
+          },
+        },
+        {
+          id: "document-profiles",
+          name: "Auto created document profiles",
+          description:
+            "AI generates a structured profile for every uploaded document — summary, key terms, parties, and matter linkage.",
+          screenshot: {
+            image: documentSummaries,
+            alt: "Spaarke auto-generated document profile — AI summary, key terms, and matter linkage",
+          },
+        },
+        {
+          id: "word-copilot",
+          name: "Document drafting with Word Copilot",
+          description:
+            "Draft directly inside Word using Copilot grounded in the matter's documents, precedents, and prior work.",
+          screenshot: {
+            image: wordAiCopilot,
+            alt: "Word with Copilot drafting a document grounded in the matter's content via Spaarke",
+          },
+        },
+        {
+          id: "playbooks",
+          name: "AI and automation playbooks",
+          description:
+            "Visual playbooks turn legal processes into automations — AI analysis, conditional routing, and matter-aware actions.",
+          screenshot: {
+            image: aiPlaybooks,
+            alt: "Spaarke playbook builder — visual AI and automation workflow with decision and action nodes",
+          },
+        },
+      ],
     },
     {
-      number: "05",
       id: "spend-performance",
       name: "Spend & Performance",
-      body: "Invoices, budgets, OCG compliance, and matter outcomes — the financial and operational truth about every matter and every firm.",
-      bullets: ["OCG compliance", "Spend signals", "Cross-firm view"],
-      screenshot: {
-        src: "/brand/capabilities/spend-performance.png",
-        alt: "Spaarke matter scorecard — performance grades, financial metrics, and upcoming tasks",
-        width: 1800,
-        height: 1100,
-      },
-      imagePosition: "right",
+      description:
+        "The financial and operational truth about every matter and every firm — invoices, budgets, OCG compliance, and outcomes.",
+      features: [
+        {
+          id: "counsel-metrics",
+          name: "Outside counsel performance metrics",
+          description:
+            "Score and benchmark outside counsel on cost, cycle time, OCG compliance, and matter outcomes.",
+          screenshot: {
+            image: outsideCounselReportCard,
+            alt: "Spaarke outside counsel report card — performance grades for cost, timeliness, and compliance",
+          },
+        },
+        {
+          id: "matter-report-cards",
+          name: "Matter report cards",
+          description:
+            "A single matter scorecard that combines budget, spend, performance grades, and risk signals at a glance.",
+          screenshot: {
+            image: financialPerformanceMetrics,
+            alt: "Spaarke matter report card — financial performance metrics across budget, spend, and outcomes",
+          },
+        },
+        {
+          id: "billing-rollup",
+          name: "Billing to matter roll-up data",
+          description:
+            "Every invoice rolled up to its matter, project, and counsel — so spend trends are always one click away.",
+          screenshot: {
+            image: billingSummary,
+            alt: "Spaarke billing summary — invoices rolled up to matter, project, and counsel with spend trends",
+          },
+        },
+        {
+          id: "budget-tracking",
+          name: "Budget setup and tracking",
+          description:
+            "Set matter budgets, track actual against forecast, and get alerted before a matter goes over.",
+          screenshot: {
+            image: budgetTracking,
+            alt: "Spaarke budget tracking — actual versus forecast spend for a matter with overage alerts",
+          },
+        },
+        {
+          id: "powerbi-dashboards",
+          name: "Power BI dashboards",
+          description:
+            "Power BI dashboards built directly on Spaarke data — cross-matter spend, performance, and operational analytics.",
+          screenshot: {
+            image: powerbiDashboards,
+            alt: "Spaarke Power BI dashboards — cross-matter spend, performance, and operational analytics",
+          },
+        },
+      ],
     },
   ],
   foundation: {
