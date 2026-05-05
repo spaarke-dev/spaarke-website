@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { IsometricScroller } from "@/components/IsometricScroller";
 import { PlatformHeroCTAs } from "@/components/PlatformHeroCTAs";
-import { Pillars, Capabilities, Foundation } from "@/components/sections";
+import {
+  Pillars,
+  Capabilities,
+  DeploymentModels,
+  Foundation,
+} from "@/components/sections";
 
 export const metadata: Metadata = {
   title: "Platform",
@@ -113,6 +118,7 @@ export default function Platform() {
         title="The Legal IQ system of record."
         subtitle="Modules supporting the full set of core capabilities required for today's legal teams."
       />
+      <DeploymentModels />
       <Foundation />
     </>
   );
