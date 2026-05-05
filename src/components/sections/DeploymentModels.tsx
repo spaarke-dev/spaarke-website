@@ -4,9 +4,10 @@ import { ArchitectureCompareSlider } from "@/components/ArchitectureCompareSlide
 
 /**
  * Two-column section with the same light-blue ambient backdrop as
- * the home-page MicrosoftNative section. Title left (1/3), descriptive
- * paragraph right (2/3). Below: full-width drag-to-reveal slider that
- * compares the Spaarke-hosted vs Customer-hosted architecture.
+ * the home-page MicrosoftNative section. Title left (1/3), four-
+ * paragraph descriptive copy on the right (2/3). Below: centered
+ * "One Platform. Two deployment models." subtitle for the
+ * drag-to-reveal architecture compare slider.
  *
  * Both diagram SVGs (architecture-spaarke-hosted.svg and
  * architecture-customer-hosted.svg) share byte-identical coordinates
@@ -32,36 +33,55 @@ export function DeploymentModels() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12 lg:gap-16">
           <div className="min-w-0 md:col-span-1">
             <Heading level={2}>
-              One platform.
+              Your data.
               <br />
-              <span className="text-fg-mid">Two deployment models.</span>
+              Your content.
+              <br />
+              <span className="text-fg-mid">Full control.</span>
             </Heading>
           </div>
 
           <div
-            className="min-w-0 md:col-span-2"
+            className="min-w-0 space-y-5 md:col-span-2"
+            // Inline fallback for `md:col-span-2` in case the dev
+            // compiler hasn't picked it up; same belt-and-suspenders
+            // pattern MicrosoftNative uses.
             style={{ gridColumn: "span 2 / span 2" }}
           >
             <Lede className="w-full">
-              Spaarke can be delivered as a managed SaaS platform or deployed
-              into the customer&rsquo;s own Microsoft tenant. Either way,
-              organizations get the same Legal Operations Intelligence
-              platform&mdash;built on Microsoft Azure, Power Platform,
-              SharePoint Embedded, Exchange, Teams, Outlook, and Microsoft 365.
+              Legal data is sensitive. And the content proprietary.
+            </Lede>
+            <Lede className="w-full">
+              AI makes control of your data and content a critical imperative.
+            </Lede>
+            <Lede className="w-full">
+              Most systems require you to move your data and AI processing into
+              their environment&mdash;with limited visibility or control.
+            </Lede>
+            <Lede className="w-full">
+              Spaarke is the only legal SaaS solution that offers the option of
+              fully hosted or customer-tenant deployment&mdash;so your data,
+              documents, and AI can run under your policies, in your
+              environment, without compromise.
             </Lede>
           </div>
+        </div>
+
+        {/* Centered subtitle introducing the diagram */}
+        <div className="mt-16 text-center md:mt-24">
+          <Heading level={3}>One Platform. Two deployment models.</Heading>
         </div>
 
         {/* Compare slider — drag, click, or arrow-keys to wipe between
             Spaarke-hosted and Customer-hosted versions of the same
             architecture. */}
-        <div className="mt-12 md:mt-16">
+        <div className="mt-8 md:mt-10">
           <ArchitectureCompareSlider
             topSrc="/brand/diagrams/architecture-spaarke-hosted.svg"
             topAlt="Spaarke-hosted deployment architecture: Spaarke runs Platform Modules, Portal, Data & Analytics, and Infrastructure; the customer Microsoft 365 tenant connects via Entra ID, Exchange, SharePoint, and Copilot Studio."
             topLabel="Spaarke-Hosted"
             bottomSrc="/brand/diagrams/architecture-customer-hosted.svg"
-            bottomAlt="Customer-tenant deployment architecture: Spaarke modules and portal sit alongside Infrastructure and the Microsoft 365 tenant inside the customer's environment."
+            bottomAlt="Customer-tenant deployment architecture: Spaarke modules and portal sit alongside Infrastructure inside the customer's environment."
             bottomLabel="Customer-Hosted"
           />
           <p className="mt-4 text-center text-[13px] text-fg-mid">
