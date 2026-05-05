@@ -53,10 +53,11 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
       // Inline position+top because Tailwind v4 arbitrary `top-[Npx]`
       // classes can fail to compile (spec §16). Without compiled top
       // value, sticky has no anchor and falls back to static.
-      className="bg-bg scroll-mt-28"
+      className="scroll-mt-28"
       style={{
         position: "sticky",
         top: 420,
+        backgroundColor: "#f6f6f4",
       }}
     >
       {/* Radial spotlight glow — fades in when this capability is the

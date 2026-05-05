@@ -42,8 +42,9 @@ export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
   return (
     <section
       data-tone="light"
-      className="bg-bg text-fg"
+      className="text-fg"
       style={{
+        backgroundColor: "#f6f6f4",
         paddingTop: hasHeader ? "var(--spacing-section-y)" : 0,
         paddingBottom: 0,
       }}
@@ -58,7 +59,7 @@ export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
           style={{
             position: "sticky",
             top: 88,
-            backgroundColor: "var(--color-bg)",
+            backgroundColor: "#f6f6f4",
           }}
         >
           <Shell>
