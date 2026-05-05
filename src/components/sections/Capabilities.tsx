@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 import {
   Eyebrow,
   Heading,
@@ -13,9 +14,9 @@ type Foundation = typeof capabilitiesContent.foundation;
 
 type CapabilitiesProps = {
   /** Centered title displayed above the stacked capability rows. */
-  title?: string;
+  title?: ReactNode;
   /** Optional subtitle / lede beneath the title. */
-  subtitle?: string;
+  subtitle?: ReactNode;
 };
 
 export function Foundation() {
@@ -53,17 +54,19 @@ export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
         <div
           // Sticky main-section title — inline styles for position +
           // top because Tailwind's arbitrary-value `top-[Npx]` classes
-          // can fail to compile under v4 JIT (spec §16). bg covers
-          // capability modules sliding under as user scrolls.
+          // can fail to compile under v4 JIT (spec §16). top:100 sits
+          // flush with the bottom of the SiteHeader (h-12 logo + py-26
+          // = 100px) so the title doesn't peek under the header.
+          // bg covers capability modules sliding under as user scrolls.
           className="z-20"
           style={{
             position: "sticky",
-            top: 88,
+            top: 100,
             backgroundColor: "#f6f6f4",
           }}
         >
           <Shell>
-            <div className="mx-auto max-w-3xl py-8 text-center md:py-10">
+            <div className="mx-auto max-w-3xl py-12 text-center md:py-14">
               {title && <Heading level={2}>{title}</Heading>}
               {subtitle && (
                 <div className="mt-6">

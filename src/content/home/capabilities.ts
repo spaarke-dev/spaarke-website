@@ -58,6 +58,8 @@ export type Capability = {
   id: string;
   name: string;
   description: string;
+  /** Optional second line that follows the description. */
+  tagline?: string;
   features: CapabilityFeature[];
 };
 
@@ -94,6 +96,8 @@ export const capabilitiesContent: CapabilitiesContent = {
       name: "Matter Management",
       description:
         "A unified system for managing matters with complete visibility into work, documents, collaboration, and external counsel.",
+      tagline:
+        "So you always know what's happening—and what needs attention.",
       features: [
         {
           id: "matter-records",
@@ -152,6 +156,7 @@ export const capabilitiesContent: CapabilitiesContent = {
       name: "Documents & Email",
       description:
         "Every document and email connected to its matter, AI-summarized, and discoverable through semantic search.",
+      tagline: "So knowledge is reusable, not buried.",
       features: [
         {
           id: "document-records",
@@ -210,6 +215,7 @@ export const capabilitiesContent: CapabilitiesContent = {
       name: "Collaboration",
       description:
         "Secure shared workspaces for everyone working a matter — internal teams, business clients, and outside counsel, in one place.",
+      tagline: "So everyone works from the same context.",
       features: [
         {
           id: "secure-workspaces",
@@ -268,6 +274,7 @@ export const capabilitiesContent: CapabilitiesContent = {
       name: "AI & Automation",
       description:
         "AI summaries, Copilot-native experiences, and event-driven playbooks — operational intelligence that runs in the background.",
+      tagline: "AI that runs across your legal operations—not just drafting.",
       features: [
         {
           id: "matter-summaries",
@@ -326,6 +333,7 @@ export const capabilitiesContent: CapabilitiesContent = {
       name: "Spend & Performance",
       description:
         "The financial and operational truth about every matter and every firm — invoices, budgets, OCG compliance, and outcomes.",
+      tagline: "Comprehensive insights to every matter, every firm.",
       features: [
         {
           id: "counsel-metrics",

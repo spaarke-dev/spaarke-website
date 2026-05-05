@@ -1,11 +1,12 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { IsometricScroller } from "@/components/IsometricScroller";
 import { PlatformHeroCTAs } from "@/components/PlatformHeroCTAs";
+import { Button } from "@/components/primitives";
 import {
   Pillars,
   Capabilities,
   DeploymentModels,
-  Foundation,
 } from "@/components/sections";
 
 export const metadata: Metadata = {
@@ -27,7 +28,7 @@ export default function Platform() {
           background: "#f6f6f4",
           // Hero fills the first viewport so the dark Pillars section
           // never peeks in before the user scrolls.
-          minHeight: "100vh",
+          minHeight: "92vh",
         }}
       >
         {/* Backdrop (z-0) — iso-scroller + left wash */}
@@ -102,12 +103,12 @@ export default function Platform() {
       <Pillars
         title={
           <>
-            Spaarke is
+            The Legal IQ system
             <br />
-            your ultimate system of truth
+            of record
           </>
         }
-        subtitle="All information in a single platform where everything works seamlessly together"
+        subtitle="A single system where legal work, data, and decisions come together."
       />
 
       {/* Hard cut from the dark Pillars section into the cream
@@ -115,11 +116,122 @@ export default function Platform() {
           Capabilities section so they read as part of the same
           visual moment as the modules below. */}
       <Capabilities
-        title="The Legal IQ system of record."
-        subtitle="Modules supporting the full set of core capabilities required for today's legal teams."
+        title={
+          <>
+            Spaarke is
+            <br />
+            your ultimate system of truth
+          </>
+        }
+        subtitle="Everything your legal team needs—built into one system"
       />
+      <SpaarkeAI />
       <DeploymentModels />
-      <Foundation />
+      <PlatformClosing />
     </>
+  );
+}
+
+const SPAARKE_AI_STYLE: CSSProperties = {
+  backgroundColor: "#0a0a0a",
+  paddingTop: "clamp(80px, 12vh, 140px)",
+  paddingBottom: "clamp(80px, 12vh, 140px)",
+};
+
+const SPAARKE_AI_DARK_TOKENS: CSSProperties = {
+  "--v2-fg": "#ffffff",
+  "--v2-fg-mid": "rgba(255, 255, 255, 0.7)",
+} as CSSProperties;
+
+function SpaarkeAI() {
+  return (
+    <section
+      data-tone="dark"
+      className="relative overflow-hidden"
+      style={SPAARKE_AI_STYLE}
+    >
+      <div
+        className="mx-auto max-w-5xl px-[var(--spacing-shell-x)] text-center"
+        style={SPAARKE_AI_DARK_TOKENS}
+      >
+        <h2
+          className="font-display text-fg font-medium leading-[1.05] tracking-[-0.025em] text-balance"
+          style={{ fontSize: "clamp(34px, 4.5vw, 64px)" }}
+        >
+          Legal AI built into the system
+          <br />
+          —not bolted on
+        </h2>
+        <p
+          className="font-body text-fg-mid mx-auto mt-8 max-w-3xl"
+          style={{
+            fontSize: "clamp(18px, 1.4vw, 25px)",
+            lineHeight: 1.5,
+          }}
+        >
+          Spaarke AI brings generative, agentic, autonomous capabilities
+          <br />
+          into the legal operations platform
+        </p>
+      </div>
+    </section>
+  );
+}
+
+const PLATFORM_CLOSING_STYLE: CSSProperties = {
+  backgroundColor: "#000000",
+  paddingTop: "clamp(80px, 10vh, 120px)",
+  paddingBottom: "clamp(120px, 16vh, 200px)",
+};
+
+const PLATFORM_CLOSING_DARK_TOKENS: CSSProperties = {
+  "--v2-fg": "#ffffff",
+  "--v2-fg-mid": "rgba(255, 255, 255, 0.7)",
+} as CSSProperties;
+
+function PlatformClosing() {
+  return (
+    <section
+      className="relative overflow-hidden"
+      style={PLATFORM_CLOSING_STYLE}
+    >
+      <div
+        className="mx-auto max-w-5xl px-[var(--spacing-shell-x)] text-center"
+        style={PLATFORM_CLOSING_DARK_TOKENS}
+      >
+        {/* Word-only Spaarke logo replaces the textual headline. The
+            SVG is white-on-transparent so it sits cleanly on the
+            #000 backdrop. h-auto + width clamp keeps the logo
+            proportional and roughly headline-scaled. */}
+        <h2 className="m-0 flex justify-center">
+          <span className="sr-only">Spaarke</span>
+          <img
+            src="/brand/logos/spaarke-white-word-logo.svg"
+            alt=""
+            aria-hidden="true"
+            className="h-auto"
+            style={{ width: "clamp(220px, 32vw, 440px)" }}
+          />
+        </h2>
+        <p
+          className="font-display text-fg mx-auto mt-8 max-w-4xl font-medium leading-tight tracking-tight"
+          style={{ fontSize: "clamp(22px, 3vw, 40px)" }}
+        >
+          A single system for legal work, data, and decisions.
+          <br />
+          <span className="whitespace-nowrap">
+            Not another tool. A new way to run legal.
+          </span>
+        </p>
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
+          <Button variant="primary" href="/access-request">
+            Get access
+          </Button>
+          <Button variant="text" href="/contact" arrow>
+            Contact us
+          </Button>
+        </div>
+      </div>
+    </section>
   );
 }

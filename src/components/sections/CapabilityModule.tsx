@@ -56,7 +56,7 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
       className="scroll-mt-28"
       style={{
         position: "sticky",
-        top: 420,
+        top: 380,
         backgroundColor: "#f6f6f4",
       }}
     >
@@ -75,7 +75,10 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
       />
 
       <Shell>
-        <div className="relative px-2 py-16 md:px-6 md:py-24">
+        <div
+          className="relative px-2 pb-16 md:px-6 md:pb-24"
+          style={{ paddingTop: 30 }}
+        >
           {/* Capability header — left-aligned, full width */}
           <header className="max-w-5xl">
             <h3 className="font-display text-fg text-3xl font-medium leading-tight tracking-tight md:text-4xl lg:text-[44px]">
@@ -84,6 +87,11 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
             <p className="font-display text-fg-mid mt-4 text-[17px] font-normal leading-relaxed md:whitespace-nowrap md:text-[19px]">
               {capability.description}
             </p>
+            {capability.tagline && (
+              <p className="font-display text-fg-mid mt-2 text-[17px] font-normal italic leading-relaxed md:whitespace-nowrap md:text-[19px]">
+                {capability.tagline}
+              </p>
+            )}
           </header>
 
           {/* 2-col body: 50/50 image / text */}

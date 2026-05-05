@@ -130,7 +130,7 @@ export function PlatformHeroCTAs({
   } as const;
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="mt-20 max-w-xl">
+    <form onSubmit={handleSubmit} noValidate className="mt-20 max-w-2xl">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <input
           type="text"
@@ -156,6 +156,13 @@ export function PlatformHeroCTAs({
           className={`${inputClass} flex-[1.5]`}
           style={inputStyle}
         />
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={status === "submitting"}
+        >
+          {status === "submitting" ? "Submitting…" : "Get access"}
+        </Button>
       </div>
 
       {status === "error" && error && (
@@ -164,14 +171,7 @@ export function PlatformHeroCTAs({
         </p>
       )}
 
-      <div className="mt-5 flex flex-wrap items-center gap-4">
-        <Button
-          variant="primary"
-          type="submit"
-          disabled={status === "submitting"}
-        >
-          {status === "submitting" ? "Submitting…" : "Get access"}
-        </Button>
+      <div className="mt-5">
         <Button variant="text" href="/why-spaarke" arrow>
           Why Spaarke
         </Button>

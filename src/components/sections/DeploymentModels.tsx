@@ -60,22 +60,23 @@ export function DeploymentModels() {
             </Lede>
             <Lede className="w-full">
               Spaarke is the only legal SaaS solution that offers the option of
-              fully hosted or customer-tenant deployment&mdash;so your data,
-              documents, and AI can run under your policies, in your
-              environment, without compromise.
+              fully hosted or customer-tenant deployment.
             </Lede>
           </div>
         </div>
 
         {/* Centered subtitle introducing the diagram */}
         <div className="mt-16 text-center md:mt-24">
-          <Heading level={3}>One Platform. Two deployment models.</Heading>
+          <h3 className="font-display text-fg text-3xl font-medium leading-tight tracking-tight md:text-4xl lg:text-[44px]">
+            One Platform. Two deployment models.
+          </h3>
         </div>
 
         {/* Compare slider — drag, click, or arrow-keys to wipe between
             Spaarke-hosted and Customer-hosted versions of the same
-            architecture. */}
-        <div className="mt-8 md:mt-10">
+            architecture. Doubled top spacing so the larger diagram
+            title has room to breathe before the slider. */}
+        <div className="mt-16 md:mt-20">
           <ArchitectureCompareSlider
             topSrc="/brand/diagrams/architecture-spaarke-hosted.svg"
             topAlt="Spaarke-hosted deployment architecture: Spaarke runs Platform Modules, Portal, Data & Analytics, and Infrastructure; the customer Microsoft 365 tenant connects via Entra ID, Exchange, SharePoint, and Copilot Studio."
