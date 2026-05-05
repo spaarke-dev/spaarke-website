@@ -1,11 +1,17 @@
 import type { CSSProperties } from "react";
 import { Heading, Lede, Shell } from "@/components/primitives";
+import { ArchitectureCompareSlider } from "@/components/ArchitectureCompareSlider";
 
 /**
  * Two-column section with the same light-blue ambient backdrop as
  * the home-page MicrosoftNative section. Title left (1/3), descriptive
- * paragraph right (2/3). Used on /platform after the Capabilities
- * sticky-stack to introduce the SaaS-vs-tenant deployment story.
+ * paragraph right (2/3). Below: full-width drag-to-reveal slider that
+ * compares the Spaarke-hosted vs Customer-hosted architecture.
+ *
+ * Both diagram SVGs (architecture-spaarke-hosted.svg and
+ * architecture-customer-hosted.svg) share byte-identical coordinates
+ * for every internal element so the wipe boundary lines up exactly
+ * — only the surrounding section frames differ.
  */
 const SECTION_STYLE: CSSProperties = {
   backgroundColor: "#ebf2ff",
@@ -34,9 +40,6 @@ export function DeploymentModels() {
 
           <div
             className="min-w-0 md:col-span-2"
-            // Inline fallback for `md:col-span-2` in case the dev
-            // compiler hasn't picked it up; same belt-and-suspenders
-            // pattern MicrosoftNative uses.
             style={{ gridColumn: "span 2 / span 2" }}
           >
             <Lede className="w-full">
@@ -47,6 +50,24 @@ export function DeploymentModels() {
               SharePoint Embedded, Exchange, Teams, Outlook, and Microsoft 365.
             </Lede>
           </div>
+        </div>
+
+        {/* Compare slider — drag, click, or arrow-keys to wipe between
+            Spaarke-hosted and Customer-hosted versions of the same
+            architecture. */}
+        <div className="mt-12 md:mt-16">
+          <ArchitectureCompareSlider
+            topSrc="/brand/diagrams/architecture-spaarke-hosted.svg"
+            topAlt="Spaarke-hosted deployment architecture: Spaarke runs Platform Modules, Portal, Data & Analytics, and Infrastructure; the customer Microsoft 365 tenant connects via Entra ID, Exchange, SharePoint, and Copilot Studio."
+            topLabel="Spaarke-Hosted"
+            bottomSrc="/brand/diagrams/architecture-customer-hosted.svg"
+            bottomAlt="Customer-tenant deployment architecture: Spaarke modules and portal sit alongside Infrastructure and the Microsoft 365 tenant inside the customer's environment."
+            bottomLabel="Customer-Hosted"
+          />
+          <p className="mt-4 text-center text-[13px] text-fg-mid">
+            Drag the divider, click anywhere, or use ← → keys to compare
+            hosting models.
+          </p>
         </div>
       </Shell>
     </section>

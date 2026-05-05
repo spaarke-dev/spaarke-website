@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spaarke — Deployment Modes</title>
+<style>
+  :root {
+    --spaarke-color: #0E2A47;
+    --customer-color: #4A6FA5;
+    --page-bg: #F7F8FA;
+    --ink: #0F172A;
+    --muted: #64748B;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--page-bg);
+    color: var(--ink);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+  }
+  .page {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 32px 24px 56px;
+  }
+  .header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 14px; gap: 24px; flex-wrap: wrap;
+  }
+  .title {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  .subtitle {
+    font-size: 14px; color: var(--muted); margin-top: 2px;
+  }
+  .hint {
+    font-size: 13px; color: var(--muted);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .hint svg { width: 18px; height: 18px; }
+
+  /* ----- The reveal stage ----- */
+  .stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1400 / 900;
+    background: var(--page-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+                0 8px 32px rgba(15, 23, 42, 0.08);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+  }
+  .stage img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+  .stage .top {
+    /* Clipped from the right; updated via JS */
+    clip-path: inset(0 50% 0 0);
+  }
+
+  /* Mode badges sit above the SVGs in opposite corners */
+  .badge {
+    position: absolute; top: 18px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .badge.left {
+    left: 22px;
+    background: rgba(14, 42, 71, 0.92);
+    color: #fff;
+  }
+  .badge.right {
+    right: 22px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--spaarke-color);
+    border: 1px solid #B8C9DD;
+  }
+
+  /* Divider line at the wipe boundary */
+  .divider {
+    position: absolute; top: 0; bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.10),
+                0 0 20px rgba(15, 23, 42, 0.15);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  /* Drag handle */
+  .handle {
+    position: absolute; top: 50%;
+    width: 48px; height: 48px;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15),
+                0 8px 24px rgba(15, 23, 42, 0.18);
+    cursor: ew-resize;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--spaarke-color);
+    transition: transform 0.08s ease, box-shadow 0.15s ease;
+    z-index: 3;
+  }
+  .handle:hover {
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+  .handle:active {
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+  .handle svg {
+    width: 22px; height: 22px;
+  }
+
+  .footer {
+    margin-top: 16px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-size: 12px; color: var(--muted);
+  }
+  .legend {
+    display: inline-flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .legend-item {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .swatch {
+    display: inline-block; width: 12px; height: 12px; border-radius: 3px;
+    border: 1px solid rgba(15, 23, 42, 0.10);
+  }
+
+  @media (max-width: 720px) {
+    .badge { font-size: 10px; padding: 6px 10px; }
+    .title { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="title">Spaarke Deployment Modes</div>
+      <div class="subtitle">Drag the divider to compare hosting models — architecture is identical, ownership shifts.</div>
+    </div>
+    <div class="hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 6 3 12 9 18"></polyline>
+        <polyline points="15 6 21 12 15 18"></polyline>
+      </svg>
+      Drag the slider, click anywhere, or use ← → keys
+    </div>
+  </div>
+
+  <div class="stage" id="stage" aria-label="Drag to reveal">
+    <!-- Bottom layer: customer-hosted -->
+    <img class="bottom" src="architecture-customer-hosted.svg" alt="Customer-hosted architecture">
+    <!-- Top layer: spaarke-hosted, clipped from the right by JS -->
+    <img class="top" id="topImg" src="architecture-spaarke-hosted.svg" alt="Spaarke-hosted architecture">
+
+    <span class="badge left">Spaarke-Hosted</span>
+    <span class="badge right">Customer-Hosted</span>
+
+    <div class="divider" id="divider"></div>
+    <button class="handle" id="handle" aria-label="Drag to compare deployment modes" tabindex="0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 6 3 12 9 18"></polyline>
+        <polyline points="15 6 21 12 15 18"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <div class="footer">
+    <div class="legend">
+      <span class="legend-item"><span class="swatch" style="background:#0E2A47"></span> Spaarke-managed components</span>
+      <span class="legend-item"><span class="swatch" style="background:#E8EEF5"></span> Customer-hosted components</span>
+      <span class="legend-item"><span class="swatch" style="background:#E8E8E8"></span> Customer M365 tenant (always)</span>
+    </div>
+    <div>Platform Services (Updates · Configuration · Support) are Spaarke-provided in both modes.</div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  const stage   = document.getElementById('stage');
+  const topImg  = document.getElementById('topImg');
+  const divider = document.getElementById('divider');
+  const handle  = document.getElementById('handle');
+
+  let pct = 50; // current divider position as percentage of stage width
+
+  function setPosition(p) {
+    pct = Math.max(0, Math.min(100, p));
+    topImg.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+    divider.style.left = pct + '%';
+    handle.style.left  = pct + '%';
+  }
+
+  function pctFromEvent(e) {
+    const rect = stage.getBoundingClientRect();
+    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    return (x / rect.width) * 100;
+  }
+
+  let dragging = false;
+
+  function onDown(e) {
+    dragging = true;
+    stage.setPointerCapture && stage.setPointerCapture(e.pointerId || 1);
+    setPosition(pctFromEvent(e));
+    e.preventDefault();
+  }
+  function onMove(e) {
+    if (!dragging) return;
+    setPosition(pctFromEvent(e));
+  }
+  function onUp() { dragging = false; }
+
+  // Pointer events (covers mouse + touch on modern browsers)
+  stage.addEventListener('pointerdown', onDown);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup',   onUp);
+  window.addEventListener('pointercancel', onUp);
+
+  // Click anywhere on the stage to jump
+  stage.addEventListener('click', (e) => {
+    if (e.target === handle || handle.contains(e.target)) return;
+    setPosition(pctFromEvent(e));
+  });
+
+  // Keyboard support on the handle
+  handle.addEventListener('keydown', (e) => {
+    const step = e.shiftKey ? 10 : 2;
+    if (e.key === 'ArrowLeft')  { setPosition(pct - step); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { setPosition(pct + step); e.preventDefault(); }
+    if (e.key === 'Home')       { setPosition(0);          e.preventDefault(); }
+    if (e.key === 'End')        { setPosition(100);        e.preventDefault(); }
+  });
+
+  setPosition(50);
+})();
+</script>
+</body>
+</html>
