@@ -20,7 +20,7 @@ import quickCreate from "../../../resources/screenshots/matter-management/quick-
 
 import documentRecord from "../../../resources/screenshots/documents/document-record-partial-light.png";
 import similarDocuments from "../../../resources/screenshots/documents/find-similar-light.png";
-import similarGraph from "../../../resources/screenshots/documents/similar-documents-graph-view-light.png";
+import similarGraph from "../../../resources/screenshots/documents/semantic-graph-light.png";
 import outlookSave from "../../../resources/screenshots/documents/outlook-save-to-spaarke-light.png";
 import wordSave from "../../../resources/screenshots/documents/word-save-to-spaarke-light.png";
 
