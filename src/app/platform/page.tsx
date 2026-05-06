@@ -193,12 +193,17 @@ function SpaarkeAI() {
           }}
         >
           <div className="p-3 sm:p-4 md:p-6">
-            <img
-              src="/brand/diagrams/spaarke-ai-architecture.svg"
-              alt="Spaarke AI architecture: generative, agentic, and autonomous AI capabilities grounded in matters, documents, workflows, and the Microsoft environment."
+            {/* Loaded via <object> so the slimmed SVG can resolve its
+                external <image href="..."> references — browsers
+                sandbox external resource loading when an SVG is loaded
+                as <img>, which would hide the embedded Microsoft logos
+                and the spaarke-AI wordmark. <object> renders the SVG
+                as a document, allowing references to load. */}
+            <object
+              data="/brand/diagrams/spaarke-ai-architecture.svg"
+              type="image/svg+xml"
+              aria-label="Spaarke AI architecture: generative, agentic, and autonomous AI capabilities grounded in matters, documents, workflows, and the Microsoft environment."
               className="block h-auto w-full"
-              loading="lazy"
-              decoding="async"
             />
           </div>
         </div>

@@ -51,13 +51,14 @@ export function MicrosoftNative() {
             <div className="mt-10 w-full md:mt-14">
               {/* Hub-and-spoke diagram — pre-rendered SVG with white
                   logo pads, transparent bg, drop shadows. Lives in
-                  /public/brand/diagrams/. */}
-              <img
-                src="/brand/diagrams/microsoft-connect-v2-light.svg"
-                alt="Spaarke connects into Microsoft 365 Copilot, which radiates out to Outlook, Teams, SharePoint, Microsoft 365 Apps, Power Platform, and Azure AI Foundry."
-                className="h-auto w-full"
-                loading="lazy"
-                decoding="async"
+                  /public/brand/diagrams/. Loaded via <object> so the
+                  slimmed SVG can resolve external <image href> refs
+                  for the embedded Microsoft logos. */}
+              <object
+                data="/brand/diagrams/microsoft-connect-v2-light.svg"
+                type="image/svg+xml"
+                aria-label="Spaarke connects into Microsoft 365 Copilot, which radiates out to Outlook, Teams, SharePoint, Microsoft 365 Apps, Power Platform, and Azure AI Foundry."
+                className="block h-auto w-full"
               />
             </div>
           </div>

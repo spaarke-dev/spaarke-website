@@ -222,13 +222,15 @@ export function ArchitectureCompareSlider({
         }}
       >
         {/* Bottom layer (revealed on the right): customer-hosted.
-            Fades out as the divider moves toward the right edge so
-            the dominant side fully takes over at the extremes. */}
-        <img
-          src={bottomSrc}
-          alt={bottomAlt}
+            Loaded via <object> so the slimmed SVG can resolve its
+            external <image href="..."> references — browsers sandbox
+            those when SVG is loaded as <img>. Fades out as the
+            divider moves toward the right edge. */}
+        <object
+          data={bottomSrc}
+          type="image/svg+xml"
+          aria-label={bottomAlt}
           className="pointer-events-none absolute inset-0 block h-full w-full"
-          draggable={false}
           style={{
             opacity: pct <= 50 ? 1 : (100 - pct) / 50,
             transition: "opacity 120ms linear",
@@ -236,13 +238,13 @@ export function ArchitectureCompareSlider({
         />
 
         {/* Top layer (revealed on the left): spaarke-hosted, clipped
-            from right. Fades out as the divider moves toward the
-            left edge — symmetric to the bottom. */}
-        <img
-          src={topSrc}
-          alt={topAlt}
+            from right. Same <object> rendering for external resource
+            loading. Symmetric fade with the bottom. */}
+        <object
+          data={topSrc}
+          type="image/svg+xml"
+          aria-label={topAlt}
           className="pointer-events-none absolute inset-0 block h-full w-full"
-          draggable={false}
           style={{
             clipPath: `inset(0 ${100 - pct}% 0 0)`,
             opacity: pct >= 50 ? 1 : pct / 50,

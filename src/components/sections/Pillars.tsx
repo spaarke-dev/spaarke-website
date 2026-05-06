@@ -58,12 +58,15 @@ export function Pillars({ title, subtitle }: PillarsProps = {}) {
           }}
         >
           <div className="p-6 sm:p-8 md:p-10">
-            <img
-              src="/brand/diagrams/platform-arch-v3-dark.svg"
-              alt="Spaarke platform architecture: Microsoft Power Platform foundation, five Spaarke capability modules, Microsoft 365 surfaces, and Microsoft 365 Copilot."
+            {/* <object> instead of <img> so the slimmed SVG can resolve
+                external <image href="..."> references for the embedded
+                Microsoft logos. Browsers sandbox external loads in
+                <img>-mode SVG; <object> renders as a document. */}
+            <object
+              data="/brand/diagrams/platform-arch-v3-dark.svg"
+              type="image/svg+xml"
+              aria-label="Spaarke platform architecture: Microsoft Power Platform foundation, five Spaarke capability modules, Microsoft 365 surfaces, and Microsoft 365 Copilot."
               className="block h-auto w-full"
-              loading="lazy"
-              decoding="async"
             />
           </div>
         </div>
