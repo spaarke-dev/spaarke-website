@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Heading, Lede, Shell } from "@/components/primitives";
+import { InlineSvg } from "@/components/InlineSvg";
 
 type PillarsProps = {
   /** Centered title displayed above the architecture diagram. */
@@ -58,16 +59,14 @@ export function Pillars({ title, subtitle }: PillarsProps = {}) {
           }}
         >
           <div className="p-6 sm:p-8 md:p-10">
-            {/* <object> instead of <img> so the slimmed SVG can resolve
-                external <image href="..."> references for the embedded
-                Microsoft logos. Browsers sandbox external loads in
-                <img>-mode SVG; <object> renders as a document. */}
-            <object
-              data="/brand/diagrams/platform-arch-v3-dark.svg"
-              type="image/svg+xml"
-              aria-label="Spaarke platform architecture: Microsoft Power Platform foundation, five Spaarke capability modules, Microsoft 365 surfaces, and Microsoft 365 Copilot."
-              className="block w-full"
-              style={{ aspectRatio: "1280 / 790" }}
+            {/* Inlined SVG — slimmed SVGs reference external <image>
+                files for the Microsoft logos, which only resolve when
+                the SVG is part of the page DOM (not loaded as <img>
+                or <object>). */}
+            <InlineSvg
+              src="/brand/diagrams/platform-arch-v3-dark.svg"
+              className="block [&>svg]:block [&>svg]:h-auto [&>svg]:w-full"
+              ariaLabel="Spaarke platform architecture: Microsoft Power Platform foundation, five Spaarke capability modules, Microsoft 365 surfaces, and Microsoft 365 Copilot."
             />
           </div>
         </div>

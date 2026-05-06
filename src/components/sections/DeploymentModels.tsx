@@ -1,6 +1,21 @@
 import type { CSSProperties } from "react";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { Heading, Lede, Shell } from "@/components/primitives";
 import { ArchitectureCompareSlider } from "@/components/ArchitectureCompareSlider";
+
+// Read the slim diagram SVGs at module load. The slider needs the
+// markup inlined into the page DOM (not a <img>/<object> URL) so the
+// SVG's external <image href="..."> references for the embedded
+// Microsoft logos can resolve normally.
+const SPAARKE_HOSTED_SVG = readFileSync(
+  join(process.cwd(), "public/brand/diagrams/architecture-spaarke-hosted.svg"),
+  "utf8",
+);
+const CUSTOMER_HOSTED_SVG = readFileSync(
+  join(process.cwd(), "public/brand/diagrams/architecture-customer-hosted.svg"),
+  "utf8",
+);
 
 /**
  * Two-column section with the same light-blue ambient backdrop as
@@ -80,10 +95,10 @@ export function DeploymentModels() {
             wide stage; on phones a short prose substitute replaces it. */}
         <div className="mt-16 hidden md:mt-20 md:block">
           <ArchitectureCompareSlider
-            topSrc="/brand/diagrams/architecture-spaarke-hosted.svg"
+            topSvg={SPAARKE_HOSTED_SVG}
             topAlt="Spaarke-hosted deployment architecture: Spaarke runs Platform Modules, Portal, Data & Analytics, and Infrastructure; the customer Microsoft 365 tenant connects via Entra ID, Exchange, SharePoint, and Copilot Studio."
             topLabel="Spaarke-Hosted"
-            bottomSrc="/brand/diagrams/architecture-customer-hosted.svg"
+            bottomSvg={CUSTOMER_HOSTED_SVG}
             bottomAlt="Customer-tenant deployment architecture: Spaarke modules and portal sit alongside Infrastructure inside the customer's environment."
             bottomLabel="Customer-Hosted"
           />

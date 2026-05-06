@@ -11,10 +11,14 @@ import {
 } from "react";
 
 type Props = {
-  topSrc: string;
+  /** Inline SVG markup for the top (Spaarke-hosted) layer. The slimmed
+   * SVG references external assets via <image href>, which only resolve
+   * when the SVG is part of the page DOM (not loaded as <img>/<object>),
+   * so the parent reads the file server-side and passes content here. */
+  topSvg: string;
   topAlt: string;
   topLabel: string;
-  bottomSrc: string;
+  bottomSvg: string;
   bottomAlt: string;
   bottomLabel: string;
   /** Stage aspect ratio — should match the SVG viewBox. */
@@ -41,10 +45,10 @@ type Props = {
  * versions.
  */
 export function ArchitectureCompareSlider({
-  topSrc,
+  topSvg,
   topAlt,
   topLabel,
-  bottomSrc,
+  bottomSvg,
   bottomAlt,
   bottomLabel,
   aspectRatio = "1400 / 900",
@@ -222,34 +226,33 @@ export function ArchitectureCompareSlider({
         }}
       >
         {/* Bottom layer (revealed on the right): customer-hosted.
-            Loaded via <object> so the slimmed SVG can resolve its
-            external <image href="..."> references — browsers sandbox
-            those when SVG is loaded as <img>. Fades out as the
-            divider moves toward the right edge. */}
-        <object
-          data={bottomSrc}
-          type="image/svg+xml"
+            SVG markup is inlined into the DOM (server reads the file
+            and passes content as a string) so its external <image href>
+            references for the embedded Microsoft logos resolve normally.
+            Fades out as the divider moves toward the right edge. */}
+        <div
           aria-label={bottomAlt}
-          className="pointer-events-none absolute inset-0 block h-full w-full"
+          role="img"
+          className="pointer-events-none absolute inset-0 block h-full w-full [&>svg]:block [&>svg]:h-full [&>svg]:w-full"
           style={{
             opacity: pct <= 50 ? 1 : (100 - pct) / 50,
             transition: "opacity 120ms linear",
           }}
+          dangerouslySetInnerHTML={{ __html: bottomSvg }}
         />
 
         {/* Top layer (revealed on the left): spaarke-hosted, clipped
-            from right. Same <object> rendering for external resource
-            loading. Symmetric fade with the bottom. */}
-        <object
-          data={topSrc}
-          type="image/svg+xml"
+            from right. Symmetric fade with the bottom. */}
+        <div
           aria-label={topAlt}
-          className="pointer-events-none absolute inset-0 block h-full w-full"
+          role="img"
+          className="pointer-events-none absolute inset-0 block h-full w-full [&>svg]:block [&>svg]:h-full [&>svg]:w-full"
           style={{
             clipPath: `inset(0 ${100 - pct}% 0 0)`,
             opacity: pct >= 50 ? 1 : pct / 50,
             transition: "opacity 120ms linear",
           }}
+          dangerouslySetInnerHTML={{ __html: topSvg }}
         />
 
         {/* Wipe divider — vertical line at the clip boundary */}

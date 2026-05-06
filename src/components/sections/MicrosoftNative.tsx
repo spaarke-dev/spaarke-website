@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { Heading, Lede, Shell } from "@/components/primitives";
+import { InlineSvg } from "@/components/InlineSvg";
 import { microsoftNativeContent } from "@/content/home/microsoft-native";
 
 /**
@@ -49,17 +50,13 @@ export function MicrosoftNative() {
           >
             <Lede className="w-full">{intro}</Lede>
             <div className="mt-10 w-full md:mt-14">
-              {/* Hub-and-spoke diagram — pre-rendered SVG with white
-                  logo pads, transparent bg, drop shadows. Lives in
-                  /public/brand/diagrams/. Loaded via <object> so the
-                  slimmed SVG can resolve external <image href> refs
-                  for the embedded Microsoft logos. */}
-              <object
-                data="/brand/diagrams/microsoft-connect-v2-light.svg"
-                type="image/svg+xml"
-                aria-label="Spaarke connects into Microsoft 365 Copilot, which radiates out to Outlook, Teams, SharePoint, Microsoft 365 Apps, Power Platform, and Azure AI Foundry."
-                className="block w-full"
-                style={{ aspectRatio: "980 / 660" }}
+              {/* Hub-and-spoke diagram — slim SVG inlined into the page
+                  DOM so its <image href="..."> references for the
+                  embedded Microsoft logos can resolve normally. */}
+              <InlineSvg
+                src="/brand/diagrams/microsoft-connect-v2-light.svg"
+                className="block [&>svg]:block [&>svg]:h-auto [&>svg]:w-full"
+                ariaLabel="Spaarke connects into Microsoft 365 Copilot, which radiates out to Outlook, Teams, SharePoint, Microsoft 365 Apps, Power Platform, and Azure AI Foundry."
               />
             </div>
           </div>

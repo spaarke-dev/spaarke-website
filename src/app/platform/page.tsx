@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { IsometricScroller } from "@/components/IsometricScroller";
 import { PlatformHeroCTAs } from "@/components/PlatformHeroCTAs";
 import { Button } from "@/components/primitives";
+import { InlineSvg } from "@/components/InlineSvg";
 import {
   Pillars,
   Capabilities,
@@ -193,18 +194,16 @@ function SpaarkeAI() {
           }}
         >
           <div className="p-3 sm:p-4 md:p-6">
-            {/* Loaded via <object> so the slimmed SVG can resolve its
-                external <image href="..."> references — browsers
-                sandbox external resource loading when an SVG is loaded
-                as <img>, which would hide the embedded Microsoft logos
-                and the spaarke-AI wordmark. <object> renders the SVG
-                as a document, allowing references to load. */}
-            <object
-              data="/brand/diagrams/spaarke-ai-architecture.svg"
-              type="image/svg+xml"
-              aria-label="Spaarke AI architecture: generative, agentic, and autonomous AI capabilities grounded in matters, documents, workflows, and the Microsoft environment."
-              className="block w-full"
-              style={{ aspectRatio: "1500 / 820" }}
+            {/* Inlined via InlineSvg so the slimmed SVG's external
+                <image href> references resolve at the document level —
+                <img> sandboxes them and <object> proved unreliable
+                across browsers. The SVG markup becomes part of the
+                page DOM and the browser loads referenced assets
+                normally. */}
+            <InlineSvg
+              src="/brand/diagrams/spaarke-ai-architecture.svg"
+              className="block [&>svg]:block [&>svg]:h-auto [&>svg]:w-full"
+              ariaLabel="Spaarke AI architecture: generative, agentic, and autonomous AI capabilities grounded in matters, documents, workflows, and the Microsoft environment."
             />
           </div>
         </div>
