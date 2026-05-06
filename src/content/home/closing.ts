@@ -27,6 +27,6 @@ export const closingContent: ClosingContent = {
   },
   ctas: [
     { label: "Get access", href: "/access-request", variant: "primary" },
-    { label: "Why Spaarke", href: "/why-spaarke", variant: "text", arrow: true },
+    { label: "See Platform", href: "/platform", variant: "text", arrow: true },
   ],
 };

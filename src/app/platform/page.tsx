@@ -118,7 +118,7 @@ export default function Platform() {
           visual moment as the modules below. */}
       <Capabilities
         title="Your ultimate system of truth"
-        subtitle="Everything your legal team needs—built into one system"
+        subtitle="Everything your legal team needs—built into one system."
       />
       <SpaarkeAI />
       <DeploymentModels />
@@ -167,7 +167,7 @@ function SpaarkeAI() {
           >
             Spaarke AI brings generative, agentic, autonomous capabilities
             <br />
-            into the legal operations platform
+            into the legal operations platform.
           </p>
         </div>
 

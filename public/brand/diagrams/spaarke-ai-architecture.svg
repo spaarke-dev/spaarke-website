@@ -112,7 +112,7 @@
 <image x="1292.0" y="385.0" width="56" height="56" href="/brand/diagrams/_extracted/img-400fcb6daff1.png" preserveAspectRatio="xMidYMid meet"/>
 <text x="1320" y="463.0" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">Word</text>
 <image x="1292.0" y="492.0" width="56" height="56" href="/brand/diagrams/_extracted/img-a93e4b227dab.svg" preserveAspectRatio="xMidYMid meet"/>
-<text x="1320" y="570.0" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">Microsoft 365</text>
+<text x="1320" y="570.0" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">M365 Copilot</text>
 <rect x="0" y="600" width="1500" height="220" rx="0" ry="0" fill="url(#capGrad)" stroke="none" stroke-width="0" opacity="1"/>
 <line x1="0" y1="600" x2="1500" y2="600" stroke="#B8C9DD" stroke-width="1.5"/>
 <text x="750.0" y="638" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="rgba(255,255,255,0.62)" text-anchor="middle" letter-spacing="0.22em">AI CAPABILITIES</text>
