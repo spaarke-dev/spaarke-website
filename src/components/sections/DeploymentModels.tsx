@@ -75,8 +75,10 @@ export function DeploymentModels() {
         {/* Compare slider — drag, click, or arrow-keys to wipe between
             Spaarke-hosted and Customer-hosted versions of the same
             architecture. Doubled top spacing so the larger diagram
-            title has room to breathe before the slider. */}
-        <div className="mt-16 md:mt-20">
+            title has room to breathe before the slider. Hidden below
+            md: the diagram is dense and the drag interaction needs a
+            wide stage; on phones a short prose substitute replaces it. */}
+        <div className="mt-16 hidden md:mt-20 md:block">
           <ArchitectureCompareSlider
             topSrc="/brand/diagrams/architecture-spaarke-hosted.svg"
             topAlt="Spaarke-hosted deployment architecture: Spaarke runs Platform Modules, Portal, Data & Analytics, and Infrastructure; the customer Microsoft 365 tenant connects via Entra ID, Exchange, SharePoint, and Copilot Studio."
@@ -89,6 +91,31 @@ export function DeploymentModels() {
             Drag the divider, click anywhere, or use ← → keys to compare
             hosting models.
           </p>
+        </div>
+
+        {/* Mobile prose substitute — same value props as the slider,
+            optimized for narrow viewports. */}
+        <div className="mt-12 grid grid-cols-1 gap-6 md:hidden">
+          <div className="rounded-2xl border border-line bg-surface p-5">
+            <h4 className="font-display text-fg text-[17px] font-semibold">
+              Spaarke-Hosted
+            </h4>
+            <p className="text-fg-mid mt-2 text-[14px] leading-relaxed">
+              Spaarke runs Platform Modules, Portal, Data & Analytics,
+              and Infrastructure. Your Microsoft 365 tenant connects via
+              Entra ID, Exchange, SharePoint, and Copilot Studio.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-line bg-surface p-5">
+            <h4 className="font-display text-fg text-[17px] font-semibold">
+              Customer-Hosted
+            </h4>
+            <p className="text-fg-mid mt-2 text-[14px] leading-relaxed">
+              Spaarke modules and portal sit alongside Infrastructure
+              inside your environment. Same architecture, your tenancy,
+              your governance.
+            </p>
+          </div>
         </div>
       </Shell>
     </section>

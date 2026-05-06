@@ -151,27 +151,69 @@ function SpaarkeAI() {
       style={SPAARKE_AI_STYLE}
     >
       <div
-        className="mx-auto max-w-5xl px-[var(--spacing-shell-x)] text-center"
+        className="mx-auto max-w-[1440px] px-[var(--spacing-shell-x)]"
         style={SPAARKE_AI_DARK_TOKENS}
       >
-        <h2
-          className="font-display text-fg font-medium leading-[1.05] tracking-[-0.025em] text-balance"
-          style={{ fontSize: "clamp(34px, 4.5vw, 64px)" }}
-        >
-          Legal AI built into the system
-          <br />
-          —not bolted on
-        </h2>
-        <p
-          className="font-body text-fg-mid mx-auto mt-8 max-w-3xl"
+        <div className="mx-auto max-w-5xl text-center">
+          <h2
+            className="font-display text-fg font-medium leading-[1.05] tracking-[-0.025em] text-balance"
+            style={{ fontSize: "clamp(34px, 4.5vw, 64px)" }}
+          >
+            Legal AI built into the system
+            <br />
+            —not bolted on
+          </h2>
+          <p
+            className="font-body text-fg-mid mx-auto mt-8 max-w-3xl"
+            style={{
+              fontSize: "clamp(18px, 1.4vw, 25px)",
+              lineHeight: 1.5,
+            }}
+          >
+            Spaarke AI brings generative, agentic, autonomous capabilities
+            <br />
+            into the legal operations platform
+          </p>
+        </div>
+
+        {/* Architecture diagram — full-width inside the section's
+            shell padding, dark-pane treatment matching the Pillars
+            section. Reduced inner padding so the SVG content can
+            occupy nearly the full pane width. Hidden below md:
+            the diagram is dense reference content with small text
+            labels that don't read on phones; a short prose summary
+            substitutes there. */}
+        <div
+          className="mt-16 hidden overflow-hidden rounded-3xl border md:mt-20 md:block"
           style={{
-            fontSize: "clamp(18px, 1.4vw, 25px)",
-            lineHeight: 1.5,
+            backgroundColor: "#111111",
+            borderColor: "rgba(255, 255, 255, 0.08)",
+            boxShadow:
+              "0 30px 80px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.06)",
           }}
         >
-          Spaarke AI brings generative, agentic, autonomous capabilities
-          <br />
-          into the legal operations platform
+          <div className="p-3 sm:p-4 md:p-6">
+            <img
+              src="/brand/diagrams/spaarke-ai-architecture.svg"
+              alt="Spaarke AI architecture: generative, agentic, and autonomous AI capabilities grounded in matters, documents, workflows, and the Microsoft environment."
+              className="block h-auto w-full"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        {/* Mobile prose substitute — same content as the diagram,
+            optimized for narrow viewports. */}
+        <p
+          className="font-body text-fg-mid mx-auto mt-12 max-w-md text-center md:hidden"
+          style={{ fontSize: "16px", lineHeight: 1.6 }}
+        >
+          Spaarke AI grounds Foundry IQ knowledge, Copilot Studio
+          orchestration, and the Agent Framework in your matters,
+          documents, emails, and tasks—surfacing as generative,
+          agentic, and autonomous capabilities across Teams,
+          Outlook, Word, and Microsoft 365.
         </p>
       </div>
     </section>
