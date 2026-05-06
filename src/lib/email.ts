@@ -66,9 +66,17 @@ export async function sendContactNotification(
   }
 }
 
+export type EarlyReleaseSource = "get-access" | "take-tour";
+
+const SOURCE_LABEL: Record<EarlyReleaseSource, string> = {
+  "get-access": "Early Release signup",
+  "take-tour": "Take Tour signup",
+};
+
 export async function sendEarlyReleaseNotification(data: {
   name: string;
   email: string;
+  source?: EarlyReleaseSource;
 }): Promise<{ sent: true } | { sent: false; error: string }> {
   if (!ensureInit()) {
     return { sent: false, error: "SendGrid not configured." };
@@ -84,20 +92,23 @@ export async function sendEarlyReleaseNotification(data: {
     return { sent: false, error: "Email recipients not configured." };
   }
 
+  const source: EarlyReleaseSource = data.source ?? "get-access";
+  const label = SOURCE_LABEL[source];
   const timestamp = new Date().toISOString();
 
   const text = [
-    `New Early Release signup at ${timestamp}`,
+    `New ${label} at ${timestamp}`,
     "",
-    `Name:  ${data.name}`,
-    `Email: ${data.email}`,
+    `Name:   ${data.name}`,
+    `Email:  ${data.email}`,
+    `Source: ${source}`,
   ].join("\n");
 
   try {
     await sgMail.send({
       to,
       from,
-      subject: `[Spaarke] New Early Release signup - ${data.name}`,
+      subject: `[Spaarke] New ${label} - ${data.name}`,
       text,
     });
     return { sent: true };

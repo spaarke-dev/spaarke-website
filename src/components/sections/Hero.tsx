@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { Lede, Shell, Slab } from "@/components/primitives";
 import { heroContent } from "@/content/home/hero";
-import { HeroCTAs } from "./HeroCTAs";
+import { TakeTourCTAs } from "@/components/TakeTourCTAs";
 
 export function Hero() {
-  const { headline, subhead, kicker, ctas, screenshot } = heroContent;
+  const { headline, subhead, kicker, screenshot } = heroContent;
 
   return (
     <Slab tone="dark" className="pt-24 md:pt-32 pb-0">
@@ -35,7 +35,9 @@ export function Hero() {
             </p>
           </div>
           <div className="mt-12">
-            <HeroCTAs ctas={ctas} />
+            <TakeTourCTAs
+              recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
+            />
           </div>
         </div>
       </Shell>

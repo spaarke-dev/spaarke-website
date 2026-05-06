@@ -5,10 +5,17 @@ import { randomBytes } from "crypto";
 import { getIpHash } from "@/lib/ip-hash";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { trackEvent, trackException } from "@/lib/logger";
-import { sendEarlyReleaseNotification } from "@/lib/email";
+import {
+  sendEarlyReleaseNotification,
+  type EarlyReleaseSource,
+} from "@/lib/email";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TABLE_NAME = "EarlyReleaseSignups";
+const VALID_SOURCES: ReadonlySet<EarlyReleaseSource> = new Set([
+  "get-access",
+  "take-tour",
+]);
 
 async function verifyCaptcha(token: string): Promise<boolean> {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
@@ -32,6 +39,12 @@ export async function POST(request: NextRequest) {
     const name = (body.name ?? "").trim();
     const email = (body.email ?? "").trim();
     const captchaToken = (body.captchaToken ?? "").trim();
+    const sourceRaw = (body.source ?? "get-access").toString();
+    const source: EarlyReleaseSource = VALID_SOURCES.has(
+      sourceRaw as EarlyReleaseSource,
+    )
+      ? (sourceRaw as EarlyReleaseSource)
+      : "get-access";
 
     // Rate limiting
     const ipHash = await getIpHash();
@@ -86,6 +99,7 @@ export async function POST(request: NextRequest) {
         rowKey,
         name,
         email,
+        source,
         ipHash,
         signedUpAt: new Date().toISOString(),
       });
@@ -94,7 +108,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send email notification (awaited so serverless doesn't terminate early)
-    await sendEarlyReleaseNotification({ name, email }).catch((err) => {
+    await sendEarlyReleaseNotification({ name, email, source }).catch((err) => {
       console.error("[early-release] Email notification failed:", err);
       trackException(
         err instanceof Error ? err : new Error(String(err)),
@@ -102,7 +116,10 @@ export async function POST(request: NextRequest) {
       );
     });
 
-    trackEvent("early_release.success", { email: email.replace(/@.*/, "@***") });
+    trackEvent("early_release.success", {
+      email: email.replace(/@.*/, "@***"),
+      source,
+    });
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("[early-release] Unexpected error:", err);

@@ -2,13 +2,6 @@
  * Section 1 — Hero
  */
 
-export type HeroCTA = {
-  label: string;
-  href?: string;
-  action?: "open-demo-modal";
-  variant: "primary" | "outline";
-};
-
 export type HeroContent = {
   headline: { line1: string; line2: string };
   subhead: string;
@@ -17,7 +10,6 @@ export type HeroContent = {
    * `strong` (full-strength fg) followed inline by `muted` (fg-mid).
    */
   kicker: { strong: string; muted: string };
-  ctas: [HeroCTA, HeroCTA];
   screenshot: {
     src: string;
     alt: string;
@@ -34,10 +26,6 @@ export const heroContent: HeroContent = {
     strong: "Built for AI across the entire lifecycle.",
     muted: "Not bolted on.",
   },
-  ctas: [
-    { label: "Watch demo", action: "open-demo-modal", variant: "outline" },
-    { label: "Get access", href: "/access-request", variant: "primary" },
-  ],
   screenshot: {
     src: "/brand/hero/hero-workspace-dark.png",
     alt: "Spaarke Corporate Counsel workspace — dashboard with matters, projects, and Copilot panel",
