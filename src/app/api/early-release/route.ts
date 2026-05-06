@@ -71,20 +71,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify CAPTCHA
-    if (!captchaToken) {
-      return NextResponse.json(
-        { ok: false, error: "CAPTCHA_FAILED" },
-        { status: 400 },
-      );
-    }
-    const captchaValid = await verifyCaptcha(captchaToken);
-    if (!captchaValid) {
-      trackEvent("early_release.captcha_failed", { ipHash });
-      return NextResponse.json(
-        { ok: false, error: "CAPTCHA_FAILED" },
-        { status: 400 },
-      );
+    // Verify CAPTCHA — only required when RECAPTCHA_SECRET_KEY is set.
+    // In dev / preview environments without the secret, an empty token
+    // is acceptable (verifyCaptcha returns true) and we skip the check
+    // entirely. With the secret set, empty tokens mean the widget
+    // didn't load (ad-blocker, extension, network) and we reject.
+    if (process.env.RECAPTCHA_SECRET_KEY) {
+      if (!captchaToken) {
+        return NextResponse.json(
+          { ok: false, error: "CAPTCHA_FAILED" },
+          { status: 400 },
+        );
+      }
+      const captchaValid = await verifyCaptcha(captchaToken);
+      if (!captchaValid) {
+        trackEvent("early_release.captcha_failed", { ipHash });
+        return NextResponse.json(
+          { ok: false, error: "CAPTCHA_FAILED" },
+          { status: 400 },
+        );
+      }
     }
 
     // Save to Azure Table Storage
