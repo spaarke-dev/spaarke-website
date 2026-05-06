@@ -8,6 +8,12 @@ import {
   Closing,
 } from "@/components/sections";
 
+// SSR per request so the Hero's TakeTourCTAs receives a runtime-resolved
+// RECAPTCHA_SITE_KEY (Azure SWA app settings are runtime-only — at build
+// time on GH Actions the env var is empty, which produced empty tokens
+// and CAPTCHA_FAILED on submit).
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Spaarke — See all sides of every matter.",
   description:

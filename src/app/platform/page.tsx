@@ -10,6 +10,10 @@ import {
   DeploymentModels,
 } from "@/components/sections";
 
+// SSR per request so PlatformHeroCTAs receives a runtime-resolved
+// RECAPTCHA_SITE_KEY (Azure SWA app settings are runtime-only).
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Platform",
   description:
