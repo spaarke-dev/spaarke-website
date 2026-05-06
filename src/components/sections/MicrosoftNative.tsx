@@ -58,7 +58,8 @@ export function MicrosoftNative() {
                 data="/brand/diagrams/microsoft-connect-v2-light.svg"
                 type="image/svg+xml"
                 aria-label="Spaarke connects into Microsoft 365 Copilot, which radiates out to Outlook, Teams, SharePoint, Microsoft 365 Apps, Power Platform, and Azure AI Foundry."
-                className="block h-auto w-full"
+                className="block w-full"
+                style={{ aspectRatio: "980 / 660" }}
               />
             </div>
           </div>

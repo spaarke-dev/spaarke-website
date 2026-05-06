@@ -203,7 +203,8 @@ function SpaarkeAI() {
               data="/brand/diagrams/spaarke-ai-architecture.svg"
               type="image/svg+xml"
               aria-label="Spaarke AI architecture: generative, agentic, and autonomous AI capabilities grounded in matters, documents, workflows, and the Microsoft environment."
-              className="block h-auto w-full"
+              className="block w-full"
+              style={{ aspectRatio: "1500 / 820" }}
             />
           </div>
         </div>

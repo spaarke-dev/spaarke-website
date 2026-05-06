@@ -66,7 +66,8 @@ export function Pillars({ title, subtitle }: PillarsProps = {}) {
               data="/brand/diagrams/platform-arch-v3-dark.svg"
               type="image/svg+xml"
               aria-label="Spaarke platform architecture: Microsoft Power Platform foundation, five Spaarke capability modules, Microsoft 365 surfaces, and Microsoft 365 Copilot."
-              className="block h-auto w-full"
+              className="block w-full"
+              style={{ aspectRatio: "1280 / 790" }}
             />
           </div>
         </div>
