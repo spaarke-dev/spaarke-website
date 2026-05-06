@@ -117,13 +117,7 @@ export default function Platform() {
           Capabilities section so they read as part of the same
           visual moment as the modules below. */}
       <Capabilities
-        title={
-          <>
-            Spaarke is
-            <br />
-            your ultimate system of truth
-          </>
-        }
+        title="Your ultimate system of truth"
         subtitle="Everything your legal team needs—built into one system"
       />
       <SpaarkeAI />
@@ -261,10 +255,12 @@ function PlatformClosing() {
           />
         </h2>
         <p
-          className="font-display text-fg mx-auto mt-8 max-w-4xl font-medium leading-tight tracking-tight"
+          className="font-display text-fg mx-auto mt-8 max-w-5xl font-medium leading-tight tracking-tight"
           style={{ fontSize: "clamp(22px, 3vw, 40px)" }}
         >
-          A single system for legal work, data, and decisions.
+          <span className="whitespace-nowrap">
+            A single system for legal work, data, and decisions.
+          </span>
           <br />
           <span className="whitespace-nowrap">
             Not another tool. A new way to run legal.

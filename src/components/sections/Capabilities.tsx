@@ -1,12 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import {
-  Eyebrow,
-  Heading,
-  Lede,
-  Shell,
-  Slab,
-} from "@/components/primitives";
+import { Eyebrow, Shell, Slab } from "@/components/primitives";
+import { CapabilitiesHeader } from "@/components/sections/CapabilitiesHeader";
 import { CapabilityModule } from "@/components/sections/CapabilityModule";
 import { capabilitiesContent } from "@/content/home/capabilities";
 
@@ -33,6 +28,7 @@ export function Foundation() {
 export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
   const { capabilities } = capabilitiesContent;
   const hasHeader = Boolean(title || subtitle);
+  const lastCapabilityId = capabilities[capabilities.length - 1]?.id ?? "";
 
   // When there is no title/subtitle the parent page is providing the
   // intro (e.g. the dark→light gradient slab). Drop both top and
@@ -51,37 +47,18 @@ export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
       }}
     >
       {hasHeader && (
-        <div
-          // Sticky main-section title — inline styles for position +
-          // top because Tailwind's arbitrary-value `top-[Npx]` classes
-          // can fail to compile under v4 JIT (spec §16). top:100 sits
-          // flush with the bottom of the SiteHeader (h-12 logo + py-26
-          // = 100px) so the title doesn't peek under the header.
-          // bg covers capability modules sliding under as user scrolls.
-          className="z-20"
-          style={{
-            position: "sticky",
-            top: 100,
-            backgroundColor: "#f6f6f4",
-          }}
-        >
-          <Shell>
-            <div className="mx-auto max-w-3xl py-12 text-center md:py-14">
-              {title && <Heading level={2}>{title}</Heading>}
-              {subtitle && (
-                <div className="mt-6">
-                  <Lede>{subtitle}</Lede>
-                </div>
-              )}
-            </div>
-          </Shell>
-        </div>
+        <CapabilitiesHeader
+          title={title}
+          subtitle={subtitle}
+          lastCapabilityId={lastCapabilityId}
+        />
       )}
       {/*
-        Each module is a direct sibling of the title block so all
+        Each module is a direct sibling of the header block so all
         sticky elements share the same containing block (this <section>).
-        Title pins at top-[72]/[88], modules pin at top-[220]/[260],
-        and all stay pinned until the section's bottom is reached.
+        Header pins at top:100, modules pin at top:380, and the header
+        client-side releases when the last module is the active sticky
+        module so it doesn't float over the next section.
       */}
       {capabilities.map((cap) => (
         <CapabilityModule key={cap.id} capability={cap} />
