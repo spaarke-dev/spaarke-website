@@ -28,10 +28,9 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
     capability.features.find((f) => f.id === activeId) ?? capability.features[0];
 
   // IntersectionObserver — fade the radial glow in when this section
-  // is the active one in the sticky-stack. The rootMargin pulls the
-  // detection band toward the upper-middle of the viewport so the
-  // glow lights up around the time the section "pins" under the
-  // header rather than the moment it first scrolls in.
+  // is in the active reading band. The rootMargin pulls the detection
+  // band toward the upper-middle of the viewport so the glow lights
+  // up as the row enters the comfortable reading zone.
   useEffect(() => {
     const el = sectionRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
@@ -50,20 +49,13 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
     <section
       id={capability.id}
       ref={sectionRef}
-      // Inline position+top because Tailwind v4 arbitrary `top-[Npx]`
-      // classes can fail to compile (spec §16). Without compiled top
-      // value, sticky has no anchor and falls back to static.
-      className="scroll-mt-28"
-      style={{
-        position: "sticky",
-        top: 380,
-        backgroundColor: "#f6f6f4",
-      }}
+      className="relative scroll-mt-28"
+      style={{ backgroundColor: "#f6f6f4" }}
     >
-      {/* Radial spotlight glow — fades in when this capability is the
-          active section in the sticky-stack. Positioned to spotlight
-          the screenshot column on desktop; ambient on mobile. Built
-          from the brand glow palette (#82A5EB / #5078DC). */}
+      {/* Radial spotlight glow — fades in when this capability is in
+          the reading band. Positioned to spotlight the screenshot
+          column on desktop; ambient on mobile. Built from the brand
+          glow palette (#82A5EB / #5078DC). */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 motion-safe:transition-opacity motion-safe:duration-1000"
@@ -75,10 +67,7 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
       />
 
       <Shell>
-        <div
-          className="relative px-2 pb-16 md:px-6 md:pb-24"
-          style={{ paddingTop: 30 }}
-        >
+        <div className="relative px-2 py-16 md:px-6 md:py-20">
           {/* Capability header — left-aligned, full width */}
           <header className="max-w-5xl">
             <h3 className="font-display text-fg text-3xl font-medium leading-tight tracking-tight md:text-4xl lg:text-[44px]">
@@ -99,7 +88,7 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
             {/* Left: screenshot — hairline frame, masked to a fixed
                 aspect window. object-cover + top anchor crops the
                 bottom of taller screenshots without scaling them up. */}
-            <div className="md:sticky md:top-[120px]">
+            <div>
               <div
                 className="relative overflow-hidden rounded-lg"
                 style={{

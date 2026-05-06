@@ -1,7 +1,12 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { Eyebrow, Shell, Slab } from "@/components/primitives";
-import { CapabilitiesHeader } from "@/components/sections/CapabilitiesHeader";
+import {
+  Eyebrow,
+  Heading,
+  Lede,
+  Shell,
+  Slab,
+} from "@/components/primitives";
 import { CapabilityModule } from "@/components/sections/CapabilityModule";
 import { capabilitiesContent } from "@/content/home/capabilities";
 
@@ -28,14 +33,7 @@ export function Foundation() {
 export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
   const { capabilities } = capabilitiesContent;
   const hasHeader = Boolean(title || subtitle);
-  const lastCapabilityId = capabilities[capabilities.length - 1]?.id ?? "";
 
-  // When there is no title/subtitle the parent page is providing the
-  // intro (e.g. the dark→light gradient slab). Drop both top and
-  // bottom padding so the first sticky module lands directly under
-  // the previous section. Inline padding overrides Slab/Tailwind
-  // arbitrary-value classes that don't always lose specificity to
-  // pt-0/pb-0 utilities.
   return (
     <section
       data-tone="light"
@@ -47,19 +45,17 @@ export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
       }}
     >
       {hasHeader && (
-        <CapabilitiesHeader
-          title={title}
-          subtitle={subtitle}
-          lastCapabilityId={lastCapabilityId}
-        />
+        <Shell>
+          <div className="mx-auto max-w-3xl py-4 text-center md:py-6">
+            {title && <Heading level={2}>{title}</Heading>}
+            {subtitle && (
+              <div className="mt-6">
+                <Lede>{subtitle}</Lede>
+              </div>
+            )}
+          </div>
+        </Shell>
       )}
-      {/*
-        Each module is a direct sibling of the header block so all
-        sticky elements share the same containing block (this <section>).
-        Header pins at top:100, modules pin at top:380, and the header
-        client-side releases when the last module is the active sticky
-        module so it doesn't float over the next section.
-      */}
       {capabilities.map((cap) => (
         <CapabilityModule key={cap.id} capability={cap} />
       ))}
