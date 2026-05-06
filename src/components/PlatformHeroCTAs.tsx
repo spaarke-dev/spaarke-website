@@ -130,7 +130,7 @@ export function PlatformHeroCTAs({
   } as const;
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="mt-20 max-w-2xl">
+    <form onSubmit={handleSubmit} noValidate className="mt-20 max-w-3xl">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <input
           type="text"
@@ -163,6 +163,9 @@ export function PlatformHeroCTAs({
         >
           {status === "submitting" ? "Submitting…" : "Get access"}
         </Button>
+        <Button variant="text" href="/why-spaarke" arrow>
+          Why Spaarke
+        </Button>
       </div>
 
       {status === "error" && error && (
@@ -170,12 +173,6 @@ export function PlatformHeroCTAs({
           {error}
         </p>
       )}
-
-      <div className="mt-5">
-        <Button variant="text" href="/why-spaarke" arrow>
-          Why Spaarke
-        </Button>
-      </div>
 
       {recaptchaSiteKey && (
         <ReCAPTCHA
