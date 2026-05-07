@@ -67,6 +67,13 @@ export default function ContactForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    // Capture form-data references synchronously — e.currentTarget
+    // becomes null after the first await due to React event pooling,
+    // which would make `new FormData(e.currentTarget)` throw a
+    // TypeError on the line that reads the honeypot.
+    const formData = new FormData(e.currentTarget);
+    const hp = (formData.get("hp") as string) ?? "";
+
     // Client-side validation
     const localErrors = validateLocally({ name, email, message });
     if (localErrors) {
@@ -100,10 +107,6 @@ export default function ContactForm({
     }
 
     try {
-
-      // Read honeypot from the form element
-      const formData = new FormData(e.currentTarget);
-      const hp = (formData.get("hp") as string) ?? "";
 
       const attribution = submissionProps();
 
