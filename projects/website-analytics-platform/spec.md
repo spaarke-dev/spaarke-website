@@ -155,9 +155,10 @@ that materially answer "what's working." Initial set:
 | `Get Access Submit` | Successful platform-hero Get-Access submission | same |
 | `Demo Request Submit` | Successful /access-request form | same |
 | `Contact Submit` | Successful /contact form | `entry_referrer`, `current_page` |
-| `Tour Section Enter` | First time a tour section becomes active | `tour_slug`, `section_id` |
-| `Tour Section Complete` | Last step of a section viewed | `tour_slug`, `section_id` |
-| `Tour Complete` | Last step of last section | `tour_slug`, `time_on_tour` |
+| `Tour Started` | First step view of a tour session (sessionStorage-guarded, once per session) | `entry_section`, `utm_source` |
+| `Tour Completed` | Tour outro reached (sessionStorage-guarded) | `total_duration_min`, `sections_viewed` |
+| `Tour Abandoned at Section` | Tab close / `visibilitychange=hidden` before reaching outro | `section_id`, `pct_complete` (bucketed: 0-25/25-50/50-75/75-100) |
+| `Tour CTA Click` | Click on any tour callout / interstitial CTA (e.g., outro "Get access") | `cta_label`, `step_id` |
 | `Article Read` | ≥75% scroll AND ≥45s on page | `article_slug`, `time_on_page` |
 | `CTA Click — Get Access` | Click on any "Get access" button | `from_page`, `from_section` |
 | `CTA Click — Contact Us` | Click on Contact CTAs | `from_page` |

@@ -7,12 +7,17 @@ import type {
   CalloutCta,
   CalloutNav as CalloutNavType,
 } from "@/content/tours/types";
+import { track } from "@/lib/analytics";
 
 type Props = {
   callout: CalloutType;
   /** Step navigation controls. When provided, render prev/next + counter
    * inline at the bottom of the interstitial card. */
   nav?: CalloutNavType;
+  /** Current step id — used to attach `step_id` to the Tour CTA Click
+   * event when the user clicks the interstitial CTA (e.g., the outro
+   * "Get access" button). */
+  stepId?: string;
 };
 
 // Match the Callout option-B styling so the interstitial reads as the
@@ -61,7 +66,13 @@ function ChevronRight() {
   );
 }
 
-function CalloutCtaButton({ cta }: { cta: CalloutCta }) {
+function CalloutCtaButton({
+  cta,
+  onClick,
+}: {
+  cta: CalloutCta;
+  onClick?: () => void;
+}) {
   const isExternal = /^https?:\/\//.test(cta.href);
   const className =
     "inline-flex items-center gap-2 rounded-md bg-[#5078DC] px-5 py-2.5 text-[14px] font-medium text-white transition-colors hover:bg-[#4060B8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC] focus-visible:ring-offset-2";
@@ -72,13 +83,14 @@ function CalloutCtaButton({ cta }: { cta: CalloutCta }) {
         target="_blank"
         rel="noopener noreferrer"
         className={className}
+        onClick={onClick}
       >
         {cta.label}
       </a>
     );
   }
   return (
-    <Link href={cta.href} className={className}>
+    <Link href={cta.href} className={className} onClick={onClick}>
       {cta.label}
     </Link>
   );
@@ -90,7 +102,13 @@ function CalloutCtaButton({ cta }: { cta: CalloutCta }) {
  * that nudges right on hover (matches the website's text Button
  * variant).
  */
-function CalloutCtaTextLink({ cta }: { cta: CalloutCta }) {
+function CalloutCtaTextLink({
+  cta,
+  onClick,
+}: {
+  cta: CalloutCta;
+  onClick?: () => void;
+}) {
   const isExternal = /^https?:\/\//.test(cta.href);
   const className =
     "group inline-flex items-center gap-2 px-2 py-2.5 text-[14px] font-medium text-[#5078DC] transition-colors hover:text-[#3F5FD9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC] focus-visible:ring-offset-2 rounded-md";
@@ -112,13 +130,14 @@ function CalloutCtaTextLink({ cta }: { cta: CalloutCta }) {
         target="_blank"
         rel="noopener noreferrer"
         className={className}
+        onClick={onClick}
       >
         {inner}
       </a>
     );
   }
   return (
-    <Link href={cta.href} className={className}>
+    <Link href={cta.href} className={className} onClick={onClick}>
       {inner}
     </Link>
   );
@@ -191,7 +210,7 @@ function InterstitialNav({ nav }: { nav: CalloutNavType }) {
  * — the dimmed underlying screenshot provides visual continuity, while
  * the centered card pauses the tour like a soft confirmation.
  */
-export function InterstitialOverlay({ callout, nav }: Props) {
+export function InterstitialOverlay({ callout, nav, stepId }: Props) {
   const wrapperStyle: CSSProperties = {
     position: "absolute",
     inset: 0,
@@ -264,9 +283,37 @@ export function InterstitialOverlay({ callout, nav }: Props) {
               flexWrap: "wrap",
             }}
           >
-            {callout.cta && <CalloutCtaButton cta={callout.cta} />}
+            {callout.cta && (
+              <CalloutCtaButton
+                cta={callout.cta}
+                onClick={() => {
+                  try {
+                    track("Tour CTA Click", {
+                      cta_label: callout.cta!.label,
+                      cta_kind: "primary",
+                      step_id: stepId ?? "",
+                    });
+                  } catch {
+                    // Plausible failures must not break navigation.
+                  }
+                }}
+              />
+            )}
             {callout.ctaSecondary && (
-              <CalloutCtaTextLink cta={callout.ctaSecondary} />
+              <CalloutCtaTextLink
+                cta={callout.ctaSecondary}
+                onClick={() => {
+                  try {
+                    track("Tour CTA Click", {
+                      cta_label: callout.ctaSecondary!.label,
+                      cta_kind: "secondary",
+                      step_id: stepId ?? "",
+                    });
+                  } catch {
+                    // Plausible failures must not break navigation.
+                  }
+                }}
+              />
             )}
           </div>
         ) : null}

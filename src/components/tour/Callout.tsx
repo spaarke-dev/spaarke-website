@@ -9,6 +9,7 @@ import type {
 } from "@/content/tours/types";
 import { resolveBox, type PointerEdge } from "./geometry";
 import { FeedbackWidget } from "./FeedbackWidget";
+import { track } from "@/lib/analytics";
 
 type Props = {
   callout: CalloutType;
@@ -140,7 +141,13 @@ function ChevronRight() {
   );
 }
 
-function CalloutCtaButton({ cta }: { cta: CalloutCta }) {
+function CalloutCtaButton({
+  cta,
+  onClick,
+}: {
+  cta: CalloutCta;
+  onClick?: () => void;
+}) {
   const isExternal = /^https?:\/\//.test(cta.href);
   const className =
     "inline-flex items-center gap-2 rounded-md bg-[#5078DC] px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-[#4060B8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC] focus-visible:ring-offset-2";
@@ -151,13 +158,14 @@ function CalloutCtaButton({ cta }: { cta: CalloutCta }) {
         target="_blank"
         rel="noopener noreferrer"
         className={className}
+        onClick={onClick}
       >
         {cta.label}
       </a>
     );
   }
   return (
-    <Link href={cta.href} className={className}>
+    <Link href={cta.href} className={className} onClick={onClick}>
       {cta.label}
     </Link>
   );
@@ -285,7 +293,19 @@ export function Callout({
       </div>
       {callout.cta ? (
         <div style={{ marginTop: "0.75rem" }}>
-          <CalloutCtaButton cta={callout.cta} />
+          <CalloutCtaButton
+            cta={callout.cta}
+            onClick={() => {
+              try {
+                track("Tour CTA Click", {
+                  cta_label: callout.cta!.label,
+                  step_id: stepId ?? "",
+                });
+              } catch {
+                // Plausible failures must not break navigation.
+              }
+            }}
+          />
         </div>
       ) : null}
       {nav ? <CalloutNav nav={nav} /> : null}

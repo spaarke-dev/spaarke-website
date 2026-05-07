@@ -92,22 +92,28 @@ customEvents
 
 ---
 
-## To implement — Plausible (marketing analytics)
+## Plausible (marketing analytics) — partially shipped
 
 Plausible is a privacy-friendly analytics tool. No cookies, GDPR-compliant
-out of the box, lightweight script (~1KB). Its custom events are limited
-on lower tiers (10/month on the smaller plans) — so we should send only
-**high-level marketing-meaningful events**, not the per-step engineering
-firehose.
+out of the box, lightweight script (~1KB). Custom events are unlimited
+on the Growth plan ($9/mo, what we're on). The discipline still matters:
+send only **high-level marketing-meaningful events**, not the per-step
+engineering firehose.
 
-### Plausible events to send
+The Plausible script and the broader site-wide event surface (form
+submits, AI Source Visit, Article Read, CTA clicks, Outbound LinkedIn)
+shipped in [PR #12](https://github.com/spaarke-dev/spaarke-website/pull/12)
+— see [`projects/website-analytics-platform/spec.md`](spec.md) §4.2 for
+the full Plausible event inventory. The tour-specific subset is below.
 
-| Event | When | Goal? |
-|---|---|---|
-| `Tour Started` | First step view of a session | ✅ goal — top of funnel |
-| `Tour Completed` | Outro reached | ✅ goal — completion conversion |
-| `Tour Abandoned at Section` | Tab close before outro, with section in props | (optional — counts) |
-| `Tour CTA Click` | Outro "Get access" or any future inline CTAs | ✅ goal — primary conversion |
+### Plausible tour events
+
+| Event | When | Status | Goal? |
+|---|---|---|---|
+| `Tour Started` | First step view of a session (sessionStorage-guarded) | ⬜ TODO — replaces `Tour Section Enter` from PR #12 | ✅ goal — top of funnel |
+| `Tour Completed` | Outro reached (sessionStorage-guarded) | ⬜ TODO — rename of `Tour Complete` from PR #12 | ✅ goal — completion conversion |
+| `Tour Abandoned at Section` | Tab close before outro, with section in props | ⬜ TODO | (optional — counts) |
+| `Tour CTA Click` | Outro "Get access" or any future inline CTAs | ⬜ TODO | ✅ goal — primary conversion |
 
 Each event should include compact metadata as Plausible custom properties:
 - `Tour Started`: `entry_section`, `utm_source`
@@ -115,29 +121,44 @@ Each event should include compact metadata as Plausible custom properties:
 - `Tour Abandoned at Section`: `section_id`, `pct_complete` (bucketed: 0-25/25-50/50-75/75-100)
 - `Tour CTA Click`: `cta_label`, `step_id`
 
-That's **4 event names**, well within free-tier limits.
+That's **4 event names** for the tour. The site-wide Plausible event set
+(form submits, CTA clicks, etc., see spec §4.2) ships separately and is
+already live.
 
-### Per-page-view tagging
+### Migration from PR #12 events
 
-Plausible auto-tracks page views. We should configure the script with
-custom dimensions (Plausible calls these "props" via `data-*` attributes
-on the script tag, or programmatically via `plausible('event', {props})`):
+PR #12 wired three tour-specific Plausible events as a placeholder:
+`Tour Section Enter`, `Tour Section Complete`, `Tour Complete`. These
+were too granular for marketing analytics (per-section enter fires on
+every navigation, not once per session) and should be replaced when the
+new events above are wired:
 
-- `tour_section` — set on every page view of `/tour/full-walkthrough` so
-  Plausible's standard "top pages" report shows section-level breakdown.
+- **Drop** `Tour Section Enter` from Plausible — App Insights
+  `tour.section_enter` already covers this for engineering analysis.
+- **Drop** `Tour Section Complete` from Plausible — same rationale.
+- **Rename** `Tour Complete` → `Tour Completed` and add `total_duration_min`
+  + `sections_viewed` props.
+- **Add** `Tour Started` (once per session, sessionStorage-guarded).
+- **Add** `Tour Abandoned at Section` (visibilitychange/beforeunload).
+- **Add** `Tour CTA Click` (outro CTA + any future inline CTAs).
+
+Update [`src/types/plausible.d.ts`](../../src/types/plausible.d.ts) event
+union to match.
 
 ### Implementation sketch
 
-1. Add Plausible script tag to `src/app/layout.tsx` (or a new
-   `<PlausibleScript>` wrapper component) with `data-domain=spaarke.com`
-   and the file-extensions / outbound-link auto-tracking enabled.
-2. New `src/lib/plausible.ts` client wrapper exposing
-   `trackPlausibleEvent(name, props)` that calls `window.plausible()` if
-   the script has loaded.
-3. Wire the 4 events above into `TourShell.tsx` alongside the existing
-   App Insights calls. The events live in **separate try/catch blocks** —
-   if one tool's script fails, the other still ships.
-4. Configure goals in the Plausible dashboard so the funnel is visible.
+1. Wire the 4 events above into [`src/components/tour/TourShell.tsx`](../../src/components/tour/TourShell.tsx)
+   alongside the existing App Insights `trackTourEvent` calls. The events
+   live in **separate try/catch blocks** — if one tool's script fails,
+   the other still ships.
+2. Update `src/types/plausible.d.ts` to add the four new event names and
+   remove the obsolete trio.
+3. For `Tour CTA Click`: wrap CTA buttons in `Callout.tsx` and
+   `InterstitialOverlay.tsx` to fire on click before navigation.
+4. For `Tour Abandoned at Section`: add a `visibilitychange` listener
+   (and `beforeunload` as fallback) that fires the event if the user
+   hasn't reached `tour-outro`.
+5. Configure goals in the Plausible dashboard so the funnel is visible.
 
 ### Goals to configure in the Plausible dashboard
 
@@ -147,34 +168,49 @@ on the script tag, or programmatically via `plausible('event', {props})`):
 - `Pageview` on `/access-request` — bottom of funnel (existing access
   requests will already track here automatically)
 
-The funnel report can then show: visitors → tour started → tour completed
-→ access requested.
+> ⚠️ **Funnel caveat:** the chain "tour completed → access requested"
+> can't be definitively attributed without a join key on `/access-request`.
+> See the open question on tour-session passthrough below; the goal-based
+> funnel above will show *correlation* (people who completed the tour
+> are likely the same people who later submitted access requests) but
+> not causation per session.
 
 ---
 
-## To implement — Microsoft Clarity (behavior + session replay)
+## Microsoft Clarity (behavior + session replay) — partially shipped
 
 Clarity is free, unlimited, and gives session replays + heatmaps + auto-
 detected friction insights (rage clicks, dead clicks, excessive scrolling,
 quick-back navigation). Strongest value: when the App Insights data flags
 a step with high abandonment, Clarity recordings tell you *why*.
 
-### Clarity setup
+### Clarity status
 
-1. Add the Clarity tracking script to `src/app/layout.tsx`. Use
-   `next/script` with `strategy="afterInteractive"` so it doesn't block
-   first paint.
-2. Set custom tags on the tour pages so recordings can be filtered:
-   - `tour_section` (current section id)
-   - `tour_step` (current step id)
-   - `tour_status` (`browsing` / `completed` / `abandoned`)
-   - `has_feedback` (`true` if user has interacted with the
-     FeedbackWidget this session)
+- ✅ **Tracking script + project ID setup** — shipped in [PR #12](https://github.com/spaarke-dev/spaarke-website/pull/12).
+  See [`src/components/analytics/ClarityScript.tsx`](../../src/components/analytics/ClarityScript.tsx).
+  Project ID is supplied via `NEXT_PUBLIC_CLARITY_PROJECT_ID` env var
+  (set in dev `.env.local` and Azure SWA app settings for production).
+- ✅ **Privacy policy disclosure** — shipped in PR #12. See
+  [`src/app/privacy/page.tsx`](../../src/app/privacy/page.tsx).
+- ⬜ **Tour-specific custom tags** — TODO (this section).
+- ⬜ **FeedbackWidget textarea masking** — TODO.
 
-   Set tags via `window.clarity('set', tag, value)` from `TourShell`'s
-   step-change effect.
-3. Mask the FeedbackWidget textarea (`data-clarity-mask="True"`) so
-   user-typed comments don't appear in recordings.
+### Clarity custom tags to add
+
+Set custom tags on tour pages so recordings can be filtered:
+
+- `tour_section` (current section id)
+- `tour_step` (current step id)
+- `tour_status` (`browsing` / `completed` / `abandoned`)
+- `has_feedback` (`true` if user has interacted with the FeedbackWidget
+  this session)
+
+Set tags via `window.clarity('set', tag, value)` from
+[`TourShell.tsx`](../../src/components/tour/TourShell.tsx)'s step-change
+effect (the same effect that fires the App Insights `tour.step_view`).
+
+Mask the FeedbackWidget textarea via `data-clarity-mask="True"` so
+user-typed comments don't appear in recordings.
 
 ### Clarity playbook
 
@@ -228,13 +264,13 @@ view is genuinely useful. Specifically:
   with no consent banner required for marketing analytics.
 - **Clarity** — does collect PII via session recordings (typed input,
   visible page content). Mitigations:
+  - ✅ Privacy policy disclosure (shipped in PR #12).
   - Mark the FeedbackWidget textarea with `data-clarity-mask="True"` so
-    typed comments don't appear in recordings.
+    typed comments don't appear in recordings (TODO).
   - The Take Tour form's name + email inputs already reach a privacy
     threshold; either mask them too (`data-clarity-mask="True"`) or
     rely on Clarity's automatic input-masking feature (default for
     password fields, but text inputs need explicit masking).
-  - Add Clarity to the privacy policy disclosure.
   - Region-specific consent: if the site grows traffic from EU/UK, a
     cookie/consent banner will be required for Clarity (it does set
     cookies). Plausible doesn't trigger this; App Insights doesn't
@@ -248,32 +284,34 @@ view is genuinely useful. Specifically:
 |---|---|---|---|
 | Tier 1 App Insights events | ✅ shipped (PR #11) | website team | All 5 base events live |
 | Email send observability | ✅ shipped (PR #11) | website team | `early_release.email_sent`/`email_not_sent` |
-| `tour.cta_click` (Tier 2 App Insights) | ⬜ TODO | website team | Wrap CalloutCta + InterstitialOverlay CTA buttons |
-| `tour.return_visit` (Tier 2 App Insights) | ⬜ TODO | website team | Detect `tour_session` cookie on entry |
-| Plausible script + 4 events | ⬜ TODO | analytics-platform team | Adds dependency + needs domain config |
+| Plausible script (sitewide) | ✅ shipped (PR #12) | analytics-platform team | Project key `pa-of04A4p4E27LEiVbf7ChI`, Growth plan |
+| Clarity script (sitewide) | ✅ shipped (PR #12) | analytics-platform team | Project ID `wngdyozlzl` via `NEXT_PUBLIC_CLARITY_PROJECT_ID` |
+| Privacy policy disclosure | ✅ shipped (PR #12) | analytics-platform team | All three tools + localStorage attribution disclosed |
+| Sitewide Plausible event surface (form submits, AI Source Visit, Article Read, CTA clicks, Outbound LinkedIn) | ✅ shipped (PR #12) | analytics-platform team | See spec §4.2 |
+| Plausible tour events: rename `Tour Section Enter`/`Tour Section Complete`/`Tour Complete` → `Tour Started`/`Tour Completed`/`Tour Abandoned at Section`/`Tour CTA Click` | ⬜ TODO | analytics-platform team | Code change in TourShell.tsx + plausible.d.ts |
 | Plausible goals configured | ⬜ TODO | analytics-platform team | Dashboard work, no code |
-| Clarity script + custom tags | ⬜ TODO | analytics-platform team | Adds dependency + privacy review |
+| Clarity tour custom tags + FeedbackWidget masking | ⬜ TODO | analytics-platform team | TourShell step-change effect; `data-clarity-mask="True"` on textarea |
+| `tour.cta_click` (Tier 2 App Insights) | ⬜ TODO | website team | Wrap Callout + InterstitialOverlay CTA buttons |
+| `tour.return_visit` (Tier 2 App Insights) | ⬜ TODO | website team | Detect `tour_session` cookie on entry |
 | Cross-tool dashboard | ⬜ TODO | analytics-platform team | High-level: starts/completions in Plausible, dwell + replays as drill-down |
-| Outro CTA → access-request attribution | ⬜ TODO | both teams | Requires query param or cookie passthrough |
+| Outro CTA → access-request attribution | ⬜ TODO | both teams | Requires query param or cookie passthrough on `/api/early-release` |
 
 ---
 
 ## Open questions
 
-- **`tour.return_visit`**: detect on entry by reading the `tour_session`
-  cookie. Useful for distinguishing "first-time visitor exploring" from
-  "returning visitor referring a colleague" — but only meaningful once
-  we have decent visit volume.
-- **Outro CTA → access-request attribution**: today the outro CTA goes
-  to `/access-request` but we don't yet correlate the access-request
-  submission with the tour visitor's session token. Adding a query
-  param or reusing the `tour_session` cookie on the access-request
-  endpoint would let us count "tour completed → access requested"
-  conversions definitively.
-- **Mobile-blocked tour visits**: the engine has a mobile guard hiding
-  the tour below `lg:` breakpoint. Plausible's UA report will show this
-  passively, but a `tour.mobile_blocked` event might be worth adding so
-  the size of the lost-traffic problem is explicit.
+- **Outro CTA → access-request attribution**: the outro CTA goes to
+  `/access-request` but we don't yet correlate the access-request
+  submission with the tour visitor's session token. Adding either a
+  `?from=tour` query param or reusing the `tour_session` cookie on the
+  `/api/early-release` endpoint would let us count "tour completed →
+  access requested" conversions definitively. **Currently blocks the
+  marketing funnel claim** — until this is in place, the goal-based
+  funnel in Plausible shows correlation, not causation per session.
+- **`tour.return_visit` semantics**: the `tour_session` cookie is only
+  set when a Take Tour form is submitted, so this event detects "lead
+  returning to tour" not "any visitor returning." Worth a clarifying
+  rename if it's wired (e.g., `tour.lead_return_visit`).
 - **Sampling**: at our current traffic volume, fire 100% of all events.
   If the tour gets 10x traffic, sample `tour.step_view` to 10% in App
   Insights and stop including `dwellMsPrevious` (compute server-side

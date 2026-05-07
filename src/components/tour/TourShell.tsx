@@ -101,6 +101,11 @@ export function TourShell({ tour }: Props) {
     return acc + stepIndex;
   }, [tour.sections, sectionIndex, stepIndex]);
 
+  const totalSteps = useMemo(
+    () => tour.sections.reduce((acc, s) => acc + s.steps.length, 0),
+    [tour.sections],
+  );
+
   // -- Navigation helpers ----------------------------------------------
   const writeUrl = useCallback(
     (nextSectionId: SectionId, nextStep: number) => {
@@ -137,25 +142,12 @@ export function TourShell({ tour }: Props) {
       writeUrl(activeSection.id, stepNum + 1);
       return;
     }
-    // At the last step of the current section.
-    track("Tour Section Complete", {
-      tour_slug: tour.slug,
-      section_id: activeSection.id,
-    });
     if (sectionIndex < tour.sections.length - 1) {
       const next = tour.sections[sectionIndex + 1];
       writeUrl(next.id, 1);
-    } else {
-      // Last step of the last section — Tour Complete (once per session).
-      const completeKey = `spk_tour_complete_${tour.slug}`;
-      if (
-        typeof sessionStorage !== "undefined" &&
-        !sessionStorage.getItem(completeKey)
-      ) {
-        track("Tour Complete", { tour_slug: tour.slug });
-        sessionStorage.setItem(completeKey, "1");
-      }
     }
+    // (Last step of last section: outro view fires Tour Completed in
+    // the step-view effect — no action needed here.)
   }, [
     activeSection.id,
     activeSection.steps.length,
@@ -163,7 +155,6 @@ export function TourShell({ tour }: Props) {
     stepIndex,
     stepNum,
     tour.sections,
-    tour.slug,
     writeUrl,
   ]);
 
@@ -176,13 +167,6 @@ export function TourShell({ tour }: Props) {
   );
 
   // Keyboard navigation: tag the upcoming step view as "keyboard"-driven.
-  useEffect(() => {
-    track("Tour Section Enter", {
-      tour_slug: tour.slug,
-      section_id: activeSection.id,
-    });
-  }, [tour.slug, activeSection.id]);
-
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
@@ -238,6 +222,14 @@ export function TourShell({ tour }: Props) {
         utm_campaign: url.searchParams.get("utm_campaign") ?? "",
         hasTourSession: tourSession,
       });
+      try {
+        track("Tour Started", {
+          entry_section: activeSection.id,
+          utm_source: url.searchParams.get("utm_source") ?? "",
+        });
+      } catch {
+        // Plausible failures must not break the tour.
+      }
     }
     // We deliberately omit deps — this effect is meant to fire on mount only.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -322,6 +314,16 @@ export function TourShell({ tour }: Props) {
           sectionsViewed: sectionsViewed.current.size,
           stepsViewed: stepsViewed.current.size,
         });
+        try {
+          track("Tour Completed", {
+            total_duration_min: Math.round(
+              (now - tourStartTimestamp.current) / 60000,
+            ),
+            sections_viewed: sectionsViewed.current.size,
+          });
+        } catch {
+          // Plausible failures must not break the tour.
+        }
       }
     }
   }, [
@@ -363,6 +365,26 @@ export function TourShell({ tour }: Props) {
         sectionsViewed: sectionsViewed.current.size,
         stepsViewed: stepsViewed.current.size,
       });
+      const pct =
+        totalSteps > 1
+          ? Math.floor((overallStepIndex / (totalSteps - 1)) * 100)
+          : 0;
+      const pct_complete =
+        pct < 25
+          ? "0-25"
+          : pct < 50
+            ? "25-50"
+            : pct < 75
+              ? "50-75"
+              : "75-100";
+      try {
+        track("Tour Abandoned at Section", {
+          section_id: activeSection.id,
+          pct_complete,
+        });
+      } catch {
+        // Plausible failures must not break the tour.
+      }
     };
     const onVisibility = () => {
       if (document.visibilityState === "hidden") fireAbandoned();
@@ -378,6 +400,7 @@ export function TourShell({ tour }: Props) {
     activeSection.id,
     currentStep,
     overallStepIndex,
+    totalSteps,
   ]);
 
   const hasSteps = activeSection.steps.length > 0;
