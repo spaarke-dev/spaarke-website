@@ -265,6 +265,54 @@ Examples:
   verbatim extracts preserved intact per spec. Result: 7 negative
   examples preserved, 1,002 → ~785 words.
 
+### Applied 2026-05-08 — taxonomy retag
+
+Frontmatter-only retag pass across the 10 articles flagged in
+`voice/taxonomy.md` §4 audit table. Bodies untouched. Every remaining
+tag value verified against the canonical sets in §2. Single-commit
+work (`chore(content): retag blog library per voice/taxonomy.md`).
+
+- **`content/blog/2026-01-04-what-is-legal-operations-intelligence.mdx`**
+  — theme: removed `thought-leadership`. Final: `legal-operations-intelligence, iq-stack`.
+- **`content/blog/2026-01-11-the-iq-stack.mdx`** — function: removed
+  `business-analyst`. Final: `operations, attorney`.
+- **`content/blog/2026-01-18-loi-maturity-model.mdx`** — theme: removed
+  `thought-leadership`. Final: `legal-operations-intelligence, iq-stack`.
+- **`content/blog/2026-02-15-what-attorneys-need-to-know-about-ai.mdx`**
+  — theme: removed `thought-leadership`. Final: `ai-strategy, data-sovereignty, microsoft-ecosystem`.
+- **`content/blog/2026-03-01-the-ai-readiness-gap.mdx`** — function:
+  removed `business-analyst`; theme: removed `thought-leadership`.
+  Final function: `operations, executive, attorney`. Final theme:
+  `ai-strategy, legal-operations-intelligence, iq-stack`.
+- **`content/blog/2026-03-07-the-20b-blind-spot.mdx`** — topic: removed
+  `invoicing` (canonical `e-billing` already present); theme: removed
+  `thought-leadership`. Final topic: `legal-spend, e-billing, reporting, vendor-management`.
+  Final theme: `legal-operations-intelligence, iq-stack`.
+- **`content/blog/2026-03-14-institutional-knowledge.mdx`** — function:
+  removed `legal-professional` (canonical `attorney` already present);
+  theme: removed `thought-leadership`. Final function: `attorney, operations, executive`.
+  Final theme: `operational-memory, iq-stack, legal-operations-intelligence`.
+- **`content/blog/2026-03-21-breaking-the-silo.mdx`** — function:
+  removed `business-analyst`. Final: `operations, finance, executive, attorney`.
+- **`content/blog/2026-03-25-legal-ops-is-not-it-for-lawyers.mdx`** —
+  function: removed `legal-professional`; theme: removed
+  `thought-leadership`. Final function: `operations, executive, attorney`.
+  Final theme: `legal-operations-intelligence, iq-stack, operational-memory`.
+- **`content/blog/2026-03-31-spaarke-feature-specification.mdx`** —
+  function: removed `business-analyst` and `legal-professional`; topic:
+  removed `invoicing`. Final function: `operations, attorney, it, executive, finance`.
+  Final topic: `matter-management, e-billing, legal-spend, dms, workflow, contracts, reporting, ai-copilot, compliance, vendor-management`.
+- **`content/blog/2026-02-01-welcome-to-spaarke.mdx`** — **skipped** per
+  T11 §4 disposition. Legacy flat-array `tags: ["news", "updates", "company"]`
+  preserved unchanged. The new draft at
+  `projects/content-platform/drafts/blog-posts/welcome-to-spaarke.mdx`
+  will replace it in place at the same slug under the structured tag
+  shape; full retag happens at swap time.
+- **Validation**: every tag value across the 10 retagged articles maps
+  to a slug in `voice/taxonomy.md` §2. No drifted values remain.
+  Most-frequent retag: `theme: thought-leadership` removed across 7
+  articles. No article bodies modified.
+
 ### Applied 2026-05-07 (round 2)
 
 - **`voice/product-knowledge.md`** — resolved the 3 remaining TBDs.
@@ -399,10 +447,14 @@ don't get lost:
   2026-05-06.** 5 / 5 / 10 / 9 canonical values; 7 tags retired
   (legal-professional, business-analyst, invoicing, thought-leadership,
   news, updates, company); 11 of 16 articles need retag.
-- **Retag the existing 16 articles per `voice/taxonomy.md` audit
+- ~~**Retag the existing 16 articles per `voice/taxonomy.md` audit
   table** — separate Phase 1 pass. Tag-only edits to MDX frontmatter;
   no body changes. Single commit
-  `chore(content): retag blog library per voice/taxonomy.md`.
+  `chore(content): retag blog library per voice/taxonomy.md`.~~
+  **Resolved 2026-05-08.** 10 articles retagged in place; legacy
+  `welcome-to-spaarke` skipped pending the queued v2 swap. See §2
+  "Applied 2026-05-08 — taxonomy retag" above for per-article detail.
+  Taxonomy follow-up fully resolved.
 - **`welcome-to-spaarke` disposition** — the single ⚠ in the audit.
   Three options: rewrite under new voice, mark as legacy, or unpublish.
 - **◐ articles** — `spaarke-for-your-it-team` and
