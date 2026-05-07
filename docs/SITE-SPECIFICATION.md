@@ -544,7 +544,15 @@ Quick signup (used by `GetAccessModal`).
 
 Full demo registration form (`DemoRequestForm`). Captures
 firstName / lastName / workEmail / organization / useCase / consent.
-Same validation + CAPTCHA + storage + email pattern.
+**Unlike the other two forms, this is a thin proxy** that validates +
+CAPTCHA-checks server-side, then forwards the payload to **Sprk.Bff.Api**
+in the main Spaarke codebase (`BFF_API_URL` env var). The BFF owns
+the full lifecycle: Dataverse persistence, duplicate detection, admin
+notification, applicant acknowledgement, manual approval workflow,
+9-step automated provisioning (Entra user, license assignment,
+Power Platform team, SharePoint Embedded permissions, welcome email),
+and daily expiration worker. See the integration doc:
+[`docs/integrations/demo-request-flow.md`](integrations/demo-request-flow.md).
 
 ### `POST /api/contact`
 
