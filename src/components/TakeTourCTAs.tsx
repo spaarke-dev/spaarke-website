@@ -1,31 +1,31 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Button } from "@/components/primitives";
-import { TakeTourModal } from "@/components/TakeTourModal";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const TOUR_PATH = "/tour/full-walkthrough";
 
-type Status = "idle" | "submitting" | "success" | "error";
+type Status = "idle" | "submitting" | "error";
 
 /**
  * Home-hero "Take tour" form — same visual shape as the platform-hero
- * Get-access form, but submitting opens the product walkthrough modal
- * instead of redirecting. Posts to /api/early-release with
- * source:"take-tour" so the email notification + Azure Tables row are
- * tagged accordingly.
+ * Get-access form. Submits to /api/early-release with source:"take-tour"
+ * to capture the lead, then redirects the user to the full product
+ * walkthrough at /tour/full-walkthrough.
  */
 export function TakeTourCTAs({
   recaptchaSiteKey,
 }: {
   recaptchaSiteKey: string;
 }) {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
-  const [tourOpen, setTourOpen] = useState(false);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -91,8 +91,10 @@ export function TakeTourCTAs({
         return;
       }
 
-      setStatus("success");
-      setTourOpen(true);
+      // Lead captured — redirect to the full walkthrough. Keep status as
+      // "submitting" until navigation completes so the button doesn't
+      // flash back to "Take tour" mid-redirect.
+      router.push(TOUR_PATH);
     } catch {
       setStatus("error");
       setError("Network error. Please try again.");
@@ -115,89 +117,65 @@ export function TakeTourCTAs({
   } as const;
 
   const submittedLabel =
-    status === "submitting" ? "Submitting…" : "Take tour";
+    status === "submitting" ? "Opening tour…" : "Take tour";
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        noValidate
-        className="mx-auto mt-10 max-w-2xl"
-      >
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <input
-            type="text"
-            required
-            aria-label="Name"
-            placeholder="Name"
-            autoComplete="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={status === "submitting"}
-            className={`${inputClass} flex-1`}
-            style={inputStyle}
-          />
-          <input
-            type="email"
-            required
-            aria-label="Work email"
-            placeholder="Work email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={status === "submitting"}
-            className={`${inputClass} flex-[1.5]`}
-            style={inputStyle}
-          />
-          {status === "success" ? (
-            <Button
-              variant="primary"
-              type="button"
-              onClick={() => setTourOpen(true)}
-            >
-              Open tour
-            </Button>
-          ) : (
-            <Button
-              variant="primary"
-              type="submit"
-              disabled={status === "submitting"}
-            >
-              {submittedLabel}
-            </Button>
-          )}
-        </div>
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      className="mx-auto mt-10 max-w-2xl"
+    >
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <input
+          type="text"
+          required
+          aria-label="Name"
+          placeholder="Name"
+          autoComplete="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          disabled={status === "submitting"}
+          className={`${inputClass} flex-1`}
+          style={inputStyle}
+        />
+        <input
+          type="email"
+          required
+          aria-label="Work email"
+          placeholder="Work email"
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={status === "submitting"}
+          className={`${inputClass} flex-[1.5]`}
+          style={inputStyle}
+        />
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={status === "submitting"}
+        >
+          {submittedLabel}
+        </Button>
+      </div>
 
-        {status === "error" && error && (
-          <p
-            role="alert"
-            className="mt-3 text-center text-sm"
-            style={{ color: "#FCA5A5" }}
-          >
-            {error}
-          </p>
-        )}
+      {status === "error" && error && (
+        <p
+          role="alert"
+          className="mt-3 text-center text-sm"
+          style={{ color: "#FCA5A5" }}
+        >
+          {error}
+        </p>
+      )}
 
-        {status === "success" && (
-          <p
-            className="mt-3 text-center text-sm"
-            style={{ color: "rgba(245,245,245,0.66)" }}
-          >
-            Thanks — your tour is open. We&rsquo;ll follow up at{" "}
-            <strong style={{ color: "#f5f5f5" }}>{email.trim()}</strong>.
-          </p>
-        )}
-
-        {recaptchaSiteKey && (
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={recaptchaSiteKey}
-            size="invisible"
-          />
-        )}
-      </form>
-
-      <TakeTourModal open={tourOpen} onClose={() => setTourOpen(false)} />
-    </>
+      {recaptchaSiteKey && (
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          sitekey={recaptchaSiteKey}
+          size="invisible"
+        />
+      )}
+    </form>
   );
 }
