@@ -45,3 +45,10 @@ next-env.d.ts
 
 # Raw article source images — local staging only, do not deploy
 /resources/articles/
+
+# Walkthrough authoring sources — large lossless captures, gitignored.
+# Markdown guides (guide.md) in the same directories are tracked normally.
+/resources/walkthroughs/**/*.png
+/resources/walkthroughs/**/*.jpg
+/resources/walkthroughs/**/*.jpeg
+/resources/walkthroughs/**/*.webp
