@@ -73,4 +73,20 @@ Organizational byline. The writing should still feel like a person wrote it — 
 
 The opening must make a specific observation, not a generic claim. No "Hello." No "Welcome." No "Imagine." The reader is a senior corporate-counsel or legal-ops director who clicked through wondering what we actually think — write to that reader.
 
-A note on the hero image: Agent J is producing the visual-identity guide and a hero-prompt section will be added to briefs in a separate pass. For now, `heroImage` is a placeholder path; treat as TBD.
+A note on the hero image: a hero prompt for this piece is captured in the `# Hero graphic` section below, drafted against the locked `voice/visual-identity.md`. Generate the image, drop it at the output path, and the `heroImage` placeholder resolves.
+
+# Hero graphic
+
+**Prompt** (paste-ready for Midjourney/DALL-E/Firefly — see `voice/visual-identity.md`):
+
+> Minimalist geometric vector illustration, deep navy background (#0A0A0A fading radially to #2D1F5E in the lower-third), single confident electric-blue accent (#000BFF) with a faint soft-purple glow halo (#7B5BFF at 15% opacity). An abstract emblem of nested containment: three concentric square frames of varying line weight, each rotated a few degrees off the next, with a small solid Spaarke-blue cube held precisely at center — a system held inside a boundary held inside a boundary. Centered focal point, 16:9 landscape, generous negative space on all sides, flat 2.5D vector, editorial illustration in the McKinsey Quarterly / Harvard Business Review house style. No text, no people, no UI panels, no neural network mesh, no robotic hands, no futuristic HUD, no data particles, no glowing brain, no Microsoft logos, no gavels or scales, no photo-real 3D renders, no clip-art.
+
+**Style preset**: minimalist geometric, deep-navy + electric-blue accent, soft purple glow, 2.5D.
+
+**Aspect ratio**: 16:9 (default — matches `ArticleHeader.tsx`).
+
+**Alt text**: Three concentric square frames on a deep navy field, with a single Spaarke-blue cube held at center, suggesting a system held inside a tenant boundary.
+
+**Generator notes**: Midjourney v6.1+ default — append `--ar 16:9 --style raw --s 50`. Lower stylize keeps decoration restrained; pin `--seed` once a candidate frame is found, then iterate variations. For commercial-safe re-use (white paper, LinkedIn carousel) prefer Adobe Firefly with the "Art" content-type and "Vector look" preset. See `tasks/hero-regeneration-prompts.md` for per-tool flag detail and the rest of the seven-piece batch.
+
+**Output path**: `/public/images/blog/welcome-to-spaarke.jpg` (replaces the existing placeholder; `heroImage` frontmatter already references this path).

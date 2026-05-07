@@ -66,9 +66,16 @@ Estimated time per file in parens; total ~3–5 hours of focused review.
       of failures we'd reject? *Resolved 2026-05-07: trimmed from 1,002
       → ~785 words; 7 negative examples preserved; "Better — write"
       extracts kept verbatim per spec.*
+- [ ] `voice/bylines.md` (~10 min) — Phase 1 bylines: review Ralph's
+      bio, confirm LinkedIn URL placeholder, decide whether to keep the
+      two TBD placeholder entries or wait until the named team members
+      are in place before publishing the file.
 - [ ] `voice/visual-identity.md` (~15 min) — does the hero discipline
       match what we want for the brand? Are the do-not-generate items
       complete? Are the hex codes correct?
+- [ ] `voice/taxonomy.md` (~10 min) — canonical blog tag values per
+      category (organization / function / topic / theme), built from a
+      drift audit of the 16-article library. Locked 2026-05-06.
 
 ### Content-type specs (~30 min)
 
@@ -123,6 +130,42 @@ Examples:
 ```
 
 (Empty — fill in during review.)
+
+### Applied 2026-05-06 (hero-regeneration prompts)
+
+- **`tasks/hero-regeneration-prompts.md`** — created. Paste-ready
+  hero-image generation prompts for the seven articles flagged in the
+  §2 2026-05-06 visual-identity entry whose existing heroes lean on
+  the futuristic-HUD / circuit-board / wireframe-hand / data-particle
+  tropes the new identity moves away from: `welcome-to-spaarke`,
+  `breaking-the-silo`, `the-ai-readiness-gap`,
+  `your-legal-data-belongs-to-you`,
+  `what-attorneys-need-to-know-about-ai`, `institutional-knowledge`,
+  `the-20b-blind-spot`. Each entry follows `voice/visual-identity.md`
+  §7 structure (style prefix · abstract subject · composition ·
+  negative list), uses real palette hex codes from §3, applies the
+  do-not-generate list from §5 in every prompt's negative, and
+  includes per-tool flag adjustments for Midjourney v6.1+,
+  DALL-E 3 / GPT-4o, Adobe Firefly, and ComfyUI (SDXL/FLUX with
+  optional brand LoRA trained on the four strong heroes). Concepts
+  are abstract — nested containment frames for `welcome-to-spaarke`,
+  isometric grid with an unjoined cluster for `breaking-the-silo`,
+  partially-formed stair for `the-ai-readiness-gap`, geometric
+  perimeter for sovereignty, three-bar typographic triad for the
+  attorneys-and-AI piece, accumulated concentric strata for
+  institutional knowledge, and a deliberate void in an otherwise
+  complete tile field for `the-20b-blind-spot`. No literal lawyers,
+  chains, padlocks, dollar signs, gavels, or HUD overlays.
+- **`briefs/2026-05-11-welcome-to-spaarke.md`** — added a `# Hero
+  graphic` section (per the `_template-blog-post.md` pattern) carrying
+  the same prompt drafted in the file above. Replaced the stale
+  "Agent J is producing the visual-identity guide and a hero-prompt
+  section will be added to briefs in a separate pass" sentence in
+  `# Voice notes` with a pointer to the new section, since
+  `voice/visual-identity.md` is now locked.
+- **§4 follow-up** — the hero-regeneration batch is struck through
+  in §4 below; prompts are drafted and the team can run them through
+  any of the four supported generators.
 
 ### Applied 2026-05-19
 
@@ -344,12 +387,22 @@ pivoted to point at research-sources.md as the repository of record.
 Don't attempt to resolve these in T11 — they're tracked here so they
 don't get lost:
 
-- **`voice/bylines.md`** — one-paragraph bio per active byline. Need
+- ~~**`voice/bylines.md`** — one-paragraph bio per active byline. Need
   Ralph Schroeder + 1–2 Future-TBD team members named first. Currently
-  4 calendar rows have `byline: tbd`.
-- **`voice/taxonomy.md`** — canonical tag values per category
+  4 calendar rows have `byline: tbd`.~~ **Drafted 2026-05-06 in
+  Phase 1**: Ralph's entry written on-voice; the two future roles
+  recorded as `placeholder` status. Three `tbd` rows remain in
+  `calendar.md` pending the named team members.
+- ~~**`voice/taxonomy.md`** — canonical tag values per category
   (organization / function / topic / theme). Audit existing
-  `content/blog/` frontmatter for drift, then lock.
+  `content/blog/` frontmatter for drift, then lock.~~ **Locked
+  2026-05-06.** 5 / 5 / 10 / 9 canonical values; 7 tags retired
+  (legal-professional, business-analyst, invoicing, thought-leadership,
+  news, updates, company); 11 of 16 articles need retag.
+- **Retag the existing 16 articles per `voice/taxonomy.md` audit
+  table** — separate Phase 1 pass. Tag-only edits to MDX frontmatter;
+  no body changes. Single commit
+  `chore(content): retag blog library per voice/taxonomy.md`.
 - **`welcome-to-spaarke` disposition** — the single ⚠ in the audit.
   Three options: rewrite under new voice, mark as legacy, or unpublish.
 - **◐ articles** — `spaarke-for-your-it-team` and
@@ -359,6 +412,16 @@ don't get lost:
   12 calendar topics. P1.2 task.
 - **First-batch articles** — Phase 2 (recommended starting batch:
   1 white paper + 2 blog posts + 3–4 LinkedIn posts).
+- ~~**Hero-regeneration batch** — the seven HUD-tropey heroes flagged
+  in the §2 2026-05-06 visual-identity entry (`welcome-to-spaarke`,
+  `breaking-the-silo`, `the-ai-readiness-gap`,
+  `your-legal-data-belongs-to-you`,
+  `what-attorneys-need-to-know-about-ai`, `institutional-knowledge`,
+  `the-20b-blind-spot`). Decide whether to refresh under the new
+  identity or let them age out as new pieces ship.~~ **Prompts drafted
+  2026-05-06.** Generate images via Midjourney/DALL-E/Firefly/ComfyUI
+  per `tasks/hero-regeneration-prompts.md`; drop into
+  `/public/images/blog/<slug>.jpg`.
 
 ---
 
