@@ -40,6 +40,31 @@ export type Screenshot = {
   alt: string;
 };
 
+/**
+ * Where the pointer sits on the callout box. Format `<edge>-<offset>`:
+ * - **edge** — which side of the box the pointer protrudes from.
+ * - **offset** — position along that edge.
+ *   - For vertical edges (`left` / `right`): `top`, `middle`, `bottom`.
+ *   - For horizontal edges (`top` / `bottom`): `left`, `middle`, `right`.
+ *
+ * The box is auto-positioned so the pointer's tip lands at the anchor.
+ * Use `*-top` / `*-left` to align the pointer with the title region of
+ * the callout; use `*-bottom` / `*-right` to align with the bottom.
+ */
+export type PointerPosition =
+  | "left-top"
+  | "left-middle"
+  | "left-bottom"
+  | "right-top"
+  | "right-middle"
+  | "right-bottom"
+  | "top-left"
+  | "top-middle"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-middle"
+  | "bottom-right";
+
 export type Callout = {
   /** Optional title shown above the body in stronger weight. */
   title?: string;
@@ -55,7 +80,18 @@ export type Callout = {
    * Drives auto-placement of the box if `box` is omitted.
    */
   anchor?: { x: number; y: number };
-  /** Which side of the callout the pointer comes out of. */
+  /**
+   * Where the pointer sits on the callout box (12-position system).
+   * Preferred over the legacy `side` field for new authoring.
+   */
+  pointer?: PointerPosition;
+  /**
+   * @deprecated Use `pointer` for richer placement. Maps to:
+   * `right` → `left-middle` (box right of anchor, pointer on box's left)
+   * `left`  → `right-middle`
+   * `top`   → `bottom-middle` (box above anchor, pointer on box's bottom)
+   * `bottom`→ `top-middle`
+   */
   side?: "top" | "right" | "bottom" | "left";
   /**
    * Optional call-to-action button rendered below the body. Useful for

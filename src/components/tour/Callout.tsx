@@ -7,7 +7,7 @@ import type {
   CalloutCta,
   CalloutNav as CalloutNavType,
 } from "@/content/tours/types";
-import { resolveBox, type Side } from "./geometry";
+import { resolveBox, type PointerEdge } from "./geometry";
 
 type Props = {
   callout: CalloutType;
@@ -34,36 +34,47 @@ const NAV_DISABLED = "rgba(15,23,42,0.25)";
 const ARROW_SIZE_PX = 14;
 const ARROW_STROKE_PX = 2;
 
-function PointerArrow({ pointerSide }: { pointerSide: Side }) {
+/**
+ * Pointer arrow positioned on a given edge of the callout box at a given
+ * offset along that edge. The polygon's tip points away from the box
+ * (toward the anchor); the box is positioned so that tip lands on the
+ * anchor coordinates.
+ *
+ * `offset` is normalized 0-1 along the edge:
+ * - For `left` / `right` edges: 0 = top, 1 = bottom (vertical position).
+ * - For `top` / `bottom` edges:  0 = left, 1 = right (horizontal position).
+ */
+function PointerArrow({
+  edge,
+  offset,
+}: {
+  edge: PointerEdge;
+  offset: number;
+}) {
   const s = ARROW_SIZE_PX;
-  const points: Record<Side, string> = {
-    left: `${s},0 ${s},${s} 0,${s / 2}`,
-    right: `0,0 0,${s} ${s},${s / 2}`,
-    top: `0,${s} ${s},${s} ${s / 2},0`,
-    bottom: `0,0 ${s},0 ${s / 2},${s}`,
+  // Tip vertex points AWAY from the box. The other two sit flush with
+  // the box edge so the box border + arrow stroke read as a continuous outline.
+  const points: Record<PointerEdge, string> = {
+    left: `${s},0 ${s},${s} 0,${s / 2}`, // tip at SVG x=0 → points left, away from box
+    right: `0,0 0,${s} ${s},${s / 2}`, // tip at SVG x=s → points right
+    top: `0,${s} ${s},${s} ${s / 2},0`, // tip at SVG y=0 → points up
+    bottom: `0,0 ${s},0 ${s / 2},${s}`, // tip at SVG y=s → points down
   };
-  const positionStyle: Record<Side, CSSProperties> = {
-    left: {
-      top: "50%",
-      left: 0,
-      transform: `translate(-${s}px, -50%)`,
-    },
-    right: {
-      top: "50%",
-      right: 0,
-      transform: `translate(${s}px, -50%)`,
-    },
-    top: {
-      top: 0,
-      left: "50%",
-      transform: `translate(-50%, -${s}px)`,
-    },
-    bottom: {
-      bottom: 0,
-      left: "50%",
-      transform: `translate(-50%, ${s}px)`,
-    },
-  };
+
+  const offsetPct = `${offset * 100}%`;
+  const positionStyle: CSSProperties =
+    edge === "left"
+      ? { top: offsetPct, left: 0, transform: `translate(-${s}px, -50%)` }
+      : edge === "right"
+        ? { top: offsetPct, right: 0, transform: `translate(${s}px, -50%)` }
+        : edge === "top"
+          ? { top: 0, left: offsetPct, transform: `translate(-50%, -${s}px)` }
+          : {
+              bottom: 0,
+              left: offsetPct,
+              transform: `translate(-50%, ${s}px)`,
+            };
+
   return (
     <svg
       aria-hidden="true"
@@ -72,13 +83,13 @@ function PointerArrow({ pointerSide }: { pointerSide: Side }) {
       viewBox={`0 0 ${s} ${s}`}
       style={{
         position: "absolute",
-        ...positionStyle[pointerSide],
+        ...positionStyle,
         pointerEvents: "none",
         overflow: "visible",
       }}
     >
       <polygon
-        points={points[pointerSide]}
+        points={points[edge]}
         fill="#ffffff"
         stroke={BOX_BORDER}
         strokeWidth={ARROW_STROKE_PX}
@@ -211,6 +222,7 @@ export function Callout({ callout, nav }: Props) {
     left: `${resolved.x * 100}%`,
     top: `${resolved.y * 100}%`,
     width: `${resolved.width * 100}%`,
+    transform: resolved.transform || undefined,
     backgroundColor: "#ffffff",
     border: `${BOX_BORDER_WIDTH_PX}px solid ${BOX_BORDER}`,
     borderRadius: "0.625rem",
@@ -261,7 +273,12 @@ export function Callout({ callout, nav }: Props) {
         </div>
       ) : null}
       {nav ? <CalloutNav nav={nav} /> : null}
-      {showPointer ? <PointerArrow pointerSide={resolved.side} /> : null}
+      {showPointer ? (
+        <PointerArrow
+          edge={resolved.pointerEdge}
+          offset={resolved.pointerOffset}
+        />
+      ) : null}
     </div>
   );
 }
