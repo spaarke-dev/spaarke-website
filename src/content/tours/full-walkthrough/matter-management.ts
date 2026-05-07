@@ -15,8 +15,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Your day, summarized by AI",
         body: "AI-generated briefings surface overdue work, upcoming deadlines, and recent matter activity. Prioritize what needs attention without opening every matter, and start the day with operational context already assembled.",
-        anchor: { x: 0.22, y: 0.14 },
-        side: "right",
+        anchor: { x: 0.31, y: 0.169 },
+        pointer: "left-top",
       },
     },
     {
@@ -30,8 +30,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Work that needs attention",
         body: "Overdue tasks and approaching deadlines are grouped automatically. Each item links directly back to the underlying matter and work item — reducing missed deadlines and improving operational visibility.",
-        anchor: { x: 0.30, y: 0.33 },
-        side: "right",
+        anchor: { x: 0.321, y: 0.567 },
+        pointer: "left-middle",
       },
     },
     {
@@ -45,8 +45,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Connected to every matter",
         body: "Activity updates roll up from tasks, filings, reviews, emails, and events. The briefing continuously updates as work changes — one view across the full legal operation.",
-        anchor: { x: 0.38, y: 0.64 },
-        side: "right",
+        anchor: { x: 0.733, y: 0.503 },
+        pointer: "right-middle",
       },
     },
     {
@@ -60,8 +60,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Tailored to your role",
         body: "Configure what appears in your briefing feed. Surface the updates most relevant to your practice and responsibilities — every user gets a personalized operational view.",
-        anchor: { x: 0.74, y: 0.29 },
-        side: "left",
+        anchor: { x: 0.631, y: 0.226 },
+        pointer: "right-top",
       },
     },
     {
@@ -75,8 +75,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Control the signal",
         body: "Turn channels on or off by activity type. Focus on deadlines, documents, emails, assignments, or matter activity — reducing noise without losing visibility.",
-        anchor: { x: 0.77, y: 0.39 },
-        side: "left",
+        anchor: { x: 0.631, y: 0.489 },
+        pointer: "right-top",
       },
     },
     {
@@ -90,8 +90,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Your legal operations workspace",
         body: "A configurable workspace for matters, tasks, documents, and updates. Bring together the information your team uses every day — and reduce context switching across disconnected systems.",
-        anchor: { x: 0.16, y: 0.075 },
-        side: "right",
+        anchor: { x: 0.201, y: 0.122 },
+        pointer: "top-left",
       },
     },
     {
@@ -105,8 +105,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Work starts here",
         body: "Launch common actions directly from the workspace. Create matters, assign work, and summarize documents in one click — AI and workflow tools are built directly into daily operations.",
-        anchor: { x: 0.27, y: 0.20 },
-        side: "bottom",
+        anchor: { x: 0.319, y: 0.322 },
+        pointer: "top-middle",
       },
     },
     {
@@ -120,8 +120,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Priorities in real time",
         body: "Active work, deadlines, and documents update continuously. Smart scoring highlights what requires immediate attention — keeping teams aligned on operational priorities.",
-        anchor: { x: 0.28, y: 0.68 },
-        side: "right",
+        anchor: { x: 0.354, y: 0.757 },
+        pointer: "left-middle",
       },
     },
     {
@@ -135,8 +135,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Every matter, one system",
         body: "View all active matters across the organization. Track matter type, practice area, ownership, and status — one operational system instead of disconnected spreadsheets and folders.",
-        anchor: { x: 0.24, y: 0.18 },
-        side: "right",
+        anchor: { x: 0.082, y: 0.221 },
+        pointer: "left-top",
       },
     },
     {
@@ -150,8 +150,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Views built for legal teams",
         body: "Filter and organize matters by practice, client, team, or workflow. Save personalized views for different legal operations roles — surfacing exactly the information your team needs.",
-        anchor: { x: 0.84, y: 0.11 },
-        side: "left",
+        anchor: { x: 0.843, y: 0.175 },
+        pointer: "top-right",
       },
     },
     {
@@ -165,8 +165,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "The complete matter record",
         body: "Every matter brings together documents, tasks, contacts, deadlines, billing, and reporting. Teams work from a shared operational view — context stays connected across the lifecycle of the matter.",
-        anchor: { x: 0.37, y: 0.30 },
-        side: "right",
+        anchor: { x: 0.385, y: 0.161 },
+        pointer: "left-top",
       },
     },
     {
@@ -180,8 +180,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Documents tied to the work",
         body: "Documents remain connected to the matter they belong to. Search, preview, and collaborate without leaving the matter — preserving context, history, and auditability.",
-        anchor: { x: 0.42, y: 0.62 },
-        side: "right",
+        anchor: { x: 0.131, y: 0.425 },
+        pointer: "bottom-left",
       },
     },
     {
@@ -195,8 +195,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Operational performance visibility",
         body: "Track budgets, compliance, performance grades, and upcoming deadlines. Financial and operational insights live beside the legal work — see matter health at a glance.",
-        anchor: { x: 0.83, y: 0.30 },
-        side: "left",
+        anchor: { x: 0.668, y: 0.431 },
+        pointer: "right-middle",
       },
     },
     {
@@ -210,8 +210,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Ask, don't search",
         body: "Natural-language search across matters, documents, projects, and invoices. AI surfaces relationships and relevance instead of keyword matches — find information based on meaning and context.",
-        anchor: { x: 0.14, y: 0.28 },
-        side: "right",
+        anchor: { x: 0.275, y: 0.289 },
+        pointer: "left-middle",
       },
     },
     {
@@ -225,8 +225,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Discover connected information",
         body: "Visual relationship graphs expose related files and matter connections. Identify similar work, linked documents, and operational patterns — moving beyond folders and static search results.",
-        anchor: { x: 0.54, y: 0.43 },
-        side: "right",
+        anchor: { x: 0.569, y: 0.306 },
+        pointer: "left-middle",
       },
     },
     {
@@ -240,8 +240,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Tune AI relevance",
         body: "Adjust thresholds, clustering, and similarity scoring. Refine how semantic results are grouped and surfaced — designed for large-scale enterprise legal repositories.",
-        anchor: { x: 0.88, y: 0.25 },
-        side: "left",
+        anchor: { x: 0.815, y: 0.229 },
+        pointer: "right-middle",
       },
     },
   ],
