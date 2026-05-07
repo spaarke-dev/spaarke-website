@@ -165,7 +165,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Secure external collaboration",
         body: "Outside counsel and external collaborators receive secure workspace access. Collaboration occurs inside the operational platform instead of email chains, so external work becomes visible and manageable.",
-        anchor: { x: 0.626, y: 0.135 },
+        anchor: { x: 0.285, y: 0.135 },
         pointer: "left-top",
       },
     },
@@ -240,7 +240,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Controlled document contribution",
         body: "External collaborators can upload and contribute documents securely. All content remains tied to the operational workspace, and governance and auditability remain intact.",
-        anchor: { x: 0.626, y: 0.544 },
+        anchor: { x: 0.285, y: 0.544 },
         pointer: "left-top",
       },
     },
@@ -255,7 +255,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Workspace-level operational collaboration",
         body: "Calendars, contacts, tasks, and communication remain integrated into the project. Collaboration extends beyond files into operational execution, creating a shared operational environment across organizations.",
-        anchor: { x: 0.626, y: 0.135 },
+        anchor: { x: 0.285, y: 0.135 },
         pointer: "left-top",
       },
     },
