@@ -57,6 +57,35 @@ export type Callout = {
   anchor?: { x: number; y: number };
   /** Which side of the callout the pointer comes out of. */
   side?: "top" | "right" | "bottom" | "left";
+  /**
+   * Optional call-to-action button rendered below the body. Useful for
+   * module-transition steps ("Continue to Documents & Email") and
+   * tour-completion steps ("Get access").
+   */
+  cta?: CalloutCta;
+};
+
+export type CalloutCta = {
+  /** Visible button text. */
+  label: string;
+  /** Destination URL. Internal paths render as Next `<Link>`; absolute
+   * URLs (https://…) render as plain anchor tags with target="_blank". */
+  href: string;
+};
+
+/**
+ * Step navigation controls passed from the parent shell into the
+ * callout so prev/next + counter live inline with the callout body.
+ */
+export type CalloutNav = {
+  /** Zero-based step index within the active section. */
+  index: number;
+  /** Total steps in the active section. */
+  total: number;
+  hasPrev: boolean;
+  hasNext: boolean;
+  onPrev: () => void;
+  onNext: () => void;
 };
 
 export type Hotspot = {
