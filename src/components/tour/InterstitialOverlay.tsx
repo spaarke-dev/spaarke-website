@@ -205,7 +205,14 @@ export function InterstitialOverlay({ callout, nav }: Props) {
             lineHeight: 1.55,
           }}
         >
-          {callout.body}
+          {callout.body.split(/\n\n+/).map((para, i, arr) => (
+            <p
+              key={i}
+              style={{ margin: 0, marginBottom: i < arr.length - 1 ? "0.75rem" : 0 }}
+            >
+              {para}
+            </p>
+          ))}
         </div>
         {callout.cta ? (
           <div style={{ marginTop: "1rem" }}>

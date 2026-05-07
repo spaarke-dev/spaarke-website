@@ -177,7 +177,7 @@ export function FeedbackWidget({ tourSlug, sectionId, stepId }: Props) {
 
   return (
     <div style={ROW_STYLE}>
-      <span style={{ marginRight: "0.25rem" }}>Was this helpful?</span>
+      <span style={{ marginRight: "0.25rem" }}>Like this feature?</span>
       <button
         type="button"
         aria-label="Helpful"

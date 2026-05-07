@@ -15,7 +15,7 @@ export const matterManagement: TourSection = {
       },
       callout: {
         title: "A guided walkthrough of Spaarke",
-        body: "Spaarke unifies legal operations across matter management, documents, collaboration, AI, and spend — built natively on Microsoft. The next 100 steps walk through how it fits together. Use the arrow keys or click to advance.",
+        body: "This tour provides a good overview of the platform. Navigate through the different capability areas at the top, and use the arrow keys to step through.\n\nWe've included a feedback option on every step. We encourage you to click the 👍 or 👎 and provide comments. Include questions and we'll get back to you!",
       },
     },
     {
