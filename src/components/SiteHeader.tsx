@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { logo, navLinks } from "@/content/nav";
+import { logo, navCta, navLinks } from "@/content/nav";
+import { Button } from "@/components/primitives";
 
 export default function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -41,19 +42,31 @@ export default function SiteHeader() {
           </ul>
         </div>
 
-        {/* Right group: action links */}
-        <ul className="hidden items-center gap-6 md:flex">
-          {navLinks.right.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="text-fg-mid hover:text-fg font-display text-[15px] font-medium transition-colors"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* Right group: action links + Get access pill */}
+        <div className="hidden items-center gap-6 md:flex">
+          <ul className="flex items-center gap-6">
+            {navLinks.right.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-fg-mid hover:text-fg font-display text-[15px] font-medium transition-colors"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          {/* Compact Button — Button primitive's primary variant gives
+              the rounded pill in cta-blue. Slightly tighter padding so
+              it doesn't dominate the nav row vertically. */}
+          <Button
+            variant="primary"
+            href={navCta.href}
+            className="!px-5 !py-2 !text-[14px]"
+          >
+            {navCta.label}
+          </Button>
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -91,6 +104,15 @@ export default function SiteHeader() {
               </li>
             ))}
           </ul>
+          <div className="px-[var(--spacing-shell-x)] pb-4">
+            <Button
+              variant="primary"
+              href={navCta.href}
+              onClick={() => setMobileOpen(false)}
+            >
+              {navCta.label}
+            </Button>
+          </div>
         </div>
       )}
     </header>

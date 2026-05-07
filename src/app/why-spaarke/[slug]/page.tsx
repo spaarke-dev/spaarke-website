@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
-import { Shell, Slab } from "@/components/primitives";
+import { Button, Shell, Slab } from "@/components/primitives";
 import { ArticleHeader } from "@/components/article/ArticleHeader";
 import { ArticleTOC } from "@/components/article/ArticleTOC";
 import { ArticleShare } from "@/components/article/ArticleShare";
@@ -133,26 +132,9 @@ export default async function WhySpaarkeArticle({ params }: Props) {
                 <p className="text-fg-mid text-sm">
                   Want to see how it works?
                 </p>
-                <Link
-                  href="/access-request"
-                  className="bg-spaarke-blue text-white hover:bg-spaarke-blue/90 focus-visible:ring-spaarke-blue inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-                >
+                <Button variant="primary" href="/access-request" arrow>
                   Get access
-                  <svg
-                    aria-hidden="true"
-                    className="h-3.5 w-3.5"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      d="M3 7h8m0 0L8 4m3 3l-3 3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
+                </Button>
               </div>
             </article>
 

@@ -5,6 +5,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Send24Regular } from "@fluentui/react-icons";
 import FormField from "@/components/FormField";
 import InlineAlert from "@/components/InlineAlert";
+import { Button } from "@/components/primitives";
 import { submissionProps } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
 
@@ -258,10 +259,10 @@ export default function ContactForm({
         <input type="text" id="hp" name="hp" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <button
+      <Button
+        variant="primary"
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
       >
         {status === "submitting" ? (
           <>
@@ -291,10 +292,10 @@ export default function ContactForm({
         ) : (
           <>
             <Send24Regular aria-hidden="true" className="h-4 w-4" />
-            Send Message
+            Send message
           </>
         )}
-      </button>
+      </Button>
 
       {recaptchaSiteKey && (
         <ReCAPTCHA

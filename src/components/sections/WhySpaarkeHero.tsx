@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { Shell, Slab } from "@/components/primitives";
+import { Button, Shell, Slab } from "@/components/primitives";
 import type { BlogPostMeta } from "@/lib/blog";
 
 type Props = {
@@ -75,28 +74,13 @@ export function WhySpaarkeHero({ posts }: Props) {
               {slide.summary ?? slide.description}
             </p>
             <div className="mt-8">
-              <Link
+              <Button
+                variant="primary"
                 href={`/why-spaarke/${slide.slug}`}
-                data-track="hero-cta"
-                data-track-slug={slide.slug}
-                data-track-position={active + 1}
-                className="bg-spaarke-blue text-fg hover:bg-spaarke-blue/90 inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium transition-colors"
+                arrow
               >
                 Read article
-                <svg
-                  className="h-3.5 w-3.5"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    d="M3 7h8m0 0L8 4m3 3l-3 3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
+              </Button>
             </div>
           </div>
 

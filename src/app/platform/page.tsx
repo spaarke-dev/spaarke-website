@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { IsometricScroller } from "@/components/IsometricScroller";
-import { PlatformHeroCTAs } from "@/components/PlatformHeroCTAs";
+import { TakeTourCTAs } from "@/components/TakeTourCTAs";
 import { Button } from "@/components/primitives";
 import { InlineSvg } from "@/components/InlineSvg";
 import {
@@ -10,7 +10,7 @@ import {
   DeploymentModels,
 } from "@/components/sections";
 
-// SSR per request so PlatformHeroCTAs receives a runtime-resolved
+// SSR per request so the hero TakeTourCTAs receives a runtime-resolved
 // RECAPTCHA_SITE_KEY (Azure SWA app settings are runtime-only).
 export const dynamic = "force-dynamic";
 
@@ -98,8 +98,11 @@ export default function Platform() {
             >
               All your legal work—connected.
             </p>
-            <PlatformHeroCTAs
+            <TakeTourCTAs
               recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
+              tone="light"
+              secondary={{ label: "Why Spaarke", href: "/why-spaarke" }}
+              className="mt-20 max-w-3xl"
             />
           </div>
         </div>

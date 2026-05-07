@@ -28,7 +28,7 @@ export default function Home() {
       <ExistingSystems />
       <LOIDiagram />
       <MicrosoftNative />
-      <Closing />
+      <Closing recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""} />
     </>
   );
 }

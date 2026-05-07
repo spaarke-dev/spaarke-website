@@ -31,7 +31,7 @@ export default function FormField({
   const errorId = `${id}-error`;
 
   const baseClasses =
-    "block w-full rounded-lg border bg-background px-4 py-2.5 text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary disabled:opacity-50";
+    "block w-full rounded-lg border bg-background px-4 py-2.5 text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-cta-blue/50 focus:border-cta-blue disabled:opacity-50";
   const borderClass = error ? "border-error" : "border-border";
   const className = `${baseClasses} ${borderClass}`;
 

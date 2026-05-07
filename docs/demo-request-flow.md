@@ -27,6 +27,15 @@
 points at the BFF (`https://spe-api-dev-67e2xz.azurewebsites.net` in
 the current dev/prod config).
 
+> **Note on dev vs prod BFF**: as of 2026-05-07 the production
+> website points at the **dev** BFF instance (`spe-api-dev-…`).
+> Intentional for now — early-access volume is low and the dev
+> environment can absorb it. Before high-volume external launch we
+> should: (1) stand up a production BFF, (2) update SWA app settings
+> via `az staticwebapp appsettings set ... --setting-names
+> BFF_API_URL=<prod-url>`, (3) decide whether dev stays as a
+> preview-deploy target or gets retired. Tracked in §11.
+
 The BFF endpoint hit by the website:
 
 ```

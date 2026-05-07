@@ -14,10 +14,30 @@ type Props = {
 
 type FilterKey = "contentType" | "topic" | "audience";
 
+// Words that should render as ALL-CAPS abbreviations even though
+// they're stored lowercase in MDX frontmatter (e.g. "ai-copilot" →
+// "AI Copilot", "iq-stack" → "IQ Stack"). Add to this set when new
+// abbreviation tags are introduced.
+const ABBREVIATIONS = new Set([
+  "ai",
+  "iq",
+  "dms",
+  "it",
+  "loi",
+  "saas",
+  "rfp",
+  "kpi",
+  "sla",
+]);
+
 function formatTag(tag: string): string {
   return tag
     .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .map((w) =>
+      ABBREVIATIONS.has(w)
+        ? w.toUpperCase()
+        : w.charAt(0).toUpperCase() + w.slice(1),
+    )
     .join(" ");
 }
 

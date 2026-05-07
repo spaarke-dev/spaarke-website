@@ -17,11 +17,24 @@ type Status = "idle" | "submitting" | "error";
  * Get-access form. Submits to /api/early-release with source:"take-tour"
  * to capture the lead, then redirects the user to the full product
  * walkthrough at /tour/full-walkthrough.
+ *
+ * `secondary` renders an inline text-arrow link to the right of the
+ * submit button (used in the home Closing section to keep "See
+ * platform" on the same line as the form).
+ *
+ * `tone` controls input-pill styling so the form reads correctly on
+ * either a dark hero (default) or the cream platform hero.
  */
 export function TakeTourCTAs({
   recaptchaSiteKey,
+  secondary,
+  tone = "dark",
+  className,
 }: {
   recaptchaSiteKey: string;
+  secondary?: { label: string; href: string };
+  tone?: "dark" | "light";
+  className?: string;
 }) {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -119,28 +132,42 @@ export function TakeTourCTAs({
     }
   }
 
-  // Inputs styled to match the platform hero — pill inputs on the dark
-  // home hero need a slightly different palette: light translucent fill
-  // with a hairline border that reads on #0a0a0a.
+  // Inputs styled per tone:
+  //  - dark (default): home hero on #0a0a0a — translucent white fill,
+  //    light text, hairline border that reads against the dark slab.
+  //  - light: platform hero on #f6f6f4 — opaque white-ish fill, dark
+  //    text, hairline border that reads against the cream slab.
   const inputClass =
     "block min-w-0 rounded-full border px-5 py-3 text-[15px] font-body " +
-    "placeholder:text-[rgba(245,245,245,0.5)] " +
+    (tone === "light"
+      ? "placeholder:text-[rgba(10,10,10,0.5)] "
+      : "placeholder:text-[rgba(245,245,245,0.5)] ") +
     "focus:outline-none focus:ring-2 focus:ring-[#5078DC]/40 focus:border-[#5078DC]/60 " +
     "disabled:opacity-60";
-  const inputStyle = {
-    backgroundColor: "rgba(255,255,255,0.06)",
-    borderColor: "rgba(255,255,255,0.18)",
-    color: "#f5f5f5",
-  } as const;
+  const inputStyle =
+    tone === "light"
+      ? ({
+          backgroundColor: "rgba(255,255,255,0.85)",
+          borderColor: "rgba(10,10,10,0.18)",
+          color: "#0a0a0a",
+        } as const)
+      : ({
+          backgroundColor: "rgba(255,255,255,0.06)",
+          borderColor: "rgba(255,255,255,0.18)",
+          color: "#f5f5f5",
+        } as const);
 
   const submittedLabel =
     status === "submitting" ? "Opening tour…" : "Take tour";
+
+  // Error text needs to be legible on whichever tone the form is on.
+  const errorColor = tone === "light" ? "#b00020" : "#FCA5A5";
 
   return (
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="mx-auto mt-10 max-w-2xl"
+      className={className ?? "mx-auto mt-10 max-w-2xl"}
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <input
@@ -174,13 +201,18 @@ export function TakeTourCTAs({
         >
           {submittedLabel}
         </Button>
+        {secondary && (
+          <Button variant="text" href={secondary.href} arrow>
+            {secondary.label}
+          </Button>
+        )}
       </div>
 
       {status === "error" && error && (
         <p
           role="alert"
-          className="mt-3 text-center text-sm"
-          style={{ color: "#FCA5A5" }}
+          className="mt-3 text-sm"
+          style={{ color: errorColor }}
         >
           {error}
         </p>

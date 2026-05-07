@@ -5,6 +5,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Send24Regular } from "@fluentui/react-icons";
 import FormField from "@/components/FormField";
 import InlineAlert from "@/components/InlineAlert";
+import { Button } from "@/components/primitives";
 import { submissionProps } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
 
@@ -379,7 +380,7 @@ export default function DemoRequestForm({
             type="checkbox"
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
-            className="mt-1 h-4 w-4 shrink-0 rounded border-border text-primary accent-primary focus:ring-2 focus:ring-primary/50"
+            className="mt-1 h-4 w-4 shrink-0 rounded border-border text-cta-blue accent-cta-blue focus:ring-2 focus:ring-cta-blue/50"
             aria-invalid={!!fieldErrors.consent}
             aria-describedby={
               fieldErrors.consent ? "consent-error" : undefined
@@ -388,14 +389,23 @@ export default function DemoRequestForm({
           <span className="text-sm text-foreground">
             I agree to the{" "}
             <a
-              href="https://spaarke.com/termsandconditions"
+              href="/terms"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+              className="font-medium text-cta-blue underline underline-offset-2 hover:text-cta-blue/80"
             >
-              terms of use and data processing agreement
-            </a>.{" "}
-            <span className="text-error">*</span>
+              terms of service
+            </a>{" "}
+            and{" "}
+            <a
+              href="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-cta-blue underline underline-offset-2 hover:text-cta-blue/80"
+            >
+              privacy policy
+            </a>
+            .<span className="text-error">*</span>
           </span>
         </label>
         {fieldErrors.consent && (
@@ -409,10 +419,10 @@ export default function DemoRequestForm({
         )}
       </div>
 
-      <button
+      <Button
+        variant="primary"
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
       >
         {status === "submitting" ? (
           <>
@@ -442,10 +452,10 @@ export default function DemoRequestForm({
         ) : (
           <>
             <Send24Regular aria-hidden="true" className="h-4 w-4" />
-            Request Early Access
+            Request early access
           </>
         )}
-      </button>
+      </Button>
 
       {recaptchaSiteKey && (
         <ReCAPTCHA

@@ -1,5 +1,6 @@
 /**
- * Site footer — three columns + Get access CTA panel + bottom strip.
+ * Site footer — brand block + minimal site links + Our Partners
+ * panel + social icon row.
  */
 
 import type { NavLink } from "./nav";
@@ -9,63 +10,85 @@ export type FooterColumn = {
   links: NavLink[];
 };
 
-export type FooterCTAPanel = {
+export type FooterPartnersPanel = {
   heading: string;
   body: string;
-  cta: { label: string; href: string };
+  partners: { name: string; logo: { src: string; alt: string } }[];
+};
+
+export type SocialPlatform = "linkedin" | "x" | "medium" | "bluesky";
+
+export type SocialLink = {
+  label: string;
+  href: string;
+  platform: SocialPlatform;
 };
 
 export type FooterContent = {
-  columns: [FooterColumn, FooterColumn, FooterColumn];
-  ctaPanel: FooterCTAPanel;
-  bottomStrip: {
+  brand: {
     wordmark: { src: string; alt: string };
-    copyright: string;
-    socialLinks: NavLink[];
+    /** One short sentence under the wordmark. Anchors the footer. */
+    positioning: string;
   };
+  columns: FooterColumn[];
+  partnersPanel: FooterPartnersPanel;
+  socialLinks: SocialLink[];
+  copyright: string;
 };
 
 export const footerContent: FooterContent = {
+  brand: {
+    wordmark: {
+      src: "/brand/logos/spaarke-logo-white.svg",
+      alt: "Spaarke",
+    },
+    positioning:
+      "The shared platform for legal — built on Microsoft 365.",
+  },
   columns: [
     {
-      heading: "Platform",
-      links: [
-        { label: "Operations", href: "/platform#operations" },
-        { label: "Documents & Knowledge", href: "/platform#documents" },
-        { label: "Collaboration", href: "/platform#collaboration" },
-        { label: "Agents & Automation", href: "/platform#automation" },
-        { label: "Spend & Performance", href: "/platform#spend-performance" },
-        { label: "Microsoft foundation", href: "/platform#microsoft-foundation" },
-      ],
-    },
-    {
-      heading: "Company",
+      heading: "Spaarke",
       links: [
         { label: "About", href: "/about" },
-        { label: "Contact", href: "/contact" },
-      ],
-    },
-    {
-      heading: "Legal",
-      links: [
         { label: "Privacy", href: "/privacy" },
         { label: "Terms", href: "/terms" },
       ],
     },
   ],
-  ctaPanel: {
-    heading: "Get access",
-    body: "The shared platform for legal departments, business stakeholders, and outside counsel.",
-    cta: { label: "Get access", href: "/access-request" },
-  },
-  bottomStrip: {
-    wordmark: {
-      src: "/brand/logos/spaarke-logo-white.svg",
-      alt: "Spaarke",
-    },
-    copyright: `© ${new Date().getFullYear()} Spaarke. All rights reserved.`,
-    socialLinks: [
-      { label: "LinkedIn", href: "https://www.linkedin.com/company/spaarke" },
+  partnersPanel: {
+    heading: "Our partners",
+    body: "We work alongside a growing network of design and engineering partners who help build, deploy, and operate Spaarke for our customers.",
+    partners: [
+      {
+        name: "Spark Labs",
+        logo: {
+          src: "/brand/logos/spark-labs-logo-dark.svg",
+          alt: "Spark Labs",
+        },
+      },
     ],
   },
+  socialLinks: [
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/company/spaarke",
+      platform: "linkedin",
+    },
+    {
+      label: "X",
+      href: "https://x.com/spaarke",
+      platform: "x",
+    },
+    {
+      label: "Medium",
+      href: "https://medium.com/@spaarke",
+      platform: "medium",
+    },
+    {
+      label: "Bluesky",
+      href: "https://bsky.app/profile/spaarke.bsky.social",
+      platform: "bluesky",
+    },
+  ],
+  copyright: `© ${new Date().getFullYear()} Spaarke. All rights reserved.`,
 };
