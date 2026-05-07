@@ -15,7 +15,7 @@ import {
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Spaarke — See all sides of every matter.",
+  title: "Spaarke — Legal Operations Intelligence platform",
   description:
     "The shared platform for legal departments, business stakeholders, and outside counsel. Built on Microsoft 365.",
 };
