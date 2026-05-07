@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { CSSProperties, MouseEventHandler } from "react";
-import type { TourStep } from "@/content/tours/types";
+import type { CalloutNav, TourStep } from "@/content/tours/types";
 import { Callout } from "@/components/tour/Callout";
 import { CoordinateGrid } from "@/components/tour/CoordinateGrid";
 
@@ -16,6 +16,11 @@ type Props = {
    * callout anchors; production users never reach this.
    */
   authorMode?: boolean;
+  /**
+   * Step navigation passed straight through to the inline nav row inside
+   * the callout. When omitted, the callout renders without nav controls.
+   */
+  nav?: CalloutNav;
 };
 
 /**
@@ -36,6 +41,7 @@ export function TourStage({
   step,
   showGrid = false,
   authorMode = false,
+  nav,
 }: Props): React.ReactElement {
   const { screenshot, callout } = step;
 
@@ -68,7 +74,7 @@ export function TourStage({
         priority
         className="block h-auto w-full"
       />
-      <Callout callout={callout} />
+      <Callout callout={callout} nav={nav} />
       <CoordinateGrid enabled={showGrid} />
     </div>
   );

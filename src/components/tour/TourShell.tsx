@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { SectionId, Tour } from "@/content/tours/types";
 import { TourHeader } from "./TourHeader";
 import { TourStage } from "./TourStage";
-import { StepNav } from "./StepNav";
 
 type Props = {
   tour: Tour;
@@ -14,7 +13,9 @@ type Props = {
 /**
  * Top-level wrapper for the walkthrough engine. Owns URL state
  * (`?section=…&step=…&grid=…&author=…`), keyboard navigation, and the
- * mobile guard. Composes <TourHeader>, <TourStage>, and <StepNav>.
+ * mobile guard. Composes <TourHeader> and <TourStage>; navigation
+ * controls (prev/next + counter) live inline inside the callout, passed
+ * down through TourStage as `nav`.
  *
  * Uses `router.replace` (never `push`) so browser back/forward jump
  * between pages, not steps. Reads search params via `useSearchParams`,
@@ -153,23 +154,19 @@ export function TourShell({ tour }: Props) {
           />
           <div className="px-6 md:px-10 pb-6">
             {hasSteps ? (
-              <>
-                <TourStage
-                  step={currentStep}
-                  showGrid={showGrid}
-                  authorMode={authorMode}
-                />
-                <div className="mt-6">
-                  <StepNav
-                    index={stepIndex}
-                    total={activeSection.steps.length}
-                    hasPrev={hasPrev}
-                    hasNext={hasNext}
-                    onPrev={goPrev}
-                    onNext={goNext}
-                  />
-                </div>
-              </>
+              <TourStage
+                step={currentStep}
+                showGrid={showGrid}
+                authorMode={authorMode}
+                nav={{
+                  index: stepIndex,
+                  total: activeSection.steps.length,
+                  hasPrev,
+                  hasNext,
+                  onPrev: goPrev,
+                  onNext: goNext,
+                }}
+              />
             ) : (
               <div className="flex min-h-[40vh] items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] px-8 py-16 text-center">
                 <p className="font-display text-[15px] leading-relaxed text-white/70">
