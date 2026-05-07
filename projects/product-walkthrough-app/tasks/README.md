@@ -67,13 +67,54 @@ appends below — see T02e prompt for the exact instruction.
 
 ---
 
-## Phase 2+ tasks (deferred)
+## Phase 2 — Full Walkthrough content
 
-Outlined in spec §10. Will be written as task files **after** Phase 1
+Deliverable: all 5 capability sections × 3–5 steps each, with real
+screenshots and refined callout positioning. No engine changes.
+
+### Dependency graph
+
+```
+T06 P2.0 — Per-section file split (refactor full-walkthrough.ts)
+ │
+ ├── T07 P2.1 Matter Management content        ┐
+ ├── T08 P2.2 Documents & Email content        │
+ ├── T09 P2.3 Collaboration content            ├── all parallel after T06
+ ├── T10 P2.4 AI & Automation content          │
+ └── T11 P2.5 Spend & Performance content      ┘
+```
+
+### Parallelization plan
+
+- **Wave 1** (sequential): T06 — splits `full-walkthrough.ts` into
+  per-section files so the content tasks touch disjoint files.
+- **Wave 2** (parallel, 5 sessions): T07–T11. Each is an authoring
+  session per spec §6: the user drops screenshots into chat, Claude
+  estimates anchor coords, the user previews with `?grid=1` and
+  iterates. These tasks are not one-shot — they pause for the user
+  between rounds.
+
+### File touch matrix
+
+| Task | Creates | Modifies |
+|---|---|---|
+| T06 | `src/content/tours/full-walkthrough/<id>.ts` × 5 (matter-management migrated; rest stubs) | `src/content/tours/full-walkthrough.ts` (replace inline content with imports) |
+| T07 | `public/tours/full-walkthrough/matter-management/*.png` (3–5) | `src/content/tours/full-walkthrough/matter-management.ts` |
+| T08 | `public/tours/full-walkthrough/documents-email/*.png` (3–5) | `src/content/tours/full-walkthrough/documents-email.ts` |
+| T09 | `public/tours/full-walkthrough/collaboration/*.png` (3–5) | `src/content/tours/full-walkthrough/collaboration.ts` |
+| T10 | `public/tours/full-walkthrough/ai-automation/*.png` (3–5) | `src/content/tours/full-walkthrough/ai-automation.ts` |
+| T11 | `public/tours/full-walkthrough/spend-performance/*.png` (3–5) | `src/content/tours/full-walkthrough/spend-performance.ts` |
+
+T07–T11 each touch their own section file and their own asset
+directory — zero parallel-write risk after T06 completes.
+
+---
+
+## Phase 3+ tasks (deferred)
+
+Outlined in spec §10. Will be written as task files **after** Phase 2
 acceptance:
 
-- **P2.1–P2.5**: author each capability section's full step set (one
-  task per section, parallelizable).
 - **P3.1**: `<HotspotLayer>` + `Hotspot` types end-to-end.
 - **P3.2**: wire one example hotspot.
 - **P4.1**: `<FeatureHighlights>` tour content.

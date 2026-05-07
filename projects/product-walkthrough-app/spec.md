@@ -492,12 +492,24 @@ DeploymentModels compare slider.
 
 ### 8.1 Screenshot processing
 
-Author guidelines:
-- Capture at 2× the rendered size (typically 2400px wide).
-- Run through `cwebp -q 80` or `oxipng` before committing.
-- Target ≤ 400 KB per PNG, ≤ 250 KB per WebP.
-- Keep raw lossless PNGs in `/resources/tours-source/<slug>/` (gitignored)
-  for re-export.
+Capture and processing pipeline:
+
+- **Capture** at 2× the rendered size (5120-wide retina captures of
+  the dev shell are typical).
+- **Process** via `node scripts/process-tour-screenshot.mjs --source <in> --out <out>`.
+  The script masks the dev "SANDBOX" badge (white fill over the
+  word in the global header — see `DEFAULT_MASK` for the
+  pre-calibrated coords) then resizes to 2400px wide and re-encodes
+  as compressed PNG. Override the mask with `--mask "x,y,w,h"`
+  (source-image coords) if a particular shot has the badge in a
+  different position.
+- **Targets**: ≤ 400 KB per PNG, ≤ 250 KB per WebP.
+- **Sources** live in `/resources/walkthroughs/<slug>/<section>/` —
+  image files gitignored, the per-section `_guide.md` tracked as
+  the authoring source of truth (per-step intent, callout copy,
+  anchor hints, mask overrides if any).
+- **Final assets** land in `/public/tours/<slug>/<section>/` and
+  are served by Next `<Image>`.
 
 ### 8.2 Loading
 
