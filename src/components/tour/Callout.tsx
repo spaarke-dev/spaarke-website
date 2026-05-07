@@ -16,62 +16,72 @@ type Props = {
   nav?: CalloutNavType;
 };
 
-const BOX_BORDER = "rgba(15,23,42,0.12)";
-const BOX_SHADOW = "0 8px 24px -4px rgba(15,23,42,0.10)";
-const BODY_COLOR = "rgba(15,23,42,0.74)"; // ~slate-700
-const TITLE_COLOR = "rgb(15,23,42)"; // slate-900
-const NAV_BORDER = "rgba(15,23,42,0.08)";
-const NAV_TEXT = "rgba(15,23,42,0.6)";
+// Brand-aligned high-contrast styling so callouts read clearly on
+// light-mode screenshots without inverting to a dark card. Border is
+// the Spaarke brand blue at 2px so the callout always reads as a
+// distinct UI element regardless of underlying screenshot content.
+const BRAND_BLUE = "#5078DC";
+const BOX_BORDER = BRAND_BLUE;
+const BOX_BORDER_WIDTH_PX = 2;
+const BOX_SHADOW =
+  "0 16px 48px -8px rgba(15,23,42,0.25), 0 4px 12px -2px rgba(80,120,220,0.18)";
+const TITLE_COLOR = BRAND_BLUE;
+const BODY_COLOR = "rgba(15,23,42,0.86)"; // ~slate-800
+const NAV_BORDER = "rgba(15,23,42,0.16)";
+const NAV_TEXT = "rgba(15,23,42,0.7)";
 const NAV_DISABLED = "rgba(15,23,42,0.25)";
 
-const ARROW_SIZE_PX = 12;
+const ARROW_SIZE_PX = 14;
+const ARROW_STROKE_PX = 2;
 
 function PointerArrow({ pointerSide }: { pointerSide: Side }) {
+  const s = ARROW_SIZE_PX;
   const points: Record<Side, string> = {
-    left: "12,0 12,12 0,6",
-    right: "0,0 0,12 12,6",
-    top: "0,12 12,12 6,0",
-    bottom: "0,0 12,0 6,12",
+    left: `${s},0 ${s},${s} 0,${s / 2}`,
+    right: `0,0 0,${s} ${s},${s / 2}`,
+    top: `0,${s} ${s},${s} ${s / 2},0`,
+    bottom: `0,0 ${s},0 ${s / 2},${s}`,
   };
   const positionStyle: Record<Side, CSSProperties> = {
     left: {
       top: "50%",
       left: 0,
-      transform: `translate(-${ARROW_SIZE_PX}px, -50%)`,
+      transform: `translate(-${s}px, -50%)`,
     },
     right: {
       top: "50%",
       right: 0,
-      transform: `translate(${ARROW_SIZE_PX}px, -50%)`,
+      transform: `translate(${s}px, -50%)`,
     },
     top: {
       top: 0,
       left: "50%",
-      transform: `translate(-50%, -${ARROW_SIZE_PX}px)`,
+      transform: `translate(-50%, -${s}px)`,
     },
     bottom: {
       bottom: 0,
       left: "50%",
-      transform: `translate(-50%, ${ARROW_SIZE_PX}px)`,
+      transform: `translate(-50%, ${s}px)`,
     },
   };
   return (
     <svg
       aria-hidden="true"
-      width={ARROW_SIZE_PX}
-      height={ARROW_SIZE_PX}
-      viewBox="0 0 12 12"
+      width={s}
+      height={s}
+      viewBox={`0 0 ${s} ${s}`}
       style={{
         position: "absolute",
         ...positionStyle[pointerSide],
         pointerEvents: "none",
+        overflow: "visible",
       }}
     >
       <polygon
         points={points[pointerSide]}
         fill="#ffffff"
         stroke={BOX_BORDER}
-        strokeWidth={1}
+        strokeWidth={ARROW_STROKE_PX}
       />
     </svg>
   );
@@ -81,11 +91,11 @@ function ChevronLeft() {
   return (
     <svg
       aria-hidden="true"
-      width={16}
-      height={16}
+      width={20}
+      height={20}
       viewBox="0 0 24 24"
       fill="none"
-      strokeWidth={1.75}
+      strokeWidth={2}
       stroke="currentColor"
     >
       <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -97,11 +107,11 @@ function ChevronRight() {
   return (
     <svg
       aria-hidden="true"
-      width={16}
-      height={16}
+      width={20}
+      height={20}
       viewBox="0 0 24 24"
       fill="none"
-      strokeWidth={1.75}
+      strokeWidth={2}
       stroke="currentColor"
     >
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -140,8 +150,8 @@ function CalloutNav({ nav }: { nav: CalloutNavType }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        marginTop: "0.875rem",
-        paddingTop: "0.625rem",
+        marginTop: "1rem",
+        paddingTop: "0.75rem",
         borderTop: `1px solid ${NAV_BORDER}`,
         color: NAV_TEXT,
       }}
@@ -151,9 +161,11 @@ function CalloutNav({ nav }: { nav: CalloutNavType }) {
         onClick={nav.onPrev}
         disabled={!nav.hasPrev}
         aria-label="Previous step"
+        className="rounded-md transition-colors hover:enabled:bg-[rgba(80,120,220,0.1)] hover:enabled:text-[#5078DC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC]/40"
         style={{
           display: "inline-flex",
           alignItems: "center",
+          padding: "0.25rem 0.5rem",
           color: nav.hasPrev ? NAV_TEXT : NAV_DISABLED,
           cursor: nav.hasPrev ? "pointer" : "not-allowed",
         }}
@@ -163,7 +175,8 @@ function CalloutNav({ nav }: { nav: CalloutNavType }) {
       <span
         aria-live="polite"
         style={{
-          fontSize: "0.75rem",
+          fontSize: "0.8125rem",
+          fontWeight: 500,
           fontVariantNumeric: "tabular-nums",
           letterSpacing: "0.02em",
         }}
@@ -175,9 +188,11 @@ function CalloutNav({ nav }: { nav: CalloutNavType }) {
         onClick={nav.onNext}
         disabled={!nav.hasNext}
         aria-label="Next step"
+        className="rounded-md transition-colors hover:enabled:bg-[rgba(80,120,220,0.1)] hover:enabled:text-[#5078DC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC]/40"
         style={{
           display: "inline-flex",
           alignItems: "center",
+          padding: "0.25rem 0.5rem",
           color: nav.hasNext ? NAV_TEXT : NAV_DISABLED,
           cursor: nav.hasNext ? "pointer" : "not-allowed",
         }}
@@ -197,10 +212,10 @@ export function Callout({ callout, nav }: Props) {
     top: `${resolved.y * 100}%`,
     width: `${resolved.width * 100}%`,
     backgroundColor: "#ffffff",
-    border: `1px solid ${BOX_BORDER}`,
-    borderRadius: "0.5rem",
+    border: `${BOX_BORDER_WIDTH_PX}px solid ${BOX_BORDER}`,
+    borderRadius: "0.625rem",
     boxShadow: BOX_SHADOW,
-    padding: "0.875rem 1rem",
+    padding: "1rem 1.125rem",
     color: BODY_COLOR,
   };
 
@@ -222,9 +237,10 @@ export function Callout({ callout, nav }: Props) {
         <div
           style={{
             color: TITLE_COLOR,
-            fontWeight: 600,
-            fontSize: "0.9375rem",
+            fontWeight: 700,
+            fontSize: "1rem",
             lineHeight: 1.3,
+            letterSpacing: "-0.005em",
             marginBottom: "0.5rem",
           }}
         >
@@ -233,8 +249,8 @@ export function Callout({ callout, nav }: Props) {
       ) : null}
       <div
         style={{
-          fontSize: "0.875rem",
-          lineHeight: 1.45,
+          fontSize: "0.9375rem",
+          lineHeight: 1.5,
         }}
       >
         {callout.body}
