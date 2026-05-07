@@ -552,7 +552,7 @@ notification, applicant acknowledgement, manual approval workflow,
 9-step automated provisioning (Entra user, license assignment,
 Power Platform team, SharePoint Embedded permissions, welcome email),
 and daily expiration worker. See the integration doc:
-[`docs/integrations/demo-request-flow.md`](integrations/demo-request-flow.md).
+[`docs/demo-request-flow.md`](demo-request-flow.md).
 
 ### `POST /api/contact`
 
