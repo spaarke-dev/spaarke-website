@@ -150,7 +150,7 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Views built for legal teams",
         body: "Filter and organize matters by practice, client, team, or workflow. Save personalized views for different legal operations roles — surfacing exactly the information your team needs.",
-        anchor: { x: 0.843, y: 0.175 },
+        anchor: { x: 0.85, y: 0.142 },
         pointer: "top-right",
       },
     },
@@ -165,7 +165,7 @@ export const matterManagement: TourSection = {
       callout: {
         title: "The complete matter record",
         body: "Every matter brings together documents, tasks, contacts, deadlines, billing, and reporting. Teams work from a shared operational view — context stays connected across the lifecycle of the matter.",
-        anchor: { x: 0.385, y: 0.161 },
+        anchor: { x: 0.365, y: 0.167 },
         pointer: "left-top",
       },
     },
@@ -180,7 +180,7 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Documents tied to the work",
         body: "Documents remain connected to the matter they belong to. Search, preview, and collaborate without leaving the matter — preserving context, history, and auditability.",
-        anchor: { x: 0.131, y: 0.425 },
+        anchor: { x: 0.124, y: 0.454 },
         pointer: "bottom-left",
       },
     },
@@ -195,8 +195,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Operational performance visibility",
         body: "Track budgets, compliance, performance grades, and upcoming deadlines. Financial and operational insights live beside the legal work — see matter health at a glance.",
-        anchor: { x: 0.668, y: 0.431 },
-        pointer: "right-middle",
+        anchor: { x: 0.243, y: 0.296 },
+        pointer: "left-middle",
       },
     },
     {

@@ -105,8 +105,8 @@ export const collaboration: TourSection = {
       callout: {
         title: "Workspace-driven execution",
         body: "Upcoming tasks, related matters, and operational activity remain connected to the project. Teams coordinate work from a shared operational context, reducing delays caused by disconnected systems.",
-        anchor: { x: 0.51, y: 0.808 },
-        pointer: "bottom-middle",
+        anchor: { x: 0.662, y: 0.694 },
+        pointer: "right-middle",
       },
     },
     {
@@ -165,7 +165,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Secure external collaboration",
         body: "Outside counsel and external collaborators receive secure workspace access. Collaboration occurs inside the operational platform instead of email chains, so external work becomes visible and manageable.",
-        anchor: { x: 0.746, y: 0.149 },
+        anchor: { x: 0.73, y: 0.149 },
         pointer: "left-top",
       },
     },
@@ -180,7 +180,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Shared operational activity",
         body: "External users can view assigned tasks, events, and shared project activity. Collaboration stays aligned to operational execution, and teams maintain a unified operational timeline.",
-        anchor: { x: 0.241, y: 0.242 },
+        anchor: { x: 0.24, y: 0.149 },
         pointer: "right-top",
       },
     },
@@ -195,7 +195,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Controlled document access",
         body: "External collaborators only see approved projects and documents. Access remains tied to workspace permissions and operational governance, making information sharing structured and secure.",
-        anchor: { x: 0.241, y: 0.548 },
+        anchor: { x: 0.24, y: 0.597 },
         pointer: "right-top",
       },
     },
@@ -210,7 +210,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "External users work from the same context",
         body: "External collaborators access structured project information directly. Project details, documents, and operational context remain connected, reducing communication overhead and duplicated work.",
-        anchor: { x: 0.241, y: 0.163 },
+        anchor: { x: 0.24, y: 0.149 },
         pointer: "right-top",
       },
     },
@@ -225,7 +225,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "AI-powered document search",
         body: "External users can search project documents using natural language. AI summaries and semantic search accelerate discovery, making shared knowledge easier to navigate.",
-        anchor: { x: 0.241, y: 0.62 },
+        anchor: { x: 0.24, y: 0.597 },
         pointer: "right-top",
       },
     },
@@ -240,7 +240,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Controlled document contribution",
         body: "External collaborators can upload and contribute documents securely. All content remains tied to the operational workspace, and governance and auditability remain intact.",
-        anchor: { x: 0.762, y: 0.62 },
+        anchor: { x: 0.73, y: 0.597 },
         pointer: "left-top",
       },
     },
@@ -255,7 +255,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Workspace-level operational collaboration",
         body: "Calendars, contacts, tasks, and communication remain integrated into the project. Collaboration extends beyond files into operational execution, creating a shared operational environment across organizations.",
-        anchor: { x: 0.762, y: 0.162 },
+        anchor: { x: 0.73, y: 0.149 },
         pointer: "left-top",
       },
     },
@@ -285,8 +285,8 @@ export const collaboration: TourSection = {
       callout: {
         title: "AI operational assistance",
         body: "Teams can search documents, identify risks, and review overdue work using AI. AI becomes embedded directly into operational collaboration, so legal work gains operational intelligence inside the collaboration layer.",
-        anchor: { x: 0.753, y: 0.676 },
-        pointer: "left-middle",
+        anchor: { x: 0.271, y: 0.669 },
+        pointer: "right-middle",
       },
     },
     {
@@ -300,7 +300,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Embedded collaboration ecosystem",
         body: "Spaarke integrates directly into the Microsoft 365 collaboration stack. Chat, meetings, files, AI, and operational workflows converge in one experience, reducing friction between legal operations and business collaboration.",
-        anchor: { x: 0.286, y: 0.676 },
+        anchor: { x: 0.463, y: 0.285 },
         pointer: "right-middle",
       },
     },

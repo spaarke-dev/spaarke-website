@@ -30,7 +30,7 @@ export const documentsEmail: TourSection = {
       callout: {
         title: "Documents tied to operations",
         body: "Documents remain connected to tasks, matters, and active work. Legal teams work from operational context, not disconnected files, and AI insights appear directly where work is happening.",
-        anchor: { x: 0.522, y: 0.639 },
+        anchor: { x: 0.529, y: 0.604 },
         pointer: "right-middle",
       },
     },
@@ -90,7 +90,7 @@ export const documentsEmail: TourSection = {
       callout: {
         title: "Guided intake workflow",
         body: "Multi-step upload flows standardize how documents enter the system. Associate files to matters and projects during intake to preserve governance and operational consistency.",
-        anchor: { x: 0.303, y: 0.295 },
+        anchor: { x: 0.284, y: 0.299 },
         pointer: "left-top",
       },
     },
@@ -120,7 +120,7 @@ export const documentsEmail: TourSection = {
       callout: {
         title: "Search-ready by design",
         body: "Documents are indexed automatically for semantic and AI search. Search visibility is managed directly within the operational workspace, making enterprise repositories fully discoverable.",
-        anchor: { x: 0.604, y: 0.145 },
+        anchor: { x: 0.62, y: 0.146 },
         pointer: "right-top",
       },
     },
@@ -150,8 +150,8 @@ export const documentsEmail: TourSection = {
       callout: {
         title: "More than a file viewer",
         body: "Every document has a full operational record. AI summaries, metadata, and linked relationships stay attached to the file so teams work from structured document intelligence.",
-        anchor: { x: 0.601, y: 0.178 },
-        pointer: "right-middle",
+        anchor: { x: 0.451, y: 0.422 },
+        pointer: "top-middle",
       },
     },
     {
@@ -225,7 +225,7 @@ export const documentsEmail: TourSection = {
       callout: {
         title: "Adjustable similarity controls",
         body: "Tune semantic thresholds and relationship depth dynamically. Refine how AI surfaces related information — built for enterprise-scale legal repositories.",
-        anchor: { x: 0.773, y: 0.201 },
+        anchor: { x: 0.781, y: 0.207 },
         pointer: "right-top",
       },
     },
@@ -240,8 +240,8 @@ export const documentsEmail: TourSection = {
       callout: {
         title: "Work directly in Word",
         body: "Open and edit documents directly in Microsoft Word. Legal teams continue working in familiar Microsoft tools while Spaarke remains connected to the operational record behind the file.",
-        anchor: { x: 0.262, y: 0.076 },
-        pointer: "right-top",
+        anchor: { x: 0.26, y: 0.495 },
+        pointer: "right-middle",
       },
     },
     {

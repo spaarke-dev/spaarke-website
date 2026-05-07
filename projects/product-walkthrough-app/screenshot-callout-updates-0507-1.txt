@@ -1,0 +1,34 @@
+
+matter management 10: x: 0.850, y: 0.142, position: top-right
+matter management 11: x: 0.365, y: 0.167, position: left-top
+matter management 12: x: 0.124, y: 0.454, position: bottom-left
+matter management 13: x: 0.243, y: 0.296, position: left-middle
+documents-email 2: x: 0.529, y: 0.604, position: right-middle
+documents-email 6: x: 0.284, y: 0.299, position: left-top
+documents-email 8: x: 0.620, y: 0.146, position: right-top
+documents-emails 10: x: 0.451, y: 0.422, position: top-middle
+documents-emails 15: x: 0.781, y: 0.207, position: right-top
+documents-emails 16: x: 0.260, y: 0.495, position: right-middle
+collaboration 7: x: 0.662, y: 0.694, position: right-middle
+collaboration 11: x: 0.730, y: 0.149, position: left-top
+collaboration 12: x: 0.240, y: 0.149, position: right-top
+collaboration 13: x: 0.240, y: 0.597, position: right-top
+collaboration 14: x: 0.240, y: 0.149, position: right-top
+collaboration 15: x: 0.240, y: 0.597, position: right-top
+collaboration 16: x: 0.730, y: 0.597, position: left-top
+collaboration 17: x: 0.730, y: 0.149, position: left-top
+collaboration 19: x: 0.271, y: 0.669, position: right-middle
+collaboration 20: x: 0.463, y: 0.285, position: right-middle
+ai-automation 4: x: 0.256, y: 0.452, position: right-middle
+ai-automation 6: x: 0.291, y: 0.289, position: left-top
+ai-automation 16: x: 0.413, y: 0.224, position: left-top
+ai-automation 17: x: 0.413, y: 0.511, position: left-top
+ai-automation 18: x: 0.218, y: 0.431, position: top-middle
+ai-automation 25: x: 0.535, y: 0.342, position: bottom-middle
+ai-automation 26: x: 0.390, y: 0.305, position: left-top
+ai-automation 27: x: 0.740, y: 0.454, position: left-top
+spend 8: x: 0.321, y: 0.668, position: top-middle
+spend 10: x: 0.242, y: 0.850, position: left-bottom
+spend 11: x: 0.242, y: 0.583, position: left-middle
+spend 12: x: 0.802, y: 0.850; position: bottom-middle
+spend 13: x: 0.704, y: 0.193, position: top-middle

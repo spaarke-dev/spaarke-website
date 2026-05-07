@@ -63,8 +63,8 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "AI extracts structured matter details",
         body: "Describe the work in plain language or from uploaded content. AI identifies matter type, practice area, and operational metadata automatically — reducing manual intake effort and improving consistency.",
-        anchor: { x: 0.528, y: 0.544 },
-        pointer: "top-middle",
+        anchor: { x: 0.256, y: 0.452 },
+        pointer: "right-middle",
       },
     },
     {
@@ -93,7 +93,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "Guided operational workflow",
         body: "Multi-step workflows guide users through intake, staffing, and next actions. AI and operational processes work together in one experience, so teams can move from intake to execution without re-entering information.",
-        anchor: { x: 0.303, y: 0.335 },
+        anchor: { x: 0.291, y: 0.289 },
         pointer: "left-top",
       },
     },
@@ -251,7 +251,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "AI summaries directly in the workflow",
         body: "AI generates contextual matter summaries directly from the matter list. Users gain immediate operational insight without opening records, reducing time spent searching through matter details.",
-        anchor: { x: 0.488, y: 0.17 },
+        anchor: { x: 0.413, y: 0.224 },
         pointer: "left-top",
       },
     },
@@ -266,7 +266,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "Operational context surfaced automatically",
         body: "AI highlights status, budget, activity, and key matter details. Summaries update as operational activity changes, giving teams faster situational awareness.",
-        anchor: { x: 0.488, y: 0.362 },
+        anchor: { x: 0.413, y: 0.511 },
         pointer: "left-top",
       },
     },
@@ -281,7 +281,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "Intelligence embedded into list views",
         body: "Operational intelligence appears directly where teams manage work. AI becomes part of day-to-day workflows instead of a separate tool — users stay inside the operational system while gaining insight.",
-        anchor: { x: 0.213, y: 0.254 },
+        anchor: { x: 0.218, y: 0.431 },
         pointer: "top-middle",
       },
     },
@@ -392,7 +392,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "Visual AI workflow orchestration",
         body: "Build AI and automation workflows visually using nodes and operational actions. Connect analysis, updates, outputs, and indexing into repeatable flows — reducing dependency on custom-coded workflow logic.",
-        anchor: { x: 0.535, y: 0.285 },
+        anchor: { x: 0.535, y: 0.342 },
         pointer: "bottom-middle",
       },
     },
@@ -407,7 +407,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "AI configured for operational outcomes",
         body: "Configure AI skills, prompts, tools, and outputs directly inside workflow nodes. Tailor analysis behavior to legal and operational requirements — AI becomes operationally configurable.",
-        anchor: { x: 0.73, y: 0.299 },
+        anchor: { x: 0.39, y: 0.305 },
         pointer: "left-top",
       },
     },
@@ -422,7 +422,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "Reusable operational building blocks",
         body: "Combine AI analysis, updates, notifications, indexing, and tasks into reusable operational patterns. Workflows can scale across practice areas and operational teams, making legal operations systematized and measurable.",
-        anchor: { x: 0.73, y: 0.446 },
+        anchor: { x: 0.74, y: 0.454 },
         pointer: "left-top",
       },
     },
