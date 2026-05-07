@@ -159,11 +159,29 @@ export default function DemoRequestForm({
         }),
       });
 
-      const data = await res.json();
+      // Parse JSON defensively — see ContactForm for rationale.
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        fields?: FieldErrors;
+        trackingId?: string;
+      };
 
       if (res.status === 429) {
         setStatus("error");
         setErrorMessage("Too many submissions. Please try again later.");
+        return;
+      }
+
+      // 409 from this endpoint comes from the BFF backend, which
+      // detects an existing registration for the same email. Show a
+      // friendlier message than generic "something went wrong" since
+      // the user has already done the work.
+      if (res.status === 409) {
+        setStatus("error");
+        setErrorMessage(
+          "It looks like that email is already on our list. We'll be in touch — no need to submit again. If that doesn't sound right, email us and we'll sort it out.",
+        );
         return;
       }
 
@@ -174,6 +192,11 @@ export default function DemoRequestForm({
         } else if (data.error === "CAPTCHA_FAILED") {
           setStatus("error");
           setErrorMessage("CAPTCHA verification failed. Please try again.");
+        } else if (res.status >= 500) {
+          setStatus("error");
+          setErrorMessage(
+            "Our servers had a brief hiccup. Please try again in a moment, or email us directly.",
+          );
         } else {
           setStatus("error");
           setErrorMessage(
@@ -186,12 +209,13 @@ export default function DemoRequestForm({
       track("Demo Request Submit", attribution);
       setTrackingId(data.trackingId ?? "");
       setStatus("success");
-    } catch {
+    } catch (err) {
       setStatus("error");
       setErrorMessage(
-        "Unable to reach the server. Please check your connection and try again.",
+        "Couldn't reach our server. Check your connection and try again.",
       );
       recaptchaRef.current?.reset();
+      console.error("[demo-request] Network error during submit:", err);
     }
   }
 

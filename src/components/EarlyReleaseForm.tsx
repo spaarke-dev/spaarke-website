@@ -74,7 +74,11 @@ export default function EarlyReleaseForm({
         }),
       });
 
-      const data = await res.json();
+      // Parse JSON defensively — see ContactForm for rationale.
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+      };
 
       if (res.status === 429) {
         setStatus("error");
@@ -84,21 +88,26 @@ export default function EarlyReleaseForm({
 
       if (!res.ok || !data.ok) {
         setStatus("error");
-        setErrorMessage(
-          data.error === "CAPTCHA_FAILED"
-            ? "CAPTCHA verification failed. Please try again."
-            : "Something went wrong. Please try again.",
-        );
+        if (data.error === "CAPTCHA_FAILED") {
+          setErrorMessage("CAPTCHA verification failed. Please try again.");
+        } else if (res.status >= 500) {
+          setErrorMessage(
+            "Our servers had a brief hiccup. Please try again in a moment.",
+          );
+        } else {
+          setErrorMessage("Something went wrong. Please try again.");
+        }
         return;
       }
 
       setStatus("success");
-    } catch {
+    } catch (err) {
       setStatus("error");
       setErrorMessage(
-        "Unable to reach the server. Please check your connection and try again.",
+        "Couldn't reach our server. Check your connection and try again.",
       );
       recaptchaRef.current?.reset();
+      console.error("[early-release] Network error during submit:", err);
     }
   }
 

@@ -108,7 +108,15 @@ export default function ContactForm({
         }),
       });
 
-      const data = await res.json();
+      // Parse JSON defensively — when the SWA edge returns a 5xx
+      // with an HTML body (cold-start handoff, transient outage),
+      // res.json() throws. Without this guard, the error surfaces as
+      // "Unable to reach the server" even though the server replied.
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        fields?: FieldErrors;
+      };
 
       if (res.status === 429) {
         setStatus("error");
@@ -123,6 +131,14 @@ export default function ContactForm({
         } else if (data.error === "CAPTCHA_FAILED") {
           setStatus("error");
           setErrorMessage("CAPTCHA verification failed. Please try again.");
+        } else if (res.status >= 500) {
+          // Server replied but with a non-success status. Distinct
+          // from a network failure — usually transient (cold start
+          // post-deploy, SWA edge proxy hiccup).
+          setStatus("error");
+          setErrorMessage(
+            "Our servers had a brief hiccup. Please try again in a moment, or email us directly.",
+          );
         } else {
           setStatus("error");
           setErrorMessage(
@@ -134,12 +150,17 @@ export default function ContactForm({
 
       track("Contact Submit", attribution);
       setStatus("success");
-    } catch {
+    } catch (err) {
+      // True network failure — fetch itself threw before any response
+      // arrived (no internet, DNS failure, request aborted).
       setStatus("error");
       setErrorMessage(
-        "Unable to reach the server. Please check your connection and try again.",
+        "Couldn't reach our server. Check your connection and try again.",
       );
       recaptchaRef.current?.reset();
+      // Surface for App Insights via console; the global error
+      // listener picks it up.
+      console.error("[contact] Network error during submit:", err);
     }
   }
 
