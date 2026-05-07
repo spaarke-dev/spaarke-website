@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Seven concentric rings of progressively thinner weight on a deep navy field, with a solid Spaarke-blue disc at the center and a small copper-gold highlight on one of the inner rings.">
+  <title>Institutional knowledge — accumulated layers</title>
+  <desc>Seven concentric rings of varying line weight centered in the frame, the innermost a small solid disc in confident electric-blue, the next two rings in CTA-blue at decreasing weight, the outer four rings in muted slate at progressively thinner weight, with the outermost ring barely visible — visualizing institutional memory as accumulated, layered, durable context. A faint copper-gold highlight sits at one point on the second-innermost ring.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="95%">
+      <stop offset="0%" stop-color="#2D1F5E"/>
+      <stop offset="55%" stop-color="#13104A"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g fill="none" stroke-linecap="round">
+    <circle cx="800" cy="450" r="420" stroke="#1A1A28" stroke-width="1"/>
+    <circle cx="800" cy="450" r="350" stroke="#222230" stroke-width="1.5"/>
+    <circle cx="800" cy="450" r="285" stroke="#2D2D45" stroke-width="2"/>
+    <circle cx="800" cy="450" r="225" stroke="#3A3858" stroke-width="2.5"/>
+    <circle cx="800" cy="450" r="170" stroke="#4A4768" stroke-width="3"/>
+    <circle cx="800" cy="450" r="120" stroke="#4060DC" stroke-width="5"/>
+    <circle cx="800" cy="450" r="75" stroke="#4060DC" stroke-width="8"/>
+  </g>
+  <circle cx="800" cy="450" r="32" fill="#000BFF"/>
+  <!-- Copper-gold highlight on the second-innermost ring (r=120), at ~45° upper-right -->
+  <path d="M 884.85 365.15 A 120 120 0 0 1 905.5 396" fill="none" stroke="#CB9959" stroke-width="5" stroke-linecap="round"/>
+</svg>

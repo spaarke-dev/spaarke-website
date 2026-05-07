@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Three evenly-spaced vertical bars on a deep navy field, the outer two in muted slate with copper-gold edges and the middle one in confident electric blue with a faint purple glow.">
+  <title>What attorneys need to know about AI — three architectural decisions</title>
+  <desc>An abstract typographic-feeling triad: three vertical bars of equal height, evenly spaced across the centered band of the frame. The outer two are rendered in muted slate with a subtle copper-gold edge highlight; the middle bar is rendered as a solid confident electric-blue column with a faint soft-purple glow halo behind it — three architectural decisions held together as a triad.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="100%" r="100%">
+      <stop offset="0%" stop-color="#2D1F5E"/>
+      <stop offset="50%" stop-color="#13104A"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#7B5BFF" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <!-- Glow halo behind middle bar -->
+  <circle cx="800" cy="450" r="280" fill="url(#glow)"/>
+  <!-- Left bar: slate with copper-gold right edge -->
+  <rect x="540" y="270" width="100" height="360" fill="#2D2A4A"/>
+  <line x1="640" y1="270" x2="640" y2="630" stroke="#CB9959" stroke-width="3" stroke-opacity="0.85"/>
+  <!-- Middle bar: Spaarke-blue solid -->
+  <rect x="750" y="270" width="100" height="360" fill="#000BFF"/>
+  <!-- Right bar: slate with copper-gold left edge -->
+  <rect x="960" y="270" width="100" height="360" fill="#2D2A4A"/>
+  <line x1="960" y1="270" x2="960" y2="630" stroke="#CB9959" stroke-width="3" stroke-opacity="0.85"/>
+</svg>

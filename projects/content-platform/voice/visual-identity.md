@@ -159,12 +159,23 @@ The do-not-generate list. Visual analogs of the do-not-say list.
 
 ## 6. Recommended generators and settings
 
-In rough order of preference:
+In rough order of preference for **this brand specifically** (geometric,
+abstract, editorial — see §1, §2):
 
-- **Midjourney v6.1+** — best for abstract, geometric, stylized
-  imagery. Use `--style raw` to kill the default cinematic drama.
-  Lock `--ar 16:9`. Use `--stylize 50` to dial down decoration
-  (default is 100).
+- **SVG-via-Claude (default).** Heroes produced directly in Claude Code
+  as hand-written SVG. Palette-exact, composition-controllable, no
+  generator drift, no subscription, instantly editable as text. Pairs
+  with this brand because the visual identity is geometric and abstract
+  by definition. The 2026-05 hero regeneration batch (`welcome-to-spaarke`,
+  `breaking-the-silo`, `the-ai-readiness-gap`, `your-legal-data-belongs-to-you`,
+  `what-attorneys-need-to-know-about-ai`, `institutional-knowledge`,
+  `the-20b-blind-spot`) is the reference. Limitation: no photographic,
+  painterly, or atmospheric imagery — for those, fall through to a raster
+  generator below.
+- **Midjourney v6.1+** — when a piece genuinely needs raster atmosphere
+  beyond what SVG can carry (rare for this brand). Use `--style raw` to
+  kill the default cinematic drama. Lock `--ar 16:9`. Use `--stylize 50`
+  to dial down decoration (default is 100).
 - **Adobe Firefly (Image 3+)** — first choice when commercial-safety
   matters (Firefly is trained on licensed/public-domain content and
   Adobe carries IP indemnification). Less stylistically distinctive;
@@ -173,6 +184,16 @@ In rough order of preference:
   ("centered, lower-third left, generous negative space right").
   Use when the brief specifies composition.
 - **Ideogram** — when typographic forms are part of the composition.
+
+### Open-Graph / social-card consideration
+
+SVG works in Next.js's `<Image>` for the in-page hero, but social-card
+preview tools (LinkedIn, Twitter/X, Slack unfurl) sometimes don't
+render SVG cleanly as the Open Graph image. If a piece is being
+syndicated heavily, consider a small raster fallback for `og:image` —
+either exported once per piece via a headless renderer or generated at
+build time. Not a blocker for in-page heroes; flag for the team when
+the first social syndication pipeline lands.
 
 Brand prompt prefix to anchor the look on any of the above:
 *"minimalist geometric vector illustration, deep navy background
@@ -242,16 +263,20 @@ no neural mesh.
 After polish, before frontmatter validation:
 
 1. **Read this file** if it's the first hero of the session.
-2. **Draft the prompt** using §7. Drop it into the brief's
-   `# Hero graphic` section (or, for ad-hoc pieces, into the draft's
-   frontmatter as a comment).
-3. **Generate 4–8 candidates.** Vary the subject metaphor; keep the
-   style prefix and negative list constant.
-4. **Pick one.** First frame that earns the title — don't over-iterate.
-5. **Save** to `public/articles/<slug>/hero.<ext>` (jpg for raster,
-   svg for vector). Match the existing path convention.
-6. **Wire** in MDX frontmatter:
-   `heroImage: "/articles/<slug>/hero.jpg"` plus
+2. **Pick a generator.** SVG-via-Claude is the default — see §6. Raster
+   only when the piece genuinely needs photographic / painterly / atmospheric.
+3. **For SVG-via-Claude:** sketch the concept in 2–3 sentences (subject,
+   composition, palette accents), then write the SVG directly to
+   `public/articles/<slug>/hero.svg` using a 1600×900 viewBox and the
+   palette stops in §3. Ship the first version that earns the title —
+   iteration on SVGs is text edits, no need to over-design up front.
+4. **For raster:** draft the prompt using §7. Drop it into the brief's
+   `# Hero graphic` section. Generate 4–8 candidates, pick the first
+   frame that earns the title, save to `public/articles/<slug>/hero.jpg`.
+5. **Wire** in MDX frontmatter:
+   `heroImage: "/articles/<slug>/hero.svg"` (or `.jpg` for raster) plus
    `heroImagePosition: "center"` (override only when off-center).
-7. **Alt text.** A real sentence — "Three concentric rings on a deep
-   navy field, suggesting layers of intelligence" — not "hero image."
+6. **Alt text** in the SVG `<title>` and `aria-label` for SVGs, or as
+   article-level alt text for raster. A real sentence — "Three
+   concentric rings on a deep navy field, suggesting layers of
+   intelligence" — not "hero image."

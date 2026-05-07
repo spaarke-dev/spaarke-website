@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A thin Spaarke-blue hexagonal perimeter on a deep navy field, holding a smaller solid CTA-blue hexagon precisely at its center, with a faint magenta glow along the perimeter's outer edge.">
+  <title>Your legal data belongs to you — boundary as structure</title>
+  <desc>A single confident geometric perimeter — a hexagon drawn in a thin Spaarke-blue line at roughly two-thirds the frame width — holds a smaller solid CTA-blue hexagonal form precisely at its center. A faint magenta glow halo runs along the perimeter's outer edge, suggesting a security boundary expressed as form rather than as a vault or a lock.</desc>
+  <defs>
+    <radialGradient id="bg" cx="60%" cy="30%" r="90%">
+      <stop offset="0%" stop-color="#1A1230"/>
+      <stop offset="60%" stop-color="#0A0A14"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#FF4DCB" stop-opacity="0"/>
+      <stop offset="85%" stop-color="#FF4DCB" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#FF4DCB" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <!-- Magenta glow halo behind perimeter -->
+  <circle cx="800" cy="450" r="560" fill="url(#glow)"/>
+  <!-- Outer hexagon perimeter (Spaarke-blue, thin) -->
+  <polygon points="1300,450 1050,883 550,883 300,450 550,17 1050,17" fill="none" stroke="#000BFF" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Inner hexagon (solid CTA-blue) -->
+  <polygon points="1000,450 900,623 700,623 600,450 700,277 900,277" fill="#4060DC"/>
+  <polygon points="1000,450 900,623 700,623 600,450 700,277 900,277" fill="none" stroke="#5A7FE6" stroke-width="1" stroke-opacity="0.5"/>
+</svg>

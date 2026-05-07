@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="An orthogonal grid of muted navy tiles threaded by an electric-blue line, with three warm-orange tiles separately to the upper right.">
+  <title>Breaking the silo — unjoined function</title>
+  <desc>An off-center lower-left grid of small navy tiles is threaded by a confident horizontal electric-blue line. Three warm-orange tiles sit clearly separate to the upper right, off the line, suggesting an unjoined function.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0A0A"/>
+      <stop offset="100%" stop-color="#0A0A14"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g opacity="0.85">
+    <rect x="160"  y="440" width="80" height="56" fill="#2D1F5E"/>
+    <rect x="252"  y="440" width="80" height="56" fill="#1A1230"/>
+    <rect x="344"  y="440" width="80" height="56" fill="#2D2A4A"/>
+    <rect x="436"  y="440" width="80" height="56" fill="#1A1230"/>
+    <rect x="528"  y="440" width="80" height="56" fill="#2D1F5E"/>
+    <rect x="620"  y="440" width="80" height="56" fill="#2D2A4A"/>
+    <rect x="160"  y="510" width="80" height="56" fill="#1A1230"/>
+    <rect x="252"  y="510" width="80" height="56" fill="#2D2A4A"/>
+    <rect x="344"  y="510" width="80" height="56" fill="#2D1F5E"/>
+    <rect x="436"  y="510" width="80" height="56" fill="#2D2A4A"/>
+    <rect x="528"  y="510" width="80" height="56" fill="#1A1230"/>
+    <rect x="620"  y="510" width="80" height="56" fill="#2D1F5E"/>
+    <rect x="160"  y="580" width="80" height="56" fill="#2D2A4A"/>
+    <rect x="252"  y="580" width="80" height="56" fill="#2D1F5E"/>
+    <rect x="344"  y="580" width="80" height="56" fill="#1A1230"/>
+    <rect x="436"  y="580" width="80" height="56" fill="#2D1F5E"/>
+    <rect x="528"  y="580" width="80" height="56" fill="#2D2A4A"/>
+    <rect x="620"  y="580" width="80" height="56" fill="#1A1230"/>
+    <rect x="160"  y="650" width="80" height="56" fill="#2D1F5E"/>
+    <rect x="252"  y="650" width="80" height="56" fill="#1A1230"/>
+    <rect x="344"  y="650" width="80" height="56" fill="#2D2A4A"/>
+    <rect x="436"  y="650" width="80" height="56" fill="#1A1230"/>
+    <rect x="528"  y="650" width="80" height="56" fill="#2D1F5E"/>
+    <rect x="620"  y="650" width="80" height="56" fill="#2D2A4A"/>
+  </g>
+  <line x1="140" y1="538" x2="720" y2="538" stroke="#000BFF" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="140" cy="538" r="4" fill="#000BFF"/>
+  <circle cx="720" cy="538" r="4" fill="#000BFF"/>
+  <g>
+    <rect x="1180" y="180" width="80" height="56" fill="#D9803A"/>
+    <rect x="1280" y="218" width="80" height="56" fill="#D9803A"/>
+    <rect x="1180" y="280" width="80" height="56" fill="#D9803A"/>
+  </g>
+</svg>

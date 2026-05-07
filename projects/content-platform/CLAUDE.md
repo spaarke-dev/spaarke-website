@@ -66,11 +66,13 @@ The default workflow is five steps. Don't skip the outline.
 4. **Polish.** Final pass — SEO meta description, alt text on images,
    frontmatter validation, internal cross-links, a sweep against
    `voice/examples/avoid-this.md`.
-5. **Hero prompt.** After polish, draft a hero-graphic prompt per
-   `voice/visual-identity.md` and write it into the draft's
-   frontmatter or the brief's `# Hero graphic` section. Claude
-   doesn't generate the image; the team does, then drops it at
-   `public/articles/<slug>/hero.<ext>`.
+5. **Hero.** Per `voice/visual-identity.md`, produce the hero
+   directly as an SVG at `public/articles/<slug>/hero.svg`. SVG is
+   the default for Spaarke heroes — geometric, abstract, palette-
+   exact, instantly iterable, no generator drift. For pieces that
+   require photographic, painterly, or atmospheric imagery (rare for
+   this brand), draft a paste-ready prompt instead and the team
+   generates via Midjourney / DALL-E / Firefly.
 
 ## What you don't do
 

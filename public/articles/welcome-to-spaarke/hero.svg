@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Three concentric rotated frames around a small Spaarke-blue cube on a deep navy field, suggesting a system held inside a tenant boundary held inside a governance boundary.">
+  <title>Welcome to Spaarke — nested containment</title>
+  <desc>Three concentric square frames of varying line weight rotate at slight angles around a small solid 2.5D Spaarke-blue cube at center, set against a deep navy radial gradient with a soft purple glow halo behind the cube.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="72%" r="80%">
+      <stop offset="0%" stop-color="#2D1F5E"/>
+      <stop offset="55%" stop-color="#13104A"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="800" cy="450" r="420" fill="#7B5BFF" opacity="0.035"/>
+  <circle cx="800" cy="450" r="300" fill="#7B5BFF" opacity="0.055"/>
+  <circle cx="800" cy="450" r="200" fill="#7B5BFF" opacity="0.09"/>
+  <circle cx="800" cy="450" r="130" fill="#7B5BFF" opacity="0.15"/>
+  <rect x="450" y="100" width="700" height="700" fill="none" stroke="#FFFFFF" stroke-opacity="0.16" stroke-width="2" transform="rotate(-2 800 450)"/>
+  <rect x="550" y="200" width="500" height="500" fill="none" stroke="#FFFFFF" stroke-opacity="0.32" stroke-width="2.5" transform="rotate(6 800 450)"/>
+  <rect x="640" y="290" width="320" height="320" fill="none" stroke="#000BFF" stroke-opacity="0.95" stroke-width="3.5" transform="rotate(-4 800 450)"/>
+  <polygon points="800,420 836,432 800,444 764,432" fill="#5867FF"/>
+  <polygon points="836,432 800,444 800,470 836,458" fill="#000BFF"/>
+  <polygon points="764,432 800,444 800,470 764,458" fill="#0008A8"/>
+</svg>

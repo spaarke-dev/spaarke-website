@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A three-step ascending stair on a navy field, with the bottom step rendered as a dashed outline, the middle step half-filled in slate, and the top step solid in electric blue with a copper-gold edge highlight.">
+  <title>The AI readiness gap — incomplete foundations</title>
+  <desc>A 2.5D isometric stair ascends from lower-right to upper-left in three steps. The bottom step is drawn as a dashed outline only — incomplete. The middle step is half-filled in muted slate. The top step is solid in confident electric-blue with a thin copper-gold highlight along its top edge, suggesting an inference layer attempting to stand on incomplete foundations.</desc>
+  <defs>
+    <radialGradient id="bg" cx="35%" cy="35%" r="85%">
+      <stop offset="0%" stop-color="#1A1230"/>
+      <stop offset="60%" stop-color="#0A0A14"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <!-- Step 1 (bottom-right): dashed outline only -->
+  <polygon points="940,560 1260,560 1290,540 970,540" fill="none" stroke="#6B608A" stroke-opacity="0.7" stroke-width="2" stroke-dasharray="8 6"/>
+  <rect x="940" y="560" width="320" height="100" fill="none" stroke="#6B608A" stroke-opacity="0.7" stroke-width="2" stroke-dasharray="8 6"/>
+  <!-- Step 2 (middle): half-filled slate -->
+  <polygon points="740,460 1060,460 1090,440 770,440" fill="#1A1A2E"/>
+  <rect x="740" y="510" width="320" height="50" fill="#2D2A4A"/>
+  <rect x="740" y="460" width="320" height="100" fill="none" stroke="#3A3858" stroke-width="1.5"/>
+  <!-- Step 3 (top-left): solid Spaarke-blue + copper edge -->
+  <polygon points="540,360 860,360 890,340 570,340" fill="#0008A8"/>
+  <rect x="540" y="360" width="320" height="100" fill="#000BFF"/>
+  <line x1="570" y1="340" x2="890" y2="340" stroke="#CB9959" stroke-width="2.5"/>
+  <line x1="540" y1="360" x2="570" y2="340" stroke="#CB9959" stroke-width="2" stroke-opacity="0.6"/>
+</svg>
