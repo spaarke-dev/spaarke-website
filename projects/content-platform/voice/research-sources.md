@@ -392,3 +392,7 @@ For transparency. Listed so we don't accidentally re-introduce them.
 - **Stackmatix, AI Business Weekly, Electroiq stat compilations.**
   Aggregator sites that re-quote primary sources; useful for
   discovery, not for citation. Always trace through to the original.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

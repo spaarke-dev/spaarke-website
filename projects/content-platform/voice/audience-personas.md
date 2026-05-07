@@ -161,3 +161,7 @@ The shared-platform argument — Spaarke is a system both sides can run on, so t
 **Secondary**: `legal-tech-cio` for architecture, deployment, and security (about one in five blog posts, one in four white papers); `firm-operations-leader` for shared-platform and OCG-collaboration topics.
 
 The brief template's `audience` defaults to `corporate-counsel` unless the topic obviously belongs elsewhere. When a piece has both a primary and secondary audience, the brief names both; the draft is written to the primary, with the secondary as sanity check.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

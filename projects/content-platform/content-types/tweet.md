@@ -80,3 +80,7 @@ The five tweets, sketched:
 5. *CTA + link.* "Wrote up the four enforcement-failure modes. Full piece: spaarke.com/blog/where-ocg-enforcement-actually-fails"
 
 Each tweet works alone and earns the next. Link sits in tweet 5 only.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

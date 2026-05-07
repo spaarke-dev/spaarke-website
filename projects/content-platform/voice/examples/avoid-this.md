@@ -137,3 +137,7 @@ Specific statistic, em-dash list, concrete claim. No rhetorical questions.
 > But what does that architecture actually look like?
 
 Specific recap content, then one short question naming the gap *this* article fills.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

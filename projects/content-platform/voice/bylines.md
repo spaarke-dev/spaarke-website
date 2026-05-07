@@ -103,3 +103,7 @@ Architecture byline reserved for a Spaarke platform engineering lead. Pieces in 
 ## 5. Calendar bylines status
 
 Three calendar rows are currently `byline: tbd`, pending the two TBD entries above being named: `billing-compliance-intelligence` (white paper, June; practitioner byline), `document-management-is-becoming-document-intelligence` (blog post, June; architecture byline), and `embedded-ai-vs-bolted-on-ai` (blog post, July; architecture byline). Until the team members are named, these pieces wait or run under the organizational `spaarke` byline if the topic supports it.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

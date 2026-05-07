@@ -118,3 +118,7 @@ First draft. Team revises in T11.
 ---
 
 *Section 1: 35. Section 2: 35. Section 3: 12. Add when patterns emerge; cut what stops earning its place.*
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

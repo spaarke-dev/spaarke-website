@@ -86,3 +86,7 @@ All passages are from public Spaarke blog posts (`content/blog/`).
 **Why included**: Two-sentence close layers two complementary two-noun contrasts ("cost center / strategic investment"; "reacts to / leads with") on top of the same example.
 
 **Use this when**: Brief's payoff is a behavioral or relational change. Layer the contrasts after a concrete example rather than asserting transformation.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

@@ -280,3 +280,7 @@ After polish, before frontmatter validation:
    article-level alt text for raster. A real sentence — "Three
    concentric rings on a deep navy field, suggesting layers of
    intelligence" — not "hero image."
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

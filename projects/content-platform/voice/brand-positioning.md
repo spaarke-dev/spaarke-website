@@ -130,3 +130,7 @@ We don't punch sideways at named competitors. The frame is implicit.
 
 - **Not anti-lawyer or anti-firm.** AI is directed; humans stay in control.
   We don't argue AI replaces lawyers or eliminates legal labor.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

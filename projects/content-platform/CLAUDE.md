@@ -98,3 +98,7 @@ The default workflow is five steps. Don't skip the outline.
   - Tweet → `drafts/tweets/<slug>.md`.
 - Final: a human moves the piece to its publish target and updates
   `calendar.md`.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

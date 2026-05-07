@@ -228,3 +228,7 @@ legal-ops problems without going maudlin or generic.
 
 - "It re-learns lessons it already learned. It re-makes mistakes it already made." — two short sentences in identical structure. The repetition mimics the repetition the article is criticizing.
 - Two-sentence close: long-then-short, abstract-then-concrete, individual-then-cumulative. The library's closing-rhythm signature.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

@@ -135,3 +135,7 @@ Expected cadence: zero to two new tags per quarter. More frequent is drift, not 
 ---
 
 Locked 2026-05-06 — see git log for history.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

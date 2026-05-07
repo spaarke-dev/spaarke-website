@@ -112,3 +112,7 @@ The brief's "References" section names which links the draft must include.
 Audience `legal-ops-director` primary, `corporate-counsel` secondary. Angle: matter management answers "what's open?" Operational intelligence answers "what should we do about it?" Length 1,400 words. Structure: hook (a director walking into a QBR with a 47-tab status report) → §1 what matter management is built to answer → §2 the questions it can't → §3 what operational intelligence adds (the IQ Stack, used structurally) → close → CTA to `/platform/spend-performance`.
 
 The angle becomes the H2 sequence: §1 the table-stakes claim, §2 the gap, §3 the resolution. The hook drops out of "what does the director actually walk into?" Each section names one piece of evidence — a CLOC reference in §1, a concrete failure scenario in §2, the IQ Stack organizing §3.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

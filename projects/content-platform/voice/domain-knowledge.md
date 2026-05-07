@@ -437,3 +437,7 @@ weight. Engage carefully or not at all.
 - **Firm consolidation, layoffs, AmLaw rankings.** A legal-economics
   commentary genre we don't write in. Engage how firms are bought
   from, not firm-side market structure.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

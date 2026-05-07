@@ -125,3 +125,7 @@ Before sending a draft for review, run this. If any answer is "no," fix it.
 6. If the IQ Stack or LOI is invoked, is it organizing the argument or just name-checked?
 7. Are paragraphs 3–5 sentences by default, with one-sentence paragraphs reserved for emphasis after a longer build?
 8. Does the close advance the argument or point to substance — not summarize, not pitch?
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

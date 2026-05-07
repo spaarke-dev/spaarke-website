@@ -117,3 +117,7 @@ The biggest one: **writing LinkedIn posts in blog voice.** A 600-word post in ti
 Audience `legal-ops-director` primary. Format `standalone`, byline a named team member with prior in-house experience, length ~280 words. Hook: "Most legal departments don't have an OCG problem. They have an OCG-enforcement-timing problem. The clauses are right; they just don't fire until after the invoice has been approved." Body: 4–5 short paragraphs covering what enforcement looks like today, what it should look like, why the gap persists, one concrete example. CTA an open question. Hashtags `#LegalOps #LegalTech`.
 
 The brief's hook is the post's first two sentences verbatim. No link out — this is standalone, designed to drive comments and recognition for the byline.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

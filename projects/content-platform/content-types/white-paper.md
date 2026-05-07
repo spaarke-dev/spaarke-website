@@ -99,3 +99,7 @@ T10 builds the brief template from these fields.
 Audience `legal-ops-director` primary, `corporate-counsel` secondary. Thesis: most legal departments enforce OCG terms after the invoice arrives, not before; the intelligence layer that catches violations on the way in pays for itself in two billing cycles. Length 3,200 words. Structure: exec summary (300 w) → context (the gap, with BTI 2025 data) → §1 where enforcement fails → §2 four failure modes → §3 what "enforcement intelligence" means architecturally → §4 implementation pattern → conclusion → action steps. Eleven citations across CLOC, ACC, BTI, Thomson Reuters Institute, practitioner observation, and a critical read of three vendor papers.
 
 The brief feeds the structure: §2's four failure modes are the four supporting claims; the exec summary writes itself once §1–§4 are tight; the action steps drop out of the §4 pattern. Companions: a 1,400-word blog post pulling the failure modes, and a 7-slide LinkedIn carousel.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

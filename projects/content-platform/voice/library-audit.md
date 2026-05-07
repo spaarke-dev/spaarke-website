@@ -138,3 +138,7 @@ Five strongest candidates for `voice/examples/good-articles.md` (T08). Each poin
 ---
 
 **Audited**: 16. **Counts**: ✅ 12 / ◐ 3 / ⚠ 1.
+
+---
+
+*Locked 2026-05-07 — see git log for history.*

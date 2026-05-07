@@ -195,3 +195,7 @@ Reference list — facts stable enough to reuse without re-verifying. Source or 
 ---
 
 *End of reference document. Update when product surfaces change in `src/app/platform/page.tsx`, `src/content/home/capabilities.ts`, or `src/components/sections/DeploymentModels.tsx`. Resolve **TBD — confirm** items in T11.*
+
+---
+
+*Locked 2026-05-07 — see git log for history.*
