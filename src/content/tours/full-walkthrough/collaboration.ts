@@ -15,7 +15,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Collaboration built into operations",
         body: "Projects organize collaboration around legal work, not disconnected folders. Matters, teams, and operational records stay connected in one workspace, so legal collaboration becomes structured and searchable.",
-        anchor: { x: 0.154, y: 0.073 },
+        anchor: { x: 0.242, y: 0.094 },
         pointer: "left-top",
       },
     },
@@ -75,7 +75,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Operational document collaboration",
         body: "Documents remain tied directly to the project and matter. Teams can search, review, preview, and manage work product from one interface, with AI-powered document operations integrated into daily work.",
-        anchor: { x: 0.14, y: 0.393 },
+        anchor: { x: 0.169, y: 0.421 },
         pointer: "bottom-left",
       },
     },
@@ -165,7 +165,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Secure external collaboration",
         body: "Outside counsel and external collaborators receive secure workspace access. Collaboration occurs inside the operational platform instead of email chains, so external work becomes visible and manageable.",
-        anchor: { x: 0.73, y: 0.149 },
+        anchor: { x: 0.703, y: 0.154 },
         pointer: "left-top",
       },
     },
@@ -180,7 +180,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Shared operational activity",
         body: "External users can view assigned tasks, events, and shared project activity. Collaboration stays aligned to operational execution, and teams maintain a unified operational timeline.",
-        anchor: { x: 0.24, y: 0.149 },
+        anchor: { x: 0.268, y: 0.154 },
         pointer: "right-top",
       },
     },
@@ -195,7 +195,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Controlled document access",
         body: "External collaborators only see approved projects and documents. Access remains tied to workspace permissions and operational governance, making information sharing structured and secure.",
-        anchor: { x: 0.24, y: 0.597 },
+        anchor: { x: 0.268, y: 0.544 },
         pointer: "right-top",
       },
     },
@@ -210,7 +210,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "External users work from the same context",
         body: "External collaborators access structured project information directly. Project details, documents, and operational context remain connected, reducing communication overhead and duplicated work.",
-        anchor: { x: 0.24, y: 0.149 },
+        anchor: { x: 0.268, y: 0.154 },
         pointer: "right-top",
       },
     },
@@ -225,7 +225,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "AI-powered document search",
         body: "External users can search project documents using natural language. AI summaries and semantic search accelerate discovery, making shared knowledge easier to navigate.",
-        anchor: { x: 0.24, y: 0.597 },
+        anchor: { x: 0.268, y: 0.154 },
         pointer: "right-top",
       },
     },
@@ -240,7 +240,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Controlled document contribution",
         body: "External collaborators can upload and contribute documents securely. All content remains tied to the operational workspace, and governance and auditability remain intact.",
-        anchor: { x: 0.73, y: 0.597 },
+        anchor: { x: 0.703, y: 0.544 },
         pointer: "left-top",
       },
     },
@@ -255,7 +255,7 @@ export const collaboration: TourSection = {
       callout: {
         title: "Workspace-level operational collaboration",
         body: "Calendars, contacts, tasks, and communication remain integrated into the project. Collaboration extends beyond files into operational execution, creating a shared operational environment across organizations.",
-        anchor: { x: 0.73, y: 0.149 },
+        anchor: { x: 0.703, y: 0.154 },
         pointer: "left-top",
       },
     },
