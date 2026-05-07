@@ -426,5 +426,19 @@ export const aiAutomation: TourSection = {
         pointer: "left-top",
       },
     },
+    {
+      id: "transition-to-spend-performance",
+      interstitial: true,
+      screenshot: {
+        src: "/tours/full-walkthrough/ai-automation/step-9-playbook-details.webp",
+        width: 2400,
+        height: 1350,
+        alt: "Spaarke playbook builder — backdrop for the transition to Spend & Performance",
+      },
+      callout: {
+        title: "Next: Spend & Performance",
+        body: "The financial and operational truth about every matter and every firm — invoices, budgets, OCG compliance, and outcomes — comprehensive insights to every matter, every firm.",
+      },
+    },
   ],
 };

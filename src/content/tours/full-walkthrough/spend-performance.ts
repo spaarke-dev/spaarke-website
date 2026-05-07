@@ -199,5 +199,20 @@ export const spendPerformance: TourSection = {
         pointer: "top-middle",
       },
     },
+    {
+      id: "tour-outro",
+      interstitial: true,
+      screenshot: {
+        src: "/tours/full-walkthrough/spend-performance/step-3-matter-billing.webp",
+        width: 2400,
+        height: 1350,
+        alt: "Spaarke billing summary — backdrop for the tour outro",
+      },
+      callout: {
+        title: "Ready to see Spaarke in action?",
+        body: "Get hands-on access to the full platform. We'll set up a tailored demo for your firm or legal department.",
+        cta: { label: "Get access", href: "/access-request" },
+      },
+    },
   ],
 };

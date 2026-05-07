@@ -158,6 +158,8 @@ export function TourShell({ tour }: Props) {
                 step={currentStep}
                 showGrid={showGrid}
                 authorMode={authorMode}
+                tourSlug={tour.slug}
+                sectionId={activeSection.id}
                 nav={{
                   index: stepIndex,
                   total: activeSection.steps.length,

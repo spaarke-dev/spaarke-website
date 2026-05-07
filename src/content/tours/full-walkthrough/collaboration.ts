@@ -304,5 +304,19 @@ export const collaboration: TourSection = {
         pointer: "right-middle",
       },
     },
+    {
+      id: "transition-to-ai-automation",
+      interstitial: true,
+      screenshot: {
+        src: "/tours/full-walkthrough/collaboration/step-6-teams.webp",
+        width: 1533,
+        height: 857,
+        alt: "Spaarke Teams app — backdrop for the transition to AI & Automation",
+      },
+      callout: {
+        title: "Next: AI & Automation",
+        body: "AI summaries, Copilot-native experiences, and event-driven playbooks — AI that runs across your legal operations, not just drafting.",
+      },
+    },
   ],
 };

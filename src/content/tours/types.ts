@@ -26,6 +26,14 @@ export type TourStep = {
   id: string;
   screenshot: Screenshot;
   callout: Callout;
+  /**
+   * When true, the step renders as a centered "interstitial" modal
+   * overlaying a dimmed/blurred screenshot — used for the tour intro,
+   * section transitions, and the outro. The callout's `title`, `body`,
+   * and optional `cta` are shown inside the centered card; no pointer
+   * is rendered.
+   */
+  interstitial?: boolean;
   /** Optional click regions; Phase 3. */
   hotspots?: Hotspot[];
 };

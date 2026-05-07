@@ -364,5 +364,19 @@ export const documentsEmail: TourSection = {
         pointer: "right-bottom",
       },
     },
+    {
+      id: "transition-to-collaboration",
+      interstitial: true,
+      screenshot: {
+        src: "/tours/full-walkthrough/documents-email/step-8-outlook-add-in.webp",
+        width: 1533,
+        height: 861,
+        alt: "Spaarke Outlook add-in — backdrop for the transition to Collaboration",
+      },
+      callout: {
+        title: "Next: Collaboration",
+        body: "Secure shared workspaces for everyone working a matter — internal teams, business clients, and outside counsel — so everyone works from the same context.",
+      },
+    },
   ],
 };

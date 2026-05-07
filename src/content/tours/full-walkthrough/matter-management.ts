@@ -5,6 +5,20 @@ export const matterManagement: TourSection = {
   label: "Matter Management",
   steps: [
     {
+      id: "tour-intro",
+      interstitial: true,
+      screenshot: {
+        src: "/tours/full-walkthrough/matter-management/step-3-workspace.webp",
+        width: 2400,
+        height: 1350,
+        alt: "Spaarke Corporate Workspace — representative view used as the backdrop for the tour intro",
+      },
+      callout: {
+        title: "A guided walkthrough of Spaarke",
+        body: "Spaarke unifies legal operations across matter management, documents, collaboration, AI, and spend — built natively on Microsoft. The next 100 steps walk through how it fits together. Use the arrow keys or click to advance.",
+      },
+    },
+    {
       id: "daily-briefing-summary",
       screenshot: {
         src: "/tours/full-walkthrough/matter-management/step-1-daily-briefing.webp",
@@ -242,6 +256,20 @@ export const matterManagement: TourSection = {
         body: "Adjust thresholds, clustering, and similarity scoring. Refine how semantic results are grouped and surfaced — designed for large-scale enterprise legal repositories.",
         anchor: { x: 0.815, y: 0.229 },
         pointer: "right-middle",
+      },
+    },
+    {
+      id: "transition-to-documents-email",
+      interstitial: true,
+      screenshot: {
+        src: "/tours/full-walkthrough/matter-management/step-6-semantic-search.webp",
+        width: 1533,
+        height: 861,
+        alt: "Spaarke semantic search — backdrop for the transition to Documents & Email",
+      },
+      callout: {
+        title: "Next: Documents & Email",
+        body: "Every document and email connected to its matter, AI-summarized, and discoverable through semantic search — so knowledge is reusable, not buried.",
       },
     },
   ],
