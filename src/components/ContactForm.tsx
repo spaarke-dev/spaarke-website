@@ -78,14 +78,28 @@ export default function ContactForm({
     setStatus("submitting");
     setErrorMessage("");
 
+    // Get captcha token in its own try/catch so we can distinguish a
+    // reCAPTCHA failure (widget blocked by an extension, executeAsync
+    // throws) from a network failure on our own /api/contact fetch.
+    // Both used to surface as "Couldn't reach our server" which was
+    // misleading when the actual cause was an ad-blocker.
+    let captchaToken = "";
     try {
-      // Get captcha token
-      let captchaToken = "";
       if (recaptchaRef.current) {
         recaptchaRef.current.reset();
         const token = await recaptchaRef.current.executeAsync();
         captchaToken = token ?? "";
       }
+    } catch (err) {
+      setStatus("error");
+      setErrorMessage(
+        "We couldn't verify your reCAPTCHA. Browser extensions, privacy tools, or corporate networks sometimes block this. Try disabling ad-blockers or use a different browser — or email us at contactus@spaarke.com.",
+      );
+      console.error("[contact] reCAPTCHA error:", err);
+      return;
+    }
+
+    try {
 
       // Read honeypot from the form element
       const formData = new FormData(e.currentTarget);

@@ -123,21 +123,34 @@ export default function DemoRequestForm({
     setStatus("submitting");
     setErrorMessage("");
 
+    // Get captcha token in its own try/catch so we can distinguish a
+    // reCAPTCHA failure (widget blocked by an extension, executeAsync
+    // throws) from a network failure on our own fetch.
+    let captchaToken = "";
     try {
-      // Get captcha token
-      let captchaToken = "";
       if (recaptchaRef.current) {
         recaptchaRef.current.reset();
         const token = await recaptchaRef.current.executeAsync();
         captchaToken = token ?? "";
       }
+    } catch (err) {
+      setStatus("error");
+      setErrorMessage(
+        "We couldn't verify your reCAPTCHA. Browser extensions, privacy tools, or corporate networks sometimes block this. Try disabling ad-blockers or use a different browser — or email us at contactus@spaarke.com.",
+      );
+      console.error("[demo-request] reCAPTCHA error:", err);
+      return;
+    }
 
-      if (!captchaToken) {
-        setStatus("error");
-        setErrorMessage("CAPTCHA verification failed. Please try again.");
-        return;
-      }
+    if (!captchaToken) {
+      setStatus("error");
+      setErrorMessage(
+        "Couldn't get a reCAPTCHA token. Browser extensions or privacy tools sometimes block this. Try disabling ad-blockers and resubmitting, or email contactus@spaarke.com.",
+      );
+      return;
+    }
 
+    try {
       const attribution = submissionProps();
 
       const res = await fetch("/api/registration/demo-request", {

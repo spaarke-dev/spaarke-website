@@ -54,14 +54,24 @@ export function TakeTourCTAs({
 
     setStatus("submitting");
 
+    // Captcha in its own try/catch — see ContactForm.
+    let captchaToken = "";
     try {
-      let captchaToken = "";
       if (recaptchaRef.current) {
         recaptchaRef.current.reset();
         const token = await recaptchaRef.current.executeAsync();
         captchaToken = token ?? "";
       }
+    } catch (err) {
+      setStatus("error");
+      setError(
+        "Couldn't verify reCAPTCHA. Disable ad-blockers or try a different browser, or email contactus@spaarke.com.",
+      );
+      console.error("[take-tour] reCAPTCHA error:", err);
+      return;
+    }
 
+    try {
       const attribution = submissionProps();
 
       const res = await fetch("/api/early-release", {
