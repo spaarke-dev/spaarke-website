@@ -764,17 +764,57 @@ Azure resources end-to-end. Documented in
 ### Deploy regression playbook
 
 If a `Failed to deploy the Azure Functions` error appears with a
-successful build:
-1. Confirm Azure-side: `az staticwebapp environment list -n
+successful build, work through these in order. The two known-causes
+are documented separately because they manifest with the same generic
+error message but have different root causes and fixes.
+
+**Cause 1 (most common): Functions package > 100 MB.**
+
+Azure SWA bundles `/public/` + `.next/standalone/` into the Functions
+zip. The hard limit is **104,857,600 bytes (100 MB)**, and Next.js's
+`node_modules/@next/swc-*` native binary alone is ~120 MB. Without
+stripping it pre-package, the Functions zip is over budget and any
+`/public/` addition tips it over. Symptom: deploy poll says
+`Status: Failed` at almost exactly **15 seconds** post-upload.
+
+**Fix** (already applied in
+`.github/workflows/azure-static-web-apps-...yml`):
+
+```yaml
+api_build_command: 'rm -rf ./node_modules/@next/swc-* && rm -rf ./.next/cache'
+```
+
+Strips both before the zip is built. **Do not remove this line** — it
+is a permanent requirement for this site, not a one-time fix. See
+[Azure/static-web-apps#1034](https://github.com/Azure/static-web-apps/issues/1034).
+
+If a future deploy fails with "Failed to deploy the Azure Functions"
+at the 15-second mark, the most likely cause is that someone removed
+the `api_build_command` line or the build started shipping a new
+~100 MB native binary that needs adding to the strip list.
+
+**Cause 2 (older, more rare): SVG with embedded base64 data URIs.**
+
+SVGs with several `data:image/png;base64,...` URIs in 60-65k-character
+single lines (the typical product of design-tool exports) cause the
+deploy to fail before it even uploads the zip. Symptom: failure during
+the build phase, not the polling phase, with a different error log
+pointing at SVG processing. Bisected in 2026-05 against the diagram
+SVGs.
+
+**Fix**: `node scripts/slim-svgs.mjs` walks diagram SVGs, hashes every
+`data:image/...` URI, writes the binary to
+`/public/brand/diagrams/_extracted/img-<sha1-12>.<ext>`, and rewrites
+the SVG to `<image href="...">`. **Run the script after any new
+diagram is added that contains embedded data URIs.** See §11 above.
+
+**General tools**:
+1. Compare the latest Api Artifact zip duration in the workflow log
+   against a known-green run. Equal duration → not a size issue.
+2. Confirm Azure-side: `az staticwebapp environment list -n
    swa-spaarke-website -g rg-spaarke-website -o table`. The
    `default` build will show `status: Failed`.
-2. Compare the latest Api Artifact zip duration in the workflow log
-   against a known-green run. Equal duration → not a size issue.
-3. Bisect against recently-added files in `/public`. The known-bad
-   pattern is large SVGs with embedded base64 data URIs on very long
-   lines (`file <svg>` reports `with very long lines (60000+)`). Run
-   `node scripts/slim-svgs.mjs` to extract their data URIs.
-4. SWA CLI direct deploy (`npx @azure/static-web-apps-cli deploy …`)
+3. SWA CLI direct deploy (`npx @azure/static-web-apps-cli deploy …`)
    is **not** a useful diagnostic for Functions failures because it
    skips the Oryx + function-handler-build path entirely.
 

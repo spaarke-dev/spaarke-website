@@ -29,6 +29,11 @@ jobs:
           app_location: "/"
           api_location: ""
           output_location: ".next"
+          # Strip Next's build cache and the SWC native binaries before SWA
+          # packages the Functions zip. Otherwise Azure's 100 MB Functions
+          # content limit (104,857,600 bytes) trips on apps with even a few
+          # MB of /public/ assets — see Azure/static-web-apps#1034.
+          api_build_command: 'rm -rf ./node_modules/@next/swc-* && rm -rf ./.next/cache'
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
