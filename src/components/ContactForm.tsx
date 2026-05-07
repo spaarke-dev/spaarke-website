@@ -5,6 +5,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Send24Regular } from "@fluentui/react-icons";
 import FormField from "@/components/FormField";
 import InlineAlert from "@/components/InlineAlert";
+import { submissionProps } from "@/lib/attribution";
+import { track } from "@/lib/analytics";
 
 const REASON_OPTIONS = ["", "Demo", "Partnership", "Support", "Other"] as const;
 
@@ -89,6 +91,8 @@ export default function ContactForm({
       const formData = new FormData(e.currentTarget);
       const hp = (formData.get("hp") as string) ?? "";
 
+      const attribution = submissionProps();
+
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,6 +104,7 @@ export default function ContactForm({
           message: message.trim(),
           hp,
           captchaToken,
+          attribution,
         }),
       });
 
@@ -127,6 +132,7 @@ export default function ContactForm({
         return;
       }
 
+      track("Contact Submit", attribution);
       setStatus("success");
     } catch {
       setStatus("error");

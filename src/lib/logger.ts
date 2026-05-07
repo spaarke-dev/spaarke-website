@@ -39,3 +39,8 @@ export function trackException(
     defaultClient.trackException({ exception: error, properties });
   }
 }
+
+/** Track an AI crawler bot visit. Slug-only — no IP, no full UA stored. */
+export function trackAiCrawler(data: { bot: string; path: string }): void {
+  trackEvent("ai_crawler.visit", { bot: data.bot, path: data.path });
+}

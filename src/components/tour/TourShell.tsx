@@ -9,6 +9,7 @@ import {
 } from "@/lib/tour-tracking";
 import { TourHeader } from "./TourHeader";
 import { TourStage } from "./TourStage";
+import { track } from "@/lib/analytics";
 
 type Props = {
   tour: Tour;
@@ -136,9 +137,24 @@ export function TourShell({ tour }: Props) {
       writeUrl(activeSection.id, stepNum + 1);
       return;
     }
+    // At the last step of the current section.
+    track("Tour Section Complete", {
+      tour_slug: tour.slug,
+      section_id: activeSection.id,
+    });
     if (sectionIndex < tour.sections.length - 1) {
       const next = tour.sections[sectionIndex + 1];
       writeUrl(next.id, 1);
+    } else {
+      // Last step of the last section — Tour Complete (once per session).
+      const completeKey = `spk_tour_complete_${tour.slug}`;
+      if (
+        typeof sessionStorage !== "undefined" &&
+        !sessionStorage.getItem(completeKey)
+      ) {
+        track("Tour Complete", { tour_slug: tour.slug });
+        sessionStorage.setItem(completeKey, "1");
+      }
     }
   }, [
     activeSection.id,
@@ -147,6 +163,7 @@ export function TourShell({ tour }: Props) {
     stepIndex,
     stepNum,
     tour.sections,
+    tour.slug,
     writeUrl,
   ]);
 
@@ -159,6 +176,13 @@ export function TourShell({ tour }: Props) {
   );
 
   // Keyboard navigation: tag the upcoming step view as "keyboard"-driven.
+  useEffect(() => {
+    track("Tour Section Enter", {
+      tour_slug: tour.slug,
+      section_id: activeSection.id,
+    });
+  }, [tour.slug, activeSection.id]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {

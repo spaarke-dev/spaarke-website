@@ -6,6 +6,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { saveContactSubmission } from "@/lib/storage";
 import { sendContactNotification } from "@/lib/email";
 import { trackEvent, trackException } from "@/lib/logger";
+import type { Attribution } from "@/lib/attribution";
 
 async function verifyCaptcha(token: string): Promise<boolean> {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
@@ -25,7 +26,10 @@ async function verifyCaptcha(token: string): Promise<boolean> {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = (await request.json()) as Partial<ContactFormData> & { captchaToken?: string };
+    const body = (await request.json()) as Partial<ContactFormData> & {
+      captchaToken?: string;
+      attribution?: Attribution | null;
+    };
 
     // Normalize inputs
     const data: ContactFormData = {
@@ -36,6 +40,7 @@ export async function POST(request: NextRequest) {
       message: (body.message ?? "").trim(),
       hp: (body.hp ?? "").trim() || undefined,
     };
+    const attribution = body.attribution ?? null;
 
     // Honeypot check - bots fill this in; silently accept
     if (data.hp) {
@@ -83,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Persist to Azure Table Storage first
-    await saveContactSubmission(data, ipHash);
+    await saveContactSubmission(data, ipHash, attribution);
 
     // Send email notification (awaited so serverless doesn't terminate early)
     await sendContactNotification(data).catch((err) => {
@@ -94,7 +99,11 @@ export async function POST(request: NextRequest) {
       );
     });
 
-    trackEvent("contact.success", { reason: data.reason ?? "none" });
+    trackEvent("contact.success", {
+      reason: data.reason ?? "none",
+      entry_referrer: attribution?.entry_referrer ?? "",
+      ai_source: attribution?.ai_source ?? "",
+    });
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("[contact] Unexpected error:", err);

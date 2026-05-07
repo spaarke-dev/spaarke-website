@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Button } from "@/components/primitives";
+import { submissionProps } from "@/lib/attribution";
+import { track } from "@/lib/analytics";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TOUR_PATH = "/tour/full-walkthrough";
@@ -60,6 +62,8 @@ export function TakeTourCTAs({
         captchaToken = token ?? "";
       }
 
+      const attribution = submissionProps();
+
       const res = await fetch("/api/early-release", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -68,6 +72,7 @@ export function TakeTourCTAs({
           email: emailTrim,
           captchaToken,
           source: "take-tour",
+          attribution,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -90,6 +95,8 @@ export function TakeTourCTAs({
         );
         return;
       }
+
+      track("Take Tour Submit", attribution);
 
       // Lead captured — redirect to the full walkthrough. Keep status as
       // "submitting" until navigation completes so the button doesn't

@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { getIpHash } from "@/lib/ip-hash";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { trackEvent, trackException } from "@/lib/logger";
+import type { Attribution } from "@/lib/attribution";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -33,6 +34,7 @@ interface DemoRequestBody {
   notes?: string;
   consent?: boolean;
   captchaToken?: string;
+  attribution?: Attribution | null;
 }
 
 interface FieldErrors {
@@ -157,6 +159,8 @@ export async function POST(request: NextRequest) {
         ? referralSource
         : undefined;
 
+    const attribution = body.attribution ?? null;
+
     // Build payload for BFF API (map website field names to BFF DTO names)
     const payload = {
       firstName: (body.firstName ?? "").trim(),
@@ -170,6 +174,7 @@ export async function POST(request: NextRequest) {
       notes: (body.notes ?? "").trim() || undefined,
       consentAccepted: body.consent,
       recaptchaToken: captchaToken,
+      attribution,
     };
 
     // Proxy to BFF API
@@ -215,6 +220,8 @@ export async function POST(request: NextRequest) {
     trackEvent("demo_request.success", {
       email: (body.workEmail ?? "").replace(/@.*/, "@***"),
       useCase: payload.useCase,
+      entry_referrer: attribution?.entry_referrer ?? "",
+      ai_source: attribution?.ai_source ?? "",
     });
 
     return NextResponse.json({

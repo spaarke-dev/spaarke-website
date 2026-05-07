@@ -5,6 +5,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Send24Regular } from "@fluentui/react-icons";
 import FormField from "@/components/FormField";
 import InlineAlert from "@/components/InlineAlert";
+import { submissionProps } from "@/lib/attribution";
+import { track } from "@/lib/analytics";
 
 const USE_CASE_OPTIONS = [
   "Document Management",
@@ -136,6 +138,8 @@ export default function DemoRequestForm({
         return;
       }
 
+      const attribution = submissionProps();
+
       const res = await fetch("/api/registration/demo-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -151,6 +155,7 @@ export default function DemoRequestForm({
           notes: notes.trim() || undefined,
           consent,
           captchaToken,
+          attribution,
         }),
       });
 
@@ -178,6 +183,7 @@ export default function DemoRequestForm({
         return;
       }
 
+      track("Demo Request Submit", attribution);
       setTrackingId(data.trackingId ?? "");
       setStatus("success");
     } catch {

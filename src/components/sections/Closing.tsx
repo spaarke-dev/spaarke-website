@@ -1,6 +1,17 @@
+"use client";
+
 import type { CSSProperties } from "react";
+import { usePathname } from "next/navigation";
 import { Button, Shell } from "@/components/primitives";
 import { closingContent } from "@/content/home/closing";
+import { track } from "@/lib/analytics";
+import type { PlausibleEventName } from "@/types/plausible";
+
+const CTA_EVENTS: Record<string, PlausibleEventName> = {
+  "/access-request": "CTA Click — Get Access",
+  "/platform": "CTA Click — See Platform",
+  "/contact": "CTA Click — Contact Us",
+};
 
 // Solid black background — the fade transition was distracting and
 // taller than necessary. The hard boundary against the section above
@@ -22,6 +33,7 @@ const DARK_ZONE_STYLE = {
 
 export function Closing() {
   const { headline, tagline, ctas } = closingContent;
+  const fromPage = usePathname() ?? "/";
 
   return (
     <section className="relative overflow-hidden" style={SECTION_STYLE}>
@@ -47,16 +59,24 @@ export function Closing() {
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
-            {ctas.map((cta) => (
-              <Button
-                key={cta.label}
-                variant={cta.variant}
-                href={cta.href}
-                arrow={cta.arrow}
-              >
-                {cta.label}
-              </Button>
-            ))}
+            {ctas.map((cta) => {
+              const event = CTA_EVENTS[cta.href];
+              return (
+                <Button
+                  key={cta.label}
+                  variant={cta.variant}
+                  href={cta.href}
+                  arrow={cta.arrow}
+                  onClick={
+                    event
+                      ? () => track(event, { from_page: fromPage })
+                      : undefined
+                  }
+                >
+                  {cta.label}
+                </Button>
+              );
+            })}
           </div>
         </div>
       </Shell>
