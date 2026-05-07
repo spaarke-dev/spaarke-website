@@ -8,12 +8,22 @@ import type {
   CalloutNav as CalloutNavType,
 } from "@/content/tours/types";
 import { resolveBox, type PointerEdge } from "./geometry";
+import { FeedbackWidget } from "./FeedbackWidget";
 
 type Props = {
   callout: CalloutType;
   /** Step navigation controls. When provided, render prev/next + counter
    * inline at the bottom of the callout (replaces the external StepNav). */
   nav?: CalloutNavType;
+  /**
+   * Identifiers used by the inline per-step feedback widget. The widget
+   * is rendered only when both `nav` and these identifiers are present
+   * — that combination signals a real, navigable step (interstitials
+   * use a different overlay component and don't render feedback here).
+   */
+  tourSlug?: string;
+  sectionId?: string;
+  stepId?: string;
 };
 
 // Brand-aligned high-contrast styling so callouts read clearly on
@@ -214,7 +224,13 @@ function CalloutNav({ nav }: { nav: CalloutNavType }) {
   );
 }
 
-export function Callout({ callout, nav }: Props) {
+export function Callout({
+  callout,
+  nav,
+  tourSlug,
+  sectionId,
+  stepId,
+}: Props) {
   const resolved = resolveBox(callout);
 
   const style: CSSProperties = {
@@ -273,6 +289,13 @@ export function Callout({ callout, nav }: Props) {
         </div>
       ) : null}
       {nav ? <CalloutNav nav={nav} /> : null}
+      {nav && tourSlug && sectionId && stepId ? (
+        <FeedbackWidget
+          tourSlug={tourSlug}
+          sectionId={sectionId}
+          stepId={stepId}
+        />
+      ) : null}
       {showPointer ? (
         <PointerArrow
           edge={resolved.pointerEdge}

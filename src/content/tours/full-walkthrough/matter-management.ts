@@ -5,6 +5,20 @@ export const matterManagement: TourSection = {
   label: "Matter Management",
   steps: [
     {
+      id: "tour-intro",
+      interstitial: true,
+      screenshot: {
+        src: "/tours/full-walkthrough/matter-management/step-3-workspace.webp",
+        width: 2400,
+        height: 1350,
+        alt: "Spaarke Corporate Workspace — representative view used as the backdrop for the tour intro",
+      },
+      callout: {
+        title: "A guided walkthrough of Spaarke",
+        body: "This tour provides a good overview of the platform. Navigate through the different capability areas at the top, and use the arrow keys to step through.\n\nWe've included a feedback option on every step. We encourage you to click the 👍 or 👎 and provide comments. Include questions and we'll get back to you!",
+      },
+    },
+    {
       id: "daily-briefing-summary",
       screenshot: {
         src: "/tours/full-walkthrough/matter-management/step-1-daily-briefing.webp",
@@ -150,7 +164,7 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Views built for legal teams",
         body: "Filter and organize matters by practice, client, team, or workflow. Save personalized views for different legal operations roles — surfacing exactly the information your team needs.",
-        anchor: { x: 0.843, y: 0.175 },
+        anchor: { x: 0.85, y: 0.142 },
         pointer: "top-right",
       },
     },
@@ -165,7 +179,7 @@ export const matterManagement: TourSection = {
       callout: {
         title: "The complete matter record",
         body: "Every matter brings together documents, tasks, contacts, deadlines, billing, and reporting. Teams work from a shared operational view — context stays connected across the lifecycle of the matter.",
-        anchor: { x: 0.385, y: 0.161 },
+        anchor: { x: 0.365, y: 0.167 },
         pointer: "left-top",
       },
     },
@@ -180,7 +194,7 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Documents tied to the work",
         body: "Documents remain connected to the matter they belong to. Search, preview, and collaborate without leaving the matter — preserving context, history, and auditability.",
-        anchor: { x: 0.131, y: 0.425 },
+        anchor: { x: 0.124, y: 0.454 },
         pointer: "bottom-left",
       },
     },
@@ -195,8 +209,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Operational performance visibility",
         body: "Track budgets, compliance, performance grades, and upcoming deadlines. Financial and operational insights live beside the legal work — see matter health at a glance.",
-        anchor: { x: 0.668, y: 0.431 },
-        pointer: "right-middle",
+        anchor: { x: 0.243, y: 0.296 },
+        pointer: "left-middle",
       },
     },
     {
@@ -242,6 +256,20 @@ export const matterManagement: TourSection = {
         body: "Adjust thresholds, clustering, and similarity scoring. Refine how semantic results are grouped and surfaced — designed for large-scale enterprise legal repositories.",
         anchor: { x: 0.815, y: 0.229 },
         pointer: "right-middle",
+      },
+    },
+    {
+      id: "transition-to-documents-email",
+      interstitial: true,
+      screenshot: {
+        src: "/tours/full-walkthrough/matter-management/step-6-semantic-search.webp",
+        width: 1533,
+        height: 861,
+        alt: "Spaarke semantic search — backdrop for the transition to Documents & Email",
+      },
+      callout: {
+        title: "Next: Documents & Email",
+        body: "Every document and email connected to its matter, AI-summarized, and discoverable through semantic search — so knowledge is reusable, not buried.",
       },
     },
   ],

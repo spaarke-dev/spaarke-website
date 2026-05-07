@@ -5,6 +5,7 @@ import type { CSSProperties, MouseEventHandler } from "react";
 import type { CalloutNav, TourStep } from "@/content/tours/types";
 import { Callout } from "@/components/tour/Callout";
 import { CoordinateGrid } from "@/components/tour/CoordinateGrid";
+import { InterstitialOverlay } from "@/components/tour/InterstitialOverlay";
 
 type Props = {
   step: TourStep;
@@ -21,6 +22,13 @@ type Props = {
    * the callout. When omitted, the callout renders without nav controls.
    */
   nav?: CalloutNav;
+  /**
+   * Identifiers forwarded to the inline FeedbackWidget rendered inside
+   * the callout. `stepId` is derived from `step.id` at the Callout call
+   * site, so only the slug + section need plumbing here.
+   */
+  tourSlug?: string;
+  sectionId?: string;
 };
 
 /**
@@ -42,6 +50,8 @@ export function TourStage({
   showGrid = false,
   authorMode = false,
   nav,
+  tourSlug,
+  sectionId,
 }: Props): React.ReactElement {
   const { screenshot, callout } = step;
 
@@ -64,6 +74,8 @@ export function TourStage({
     void navigator.clipboard?.writeText(coords);
   };
 
+  const isInterstitial = step.interstitial === true;
+
   return (
     <div style={wrapperStyle} onClick={authorMode ? handleClick : undefined}>
       <Image
@@ -73,8 +85,35 @@ export function TourStage({
         height={screenshot.height}
         priority
         className="block h-auto w-full"
+        style={isInterstitial ? { opacity: 0.55 } : undefined}
       />
-      <Callout callout={callout} nav={nav} />
+      {isInterstitial ? (
+        <>
+          {/* Translucent backdrop dims and softly blurs the screenshot
+              so the centered card reads as a paused state on top of the
+              tour, not a hard page break. */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "rgba(15,23,42,0.35)",
+              backdropFilter: "blur(2px)",
+              WebkitBackdropFilter: "blur(2px)",
+              pointerEvents: "none",
+            }}
+          />
+          <InterstitialOverlay callout={callout} nav={nav} />
+        </>
+      ) : (
+        <Callout
+          callout={callout}
+          nav={nav}
+          tourSlug={tourSlug}
+          sectionId={sectionId}
+          stepId={step.id}
+        />
+      )}
       <CoordinateGrid enabled={showGrid} />
     </div>
   );

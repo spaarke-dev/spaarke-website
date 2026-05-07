@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { TableClient } from "@azure/data-tables";
-import { randomBytes } from "crypto";
+import { createHash, randomBytes } from "crypto";
 import { getIpHash } from "@/lib/ip-hash";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { trackEvent, trackException } from "@/lib/logger";
@@ -10,6 +10,21 @@ import {
   type EarlyReleaseSource,
 } from "@/lib/email";
 import type { Attribution } from "@/lib/attribution";
+
+/**
+ * Build the deterministic, non-PII tour session token bound to an
+ * email address + per-deploy salt. The token is set as an HttpOnly
+ * cookie when a Take Tour signup succeeds so subsequent feedback
+ * submissions can be correlated with the signup row by re-deriving
+ * this same hash from the EarlyReleaseSignups email column.
+ */
+function buildTourSessionToken(normalizedEmail: string): string {
+  const salt = process.env.TOUR_SESSION_SALT ?? "";
+  return createHash("sha256")
+    .update(`${normalizedEmail}:${salt}`)
+    .digest("hex")
+    .slice(0, 32);
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TABLE_NAME = "EarlyReleaseSignups";
@@ -97,6 +112,7 @@ export async function POST(request: NextRequest) {
 
     // Save to Azure Table Storage
     const connectionString = process.env.STORAGE_ACCOUNT_CONNECTION;
+    let persisted = false;
     if (connectionString) {
       const client = TableClient.fromConnectionString(connectionString, TABLE_NAME);
       const random = randomBytes(4).toString("hex");
@@ -118,18 +134,36 @@ export async function POST(request: NextRequest) {
         utm_medium: attribution?.utm_medium ?? "",
         utm_campaign: attribution?.utm_campaign ?? "",
       });
+      persisted = true;
     } else {
       console.warn("[early-release] STORAGE_ACCOUNT_CONNECTION not set - signup not persisted.");
     }
 
-    // Send email notification (awaited so serverless doesn't terminate early)
-    await sendEarlyReleaseNotification({ name, email, source }).catch((err) => {
-      console.error("[early-release] Email notification failed:", err);
+    // Send email notification (awaited so serverless doesn't terminate
+    // early). The function returns {sent: false} on SendGrid errors
+    // without throwing — capture both the thrown and returned-failure
+    // cases so silent send failures don't go unnoticed in App Insights.
+    try {
+      const result = await sendEarlyReleaseNotification({ name, email, source });
+      if (result.sent) {
+        trackEvent("early_release.email_sent", { source });
+      } else {
+        console.error(
+          "[early-release] Email notification returned not-sent:",
+          result.error,
+        );
+        trackEvent("early_release.email_not_sent", {
+          source,
+          error: result.error,
+        });
+      }
+    } catch (err) {
+      console.error("[early-release] Email notification threw:", err);
       trackException(
         err instanceof Error ? err : new Error(String(err)),
-        { step: "email" },
+        { step: "email", source },
       );
-    });
+    }
 
     trackEvent("early_release.success", {
       email: email.replace(/@.*/, "@***"),
@@ -137,7 +171,23 @@ export async function POST(request: NextRequest) {
       entry_referrer: attribution?.entry_referrer ?? "",
       ai_source: attribution?.ai_source ?? "",
     });
-    return NextResponse.json({ ok: true });
+
+    const response = NextResponse.json({ ok: true });
+
+    // Set a tour_session cookie only for the Take Tour flow and only
+    // when the row was actually persisted. The value is a deterministic
+    // SHA-256 hash of email + per-deploy salt, truncated — not PII, but
+    // only re-derivable on the server holding TOUR_SESSION_SALT.
+    if (source === "take-tour" && persisted) {
+      const normalizedEmail = email.toLowerCase();
+      const token = buildTourSessionToken(normalizedEmail);
+      response.headers.append(
+        "Set-Cookie",
+        `tour_session=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=2592000`,
+      );
+    }
+
+    return response;
   } catch (err) {
     console.error("[early-release] Unexpected error:", err);
     trackException(
