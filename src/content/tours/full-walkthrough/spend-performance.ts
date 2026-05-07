@@ -120,7 +120,7 @@ export const spendPerformance: TourSection = {
       callout: {
         title: "Compliance and outcomes measured together",
         body: "Financial compliance and operational outcomes remain connected. Teams can evaluate legal work using operational and business metrics together, improving visibility into legal operations performance.",
-        anchor: { x: 0.415, y: 0.706 },
+        anchor: { x: 0.321, y: 0.668 },
         pointer: "top-middle",
       },
     },
@@ -150,8 +150,8 @@ export const spendPerformance: TourSection = {
       callout: {
         title: "Budget visibility in real time",
         body: "Monitor total budget, remaining budget, invoice volume, and utilization continuously. Teams can identify financial risk earlier in the workflow, making budget management proactive instead of retrospective.",
-        anchor: { x: 0.765, y: 0.284 },
-        pointer: "left-top",
+        anchor: { x: 0.242, y: 0.85 },
+        pointer: "left-bottom",
       },
     },
     {
@@ -165,8 +165,8 @@ export const spendPerformance: TourSection = {
       callout: {
         title: "Every invoice tied to operational context",
         body: "Invoices remain linked to the matter, operational workflow, and related activity. Teams can review financial history directly from the matter workspace, keeping operational and financial data unified.",
-        anchor: { x: 0.318, y: 0.588 },
-        pointer: "left-top",
+        anchor: { x: 0.242, y: 0.583 },
+        pointer: "left-middle",
       },
     },
     {
@@ -180,7 +180,7 @@ export const spendPerformance: TourSection = {
       callout: {
         title: "Budgets managed alongside execution",
         body: "Budgets are maintained as operational records connected to ongoing legal work. Financial governance becomes integrated into day-to-day operations, improving visibility into spend planning and execution.",
-        anchor: { x: 0.483, y: 0.872 },
+        anchor: { x: 0.802, y: 0.85 },
         pointer: "bottom-middle",
       },
     },
@@ -195,8 +195,23 @@ export const spendPerformance: TourSection = {
       callout: {
         title: "Operational reporting built into finance workflows",
         body: "Reporting, workflow actions, and operational processes remain available directly inside billing workflows. Legal spend management becomes operationally actionable — teams can move from analysis to execution without leaving the platform.",
-        anchor: { x: 0.814, y: 0.872 },
-        pointer: "bottom-middle",
+        anchor: { x: 0.704, y: 0.193 },
+        pointer: "top-middle",
+      },
+    },
+    {
+      id: "tour-outro",
+      interstitial: true,
+      screenshot: {
+        src: "/tours/full-walkthrough/spend-performance/step-3-matter-billing.webp",
+        width: 2400,
+        height: 1350,
+        alt: "Spaarke billing summary — backdrop for the tour outro",
+      },
+      callout: {
+        title: "Ready to see Spaarke in action?",
+        body: "Get hands-on access to the full platform. We'll set up a tailored demo for your firm or legal department.",
+        cta: { label: "Get access", href: "/access-request" },
       },
     },
   ],

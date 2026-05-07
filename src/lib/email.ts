@@ -66,6 +66,68 @@ export async function sendContactNotification(
   }
 }
 
+export type TourFeedbackEmailData = {
+  tourSlug: string;
+  sectionId: string;
+  stepId: string;
+  sentiment: "up" | "down" | null;
+  comment: string;
+  sessionToken?: string;
+};
+
+export async function sendTourFeedbackNotification(
+  data: TourFeedbackEmailData,
+): Promise<{ sent: true } | { sent: false; error: string }> {
+  if (!ensureInit()) {
+    return { sent: false, error: "SendGrid not configured." };
+  }
+
+  const to = process.env.CONTACT_EMAIL_TO;
+  const from = process.env.SENDGRID_FROM_EMAIL;
+
+  if (!to || !from) {
+    console.warn(
+      "[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set - skipping.",
+    );
+    return { sent: false, error: "Email recipients not configured." };
+  }
+
+  const timestamp = new Date().toISOString();
+  const sentimentLabel = data.sentiment ?? "(no sentiment)";
+  const sessionLine = data.sessionToken
+    ? data.sessionToken
+    : "(none — anonymous visitor)";
+
+  const text = [
+    `New tour feedback received at ${timestamp}`,
+    "",
+    `Tour:      ${data.tourSlug}`,
+    `Section:   ${data.sectionId}`,
+    `Step:      ${data.stepId}`,
+    `Sentiment: ${sentimentLabel}`,
+    `Session:   ${sessionLine}`,
+    "",
+    "Comment:",
+    data.comment,
+    "",
+    "To follow up, look up the EarlyReleaseSignups row whose email hashes to the session token above.",
+  ].join("\n");
+
+  try {
+    await sgMail.send({
+      to,
+      from,
+      subject: `Tour feedback: ${data.stepId}`,
+      text,
+    });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send tour feedback notification:", message);
+    return { sent: false, error: message };
+  }
+}
+
 export type EarlyReleaseSource = "get-access" | "take-tour";
 
 const SOURCE_LABEL: Record<EarlyReleaseSource, string> = {
