@@ -4,6 +4,9 @@ import ThemeProvider from "@/components/ThemeProvider";
 import NotificationBar from "@/components/NotificationBar";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { PlausibleScript } from "@/components/analytics/PlausibleScript";
+import { ClarityScript } from "@/components/analytics/ClarityScript";
+import { AttributionBootstrap } from "@/components/analytics/AttributionBootstrap";
 import {
   generateOrganizationJsonLd,
   generateWebSiteJsonLd,
@@ -96,6 +99,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${interTight.variable} ${inter.variable} ${jetbrainsMono.variable} flex min-h-screen flex-col antialiased`}
       >
+        <PlausibleScript />
+        <ClarityScript />
+        <AttributionBootstrap />
         <ThemeProvider>
           {/* Skip link — first focusable element, hidden until focused */}
           <a

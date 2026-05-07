@@ -9,6 +9,7 @@ import {
   sendEarlyReleaseNotification,
   type EarlyReleaseSource,
 } from "@/lib/email";
+import type { Attribution } from "@/lib/attribution";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TABLE_NAME = "EarlyReleaseSignups";
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
     )
       ? (sourceRaw as EarlyReleaseSource)
       : "get-access";
+    const attribution = (body.attribution ?? null) as Attribution | null;
 
     // Rate limiting
     const ipHash = await getIpHash();
@@ -108,6 +110,13 @@ export async function POST(request: NextRequest) {
         source,
         ipHash,
         signedUpAt: new Date().toISOString(),
+        entry_referrer: attribution?.entry_referrer ?? "",
+        entry_landing: attribution?.entry_landing ?? "",
+        first_visit_at: attribution?.first_visit_at ?? "",
+        ai_source: attribution?.ai_source ?? "",
+        utm_source: attribution?.utm_source ?? "",
+        utm_medium: attribution?.utm_medium ?? "",
+        utm_campaign: attribution?.utm_campaign ?? "",
       });
     } else {
       console.warn("[early-release] STORAGE_ACCOUNT_CONNECTION not set - signup not persisted.");
@@ -125,6 +134,8 @@ export async function POST(request: NextRequest) {
     trackEvent("early_release.success", {
       email: email.replace(/@.*/, "@***"),
       source,
+      entry_referrer: attribution?.entry_referrer ?? "",
+      ai_source: attribution?.ai_source ?? "",
     });
     return NextResponse.json({ ok: true });
   } catch (err) {

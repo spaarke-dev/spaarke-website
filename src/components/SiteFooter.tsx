@@ -1,10 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { footerContent } from "@/content/footer";
 import { Button } from "@/components/primitives";
+import { track } from "@/lib/analytics";
+import type { PlausibleEventName } from "@/types/plausible";
+
+const CTA_EVENTS: Record<string, PlausibleEventName> = {
+  "/access-request": "CTA Click — Get Access",
+  "/contact": "CTA Click — Contact Us",
+  "/platform": "CTA Click — See Platform",
+};
+
+function isLinkedIn(href: string): boolean {
+  return /linkedin\.com/i.test(href);
+}
 
 export default function SiteFooter() {
   const { columns, ctaPanel, bottomStrip } = footerContent;
+  const fromPage = usePathname() ?? "/";
+  const ctaEvent = CTA_EVENTS[ctaPanel.cta.href];
 
   return (
     <footer className="bg-bg border-line text-fg-mid border-t">
@@ -40,7 +57,15 @@ export default function SiteFooter() {
               {ctaPanel.body}
             </p>
             <div className="mt-5">
-              <Button variant="primary" href={ctaPanel.cta.href}>
+              <Button
+                variant="primary"
+                href={ctaPanel.cta.href}
+                onClick={
+                  ctaEvent
+                    ? () => track(ctaEvent, { from_page: fromPage })
+                    : undefined
+                }
+              >
                 {ctaPanel.cta.label}
               </Button>
             </div>
@@ -69,6 +94,14 @@ export default function SiteFooter() {
                   className="text-fg-mid hover:text-fg text-sm transition-colors"
                   target={link.href.startsWith("http") ? "_blank" : undefined}
                   rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  onClick={
+                    isLinkedIn(link.href)
+                      ? () =>
+                          track("Outbound Click — LinkedIn", {
+                            from_page: fromPage,
+                          })
+                      : undefined
+                  }
                 >
                   {link.label}
                 </Link>

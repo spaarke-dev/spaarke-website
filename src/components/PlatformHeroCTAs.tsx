@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Button } from "@/components/primitives";
+import { submissionProps } from "@/lib/attribution";
+import { track } from "@/lib/analytics";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -56,6 +58,8 @@ export function PlatformHeroCTAs({
         captchaToken = token ?? "";
       }
 
+      const attribution = submissionProps();
+
       const res = await fetch("/api/early-release", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -63,6 +67,7 @@ export function PlatformHeroCTAs({
           name: nameTrim,
           email: emailTrim,
           captchaToken,
+          attribution,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -86,6 +91,7 @@ export function PlatformHeroCTAs({
         return;
       }
 
+      track("Get Access Submit", attribution);
       setStatus("success");
     } catch {
       setStatus("error");

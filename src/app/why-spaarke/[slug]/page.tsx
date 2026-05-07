@@ -9,6 +9,7 @@ import { ArticleTOC } from "@/components/article/ArticleTOC";
 import { ArticleShare } from "@/components/article/ArticleShare";
 import { ArticleRelated } from "@/components/article/ArticleRelated";
 import { ArticleProgressBar } from "@/components/article/ArticleProgressBar";
+import { ArticleReadTracker } from "@/components/analytics/ArticleReadTracker";
 import {
   getAllPosts,
   getPostBySlug,
@@ -83,6 +84,7 @@ export default async function WhySpaarkeArticle({ params }: Props) {
   return (
     <>
       <ArticleProgressBar />
+      <ArticleReadTracker slug={slug} />
       <Slab tone="light">
         <Shell>
           <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-16">

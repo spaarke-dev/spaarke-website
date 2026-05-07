@@ -82,6 +82,7 @@ export function Button({
         className={merged}
         aria-label={ariaLabel}
         style={resolvedStyle}
+        onClick={onClick}
       >
         {inner}
       </Link>
