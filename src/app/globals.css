@@ -141,6 +141,28 @@ html::-webkit-scrollbar {
   pointer-events: none !important;
 }
 
+/* Form fields on dark slabs — override Chrome / Safari autofill so the
+   field stays effectively transparent instead of showing the default
+   light-blue/white autofill backdrop. The inset box-shadow paints over
+   the browser's autofill colour using the slab background; the
+   text-fill-color keeps the typed value legible in white. */
+[data-tone="dark"] input:-webkit-autofill,
+[data-tone="dark"] input:-webkit-autofill:hover,
+[data-tone="dark"] input:-webkit-autofill:focus,
+[data-tone="dark"] input:-webkit-autofill:active,
+[data-tone="dark"] textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #0a0a0a inset !important;
+  -webkit-text-fill-color: #f5f5f5 !important;
+  caret-color: #f5f5f5 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Native <select> popup on dark slabs uses the OS dark colour scheme
+   so the option list isn't rendered white-on-white. */
+[data-tone="dark"] select {
+  color-scheme: dark;
+}
+
 /* Footer top row — two-column grid (brand | nav) at md+, stacked
    single column on mobile. Defined as plain CSS rather than
    Tailwind's arbitrary grid-cols value because Turbopack was

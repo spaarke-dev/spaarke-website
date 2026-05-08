@@ -301,7 +301,6 @@ export default function DemoRequestForm({
               name="firstName"
               type="text"
               required
-              placeholder="Jane"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               aria-invalid={!!fieldErrors.firstName}
@@ -322,7 +321,6 @@ export default function DemoRequestForm({
               name="lastName"
               type="text"
               required
-              placeholder="Smith"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               aria-invalid={!!fieldErrors.lastName}
@@ -346,7 +344,6 @@ export default function DemoRequestForm({
             name="workEmail"
             type="email"
             required
-            placeholder="jane.smith@example.com"
             value={workEmail}
             onChange={(e) => setWorkEmail(e.target.value)}
             aria-invalid={!!fieldErrors.workEmail}
@@ -369,7 +366,6 @@ export default function DemoRequestForm({
             name="organization"
             type="text"
             required
-            placeholder="Acme Corp"
             value={organization}
             onChange={(e) => setOrganization(e.target.value)}
             aria-invalid={!!fieldErrors.organization}
@@ -392,7 +388,6 @@ export default function DemoRequestForm({
               id="dr-jobTitle"
               name="jobTitle"
               type="text"
-              placeholder="General Counsel"
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
               className={`${inputBase} ${inputBorder(false)}`}
@@ -406,7 +401,6 @@ export default function DemoRequestForm({
               id="dr-phone"
               name="phone"
               type="tel"
-              placeholder="Optional"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className={`${inputBase} ${inputBorder(false)}`}
@@ -478,7 +472,6 @@ export default function DemoRequestForm({
             id="dr-notes"
             name="notes"
             rows={4}
-            placeholder="Tell us about your needs or any questions you have…"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             className={`${inputBase} ${inputBorder(false)} resize-y`}
