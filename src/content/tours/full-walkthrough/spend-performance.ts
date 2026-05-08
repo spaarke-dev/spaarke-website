@@ -90,7 +90,7 @@ export const spendPerformance: TourSection = {
       callout: {
         title: "KPI-driven legal operations",
         body: "Assessments capture measurable operational performance indicators across matters. Legal teams can evaluate compliance, efficiency, and outcomes consistently, making operational reporting data-driven.",
-        anchor: { x: 0.715, y: 0.557 },
+        anchor: { x: 0.406, y: 0.540 },
         pointer: "left-middle",
       },
     },
@@ -105,7 +105,7 @@ export const spendPerformance: TourSection = {
       callout: {
         title: "Track operational trends over time",
         body: "Performance history provides visibility into operational changes and trends. Teams can identify recurring issues and improve process execution, and historical scoring supports operational accountability.",
-        anchor: { x: 0.821, y: 0.639 },
+        anchor: { x: 0.819, y: 0.525 },
         pointer: "right-top",
       },
     },
@@ -120,8 +120,8 @@ export const spendPerformance: TourSection = {
       callout: {
         title: "Compliance and outcomes measured together",
         body: "Financial compliance and operational outcomes remain connected. Teams can evaluate legal work using operational and business metrics together, improving visibility into legal operations performance.",
-        anchor: { x: 0.321, y: 0.668 },
-        pointer: "top-middle",
+        anchor: { x: 0.585, y: 0.634 },
+        pointer: "left-middle",
       },
     },
     {
@@ -212,6 +212,7 @@ export const spendPerformance: TourSection = {
         title: "Ready to see Spaarke in action?",
         body: "Get hands-on access to the full platform. We'll set up a tailored demo for your firm or legal department.",
         cta: { label: "Get access", href: "/access-request" },
+        ctaSecondary: { label: "Why Spaarke", href: "/why-spaarke" },
       },
     },
   ],

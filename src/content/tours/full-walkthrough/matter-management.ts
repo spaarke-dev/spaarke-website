@@ -209,8 +209,8 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Operational performance visibility",
         body: "Track budgets, compliance, performance grades, and upcoming deadlines. Financial and operational insights live beside the legal work — see matter health at a glance.",
-        anchor: { x: 0.243, y: 0.296 },
-        pointer: "left-middle",
+        anchor: { x: 0.671, y: 0.427 },
+        pointer: "right-middle",
       },
     },
     {
@@ -224,7 +224,7 @@ export const matterManagement: TourSection = {
       callout: {
         title: "Ask, don't search",
         body: "Natural-language search across matters, documents, projects, and invoices. AI surfaces relationships and relevance instead of keyword matches — find information based on meaning and context.",
-        anchor: { x: 0.275, y: 0.289 },
+        anchor: { x: 0.240, y: 0.268 },
         pointer: "left-middle",
       },
     },

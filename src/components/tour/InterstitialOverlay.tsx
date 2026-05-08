@@ -84,6 +84,46 @@ function CalloutCtaButton({ cta }: { cta: CalloutCta }) {
   );
 }
 
+/**
+ * Secondary text-style CTA — paired with the primary button on the
+ * tour-outro card. Renders the label followed by an animated arrow
+ * that nudges right on hover (matches the website's text Button
+ * variant).
+ */
+function CalloutCtaTextLink({ cta }: { cta: CalloutCta }) {
+  const isExternal = /^https?:\/\//.test(cta.href);
+  const className =
+    "group inline-flex items-center gap-2 px-2 py-2.5 text-[14px] font-medium text-[#5078DC] transition-colors hover:text-[#3F5FD9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC] focus-visible:ring-offset-2 rounded-md";
+  const inner = (
+    <>
+      {cta.label}
+      <span
+        aria-hidden="true"
+        className="inline-block transition-transform group-hover:translate-x-1"
+      >
+        →
+      </span>
+    </>
+  );
+  if (isExternal) {
+    return (
+      <a
+        href={cta.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {inner}
+      </a>
+    );
+  }
+  return (
+    <Link href={cta.href} className={className}>
+      {inner}
+    </Link>
+  );
+}
+
 function InterstitialNav({ nav }: { nav: CalloutNavType }) {
   const counter = `${nav.index + 1} of ${nav.total}`;
   return (
@@ -214,9 +254,20 @@ export function InterstitialOverlay({ callout, nav }: Props) {
             </p>
           ))}
         </div>
-        {callout.cta ? (
-          <div style={{ marginTop: "1rem" }}>
-            <CalloutCtaButton cta={callout.cta} />
+        {callout.cta || callout.ctaSecondary ? (
+          <div
+            style={{
+              marginTop: "1rem",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              flexWrap: "wrap",
+            }}
+          >
+            {callout.cta && <CalloutCtaButton cta={callout.cta} />}
+            {callout.ctaSecondary && (
+              <CalloutCtaTextLink cta={callout.ctaSecondary} />
+            )}
           </div>
         ) : null}
         {nav ? <InterstitialNav nav={nav} /> : null}

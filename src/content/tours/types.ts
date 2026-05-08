@@ -107,6 +107,12 @@ export type Callout = {
    * tour-completion steps ("Get access").
    */
   cta?: CalloutCta;
+  /**
+   * Optional secondary CTA rendered to the right of `cta` as a text-
+   * style link with arrow. Used for the tour-outro pairing
+   * "Get access | Why Spaarke →".
+   */
+  ctaSecondary?: CalloutCta;
 };
 
 export type CalloutCta = {

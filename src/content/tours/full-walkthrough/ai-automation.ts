@@ -63,8 +63,8 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "AI extracts structured matter details",
         body: "Describe the work in plain language or from uploaded content. AI identifies matter type, practice area, and operational metadata automatically — reducing manual intake effort and improving consistency.",
-        anchor: { x: 0.256, y: 0.452 },
-        pointer: "right-middle",
+        anchor: { x: 0.511, y: 0.498 },
+        pointer: "top-middle",
       },
     },
     {
@@ -392,7 +392,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "Visual AI workflow orchestration",
         body: "Build AI and automation workflows visually using nodes and operational actions. Connect analysis, updates, outputs, and indexing into repeatable flows — reducing dependency on custom-coded workflow logic.",
-        anchor: { x: 0.535, y: 0.342 },
+        anchor: { x: 0.532, y: 0.382 },
         pointer: "bottom-middle",
       },
     },
@@ -407,7 +407,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "AI configured for operational outcomes",
         body: "Configure AI skills, prompts, tools, and outputs directly inside workflow nodes. Tailor analysis behavior to legal and operational requirements — AI becomes operationally configurable.",
-        anchor: { x: 0.39, y: 0.305 },
+        anchor: { x: 0.351, y: 0.314 },
         pointer: "left-top",
       },
     },
@@ -422,7 +422,7 @@ export const aiAutomation: TourSection = {
       callout: {
         title: "Reusable operational building blocks",
         body: "Combine AI analysis, updates, notifications, indexing, and tasks into reusable operational patterns. Workflows can scale across practice areas and operational teams, making legal operations systematized and measurable.",
-        anchor: { x: 0.74, y: 0.454 },
+        anchor: { x: 0.615, y: 0.424 },
         pointer: "left-top",
       },
     },

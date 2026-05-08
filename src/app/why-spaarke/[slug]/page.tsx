@@ -100,7 +100,7 @@ export default async function WhySpaarkeArticle({ params }: Props) {
 
               <ArticleHeader post={post} readingTimeMin={readingTime} />
 
-              <div className="prose prose-neutral prose-base md:prose-lg max-w-none prose-headings:font-display prose-headings:font-medium prose-headings:tracking-tight prose-h2:scroll-mt-28 prose-h3:scroll-mt-28">
+              <div className="prose prose-neutral prose-base md:prose-lg max-w-none prose-headings:font-display prose-headings:font-medium prose-headings:tracking-tight prose-h2:scroll-mt-[132px] prose-h3:scroll-mt-[132px]">
                 {mdxContent}
               </div>
 

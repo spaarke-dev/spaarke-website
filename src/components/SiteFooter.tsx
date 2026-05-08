@@ -22,7 +22,7 @@ export default function SiteFooter() {
   const flatLinks = columns.flatMap((c) => c.links);
 
   return (
-    <footer className="bg-bg border-line text-fg-mid border-t">
+    <footer className="bg-bg text-fg-mid">
       <div className="px-[var(--spacing-shell-x)] py-12 md:py-14">
         {/* Top row: brand block (left) | horizontal links (right).
             Layout uses the .footer-row CSS class in globals.css

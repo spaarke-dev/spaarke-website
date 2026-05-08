@@ -45,7 +45,12 @@ export function ExistingSystems() {
   const { heading, subhead, cards } = existingSystemsContent;
 
   return (
-    <section className="relative" style={SECTION_STYLE}>
+    // -mt-px overlaps the previous (dark) section by 1px so any
+    // compositor-level seam between the GapStats slab and this
+    // gradient section's top stop (both #0a0a0a) is masked. Without
+    // this, browsers occasionally render a 1px hairline at the
+    // boundary.
+    <section className="relative -mt-px" style={SECTION_STYLE}>
       <Shell>
         <div
           className="mx-auto max-w-5xl text-center"

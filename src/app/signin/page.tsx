@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function SignIn() {
   return (
-    <Slab tone="dark">
+    <Slab tone="dark" className="flex-1">
       <Shell>
         <PageHeader
           eyebrow="Sign in"

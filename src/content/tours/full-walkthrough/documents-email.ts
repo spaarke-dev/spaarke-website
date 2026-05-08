@@ -75,7 +75,7 @@ export const documentsEmail: TourSection = {
       callout: {
         title: "AI extraction pipeline",
         body: "Playbooks process files through extraction, profiling, indexing, and classification steps. Structured document intelligence is generated automatically — designed for scalable enterprise document operations.",
-        anchor: { x: 0.512, y: 0.605 },
+        anchor: { x: 0.513, y: 0.574 },
         pointer: "top-middle",
       },
     },
@@ -240,7 +240,7 @@ export const documentsEmail: TourSection = {
       callout: {
         title: "Work directly in Word",
         body: "Open and edit documents directly in Microsoft Word. Legal teams continue working in familiar Microsoft tools while Spaarke remains connected to the operational record behind the file.",
-        anchor: { x: 0.26, y: 0.495 },
+        anchor: { x: 0.307, y: 0.494 },
         pointer: "right-middle",
       },
     },
@@ -255,7 +255,7 @@ export const documentsEmail: TourSection = {
       callout: {
         title: "AI inside the document",
         body: "Copilot and AI-powered tools assist directly within the drafting experience. Summaries and contextual assistance appear beside the document — reducing context switching during legal drafting.",
-        anchor: { x: 0.546, y: 0.678 },
+        anchor: { x: 0.549, y: 0.638 },
         pointer: "top-middle",
       },
     },
