@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import InlineAlert from "@/components/InlineAlert";
+import { HoorayConfetti } from "@/components/HoorayConfetti";
 import { Button } from "@/components/primitives";
 import { submissionProps } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
@@ -128,7 +129,6 @@ export default function DemoRequestForm({
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const [trackingId, setTrackingId] = useState("");
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -249,7 +249,6 @@ export default function DemoRequestForm({
       }
 
       track("Demo Request Submit", attribution);
-      setTrackingId(data.trackingId ?? "");
       setStatus("success");
     } catch (err) {
       setStatus("error");
@@ -263,20 +262,19 @@ export default function DemoRequestForm({
 
   if (status === "success") {
     return (
-      <div className="space-y-4">
-        <InlineAlert
-          variant="success"
-          message="Thank you for your interest in Spaarke. Your request has been submitted. Please look for our follow-up email with additional details shortly."
-          messageClassName="text-black"
-        />
-        {trackingId && (
-          <p className="text-sm text-muted-foreground">
-            Your tracking ID:{" "}
-            <span className="font-mono font-medium text-foreground">
-              {trackingId}
-            </span>
+      <div className="relative flex min-h-[200px] items-center justify-center text-center">
+        <HoorayConfetti />
+        <div className="relative z-10">
+          <p
+            className="font-display text-fg font-medium tracking-tight"
+            style={{ fontSize: "clamp(28px, 4vw, 44px)", lineHeight: 1.05 }}
+          >
+            Thank you!
           </p>
-        )}
+          <p className="text-fg-mid mt-3 text-base md:text-[17px]">
+            We&rsquo;ll be in touch ASAP!
+          </p>
+        </div>
       </div>
     );
   }

@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Button } from "@/components/primitives";
+import { HoorayConfetti } from "@/components/HoorayConfetti";
 import InlineAlert from "@/components/InlineAlert";
 import { submissionProps } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
@@ -44,8 +45,10 @@ function validateLocally(fields: {
     errors.email = "A valid email address is required.";
   }
 
-  if (!fields.message.trim() || fields.message.trim().length > 5000) {
-    errors.message = "Message is required (1-5000 characters).";
+  // Message is optional; only enforce a max-length cap if anything is
+  // entered.
+  if (fields.message.trim().length > 5000) {
+    errors.message = "Message must be 5000 characters or fewer.";
   }
 
   return Object.keys(errors).length > 0 ? errors : null;
@@ -179,10 +182,20 @@ export default function ContactForm({
 
   if (status === "success") {
     return (
-      <InlineAlert
-        variant="success"
-        message="Thank you! We'll be in touch ASAP!"
-      />
+      <div className="relative flex min-h-[200px] items-center justify-center text-center">
+        <HoorayConfetti />
+        <div className="relative z-10">
+          <p
+            className="font-display text-fg font-medium tracking-tight"
+            style={{ fontSize: "clamp(28px, 4vw, 44px)", lineHeight: 1.05 }}
+          >
+            Thank you!
+          </p>
+          <p className="text-fg-mid mt-3 text-base md:text-[17px]">
+            We&rsquo;ll be in touch ASAP!
+          </p>
+        </div>
+      </div>
     );
   }
 
@@ -302,7 +315,6 @@ export default function ContactForm({
           <textarea
             id="contact-message"
             name="message"
-            required
             rows={4}
             placeholder="A few lines is plenty."
             value={message}

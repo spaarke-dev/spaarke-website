@@ -18,7 +18,7 @@ const SPECTRAL_GRADIENT =
 
 export default function AccessRequest() {
   return (
-    <Slab tone="dark" className="relative overflow-hidden">
+    <Slab tone="dark" className="relative flex-1 overflow-hidden">
       {/* Back-glow — same radial-spotlight pattern as the platform
           Capabilities ("Your ultimate system of truth") modules and
           the contact-us page. Brand glow palette (#82A5EB / #5078DC),

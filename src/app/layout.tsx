@@ -112,7 +112,11 @@ export default function RootLayout({
           </a>
           <NotificationBar />
           <SiteHeader />
-          <main id="main-content" className="flex-1">
+          {/* main is a flex column so a single-section page can grow
+              its Slab via `flex-1` to fill the viewport. Without this,
+              the body's light background shows through below short
+              dark pages on tall viewports. */}
+          <main id="main-content" className="flex flex-1 flex-col">
             {children}
           </main>
           <SiteFooter />
