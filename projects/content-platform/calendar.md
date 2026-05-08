@@ -39,6 +39,19 @@ firm publish date yet.
 | Slug | Type | Publish | Status | Author | Notes |
 |---|---|---|---|---|---|
 | the-rise-of-ai-directed-legal-workflows | white-paper | 2026-Q3 | brief | rs | Operational architecture for agentic legal systems; target Q3 publish, exact date TBD |
+| ai-across-the-engagement | blog-post | 2026-Q3 | idea | rs | The architectural argument for why AI grounding should survive the engagement boundary between in-house and outside counsel. Standalone treatment of the theme introduced in `what-attorneys-need-to-know-about-ai` §Decision Four and woven through `your-legal-data-belongs-to-you` and `tenant-dedicated-deployment`. |
+| e-invoicing-and-vida-what-corporate-legal-needs-to-know | blog-post | 2026-Q3 | idea | rs | EU's VAT in the Digital Age (ViDA) directive plus the broader e-invoicing-mandate landscape — operational implications for in-house legal departments. Touched in `spaarke-feature-specification` §Spend & Performance LEDES bullet. |
+
+---
+
+## Idea backlog
+
+Topics flagged during article reviews that are not yet scheduled. Status `idea` rows above are promoted to a publish month when ready. New ideas added below; promote to a dated section when the brief is written.
+
+| Slug | Type | Notes |
+|---|---|---|
+
+(Empty — promote ideas from the Q3 idea bucket above as briefs get written, and add new ideas here as they surface during reviews or strategy sessions.)
 
 ---
 
