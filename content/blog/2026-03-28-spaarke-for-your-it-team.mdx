@@ -12,10 +12,10 @@ tags:
   theme: [tenant-dedicated-deployment, microsoft-ecosystem, data-sovereignty, buyer-enablement, platform]
 heroImage: "/articles/spaarke-for-your-it-team/hero.jpg"
 keyTakeaways:
-  - Spaarke runs entirely on Microsoft Power Platform inside the customer's M365 tenant — Dataverse, SharePoint Online, Power Automate, Power BI, and Microsoft 365 Copilot. No external infrastructure, no data egress.
+  - Spaarke runs entirely on Microsoft Power Platform inside the customer's M365 tenant — Dataverse, SharePoint Embedded, Power Automate, Power BI, Azure AI, and Microsoft 365 Copilot. No external infrastructure, no data egress.
   - Identity, access, DLP, sensitivity labels, retention, and audit logging all flow through Entra ID, Purview, and the M365 unified audit log your team already operates. No parallel governance regime.
   - Deployment is a managed solution package promoted through standard Power Platform ALM. Tenant-level SOC 2, ISO 27001, HIPAA, FedRAMP, and GDPR coverage extends because the data lives in your tenant.
-  - Licensing fits inside an existing M365 E3/E5 estate plus Power Apps and Dataverse capacity. M365 Copilot is optional and additive — no hidden compute costs, no vendor-hosted infrastructure to audit.
+  - Licensing fits inside an existing M365 E3/E5 estate plus Power Apps and Dataverse capacity. AI infrastructure (Azure AI Foundry, Azure OpenAI) is licensed by the customer under their own Azure / Enterprise Agreement — predictable Microsoft EA pricing, no Spaarke-mediated AI markup.
 draft: false
 ---
 
@@ -35,11 +35,12 @@ Here is the technology stack:
 
 - **Runtime**: Model-driven and canvas apps built on Microsoft Power Apps, running on Dataverse
 - **Data layer**: Microsoft Dataverse — all Spaarke data (matters, invoices, workflows, operational memory) is stored within tables in your tenant's Dataverse environment
-- **AI layer**: Microsoft 365 Copilot integration — AI capabilities operate within the tenant boundary, grounded in structured legal data stored in Dataverse
-- **Document storage**: SharePoint Online — native integration for matter documents with full versioning, metadata, and co-authoring support. No separate document management system required
-- **Communication**: Microsoft Teams and Outlook — notifications, collaboration spaces, email capture, and calendar integration for deadlines
-- **Automation**: Power Automate — workflow engine handling matter routing, approval chains, notification triggers, and connectors to external systems
-- **Analytics**: Power BI — embedded dashboards and executive reporting built on the same data model
+- **AI layer**: Azure AI Foundry (knowledge grounding), Microsoft Copilot Studio (orchestration), and Microsoft Agent Framework (execution), surfaced through Microsoft 365 Copilot. AI capabilities operate within the tenant boundary, grounded in structured legal data stored in Dataverse and SharePoint Embedded
+- **Document storage**: SharePoint Embedded (SPE) — Microsoft's developer-grade SharePoint storage running inside your tenant. Spaarke documents live in their own SPE container, isolated from your existing SharePoint Online sites (no commingling between SPE and SPO). Native versioning, metadata, co-authoring, sensitivity labels, and retention all apply
+- **Communication**: Microsoft Teams and Outlook — notifications, collaboration spaces, calendar integration; email capture at the Exchange layer (so capture is independent of which Outlook client a user prefers)
+- **Workflow engine**: Spaarke's own engine — purpose-built for legal-operations volume and complexity (matter routing, approval chains, OCG enforcement, escalation rules, event-driven execution). Power Automate is *not* the core platform engine; it sits alongside Spaarke as the customer-extensibility layer
+- **Customer-extensibility automation**: Power Automate — for organization-specific workflows, integration with enterprise systems via Power Platform connectors, and process automation outside the core platform
+- **Analytics**: Power BI — embedded dashboards and executive reporting built on the Dataverse data model. The Dataverse foundation extends natively into **Microsoft Fabric** workloads as organizations consolidate analytics there — no separate data migration when the analytics center of gravity moves
 
 This architecture means Spaarke is not a separate system that integrates with Microsoft. It is a Microsoft-native application that runs inside your existing environment. The distinction matters: there are no API bridges to maintain, no data synchronization to monitor, and no additional infrastructure to secure.
 
@@ -82,7 +83,9 @@ No virtual machines to provision. No databases to administer. No network configu
 
 Spaarke inherits your existing Microsoft 365 security posture. This is not a figure of speech — it is an architectural consequence of running inside your tenant.
 
-**Identity and access management.** Microsoft Entra ID (formerly Azure AD) handles all authentication. Your existing SSO configuration, multi-factor authentication requirements, and Conditional Access policies apply to Spaarke automatically. There is no separate identity provider, no parallel user directory, and no additional credentials for users to manage.
+**Identity and access management.** Microsoft Entra ID (formerly Azure AD) handles all authentication. Multi-factor authentication requirements, Conditional Access policies, and the user's existing SSO experience apply to Spaarke automatically.
+
+Organizations using a third-party identity provider — **Okta**, Ping Identity, OneLogin, ADFS, or others — federate to Entra ID through standard SAML or OpenID Connect, and Spaarke inherits whatever IdP configuration is already in place. The user signs in through the IdP they already use; Entra ID handles the federated session; Spaarke sees an authenticated user with the right group membership and security role. There is no separate identity provider for Spaarke, no parallel user directory, and no additional credentials for users to manage.
 
 **Data governance.** Microsoft Purview extends to all Spaarke data natively. Sensitivity labels, data classification policies, retention rules, and Data Loss Prevention (DLP) configurations that your compliance team has already implemented cover Spaarke data without additional setup.
 
@@ -106,17 +109,19 @@ Spaarke's integrations are native to the Microsoft ecosystem, not bolted on thro
 
 **Microsoft 365 Copilot.** Spaarke exposes structured legal data — matter history, spend patterns, workflow context, institutional memory — to Copilot. Users can query legal operations data through natural language within Copilot, grounded in structured data that produces far more relevant outputs than Copilot applied to unstructured email and documents alone. All Copilot processing occurs within the tenant boundary.
 
-**SharePoint Online.** Matter documents are stored in SharePoint document libraries with native versioning, metadata tagging, and co-authoring. No separate DMS to license, deploy, or maintain. Documents remain within the same governance and retention framework that covers all SharePoint content in your tenant.
+**SharePoint Embedded (SPE).** Matter documents are stored in SharePoint Embedded — Microsoft's developer-grade SharePoint storage running inside your tenant. Spaarke uses its own SPE container, isolated from your existing SharePoint Online sites; the two do not commingle. Documents inherit native SharePoint capabilities (versioning, metadata, co-authoring, sensitivity labels, retention) but operational governance is partitioned to the legal-operations workload. No separate DMS to license, deploy, or maintain.
 
 **Outlook.** Email capture for matter-related correspondence, notification delivery for workflow events, and calendar integration for deadlines and key dates. Users interact with matter data without leaving their inbox.
 
 **Teams.** Dedicated matter channels, collaboration spaces tied to active matters, and notification bots that surface workflow events and approvals directly in Teams.
 
-**Power Automate.** The workflow engine behind Spaarke's automation — matter routing, approval chains, escalation rules, notification triggers, and integration with external systems through Power Automate's library of standard and custom connectors.
+**Spaarke workflow engine + Power Automate (customer extensibility).** Spaarke ships with its own workflow engine purpose-built for legal-operations volume and complexity — matter routing, approval chains, OCG enforcement, escalation rules, and event-driven execution run on the Spaarke engine, not on Power Automate. Power Automate sits alongside as the customer-extensibility layer: your team can build organization-specific workflows that subscribe to matter events and reach into Power Platform's library of standard and custom connectors (ServiceNow, SAP, Salesforce, DocuSign, Workday, and hundreds of others) without modifying the core platform.
 
 **Power BI.** Embedded analytics and executive dashboards built on the Dataverse data model. Your team can extend or customize reports using the same Power BI tools and skills they already have.
 
-**Dataverse Web API.** A standard REST API for custom integrations, data exchange with external systems, and programmatic access to Spaarke data. This is the same API surface that all Dataverse applications expose — no proprietary interface to learn.
+**Dataverse Web API + webhooks.** A standard REST API for data CRUD, custom integrations, and programmatic access to Spaarke data. Webhooks publish matter events (matter created, status changed, document uploaded, invoice received, OCG flag raised) to subscribed systems for event-driven integration. Same API surface and event model that all Dataverse applications expose — no proprietary interface to learn.
+
+**Azure services for advanced integration.** For cases that exceed connector-based integration — high-throughput data exchange, asynchronous event flows, custom inference pipelines, or governance over outbound APIs — Spaarke surfaces operate on Azure infrastructure your team already runs: **Azure Service Bus** and **Event Grid** for matter-event publishing at scale, **Azure Logic Apps** and **Azure Functions** for custom orchestration, **Azure API Management** for governance over outbound APIs. Spaarke does not require these — connector-based patterns handle most cases — but the option exists, runs on the same Azure subscription that hosts the rest of the customer's infrastructure, and is licensed under the customer's existing Azure agreement.
 
 ---
 
@@ -137,7 +142,62 @@ Spaarke is licensed on a per-user basis. Licensing includes the managed solution
 
 Specific pricing is determined based on user count, deployment scope, and implementation complexity. Contact Spaarke for a detailed quote aligned to your organization's requirements.
 
-**Important note on cost structure:** Because Spaarke runs on your existing Microsoft infrastructure, there are no hidden compute costs, no separate hosting fees, and no infrastructure markups. Your Microsoft licensing investment carries the platform — Spaarke licensing covers the application and services layer on top.
+**Important note on cost structure.** Because Spaarke runs on your existing Microsoft infrastructure, there are no hidden compute costs, no separate hosting fees, and no infrastructure markups. Your Microsoft licensing investment carries the platform — Spaarke licensing covers the application and services layer on top.
+
+**AI infrastructure — customer-licensed.** Spaarke's AI capabilities — Foundry IQ knowledge grounding, Copilot Studio orchestration, Microsoft Agent Framework execution — run on Azure AI services (Azure AI Foundry, Azure OpenAI Service, Azure AI Search). In Tenant Dedicated Deployment, the customer provisions these services directly under their own Azure subscription and licenses them through their existing Azure / Enterprise Agreement.
+
+This is a deliberate architectural choice. AI consumption is a line item on the customer's Azure bill — negotiated EA pricing applies, cost-management policies (budgets, alerts, tag-based allocation, reserved capacity for predictable workloads) apply, and model tier / region / capacity selection stay under the customer's control. There is no Spaarke-mediated AI markup, no opaque AI surcharge, and AI cost scales with the customer's actual usage rather than with whatever the vendor decides to bundle. For most enterprise customers, this is significantly cheaper and more transparent than vendor-bundled AI pricing.
+
+---
+
+## Data Onboarding
+
+For most organizations, Spaarke is replacing or consolidating systems that already hold legal data. Onboarding is one of the larger questions IT and legal-ops teams have, and the answer depends on what is coming in and what shape it is in.
+
+**What typically migrates:**
+
+- **Matter records** from existing ELM, matter-management, or spreadsheet sources — including taxonomy mapping, status, parties, dates, and historical notes.
+- **Invoice and spend history** from e-billing platforms — line-item granularity where available, summarized where not. LEDES files import directly.
+- **Outside counsel and timekeeper records** — firms, panels, rate cards, and OCG history.
+- **Contracts and matter documents** — depending on volume and source-system structure, either migrated into SharePoint Embedded with metadata, or linked in place where the source remains the system of record.
+- **OCG rules and policies** — decoded from the source system (or from PDFs and Word documents) into the configurable rules Spaarke enforces against incoming invoices.
+
+**Approach.** Spaarke provides import tooling for the standard sources (LEDES, common ELM exports, SharePoint document libraries, Outlook PSTs) and migration services for non-standard cases. Migration runs in phases and stages in a non-production environment first, so the team can verify counts, mappings, and edge cases before promotion to production. Data integrity is validated at each stage.
+
+**Documents — migrate or link?** A common decision point. For active matter documents, migration into SharePoint Embedded is the default — documents become part of Spaarke's matter context, with versioning preserved and AI grounding intact. For long-archived or large-volume historical document libraries, linkage (Spaarke references the document in place via the relationship graph) often makes more sense than full migration. The right answer depends on access patterns and retention strategy; the implementation plan calls it explicitly.
+
+**Timeline.** Onboarding typically completes within the deployment timeline (weeks, not months) because the work runs in parallel with configuration. The pacing factor is data quality at the source, not the migration tooling itself.
+
+---
+
+## Maintenance and Support
+
+In Tenant Dedicated Deployment, the platform runs in your tenant — which means the operational responsibility split is different from typical SaaS. The line is intentionally clean.
+
+**Spaarke's responsibility:**
+
+- Maintain the Spaarke managed solution: feature updates, bug fixes, security patches, and platform-compatibility updates.
+- Ship updates as managed-solution releases on a published cadence; the customer controls timing of import.
+- Provide direct technical support with defined response times by severity (critical: same-day; standard: business-day).
+- Operate as the technical escalation path for application-layer issues.
+
+**Microsoft's responsibility (inherited):**
+
+- Power Platform, Dataverse, SharePoint Embedded, Microsoft 365, Azure AI — the underlying services Spaarke runs on. SLA, uptime, security patches, and capacity scale are Microsoft's, covered by the customer's M365 and Azure agreements.
+- 99.9% Power Platform SLA. Microsoft support is reachable through the customer's existing channels.
+
+**The customer IT team's responsibility:**
+
+- Operate the M365 tenant the platform runs in — identity, governance, DLP, retention, audit — same as the rest of the tenant.
+- Apply Spaarke managed-solution updates on the team's own schedule. Test environment first if the team's ALM process calls for it.
+- First-line user support for legal-ops users; Spaarke handles second-line and technical escalation.
+- Coordinate with Spaarke on tenant-level configuration changes that affect the platform (DLP scope changes, Conditional Access updates).
+
+**What this means in practice.** The IT team is not running a vendor's hosted infrastructure. There is no parallel ops surface to monitor, no separate incident channel for platform issues, no vendor-cloud capacity to plan for. The platform behaves like another Power Platform application in the tenant — administered through the Power Platform admin center, monitored through the M365 service-health portal. The Spaarke support team handles application-layer issues; Microsoft handles the underlying infrastructure; the customer's team handles the tenant.
+
+**Direct support channel.** No ticket queue intermediary. The customer's Spaarke administrator has direct access to Spaarke's technical team for application-layer issues. Critical platform issues (Spaarke unavailable) route to a same-day response; standard issues are handled within a business day.
+
+**Update cadence.** Spaarke releases follow a regular cadence — major releases roughly twice a year, point releases for fixes and security patches as needed. Each release ships with release notes, a changelog, and (where applicable) configuration migration guidance. Updates are managed-solution imports, applied on the customer's schedule.
 
 ---
 
