@@ -76,7 +76,7 @@ Practical checklist — position as empowerment, not fear:
 - Does your AI processing occur within my environment or yours?
 
 ### 6. Where to Go Next
-- Back-references: "Why We Built on Microsoft" (Article 4) for the platform foundation; reference the IQ Stack (Article 2) — data sovereignty is prerequisite for trustworthy Data and Memory layers
+- Back-references: "Why We Built on Microsoft" (Article 4) for the platform foundation; reference the Legal IQ stack (Article 2) — data sovereignty is prerequisite for trustworthy Data and Memory layers
 - Forward tease: Article 7 (AI architecture decisions)
 
 ## Cross-References

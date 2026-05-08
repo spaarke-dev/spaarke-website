@@ -24,7 +24,7 @@ First draft. Team revises in T11.
 | fragmented systems | legacy tools / disconnected solutions | accurate and concrete — names what's actually wrong |
 | discipline | category / space / market | LOI is a discipline first; "category" comes second |
 | operating layer | middleware / integration layer | "operating layer" is positioning; "middleware" is plumbing |
-| inference | AI / machine learning (when describing the IQ Stack layer) | the layer is named Inference; use the term we coined |
+| inference | AI / machine learning (when describing the Legal IQ stack layer) | the layer is named Inference; use the term we coined |
 | compound / compounding | synergize / scale / accelerate | "compound" is concrete and financial; the others are consultantisms |
 | reactive to predictive | digital transformation / modernization | the maturity arc we sell; "transformation" is empty |
 | structural | foundational / strategic | "structural" means "in the architecture"; the alternatives are softer |

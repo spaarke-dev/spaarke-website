@@ -33,7 +33,7 @@ Give readers a self-assessment framework. Highly shareable, practical content th
 ## Structure
 
 ### 1. Why This Matters (~150 words)
-You cannot improve what you cannot assess. This model gives legal ops leaders a common language for their current state and a roadmap forward. Reference the LOI framework (Article 1) and IQ Stack (Article 2) — this model maps progression through those concepts.
+You cannot improve what you cannot assess. This model gives legal ops leaders a common language for their current state and a roadmap forward. Reference the LOI framework (Article 1) and Legal IQ stack (Article 2) — this model maps progression through those concepts.
 
 ### 2. The Five Levels (~800 words, ~160 each)
 Define each level with characteristics, typical tools, and outcomes:
@@ -54,7 +54,7 @@ Define each level with characteristics, typical tools, and outcomes:
 - Systems connected. Unified data layer emerging. Reporting is possible.
 - Cross-system visibility beginning to form
 - Process consistency improving; workflows becoming repeatable
-- Data layer of the IQ Stack is taking shape
+- Data layer of the Legal IQ stack is taking shape
 
 **Level 4: Intelligent**
 - Operational memory captured. Pattern recognition active. Workflows adapt.
@@ -79,13 +79,13 @@ Practical diagnostic questions for each level transition:
 Frame as a self-assessment the reader can do immediately. Make it concrete enough to be uncomfortable — most readers will recognize they are at Level 1 or 2.
 
 ### 4. Moving Up: It Is Not About Buying More Tools (~200 words)
-The maturity path is about architecture and discipline, not adding more point solutions. More tools at Level 2 keeps you at Level 2 — with more data silos. Progression requires the IQ Stack architecture (Article 2): unify data first, then build memory, then enable inference. Each level maps to a deeper engagement with the IQ Stack.
+The maturity path is about architecture and discipline, not adding more point solutions. More tools at Level 2 keeps you at Level 2 — with more data silos. Progression requires the Legal IQ stack architecture (Article 2): unify data first, then build memory, then enable inference. Each level maps to a deeper engagement with the Legal IQ stack.
 
 ### 5. Where to Go Next
-- Back-references: "What is Legal Operations Intelligence?" (Article 1) and "The IQ Stack" (Article 2)
+- Back-references: "What is Legal Operations Intelligence?" (Article 1) and "The Legal IQ stack" (Article 2)
 - These three articles form the Category Foundation — together they define the category, the architecture, and the roadmap
 
 ## Cross-References
 - **Can reference**: Articles 1, 2
 - **Will be referenced by**: Articles 9, 10, 13
-- **Shared themes**: IQ Stack / LOI Framework, Business Case / ROI
+- **Shared themes**: Legal IQ stack / LOI Framework, Business Case / ROI

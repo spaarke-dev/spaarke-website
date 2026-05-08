@@ -54,7 +54,7 @@ Per `voice/product-knowledge.md` §2.2, the canonical Microsoft foundation has *
 
 ### The five capability modules
 
-⚠ **Section structure (lines 35–193).** The spec organizes the platform around the **IQ Stack layers** (Data / Memory / Inference / Cross-Functional) rather than the **five capability modules** that the home page and `/platform` are built on. Per `voice/product-knowledge.md` §2.1, the canonical modules — verbatim from `src/content/home/capabilities.ts` as of 2026-05-06 — are:
+⚠ **Section structure (lines 35–193).** The spec organizes the platform around the **Legal IQ stack layers** (Data / Memory / Inference / Cross-Functional) rather than the **five capability modules** that the home page and `/platform` are built on. Per `voice/product-knowledge.md` §2.1, the canonical modules — verbatim from `src/content/home/capabilities.ts` as of 2026-05-06 — are:
 
 | Canonical module name | Description (from capabilities.ts) | Where in this spec? |
 |---|---|---|
@@ -64,7 +64,7 @@ Per `voice/product-knowledge.md` §2.2, the canonical Microsoft foundation has *
 | **AI & Automation** | "AI summaries, Copilot-native experiences, and event-driven playbooks…" | Partial — "Copilot Integration" subsection (line 153); **AI and automation playbooks** as the canonical Spaarke product surface are missing as a named feature (only the generic "Workflow Engine" is described). |
 | **Spend & Performance** | "The financial and operational truth about every matter and every firm — invoices, budgets, OCG compliance, and outcomes." | Partial — "Legal Spend Management" (line 48) plus "Spend Analytics and Forecasting" (line 134); the canonical phrase "Spend & Performance" and the **outside counsel report card / matter report card** features are not named. |
 
-The five-module taxonomy is the structure the home page and `/platform` are built on. A "feature specification" article that does not match it creates an alignment problem the team will hit on every cross-link. The IQ Stack frame is not wrong — but it is the *narrative* frame, not the *product* frame. Compare with `voice/brand-positioning.md` §2 (themes 3–4): the IQ Stack names the architecture; the five modules are the proof points.
+The five-module taxonomy is the structure the home page and `/platform` are built on. A "feature specification" article that does not match it creates an alignment problem the team will hit on every cross-link. The Legal IQ stack frame is not wrong — but it is the *narrative* frame, not the *product* frame. Compare with `voice/brand-positioning.md` §2 (themes 3–4): the Legal IQ stack names the architecture; the five modules are the proof points.
 
 ### Three Spaarke AI pillars
 
@@ -89,7 +89,7 @@ This is the second-largest gap in the doc (after SharePoint Embedded). The produ
 
 ### Things that match
 
-✅ **Line 17 reference to the IQ Stack series.** Pieces are cross-linked correctly to `the-iq-stack`, `tenant-dedicated-deployment`, `spaarke-for-your-it-team`, `the-20b-blind-spot`, `institutional-knowledge`, `breaking-the-silo`, `loi-maturity-model`, `what-is-legal-operations-intelligence`, `what-attorneys-need-to-know-about-ai`, `ai-without-giving-away-the-keys`. All are real, published articles.
+✅ **Line 17 reference to the Legal IQ stack series.** Pieces are cross-linked correctly to `the-iq-stack`, `tenant-dedicated-deployment`, `spaarke-for-your-it-team`, `the-20b-blind-spot`, `institutional-knowledge`, `breaking-the-silo`, `loi-maturity-model`, `what-is-legal-operations-intelligence`, `what-attorneys-need-to-know-about-ai`, `ai-without-giving-away-the-keys`. All are real, published articles.
 
 ✅ **Line 28 — "Identity management flows through Microsoft Entra ID."** Matches product-knowledge §2.2.
 
@@ -145,7 +145,7 @@ Findings against `voice/style-guide.md` §5 and `voice/examples/avoid-this.md`. 
 
 ### A. Recap-opener boilerplate (style-guide §5 item 11)
 
-⚠ **Line 17 — "Throughout this series, we have defined Legal Operations Intelligence as a category, described the IQ Stack as its architectural foundation, explored why platform choice matters, and addressed IT architecture and deployment in detail. Each article advanced a piece of the picture. This article assembles the complete view."**
+⚠ **Line 17 — "Throughout this series, we have defined Legal Operations Intelligence as a category, described the Legal IQ stack as its architectural foundation, explored why platform choice matters, and addressed IT architecture and deployment in detail. Each article advanced a piece of the picture. This article assembles the complete view."**
 
 Style guide §5 item 11 calls this out by name: "No 'Throughout this series, we…' recap-openers. They flatten the first paragraph. Weave the connective tissue into the body; spend the opening on the hook of *this* piece." `examples/avoid-this.md` shows the better pattern from `the-iq-stack`.
 
@@ -156,7 +156,7 @@ Style guide §5 item 11 calls this out by name: "No 'Throughout this series, we�
 ⚠ **Frontmatter `summary` (line 4) — "the compounding intelligence loop that defines Legal Operations Intelligence."**
 `vocabulary.md` §2 row "compounding intelligence — (cut, or 'compound' as a verb tied to a layer) — audit flags overuse; the verb works, the noun phrase is a tell."
 
-**Suggested rewrite**: "the IQ Stack — Data, Memory, Inference — that defines Legal Operations Intelligence."
+**Suggested rewrite**: "the Legal IQ stack — Data, Memory, Inference — that defines Legal Operations Intelligence."
 
 ### C. AI-tell / vendor adjective
 
@@ -182,7 +182,7 @@ Style guide §5 item 11 calls this out by name: "No 'Throughout this series, we�
 ⚠ **Line 105 — "Relevant precedent surfaces in seconds rather than requiring someone to remember it."** "In seconds" is a 10x-style claim without measurement.
 **Suggested rewrite**: *"Past matters become searchable by counterparty, jurisdiction, terms, and outcome — so a new dispute starts from what your team has already seen, not from someone's memory."*
 
-⚠ **Line 130 — "The Inference layer is where the IQ Stack delivers its most visible return."** "Most visible return" is a vendor framing.
+⚠ **Line 130 — "The Inference layer is where the Legal IQ stack delivers its most visible return."** "Most visible return" is a vendor framing.
 **Suggested rewrite**: *"The Inference layer is where unified data and structured memory turn into usable predictions — spend forecasts, outcome estimates, anomaly flags."*
 
 ⚠ **Line 165 — "Reporting moves from periodic manual exercises to live, interactive intelligence."** "Live, interactive intelligence" is filler.
@@ -215,7 +215,7 @@ Style guide §5 item 11 calls this out by name: "No 'Throughout this series, we�
 
 ✅ **Line 197 — "Where to Go Next."** Matches the library's pattern (style-guide §5 item 4). The cross-links go to substance, not to a demo CTA. Good.
 
-⚠ Closing paragraph could be tightened — line 199 ends mid-thought. Consider replacing with a single sentence that lands the article's argument: *"The full picture is the five modules running on one record, in one tenant, with AI grounded in your own work — not the IQ Stack as a slogan but as the architecture of every section above."*
+⚠ Closing paragraph could be tightened — line 199 ends mid-thought. Consider replacing with a single sentence that lands the article's argument: *"The full picture is the five modules running on one record, in one tenant, with AI grounded in your own work — not the Legal IQ stack as a slogan but as the architecture of every section above."*
 
 ---
 
@@ -237,11 +237,11 @@ Ranked by impact on the document's accuracy and on-voice quality.
 **Proposed**: rename the section "Spaarke AI" and structure it as three pillars. Open with one short paragraph naming **Foundry IQ** (knowledge grounding on Azure AI Foundry, indexing matters/documents/emails into a structured grounding source), **Copilot Studio** (orchestration: matter-aware experiences inside M365 Copilot and Teams), and **Microsoft Agent Framework** (execution: bounded agentic actions surfacing in playbooks). Then describe Copilot, Word Copilot, Teams app, and the relationship graph as the surfaces these pillars show up on. Keep the "tenant-boundary processing" bullet. Use the verbatim source at `voice/product-knowledge.md` §3 (Foundry IQ §3.1, Copilot Studio §3.2, Agent Framework §3.3).
 **Reason**: product-knowledge §3 prologue: "We don't say 'AI-powered' — we say which pillar is doing what." The current section never names Foundry IQ, Copilot Studio, Agent Framework, or Azure AI Foundry. This is the second-largest accuracy gap.
 
-### 3. Restructure the article around the five canonical modules — or at least map IQ Stack to modules explicitly
+### 3. Restructure the article around the five canonical modules — or at least map Legal IQ stack to modules explicitly
 
 **Location**: H2 structure (lines 35, 89, 130) and the introductory paragraph at line 19.
 **Current**: organized around Data / Memory / Inference / Cross-Functional layers; the five canonical modules (Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance) are not used as the primary organizing principle and the **Collaboration** module is largely absent.
-**Proposed (substantive)**: either (a) reorganize H2s to use the five modules as the primary structure with IQ Stack threaded through, or (b) add an explicit map at line 19 — "These capabilities cluster into five modules — Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance — and into the three IQ Stack layers — Data, Memory, Inference. The article walks the layers; the modules are how the platform is shipped." Then add a Collaboration H3 inside Cross-Functional (or its own H2) covering secure project workspaces, outside-counsel access, Word co-creation, Teams app.
+**Proposed (substantive)**: either (a) reorganize H2s to use the five modules as the primary structure with Legal IQ stack threaded through, or (b) add an explicit map at line 19 — "These capabilities cluster into five modules — Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance — and into the three Legal IQ stack layers — Data, Memory, Inference. The article walks the layers; the modules are how the platform is shipped." Then add a Collaboration H3 inside Cross-Functional (or its own H2) covering secure project workspaces, outside-counsel access, Word co-creation, Teams app.
 **Reason**: the home page and `/platform` are built on the five modules. Cross-links from a feature-spec article that uses different organizing concepts will create confusion. `voice/product-knowledge.md` §2.1 says module names are "canonical, verbatim from `src/content/home/capabilities.ts`." `brand-positioning.md` §4 names the five modules as a primary proof point.
 
 ### 4. Surface both deployment models, not just customer-tenant
@@ -254,8 +254,8 @@ Ranked by impact on the document's accuracy and on-voice quality.
 ### 5. Replace the recap-style opener (line 17)
 
 **Location**: line 17, the article's first paragraph.
-**Current**: "Throughout this series, we have defined Legal Operations Intelligence as a category, described the IQ Stack as its architectural foundation, explored why platform choice matters, and addressed IT architecture and deployment in detail. Each article advanced a piece of the picture. This article assembles the complete view."
-**Proposed**: *"Procurement teams, IT reviewers, and business stakeholders ask the same question of every platform under evaluation: what does it actually do? The answer for Spaarke follows — every major capability, organized by the five modules the platform ships in, with each capability mapped to the operational outcome it produces. The IQ Stack — Data, Memory, Inference — sits behind the modules as the architecture; the modules are how the platform reaches a user's day."*
+**Current**: "Throughout this series, we have defined Legal Operations Intelligence as a category, described the Legal IQ stack as its architectural foundation, explored why platform choice matters, and addressed IT architecture and deployment in detail. Each article advanced a piece of the picture. This article assembles the complete view."
+**Proposed**: *"Procurement teams, IT reviewers, and business stakeholders ask the same question of every platform under evaluation: what does it actually do? The answer for Spaarke follows — every major capability, organized by the five modules the platform ships in, with each capability mapped to the operational outcome it produces. The Legal IQ stack — Data, Memory, Inference — sits behind the modules as the architecture; the modules are how the platform reaches a user's day."*
 **Reason**: `voice/style-guide.md` §5 item 11 explicitly bans "Throughout this series, we…" openers and `voice/examples/avoid-this.md` shows the same anti-pattern at length. The hook has to belong to *this* piece.
 
 ### 6. Add a Collaboration section with the named features
@@ -288,8 +288,8 @@ Ranked by impact on the document's accuracy and on-voice quality.
 
 **Location**: lines 197–199.
 **Current**: "This article serves as the comprehensive feature reference for the Spaarke platform. For the strategic framework behind these capabilities, start with…"
-**Proposed**: *"The five modules — Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance — run on one record, in your tenant, with AI grounded in your own work. The IQ Stack — Data, Memory, Inference — names the architecture; the modules are how it reaches a user's day. For the strategic framework, start with [What is Legal Operations Intelligence?](/blog/what-is-legal-operations-intelligence) and [The IQ Stack](/blog/the-iq-stack). For the technical architecture and deployment, see [Spaarke for Your IT Team](/blog/spaarke-for-your-it-team)."*
-**Reason**: lands the doc on its argument (modules + IQ Stack + tenant), keeps the "Where to Go Next" pattern, and uses the three-stakeholder / five-module framing the rest of the site already carries.
+**Proposed**: *"The five modules — Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance — run on one record, in your tenant, with AI grounded in your own work. The Legal IQ stack — Data, Memory, Inference — names the architecture; the modules are how it reaches a user's day. For the strategic framework, start with [What is Legal Operations Intelligence?](/blog/what-is-legal-operations-intelligence) and [The Legal IQ stack](/blog/the-iq-stack). For the technical architecture and deployment, see [Spaarke for Your IT Team](/blog/spaarke-for-your-it-team)."*
+**Reason**: lands the doc on its argument (modules + Legal IQ stack + tenant), keeps the "Where to Go Next" pattern, and uses the three-stakeholder / five-module framing the rest of the site already carries.
 
 ---
 
@@ -297,11 +297,11 @@ Ranked by impact on the document's accuracy and on-voice quality.
 
 **Needs significant rework before it should go live as the team's procurement-grade reference.**
 
-Justification: the article's structural choices (IQ Stack layers as the only top-level frame, "SharePoint" instead of SharePoint Embedded, "Copilot Integration" instead of the three Spaarke AI pillars, single deployment model, no Collaboration section, no OCG vocabulary) put it out of alignment with three Phase 0 deliverables — `voice/product-knowledge.md`, `voice/brand-positioning.md`, and `src/content/home/capabilities.ts` — that the Phase 0 review (T11) is locking. The voice issues alone (recap opener, empty-intensifier sentences, unsourced numeric claims) would be a "minor edits" verdict; combined with the architectural mismatches, they sit closer to a rework.
+Justification: the article's structural choices (Legal IQ stack layers as the only top-level frame, "SharePoint" instead of SharePoint Embedded, "Copilot Integration" instead of the three Spaarke AI pillars, single deployment model, no Collaboration section, no OCG vocabulary) put it out of alignment with three Phase 0 deliverables — `voice/product-knowledge.md`, `voice/brand-positioning.md`, and `src/content/home/capabilities.ts` — that the Phase 0 review (T11) is locking. The voice issues alone (recap opener, empty-intensifier sentences, unsourced numeric claims) would be a "minor edits" verdict; combined with the architectural mismatches, they sit closer to a rework.
 
 That said, the bones are in place. The article's research is mostly accurate, the cross-links are right, and the cross-functional and finance-integration sections track the brand-positioning themes. Edits 1–4 above (SharePoint Embedded, Spaarke AI three pillars, five-module structure, two deployment models) are the load-bearing changes; edits 5–10 are local cleanup. With those in, the doc becomes the procurement-grade reference the lead paragraph claims it already is.
 
-The fastest path is probably (a) restructure the H2s around the five modules with IQ Stack threaded through; (b) rewrite the AI section to name Foundry IQ / Copilot Studio / Agent Framework; (c) replace SharePoint with SharePoint Embedded; (d) cut the recap opener and the eleven empty-intensifier sentences. That is a focused half-day of rewriting, not a from-scratch redraft.
+The fastest path is probably (a) restructure the H2s around the five modules with Legal IQ stack threaded through; (b) rewrite the AI section to name Foundry IQ / Copilot Studio / Agent Framework; (c) replace SharePoint with SharePoint Embedded; (d) cut the recap opener and the eleven empty-intensifier sentences. That is a focused half-day of rewriting, not a from-scratch redraft.
 
 ---
 

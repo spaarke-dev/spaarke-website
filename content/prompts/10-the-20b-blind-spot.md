@@ -55,7 +55,7 @@ What LOI-level spend visibility enables:
 - **Predictive forecasting** — "Based on current trajectory, Q3 legal spend will be $X, driven by Y"
 - **Anomaly detection** — "This invoice is 40% above the average for this matter type and firm"
 
-Connect to the Inference layer of the IQ Stack (Article 2): this is what happens when you apply intelligence to unified spend data. The Memory layer means you do not lose this insight when team members change.
+Connect to the Inference layer of the Legal IQ stack (Article 2): this is what happens when you apply intelligence to unified spend data. The Memory layer means you do not lose this insight when team members change.
 
 ### 4. From Reporting to Intelligence (~250 words)
 The difference between backward-looking reports and forward-looking intelligence:
@@ -71,9 +71,9 @@ How LOI changes the dynamic between legal and finance:
 - This is the difference between legal as a cost center and legal as a managed strategic investment
 
 ### 6. Where to Go Next
-- Back-references: "What is Legal Operations Intelligence?" (Article 1), "The IQ Stack" (Article 2), "From Reactive to Predictive" (Article 3)
+- Back-references: "What is Legal Operations Intelligence?" (Article 1), "The Legal IQ stack" (Article 2), "From Reactive to Predictive" (Article 3)
 
 ## Cross-References
 - **Can reference**: Articles 1, 2, 3, 4, 5, 6, 7, 8, 9
 - **Will be referenced by**: Articles 12, 13, 15
-- **Shared themes**: IQ Stack / LOI Framework, Business Case / ROI
+- **Shared themes**: Legal IQ stack / LOI Framework, Business Case / ROI

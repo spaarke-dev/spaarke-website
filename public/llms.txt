@@ -10,7 +10,7 @@ Spaarke provides a Legal Operations Intelligence (LOI) platform that deploys
 directly within an organization's own Microsoft 365 tenant. The platform is
 built on Microsoft Power Platform and integrates with M365 Copilot.
 
-### Core Framework: The IQ Stack
+### Core Framework: The Legal IQ stack
 
 - **Data**: Unified capture of matter, spend, workflow, and document data
 - **Memory**: Institutional knowledge retention — decisions, rationale, context, and patterns

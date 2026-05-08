@@ -53,7 +53,7 @@ straw-manning.
 
 ---
 
-## From: The IQ Stack: Data, Memory, Inference (`the-iq-stack`, 2026-01-11)
+## From: The Legal IQ stack: Data, Memory, Inference (`the-iq-stack`, 2026-01-11)
 
 ### Why this article
 
@@ -79,7 +79,7 @@ without reaching for "synergy" as decoration.
 > Consider the difference in practice:
 >
 > - **Generic AI**: "Similar matters in the industry typically cost between $200K and $500K." Useful as a benchmark, but too broad to drive decisions.
-> - **IQ Stack Inference**: "Based on 200 similar matters your department has handled, this one will likely cost $280K and take 14 months. The last three matters of this type with this outside counsel came in 12% over initial estimate — consider building that into the budget."
+> - **Legal IQ stack Inference**: "Based on 200 similar matters your department has handled, this one will likely cost $280K and take 14 months. The last three matters of this type with this outside counsel came in 12% over initial estimate — consider building that into the budget."
 >
 > That is the difference between information and intelligence. The first gives you a range. The second gives you a decision framework built on your own history.
 

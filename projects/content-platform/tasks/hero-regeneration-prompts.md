@@ -135,7 +135,7 @@ read as deliberately separate, not just a different color.
 
 **Source**: `content/blog/2026-03-01-the-ai-readiness-gap.mdx`
 **Argument the hero should evoke**: AI is not the bottleneck — the
-data architecture underneath it is. The IQ Stack sequence (Data →
+data architecture underneath it is. The Legal IQ stack sequence (Data →
 Memory → Inference) is what closes the gap.
 **Concept**: A staircase of three rising blocks where the lower two
 are partially formed (dashed outline, half-filled) and the top sits

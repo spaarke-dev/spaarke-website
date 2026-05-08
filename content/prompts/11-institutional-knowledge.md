@@ -24,7 +24,7 @@ tags:
 
 ## Purpose
 
-Emotional, relatable piece. Every legal professional has experienced this. Positions "operational memory" as urgently necessary — not a nice-to-have, but a risk mitigation imperative. This is the article that makes the Memory layer of the IQ Stack viscerally real.
+Emotional, relatable piece. Every legal professional has experienced this. Positions "operational memory" as urgently necessary — not a nice-to-have, but a risk mitigation imperative. This is the article that makes the Memory layer of the Legal IQ stack viscerally real.
 
 ## Card Summary / Why This Matters
 
@@ -33,7 +33,7 @@ Emotional, relatable piece. Every legal professional has experienced this. Posit
 ## Structure
 
 ### 1. Why This Matters (~150 words)
-The legal profession faces a knowledge crisis. Expertise is leaving faster than it can be transferred. Every departure is an unrecoverable data loss event — not because the documents disappear, but because the *context* does. Reference the Memory layer from the IQ Stack (Article 2).
+The legal profession faces a knowledge crisis. Expertise is leaving faster than it can be transferred. Every departure is an unrecoverable data loss event — not because the documents disappear, but because the *context* does. Reference the Memory layer from the Legal IQ stack (Article 2).
 
 ### 2. The Hidden Cost of Knowledge Loss (~300 words)
 Concrete, relatable scenarios:
@@ -56,7 +56,7 @@ Quantify where possible: average cost of knowledge replacement, time to rebuild 
 - Knowledge is contextual, relational, and layered — it does not live in a single document, it lives in the connections between decisions, people, matters, and outcomes
 - The document says "We hired Firm X for this matter." Memory says "We hired Firm X because they have deep expertise in this jurisdiction, they gave us favorable rates after the RFP in 2024, and the lead partner has a strong relationship with the opposing party's general counsel."
 
-Connect to the Memory layer of the IQ Stack (Article 2): operational memory is not documentation — it is structured, searchable, contextual knowledge captured as a natural byproduct of work.
+Connect to the Memory layer of the Legal IQ stack (Article 2): operational memory is not documentation — it is structured, searchable, contextual knowledge captured as a natural byproduct of work.
 
 ### 4. Building Operational Memory (~300 words)
 How LOI platforms systematically capture this knowledge:
@@ -66,7 +66,7 @@ How LOI platforms systematically capture this knowledge:
 - **Searchable institutional knowledge** — "What happened the last time we negotiated with this counterparty?" becomes a query, not a question to someone who might not work here anymore.
 - **AI amplification** — When the Memory layer feeds the Inference layer (Article 2), institutional knowledge becomes active intelligence. Copilot does not just search documents — it draws on organizational context to recommend, compare, and advise.
 
-Connect to LOI (Article 1) and the IQ Stack (Article 2).
+Connect to LOI (Article 1) and the Legal IQ stack (Article 2).
 
 ### 5. The Compounding Effect (~200 words)
 An organization that retains operational memory gets smarter with every matter, every decision, every negotiation.
@@ -79,9 +79,9 @@ An organization that retains operational memory gets smarter with every matter, 
 The contrast: an organization without operational memory resets to zero with every departure, every reorganization, every new hire. The cost is invisible but enormous.
 
 ### 6. Where to Go Next
-- Back-references: "The IQ Stack" (Article 2), "The AI Readiness Gap" (Article 9)
+- Back-references: "The Legal IQ stack" (Article 2), "The AI Readiness Gap" (Article 9)
 
 ## Cross-References
 - **Can reference**: Articles 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 - **Will be referenced by**: Articles 13, 15
-- **Shared themes**: Operational Memory, IQ Stack / LOI Framework
+- **Shared themes**: Operational Memory, Legal IQ stack / LOI Framework

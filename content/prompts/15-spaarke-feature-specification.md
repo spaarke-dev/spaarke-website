@@ -24,16 +24,16 @@ tags:
 
 ## Purpose
 
-Comprehensive feature reference. Supports late-stage evaluation and procurement. This is the article a buyer sends to their evaluation committee. Organized around the IQ Stack framework so features map to business value, not just capability checklists.
+Comprehensive feature reference. Supports late-stage evaluation and procurement. This is the article a buyer sends to their evaluation committee. Organized around the Legal IQ stack framework so features map to business value, not just capability checklists.
 
 ## Card Summary / Why This Matters
 
-> This article provides a comprehensive overview of the Spaarke platform's capabilities — organized around the IQ Stack framework of Data, Memory, and Inference. Whether you are evaluating Spaarke for the first time or building a business case for adoption, this is your single reference for what the platform does and how each capability connects to operational outcomes.
+> This article provides a comprehensive overview of the Spaarke platform's capabilities — organized around the Legal IQ stack framework of Data, Memory, and Inference. Whether you are evaluating Spaarke for the first time or building a business case for adoption, this is your single reference for what the platform does and how each capability connects to operational outcomes.
 
 ## Structure
 
 ### 1. Why This Matters (~150 words)
-A complete view of platform capabilities, organized by how they create value — not just what buttons you can click. Features are meaningless without context; this specification maps every capability to the LOI framework (Article 1) and IQ Stack (Article 2) so readers understand not just what Spaarke does, but why each capability matters.
+A complete view of platform capabilities, organized by how they create value — not just what buttons you can click. Features are meaningless without context; this specification maps every capability to the LOI framework (Article 1) and Legal IQ stack (Article 2) so readers understand not just what Spaarke does, but why each capability matters.
 
 ### 2. Platform Foundation (~200 words)
 Establish the technical foundation before diving into features:
@@ -108,7 +108,7 @@ The differentiator. Reference Article 11 (institutional knowledge) for the busin
 - Best practice codification (convert informal practices into repeatable processes)
 
 ### 5. Inference Layer Capabilities (~400 words)
-Intelligence powered by the IQ Stack. Reference Articles 7, 8 (AI architecture, Copilot).
+Intelligence powered by the Legal IQ stack. Reference Articles 7, 8 (AI architecture, Copilot).
 
 **Spend Analytics and Forecasting**
 - Historical spend analysis (by matter type, firm, practice area, business unit, time period)
@@ -152,11 +152,11 @@ Capabilities that extend beyond the legal department. Reference Article 12 (brea
 - **Board reporting**: Automated board deck content — litigation summary, spend overview, key metrics
 
 ### 7. Where to Go Next
-- Back-references: "Spaarke for Your IT Team" (Article 14) for architecture and deployment details, "What is Legal Operations Intelligence?" (Article 1) for the framework, "The IQ Stack" (Article 2) for the architecture
+- Back-references: "Spaarke for Your IT Team" (Article 14) for architecture and deployment details, "What is Legal Operations Intelligence?" (Article 1) for the framework, "The Legal IQ stack" (Article 2) for the architecture
 
 ## Cross-References
 - **Can reference**: All prior articles (1-14)
 - **This is the final article in the series** — it serves as the comprehensive reference that readers can return to
 
 ## Production Notes
-This is the longest article in the series. It should read as a well-organized reference, not a wall of features. Each capability should have a brief description (1-2 sentences) that connects it to a business outcome. Avoid marketing language — describe what the feature does, not how great it is. The IQ Stack organization provides the "why" automatically.
+This is the longest article in the series. It should read as a well-organized reference, not a wall of features. Each capability should have a brief description (1-2 sentences) that connects it to a business outcome. Avoid marketing language — describe what the feature does, not how great it is. The Legal IQ stack organization provides the "why" automatically.

@@ -1,4 +1,4 @@
-# Article 2: The IQ Stack — Data, Memory, Inference
+# Article 2: The Legal IQ stack — Data, Memory, Inference
 
 > **Read `content/EDITORIAL-PLAN.md` first** for voice guidelines, tag taxonomy, template structure, and cross-reference rules.
 
@@ -28,12 +28,12 @@ Deep dive into Spaarke's foundational architecture framework. Makes the abstract
 
 ## Card Summary / Why This Matters
 
-> Most legal technology solves one problem at a time. A contract tool here, a billing system there, a workflow app in between. The IQ Stack is a different approach — a three-layer architecture designed to make your entire legal operation smarter over time. Data captures how work actually gets done. Memory retains context so your organization never starts from zero. Inference turns accumulated signals into actionable decisions.
+> Most legal technology solves one problem at a time. A contract tool here, a billing system there, a workflow app in between. The Legal IQ stack is a different approach — a three-layer architecture designed to make your entire legal operation smarter over time. Data captures how work actually gets done. Memory retains context so your organization never starts from zero. Inference turns accumulated signals into actionable decisions.
 
 ## Structure
 
 ### 1. Why This Matters (~150 words)
-Point solutions create data silos. The IQ Stack is an architecture for compounding intelligence. As we defined in "What is Legal Operations Intelligence?" — LOI requires a unified platform approach. The IQ Stack is that architecture.
+Point solutions create data silos. The Legal IQ stack is an architecture for compounding intelligence. As we defined in "What is Legal Operations Intelligence?" — LOI requires a unified platform approach. The Legal IQ stack is that architecture.
 
 ### 2. Layer 1: Data — Capture How Work Gets Done (~350 words)
 Unified matter data, spend data, workflow data, document data. Not just storage — structured capture across the full matter lifecycle.
@@ -41,7 +41,7 @@ Unified matter data, spend data, workflow data, document data. Not just storage 
 Key points:
 - Data unification is the foundation; without it, memory and inference have nothing to work with
 - Current state: data scattered across ELM, CLM, e-billing, email, spreadsheets, SharePoint
-- The IQ Stack's Data layer captures across all these touchpoints into a unified model
+- The Legal IQ stack's Data layer captures across all these touchpoints into a unified model
 - Reference how this breaks down the silos described in Article 1
 
 ### 3. Layer 2: Memory — Retain What Your Organization Knows (~350 words)
@@ -72,7 +72,7 @@ This is a flywheel, not a stack of features. Frame this as the fundamental diffe
 
 ### 6. Where to Go Next
 - Back-reference: "What is Legal Operations Intelligence?" (Article 1)
-- Forward: "From Reactive to Predictive: The LOI Maturity Model" (Article 3) — use your understanding of the IQ Stack to assess where your organization falls
+- Forward: "From Reactive to Predictive: The LOI Maturity Model" (Article 3) — use your understanding of the Legal IQ stack to assess where your organization falls
 
 ## Cross-References
 - **Can reference**: Article 1 (LOI definition)

@@ -51,7 +51,7 @@ The market keeps shipping productivity features: faster drafting, review,
 summarization. Useful, but they don't change how legal work *runs*.
 Operational intelligence is the layer above — visibility into spend, counsel
 performance, matter status, and outcomes, with AI directing and humans
-controlling. The IQ Stack (Data → Memory → Inference) names the architecture;
+controlling. The Legal IQ stack (Data → Memory → Inference) names the architecture;
 the proof is that Spaarke answers questions about *your* 200 matters, not
 generic legal ones.
 

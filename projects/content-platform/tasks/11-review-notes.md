@@ -60,7 +60,7 @@ Estimated time per file in parens; total ~3–5 hours of focused review.
       from 2,864 → ~2,450 words.*
 - [x] `voice/examples/tone-samples.md` (~5 min) — *Resolved 2026-05-07:
       trimmed from 1,019 → ~850 words; reduced from 8 to 7 passages
-      (dropped IQ Stack Layer 1 close — redundant with the IQ Stack
+      (dropped Legal IQ stack Layer 1 close — redundant with the Legal IQ stack
       flywheel close already in `good-articles.md`).*
 - [x] `voice/examples/avoid-this.md` (~5 min) — are these characteristic
       of failures we'd reject? *Resolved 2026-05-07: trimmed from 1,002
@@ -256,7 +256,7 @@ Examples:
   Result: 5 articles, 2,864 → ~2,450 words.
 - **`voice/examples/tone-samples.md`** — trimmed multi-paragraph
   extracts and tightened "Why included" / "Use this when" lines.
-  Dropped the IQ Stack Layer 1 close passage (redundant with the IQ
+  Dropped the Legal IQ stack Layer 1 close passage (redundant with the IQ
   Stack flywheel close already in `good-articles.md`). Result: 8 → 7
   passages, 1,019 → ~850 words.
 - **`voice/examples/avoid-this.md`** — shortened the constructed
