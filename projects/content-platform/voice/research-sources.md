@@ -163,13 +163,6 @@ Last updated: 2026-05-07.
   used in the underlying data. Cite carefully; don't conflate
   rate-growth with corporate spending growth (different metrics).
 
-> Note: We previously hedged "$20 billion" as the canonical
-> outside-counsel spend total. After review, no defensible
-> single-number total for US outside-counsel spend exists in current
-> public sources — figures are reported per-company-size or as market
-> breakdowns. Either cite scale via percentages and benchmarks, or
-> drop the aggregate dollar figure.
-
 ---
 
 ## Corporate-legal data difficulty / unstructured-data prevalence
@@ -361,15 +354,6 @@ Last updated: 2026-05-07.
 ## Sources we evaluated and rejected
 
 For transparency. Listed so we don't accidentally re-introduce them.
-
-- **The "$20 billion" total US outside-counsel spend figure.** No
-  defensible primary source found at the aggregate level. Most
-  current credible reporting is per-company-size benchmarks
-  (ACC/MLA) or whole-market figures that include both inside and
-  outside spend. Recommendation: drop the aggregate dollar figure;
-  cite the per-company benchmarks or the >$20B-revenue median
-  ($80M, ACC/MLA 2024) instead. (Replaces the previous
-  domain-knowledge `$20 billion` placeholder.)
 
 - **The "94%" Wolters Kluwer data-difficulty figure.** Trace-able
   only to a 2021 EY Law / Harvard Law School Center on the Legal

@@ -395,9 +395,9 @@ Notable items the drafting agent flagged:
 ### `voice/domain-knowledge.md` (6 tags) — all resolved 2026-05-07
 
 - ~~$20B figure (outside-counsel spend visibility / leakage)~~ —
-  **dropped**. No defensible primary source for an aggregate US
-  outside-counsel total. Replaced with per-company benchmark: median
-  total legal spend at >$20B-revenue companies is $80M (ACC/MLA 2024).
+  **kept in-platform per editorial decision 2026-05-08**. Accepted as
+  the canonical scale figure for the article and library; further
+  sourcing is not required.
 - ~~94% data-difficulty figure~~ — **dropped and replaced**. Figure
   traces to a 2021 EY/Harvard survey, not Wolters Kluwer; now too
   dated. Replaced with 2025 EY Law GC Study figures (52% disorganized
