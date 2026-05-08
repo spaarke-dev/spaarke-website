@@ -50,7 +50,7 @@ Build a simple, SEO-friendly marketing website using **Next.js (TypeScript)** de
 - `/blog` Blog index
   - List of posts with tags
   - Optional: pagination
-- `/blog/[slug]` Blog post
+- `/why-spaarke/[slug]` Blog post
   - MDX rendering + typography
   - Metadata: title, description, date, author, tags
   - Social preview metadata
@@ -80,7 +80,7 @@ Constraints:
   - `draft` (boolean, default false)
   - `heroImage` (string path, optional)
 - Capabilities:
-  - RSS: `/blog/rss.xml`
+  - RSS: `/why-spaarke/rss.xml`
   - Sitemap includes posts
   - Optional: related posts by tag overlap
 
@@ -448,7 +448,7 @@ staticwebapp.config.json
 ### Phase 1 — Blog system (MDX)
 - Implement MDX loading and post routing
 - `/blog` list + tags
-- `/blog/[slug]` render with typography
+- `/why-spaarke/[slug]` render with typography
 - Add metadata + OG tags + JSON-LD
 - Add RSS + sitemap
 

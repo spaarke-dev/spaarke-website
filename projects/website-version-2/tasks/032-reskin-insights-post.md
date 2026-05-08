@@ -8,7 +8,7 @@
 
 ## Context
 
-Apply v2 typography and layout to the Insights post template (formerly `/blog/[slug]`, now `/insights/[slug]`). MDX content needs a styled prose container — Manrope for headings, Source Sans 3 for body, generous max-width (~720px), correct heading hierarchy clamps from v2 type scale.
+Apply v2 typography and layout to the Insights post template (formerly `/why-spaarke/[slug]`, now `/insights/[slug]`). MDX content needs a styled prose container — Manrope for headings, Source Sans 3 for body, generous max-width (~720px), correct heading hierarchy clamps from v2 type scale.
 
 Update the post header: eyebrow with type tag (whitepaper/article/brief), H1 title, lede, byline + date + reading time line.
 

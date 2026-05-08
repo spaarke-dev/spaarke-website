@@ -288,7 +288,7 @@ Ranked by impact on the document's accuracy and on-voice quality.
 
 **Location**: lines 197–199.
 **Current**: "This article serves as the comprehensive feature reference for the Spaarke platform. For the strategic framework behind these capabilities, start with…"
-**Proposed**: *"The five modules — Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance — run on one record, in your tenant, with AI grounded in your own work. The Legal IQ stack — Data, Memory, Inference — names the architecture; the modules are how it reaches a user's day. For the strategic framework, start with [What is Legal Operations Intelligence?](/blog/what-is-legal-operations-intelligence) and [The Legal IQ stack](/blog/the-iq-stack). For the technical architecture and deployment, see [Spaarke for Your IT Team](/blog/spaarke-for-your-it-team)."*
+**Proposed**: *"The five modules — Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance — run on one record, in your tenant, with AI grounded in your own work. The Legal IQ stack — Data, Memory, Inference — names the architecture; the modules are how it reaches a user's day. For the strategic framework, start with [What is Legal Operations Intelligence?](/why-spaarke/what-is-legal-operations-intelligence) and [The Legal IQ stack](/why-spaarke/the-iq-stack). For the technical architecture and deployment, see [Spaarke for Your IT Team](/why-spaarke/spaarke-for-your-it-team)."*
 **Reason**: lands the doc on its argument (modules + Legal IQ stack + tenant), keeps the "Where to Go Next" pattern, and uses the three-stakeholder / five-module framing the rest of the site already carries.
 
 ---

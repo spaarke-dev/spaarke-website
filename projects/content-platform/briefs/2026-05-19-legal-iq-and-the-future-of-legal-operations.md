@@ -54,7 +54,7 @@ The piece lands as the second blog post under the new voice constitution, immedi
 - A short concrete passage showing what raised Legal IQ looks like operationally — spend visibility shifting from quarterly to continuous, matter handoffs preserving rationale not just documentation, outside-counsel performance grounded in the department's own history.
 - The 87% headcount growth figure (ACC/BLS, 2025) cited from `voice/research-sources.md`.
 - A closing argument: legal IQ becomes a board-level metric. CFOs and CEOs will start asking about it the way they now ask about marketing attribution.
-- Two cross-links: to `/blog/what-is-legal-operations-intelligence` (category) and `/blog/the-iq-stack` (architecture).
+- Two cross-links: to `/why-spaarke/what-is-legal-operations-intelligence` (category) and `/why-spaarke/the-iq-stack` (architecture).
 
 # Must NOT include
 
@@ -68,9 +68,9 @@ The piece lands as the second blog post under the new voice constitution, immedi
 
 # References
 
-- `/blog/welcome-to-spaarke` — sister piece (publishes 2026-05-11; this publishes 2026-05-19).
-- `/blog/what-is-legal-operations-intelligence` — category-definition piece. Cite once near the opening, link.
-- `/blog/the-iq-stack` — architecture piece. Cite when the data → memory → inference sequence is invoked.
+- `/why-spaarke/welcome-to-spaarke` — sister piece (publishes 2026-05-11; this publishes 2026-05-19).
+- `/why-spaarke/what-is-legal-operations-intelligence` — category-definition piece. Cite once near the opening, link.
+- `/why-spaarke/the-iq-stack` — architecture piece. Cite when the data → memory → inference sequence is invoked.
 - `/platform` — for the close. The reader who wants to see what raised legal IQ looks like in product.
 - `voice/research-sources.md` — for the ACC/BLS 87% figure and any other quantitative claim that earns its place.
 

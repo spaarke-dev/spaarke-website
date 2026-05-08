@@ -183,9 +183,9 @@ Examples:
   comment at the top of the file: "What Spaarke Is For." Five H2
   sections (LOI definition / AI-directed, human-controlled / Microsoft
   tenant / tools-to-operating-models / what you'll read here). Three
-  internal cross-links: `/platform`, `/blog/what-is-legal-operations-intelligence`,
-  `/blog/why-we-built-on-microsoft` — plus an inline reference to
-  `/blog/the-iq-stack`. Hero image is a placeholder path with a top-of-file
+  internal cross-links: `/platform`, `/why-spaarke/what-is-legal-operations-intelligence`,
+  `/why-spaarke/why-we-built-on-microsoft` — plus an inline reference to
+  `/why-spaarke/the-iq-stack`. Hero image is a placeholder path with a top-of-file
   comment noting Agent J is producing the visual-identity guide and a
   hero-prompt section will be added to briefs in a separate pass.
   Final-pass against `voice/examples/avoid-this.md` and

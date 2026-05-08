@@ -14,7 +14,7 @@ Build a simple, SEO-friendly marketing website for Spaarke using Next.js (TypeSc
 
 - **Homepage** (`/`): Hero section, intro video (embed or self-hosted MP4), feature/value blocks, CTAs
 - **Video hosting**: Azure Blob Storage for self-hosted MP4 video, optionally behind Azure CDN/Front Door
-- **Blog system** (`/blog`, `/blog/[slug]`): MDX-in-repo content, tag filtering, RSS feed, sitemap integration, JSON-LD structured data
+- **Blog system** (`/blog`, `/why-spaarke/[slug]`): MDX-in-repo content, tag filtering, RSS feed, sitemap integration, JSON-LD structured data
 - **Contact form** (`/contact`): Form with validation, honeypot spam control, rate limiting, Azure Table Storage persistence, SendGrid email notifications
 - **Privacy & Terms pages** (`/privacy`, `/terms`): Static legal content pages
 - **SEO**: Per-page metadata, OpenGraph/Twitter cards, canonical URLs, sitemap.xml, robots.txt
@@ -51,7 +51,7 @@ Build a simple, SEO-friendly marketing website for Spaarke using Next.js (TypeSc
 3. **FR-03**: Blog index page lists all published posts with title, date, description, and tags - Acceptance: Draft posts (draft: true) are excluded; posts sorted by date descending
 4. **FR-04**: Blog post pages render MDX content with proper typography - Acceptance: Headings, code blocks, images, and links render correctly
 5. **FR-05**: Blog posts include required frontmatter: title, description, date, author, tags, draft, heroImage (optional) - Acceptance: Build fails or warns if required frontmatter is missing
-6. **FR-06**: RSS feed available at `/blog/rss.xml` - Acceptance: Feed validates with an RSS validator; includes all published posts
+6. **FR-06**: RSS feed available at `/why-spaarke/rss.xml` - Acceptance: Feed validates with an RSS validator; includes all published posts
 7. **FR-07**: Sitemap at `/sitemap.xml` includes all pages and published blog posts - Acceptance: Sitemap is valid XML and includes correct URLs
 8. **FR-08**: Contact form collects name (required), email (required), company (optional), message (required), reason (optional enum) - Acceptance: Client-side and server-side validation enforced
 9. **FR-09**: Contact submissions persist to Azure Table Storage - Acceptance: Every valid submission creates a row with all fields + timestamp + IP hash

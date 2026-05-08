@@ -49,7 +49,7 @@ Spaarke launched in 2026; the platform is in early access (CTA "Get access" on `
 - That Spaarke runs inside the customer's own Microsoft tenant. Frame as a structural choice, not a deployment preference. Identity, DLP, sensitivity labels, audit are the ones IT already approved.
 - The shift from tools to operating models. Drafting, review, summarization improve a single task. An operating model changes how work runs across matters, spend, documents, and counsel.
 - A short preview of the writing topic families — operational intelligence, embedded AI, document intelligence, billing-compliance intelligence, AI-directed workflows, why-Microsoft-is-becoming-the-operating-layer-for-legal.
-- One pointer each to `/platform`, `/why-spaarke`, `/blog/what-is-legal-operations-intelligence`, and `/blog/why-we-built-on-microsoft`.
+- One pointer each to `/platform`, `/why-spaarke`, `/why-spaarke/what-is-legal-operations-intelligence`, and `/why-spaarke/why-we-built-on-microsoft`.
 
 # Must NOT include
 - "Welcome to Spaarke!" as an opener, or any breathless launch language. No "Hello," "Greetings," or "We're thrilled."
@@ -57,15 +57,15 @@ Spaarke launched in 2026; the platform is in early access (CTA "Get access" on `
 - "AI-powered." Use specific layer names (Foundry IQ grounding, Copilot Studio orchestration, Agent Framework execution) when AI is named at all.
 - "Replace lawyers," "10x productivity," "transform," "disrupt," "revolutionary," "ChatGPT for legal," "Copilot for lawyers."
 - Generic "the future of legal" framing. We don't predict trajectories we can't defend.
-- Demo CTA. The close points to substance (`/platform`, `/blog/what-is-legal-operations-intelligence`).
+- Demo CTA. The close points to substance (`/platform`, `/why-spaarke/what-is-legal-operations-intelligence`).
 - Stock SaaS adjectives — powerful, robust, seamless, innovative, cutting-edge, best-in-class.
 
 # References
 - `/platform` — capability modules and deployment models.
 - `/why-spaarke` — positioning hub.
-- `/blog/what-is-legal-operations-intelligence` — category-definition piece.
-- `/blog/why-we-built-on-microsoft` — Microsoft-foundation piece.
-- `/blog/the-iq-stack` — architecture reference (used as cadence model for the opening).
+- `/why-spaarke/what-is-legal-operations-intelligence` — category-definition piece.
+- `/why-spaarke/why-we-built-on-microsoft` — Microsoft-foundation piece.
+- `/why-spaarke/the-iq-stack` — architecture reference (used as cadence model for the opening).
 - External, optional: Microsoft 2026 Work Trend Index figures (15M paid M365 Copilot seats; 420M MAU) — only if a number is genuinely earning its place. Don't pad.
 
 # Voice notes

@@ -8,7 +8,7 @@
 
 ## Goal
 
-RSS feed at `/blog/rss.xml` that includes all published blog posts.
+RSS feed at `/why-spaarke/rss.xml` that includes all published blog posts.
 
 ## Context
 
@@ -34,7 +34,7 @@ RSS enables readers and aggregators to subscribe to the blog. The feed should in
 
 ## Acceptance Criteria
 
-- [ ] `/blog/rss.xml` returns valid RSS 2.0 XML
+- [ ] `/why-spaarke/rss.xml` returns valid RSS 2.0 XML
 - [ ] Feed includes all published posts (excludes drafts)
 - [ ] Each item has title, description, pubDate, link
 - [ ] Content-Type header is `application/rss+xml`

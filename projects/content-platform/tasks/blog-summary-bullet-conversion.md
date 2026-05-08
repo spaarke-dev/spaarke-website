@@ -92,7 +92,7 @@ Per article:
      - Fourth bullet here.
    ```
 5. **Leave `summary:` in place** if it exists. The renderer prefers `keyTakeaways` when both are set, and `summary` is still consumed elsewhere (RSS, social cards, list pages — verify before deletion; out of scope for this task).
-6. **Verify locally:** `npm run dev`, navigate to `/blog/<slug>`, confirm the "Key takeaways" card renders with 3–5 bullets and the legacy paragraph no longer shows.
+6. **Verify locally:** `npm run dev`, navigate to `/why-spaarke/<slug>`, confirm the "Key takeaways" card renders with 3–5 bullets and the legacy paragraph no longer shows.
 7. **No body edits.** This task is frontmatter-only.
 
 ### UI copy

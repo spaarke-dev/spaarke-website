@@ -43,13 +43,13 @@ Here is the technology stack:
 
 This architecture means Spaarke is not a separate system that integrates with Microsoft. It is a Microsoft-native application that runs inside your existing environment. The distinction matters: there are no API bridges to maintain, no data synchronization to monitor, and no additional infrastructure to secure.
 
-For the business context behind this architectural decision, see [Why We Built on Microsoft](/blog/why-we-built-on-microsoft) and [Tenant Dedicated Deployment: The New On-Premises](/blog/tenant-dedicated-deployment).
+For the business context behind this architectural decision, see [Why We Built on Microsoft](/why-spaarke/why-we-built-on-microsoft) and [Tenant Dedicated Deployment: The New On-Premises](/why-spaarke/tenant-dedicated-deployment).
 
 ---
 
 ## Deployment Model
 
-Spaarke follows what we call [Tenant Dedicated Deployment](/blog/tenant-dedicated-deployment) — a model where the platform runs entirely within your organization's own M365 tenant rather than on vendor-managed infrastructure.
+Spaarke follows what we call [Tenant Dedicated Deployment](/why-spaarke/tenant-dedicated-deployment) — a model where the platform runs entirely within your organization's own M365 tenant rather than on vendor-managed infrastructure.
 
 Here is what deployment looks like in practice:
 
@@ -96,7 +96,7 @@ Spaarke inherits your existing Microsoft 365 security posture. This is not a fig
 
 The net effect: there is no additional security perimeter to evaluate. No separate vendor infrastructure to include in your risk assessment. No new attack surface introduced. The security review for Spaarke is a Power Platform solution review, not a full vendor infrastructure assessment.
 
-As we explored in [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you), data sovereignty is not a policy commitment — it is a structural outcome of where the platform runs. For IT teams, this means the governance model you have already built for Microsoft 365 extends to your legal operations platform without modification.
+As we explored in [Your Legal Data Belongs to You](/why-spaarke/your-legal-data-belongs-to-you), data sovereignty is not a policy commitment — it is a structural outcome of where the platform runs. For IT teams, this means the governance model you have already built for Microsoft 365 extends to your legal operations platform without modification.
 
 ---
 
@@ -179,4 +179,4 @@ Spaarke provides import tools and migration services for existing matter data, s
 
 ## Where to Go Next
 
-This article is the technical reference for IT teams evaluating Spaarke. For the strategic context behind the architectural decisions described here, see [Why We Built on Microsoft](/blog/why-we-built-on-microsoft). For the business case for Tenant Dedicated Deployment, see [Tenant Dedicated Deployment: The New On-Premises](/blog/tenant-dedicated-deployment). For the data sovereignty principles that this architecture enforces, see [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you).
+This article is the technical reference for IT teams evaluating Spaarke. For the strategic context behind the architectural decisions described here, see [Why We Built on Microsoft](/why-spaarke/why-we-built-on-microsoft). For the business case for Tenant Dedicated Deployment, see [Tenant Dedicated Deployment: The New On-Premises](/why-spaarke/tenant-dedicated-deployment). For the data sovereignty principles that this architecture enforces, see [Your Legal Data Belongs to You](/why-spaarke/your-legal-data-belongs-to-you).

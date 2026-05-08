@@ -23,7 +23,7 @@ AI is no longer optional for legal departments. Every major law firm and corpora
 
 This is not a technical deep dive. You do not need to become an engineer. But you do need to know which architectural decisions carry real consequences for privilege, data governance, and cost — and you need to know what questions to ask before someone else makes those decisions for you.
 
-In [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you), we explored why data sovereignty has become urgent in the era of AI. In [Why We Built on Microsoft](/blog/why-we-built-on-microsoft), we explained the platform decision that shapes everything else. This article builds on both: three architectural decisions that every attorney evaluating AI tools should understand.
+In [Your Legal Data Belongs to You](/why-spaarke/your-legal-data-belongs-to-you), we explored why data sovereignty has become urgent in the era of AI. In [Why We Built on Microsoft](/why-spaarke/why-we-built-on-microsoft), we explained the platform decision that shapes everything else. This article builds on both: three architectural decisions that every attorney evaluating AI tools should understand.
 
 ---
 
@@ -45,7 +45,7 @@ A litigation team uses an AI tool to analyze privileged strategy documents — c
 
 A contracts team asks AI to compare proposed terms against the organization's negotiation history — past positions, concession patterns, counterparty behavior across dozens of prior deals. Under the external model, that institutional knowledge flows to someone else's servers. Under the tenant model, the comparison runs on your data, in your environment, with no egress.
 
-The difference is not theoretical. It is the difference between structural privilege protection and contractual assurance. As we detailed in [Tenant Dedicated Deployment: The New On-Premises](/blog/tenant-dedicated-deployment), structural compliance — where your architecture enforces the boundary — is fundamentally more reliable than promissory compliance, where a vendor agreement is the only thing standing between your privileged data and exposure.
+The difference is not theoretical. It is the difference between structural privilege protection and contractual assurance. As we detailed in [Tenant Dedicated Deployment: The New On-Premises](/why-spaarke/tenant-dedicated-deployment), structural compliance — where your architecture enforces the boundary — is fundamentally more reliable than promissory compliance, where a vendor agreement is the only thing standing between your privileged data and exposure.
 
 ---
 
@@ -61,11 +61,11 @@ There are three approaches in the market, and they produce fundamentally differe
 
 **Grounded in structured operational data.** The AI draws on your organization's matter history, spend patterns, negotiation precedents, outside counsel performance data, and accumulated institutional context. This is not document retrieval. It is reasoning over the structured Memory layer that captures how your organization actually operates — decisions made, outcomes achieved, patterns observed over years of practice.
 
-This third approach is what the Inference layer of the [Legal IQ stack](/blog/the-iq-stack) delivers. When AI is grounded in your organization's operational memory, the difference in output quality is not incremental. It is categorical.
+This third approach is what the Inference layer of the [Legal IQ stack](/why-spaarke/the-iq-stack) delivers. When AI is grounded in your organization's operational memory, the difference in output quality is not incremental. It is categorical.
 
 A generic AI tool asked to estimate the cost of an employment matter will give you an industry range. An AI grounded in your operational data will tell you what your department has historically spent on similar matters, with which firms, at what stage costs typically escalate, and where your estimates have historically been optimistic. One gives you a number. The other gives you a decision framework built on your own experience.
 
-The Legal IQ stack's [Memory layer](/blog/the-iq-stack) — the accumulated decisions, rationale, and institutional context described in our earlier article — is what makes this possible. Without it, AI is just a faster way to process documents. With it, AI becomes a genuine extension of your organization's collective judgment.
+The Legal IQ stack's [Memory layer](/why-spaarke/the-iq-stack) — the accumulated decisions, rationale, and institutional context described in our earlier article — is what makes this possible. Without it, AI is just a faster way to process documents. With it, AI becomes a genuine extension of your organization's collective judgment.
 
 ---
 
@@ -109,4 +109,4 @@ You will be in the room when these decisions are made — or you should be. AI a
 
 ## Where to Go Next
 
-For the data sovereignty foundation behind these architectural questions, read [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you). For the three-layer architecture that makes AI grounding work — how Data, Memory, and Inference compound to produce organizational intelligence — see [The Legal IQ stack: Data, Memory, Inference](/blog/the-iq-stack). In our next article, we will explore how Spaarke implements these principles within the Microsoft 365 Copilot plane — delivering AI capabilities without requiring you to give away the keys to your data.
+For the data sovereignty foundation behind these architectural questions, read [Your Legal Data Belongs to You](/why-spaarke/your-legal-data-belongs-to-you). For the three-layer architecture that makes AI grounding work — how Data, Memory, and Inference compound to produce organizational intelligence — see [The Legal IQ stack: Data, Memory, Inference](/why-spaarke/the-iq-stack). In our next article, we will explore how Spaarke implements these principles within the Microsoft 365 Copilot plane — delivering AI capabilities without requiring you to give away the keys to your data.
