@@ -44,7 +44,10 @@ projects, emails, documents, tasks, metrics, and outside counsel
 collaboration connect — and where business clients, in-house counsel, and
 outside counsel work in shared spaces with ethical walls and matter-level
 permissions enforced. That's what "One platform. All sides. Every matter."
-compresses, and why we say "system of record" not "matter management."
+compresses, and why we say "system of record" not "matter management." The
+extension we increasingly emphasize: AI grounding stays on one record too —
+outside counsel work against the customer's operational memory, not a
+parallel firm-side AI grounded separately on the same matter.
 
 **Operational intelligence, not productivity AI.**
 The market keeps shipping productivity features: faster drafting, review,
@@ -105,6 +108,18 @@ We don't punch sideways at named competitors. The frame is implicit.
 - **Diagnostic — cited frameworks locate the LOI thesis.** CLOC Core 12, ACC
   Maturity Model 2.0, Gartner. We place category claims inside the existing
   legal-ops landscape rather than asserting from outside it.
+
+- **Architectural — engagement boundary preserved.** When the platform runs
+  inside the customer's tenant and outside counsel become authorized
+  collaborators against the same record, AI grounding does not fragment at
+  the engagement boundary. The company's data, operational memory, and AI
+  grounding stay inside the company's boundary; the firm operates against
+  them rather than re-creating its own. Most legal AI tools today are sold
+  to one side or the other and don't share grounding even when the same
+  vendor sells to both. `what-attorneys-need-to-know-about-ai` §Decision Four
+  carries the long form; `your-legal-data-belongs-to-you` and
+  `tenant-dedicated-deployment` carry the data-sovereignty and deployment
+  consequences.
 
 ---
 
