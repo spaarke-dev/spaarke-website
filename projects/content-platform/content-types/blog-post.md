@@ -66,7 +66,7 @@ The canonical shape lives in `src/lib/blog.ts`. Required fields, validated at bu
 ---
 title: <Statement, sentence-case-but-with-proper-caps-as-needed>
 description: <SEO meta description, ~155 chars; full sentence>
-summary: <Optional one-paragraph summary shown above the article body>
+summary: <2-3 sentences shown on the /why-spaarke index card and the article-page hero; max ~300 chars>
 date: 2026-05-12                      # ISO date; publication date
 author: spaarke                       # spaarke | <person-slug>
 tags:
@@ -81,6 +81,8 @@ draft: false
 ```
 
 Optional fields supported by the loader: `posted` (separate from `date` if backdating); `keyTakeaways` (bullet list shown at the top of the article); `order` (homepage card sort); `featured` + `featuredOrder` (for the `/why-spaarke` carousel).
+
+**`summary`**: 2–3 sentences, target 150–280 chars (max ~300). Renders as the article preview on the `/why-spaarke` index card and the article-page hero. Should be distinct from `description` (SEO meta) — narrative, not keyword-stuffed. The `keyTakeaways` below the body do the comprehensive-summary work; the `summary`'s job is the hook.
 
 **`keyTakeaways`**: array of 3–5 strings; each string 18–35 words; drafted in Spaarke voice; appears in the article's "Key takeaways" card above the body.
 
