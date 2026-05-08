@@ -94,7 +94,7 @@ When introducing a new term, build to it patiently. `what-is-legal-operations-in
 
 9. **No stacked superlatives.** "Categorically different," "fundamentally transformative," "completely revolutionary" in the same paragraph slides the writing into the breathless register. One earned superlative per piece is plenty; zero is usually better.
 
-10. **No reciting "Data → Memory → Inference" without using it structurally.** When the IQ Stack appears, it should organize the argument, not be name-checked. Mid-paragraph creed-recitation is a library habit we should drop.
+10. **No reciting "Data → Memory → Inference" without using it structurally.** When the Legal IQ stack appears, it should organize the argument, not be name-checked. Mid-paragraph creed-recitation is a library habit we should drop.
 
 11. **No "Throughout this series, we…" recap-openers.** They flatten the first paragraph. Weave the connective tissue into the body; spend the opening on the hook of *this* piece.
 
@@ -122,7 +122,7 @@ Before sending a draft for review, run this. If any answer is "no," fix it.
 3. Are sentence rhythms varied — short for emphasis, medium for development, no long compound sentences carrying the load?
 4. Are headings statements (not questions) in sentence case?
 5. Does the piece avoid the §5 words and phrases — "transform," "powerful," "seamless," "AI-powered," "10x," demo CTAs, exclamation points?
-6. If the IQ Stack or LOI is invoked, is it organizing the argument or just name-checked?
+6. If the Legal IQ stack or LOI is invoked, is it organizing the argument or just name-checked?
 7. Are paragraphs 3–5 sentences by default, with one-sentence paragraphs reserved for emphasis after a longer build?
 8. Does the close advance the argument or point to substance — not summarize, not pitch?
 

@@ -37,7 +37,7 @@ reassigning the relevant calendar rows from `tbd` to the new slug.
 Ralph Schroeder is the founder and CEO of Spaarke. His work centers on Legal Operations Intelligence — the operational layer above matter and document systems where data, memory, and inference compound. He argues that legal AI becomes operationally valuable only when it is grounded in a system of record, not bolted on, and that the platform belongs inside the Microsoft tenant the business already governs. The Spaarke philosophy is plainspoken: AI-directed, human-controlled.
 
 **Topic areas**:
-- Legal Operations Intelligence as a category — the IQ Stack, the LOI maturity model, and where it sits relative to matter management and ELM
+- Legal Operations Intelligence as a category — the Legal IQ stack, the LOI maturity model, and where it sits relative to matter management and ELM
 - Microsoft-native legal infrastructure — Power Platform, SharePoint Embedded, Outlook, Teams, M365 Copilot, Azure AI Foundry as one operating layer
 - AI-directed, human-controlled workflows — agentic systems that respect professional judgment
 - The future of legal work — operating models, not tools

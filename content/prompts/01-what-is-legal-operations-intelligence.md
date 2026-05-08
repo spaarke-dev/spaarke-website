@@ -39,7 +39,7 @@ The gap between legal's strategic importance and its operational sophistication.
 Paint the current state. ELM, CLM, e-billing, spreadsheets, email. Data everywhere, insight nowhere. Institutional knowledge lives in people's heads. Every matter starts from zero. The average legal department uses 7+ disconnected systems. No other function in the enterprise operates this way.
 
 ### 3. What Legal Operations Intelligence Is (~400 words)
-Define LOI as a category. It is not a tool — it is a discipline and a platform approach. Introduce the IQ Stack:
+Define LOI as a category. It is not a tool — it is a discipline and a platform approach. Introduce the Legal IQ stack:
 - **Data**: Capture how work gets done — matter data, spend data, workflow data, document data
 - **Memory**: Retain organizational context — decisions, rationale, patterns, precedent
 - **Inference**: Turn signals into decisions — analytics, prediction, recommendation
@@ -66,12 +66,12 @@ Concrete outcomes LOI enables:
 Position Spaarke as the platform purpose-built for LOI — but do this with a light touch. The article should define the category first; Spaarke is the natural answer, not the sales pitch.
 
 ### 6. Where to Go Next
-This is the first article — no back-references available. Include a forward tease: "In our next article, we take a deeper look at the architecture behind Legal Operations Intelligence — the IQ Stack."
+This is the first article — no back-references available. Include a forward tease: "In our next article, we take a deeper look at the architecture behind Legal Operations Intelligence — the Legal IQ stack."
 
 ## Key Phrases to Introduce
 These become shared vocabulary for the entire series. Use them naturally and define them clearly:
 - Legal Operations Intelligence (LOI)
-- IQ Stack
+- Legal IQ stack
 - Data, Memory, Inference (as the three layers)
 - "data-rich, insight-poor"
 - Operational memory
@@ -79,7 +79,7 @@ These become shared vocabulary for the entire series. Use them naturally and def
 ## Cross-References
 - **Can reference**: None (first article)
 - **Will be referenced by**: Nearly every subsequent article
-- **Forward tease**: Article 2 (IQ Stack)
+- **Forward tease**: Article 2 (Legal IQ stack)
 
 ## Tone Notes
 This is the manifesto. McKinsey Quarterly energy — the kind of article a GC forwards to their CEO. No product screenshots, no feature lists, no "schedule a demo." Pure thought leadership that happens to describe what Spaarke does.

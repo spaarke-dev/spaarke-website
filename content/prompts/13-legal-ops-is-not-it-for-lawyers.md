@@ -61,7 +61,7 @@ The strategic legal ops leader is not an IT manager for the legal department —
 ### 4. Intelligence Is the Differentiator (~250 words)
 The difference between admin legal ops and strategic legal ops is intelligence: the ability to analyze, predict, and recommend — not just process and report.
 
-This requires the IQ Stack (Article 2):
+This requires the Legal IQ stack (Article 2):
 - Without a **Data layer**, legal ops can only report on what it manually collects
 - Without a **Memory layer**, legal ops resets context with every staff change
 - Without an **Inference layer**, legal ops can only look backward, never forward
@@ -85,4 +85,4 @@ Connect legal ops outcomes to business outcomes — speak the language of the CF
 ## Cross-References
 - **Can reference**: Articles 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
 - **Will be referenced by**: Articles 14, 15
-- **Shared themes**: Operational Memory, Business Case / ROI, IQ Stack / LOI Framework
+- **Shared themes**: Operational Memory, Business Case / ROI, Legal IQ stack / LOI Framework

@@ -8,7 +8,7 @@
 
 ## Goal
 
-Individual blog post page at `/blog/[slug]` that renders MDX content with proper typography, post header, and metadata.
+Individual blog post page at `/why-spaarke/[slug]` that renders MDX content with proper typography, post header, and metadata.
 
 ## Context
 

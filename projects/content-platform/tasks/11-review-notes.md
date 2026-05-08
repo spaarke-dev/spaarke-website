@@ -60,7 +60,7 @@ Estimated time per file in parens; total ~3–5 hours of focused review.
       from 2,864 → ~2,450 words.*
 - [x] `voice/examples/tone-samples.md` (~5 min) — *Resolved 2026-05-07:
       trimmed from 1,019 → ~850 words; reduced from 8 to 7 passages
-      (dropped IQ Stack Layer 1 close — redundant with the IQ Stack
+      (dropped Legal IQ stack Layer 1 close — redundant with the Legal IQ stack
       flywheel close already in `good-articles.md`).*
 - [x] `voice/examples/avoid-this.md` (~5 min) — are these characteristic
       of failures we'd reject? *Resolved 2026-05-07: trimmed from 1,002
@@ -183,9 +183,9 @@ Examples:
   comment at the top of the file: "What Spaarke Is For." Five H2
   sections (LOI definition / AI-directed, human-controlled / Microsoft
   tenant / tools-to-operating-models / what you'll read here). Three
-  internal cross-links: `/platform`, `/blog/what-is-legal-operations-intelligence`,
-  `/blog/why-we-built-on-microsoft` — plus an inline reference to
-  `/blog/the-iq-stack`. Hero image is a placeholder path with a top-of-file
+  internal cross-links: `/platform`, `/why-spaarke/what-is-legal-operations-intelligence`,
+  `/why-spaarke/why-we-built-on-microsoft` — plus an inline reference to
+  `/why-spaarke/the-iq-stack`. Hero image is a placeholder path with a top-of-file
   comment noting Agent J is producing the visual-identity guide and a
   hero-prompt section will be added to briefs in a separate pass.
   Final-pass against `voice/examples/avoid-this.md` and
@@ -256,7 +256,7 @@ Examples:
   Result: 5 articles, 2,864 → ~2,450 words.
 - **`voice/examples/tone-samples.md`** — trimmed multi-paragraph
   extracts and tightened "Why included" / "Use this when" lines.
-  Dropped the IQ Stack Layer 1 close passage (redundant with the IQ
+  Dropped the Legal IQ stack Layer 1 close passage (redundant with the IQ
   Stack flywheel close already in `good-articles.md`). Result: 8 → 7
   passages, 1,019 → ~850 words.
 - **`voice/examples/avoid-this.md`** — shortened the constructed
@@ -395,9 +395,9 @@ Notable items the drafting agent flagged:
 ### `voice/domain-knowledge.md` (6 tags) — all resolved 2026-05-07
 
 - ~~$20B figure (outside-counsel spend visibility / leakage)~~ —
-  **dropped**. No defensible primary source for an aggregate US
-  outside-counsel total. Replaced with per-company benchmark: median
-  total legal spend at >$20B-revenue companies is $80M (ACC/MLA 2024).
+  **kept in-platform per editorial decision 2026-05-08**. Accepted as
+  the canonical scale figure for the article and library; further
+  sourcing is not required.
 - ~~94% data-difficulty figure~~ — **dropped and replaced**. Figure
   traces to a 2021 EY/Harvard survey, not Wolters Kluwer; now too
   dated. Replaced with 2025 EY Law GC Study figures (52% disorganized

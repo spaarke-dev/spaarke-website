@@ -20,7 +20,7 @@ keyTakeaways:
 draft: false
 ---
 
-Procurement teams, IT reviewers, and legal-ops directors evaluating any platform ask the same question first: what does it actually do? The answer for Spaarke follows. Every major capability, organized by the five modules the product ships in, with each capability mapped to the operational outcome it produces. The IQ Stack — Data, Memory, Inference — sits behind the modules as the architecture; the modules are how the platform reaches a user's day.
+Procurement teams, IT reviewers, and legal-ops directors evaluating any platform ask the same question first: what does it actually do? The answer for Spaarke follows. Every major capability, organized by the five modules the product ships in, with each capability mapped to the operational outcome it produces. The Legal IQ stack — Data, Memory, Inference — sits behind the modules as the architecture; the modules are how the platform reaches a user's day.
 
 The canonical records are three: **matters**, **projects**, and **invoices**. Everything else — documents, emails, tasks, workspaces, budgets, performance metrics, AI summaries — connects to one of those three. Workspaces are collaboration spaces tied to a matter or project, not the organizing primitive. The platform is built around the work, the spend, and the deliverable.
 
@@ -35,7 +35,7 @@ Two consequences for IT:
 - **No new identity or governance perimeter.** Authentication flows through the customer's existing Entra ID. Conditional Access, Data Loss Prevention, sensitivity labels, audit logging, and retention policies cover Spaarke automatically. There are no Spaarke credentials for users to manage.
 - **No parallel infrastructure.** No virtual machines to provision, no databases to administer. Deployment is a Power Platform managed-solution import into a Dataverse environment. The deployment-timeline driver is configuration scope — matter taxonomies, OCG rules, security roles, migration — not technology.
 
-For the long form on architecture, security model, licensing, and the questions IT evaluators consistently ask, see [Spaarke for Your IT Team](/blog/spaarke-for-your-it-team).
+For the long form on architecture, security model, licensing, and the questions IT evaluators consistently ask, see [Spaarke for Your IT Team](/why-spaarke/spaarke-for-your-it-team).
 
 ---
 
@@ -46,13 +46,13 @@ Spaarke ships in two models. Same product, same Power Platform / Dataverse / Sha
 - **Spaarke-Hosted.** Spaarke runs Platform Modules, Portal, Data & Analytics, and Infrastructure on Spaarke-managed tenancy. The customer's M365 tenant connects through Entra ID, Exchange, SharePoint, and Copilot Studio. The path of least resistance for organizations that want Microsoft-native without operating it themselves.
 - **Customer-Hosted** (also "Tenant Dedicated Deployment" in long form). Spaarke modules and portal sit inside the customer's own M365 tenant. Data, identity, and governance stay where they already are. Existing Entra ID, Conditional Access, DLP, sensitivity labels, and audit logging cover Spaarke automatically. Data never leaves the customer environment.
 
-Customer-Hosted is a differentiator worth naming factually: we are not aware of another legal-operations platform that deploys inside the customer's own M365 tenant. Other vendors offer "customer-dedicated" tenants — but those run in the vendor's cloud, not the customer's. The long form is in [Tenant Dedicated Deployment](/blog/tenant-dedicated-deployment) and [Your Legal Data Belongs to You](/blog/your-legal-data-belongs-to-you).
+Customer-Hosted is a differentiator worth naming factually: we are not aware of another legal-operations platform that deploys inside the customer's own M365 tenant. Other vendors offer "customer-dedicated" tenants — but those run in the vendor's cloud, not the customer's. The long form is in [Tenant Dedicated Deployment](/why-spaarke/tenant-dedicated-deployment) and [Your Legal Data Belongs to You](/why-spaarke/your-legal-data-belongs-to-you).
 
 ---
 
 ## The five modules
 
-The platform ships in five capability modules, each built on the same Dataverse schema and the same security model. The IQ Stack — Data, Memory, Inference — is the architecture; the modules are how the architecture reaches a user. Most readers will care about specific modules; the cross-module value comes from the shared record underneath them.
+The platform ships in five capability modules, each built on the same Dataverse schema and the same security model. The Legal IQ stack — Data, Memory, Inference — is the architecture; the modules are how the architecture reaches a user. Most readers will care about specific modules; the cross-module value comes from the shared record underneath them.
 
 ---
 
@@ -79,7 +79,7 @@ The matter is the canonical record. Project records — used for non-matter lega
 
 Documents live in **SharePoint Embedded (SPE)** — Microsoft's developer-grade SharePoint storage that runs inside the customer's own M365 tenant. SPE is the architectural choice that lets Spaarke control the document UX (matter-linked libraries, AI summaries, semantic indexing, the relationship graph) while the underlying storage uses native SharePoint capabilities — versioning, metadata, co-authoring, sensitivity labels, retention. There is no separate DMS to license, manage, or integrate, and Spaarke documents inherit the customer's existing SharePoint governance. Every file is semantic-indexed by Spaarke AI without leaving the tenant.
 
-Email is captured the same way. Outlook is the surface; the email is filed against its matter, project, or document set with the matter context attached.
+Email is captured the same way. Outlook is the user surface; **Exchange** is the capture layer. The email files against its matter, project, or document set with the matter context attached, independent of which Outlook client — desktop, web, or mobile — the user happens to prefer.
 
 - **Document records.** Rich profiles with AI-generated summaries, metadata, version history, and the matter context they belong to. The record sits on top of the SPE-stored file — the file remains the source of truth, the record is how it shows up in matters, search, and AI.
 - **Find similar.** Azure AI semantic search surfaces similar documents across every matter and counsel — past work made retrievable on demand. Past matters become searchable by counterparty, jurisdiction, terms, and outcome, so a new dispute starts from what the team has already seen.
@@ -98,12 +98,13 @@ Email is captured the same way. Outlook is the surface; the email is filed again
 Three stakeholders touch most legal work: the business unit that requested it, in-house counsel running it, and outside counsel executing it. Most platforms see one or two of those parties. Spaarke holds all three on one record, with ethical walls and matter-level permissions enforced. The collaboration module is how that three-stakeholder coverage shows up in product.
 
 - **Secure project workspaces.** Granular workspaces for matters, projects, and deals — invite-only, role-aware, and connected to the underlying record. A workspace is a collaboration surface tied to a matter or project, not a free-standing object.
+- **Document and document-set sharing.** Granular role-based access — view, edit, comment, sign — for individual documents or document sets. Share by user, group, or workspace; sharing inherits the matter's permission model and trails to the matter audit log.
 - **Outside counsel access.** Direct, secure access to the documents and tasks counsel need — without sending another email attachment or standing up a separate firm portal. Privilege and audit trails are preserved in the same workspace as the internal team's view.
 - **Word co-creation and editing.** Co-author Word documents in place — multiple stakeholders, real-time edits, every version anchored to its matter. Native Word, not a Spaarke web view embedded inside Word.
 - **Shared matters and projects.** Share entire matters and projects with internal and external collaborators while preserving privilege and audit trails. The same record, partitioned by who can see what — not three copies to keep in sync.
 - **Teams app.** The Spaarke app inside Microsoft Teams brings matter chat, files, and tasks to where cross-functional teams already collaborate. A matter conversation in Teams stays attached to the matter record automatically.
 
-The shared-workspace pattern matters most where the alternative is the email attachment. Outside counsel sending the latest draft. Business clients asking for status. In-house attorneys reconciling versions. Each of those is a per-firm or per-stakeholder portal in most architectures. Here it is one record, three views.
+The shared-workspace pattern matters most where the alternative is the email attachment. Outside counsel sending the latest draft. Business clients asking for status. In-house teams reconciling versions. Each of those is a per-firm or per-stakeholder portal in most architectures. Here it is one record, three views.
 
 ---
 
@@ -125,7 +126,7 @@ The features users see in this module sit on top of those three pillars:
 - **Document drafting with Word Copilot.** Draft directly inside Word using Copilot grounded in the matter's documents, precedents, and prior work — so a new motion starts from what was filed in similar matters, not from a blank page.
 - **AI and automation playbooks.** Visual workflows that turn legal processes — intake routing, approval chains, invoice review, escalation — into automations. Each step can call AI for analysis or summarization, branch on data conditions, and act through native Microsoft surfaces (Outlook, Teams, Power Automate). Power Automate's connector library extends playbooks into enterprise systems — ServiceNow, SAP, Salesforce, DocuSign, Workday — when matter events need to trigger action elsewhere.
 
-For the architectural argument behind this module — what data the model sees, what stays in the tenant, what gets logged — see [What Attorneys Need to Know About AI Architecture](/blog/what-attorneys-need-to-know-about-ai) and [AI Without Giving Away the Keys](/blog/ai-without-giving-away-the-keys).
+For the architectural argument behind this module — what data the model sees, what stays in the tenant, what gets logged — see [What Attorneys Need to Know About AI Architecture](/why-spaarke/what-attorneys-need-to-know-about-ai) and [AI Without Giving Away the Keys](/why-spaarke/ai-without-giving-away-the-keys).
 
 ---
 
@@ -133,29 +134,29 @@ For the architectural argument behind this module — what data the model sees, 
 
 **The financial and operational truth about every matter and every firm — invoices, budgets, OCG compliance, and outcomes.**
 
-Outside legal spend in the United States alone exceeds $20 billion annually. The Spend & Performance module is how Spaarke makes that spend visible in the same record where the work runs — so OCG compliance, counsel performance, and matter outcomes track against the same data, not three different exports. The long form on the visibility problem is in [The $20B Blind Spot](/blog/the-20b-blind-spot).
+Outside legal spend in the United States alone exceeds $20 billion annually. The Spend & Performance module is how Spaarke makes that spend visible in the same record where the work runs — so OCG compliance, counsel performance, and matter outcomes track against the same data, not three different exports. The long form on the visibility problem is in [The $20B Blind Spot](/why-spaarke/the-20b-blind-spot).
 
 - **Outside counsel performance metrics (the report card).** Score and benchmark outside counsel on cost, cycle time, OCG compliance, and matter outcomes. Selection and panel-management decisions draw on demonstrated track record, not just relationship.
 - **Matter report cards.** A single matter scorecard combining budget, spend, performance grades, and risk signals at a glance. The version of the matter the GC and the CFO can both read.
 - **Billing-to-matter roll-up.** Every invoice rolled up to its matter, project, and counsel — so spend trends are one click from the matter record, not one export and three pivot tables away.
 - **Budget setup and tracking.** Set matter budgets, track actual against forecast, and get alerted before a matter goes over. Budgets attach to individual matters and to portfolios; thresholds trigger notifications, not retrospective discovery.
-- **Power BI dashboards.** Dashboards built directly on the Spaarke Dataverse model: cross-matter spend, performance, operational analytics. Reporting reflects today's matters, not last quarter's spreadsheet.
-- **Invoice capture (LEDES).** Electronic submission with LEDES (Legal Electronic Data Exchange Standard) format support enables line-item-level data capture. Automated ingestion replaces manual entry.
+- **Power BI dashboards.** Dashboards built directly on the Spaarke Dataverse model: cross-matter spend, performance, operational analytics. Reporting reflects today's matters, not last quarter's spreadsheet. As Microsoft consolidates enterprise analytics under **Fabric**, Spaarke's Dataverse foundation extends natively into Fabric workloads — no separate data migration when an organization moves its analytics center of gravity.
+- **Invoice capture (LEDES + e-invoicing).** Electronic submission via LEDES (Legal Electronic Data Exchange Standard) for line-item-level data capture; automated ingestion replaces manual entry. The architecture also supports emerging e-invoicing mandates — including the EU's **VAT in the Digital Age (ViDA)** directive that phases structured electronic invoicing into cross-border B2B transactions across the EU.
 - **Outside counsel guidelines (OCG) enforcement.** Configurable OCG rules review every invoice automatically. Block billing, excessive hours, unapproved timekeepers, expense categories outside the policy — flagged on the way in, not after approval. Compliance reporting back to firms happens in the same workspace where the work runs, so disputes don't accumulate to quarter-end.
 - **Accruals.** Accrual estimates based on matter stage, historical patterns, and billing velocity. Quarter-end forecasting becomes data-driven rather than spreadsheet-driven.
 - **Rate management.** Approved rate cards by firm, timekeeper level, and practice area. Rate-increase tracking and benchmarking compare rates across comparable matters and firms.
 
 ---
 
-## How the IQ Stack runs across the modules
+## How the Legal IQ stack runs across the modules
 
-The IQ Stack — **Data**, **Memory**, **Inference** — is the architectural lens; the five modules above are the product. Each module shows up at every layer of the stack:
+The Legal IQ stack — **Data**, **Memory**, **Inference** — is the architectural lens; the five modules above are the product. Each module shows up at every layer of the stack:
 
-- **Data layer.** Unified records on a single Dataverse schema. Matters, projects, invoices, documents, emails, tasks, performance metrics — all connected. Most matter systems are document repositories with status flags. Spaarke is a structured operational record, which is what makes the layers above it work. See [The IQ Stack](/blog/the-iq-stack) for the long form.
-- **Memory layer.** Operational memory — decisions, rationale, outcomes, counsel relationships, counterparty patterns, negotiated terms — captured systematically as matters run, not as an afterthought. The Documents & Email relationship graph, the Spend & Performance report cards, and the AI & Automation Find similar capability all draw on this layer. See [Institutional Knowledge Is Walking Out the Door](/blog/institutional-knowledge) for why this is the difference between systems that remember status and systems that remember decisions.
-- **Inference layer.** Spaarke AI — Foundry IQ, Copilot Studio, Microsoft Agent Framework — applied to the structured data and memory underneath. Matter summaries, semantic search, anomaly flags on invoices, agentic playbooks. This is the layer the audit committee asks about. The architecture answer is in [What Attorneys Need to Know About AI Architecture](/blog/what-attorneys-need-to-know-about-ai).
+- **Data layer.** Unified records on a single Dataverse schema. Matters, projects, invoices, documents, emails, tasks, performance metrics — all connected. Most matter systems are document repositories with status flags. Spaarke is a structured operational record, which is what makes the layers above it work. See [The Legal IQ stack](/why-spaarke/the-iq-stack) for the long form.
+- **Memory layer.** Operational memory — decisions, rationale, outcomes, counsel relationships, counterparty patterns, negotiated terms — captured systematically as matters run, not as an afterthought. The Documents & Email relationship graph, the Spend & Performance report cards, and the AI & Automation Find similar capability all draw on this layer. See [Institutional Knowledge Is Walking Out the Door](/why-spaarke/institutional-knowledge) for why this is the difference between systems that remember status and systems that remember decisions.
+- **Inference layer.** Spaarke AI — Foundry IQ, Copilot Studio, Microsoft Agent Framework — applied to the structured data and memory underneath. Matter summaries, semantic search, anomaly flags on invoices, agentic playbooks. This is the layer the audit committee asks about. The architecture answer is in [What Attorneys Need to Know About AI Architecture](/why-spaarke/what-attorneys-need-to-know-about-ai).
 
-The IQ Stack is not a fourth module. It is the architecture of the five.
+The Legal IQ stack is not a fourth module. It is the architecture of the five.
 
 ---
 
@@ -164,17 +165,17 @@ The IQ Stack is not a fourth module. It is the architecture of the five.
 Legal does not operate in isolation, and the platform's reach extends to the stakeholders the legal department serves. The cross-functional surfaces below are not separate modules — they are how the five modules show up for non-legal users.
 
 - **Executive dashboards.** Board-ready legal-department overview covering spend, risk, volume, and outcomes. A portfolio view that communicates legal's operational health in the language the C-suite uses, without manual deck-building.
-- **Finance integration.** Accrual forecasts, budget-versus-actual reporting, and cost allocation by business unit. Finance gets the forward-looking data planning needs; legal gets credit for the operational discipline that produces it. Long form: [Breaking the Silo Between Legal, Finance, and the Business](/blog/breaking-the-silo).
+- **Finance integration.** Accrual forecasts, budget-versus-actual reporting, and cost allocation by business unit. Finance gets the forward-looking data planning needs; legal gets credit for the operational discipline that produces it. Long form: [Breaking the Silo Between Legal, Finance, and the Business](/why-spaarke/breaking-the-silo).
 - **Business unit portals.** Self-service matter requests, contract status, and regulatory updates for internal clients. The business gets the visibility it wants without creating manual work for legal.
 - **Outside counsel collaboration.** Covered in the Collaboration module above. The point worth restating cross-functionally: outside counsel see only what they should see, in a workspace that runs on the same record the in-house team uses.
 - **Board reporting.** Quarterly board content — litigation summary, spend overview, key metrics, trend analysis — assembles from the live data instead of being rebuilt in slides each quarter.
 
-These capabilities reflect a principle that runs through the [LOI Maturity Model](/blog/loi-maturity-model): as legal operations mature, their value extends beyond the department. The platform should support that trajectory.
+These capabilities reflect a principle that runs through the [LOI Maturity Model](/why-spaarke/loi-maturity-model): as legal operations mature, their value extends beyond the department. The platform should support that trajectory.
 
 ---
 
 ## Where to go next
 
-Five modules — Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance — running on one record, in the customer's tenant, with AI grounded in the customer's own work. The IQ Stack — Data, Memory, Inference — names the architecture; the modules are how the architecture reaches a user's day.
+Five modules — Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance — running on one record, in the customer's tenant, with AI grounded in the customer's own work. The Legal IQ stack — Data, Memory, Inference — names the architecture; the modules are how the architecture reaches a user's day.
 
-For the strategic framework behind the platform, start with [What is Legal Operations Intelligence?](/blog/what-is-legal-operations-intelligence) and [The IQ Stack](/blog/the-iq-stack). For the technical architecture, deployment models, and the questions IT consistently asks, see [Spaarke for Your IT Team](/blog/spaarke-for-your-it-team) and [Tenant Dedicated Deployment](/blog/tenant-dedicated-deployment). For the AI architecture and why grounding matters, see [What Attorneys Need to Know About AI Architecture](/blog/what-attorneys-need-to-know-about-ai) and [AI Without Giving Away the Keys](/blog/ai-without-giving-away-the-keys).
+For the strategic framework behind the platform, start with [What is Legal Operations Intelligence?](/why-spaarke/what-is-legal-operations-intelligence) and [The Legal IQ stack](/why-spaarke/the-iq-stack). For the technical architecture, deployment models, and the questions IT consistently asks, see [Spaarke for Your IT Team](/why-spaarke/spaarke-for-your-it-team) and [Tenant Dedicated Deployment](/why-spaarke/tenant-dedicated-deployment). For the AI architecture and why grounding matters, see [What Attorneys Need to Know About AI Architecture](/why-spaarke/what-attorneys-need-to-know-about-ai) and [AI Without Giving Away the Keys](/why-spaarke/ai-without-giving-away-the-keys).

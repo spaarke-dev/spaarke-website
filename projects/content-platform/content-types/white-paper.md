@@ -45,7 +45,7 @@ Citation count minimum: 8 distinct sources for a 3,000-word paper. More if the a
 
 ## 5. Visual treatment
 
-- **Diagrams** are welcome and often required. The IQ Stack, the five capability modules, deployment topology — these are easier to argue with a diagram than with prose. Reference the existing Spaarke diagram library before commissioning new art.
+- **Diagrams** are welcome and often required. The Legal IQ stack, the five capability modules, deployment topology — these are easier to argue with a diagram than with prose. Reference the existing Spaarke diagram library before commissioning new art.
 - **Callout boxes** for key statistics. One per section, max. Pulls the eye for the scanner; the prose still has to earn the claim.
 - **Tables** for comparisons (capability matrices, framework alignments). Use sparingly — a table with three rows is a list pretending to be a table.
 - **No clip-art, no stock photography of suited professionals shaking hands, no AI-generated diagrams that hallucinate connections.** If we can't draw it accurately, we don't include it.

@@ -28,7 +28,7 @@ Inferred from the 3 converted articles (no formal length cap is defined in `proj
 
 - **Bullet count:** 4 per article in every converted example.
 - **Bullet length:** roughly 18–35 words, single sentence, declarative.
-- **Voice:** assertion-led, names the operative thing (LOI, the IQ Stack, tenant-dedicated deployment), no hedging, no "we believe."
+- **Voice:** assertion-led, names the operative thing (LOI, the Legal IQ stack, tenant-dedicated deployment), no hedging, no "we believe."
 - **Format in YAML:** block list under `keyTakeaways:`, each item plain (unquoted) on its own line. No nested lists, no markdown formatting inside bullets.
 - **Position in frontmatter:** before `draft: false`, after the tag/feature block. Mechanical placement — the loader doesn't care, but consistency helps the team.
 
@@ -82,7 +82,7 @@ Per article:
    - Roughly 18–35 words. Match the cadence of the converted examples.
    - 4 bullets is the established shape; 3 is acceptable for shorter pieces, 5 is the upper bound.
    - No "we believe," no "this article explores," no marketing throat-clearing.
-   - Numbers and named frameworks (LOI, IQ Stack, CLOC Core 12, $20B, 85%) must match the body verbatim.
+   - Numbers and named frameworks (LOI, Legal IQ stack, CLOC Core 12, $20B, 85%) must match the body verbatim.
 4. **Insert into frontmatter** above `draft: false`, as a YAML block list:
    ```yaml
    keyTakeaways:
@@ -92,7 +92,7 @@ Per article:
      - Fourth bullet here.
    ```
 5. **Leave `summary:` in place** if it exists. The renderer prefers `keyTakeaways` when both are set, and `summary` is still consumed elsewhere (RSS, social cards, list pages — verify before deletion; out of scope for this task).
-6. **Verify locally:** `npm run dev`, navigate to `/blog/<slug>`, confirm the "Key takeaways" card renders with 3–5 bullets and the legacy paragraph no longer shows.
+6. **Verify locally:** `npm run dev`, navigate to `/why-spaarke/<slug>`, confirm the "Key takeaways" card renders with 3–5 bullets and the legacy paragraph no longer shows.
 7. **No body edits.** This task is frontmatter-only.
 
 ### UI copy
@@ -190,7 +190,7 @@ range (48 of 48). Frontmatter only — no article bodies modified.
 
 ```yaml
 keyTakeaways:
-  - The IQ Stack is the three-layer architecture behind LOI — Data captures how work gets done, Memory retains the rationale, Inference turns both into decisions.
+  - The Legal IQ stack is the three-layer architecture behind LOI — Data captures how work gets done, Memory retains the rationale, Inference turns both into decisions.
   - Documents capture outcomes; Memory captures the negotiation dynamics — what was conceded, what leverage worked, what the fallback position was.
   - Generic AI gives you industry ranges; Inference grounded in your 200 prior matters gives you a decision framework built on your own history.
   - The three layers compound. More data sharpens memory, richer memory sharpens inference, better inference guides what data to capture next. One learns. The other just runs.
@@ -259,7 +259,7 @@ keyTakeaways:
   - Most legal departments are not ready for AI — not because the tools are immature, but because their data is. The tool is not the bottleneck. The data architecture is.
   - An AI tool layered on fragmented data gives you fragmented answers — faster. The risk is not bad output. It is plausible bad output that gets embedded into decisions before anyone notices.
   - Adding more tools at LOI Maturity Level 2 keeps you at Level 2 with more silos. AI-readiness corresponds to Level 3 and above, where data is integrated and context is captured.
-  - The IQ Stack sequence — Data first, then Memory, then Inference — is how you close the gap. Skip to Inference and the model has nothing meaningful to reason over.
+  - The Legal IQ stack sequence — Data first, then Memory, then Inference — is how you close the gap. Skip to Inference and the model has nothing meaningful to reason over.
 ```
 
 ### `the-20b-blind-spot`

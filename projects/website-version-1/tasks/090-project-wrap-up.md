@@ -19,7 +19,7 @@ This is the final task. All features are built and deployed. This task runs fina
 1. Run Lighthouse audit on all pages (desktop):
    - `/` - Homepage
    - `/blog` - Blog index
-   - `/blog/{sample-slug}` - Blog post
+   - `/why-spaarke/{sample-slug}` - Blog post
    - `/contact` - Contact form
    - Verify targets: Performance >= 90, Accessibility >= 95, Best Practices >= 95, SEO >= 95
 2. Verify all success criteria from spec.md:

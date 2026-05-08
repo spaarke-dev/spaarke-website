@@ -139,7 +139,7 @@ Factual statements supporting positioning — not sales superlatives. Framed as 
 
 - **Single platform across five modules, not point tools.** Five modules on one Dataverse schema. Most alternatives cover one or two and integrate across the boundary.
 
-- **Three-stakeholder coverage: business, in-house counsel, outside counsel.** Per `projects/website-version-2/spaarke-home-page-creative-brief-v1.4.md`, this is the moat. Other platforms see one or two parties.
+- **Three-stakeholder coverage: business, in-house counsel, outside counsel.** Per `projects/website-version-2/spaarke-home-page-creative-brief-v1.4.md`, this is the moat. Other platforms see one or two parties — and even when they see all three at the document level, the underlying AI grounding does not survive the engagement. Outside counsel use their own AI tool, grounded separately, on the same matter the in-house team is working in another tool. Spaarke's three-stakeholder model puts in-house and outside-counsel work against the same matter record, the same operational memory, and the same AI grounding. Source: positioning logic from `content/blog/2026-02-15-what-attorneys-need-to-know-about-ai.mdx` §Decision Four; consequences in `content/blog/2026-02-01-your-legal-data-belongs-to-you.mdx` (Outside-Counsel Data Question section) and `content/blog/2026-02-08-tenant-dedicated-deployment.mdx`.
 
 - **Built-in AI, not bolted-on.** AI is a structured layer (Foundry IQ + Copilot Studio + Agent Framework) grounded in the platform's own data — not generic AI applied to unstructured email and documents.
 

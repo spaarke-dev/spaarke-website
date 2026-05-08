@@ -10,7 +10,7 @@
 
 Update [src/app/layout.tsx](../../../src/app/layout.tsx) so NotificationBar (top), SiteHeader (sticky), and Footer (bottom) wrap all routes.
 
-Verify on every existing route the global chrome renders correctly: `/`, `/blog`, `/blog/[slug]`, `/contact`, `/access-request`, `/privacy`, `/terms`, `/signin`, `/platform`, `/why-spaarke`.
+Verify on every existing route the global chrome renders correctly: `/`, `/blog`, `/why-spaarke/[slug]`, `/contact`, `/access-request`, `/privacy`, `/terms`, `/signin`, `/platform`, `/why-spaarke`.
 
 After this task, every page on the `v2` branch is using v2 chrome even if the page body is still v1-styled — that's expected; Phase 3 reskins the page bodies.
 

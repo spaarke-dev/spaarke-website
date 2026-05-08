@@ -50,27 +50,27 @@ The piece lands as the second blog post under the new voice constitution, immedi
 
 - A one-sentence working definition of Legal IQ that the reader can carry away — different in framing from `what-is-legal-operations-intelligence` (which defines the *category*) but consistent with it.
 - The intelligence-metric-by-function comparison (marketing, sales, finance vs. legal). The comparison is the lever — every reader knows their company runs on those metrics.
-- The practical sequence — data, then memory, then inference — citing `the-iq-stack` as the architectural piece. Don't restate the IQ Stack in detail; gesture and link.
+- The practical sequence — data, then memory, then inference — citing `the-iq-stack` as the architectural piece. Don't restate the Legal IQ stack in detail; gesture and link.
 - A short concrete passage showing what raised Legal IQ looks like operationally — spend visibility shifting from quarterly to continuous, matter handoffs preserving rationale not just documentation, outside-counsel performance grounded in the department's own history.
 - The 87% headcount growth figure (ACC/BLS, 2025) cited from `voice/research-sources.md`.
 - A closing argument: legal IQ becomes a board-level metric. CFOs and CEOs will start asking about it the way they now ask about marketing attribution.
-- Two cross-links: to `/blog/what-is-legal-operations-intelligence` (category) and `/blog/the-iq-stack` (architecture).
+- Two cross-links: to `/why-spaarke/what-is-legal-operations-intelligence` (category) and `/why-spaarke/the-iq-stack` (architecture).
 
 # Must NOT include
 
 - Productivity-tool framing. The whole piece argues against productivity AI as the destination.
-- "AI-powered." Use specific layer names (Foundry IQ, Copilot Studio, Microsoft Agent Framework) only if the architectural reference earns it; otherwise defer to The IQ Stack and Welcome to Spaarke.
+- "AI-powered." Use specific layer names (Foundry IQ, Copilot Studio, Microsoft Agent Framework) only if the architectural reference earns it; otherwise defer to The Legal IQ stack and Welcome to Spaarke.
 - "The future of legal" as a phrase. We are arguing about a specific function (legal operations) and a specific property (intelligence metric), not the future of legal practice broadly.
 - "Transform," "disrupt," "revolutionary," "10x." On the do-not-say list.
 - Specific vendor names — even by implication. The piece is structural, not competitive.
 - Any restated body of `what-is-legal-operations-intelligence`. Reference, don't replicate.
-- Demo CTAs. Close points to the platform page or the IQ Stack, not to a contact form.
+- Demo CTAs. Close points to the platform page or the Legal IQ stack, not to a contact form.
 
 # References
 
-- `/blog/welcome-to-spaarke` — sister piece (publishes 2026-05-11; this publishes 2026-05-19).
-- `/blog/what-is-legal-operations-intelligence` — category-definition piece. Cite once near the opening, link.
-- `/blog/the-iq-stack` — architecture piece. Cite when the data → memory → inference sequence is invoked.
+- `/why-spaarke/welcome-to-spaarke` — sister piece (publishes 2026-05-11; this publishes 2026-05-19).
+- `/why-spaarke/what-is-legal-operations-intelligence` — category-definition piece. Cite once near the opening, link.
+- `/why-spaarke/the-iq-stack` — architecture piece. Cite when the data → memory → inference sequence is invoked.
 - `/platform` — for the close. The reader who wants to see what raised legal IQ looks like in product.
 - `voice/research-sources.md` — for the ACC/BLS 87% figure and any other quantitative claim that earns its place.
 

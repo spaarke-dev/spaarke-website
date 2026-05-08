@@ -38,7 +38,7 @@ With the MDX loading pipeline in place, we need the blog index page to list post
 - [ ] Blog index lists all published posts
 - [ ] Posts are sorted by date (newest first)
 - [ ] Draft posts do not appear
-- [ ] Each post card links to `/blog/[slug]`
+- [ ] Each post card links to `/why-spaarke/[slug]`
 - [ ] Tags render as styled pills/badges
 - [ ] Responsive layout works on mobile and desktop
 

@@ -27,7 +27,7 @@
 - Blog index page with post listing, dates, descriptions, and tags
 - Blog post page with MDX rendering and typography
 - Per-post SEO: OpenGraph, Twitter cards, JSON-LD BlogPosting schema
-- RSS feed at `/blog/rss.xml`
+- RSS feed at `/why-spaarke/rss.xml`
 - Blog posts integrated into sitemap
 - 2 sample MDX posts for testing
 

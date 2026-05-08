@@ -4,7 +4,7 @@
 **Scope**: every `.mdx` file in `content/blog/` as of 2026-05-06
 **Calibration**: T00 §1 — McKinsey Quarterly, HBR, Stripe blog, Microsoft WorkLab/Fabric, BCG, Thomson Reuters Institute. Operator-grade, structured, plainspoken, analytically defensible — closer to McKinsey/HBR than to startup marketing.
 
-The existing library is a mostly cohesive series under the "Spaarke Team" byline that defines the Legal Operations Intelligence (LOI) category and the IQ Stack (Data → Memory → Inference). Almost every piece is directionally on-voice. The exception is one early launch post predating the LOI thesis that reads in a different register entirely.
+The existing library is a mostly cohesive series under the "Spaarke Team" byline that defines the Legal Operations Intelligence (LOI) category and the Legal IQ stack (Data → Memory → Inference). Almost every piece is directionally on-voice. The exception is one early launch post predating the LOI thesis that reads in a different register entirely.
 
 ---
 
@@ -13,7 +13,7 @@ The existing library is a mostly cohesive series under the "Spaarke Team" byline
 | Slug | Date | Title | Persona fit | Voice rating | Notes |
 |---|---|---|---|---|---|
 | what-is-legal-operations-intelligence | 2026-01-04 | What Is Legal Operations Intelligence? | GC, Legal Ops Director | ✅ | Category-defining piece; concrete opener, taut argument, distinguishes from adjacent categories cleanly. |
-| the-iq-stack | 2026-01-11 | The IQ Stack: Data, Memory, Inference | Legal Ops Director, GC | ✅ | Sharpest architectural piece; pithy contrasts ("documents capture outcomes / memory captures negotiation dynamics"). |
+| the-iq-stack | 2026-01-11 | The Legal IQ stack: Data, Memory, Inference | Legal Ops Director, GC | ✅ | Sharpest architectural piece; pithy contrasts ("documents capture outcomes / memory captures negotiation dynamics"). |
 | loi-maturity-model | 2026-01-18 | From Reactive to Predictive: How LOI Aligns with Legal Operations Maturity | Legal Ops Director | ✅ | Cites CLOC, ACC, Gartner by name; complements rather than competes; defensible diagnostic. |
 | why-we-built-on-microsoft | 2026-01-25 | Why We Built on Microsoft (and Why It Matters for Legal) | CIO, GC | ✅ | Frames platform choice as governance, not preference; "Operation within Microsoft" line earns its weight. |
 | welcome-to-spaarke | 2026-02-01 | Welcome to Spaarke | general | ⚠ | Pre-LOI launch post; "ignite innovation," "spark," generic services list — does not match current voice. |
@@ -27,7 +27,7 @@ The existing library is a mostly cohesive series under the "Spaarke Team" byline
 | breaking-the-silo | 2026-03-21 | Breaking the Silo Between Legal, Finance, and the Business | Legal Ops Director, GC | ✅ | Cross-functional argument; three concrete scenarios (M&A, Q3 forecast, BU re-negotiating) carry the case. |
 | legal-ops-is-not-it-for-lawyers | 2026-03-25 | Legal Ops Is Not IT for Lawyers | Legal Ops Director | ✅ | "COO of the legal function" framing is on-thesis; metrics ladder (cost avoidance, time to insight, predictive accuracy) is sharp. |
 | spaarke-for-your-it-team | 2026-03-28 | Spaarke for Your IT Team: Architecture & Deployment Q&A | CIO | ◐ | Reference doc, drier than narrative pieces; ◐ reflects fit-for-purpose, not weakness. |
-| spaarke-feature-specification | 2026-03-31 | The Spaarke Platform: Feature Specification | CIO, Legal Ops Director | ◐ | Feature catalog by IQ Stack; structurally disciplined but reads as spec, not thought leadership. ◐ for fit. |
+| spaarke-feature-specification | 2026-03-31 | The Spaarke Platform: Feature Specification | CIO, Legal Ops Director | ◐ | Feature catalog by Legal IQ stack; structurally disciplined but reads as spec, not thought leadership. ◐ for fit. |
 
 **Counts**: ✅ 12, ◐ 3, ⚠ 1.
 
@@ -51,7 +51,7 @@ The remaining twelve articles form a tightly linked LOI series and consistently 
 
 4. **Concrete operational scenarios instead of abstractions.** `institutional-knowledge` opens with four named roles (the litigator, the contract manager, the legal ops lead, the IP paralegal) and what specifically walked out the door with each. `breaking-the-silo` does the same with M&A diligence, Q3 forecasting, and a business unit re-negotiating ground already won. `what-attorneys-need-to-know-about-ai` uses litigation-strategy-document and contracts-comparison scenarios. These specifics convert platitudes into arguments a reader can audit.
 
-5. **Side-by-side language to make a distinction precise.** Name the old/generic version, then the new/grounded version, in parallel sentences. "Generic AI: 'Similar matters typically cost between $200K and $500K.' / IQ Stack Inference: 'Based on 200 similar matters your department has handled, this one will likely cost $280K…'" The same pattern appears in `the-20b-blind-spot` (Reporting vs. Intelligence) and `legal-ops-is-not-it-for-lawyers` ("We processed 4,000 invoices" vs. "We identified $2.1 million in billing anomalies"). One of the library's most reliable rhetorical patterns.
+5. **Side-by-side language to make a distinction precise.** Name the old/generic version, then the new/grounded version, in parallel sentences. "Generic AI: 'Similar matters typically cost between $200K and $500K.' / Legal IQ stack Inference: 'Based on 200 similar matters your department has handled, this one will likely cost $280K…'" The same pattern appears in `the-20b-blind-spot` (Reporting vs. Intelligence) and `legal-ops-is-not-it-for-lawyers` ("We processed 4,000 invoices" vs. "We identified $2.1 million in billing anomalies"). One of the library's most reliable rhetorical patterns.
 
 6. **Closes with a pointer to where to go next, not a sales CTA.** The "Where to Go Next" sections link to other library pieces framed by what they answer, not by funnel position. No "Schedule a demo," no "Talk to sales." The closes earn trust by pointing to more substance — which fits the McKinsey/HBR calibration.
 
@@ -63,7 +63,7 @@ The remaining twelve articles form a tightly linked LOI series and consistently 
 
 1. **Marketing-flavored superlatives bleed in.** "Transformative," "categorically different," "the difference is not incremental — it is categorical," and "transforms how legal departments operate" appear in nearly every piece. Once or twice per article they read as earned; when two or three stack inside a section, the writing slides toward the "breathless" register the style guide will want to avoid. The strongest passages prove the claim with a comparison; weaker passages assert it.
 
-2. **The IQ Stack is name-dropped without always earning the reference.** Cross-linking to `the-iq-stack` is part of the series strategy — but several articles invoke "Data → Memory → Inference" or "the flywheel" mid-section as if reciting a creed rather than using it structurally. `the-ai-readiness-gap` and `breaking-the-silo` are strongest because they actually *use* the three-layer frame to organize the argument; weaker passages gesture at it.
+2. **The Legal IQ stack is name-dropped without always earning the reference.** Cross-linking to `the-iq-stack` is part of the series strategy — but several articles invoke "Data → Memory → Inference" or "the flywheel" mid-section as if reciting a creed rather than using it structurally. `the-ai-readiness-gap` and `breaking-the-silo` are strongest because they actually *use* the three-layer frame to organize the argument; weaker passages gesture at it.
 
 3. **Low-entropy series boilerplate at the head and foot of articles.** Most pieces open with a "Throughout this series, we…" or "In our previous article, we introduced…" recap and close with a near-identical "Where to Go Next." The recap-opener buys cohesion at the cost of a flat first paragraph. A McKinsey/HBR-aligned target would spend the first paragraph on the hook of *this* piece and weave the connective tissue into the body.
 
@@ -98,7 +98,7 @@ Five strongest candidates for `voice/examples/good-articles.md` (T08). Each poin
 - **Why included**: Tightest architectural piece in the library. Each layer has its own voice (Data is operational; Memory is reflective; Inference is comparative), and "How the Three Layers Compound" is the clearest articulation of the flywheel in the corpus.
 - **Suggested extracts**:
   - Layer 2 (Memory), the three "Documents capture outcomes / Documents capture snapshots / Documents are static" contrasts — canonical parallel-construction-with-bold pattern.
-  - The "Generic AI vs. IQ Stack Inference" side-by-side in Layer 3 — clearest example of the side-by-side comparison move.
+  - The "Generic AI vs. Legal IQ stack Inference" side-by-side in Layer 3 — clearest example of the side-by-side comparison move.
   - "How the Three Layers Compound" — describes a system effect in prose without reaching for "synergy."
 
 ### Article: `the-20b-blind-spot`

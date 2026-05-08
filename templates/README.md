@@ -144,7 +144,7 @@ Three patterns, increasing in specificity:
 
 ### 1. "Use whatever fits" — Claude picks from your library
 
-> "Write a new article on the IQ Stack framework. There are images in
+> "Write a new article on the Legal IQ stack framework. There are images in
 > `resources/articles/legal-ops/` you can use — pick whichever fit.
 > Save the post as `content/blog/2026-05-20-iq-stack-explained.mdx`."
 
@@ -155,7 +155,7 @@ the MDX.
 
 ### 2. "Use these specific images"
 
-> "Write the article on the IQ Stack. Use these images:
+> "Write the article on the Legal IQ stack. Use these images:
 >
 > - `resources/articles/legal-ops/iq-stack-diagram.svg` as the hero
 > - `resources/articles/legal-ops/data-layer.svg` for the Data section

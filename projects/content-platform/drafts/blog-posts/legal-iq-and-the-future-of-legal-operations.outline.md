@@ -89,7 +89,7 @@
 **Move**: turn outward and forward. No demo CTA.
 
 - Pointer 1: `/platform` — the platform built around Legal IQ.
-- Pointer 2: `/blog/the-iq-stack` — the architectural sequence in long form.
+- Pointer 2: `/why-spaarke/the-iq-stack` — the architectural sequence in long form.
 - Final sentence: a measured kicker that lands the structural claim. Candidate: "The function does not stay the way it is. The departments that have organized for it will measure differently from the ones that have not." (Refine in draft.)
 
 ---
@@ -100,7 +100,7 @@
 - [ ] No "AI-powered." Layer names only on cite. ✓
 - [ ] No "transform," "disrupt," "revolutionary," "10x," "future of legal." ✓ (verify in draft)
 - [ ] No demo CTA. Close points to substance. ✓
-- [ ] Cross-links: `/blog/what-is-legal-operations-intelligence`, `/blog/the-iq-stack`, `/platform`. ✓ (3 cross-links per content-types/blog-post.md)
+- [ ] Cross-links: `/why-spaarke/what-is-legal-operations-intelligence`, `/why-spaarke/the-iq-stack`, `/platform`. ✓ (3 cross-links per content-types/blog-post.md)
 - [ ] One stat citation max in body. ✓ (87% headcount, ACC/BLS, sourced)
 - [ ] Sentence-case headings, no rhetorical questions in headings. ✓
 - [ ] Length target: ~1,500 words. Outline budgets to ~1,500 ± 50 across opener + 5 sections + close.

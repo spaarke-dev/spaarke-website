@@ -55,9 +55,9 @@ Three approaches, each producing fundamentally different output quality:
 
 **RAG with your documents** — The AI retrieves your documents at query time. Better, but dependent on document quality and indexing.
 
-**Grounded in structured operational data** — The AI draws on your organization's matter history, precedents, institutional memory, and operational context. This is the Inference layer of the IQ Stack (Article 2).
+**Grounded in structured operational data** — The AI draws on your organization's matter history, precedents, institutional memory, and operational context. This is the Inference layer of the Legal IQ stack (Article 2).
 
-Key insight: An AI grounded in your organization's own operational memory will produce fundamentally better work than one trained on the internet. The IQ Stack's Memory layer is what makes AI genuinely useful for legal work.
+Key insight: An AI grounded in your organization's own operational memory will produce fundamentally better work than one trained on the internet. The Legal IQ stack's Memory layer is what makes AI genuinely useful for legal work.
 
 ### 4. Decision 3: What Is the True Cost Model? (~300 words)
 AI pricing is opaque. Help readers understand the real cost structure:
@@ -86,7 +86,7 @@ Practical checklist for evaluating any AI-enabled legal tool:
 Frame as empowerment: "You will be in the room when these decisions are made. These are the questions that separate informed adoption from risky experimentation."
 
 ### 6. Where to Go Next
-- Back-references: "Your Legal Data Belongs to You" (Article 5) for data sovereignty depth; "The IQ Stack" (Article 2) for the architecture that makes AI grounding work
+- Back-references: "Your Legal Data Belongs to You" (Article 5) for data sovereignty depth; "The Legal IQ stack" (Article 2) for the architecture that makes AI grounding work
 - Forward tease: "AI Without Giving Away the Keys" (Article 8) for how Spaarke implements this within M365 Copilot
 
 ## Cross-References

@@ -57,7 +57,7 @@ Spaarke's recurring narrative — what argument the article advances. Smaller an
 | Slug | When to use |
 |---|---|
 | `legal-operations-intelligence` | The LOI argument: Spaarke is operational intelligence for the legal function. The umbrella narrative. |
-| `iq-stack` | The four-layer IQ Stack frame (operational memory → analytics → directed AI → directed agents). Use only when the piece explicitly invokes the stack. |
+| `iq-stack` | The four-layer Legal IQ stack frame (operational memory → analytics → directed AI → directed agents). Use only when the piece explicitly invokes the stack. |
 | `microsoft-ecosystem` | The Microsoft-native argument — Dataverse, SharePoint, Entra, Purview, Copilot. Use for architecture and integration pieces. |
 | `tenant-dedicated-deployment` | The customer-tenant deployment story — single-tenant in the customer's Microsoft estate vs multi-tenant SaaS. |
 | `data-sovereignty` | Where customer data lives, who can see it, what the AI does and does not learn from it. The privilege-and-control argument. |

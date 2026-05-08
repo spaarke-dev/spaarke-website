@@ -57,7 +57,7 @@ Key points:
 - Connect to the LOI Maturity Model: readiness corresponds to Level 3+ on the maturity scale
 
 ### 4. Closing the Gap: An LOI Approach (~300 words)
-The IQ Stack (Article 2) sequence is designed to close this gap:
+The Legal IQ stack (Article 2) sequence is designed to close this gap:
 
 1. **Start with Data** — Unify matter, spend, and document data into a single structured platform. This is not a data migration project — it is changing how data is captured going forward.
 
@@ -77,9 +77,9 @@ Practical first steps — make this actionable:
 Position Spaarke as the platform designed for this progression — but frame it as the logical answer, not a pitch.
 
 ### 6. Where to Go Next
-- Back-references: "From Reactive to Predictive: The LOI Maturity Model" (Article 3), "The IQ Stack" (Article 2), "What Attorneys Need to Know About AI Architecture" (Article 7)
+- Back-references: "From Reactive to Predictive: The LOI Maturity Model" (Article 3), "The Legal IQ stack" (Article 2), "What Attorneys Need to Know About AI Architecture" (Article 7)
 
 ## Cross-References
 - **Can reference**: Articles 1, 2, 3, 4, 5, 6, 7, 8
 - **Will be referenced by**: Articles 11
-- **Shared themes**: AI Strategy & Literacy, IQ Stack / LOI Framework
+- **Shared themes**: AI Strategy & Literacy, Legal IQ stack / LOI Framework

@@ -147,7 +147,7 @@ Cross-references must only point to articles with an **earlier Published date**.
 | # | Published | Title | Prompt File |
 |---|-----------|-------|-------------|
 | 1 | 2026-01-04 | What is Legal Operations Intelligence? | `01-what-is-legal-operations-intelligence.md` |
-| 2 | 2026-01-11 | The IQ Stack: Data, Memory, Inference | `02-the-iq-stack.md` |
+| 2 | 2026-01-11 | The Legal IQ stack: Data, Memory, Inference | `02-the-iq-stack.md` |
 | 3 | 2026-01-18 | From Reactive to Predictive: The LOI Maturity Model | `03-loi-maturity-model.md` |
 
 ### Phase 2 — Platform & Architecture
@@ -191,7 +191,7 @@ These thematic threads connect articles across phases. When writing any article,
 | Theme Thread | Articles |
 |---|---|
 | **Data Sovereignty & Control** | 1, 4, 5, 6, 7, 8, 14 |
-| **IQ Stack / LOI Framework** | 1, 2, 3, 10, 11, 12, 15 |
+| **Legal IQ stack / LOI Framework** | 1, 2, 3, 10, 11, 12, 15 |
 | **Microsoft Ecosystem** | 4, 5, 6, 8, 14, 15 |
 | **AI Strategy & Literacy** | 7, 8, 9, 12 |
 | **Operational Memory** | 2, 11, 13 |

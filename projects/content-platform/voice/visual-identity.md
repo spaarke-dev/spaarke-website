@@ -72,17 +72,17 @@ article.
 **Backgrounds (foreground of the hero canvas)**
 - `#0A0A0A` — page background (`--v2-bg`).
 - `#111111` — surface (`--v2-surface`).
-- `#0A0A14` — deepest navy used in the existing IQ Stack hero
+- `#0A0A14` — deepest navy used in the existing Legal IQ stack hero
   gradient.
 - `#1A1230` and `#2D1F5E` — deep purple-navy mid-tones from the
-  existing IQ Stack hero radial.
+  existing Legal IQ stack hero radial.
 
 **Accents (the hero's confident color note)**
 - `#000BFF` — Spaarke Blue (`--color-spaarke-blue`); the brand's
   electric primary. Use as a single confident accent, not as a wash.
 - `#4060DC` — CTA blue (`--color-cta-blue`); softer, sits in the
   same family as the home-page footlight glow.
-- `#7B5BFF` — soft purple from the existing IQ Stack hero glow; use
+- `#7B5BFF` — soft purple from the existing Legal IQ stack hero glow; use
   as a low-opacity wash, not a hard fill.
 - `#FF4DCB` — magenta accent from the same hero glow; very low
   opacity (≤ 20%) and only as a glow halo, never as fill.
@@ -111,7 +111,7 @@ white — the hero must read confidently against neighboring white text.
   `1:1` or `4:5` for an article hero; reserve those for LinkedIn
   carousel covers and portrait crops.
 - **Focal point: centered or rule-of-thirds left.** Centered for
-  symmetric concepts (the IQ Stack mark, a concentric ring, a
+  symmetric concepts (the Legal IQ stack mark, a concentric ring, a
   spiral). Off-center to the lower-third-left for asymmetric concepts
   with a strong negative-space right side. Avoid right-weighted
   compositions — the article title overlay sits high-left in the

@@ -44,7 +44,7 @@ When the brief sets `byline: <person>` and the post is first-person, sustain the
 - **1–2 supporting images per post.** Required for any post whose argument is visual (architecture, flow, dashboard, comparison).
 - **Acceptable**: product screenshots, original diagrams (existing asset library), licensed photography. No stock-suit handshakes; no AI-generated illustrations that read as AI-generated.
 - **Hero image**: every post sets `heroImage` in frontmatter. From now on, heroes are custom-generated per piece, not picked from a vector library — hero treatment follows `voice/visual-identity.md`, and the brief's `# Hero graphic` section captures the prompt and generator settings the team used. Reused diagrams fine; reused stock isn't.
-- **Alt text** is a real sentence — "Diagram of the IQ Stack with Data, Memory, and Inference layers," not "diagram." Polish step enforces.
+- **Alt text** is a real sentence — "Diagram of the Legal IQ stack with Data, Memory, and Inference layers," not "diagram." Polish step enforces.
 - **Pull-quotes** optional, one per post max.
 
 ## 5. CTA convention
@@ -109,9 +109,9 @@ The brief's "References" section names which links the draft must include.
 
 **Brief sketch** (hypothetical): *2026-05-19 — "Where matter management ends and operational intelligence begins."*
 
-Audience `legal-ops-director` primary, `corporate-counsel` secondary. Angle: matter management answers "what's open?" Operational intelligence answers "what should we do about it?" Length 1,400 words. Structure: hook (a director walking into a QBR with a 47-tab status report) → §1 what matter management is built to answer → §2 the questions it can't → §3 what operational intelligence adds (the IQ Stack, used structurally) → close → CTA to `/platform/spend-performance`.
+Audience `legal-ops-director` primary, `corporate-counsel` secondary. Angle: matter management answers "what's open?" Operational intelligence answers "what should we do about it?" Length 1,400 words. Structure: hook (a director walking into a QBR with a 47-tab status report) → §1 what matter management is built to answer → §2 the questions it can't → §3 what operational intelligence adds (the Legal IQ stack, used structurally) → close → CTA to `/platform/spend-performance`.
 
-The angle becomes the H2 sequence: §1 the table-stakes claim, §2 the gap, §3 the resolution. The hook drops out of "what does the director actually walk into?" Each section names one piece of evidence — a CLOC reference in §1, a concrete failure scenario in §2, the IQ Stack organizing §3.
+The angle becomes the H2 sequence: §1 the table-stakes claim, §2 the gap, §3 the resolution. The hook drops out of "what does the director actually walk into?" Each section names one piece of evidence — a CLOC reference in §1, a concrete failure scenario in §2, the Legal IQ stack organizing §3.
 
 ---
 

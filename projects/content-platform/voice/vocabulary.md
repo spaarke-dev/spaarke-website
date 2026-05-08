@@ -24,7 +24,7 @@ First draft. Team revises in T11.
 | fragmented systems | legacy tools / disconnected solutions | accurate and concrete — names what's actually wrong |
 | discipline | category / space / market | LOI is a discipline first; "category" comes second |
 | operating layer | middleware / integration layer | "operating layer" is positioning; "middleware" is plumbing |
-| inference | AI / machine learning (when describing the IQ Stack layer) | the layer is named Inference; use the term we coined |
+| inference | AI / machine learning (when describing the Legal IQ stack layer) | the layer is named Inference; use the term we coined |
 | compound / compounding | synergize / scale / accelerate | "compound" is concrete and financial; the others are consultantisms |
 | reactive to predictive | digital transformation / modernization | the maturity arc we sell; "transformation" is empty |
 | structural | foundational / strategic | "structural" means "in the architecture"; the alternatives are softer |
@@ -44,6 +44,7 @@ First draft. Team revises in T11.
 | because | due to the fact that | shorter |
 | help | empower / enable (when "help" works) | "empower" is corporate-speak; "help" is human |
 | answer | solution (when answering a question) | "solution" is overused and almost meaningless |
+| legal professionals / the legal team / practitioners / users | attorneys / lawyers (when work isn't attorney-only) | corporate legal includes paralegals, legal-ops, contract managers, compliance officers — saying "attorneys" for shared operational work alienates the non-attorney majority of the function. See §3. |
 
 ---
 
@@ -115,9 +116,11 @@ First draft. Team revises in T11.
 
 **LEDES** — Standard e-billing file format. All caps, no periods. Spell out (Legal Electronic Data Exchange Standard) only for non-technical audiences; the field knows the term.
 
+**Attorneys vs. legal professionals** — Corporate legal departments include paralegals, legal-ops practitioners, contract managers, compliance professionals, e-discovery specialists, and admin staff. Many operational tasks (matter intake, billing review, matter coordination, vendor management, knowledge capture, document workflow) are non-attorney work in well-run departments. Default to **"legal professionals," "the legal team," "practitioners,"** or **"users"** unless the activity is genuinely attorney-only — drafting privileged advice, signing off on legal positions, taking depositions, asserting attorney-client privilege. Saying "attorneys" for shared operational work alienates the meaningful share of our audience inside the function who do most of the operational work. The Phase-2 piece "What Attorneys Need to Know About AI" is an intentional attorney-positioning exception; broader articles should default to inclusive language.
+
 ---
 
-*Section 1: 35. Section 2: 35. Section 3: 12. Add when patterns emerge; cut what stops earning its place.*
+*Section 1: 36. Section 2: 35. Section 3: 13. Add when patterns emerge; cut what stops earning its place.*
 
 ---
 

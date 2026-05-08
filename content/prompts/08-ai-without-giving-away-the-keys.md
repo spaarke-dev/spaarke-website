@@ -49,7 +49,7 @@ Spaarke's AI capabilities are built to operate **within** M365 Copilot, not alon
 
 Key points:
 - AI interactions are governed by the same data boundaries as the rest of your M365 environment
-- Copilot can draw on Spaarke's structured legal data — the IQ Stack (Article 2) — to produce grounded, context-rich outputs
+- Copilot can draw on Spaarke's structured legal data — the Legal IQ stack (Article 2) — to produce grounded, context-rich outputs
 - No data leaves the tenant for AI processing
 - Spaarke does not bring its own AI — it makes your organization's Copilot smarter by providing structured legal data and operational memory
 - This means: one AI governance framework, not two. Your IT team manages Copilot policies once; Spaarke operates within them.
@@ -71,12 +71,12 @@ The closing argument:
 
 - Generic Copilot is useful — it can draft, summarize, and analyze
 - Copilot grounded in your organization's legal operational memory is transformative — it can recommend, predict, and advise based on your specific history and context
-- This is the Inference layer of the IQ Stack (Article 2) in action
+- This is the Inference layer of the Legal IQ stack (Article 2) in action
 - The more structured data and memory Spaarke captures, the more useful Copilot becomes for your legal team
 - The flywheel: Data → Memory → Inference → better Data capture. Copilot is the interface through which this intelligence becomes accessible.
 
 ### 6. Where to Go Next
-- Back-references: "What Attorneys Need to Know About AI Architecture" (Article 7), "The IQ Stack" (Article 2), "Why We Built on Microsoft" (Article 4)
+- Back-references: "What Attorneys Need to Know About AI Architecture" (Article 7), "The Legal IQ stack" (Article 2), "Why We Built on Microsoft" (Article 4)
 
 ## Cross-References
 - **Can reference**: Articles 1, 2, 3, 4, 5, 6, 7
