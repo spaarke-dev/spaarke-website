@@ -131,3 +131,49 @@ html {
 html::-webkit-scrollbar {
   display: none;
 }
+
+/* Hide the reCAPTCHA v3 floating badge globally. The legal disclosure
+   is surfaced inline near each form that uses reCAPTCHA per Google's
+   alternative-disclosure rule:
+   https://developers.google.com/recaptcha/docs/faq#id-like-to-hide-the-recaptcha-badge */
+.grecaptcha-badge {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Footer top row — two-column grid (brand | nav) at md+, stacked
+   single column on mobile. Defined as plain CSS rather than
+   Tailwind's arbitrary grid-cols value because Turbopack was
+   inconsistent about generating that responsive arbitrary value in
+   this surface. */
+.footer-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+@media (min-width: 768px) {
+  .footer-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 2.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .footer-row {
+    gap: 4rem;
+  }
+}
+
+/* Footer link list — evenly distributed across the middle 1fr column. */
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 2rem;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .footer-links {
+    justify-content: space-around;
+  }
+}

@@ -243,8 +243,22 @@ function PlatformClosing() {
       className="relative overflow-hidden"
       style={PLATFORM_CLOSING_STYLE}
     >
+      {/* Radial back-glow — same brand pattern as the Get access page
+          and the platform Capabilities modules (#82A5EB / #5078DC).
+          Centered under the logo+tagline since this section's content
+          is center-aligned, vs. the left-biased version on the
+          headline-led pages. */}
       <div
-        className="mx-auto max-w-5xl px-[var(--spacing-shell-x)] text-center"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 hidden md:block"
+        style={{
+          backgroundImage:
+            "radial-gradient(ellipse 75% 60% at 50% 50%, rgba(130,165,235,0.18) 0%, rgba(80,120,220,0.08) 35%, rgba(130,165,235,0.03) 60%, transparent 78%)",
+        }}
+      />
+
+      <div
+        className="relative mx-auto max-w-5xl px-[var(--spacing-shell-x)] text-center"
         style={PLATFORM_CLOSING_DARK_TOKENS}
       >
         {/* Word-only Spaarke logo replaces the textual headline. The

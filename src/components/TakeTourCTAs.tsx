@@ -218,6 +218,39 @@ export function TakeTourCTAs({
         </p>
       )}
 
+      {/* reCAPTCHA legal disclosure — required when the floating badge
+          is hidden globally (see globals.css). The text colour adapts
+          to the form tone so it stays legible on either backdrop. */}
+      <p
+        className="mt-4 text-[10px] leading-relaxed"
+        style={{
+          color:
+            tone === "light"
+              ? "rgba(10,10,10,0.5)"
+              : "rgba(245,245,245,0.45)",
+        }}
+      >
+        Protected by reCAPTCHA — Google{" "}
+        <a
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          Privacy
+        </a>{" "}
+        &amp;{" "}
+        <a
+          href="https://policies.google.com/terms"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          Terms
+        </a>{" "}
+        apply.
+      </p>
+
       {recaptchaSiteKey && (
         <ReCAPTCHA
           ref={recaptchaRef}

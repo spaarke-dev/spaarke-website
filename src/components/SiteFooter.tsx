@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { footerContent } from "@/content/footer";
 import { SocialIcon } from "@/components/SocialIcons";
@@ -12,94 +11,86 @@ function isLinkedIn(href: string): boolean {
 }
 
 export default function SiteFooter() {
-  const { brand, columns, partnersPanel, socialLinks, copyright } =
-    footerContent;
+  // partnersPanel data is intentionally unused for now — the partners
+  // section was removed pending refreshed partner branding.
+  const { brand, columns, socialLinks, copyright } = footerContent;
   const fromPage = usePathname() ?? "/";
+
+  // Flatten the (currently single-column) Spaarke link list into a flat
+  // horizontal row for the footer-mid nav. If we add more sections
+  // later, this is the place to merge or split them.
+  const flatLinks = columns.flatMap((c) => c.links);
 
   return (
     <footer className="bg-bg border-line text-fg-mid border-t">
-      <div className="px-[var(--spacing-shell-x)] py-16 md:py-20">
-        {/* Top section: brand · site links · partners — balanced 3 cols
-            on desktop, stacked on mobile. The brand block anchors the
-            footer visually so the link column doesn't look stranded. */}
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-10">
+      <div className="px-[var(--spacing-shell-x)] py-12 md:py-14">
+        {/* Top row: brand block (left) | horizontal links (right).
+            Layout uses the .footer-row CSS class in globals.css
+            (auto / 1fr grid template at md+). The partners panel
+            previously sat in a third column; remove that comment if
+            it returns. */}
+        <div className="footer-row">
           {/* Brand block */}
-          <div className="md:col-span-5 lg:col-span-4">
+          <div>
             <Link
               href="/"
               className="focus-visible:ring-spaarke-blue inline-block rounded-sm focus-visible:outline-none focus-visible:ring-2"
               aria-label={brand.wordmark.alt}
             >
-              <Image
+              {/* Plain <img> — Next/Image was rendering this SVG at its
+                  intrinsic 3832×1163 size on the footer, ignoring the
+                  className-based height cap. The header doesn't have
+                  this issue, but for a defensive fix in this surface we
+                  render the SVG via a vanilla img. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={brand.wordmark.src}
                 alt={brand.wordmark.alt}
-                width={160}
-                height={42}
-                className="h-9 w-auto"
+                style={{ height: 32, width: "auto" }}
               />
             </Link>
-            <p className="text-fg-mid mt-5 max-w-xs text-sm leading-relaxed">
-              {brand.positioning}
+            {/* Render the positioning line with a break after the
+                em-dash for visual rhythm. The split tolerates any
+                positioning string that contains an em-dash; if the
+                copy ever changes to a single phrase, no change is
+                needed here. */}
+            <p className="text-fg-mid mt-3 max-w-xs text-sm leading-relaxed">
+              {(() => {
+                const idx = brand.positioning.indexOf("—");
+                if (idx === -1) return brand.positioning;
+                return (
+                  <>
+                    {brand.positioning.slice(0, idx + 1)}
+                    <br />
+                    {brand.positioning.slice(idx + 1).trim()}
+                  </>
+                );
+              })()}
             </p>
           </div>
 
-          {/* Site links */}
-          <div className="md:col-span-3 lg:col-span-3">
-            {columns.map((col) => (
-              <div key={col.heading}>
-                <h3 className="text-fg font-display text-sm font-medium uppercase tracking-wider">
-                  {col.heading}
-                </h3>
-                <ul className="mt-4 space-y-3">
-                  {col.links.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-fg-mid hover:text-fg focus-visible:ring-spaarke-blue rounded-sm text-sm transition-colors focus-visible:outline-none focus-visible:ring-2"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          {/* Our Partners panel */}
-          <div className="md:col-span-4 lg:col-span-5">
-            <h3 className="text-fg font-display text-sm font-medium uppercase tracking-wider">
-              {partnersPanel.heading}
-            </h3>
-            <p className="text-fg-mid mt-4 max-w-md text-sm leading-relaxed">
-              {partnersPanel.body}
-            </p>
-            <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-4">
-              {partnersPanel.partners.map((p) => (
-                // The current Spark Labs logo is dark-on-light, so it
-                // sits in a soft white pill to stay legible on the
-                // dark footer. Replace the wrapper when a true white
-                // version of the partner logo arrives.
-                <span
-                  key={p.name}
-                  className="inline-flex items-center justify-center rounded-md bg-white/95 px-4 py-2"
-                >
-                  <Image
-                    src={p.logo.src}
-                    alt={p.logo.alt}
-                    width={120}
-                    height={44}
-                    className="h-8 w-auto"
-                  />
-                </span>
+          {/* Horizontal links — fill the middle 1fr column and spread
+              the links evenly. Layout via .footer-links in globals.css
+              (justify-content: space-around at md+). */}
+          <nav aria-label="Footer" className="md:pt-1">
+            <ul className="footer-links">
+              {flatLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-fg-mid hover:text-fg focus-visible:ring-spaarke-blue rounded-sm text-sm transition-colors focus-visible:outline-none focus-visible:ring-2"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </nav>
+
         </div>
 
-        {/* Bottom strip: copyright (left) + social icon row (right). On
-            mobile the social row stacks below the copyright. */}
-        <div className="border-line mt-14 flex flex-col items-start justify-between gap-5 border-t pt-8 md:flex-row md:items-center md:gap-4">
+        {/* Bottom strip — copyright (left) + social icons (right). */}
+        <div className="border-line mt-12 flex flex-col items-start justify-between gap-5 border-t pt-6 md:flex-row md:items-center md:gap-4">
           <p className="text-fg-low text-xs">{copyright}</p>
           <ul className="flex items-center gap-2">
             {socialLinks.map((link) => (

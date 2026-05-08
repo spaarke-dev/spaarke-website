@@ -2,14 +2,18 @@
 
 import { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { Send24Regular } from "@fluentui/react-icons";
-import FormField from "@/components/FormField";
-import InlineAlert from "@/components/InlineAlert";
 import { Button } from "@/components/primitives";
+import InlineAlert from "@/components/InlineAlert";
 import { submissionProps } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
 
-const REASON_OPTIONS = ["", "Demo", "Partnership", "Support", "Other"] as const;
+const REASON_OPTIONS = [
+  "",
+  "See a working session",
+  "Partnership",
+  "Press / media",
+  "Something else",
+] as const;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -49,6 +53,15 @@ function validateLocally(fields: {
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
+const labelClass =
+  "font-mono block text-[11px] font-medium uppercase tracking-[0.18em] text-fg-low";
+const inputBase =
+  "block w-full border-0 border-b bg-transparent px-0 py-2.5 text-[15px] text-fg placeholder:text-fg-low/70 transition-colors focus:outline-none";
+const inputBorder = (hasError: boolean) =>
+  hasError
+    ? "border-error focus:border-error"
+    : "border-line-strong focus:border-cta-blue";
+
 export default function ContactForm({
   recaptchaSiteKey,
 }: {
@@ -75,7 +88,6 @@ export default function ContactForm({
     const formData = new FormData(e.currentTarget);
     const hp = (formData.get("hp") as string) ?? "";
 
-    // Client-side validation
     const localErrors = validateLocally({ name, email, message });
     if (localErrors) {
       setFieldErrors(localErrors);
@@ -86,11 +98,6 @@ export default function ContactForm({
     setStatus("submitting");
     setErrorMessage("");
 
-    // Get captcha token in its own try/catch so we can distinguish a
-    // reCAPTCHA failure (widget blocked by an extension, executeAsync
-    // throws) from a network failure on our own /api/contact fetch.
-    // Both used to surface as "Couldn't reach our server" which was
-    // misleading when the actual cause was an ad-blocker.
     let captchaToken = "";
     try {
       if (recaptchaRef.current) {
@@ -108,7 +115,6 @@ export default function ContactForm({
     }
 
     try {
-
       const attribution = submissionProps();
 
       const res = await fetch("/api/contact", {
@@ -126,10 +132,6 @@ export default function ContactForm({
         }),
       });
 
-      // Parse JSON defensively — when the SWA edge returns a 5xx
-      // with an HTML body (cold-start handoff, transient outage),
-      // res.json() throws. Without this guard, the error surfaces as
-      // "Unable to reach the server" even though the server replied.
       const data = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
         error?: string;
@@ -150,9 +152,6 @@ export default function ContactForm({
           setStatus("error");
           setErrorMessage("CAPTCHA verification failed. Please try again.");
         } else if (res.status >= 500) {
-          // Server replied but with a non-success status. Distinct
-          // from a network failure — usually transient (cold start
-          // post-deploy, SWA edge proxy hiccup).
           setStatus("error");
           setErrorMessage(
             "Our servers had a brief hiccup. Please try again in a moment, or email us directly.",
@@ -169,15 +168,11 @@ export default function ContactForm({
       track("Contact Submit", attribution);
       setStatus("success");
     } catch (err) {
-      // True network failure — fetch itself threw before any response
-      // arrived (no internet, DNS failure, request aborted).
       setStatus("error");
       setErrorMessage(
         "Couldn't reach our server. Check your connection and try again.",
       );
       recaptchaRef.current?.reset();
-      // Surface for App Insights via console; the global error
-      // listener picks it up.
       console.error("[contact] Network error during submit:", err);
     }
   }
@@ -186,72 +181,142 @@ export default function ContactForm({
     return (
       <InlineAlert
         variant="success"
-        message="Thank you! We'll be in touch within 1-2 business days."
+        message="Thank you! We'll be in touch ASAP!"
       />
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+    <form onSubmit={handleSubmit} noValidate>
       {status === "error" && errorMessage && (
-        <InlineAlert variant="error" message={errorMessage} />
+        <div className="mb-6">
+          <InlineAlert variant="error" message={errorMessage} />
+        </div>
       )}
 
-      <FormField
-        name="name"
-        label="Name"
-        required
-        placeholder="Your name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        error={fieldErrors.name}
-      />
+      <div className="space-y-7">
+        {/* Name */}
+        <div>
+          <label htmlFor="contact-name" className={labelClass}>
+            Name
+          </label>
+          <input
+            id="contact-name"
+            name="name"
+            type="text"
+            required
+            placeholder="Jane Smith"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            aria-invalid={!!fieldErrors.name}
+            className={`${inputBase} ${inputBorder(!!fieldErrors.name)}`}
+          />
+          {fieldErrors.name && (
+            <p className="text-error mt-1.5 text-sm" role="alert">
+              {fieldErrors.name}
+            </p>
+          )}
+        </div>
 
-      <FormField
-        name="email"
-        label="Email"
-        type="email"
-        required
-        placeholder="you@example.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        error={fieldErrors.email}
-      />
+        {/* Email */}
+        <div>
+          <label htmlFor="contact-email" className={labelClass}>
+            Email
+          </label>
+          <input
+            id="contact-email"
+            name="email"
+            type="email"
+            required
+            placeholder="jane@firm.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            aria-invalid={!!fieldErrors.email}
+            className={`${inputBase} ${inputBorder(!!fieldErrors.email)}`}
+          />
+          {fieldErrors.email && (
+            <p className="text-error mt-1.5 text-sm" role="alert">
+              {fieldErrors.email}
+            </p>
+          )}
+        </div>
 
-      <FormField
-        name="company"
-        label="Company"
-        placeholder="Your company (optional)"
-        value={company}
-        onChange={(e) => setCompany(e.target.value)}
-      />
+        {/* Company */}
+        <div>
+          <label htmlFor="contact-company" className={labelClass}>
+            Company
+          </label>
+          <input
+            id="contact-company"
+            name="company"
+            type="text"
+            placeholder="Optional"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            className={`${inputBase} ${inputBorder(false)}`}
+          />
+        </div>
 
-      <FormField
-        name="reason"
-        label="Reason for Contact"
-        type="select"
-        value={reason}
-        onChange={(e) => setReason(e.target.value)}
-      >
-        <option value="">Select a reason (optional)</option>
-        {REASON_OPTIONS.filter(Boolean).map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </FormField>
+        {/* Reason */}
+        <div>
+          <label htmlFor="contact-reason" className={labelClass}>
+            Reason for contact
+          </label>
+          <div className="relative">
+            <select
+              id="contact-reason"
+              name="reason"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              className={`${inputBase} ${inputBorder(false)} appearance-none pr-8`}
+            >
+              <option value="">Select a reason (optional)</option>
+              {REASON_OPTIONS.filter(Boolean).map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+            <svg
+              aria-hidden="true"
+              className="text-fg-low pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                d="M6 9l6 6 6-6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
 
-      <FormField
-        name="message"
-        label="Message"
-        type="textarea"
-        required
-        rows={5}
-        placeholder="How can we help?"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        error={fieldErrors.message}
-      />
+        {/* Message */}
+        <div>
+          <label htmlFor="contact-message" className={labelClass}>
+            Message
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            required
+            rows={4}
+            placeholder="A few lines is plenty."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            aria-invalid={!!fieldErrors.message}
+            className={`${inputBase} ${inputBorder(!!fieldErrors.message)} resize-y`}
+          />
+          {fieldErrors.message && (
+            <p className="text-error mt-1.5 text-sm" role="alert">
+              {fieldErrors.message}
+            </p>
+          )}
+        </div>
+      </div>
 
       {/* Honeypot field - hidden from real users */}
       <div className="absolute left-[-9999px] opacity-0" aria-hidden="true">
@@ -259,43 +324,43 @@ export default function ContactForm({
         <input type="text" id="hp" name="hp" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <Button
-        variant="primary"
-        type="submit"
-        disabled={status === "submitting"}
-      >
-        {status === "submitting" ? (
-          <>
-            <svg
-              className="h-4 w-4 animate-spin"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            Sending...
-          </>
-        ) : (
-          <>
-            <Send24Regular aria-hidden="true" className="h-4 w-4" />
-            Send message
-          </>
-        )}
-      </Button>
+      {/* Bottom row — privacy reassurance + submit pill */}
+      <div className="mt-10 flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
+        <p className="font-mono text-fg-low text-[10px] uppercase tracking-[0.18em]">
+          We never share what you send.
+        </p>
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={status === "submitting"}
+          arrow
+        >
+          {status === "submitting" ? "Sending…" : "Send message"}
+        </Button>
+      </div>
+
+      {/* reCAPTCHA legal disclosure — required when the badge is hidden */}
+      <p className="text-fg-low mt-6 text-[11px] leading-relaxed">
+        This site is protected by reCAPTCHA and the Google{" "}
+        <a
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-fg-mid underline"
+        >
+          Privacy Policy
+        </a>{" "}
+        and{" "}
+        <a
+          href="https://policies.google.com/terms"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-fg-mid underline"
+        >
+          Terms of Service
+        </a>{" "}
+        apply.
+      </p>
 
       {recaptchaSiteKey && (
         <ReCAPTCHA

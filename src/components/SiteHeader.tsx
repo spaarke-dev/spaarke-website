@@ -3,11 +3,25 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { logo, navCta, navLinks } from "@/content/nav";
 import { Button } from "@/components/primitives";
 
+/**
+ * Match the current pathname against a nav-link href.
+ *
+ * Root (`/`) only matches exactly. Section pages match exact + any
+ * deeper sub-path so the parent stays highlighted on nested pages —
+ * e.g. `/why-spaarke` stays active on `/why-spaarke/some-article`.
+ */
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname() ?? "/";
 
   return (
     <header className="bg-bg border-line sticky top-0 z-50 border-b backdrop-blur-sm">
@@ -29,32 +43,46 @@ export default function SiteHeader() {
             />
           </Link>
           <ul className="hidden items-center gap-7 md:flex">
-            {navLinks.left.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-fg-mid hover:text-fg focus-visible:ring-spaarke-blue font-display rounded-sm px-1 py-1 text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {navLinks.left.map((link) => {
+              const active = isActive(pathname, link.href);
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`focus-visible:ring-spaarke-blue font-display relative rounded-sm px-1 py-1 text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 ${
+                      active ? "text-fg" : "text-fg-mid hover:text-fg"
+                    }`}
+                  >
+                    {link.label}
+                    {active && <NavUnderline />}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
         {/* Right group: action links + Get access pill */}
         <div className="hidden items-center gap-6 md:flex">
           <ul className="flex items-center gap-6">
-            {navLinks.right.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-fg-mid hover:text-fg font-display text-[15px] font-medium transition-colors"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {navLinks.right.map((link) => {
+              const active = isActive(pathname, link.href);
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`font-display relative text-[15px] font-medium transition-colors ${
+                      active ? "text-fg" : "text-fg-mid hover:text-fg"
+                    }`}
+                  >
+                    {link.label}
+                    {active && <NavUnderline />}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
           {/* Compact Button — Button primitive's primary variant gives
               the rounded pill in cta-blue. Slightly tighter padding so
@@ -92,17 +120,25 @@ export default function SiteHeader() {
       {mobileOpen && (
         <div className="border-line border-t md:hidden">
           <ul className="px-[var(--spacing-shell-x)] flex flex-col gap-1 py-3">
-            {[...navLinks.left, ...navLinks.right].map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-fg-mid hover:text-fg hover:bg-surface focus-visible:ring-spaarke-blue font-display block rounded-md px-2 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {[...navLinks.left, ...navLinks.right].map((link) => {
+              const active = isActive(pathname, link.href);
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    onClick={() => setMobileOpen(false)}
+                    className={`focus-visible:ring-spaarke-blue font-display block rounded-md px-2 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 ${
+                      active
+                        ? "text-fg bg-surface border-l-2 border-cta-blue pl-3"
+                        : "text-fg-mid hover:text-fg hover:bg-surface"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
           <div className="px-[var(--spacing-shell-x)] pb-4">
             <Button
@@ -116,5 +152,20 @@ export default function SiteHeader() {
         </div>
       )}
     </header>
+  );
+}
+
+/**
+ * Subtle underline marker rendered beneath the active nav link. Sits
+ * absolutely below the text so the surrounding label baseline
+ * doesn't shift between active and inactive states. Uses cta-blue at
+ * 80% so it reads as deliberate but not heavy.
+ */
+function NavUnderline() {
+  return (
+    <span
+      aria-hidden="true"
+      className="bg-cta-blue/80 absolute -bottom-1.5 left-1 right-1 h-[2px] rounded-full"
+    />
   );
 }
