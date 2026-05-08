@@ -91,6 +91,10 @@ projects/content-platform/
 │   ├── linkedin-posts/                  ← the export — actual posting is manual
 │   ├── tweets/
 │   └── white-papers/                    ← (blog posts publish to /content/blog/ instead)
+├── campaigns/                           ← coordinated multi-asset pushes around a theme or launch
+│   ├── README.md                        ← what campaigns are, when to create one
+│   ├── _template-campaign.md            ← schema for a new campaign file
+│   └── <YYYY-MM>-<slug>.md              ← one per campaign
 └── calendar.md                          ← single source of truth for what's planned/scheduled/live
 ```
 
