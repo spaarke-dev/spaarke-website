@@ -103,7 +103,7 @@ export function TourStage({
               pointerEvents: "none",
             }}
           />
-          <InterstitialOverlay callout={callout} nav={nav} />
+          <InterstitialOverlay callout={callout} nav={nav} stepId={step.id} />
         </>
       ) : (
         <Callout
