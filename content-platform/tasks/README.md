@@ -12,7 +12,7 @@ spec sections by number.
 ## Phase 0 — Voice extraction
 
 Deliverable: the voice constitution in
-`projects/content-platform/voice/`, locked, plus `content-types/*.md`
+`content-platform/voice/`, locked, plus `content-types/*.md`
 specs, plus initial workflow scaffolding.
 
 ### Inputs needed from you (T00)

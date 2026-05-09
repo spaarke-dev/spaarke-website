@@ -2,7 +2,7 @@
 
 Read-only review of `content/blog/2026-03-31-spaarke-feature-specification.mdx`
 against the Phase 0 voice constitution
-(`projects/content-platform/voice/*`) and the live platform copy
+(`content-platform/voice/*`) and the live platform copy
 (`src/content/home/capabilities.ts`, `src/app/platform/page.tsx`).
 
 The team will decide whether to apply the suggested edits. This review
@@ -281,7 +281,7 @@ Ranked by impact on the document's accuracy and on-voice quality.
 
 **Location**: line 159 (outside counsel recommendation), line 160 ("days → minutes"), line 76 / line 83 ("500+ pre-built connectors"), and the Inference layer prediction features (lines 140, 148–151).
 **Current**: features described as if shipped, no attribution.
-**Proposed**: for each, either (a) attribute to the right Spaarke AI pillar (Foundry IQ + Agent Framework playbook) and confirm shipping status with the team, or (b) move to a "roadmap" framing, or (c) remove. Mark unconfirmed items with the project's standard `**TBD — confirm**` per `projects/content-platform/CLAUDE.md` §4.
+**Proposed**: for each, either (a) attribute to the right Spaarke AI pillar (Foundry IQ + Agent Framework playbook) and confirm shipping status with the team, or (b) move to a "roadmap" framing, or (c) remove. Mark unconfirmed items with the project's standard `**TBD — confirm**` per `content-platform/CLAUDE.md` §4.
 **Reason**: `voice/style-guide.md` §5 item 12 — "No claims without a defense." For a doc the article itself frames as the procurement-grade reference, unsourced predictive features are a credibility risk.
 
 ### 10. Rewrite the closing paragraph
@@ -305,4 +305,4 @@ The fastest path is probably (a) restructure the H2s around the five modules wit
 
 ---
 
-*Reviewer: Claude (read-only review, no edits to the spec). All findings reference the canonical sources at `projects/content-platform/voice/*` and the live platform copy at `src/content/home/capabilities.ts` / `src/app/platform/page.tsx` as of 2026-05-06.*
+*Reviewer: Claude (read-only review, no edits to the spec). All findings reference the canonical sources at `content-platform/voice/*` and the live platform copy at `src/content/home/capabilities.ts` / `src/app/platform/page.tsx` as of 2026-05-06.*

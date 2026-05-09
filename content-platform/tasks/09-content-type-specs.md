@@ -15,16 +15,16 @@ addition to the universal style guide.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §4 (content types) and §6 (brief
+- `content-platform/spec.md` §4 (content types) and §6 (brief
   format).
-- `projects/content-platform/voice/style-guide.md` (T02 output) — for
+- `content-platform/voice/style-guide.md` (T02 output) — for
   the universal voice baseline being calibrated.
-- `projects/content-platform/voice/brand-positioning.md` and
+- `content-platform/voice/brand-positioning.md` and
   `audience-personas.md` if available (parallel-built; may be partial).
 
 ## Deliverables
 
-Four files in `projects/content-platform/content-types/`:
+Four files in `content-platform/content-types/`:
 
 ### `content-types/white-paper.md`
 
@@ -157,7 +157,7 @@ Target length: 600 words (X is shorter; the spec doc reflects that).
 
 > Phase 0, T09 of the Spaarke content platform.
 >
-> Read `projects/content-platform/spec.md` §4 and §6, plus the (in
+> Read `content-platform/spec.md` §4 and §6, plus the (in
 > progress or completed) Phase 0 voice docs — at minimum
 > `voice/style-guide.md`. Skim `voice/brand-positioning.md` and
 > `voice/audience-personas.md` if they're available; otherwise

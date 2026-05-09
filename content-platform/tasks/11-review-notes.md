@@ -9,7 +9,7 @@
 
 ## How to use this file
 
-Phase 0 is drafted. Eleven files now exist in `projects/content-platform/`
+Phase 0 is drafted. Eleven files now exist in `content-platform/`
 and need a read-and-revise pass before the voice constitution is locked.
 
 Two ways to capture edits — pick one or mix:
@@ -305,7 +305,7 @@ work (`chore(content): retag blog library per voice/taxonomy.md`).
 - **`content/blog/2026-02-01-welcome-to-spaarke.mdx`** — **skipped** per
   T11 §4 disposition. Legacy flat-array `tags: ["news", "updates", "company"]`
   preserved unchanged. The new draft at
-  `projects/content-platform/drafts/blog-posts/welcome-to-spaarke.mdx`
+  `content-platform/drafts/blog-posts/welcome-to-spaarke.mdx`
   will replace it in place at the same slug under the structured tag
   shape; full retag happens at swap time.
 - **Validation**: every tag value across the 10 retagged articles maps

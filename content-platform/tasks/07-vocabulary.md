@@ -12,15 +12,15 @@ for a word, this tells me whether to use it.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §5.6.
-- `projects/content-platform/tasks/00-inputs.md` §4 (do-not-claim list).
+- `content-platform/spec.md` §5.6.
+- `content-platform/tasks/00-inputs.md` §4 (do-not-claim list).
 - `voice/library-audit.md` (T01) — Section 2 (patterns observed)
   flags repeating word choices.
 - 2–3 existing strong articles to mine for actual word choices.
 
 ## Deliverables
 
-### `projects/content-platform/voice/vocabulary.md`
+### `content-platform/voice/vocabulary.md`
 
 Markdown file. Two-column table (or two tables — preferred / avoided)
 with one-line reasons. Target: 50 entries to start.
@@ -141,7 +141,7 @@ words.
 
 > Phase 0, T07 of the Spaarke content platform.
 >
-> Read `projects/content-platform/spec.md` §5.6,
+> Read `content-platform/spec.md` §5.6,
 > `tasks/00-inputs.md` §4, `voice/library-audit.md`, and 2–3 of the
 > strongest existing articles in `content/blog/`.
 >

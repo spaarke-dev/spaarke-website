@@ -8,7 +8,7 @@
 
 Read every existing article in `content/blog/`, tag each one for voice
 quality and audience fit, and produce a one-file audit report at
-`projects/content-platform/voice/library-audit.md`. The report drives
+`content-platform/voice/library-audit.md`. The report drives
 two downstream activities: (1) identifying which existing articles
 become source material for `voice/examples/good-articles.md`, and (2)
 flagging the few articles that may want light refresh under the new
@@ -19,9 +19,9 @@ expect most pieces to land at ✅ or ◐, few at ⚠.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §5 (voice constitution),
+- `content-platform/spec.md` §5 (voice constitution),
   §9 (library audit).
-- `projects/content-platform/tasks/00-inputs.md` — the team's filled-in
+- `content-platform/tasks/00-inputs.md` — the team's filled-in
   inputs, especially §1 ("yes, this is us" reference pieces) and §4
   (do-not-claim list).
 - All `.mdx` files in `content/blog/`.
@@ -29,7 +29,7 @@ expect most pieces to land at ✅ or ◐, few at ⚠.
 
 ## Deliverables
 
-### `projects/content-platform/voice/library-audit.md`
+### `content-platform/voice/library-audit.md`
 
 Single Markdown file with three sections:
 
@@ -98,7 +98,7 @@ the actual extraction and annotation.
 
 ## Acceptance criteria
 
-- `projects/content-platform/voice/library-audit.md` exists with all
+- `content-platform/voice/library-audit.md` exists with all
   three sections populated.
 - Every `.mdx` file in `content/blog/` appears in the inventory table.
 - Patterns section names at least 5 specific recurring strengths and
@@ -121,12 +121,12 @@ the actual extraction and annotation.
 > You are starting Phase 0 of the Spaarke content platform project at
 > `c:\code_files\spaarke-website\projects\content-platform\`.
 >
-> Read `projects/content-platform/spec.md` §5 and §9, then
-> `projects/content-platform/tasks/00-inputs.md` (the team's
+> Read `content-platform/spec.md` §5 and §9, then
+> `content-platform/tasks/00-inputs.md` (the team's
 > bootstrap inputs), then this task file. Then read every `.mdx` file
 > in `content/blog/`.
 >
-> Produce `projects/content-platform/voice/library-audit.md` with the
+> Produce `content-platform/voice/library-audit.md` with the
 > three sections specified: article inventory table (one row per
 > article, with voice rating ✅/◐/⚠), observed patterns (≥ 5 strengths
 > and ≥ 3 weaknesses with specifics), and recommended source material

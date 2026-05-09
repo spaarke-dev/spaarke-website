@@ -13,8 +13,8 @@ the persona's perspective.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §5.3.
-- `projects/content-platform/tasks/00-inputs.md` §2 (team's persona
+- `content-platform/spec.md` §5.3.
+- `content-platform/tasks/00-inputs.md` §2 (team's persona
   sketches) — the most direct input.
 - `voice/library-audit.md` (T01) — articles often reveal whom they're
   written for.
@@ -23,7 +23,7 @@ the persona's perspective.
 
 ## Deliverables
 
-### `projects/content-platform/voice/audience-personas.md`
+### `content-platform/voice/audience-personas.md`
 
 Markdown file, ~1,200 words. One section per persona, plus a short
 introduction and a "primary vs. secondary" note.
@@ -117,7 +117,7 @@ the primary persona unless overridden.
 
 > Phase 0, T04 of the Spaarke content platform.
 >
-> Read `projects/content-platform/spec.md` §5.3,
+> Read `content-platform/spec.md` §5.3,
 > `tasks/00-inputs.md` §2, `voice/library-audit.md`, and existing site
 > copy on `/platform` and `/why-spaarke`.
 >

@@ -24,7 +24,7 @@ This is why the legacy posts still render today — the fallback paragraph is th
 
 ### Canonical shape
 
-Inferred from the 3 converted articles (no formal length cap is defined in `projects/content-platform/content-types/blog-post.md` or `briefs/_template-blog-post.md`):
+Inferred from the 3 converted articles (no formal length cap is defined in `content-platform/content-types/blog-post.md` or `briefs/_template-blog-post.md`):
 
 - **Bullet count:** 4 per article in every converted example.
 - **Bullet length:** roughly 18–35 words, single sentence, declarative.
@@ -77,7 +77,7 @@ Per article:
 
 1. **Open the MDX file** in `content/blog/`.
 2. **Read the body.** Identify the 3–5 load-bearing assertions — the things a reader who reads only the bullets should walk away knowing. Prefer claims that already appear as topic sentences or section headers in the body. Do not invent new claims that aren't supported by the article.
-3. **Draft the bullets** in Spaarke voice (per `projects/content-platform/voice/style-guide.md` and `voice/examples/tone-samples.md`):
+3. **Draft the bullets** in Spaarke voice (per `content-platform/voice/style-guide.md` and `voice/examples/tone-samples.md`):
    - One sentence each. Declarative. Names the thing.
    - Roughly 18–35 words. Match the cadence of the converted examples.
    - 4 bullets is the established shape; 3 is acceptable for shorter pieces, 5 is the upper bound.
@@ -101,7 +101,7 @@ No UI copy changes are required. The component already renders the "Key takeaway
 
 ### Length cap
 
-There is **no enforced cap** in code or in the content-type spec. The 18–35 word, 4-bullet shape is empirical from the 3 converted articles, not a contract. If we want to lock it, we should add it to `projects/content-platform/content-types/blog-post.md` as part of this task — see open questions.
+There is **no enforced cap** in code or in the content-type spec. The 18–35 word, 4-bullet shape is empirical from the 3 converted articles, not a contract. If we want to lock it, we should add it to `content-platform/content-types/blog-post.md` as part of this task — see open questions.
 
 ---
 
@@ -162,7 +162,7 @@ Reasoning:
 
 **Suggested execution:**
 1. Authorize Option A as a Phase 1 task.
-2. Claude generates a single tracking doc: `projects/content-platform/tasks/blog-summary-bullet-conversion-drafts.md` with all 13 drafts.
+2. Claude generates a single tracking doc: `content-platform/tasks/blog-summary-bullet-conversion-drafts.md` with all 13 drafts.
 3. Voice/content lead reviews and red-lines in one sitting.
 4. Claude applies revisions, opens a single PR, engineering merges.
 
@@ -170,7 +170,7 @@ Reasoning:
 
 ## 6. Open questions for the team
 
-1. **Length cap — codify or stay empirical?** Should we add "3–5 bullets, 18–35 words each" to `projects/content-platform/content-types/blog-post.md` as a normative spec, or leave it as observed convention? Recommend codifying as part of this task so future articles don't drift.
+1. **Length cap — codify or stay empirical?** Should we add "3–5 bullets, 18–35 words each" to `content-platform/content-types/blog-post.md` as a normative spec, or leave it as observed convention? Recommend codifying as part of this task so future articles don't drift.
 2. **`summary` field — keep or remove?** The renderer prefers `keyTakeaways` when both are present, but `summary` is still passed through `getAllPosts()` and may be consumed by RSS, social cards, or list pages. Audit before removing. Out of scope here — flag for a separate task.
 3. **Per-author review or single-editor review?** Recommend per-author for the articles where the original author is identifiable and available; single voice-lead review otherwise. Confirm before drafting.
 4. **`welcome-to-spaarke` legacy tags.** This article still uses the flat `tags: [...]` array format instead of the structured `{organization, function, topic, theme}` shape. Out of scope for the bullet conversion, but worth noting — it's the only such article and creates a small consistency wart.
