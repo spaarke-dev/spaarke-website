@@ -61,7 +61,7 @@ Topics flagged during article reviews that are not yet scheduled. Status `idea` 
 - **idea** — topic flagged but no brief yet
 - **brief** — topic identified, brief being written
 - **outline** — outline drafted, awaiting approval
-- **draft** — draft in progress in `drafts/`
+- **draft** — draft in progress in `articles/<slug>/draft.{mdx|md}`
 - **review** — draft submitted, edits in progress
 - **scheduled** — final, awaiting publish_date
 - **published** — live on the channel

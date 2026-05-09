@@ -1,6 +1,6 @@
 # Outline — Legal IQ and the future of legal operations
 
-**Brief**: `briefs/2026-05-19-legal-iq-and-the-future-of-legal-operations.md`
+**Brief**: `./brief.md` (sibling in this article workspace)
 **Status**: outline awaiting team sign-off
 **Length target**: 1,500 words
 **Section count**: 5 H2 sections + opener + close
