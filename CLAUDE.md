@@ -47,11 +47,12 @@ content-platform/
 ├── spec.md                      ← architectural spec
 ├── voice/                       ← the constitution (style, brand, personas, vocab)
 ├── content-types/               ← per-type calibration (blog-post, linkedin-post, …)
-├── articles/                    ← per-piece workspaces
-│   ├── _template-blog-post/     ← templates by content type
-│   ├── _template-linkedin-post/
-│   ├── _template-white-paper/
-│   ├── _template-tweet/
+├── templates/                   ← per-type workspace templates (copied when starting a piece)
+│   ├── blog-post/{idea,brief,plan,tasks,CLAUDE}.md
+│   ├── linkedin-post/...
+│   ├── white-paper/...
+│   └── tweet/...
+├── articles/                    ← per-piece workspaces (actual pieces only)
 │   └── <slug>/                  ← one directory per piece
 │       ├── idea.md              ← writer's raw idea
 │       ├── brief.md             ← formal brief (the spec)

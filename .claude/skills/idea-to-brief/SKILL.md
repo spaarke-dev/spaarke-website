@@ -48,7 +48,7 @@ GitHub Issue).
 
 **Output**:
 - `content-platform/articles/<slug>/brief.md` — canonical brief
-  built from the matching `_template-<type>/brief.md` template
+  built from the matching `content-platform/templates/<type>/brief.md` template
 
 ## Workflow Position
 
@@ -269,7 +269,7 @@ that the piece is standalone.
 ### Step 8: Generate brief.md from the matching template
 
 ```
-COPY content-platform/articles/_template-<type>/brief.md
+COPY content-platform/templates/<type>/brief.md
   TO   content-platform/articles/<slug>/brief.md
   (overwrite if exists; user has already opted into regeneration)
 
@@ -349,7 +349,7 @@ IF user said 'done':
 | Situation | Response |
 |---|---|
 | Voice constitution files missing | Halt; report which files are missing; ask user to confirm before proceeding without them |
-| `_template-<type>/brief.md` missing | Halt; explain template is required; offer to fall back to most-similar template |
+| `templates/<type>/brief.md` missing | Halt; explain template is required; offer to fall back to most-similar template |
 | User skips blocking questions | Cannot proceed; explain why each blocking question matters for brief quality |
 | Existing brief.md at the path | Ask before overwriting: "A brief already exists. Overwrite, append a `_v2`, or cancel?" |
 | Tag value not in taxonomy | Refuse to invent; offer closest matches; require user to choose or update taxonomy.md first |
