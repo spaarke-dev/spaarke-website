@@ -20,10 +20,10 @@ gated by human confirmation at each step.
 - Validates brief.md against required sections + frontmatter
 - Generates plan.md (the structural outline — section + claim +
   evidence per section, opening + close beats, sources to verify,
-  hero direction) using the matching `_template-<type>/plan.md`
-- Generates tasks.md from `_template-<type>/tasks.md` (the 5- or
+  hero direction) using the matching `templates/<type>/plan.md`
+- Generates tasks.md from `templates/<type>/tasks.md` (the 5- or
   6-gate workflow checklist)
-- Generates per-piece CLAUDE.md from `_template-<type>/CLAUDE.md`
+- Generates per-piece CLAUDE.md from `templates/<type>/CLAUDE.md`
   (the session contract for this piece)
 - Creates the GitHub Issue with the right title, body, labels,
   and Milestone (campaign)
@@ -127,7 +127,7 @@ IF a campaign is assigned:
 ### Step 3: Generate plan.md
 
 ```
-COPY content-platform/articles/_template-<type>/plan.md
+COPY content-platform/templates/<type>/plan.md
   TO   content-platform/articles/<slug>/plan.md
 
 FILL in:
@@ -174,13 +174,13 @@ Next: generate tasks.md and per-piece CLAUDE.md.
 ### Step 4: Generate tasks.md and per-piece CLAUDE.md
 
 ```
-COPY content-platform/articles/_template-<type>/tasks.md
+COPY content-platform/templates/<type>/tasks.md
   TO   content-platform/articles/<slug>/tasks.md
 
 REPLACE all "<piece slug>" with the actual slug.
 LEAVE all checkboxes unchecked.
 
-COPY content-platform/articles/_template-<type>/CLAUDE.md
+COPY content-platform/templates/<type>/CLAUDE.md
   TO   content-platform/articles/<slug>/CLAUDE.md
 
 REPLACE "<piece slug>" with the actual slug.

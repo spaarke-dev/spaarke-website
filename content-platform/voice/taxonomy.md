@@ -6,7 +6,7 @@
 
 ## 1. How tags work
 
-Every blog post carries a structured `tags:` block in MDX frontmatter with four categories: **organization** (whose legal function the article is about), **function** (the role spoken to), **topic** (the operational subject), and **theme** (the narrative arc advanced). Tags MUST come from the canonical sets below — authors do not invent new values. The same shape appears in `articles/_template-blog-post/brief.md`. The site uses these tags for filters, related-post heuristics, and the future blog index; drift breaks all three.
+Every blog post carries a structured `tags:` block in MDX frontmatter with four categories: **organization** (whose legal function the article is about), **function** (the role spoken to), **topic** (the operational subject), and **theme** (the narrative arc advanced). Tags MUST come from the canonical sets below — authors do not invent new values. The same shape appears in `templates/blog-post/brief.md`. The site uses these tags for filters, related-post heuristics, and the future blog index; drift breaks all three.
 
 ---
 
