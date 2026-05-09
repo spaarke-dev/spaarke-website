@@ -67,8 +67,10 @@ $notes
 
 ## Where things live
 
-- Brief: \`content-platform/briefs/$publish_date-$slug.md\` (when written)
-- Draft: \`content-platform/drafts/${type}s/$slug.mdx\` (when started)
+- Brief: \`content-platform/articles/$slug/brief.md\` (when written)
+- Plan: \`content-platform/articles/$slug/plan.md\` (when started)
+- Tasks: \`content-platform/articles/$slug/tasks.md\` (when started)
+- Draft: \`content-platform/articles/$slug/draft.mdx\` (when started)
 - Final publish: \`content/blog/$publish_date-$slug.mdx\` *(blog posts only)*
 
 ## Workflow

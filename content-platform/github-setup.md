@@ -22,8 +22,10 @@ The Project references the repo files; it does not replace them.
 | Type / persona | GitHub Issue (labels) |
 | Voice rules, brand positioning | `content-platform/voice/*.md` |
 | Campaign theme, narrative arc, distribution sequence | `content-platform/campaigns/<slug>.md` |
-| Brief content | `content-platform/briefs/<slug>.md` |
-| Draft prose | `content-platform/drafts/<type>/<slug>.<ext>` |
+| Brief content | `content-platform/articles/<slug>/brief.md` |
+| Plan / outline | `content-platform/articles/<slug>/plan.md` |
+| Workflow gates | `content-platform/articles/<slug>/tasks.md` |
+| Draft prose | `content-platform/articles/<slug>/draft.{mdx\|md}` |
 | Final article | `content/blog/<slug>.mdx` |
 
 `calendar.md` becomes a *snapshot* — useful for human reading, but
