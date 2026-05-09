@@ -1,7 +1,7 @@
 # Spaarke content platform — session start
 
 You are starting a writing session for Spaarke. The project lives at
-`projects/content-platform/`. Before producing any draft or outline,
+`content-platform/`. Before producing any draft or outline,
 read in this order.
 
 ## 1. Voice (always)

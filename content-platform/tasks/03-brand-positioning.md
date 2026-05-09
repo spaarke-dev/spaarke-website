@@ -13,11 +13,11 @@ to understand *what to argue*, not *how to write*.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §5.2.
-- `projects/content-platform/tasks/00-inputs.md` — all sections,
+- `content-platform/spec.md` §5.2.
+- `content-platform/tasks/00-inputs.md` — all sections,
   especially §3 (reference voices) and §5 (calendar topics — they
   reveal positioning by the topics chosen).
-- `projects/content-platform/voice/library-audit.md` (T01 output).
+- `content-platform/voice/library-audit.md` (T01 output).
 - The site itself — read `src/app/page.tsx` (home), `src/app/platform/page.tsx`,
   the home-Hero content (`src/content/home/hero.ts`,
   `src/content/home/closing.ts`, `src/content/home/microsoft-native.ts`).
@@ -27,7 +27,7 @@ to understand *what to argue*, not *how to write*.
 
 ## Deliverables
 
-### `projects/content-platform/voice/brand-positioning.md`
+### `content-platform/voice/brand-positioning.md`
 
 Markdown file, ~800 words. Sections:
 
@@ -131,7 +131,7 @@ Helps me decline to write certain framings.
 
 > Phase 0, T03 of the Spaarke content platform.
 >
-> Read `projects/content-platform/spec.md` §5.2,
+> Read `content-platform/spec.md` §5.2,
 > `tasks/00-inputs.md`, `voice/library-audit.md`, and the existing
 > site copy (`src/app/page.tsx`, `src/app/platform/page.tsx`,
 > `src/content/home/*.ts`).

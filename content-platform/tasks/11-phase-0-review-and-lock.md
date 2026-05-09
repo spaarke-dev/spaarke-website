@@ -21,21 +21,21 @@ parens; total ~3-5 hours of focused review.
 
 ### Voice constitution (~2 hours total)
 
-- `projects/content-platform/voice/style-guide.md` (~30 min) — does
+- `content-platform/voice/style-guide.md` (~30 min) — does
   this sound like Spaarke? Is the do/avoid list complete?
-- `projects/content-platform/voice/brand-positioning.md` (~20 min) —
+- `content-platform/voice/brand-positioning.md` (~20 min) —
   is the positioning statement *us*? Are the 3-5 themes the right
   three to five?
-- `projects/content-platform/voice/audience-personas.md` (~30 min) —
+- `content-platform/voice/audience-personas.md` (~30 min) —
   do these personas match the people we're actually writing to? Are
   any missing?
-- `projects/content-platform/voice/product-knowledge.md` (~20 min) —
+- `content-platform/voice/product-knowledge.md` (~20 min) —
   factually correct? Anything to add or remove?
-- `projects/content-platform/voice/domain-knowledge.md` (~20 min) —
+- `content-platform/voice/domain-knowledge.md` (~20 min) —
   POV-on-trends section: do we agree with these positions?
-- `projects/content-platform/voice/vocabulary.md` (~10 min) — quick
+- `content-platform/voice/vocabulary.md` (~10 min) — quick
   scan of preferred + avoided columns.
-- `projects/content-platform/voice/examples/*.md` (~20 min) — are the
+- `content-platform/voice/examples/*.md` (~20 min) — are the
   good-articles selections the strongest? Are the avoid-this examples
   characteristic of failures we'd reject?
 
@@ -139,7 +139,7 @@ Phase 0 is locked when:
 > Phase 0 review for the Spaarke content platform — assistance with
 > revisions.
 >
-> The team has reviewed `projects/content-platform/voice/*.md`,
+> The team has reviewed `content-platform/voice/*.md`,
 > `content-types/*.md`, `CLAUDE.md`, and `briefs/_template-*.md`,
 > and produced an edit list (either inline as HTML comments or as a
 > flat list in `tasks/11-review-notes.md`).

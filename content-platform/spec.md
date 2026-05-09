@@ -60,7 +60,7 @@ than relying on whatever fits in a given chat.
 ### 3.1 Folder layout
 
 ```
-projects/content-platform/
+content-platform/
 ├── spec.md                              ← this file
 ├── tasks/                               ← project tasks (Phase 0+)
 ├── CLAUDE.md                            ← session-start routing for Claude
@@ -106,7 +106,7 @@ the platform folder because they're channel exports, not site content.
 
 When Claude starts a writing session, the agent reads in this order:
 
-1. `projects/content-platform/CLAUDE.md` — session orientation.
+1. `content-platform/CLAUDE.md` — session orientation.
 2. `voice/style-guide.md` — voice and formatting rules.
 3. `voice/brand-positioning.md` — what we're selling, narratively.
 4. `voice/audience-personas.md` — who we're writing to.

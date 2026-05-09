@@ -17,8 +17,8 @@ particular voice traits.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §5.7.
-- `projects/content-platform/tasks/00-inputs.md` §1 (yes-this-is-us
+- `content-platform/spec.md` §5.7.
+- `content-platform/tasks/00-inputs.md` §1 (yes-this-is-us
   references) and §4 (do-not-claim list).
 - `voice/library-audit.md` (T01) — Section 3 (recommended source
   material) lists the articles to mine.
@@ -161,7 +161,7 @@ For each:
 
 > Phase 0, T08 of the Spaarke content platform.
 >
-> Read `projects/content-platform/spec.md` §5.7,
+> Read `content-platform/spec.md` §5.7,
 > `tasks/00-inputs.md` §1 + §4, and the audit at
 > `voice/library-audit.md` (Section 3 lists the source articles).
 >

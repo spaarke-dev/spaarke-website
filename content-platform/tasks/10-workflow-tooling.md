@@ -15,7 +15,7 @@ drafting session immediately.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §3.2 (reading-priority ladder),
+- `content-platform/spec.md` §3.2 (reading-priority ladder),
   §6 (brief format), §8 (calendar).
 - All of `voice/*.md` (T02–T08 outputs).
 - All of `content-types/*.md` (T09 output) — for type-specific brief
@@ -25,7 +25,7 @@ drafting session immediately.
 
 ## Deliverables
 
-### 1. `projects/content-platform/CLAUDE.md`
+### 1. `content-platform/CLAUDE.md`
 
 The session-orientation doc. Read at the very start of any drafting
 session. Tells me what to read, in what order, and what to produce.
@@ -34,7 +34,7 @@ session. Tells me what to read, in what order, and what to produce.
 # Spaarke content platform — session start
 
 You are starting a writing session for Spaarke. The project lives at
-`projects/content-platform/`. Before producing any draft or outline,
+`content-platform/`. Before producing any draft or outline,
 read in this order:
 
 ## 1. Voice (always)
@@ -110,7 +110,7 @@ Default workflow per spec.md §7.1:
 
 ### 2. Brief templates
 
-Four files in `projects/content-platform/briefs/`:
+Four files in `content-platform/briefs/`:
 
 - `_template-white-paper.md`
 - `_template-blog-post.md`
@@ -168,7 +168,7 @@ Per-type variations:
 - Tweet template adds: `format` (single/thread), `tweet_count`,
   `link_target`.
 
-### 3. `projects/content-platform/calendar.md`
+### 3. `content-platform/calendar.md`
 
 Initial calendar populated from `tasks/00-inputs.md` §5 (the team's
 bootstrap topic stubs). Format per spec §8:
@@ -259,19 +259,19 @@ publish into `/content/blog/`.)
 
 > Phase 0, T10 of the Spaarke content platform.
 >
-> Read `projects/content-platform/spec.md` §3.2, §6, §8; all of
+> Read `content-platform/spec.md` §3.2, §6, §8; all of
 > `voice/*.md` (T02-T08 outputs); all of `content-types/*.md` (T09
 > output); and `tasks/00-inputs.md` §5 + §6.
 >
 > Produce four artifacts:
-> 1. `projects/content-platform/CLAUDE.md` (≤ 600 words) — session
+> 1. `content-platform/CLAUDE.md` (≤ 600 words) — session
 >    routing per the spec in `tasks/10-workflow-tooling.md` (this
 >    file).
 > 2. Four brief templates in `briefs/_template-<type>.md` — one per
 >    content type, with type-specific frontmatter fields per the
 >    content-type docs.
-> 3. `projects/content-platform/calendar.md` populated from T00 §5.
+> 3. `content-platform/calendar.md` populated from T00 §5.
 > 4. `.gitkeep` files in the seven empty directories listed.
 >
 > Do not draft any article content. Do not modify other files outside
-> `projects/content-platform/`.
+> `content-platform/`.

@@ -81,7 +81,7 @@ Copilot Studio is the orchestration layer — the connective tissue between user
 
 The Agent Framework is the execution layer — the agentic capability that turns playbooks into running automations. The third pillar maps to **Microsoft Agent Framework** — Microsoft's enterprise-grade platform for building and orchestrating agentic and autonomous agents, comparable in scope to the agent frameworks emerging from other major AI vendors. It is a real Microsoft product, not Spaarke-coined terminology.
 
-AI and automation playbooks (in the AI & Automation module) build on this layer: visual workflows that combine AI analysis, conditional routing, and matter-aware actions. Agents read Foundry IQ grounding, take bounded actions in the platform (open matters, route invoices, draft via Word Copilot, post to Teams), and surface what they did to a human. The framing is "AI-directed, human-controlled" (per `projects/content-platform/tasks/00-inputs.md` §7).
+AI and automation playbooks (in the AI & Automation module) build on this layer: visual workflows that combine AI analysis, conditional routing, and matter-aware actions. Agents read Foundry IQ grounding, take bounded actions in the platform (open matters, route invoices, draft via Word Copilot, post to Teams), and surface what they did to a human. The framing is "AI-directed, human-controlled" (per `content-platform/tasks/00-inputs.md` §7).
 
 ---
 
@@ -107,7 +107,7 @@ Additional surfaces in product but not headlined as integrations: **Power Automa
 
 ## 5. What we don't claim
 
-Negative-space list — claims we explicitly do not make. From `projects/content-platform/tasks/00-inputs.md` §4 plus product-specific disclaimers. Nine entries.
+Negative-space list — claims we explicitly do not make. From `content-platform/tasks/00-inputs.md` §4 plus product-specific disclaimers. Nine entries.
 
 1. **Replaces lawyers or paralegals.** Philosophy is "AI-directed, human-controlled" (T00 §7). The product augments judgment; it does not substitute for it.
 
@@ -157,7 +157,7 @@ What readers often assume that's wrong. At least four entries (have six).
 
 1. **"Spaarke is a SaaS app on vendor infrastructure."** Not when deployed Customer-Hosted. The Tenant Dedicated Deployment model runs Spaarke inside the customer's own M365 tenant — data stays in the customer environment, governed by the customer's existing Microsoft policies. The Spaarke-Hosted model exists for customers who want Microsoft-native without operating it themselves.
 
-2. **"Spaarke is for litigation."** It's for all matter types — corporate legal work, contracts, M&A, regulatory, IP, investigations, employment, and litigation. The data model uses "matter" because the term spans all these (per the vocabulary discussion in `projects/content-platform/spec.md` §5.6 and `content/blog/2026-03-31-spaarke-feature-specification.mdx`).
+2. **"Spaarke is for litigation."** It's for all matter types — corporate legal work, contracts, M&A, regulatory, IP, investigations, employment, and litigation. The data model uses "matter" because the term spans all these (per the vocabulary discussion in `content-platform/spec.md` §5.6 and `content/blog/2026-03-31-spaarke-feature-specification.mdx`).
 
 3. **"Spaarke needs a separate identity provider or user directory."** No. Authentication runs through the customer's Microsoft Entra ID. Existing SSO, MFA, and Conditional Access policies apply automatically. There are no Spaarke credentials for users to manage.
 
@@ -188,7 +188,7 @@ Reference list — facts stable enough to reuse without re-verifying. Source or 
 - **Product launch year**: 2026. Primary CTA is "Get access" (early access) as of 2026-05-06.
 - **Spaarke licensing**: per-user; includes managed solution, configuration support, updates, standard support. Implementation services scoped separately. Source: `content/blog/2026-03-28-spaarke-for-your-it-team.mdx`.
 - **Microsoft licensing prerequisites**: M365 E3 or E5 (or equivalent); Power Apps per-user or per-app; Dataverse storage; M365 Copilot (optional, required for AI features). Source: same.
-- **Canonical positioning line**: "Spaarke — The Legal Operations Intelligence Platform / Built to Raise the IQ of Legal Work." Source: `projects/content-platform/tasks/00-inputs.md` §7.
+- **Canonical positioning line**: "Spaarke — The Legal Operations Intelligence Platform / Built to Raise the IQ of Legal Work." Source: `content-platform/tasks/00-inputs.md` §7.
 - **Platform-page tagline**: "One platform. All sides. Every matter." Subhead: "All your legal work—connected." Source: `src/app/platform/page.tsx`.
 - **Home-page tagline (v1.4 brief)**: "See all sides of every matter." Source: `projects/website-version-2/spaarke-home-page-creative-brief-v1.4.md`.
 

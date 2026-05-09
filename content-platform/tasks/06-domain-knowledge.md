@@ -15,8 +15,8 @@ sources we cite.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §5.5.
-- `projects/content-platform/tasks/00-inputs.md` — especially §2
+- `content-platform/spec.md` §5.5.
+- `content-platform/tasks/00-inputs.md` — especially §2
   (personas) and §5 (calendar topics).
 - `voice/library-audit.md` (T01) — articles already reveal which
   industry topics we engage with.
@@ -25,7 +25,7 @@ sources we cite.
 
 ## Deliverables
 
-### `projects/content-platform/voice/domain-knowledge.md`
+### `content-platform/voice/domain-knowledge.md`
 
 Markdown file, 1,500–2,500 words. Sections:
 
@@ -162,7 +162,7 @@ about it.
 
 > Phase 0, T06 of the Spaarke content platform.
 >
-> Read `projects/content-platform/spec.md` §5.5,
+> Read `content-platform/spec.md` §5.5,
 > `tasks/00-inputs.md` (esp. §2 and §5), `voice/library-audit.md`,
 > and a few existing articles in `content/blog/` that touch on
 > industry trends.

@@ -13,10 +13,10 @@ writing session reads it.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §5.1 (style-guide scope).
-- `projects/content-platform/tasks/00-inputs.md` (team's bootstrap
+- `content-platform/spec.md` §5.1 (style-guide scope).
+- `content-platform/tasks/00-inputs.md` (team's bootstrap
   inputs) — especially §1, §3, §4.
-- `projects/content-platform/voice/library-audit.md` (T01 output) —
+- `content-platform/voice/library-audit.md` (T01 output) —
   Sections 2 and 3 are direct inputs to drafting.
 - 3–5 of the strongest existing articles in `content/blog/` (the ones
   rated ✅ in T01 and listed in T01's "Recommended source material").
@@ -24,7 +24,7 @@ writing session reads it.
 
 ## Deliverables
 
-### `projects/content-platform/voice/style-guide.md`
+### `content-platform/voice/style-guide.md`
 
 Markdown file, ~1,200 words. Sections:
 
@@ -157,12 +157,12 @@ self-review:
 > `c:\code_files\spaarke-website\projects\content-platform\`. T00 and
 > T01 are complete.
 >
-> Read `projects/content-platform/spec.md` §5.1, the team's inputs in
+> Read `content-platform/spec.md` §5.1, the team's inputs in
 > `tasks/00-inputs.md` (especially §1, §3, §4), and the audit at
 > `voice/library-audit.md`. Then read at least 3 of the strongest
 > existing articles in `content/blog/` (those rated ✅ in the audit).
 >
-> Produce `projects/content-platform/voice/style-guide.md`, 1,000–1,400
+> Produce `content-platform/voice/style-guide.md`, 1,000–1,400
 > words, covering the seven sections specified in
 > `tasks/02-style-guide.md` (this file). Pull illustrating examples
 > from the actual articles you read — do not fabricate.

@@ -13,7 +13,7 @@ session.
 
 ## Reads (required context)
 
-- `projects/content-platform/spec.md` §5.4.
+- `content-platform/spec.md` §5.4.
 - `docs/SITE-SPECIFICATION.md` §1 (purpose of the site, which mirrors
   the product positioning).
 - The site's existing platform-page content
@@ -25,7 +25,7 @@ session.
 
 ## Deliverables
 
-### `projects/content-platform/voice/product-knowledge.md`
+### `content-platform/voice/product-knowledge.md`
 
 Markdown file, 1,500–2,500 words. Sections:
 
@@ -154,7 +154,7 @@ Each fact: source where verifiable, "internal — confirm" where not.
 
 > Phase 0, T05 of the Spaarke content platform.
 >
-> Read `projects/content-platform/spec.md` §5.4, the site's
+> Read `content-platform/spec.md` §5.4, the site's
 > `docs/SITE-SPECIFICATION.md` §1, `src/app/platform/page.tsx`, and
 > `src/content/home/capabilities.ts`. Skim a handful of existing
 > articles in `content/blog/` to align with the product framings

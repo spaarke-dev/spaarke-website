@@ -55,7 +55,7 @@ once below and only piece-specific notes appear per entry.
 
 ## welcome-to-spaarke
 
-**Source**: `projects/content-platform/drafts/blog-posts/welcome-to-spaarke.mdx`
+**Source**: `content-platform/drafts/blog-posts/welcome-to-spaarke.mdx`
 **Argument the hero should evoke**: Spaarke is not a tool added to the
 stack — it is the operating layer above the tools, running inside the
 customer's tenant rather than next to it.
