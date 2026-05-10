@@ -59,7 +59,7 @@ The piece lands as the second blog post under the new voice constitution, immedi
 # Must NOT include
 
 - Productivity-tool framing. The whole piece argues against productivity AI as the destination.
-- "AI-powered." Use specific layer names (Foundry IQ, Copilot Studio, Microsoft Agent Framework) only if the architectural reference earns it; otherwise defer to The Legal IQ stack and Welcome to Spaarke.
+- "AI-powered." Use specific layer names (Foundry IQ, Microsoft Agent Framework, Microsoft Power Platform and Microsoft 365) only if the architectural reference earns it; otherwise defer to The Legal IQ stack and Welcome to Spaarke.
 - "The future of legal" as a phrase. We are arguing about a specific function (legal operations) and a specific property (intelligence metric), not the future of legal practice broadly.
 - "Transform," "disrupt," "revolutionary," "10x." On the do-not-say list.
 - Specific vendor names — even by implication. The piece is structural, not competitive.

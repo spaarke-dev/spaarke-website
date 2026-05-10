@@ -27,7 +27,7 @@ They improve specific tasks but can't reach the full context of a matter
 because they don't sit on a system of record. AI becomes operationally
 valuable only when it's grounded in matters, documents, spend, and
 collaboration as one connected system. Shows up in the home hero and in the
-Spaarke AI architecture (Foundry IQ, Copilot Studio, Agent Framework).
+Spaarke architecture (Foundry IQ for grounding and operational memory; Microsoft Agent Framework for orchestration and execution; Power Platform + M365 as the user experience layer).
 
 **Microsoft-native — built on Microsoft, not adjacent to it.**
 Most legal platforms integrate *with* Microsoft. Spaarke runs *inside* it —

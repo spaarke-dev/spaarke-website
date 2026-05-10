@@ -215,11 +215,13 @@ function SpaarkeAI() {
           className="font-body text-fg-mid mx-auto mt-12 max-w-md text-center md:hidden"
           style={{ fontSize: "16px", lineHeight: 1.6 }}
         >
-          Spaarke AI grounds Foundry IQ knowledge, Copilot Studio
-          orchestration, and the Agent Framework in your matters,
-          documents, emails, and tasks—surfacing as generative,
-          agentic, and autonomous capabilities across Teams,
-          Outlook, Word, and Microsoft 365.
+          Spaarke is built around three core layers: Foundry IQ for
+          grounding and operational memory, the Microsoft Agent
+          Framework for orchestration and execution, and Microsoft
+          Power Platform and Microsoft 365 for the user
+          experience—surfacing as generative, agentic, and autonomous
+          capabilities across Teams, Outlook, Word, SharePoint, and
+          Microsoft 365 Copilot.
         </p>
       </div>
     </section>
