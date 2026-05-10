@@ -54,7 +54,7 @@ Spaarke launched in 2026; the platform is in early access (CTA "Get access" on `
 # Must NOT include
 - "Welcome to Spaarke!" as an opener, or any breathless launch language. No "Hello," "Greetings," or "We're thrilled."
 - Founder-letter "I'm thrilled to" / "we're excited to" voice (style-guide §5.8).
-- "AI-powered." Use specific layer names (Foundry IQ grounding, Copilot Studio orchestration, Agent Framework execution) when AI is named at all.
+- "AI-powered." Use specific layer names (Foundry IQ for grounding and operational memory, Microsoft Agent Framework for orchestration and execution, Power Platform + M365 for the user experience) when AI is named at all.
 - "Replace lawyers," "10x productivity," "transform," "disrupt," "revolutionary," "ChatGPT for legal," "Copilot for lawyers."
 - Generic "the future of legal" framing. We don't predict trajectories we can't defend.
 - Demo CTA. The close points to substance (`/platform`, `/why-spaarke/what-is-legal-operations-intelligence`).

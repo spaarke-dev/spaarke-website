@@ -55,7 +55,7 @@
 **Structure**:
 - **Data**: Unified, structured, complete. Matter records, document records, billing records, communication records — all carrying the same matter ID. Without this, the rest is ungrounded.
 - **Memory**: Context, rationale, prior decisions retained in machine-readable form. Why a vendor was chosen, which OCG terms were hard-won, what worked in similar matters. (Cross-reference `institutional-knowledge`.)
-- **Inference**: AI applied to the grounded, contextualized record. AI-directed, human-controlled. Foundry IQ for grounding, Copilot Studio for orchestration, Microsoft Agent Framework for execution — name them once, link to architecture pieces.
+- **Inference**: AI applied to the grounded, contextualized record. AI-directed, human-controlled. Foundry IQ for grounding and operational memory; Microsoft Agent Framework for orchestration and execution; Power Platform + M365 as the user-experience layer — name them once, link to architecture pieces.
 
 **Close section**: cite `the-iq-stack` as the long-form architecture; this piece's job is the why-of-the-sequence, not the architectural detail. One paragraph on the practical implication: the return on AI investment in legal is gated by the data/memory work that precedes it.
 

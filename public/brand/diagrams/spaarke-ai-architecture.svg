@@ -92,13 +92,13 @@
 <text x="750.0" y="358.159509202454" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="17" font-weight="400" fill="rgba(255,255,255,0.78)" text-anchor="middle">Context-aware intelligence across legal work</text>
 <image x="556.0" y="380" width="64" height="64" href="/brand/diagrams/_extracted/img-6410789cf3eb.svg" preserveAspectRatio="xMidYMid meet"/>
 <text x="588.0" y="466" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">Foundry IQ</text>
-<text x="588.0" y="486" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="rgba(255,255,255,0.65)" text-anchor="middle">Knowledge grounding</text>
+<text x="588.0" y="486" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="rgba(255,255,255,0.65)" text-anchor="middle">Grounding &amp; memory</text>
 <image x="718.0" y="380" width="64" height="64" href="/brand/diagrams/_extracted/img-cb423c101e28.png" preserveAspectRatio="xMidYMid meet"/>
-<text x="750.0" y="466" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">Copilot Studio</text>
-<text x="750.0" y="486" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="rgba(255,255,255,0.65)" text-anchor="middle">Orchestration</text>
+<text x="750.0" y="466" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">Agent Framework</text>
+<text x="750.0" y="486" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="rgba(255,255,255,0.65)" text-anchor="middle">Orchestration &amp; execution</text>
 <image x="880.0" y="380" width="64" height="64" href="/brand/diagrams/_extracted/img-1242a6cf8b87.png" preserveAspectRatio="xMidYMid meet"/>
-<text x="912.0" y="466" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">Agent Framework</text>
-<text x="912.0" y="486" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="rgba(255,255,255,0.65)" text-anchor="middle">Execution</text>
+<text x="912.0" y="466" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF" text-anchor="middle">Power Platform &amp; M365</text>
+<text x="912.0" y="486" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="12" font-weight="400" fill="rgba(255,255,255,0.65)" text-anchor="middle">User experience</text>
 <path d="M 1020 342.0 C 1168.5 342.0, 1141.5 200, 1290 200" stroke="url(#flowOut)" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.78"/>
 <path d="M 1020 354.0 C 1168.5 354.0, 1141.5 307, 1290 307" stroke="url(#flowOut)" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.78"/>
 <path d="M 1020 366.0 C 1168.5 366.0, 1141.5 413, 1290 413" stroke="url(#flowOut)" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.78"/>

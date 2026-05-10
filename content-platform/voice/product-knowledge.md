@@ -63,25 +63,25 @@ Platform-page positioning: "Spaarke is the only legal SaaS solution that offers 
 
 ---
 
-## 3. The AI layer — the three "Spaarke AI" pillars
+## 3. The architecture — three core layers
 
-Spaarke's AI is a structured layer with three named pillars. We don't say "AI-powered" — we say which pillar is doing what.
+Spaarke is built around three core layers: **Foundry IQ** for grounding and operational memory, the **Microsoft Agent Framework** for orchestration and execution, and **Microsoft Power Platform and Microsoft 365** for the operational and collaborative user experience. We don't say "AI-powered" — we say which layer is doing what.
 
-Pillar source: `src/app/platform/page.tsx` (SpaarkeAI section) describes "Foundry IQ knowledge, Copilot Studio orchestration, and the Agent Framework" surfacing as "generative, agentic, and autonomous capabilities across Teams, Outlook, Word, and Microsoft 365."
+### 3.1 Foundry IQ — grounding and operational memory
 
-### 3.1 Foundry IQ — knowledge grounding
+Foundry IQ is the grounding and memory layer. It indexes matters, documents, emails, tasks, prior work, and counsel-and-firm history into a structured grounding source so AI features operate on the customer's actual legal data rather than generic web text. It also retains operational memory — what the platform learned from prior matters informs what it does on the next one. In product it shows up in Find similar (semantic search), the relationship graph, AI-generated matter and document summaries, and the knowledge source M365 Copilot queries against. Built on Azure AI Foundry. Lets the user ask matter-specific questions in M365 Copilot and get answers grounded in their department's prior work and accumulated context — not generic public-model answers.
 
-Foundry IQ is the knowledge layer. It indexes matters, documents, emails, tasks, prior work, and counsel-and-firm history into a structured grounding source so AI features operate on the customer's actual legal data rather than generic web text. In product it shows up in Find similar (semantic search), the relationship graph, AI-generated matter and document summaries, and the knowledge source M365 Copilot queries against. Built on Azure AI Foundry (per `projects/website-version-2/spaarke-home-page-creative-brief-v1.4.md`). Lets the user ask matter-specific questions in M365 Copilot and get answers grounded in their department's prior work — not generic public-model answers.
+### 3.2 Microsoft Agent Framework — orchestration and execution
 
-### 3.2 Copilot Studio — orchestration
+The Microsoft Agent Framework is the orchestration and execution layer. It is Microsoft's enterprise-grade platform for building and running agentic and autonomous workflows. Microsoft is consolidating its agentic stack into the Agent Framework — which is why Spaarke's orchestration and execution layer sits there rather than around lower-level tools. AI and automation playbooks (in the AI & Automation module) build on this layer: visual workflows that combine AI analysis, conditional routing, and matter-aware actions. Agents read Foundry IQ grounding, take bounded actions in the platform (open matters, route invoices, draft via Word Copilot, post to Teams), and surface what they did to a human reviewer. The framing is "AI-directed, human-controlled" — agents act inside guardrails, and a person stays accountable for the result.
 
-Copilot Studio is the orchestration layer — the connective tissue between user prompts, knowledge grounding, and downstream actions. Used to compose Spaarke's matter-aware experiences inside M365 Copilot and Teams (matter Q&A, briefings, intake flows, approvals) and to expose Spaarke as a Copilot knowledge source rather than a separate chat UI. Microsoft Copilot Studio is the named Microsoft product Spaarke builds on. Lets the user ask once, in the Copilot they already use, and have the right grounding plus the right action wired in.
+### 3.3 Microsoft Power Platform and Microsoft 365 — the user experience layer
 
-### 3.3 Agent Framework — execution
+This is where users actually meet the platform. Spaarke surfaces inside Outlook, Word, Teams, SharePoint, Microsoft 365 Copilot, and Power BI, plus the model-driven apps Spaarke composes on Power Platform. Native because each of those tools is already where the work happens; a separate Spaarke UI would defeat the point.
 
-The Agent Framework is the execution layer — the agentic capability that turns playbooks into running automations. The third pillar maps to **Microsoft Agent Framework** — Microsoft's enterprise-grade platform for building and orchestrating agentic and autonomous agents, comparable in scope to the agent frameworks emerging from other major AI vendors. It is a real Microsoft product, not Spaarke-coined terminology.
+### 3.4 A note on Copilot Studio and Power Automate
 
-AI and automation playbooks (in the AI & Automation module) build on this layer: visual workflows that combine AI analysis, conditional routing, and matter-aware actions. Agents read Foundry IQ grounding, take bounded actions in the platform (open matters, route invoices, draft via Word Copilot, post to Teams), and surface what they did to a human. The framing is "AI-directed, human-controlled" (per `content-platform/tasks/00-inputs.md` §7).
+Spaarke uses Microsoft low-code tools like Copilot Studio and Power Automate where they fit specific user contexts — but they are not core architectural components. Microsoft is consolidating its enterprise-grade agentic capabilities into the Microsoft Agent Framework; that is where Spaarke's orchestration and execution layer sits. Copilot Studio and Power Automate are useful for some user-facing surfaces, similar to how an enterprise might use Word and Excel for ad-hoc work without those being part of the core data architecture.
 
 ---
 
@@ -113,7 +113,7 @@ Negative-space list — claims we explicitly do not make. From `content-platform
 
 2. **A productivity multiplier (10x, 5x, 3x).** Per T00 §4, unverifiable and simplistic. Story is operational intelligence and improved execution, not a numeric multiplier.
 
-3. **"AI-powered."** Per T00 §4, too generic by 2026. We name what the AI does — Foundry IQ grounding, Copilot Studio orchestration, Agent Framework execution — and which surface it appears on.
+3. **"AI-powered."** Per T00 §4, too generic by 2026. We name which layer is doing what — Foundry IQ for grounding and memory, Microsoft Agent Framework for orchestration and execution — and which surface (Power Platform / M365 / Copilot) it appears on.
 
 4. **"Fully autonomous" / "autonomous legal AI."** Per T00 §4, overstates current maturity and undermines trust. Agentic execution is bounded and supervised.
 
@@ -141,7 +141,7 @@ Factual statements supporting positioning — not sales superlatives. Framed as 
 
 - **Three-stakeholder coverage: business, in-house counsel, outside counsel.** Per `projects/website-version-2/spaarke-home-page-creative-brief-v1.4.md`, this is the moat. Other platforms see one or two parties — and even when they see all three at the document level, the underlying AI grounding does not survive the engagement. Outside counsel use their own AI tool, grounded separately, on the same matter the in-house team is working in another tool. Spaarke's three-stakeholder model puts in-house and outside-counsel work against the same matter record, the same operational memory, and the same AI grounding. Source: positioning logic from `content/blog/2026-02-15-what-attorneys-need-to-know-about-ai.mdx` §Decision Four; consequences in `content/blog/2026-02-01-your-legal-data-belongs-to-you.mdx` (Outside-Counsel Data Question section) and `content/blog/2026-02-08-tenant-dedicated-deployment.mdx`.
 
-- **Built-in AI, not bolted-on.** AI is a structured layer (Foundry IQ + Copilot Studio + Agent Framework) grounded in the platform's own data — not generic AI applied to unstructured email and documents.
+- **Built-in AI, not bolted-on.** AI is a structured architecture (Foundry IQ for grounding and memory + Microsoft Agent Framework for orchestration and execution + Power Platform / M365 as the user experience) grounded in the platform's own data — not generic AI applied to unstructured email and documents.
 
 - **Inherited Microsoft security posture.** Existing Entra ID, Conditional Access, DLP, sensitivity labels, audit logging, retention, and tenant-level compliance certifications (SOC 2 Type II, ISO 27001, HIPAA, FedRAMP, GDPR) cover Spaarke automatically. No separate vendor security perimeter. Source: `content/blog/2026-01-25-why-we-built-on-microsoft.mdx`, `content/blog/2026-03-28-spaarke-for-your-it-team.mdx`.
 
@@ -176,7 +176,7 @@ Reference list — facts stable enough to reuse without re-verifying. Source or 
 - **Capability modules: 5** (Matter Management, Documents & Email, Collaboration, AI & Automation, Spend & Performance). Source: `src/content/home/capabilities.ts`.
 - **Microsoft foundation surfaces on the foundation card: 7** (Power Platform, SharePoint, Microsoft 365 Apps, Outlook, Teams, M365 Copilot, Azure AI Foundry). Source: `src/content/home/capabilities.ts` `foundation.logos`.
 - **Named integration surfaces in §4: 6** (Outlook, Word/Office, Teams, M365 Copilot, SharePoint, Power BI).
-- **Spaarke AI pillars: 3** (Foundry IQ, Copilot Studio, Agent Framework). Source: `src/app/platform/page.tsx`.
+- **Spaarke core layers: 3** (Foundry IQ for grounding and operational memory; Microsoft Agent Framework for orchestration and execution; Power Platform + M365 for the user experience). Source: `src/app/platform/page.tsx`.
 - **Hosting models: 2** (Spaarke-Hosted, Customer-Hosted). Source: `src/components/sections/DeploymentModels.tsx`.
 - **Runtime stack**: Power Apps (model-driven and canvas) on Dataverse; Power Automate; SharePoint Embedded (canonical document layer, in the customer's tenant); Power BI; M365 Copilot; Azure AI Foundry. Source: `content/blog/2026-03-28-spaarke-for-your-it-team.mdx`.
 - **Identity**: Microsoft Entra ID (formerly Azure AD).

@@ -275,8 +275,10 @@ export default function Privacy() {
             AI features
           </h3>
           <p>
-            Spaarke&rsquo;s AI features (Foundry IQ, Copilot Studio agents,
-            and approved enterprise model integrations) are grounded in your
+            Spaarke&rsquo;s AI features (Foundry IQ, Microsoft Agent
+            Framework agents, and approved enterprise model integrations,
+            surfaced through Microsoft Power Platform and Microsoft 365)
+            are grounded in your
             Customer Data via retrieval rather than training. Prompts and
             grounding content sent to underlying model providers are processed
             under enterprise data protection terms — including the Azure

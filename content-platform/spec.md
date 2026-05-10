@@ -287,9 +287,11 @@ Reference, not narrative. Sections covering:
 - Architecture (Microsoft-native, hosted vs customer-tenant, the five
   capability modules).
 - Integration surfaces (Outlook, Teams, Word, SharePoint, Power BI,
-  Copilot Studio).
-- The AI layer (Foundry IQ, Copilot Studio, Agent Framework — the
-  three "Spaarke AI" pillars).
+  M365 Copilot, Power Platform model-driven apps).
+- The architecture (three core layers: Foundry IQ for grounding
+  and operational memory; Microsoft Agent Framework for
+  orchestration and execution; Power Platform + M365 for the
+  user experience).
 - What we don't claim (e.g., we don't claim "replaces lawyers", we
   don't claim 10x productivity).
 - Differentiators — what's unique vs the alternatives.
