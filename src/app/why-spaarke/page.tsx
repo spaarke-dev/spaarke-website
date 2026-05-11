@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/images/og-default.png",
-        width: 1661,
-        height: 935,
-        alt: "Why Spaarke — Legal Operations Intelligence platform",
+        width: 1200,
+        height: 630,
+        alt: "Why Spaarke — the LegalIQ system of record",
       },
     ],
   },
