@@ -15,6 +15,18 @@ export const metadata: Metadata = {
     url: `${siteUrl}/why-spaarke`,
     siteName: "Spaarke",
     type: "website",
+    images: [
+      {
+        url: "/images/og-default.png",
+        width: 1661,
+        height: 935,
+        alt: "Why Spaarke — Legal Operations Intelligence platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/images/og-default.png"],
   },
 };
 

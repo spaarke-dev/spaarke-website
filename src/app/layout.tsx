@@ -65,6 +65,18 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Spaarke",
     locale: "en_US",
+    images: [
+      {
+        url: "/images/og-default.png",
+        width: 1661,
+        height: 935,
+        alt: "Spaarke — Legal Operations Intelligence platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/images/og-default.png"],
   },
   robots: {
     index: true,
