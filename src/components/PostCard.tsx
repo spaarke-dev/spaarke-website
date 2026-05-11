@@ -20,7 +20,7 @@ export default function PostCard({ post, variant = "list" }: PostCardProps) {
 
   if (variant === "portrait") {
     return (
-      <article className="group flex flex-col overflow-hidden rounded-xl border border-border bg-background p-5 transition-all hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-md">
+      <article className="group bg-surface border-line hover:border-line-strong flex flex-col overflow-hidden rounded-xl border p-5 transition-all hover:-translate-y-0.5 hover:shadow-md">
         <Link href={`/why-spaarke/${post.slug}`} className="flex h-full flex-col">
           {/* Top row: small image + title/meta block. Image stretches to match
               the text block height so date/author always sit within image bounds
@@ -60,13 +60,13 @@ export default function PostCard({ post, variant = "list" }: PostCardProps) {
             {/* Title + date + author */}
             <div className="flex min-w-0 flex-1 flex-col pr-12 sm:pr-16 lg:pr-24">
               <h3
-                className="text-foreground group-hover:text-primary font-semibold leading-snug tracking-tight"
+                className="text-fg group-hover:text-primary font-semibold leading-snug tracking-tight"
                 style={{ fontSize: "clamp(18px, 1.3vw, 22px)" }}
               >
                 {post.title}
               </h3>
               <div
-                className="text-muted-foreground mt-2 flex flex-wrap items-center gap-x-2 gap-y-1"
+                className="text-fg-mid mt-2 flex flex-wrap items-center gap-x-2 gap-y-1"
                 style={{ fontSize: "clamp(13px, 0.85vw, 15px)" }}
               >
                 <span className="flex items-center gap-1.5">
@@ -83,7 +83,7 @@ export default function PostCard({ post, variant = "list" }: PostCardProps) {
 
           {/* Summary — full width below the image row */}
           <p
-            className="text-muted-foreground mt-5 leading-relaxed line-clamp-5"
+            className="text-fg-mid mt-5 leading-relaxed line-clamp-5"
             style={{ fontSize: "clamp(15px, 1vw, 17px)" }}
           >
             {post.summary ?? post.description}
