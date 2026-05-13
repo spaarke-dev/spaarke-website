@@ -52,3 +52,6 @@ next-env.d.ts
 /resources/walkthroughs/**/*.jpg
 /resources/walkthroughs/**/*.jpeg
 /resources/walkthroughs/**/*.webp
+
+# LinkedIn integration — local OAuth state during three-legged flow
+/scripts/.linkedin-cache/
