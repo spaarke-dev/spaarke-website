@@ -13,7 +13,7 @@ alwaysApply: false
 published Spaarke blog article to LinkedIn. Drafts a feed-card
 commentary in the voice appropriate to the target surface (company
 page or personal account), resolves the 1920×1080 image, gates on a
-chat approval, then shells out to `npm run linkedin:publish` which
+chat approval, then shells out to `npx tsx scripts/linkedin-publish.ts` which
 holds the OAuth credentials and talks to LinkedIn's Posts API.
 
 Full architectural spec: [`projects/linkedin-publishing/spec.md`](../../../projects/linkedin-publishing/spec.md).
@@ -83,7 +83,7 @@ VALIDATE:
        HEAD https://www.spaarke.com/why-spaarke/<slug>
        -> 200 expected; if 404 or 5xx, stop.
   5. KV credentials for the chosen target exist. Probe by running:
-       npm run linkedin:publish -- --slug=<slug> --target=<target> --dry-run
+       npx tsx scripts/linkedin-publish.ts --slug=<slug> --target=<target> --dry-run
      and capture any "secret not found" / "token expired" surface.
 
 IF validation fails:
@@ -275,7 +275,7 @@ explicit `approve`.
 
 ```
 EXECUTE (Bash tool):
-  npm run linkedin:publish -- --slug=<slug> --target=<target>
+  npx tsx scripts/linkedin-publish.ts --slug=<slug> --target=<target>
 
 The CLI:
   1. Loads tokens from KV for <target>; refreshes inline if needed.
@@ -289,12 +289,13 @@ The CLI:
      frontmatter field.
   6. Echoes the post URL on stdout.
 
-IMPORTANT: Always include the npm `--` separator. With npm, args
-after `--` are passed through to the underlying script. Without it,
-npm eats them and the CLI sees no flags:
+IMPORTANT: Invoke via `npx tsx` rather than `npm run`. npm strips
+the `--key=` prefix from args containing `=` on Windows, which would
+mangle `--slug=foo --target=personal`. Direct `npx tsx` bypasses
+that arg processing.
 
-  WRONG: npm run linkedin:publish --slug=foo --target=personal
-  RIGHT: npm run linkedin:publish -- --slug=foo --target=personal
+  PREFERRED: npx tsx scripts/linkedin-publish.ts --slug=foo --target=personal
+  AVOID:     npm run linkedin:publish -- --slug=foo --target=personal
 
 CAPTURE the stdout. Look for the post URL line. Capture stderr too —
 LinkedIn errors map to operator-friendly messages (see Error
@@ -504,8 +505,8 @@ error class.
 | Situation | Chat message to operator |
 |---|---|
 | KV access denied / `az login` expired | "I can't reach Key Vault. Run `az login` in your terminal, then retry." |
-| Secret missing (first time on a target) | "No credentials in KV for `<target>`. Run `npm run linkedin:auth -- --app=<member\|org>` to do the one-shot OAuth, then retry." |
-| Access token expired and refresh fails (401) | "LinkedIn token expired and refresh failed. I'll need you to run `npm run linkedin:auth -- --app=<member\|org>` from your terminal, then we can retry." |
+| Secret missing (first time on a target) | "No credentials in KV for `<target>`. Run `npx tsx scripts/linkedin-auth.ts --app=<member\|org>` to do the one-shot OAuth, then retry." |
+| Access token expired and refresh fails (401) | "LinkedIn token expired and refresh failed. I'll need you to run `npx tsx scripts/linkedin-auth.ts --app=<member\|org>` from your terminal, then we can retry." |
 | 403 permission denied (company) | "LinkedIn rejected the post: you must be ADMINISTRATOR on the Spaarke Company Page in LinkedIn's admin panel. Personal-account posts don't have this requirement." |
 | 422 commentary > 3000 chars | "LinkedIn rejected the post body — commentary is `<N>` chars, limit is 3000. Want me to shorten? `edit "<copy>"` with your own version, or `regenerate` for a fresh shorter draft." |
 | 422 other (mention syntax, etc.) | "LinkedIn rejected the post body with: `<error detail>`. Most likely cause is mention or hashtag syntax. Reply `edit "<copy>"` to fix." |
@@ -533,7 +534,7 @@ and let them decide. Don't silently retry.
   row) and a live LinkedIn post. The main session commits per repo
   conventions.
 - Do **not** import the publish CLI's TypeScript source. Shell out
-  to `npm run linkedin:publish` only.
+  to `npx tsx scripts/linkedin-publish.ts` only.
 - Do **not** print or log access tokens, refresh tokens, or any
   field from KV other than the public author URN.
 - Do **not** auto-loop past `regenerate` more than twice in a row.
@@ -585,7 +586,7 @@ publish-linkedin (THIS SKILL)
     |
     +-> Validates + drafts voice-aware commentary
     +-> Chat approval gate
-    +-> Invokes npm run linkedin:publish
+    +-> Invokes npx tsx scripts/linkedin-publish.ts
     +-> Records URL back to published/linkedin-posts/<slug>.md
     +-> Appends calendar row
            |

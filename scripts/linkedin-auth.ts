@@ -86,16 +86,18 @@ interface OrgAclsBody {
 /* ------------------------------------------------------------------ */
 
 function parseApp(argv: readonly string[]): App {
-  for (const raw of argv.slice(2)) {
-    if (raw === "--app=member") return "member";
-    if (raw === "--app=org") return "org";
-    if (raw === "--app" || raw.startsWith("--app=")) {
-      const value = raw.includes("=") ? raw.split("=", 2)[1] : argv[argv.indexOf(raw) + 1];
-      if (value === "member" || value === "org") return value;
-    }
+  // Accept `--app=member`, `--app member`, or bare positional `member`/`org`.
+  // The bare-positional form is the fallback for npm-on-Windows, which strips
+  // the `--app=` prefix when passing args after `--` through `npm run`.
+  for (let i = 2; i < argv.length; i++) {
+    const raw = argv[i];
+    if (raw === "--app=member" || (raw === "--app" && argv[i + 1] === "member")) return "member";
+    if (raw === "--app=org" || (raw === "--app" && argv[i + 1] === "org")) return "org";
+    if (raw === "member" || raw === "org") return raw;
   }
   throw new LinkedInConfigError(
-    "Missing or invalid --app flag. Use --app=member or --app=org.",
+    "Missing or invalid --app flag. Use --app=member or --app=org " +
+      "(or pass `member`/`org` as a bare arg).",
   );
 }
 
