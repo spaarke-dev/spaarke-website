@@ -588,21 +588,112 @@ function yamlScalar(v: unknown): string {
   return s;
 }
 
-function appendCalendarLine(args: {
+/**
+ * Updates `content-platform/calendar.md` to record a LinkedIn post.
+ *
+ * Schema (defined by task 043): each monthly section is a markdown
+ * table with the columns:
+ *   `Slug | Type | Publish | Status | Author | Campaign |
+ *    LinkedIn (personal) | LinkedIn (company) | Notes`
+ *
+ * This function locates the row matching `slug` and writes
+ * `[YYYY-MM-DD](url)` into the column matching `target`. If no row
+ * is found, it appends a new row to the first month-section table
+ * it finds and logs a warning.
+ *
+ * The transform is line-based (string replace) — no markdown parser.
+ */
+function updateCalendarForPost(args: {
   slug: string;
   target: "personal" | "company";
   postUrl: string;
 }): void {
   const today = new Date().toISOString().slice(0, 10);
-  const line = `- LinkedIn (${args.target}) ${today} — ${args.slug} — ${args.postUrl}\n`;
-  // Task 043 will define the canonical column/row format. For now we
-  // append a single line at end-of-file so nothing existing is
-  // disturbed. The operator (or task 043) can re-home it later.
+  const cellValue = `[${today}](${args.postUrl})`;
+
+  let raw: string;
   try {
-    fs.appendFileSync(CALENDAR_PATH, line, "utf8");
+    raw = fs.readFileSync(CALENDAR_PATH, "utf8");
   } catch (err) {
     console.warn(
-      `[warn] Could not append to calendar at ${CALENDAR_PATH}: ${(err as Error).message}. Post was still published successfully.`,
+      `[warn] Could not read calendar at ${CALENDAR_PATH}: ${(err as Error).message}. Post was still published successfully.`,
+    );
+    return;
+  }
+
+  const lines = raw.split("\n");
+
+  // A row matches if it's a table-data line whose first non-empty
+  // cell equals the slug. Table-data lines start with `|`. The
+  // first non-empty cell after the leading `|` is the slug.
+  let rowIndex = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.startsWith("|")) continue;
+    // Skip header rows (which contain `Slug` and `Type`) and
+    // separator rows (which are `|---|---|...|`).
+    const trimmed = line.trim();
+    if (/^\|[\s-]*-+[\s-|]*\|?$/.test(trimmed)) continue;
+    // Split into cells; trim. First cell is empty (before leading `|`).
+    const cells = trimmed.split("|").map((c) => c.trim());
+    // cells[0] is "" (leading `|`), cells[1] is the slug column.
+    const firstCell = cells[1] ?? "";
+    if (firstCell === args.slug) {
+      rowIndex = i;
+      break;
+    }
+  }
+
+  if (rowIndex === -1) {
+    // Fallback: append a new row to the current month-section table.
+    console.warn(
+      `[warn] Calendar row for slug='${args.slug}' not found in ${CALENDAR_PATH}. Appending a new row.`,
+    );
+    const personalCell = args.target === "personal" ? cellValue : "";
+    const companyCell = args.target === "company" ? cellValue : "";
+    const newRow = `| ${args.slug} |  | ${today} | published | rs |  | ${personalCell} | ${companyCell} | Auto-added by linkedin-publish (row was missing) |`;
+    const updated =
+      raw.endsWith("\n") ? raw + newRow + "\n" : raw + "\n" + newRow + "\n";
+    try {
+      fs.writeFileSync(CALENDAR_PATH, updated, "utf8");
+    } catch (err) {
+      console.warn(
+        `[warn] Could not write calendar at ${CALENDAR_PATH}: ${(err as Error).message}. Post was still published successfully.`,
+      );
+    }
+    return;
+  }
+
+  // Found the row. Update the appropriate column in-place.
+  const original = lines[rowIndex];
+  // Preserve the original cell padding/whitespace shape as best we
+  // can by splitting on `|` while remembering this is a "pipe-table"
+  // row that starts and ends with `|`.
+  const cells = original.split("|");
+  // For a table row "| a | b | c |", split returns ["", " a ", " b ", " c ", ""].
+  // Column indices (1-based on the inner cells):
+  //   1=Slug, 2=Type, 3=Publish, 4=Status, 5=Author, 6=Campaign,
+  //   7=LinkedIn (personal), 8=LinkedIn (company), 9=Notes
+  const personalIdx = 7;
+  const companyIdx = 8;
+  const colIdx = args.target === "personal" ? personalIdx : companyIdx;
+
+  if (cells.length <= colIdx) {
+    console.warn(
+      `[warn] Calendar row for slug='${args.slug}' has only ${cells.length - 2} columns; expected at least 9 (with LinkedIn columns). Skipping update — the calendar schema may be out of sync.`,
+    );
+    return;
+  }
+
+  // Preserve a single leading/trailing space inside the cell.
+  cells[colIdx] = ` ${cellValue} `;
+  lines[rowIndex] = cells.join("|");
+
+  try {
+    fs.writeFileSync(CALENDAR_PATH, lines.join("\n"), "utf8");
+  } catch (err) {
+    console.warn(
+      `[warn] Could not write calendar at ${CALENDAR_PATH}: ${(err as Error).message}. Post was still published successfully.`,
     );
   }
 }
@@ -706,7 +797,7 @@ async function main(): Promise<void> {
     postUrl: result.postUrl,
     commentary,
   });
-  appendCalendarLine({
+  updateCalendarForPost({
     slug: args.slug,
     target: args.target,
     postUrl: result.postUrl,

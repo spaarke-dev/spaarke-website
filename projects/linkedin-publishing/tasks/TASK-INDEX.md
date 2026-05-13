@@ -80,18 +80,18 @@ merge conflicts, agent C4 should rebase before pushing.
 | 012 | Create publish-linkedin skill | 1 | **complete** | 002 (shape) | claude-code, skill, orchestration |
 | 013 | Wire package.json scripts | 1 | **complete** | 002, 003, 010, 011 | package-json, scripts |
 | 014 | E2E test personal account | 1 | **complete** ✅ M2 | 010, 011, 012, 013 | testing, e2e, milestone |
-| 020 | Scaffold refresh Azure Function | 2 | not-started | 003 | azure, functions, timer, devops |
-| 021 | Implement refresh function logic | 2 | not-started | 020 | azure, functions, linkedin, oauth |
-| 022 | Configure managed identity + KV RBAC | 2 | not-started | 020 | azure, identity, rbac, keyvault |
-| 023 | SendGrid alerting on refresh failures | 2 | not-started | 020 | sendgrid, alerting, email |
-| 024 | Deploy refresh function | 2 | not-started | 021, 022, 023 | azure, deploy, milestone |
+| 020 | Scaffold refresh Azure Function | 2 | **complete** | 003 | azure, functions, timer, devops |
+| 021 | Implement refresh function logic | 2 | **complete** | 020 | azure, functions, linkedin, oauth |
+| 022 | Configure managed identity + KV RBAC | 2 | **complete** | 020 | azure, identity, rbac, keyvault |
+| 023 | SendGrid alerting on refresh failures | 2 | **complete** | 020 | sendgrid, alerting, email |
+| 024 | Deploy refresh function | 2 | **complete** ✅ M3 | 021, 022, 023 | azure, deploy, milestone |
+| 040 | Implement linkedin-status CLI | 4 | **complete** | 002, 003 | cli, observability |
+| 041 | Implement linkedin-revoke CLI | 4 | **complete** | 002 | cli, security, lifecycle |
+| 042 | Write operator runbook | 4 | **complete** | 014 | docs, runbook |
+| 043 | Extend calendar with LinkedIn columns | 4 | **complete** | 011 | content-platform, calendar |
 | 030 | Run OAuth for org app | 3 | **blocked** (CM API approval) | 010 | linkedin, oauth, manual |
 | 031 | Extend publish CLI for --target=company | 3 | blocked | 011, 030 | linkedin, cli |
 | 032 | Extend skill + E2E company post | 3 | blocked | 012, 031 | claude-code, skill, e2e, milestone |
-| 040 | Implement linkedin-status CLI | 4 | not-started | 002, 003 | cli, observability |
-| 041 | Implement linkedin-revoke CLI | 4 | not-started | 002 | cli, security, lifecycle |
-| 042 | Write operator runbook | 4 | not-started | 014 | docs, runbook |
-| 043 | Extend calendar with LinkedIn columns | 4 | not-started | 011 | content-platform, calendar |
 | 090 | Project wrap-up | wrap | not-started | all | verification, milestone |
 
 ---
