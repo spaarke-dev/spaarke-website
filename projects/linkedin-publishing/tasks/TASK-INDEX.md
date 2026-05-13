@@ -79,7 +79,7 @@ merge conflicts, agent C4 should rebase before pushing.
 | 011 | Implement linkedin-publish.ts | 1 | **complete** | 002, 003 | typescript, linkedin, api, cli, sharp |
 | 012 | Create publish-linkedin skill | 1 | **complete** | 002 (shape) | claude-code, skill, orchestration |
 | 013 | Wire package.json scripts | 1 | **complete** | 002, 003, 010, 011 | package-json, scripts |
-| 014 | E2E test personal account | 1 | not-started | 010, 011, 012, 013 | testing, e2e, milestone |
+| 014 | E2E test personal account | 1 | **complete** ✅ M2 | 010, 011, 012, 013 | testing, e2e, milestone |
 | 020 | Scaffold refresh Azure Function | 2 | not-started | 003 | azure, functions, timer, devops |
 | 021 | Implement refresh function logic | 2 | not-started | 020 | azure, functions, linkedin, oauth |
 | 022 | Configure managed identity + KV RBAC | 2 | not-started | 020 | azure, identity, rbac, keyvault |
