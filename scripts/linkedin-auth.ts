@@ -7,7 +7,7 @@
 //   npx tsx scripts/linkedin-auth.ts --app=org
 //
 // Opens the system browser, spins up an ephemeral HTTP server on
-// 127.0.0.1:3000 to catch the OAuth callback, exchanges the
+// 127.0.0.1:3030 to catch the OAuth callback, exchanges the
 // authorization code for tokens, fetches the author URN, and persists
 // everything to Key Vault via the shared module.
 //
@@ -36,7 +36,9 @@ import {
 /* ------------------------------------------------------------------ */
 
 const CALLBACK_HOST = "127.0.0.1";
-const CALLBACK_PORT = 3000;
+// Port 3030 (not 3000) to avoid clashing with the Next.js dev server.
+// If this changes, update the LinkedIn app's Authorized redirect URLs.
+const CALLBACK_PORT = 3030;
 const CALLBACK_PATH = "/auth/linkedin/callback";
 const REDIRECT_URI = `http://localhost:${CALLBACK_PORT}${CALLBACK_PATH}`;
 

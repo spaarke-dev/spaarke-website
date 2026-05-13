@@ -290,10 +290,10 @@ npm run linkedin:auth --app=member   # or --app=org
 
 Behavior:
 1. Reads client-id + client-secret from KV for the chosen app.
-2. Spins up an ephemeral local HTTP server on `localhost:3000`.
+2. Spins up an ephemeral local HTTP server on `localhost:3030` (avoiding Next.js dev on 3000).
 3. Opens the browser to LinkedIn's authorization URL with the
    correct scopes for the chosen app and `redirect_uri=
-   http://localhost:3000/auth/linkedin/callback`.
+   http://localhost:3030/auth/linkedin/callback`.
 4. Operator approves in the browser; LinkedIn redirects back to the
    local server with `?code=...`.
 5. Server exchanges the code for an access + refresh token at

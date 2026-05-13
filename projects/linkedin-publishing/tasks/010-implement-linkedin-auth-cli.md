@@ -30,9 +30,9 @@ Management API scopes.
    - `org`: `r_organization_social w_organization_social rw_organization_admin`
 4. Load credentials from KV: `getCredentials(app)`.
 5. Generate a random `state` (16 bytes base64) — store in a local in-memory variable for CSRF protection.
-6. Start an ephemeral HTTP server on `127.0.0.1:3000`. Single route handler at `/auth/linkedin/callback`.
+6. Start an ephemeral HTTP server on `127.0.0.1:3030` (port 3000 reserved for Next.js dev). Single route handler at `/auth/linkedin/callback`.
 7. Build the LinkedIn authorization URL:
-   `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=<id>&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Flinkedin%2Fcallback&state=<state>&scope=<scope>`
+   `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=<id>&redirect_uri=http%3A%2F%2Flocalhost%3A3030%2Fauth%2Flinkedin%2Fcallback&state=<state>&scope=<scope>`
 8. Print the URL to stdout and call `open(url)` to launch the default browser.
 9. In the callback handler:
    - Validate `state` matches.
