@@ -1,26 +1,23 @@
 # Current task — LinkedIn Publishing
 
-**Active task:** none (Phase 0 complete — ready for Phase 1 fan-out)
+**Active task:** 013 — Wire `npm run linkedin:*` scripts in package.json (next)
 
 **Last completed:**
 - 001 (2026-05-13) — deps + tsconfig.scripts.json
-- 002 (2026-05-13) — scripts/linkedin-shared.ts (KV client, types, errors, pingKv)
-- 003 (2026-05-13) — scripts/linkedin-refresh-token.ts (refreshIfNeeded, refreshNow, daysUntilExpiry)
+- 002 (2026-05-13) — scripts/linkedin-shared.ts (164 lines)
+- 003 (2026-05-13) — scripts/linkedin-refresh-token.ts (129 lines)
+- **010 (2026-05-13)** — scripts/linkedin-auth.ts (504 lines) — Agent A1, dispatched in parallel
+- **011 (2026-05-13)** — scripts/linkedin-publish.ts (746 lines) — Agent A2, dispatched in parallel
+- **012 (2026-05-13)** — .claude/skills/publish-linkedin/SKILL.md (606 lines) — Agent A3, dispatched in parallel
 
-**Milestone M1 reached:** KV reachable, shared module compiles, refresh logic in place.
+**Group A parallel fan-out complete.** Combined `npx tsc -p tsconfig.scripts.json --noEmit` passes cleanly across all four scripts. Skill is registered (Claude Code recognizes `publish-linkedin` in the available-skills list).
 
-**Up next — Phase 1 parallel fan-out (Group A):**
-- 010 — scripts/linkedin-auth.ts (OAuth one-shot CLI)
-- 011 — scripts/linkedin-publish.ts (publish CLI with --target=personal)
-- 012 — .claude/skills/publish-linkedin/SKILL.md (orchestrator)
-
-These three are independent and can run as parallel Claude Code agents per
-the dispatch recipe in tasks/TASK-INDEX.md "Recipe 1".
-
-After all three return: 013 (package.json scripts), 014 (E2E test).
+**Up next:**
+- 013 — small (package.json scripts) — main thread
+- 014 — E2E test against personal LinkedIn account — **needs operator action** (OAuth + real post)
 
 **Notes:**
-- KV smoke-test passes: `linkedin-member-client-id` reachable, length 14.
-- `daysUntilExpiry` math verified on a 30-day-future token.
+- Each agent over-delivered on line count (~2× the task estimates) due to inline doc comments, error-mapping branches, and the SKILL.md including full worked-example commentary per voice.
+- Auth CLI handles multi-org picker via a second HTTP-server hop with CSRF-state preservation.
+- Publish CLI has partial-state recovery via `.linkedin-cache/<slug>-pending.json` marker; on startup with a leftover marker, queries LinkedIn for recent posts by author URN.
 - LinkedIn Community Management API submitted 2026-05-13; expect approval 2–6 weeks.
-- Real-refresh path (`refreshNow`) is not yet exercised — needs first OAuth run (task 010).

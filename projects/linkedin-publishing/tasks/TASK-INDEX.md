@@ -75,9 +75,9 @@ merge conflicts, agent C4 should rebase before pushing.
 | 001 | Add dependencies and scripts TypeScript config | 0 | **complete** | — | typescript, deps, config |
 | 002 | Implement linkedin-shared.ts | 0 | **complete** | 001 | typescript, azure, keyvault, foundation |
 | 003 | Implement refresh-token logic | 0 | **complete** | 002 | typescript, oauth, linkedin |
-| 010 | Implement linkedin-auth.ts (OAuth CLI) | 1 | not-started | 002 | typescript, oauth, linkedin, cli |
-| 011 | Implement linkedin-publish.ts | 1 | not-started | 002, 003 | typescript, linkedin, api, cli, sharp |
-| 012 | Create publish-linkedin skill | 1 | not-started | 002 (shape) | claude-code, skill, orchestration |
+| 010 | Implement linkedin-auth.ts (OAuth CLI) | 1 | **complete** | 002 | typescript, oauth, linkedin, cli |
+| 011 | Implement linkedin-publish.ts | 1 | **complete** | 002, 003 | typescript, linkedin, api, cli, sharp |
+| 012 | Create publish-linkedin skill | 1 | **complete** | 002 (shape) | claude-code, skill, orchestration |
 | 013 | Wire package.json scripts | 1 | not-started | 002, 003, 010, 011 | package-json, scripts |
 | 014 | E2E test personal account | 1 | not-started | 010, 011, 012, 013 | testing, e2e, milestone |
 | 020 | Scaffold refresh Azure Function | 2 | not-started | 003 | azure, functions, timer, devops |
