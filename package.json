@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "linkedin:auth": "tsx scripts/linkedin-auth.ts",
+    "linkedin:publish": "tsx scripts/linkedin-publish.ts",
+    "linkedin:refresh": "tsx scripts/linkedin-refresh-token.ts",
+    "linkedin:test-kv": "tsx scripts/linkedin-test-kv.ts",
+    "linkedin:status": "tsx scripts/linkedin-status.ts"
   },
   "dependencies": {
     "@azure/data-tables": "^13.3.2",
