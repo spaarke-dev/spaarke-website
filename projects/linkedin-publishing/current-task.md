@@ -1,17 +1,26 @@
 # Current task — LinkedIn Publishing
 
-**Active task:** 002 — Implement scripts/linkedin-shared.ts
+**Active task:** none (Phase 0 complete — ready for Phase 1 fan-out)
 
-**Last completed:** 001 — Add dependencies and scripts TypeScript config (2026-05-13)
-- `@azure/identity` ^4.5.0, `@azure/keyvault-secrets` ^4.9.0, `open` ^10.1.0 added to dependencies
-- `tsx` ^4.19.2 added to devDependencies (installed as 4.21.0)
-- `tsconfig.scripts.json` created at repo root (target ES2022, module ESNext, strict)
-- `.gitignore` updated with `/scripts/.linkedin-cache/`
-- Bulk replaced `pnpm` → `npm`/`npx` across all project files (npm is the repo's actual package manager)
+**Last completed:**
+- 001 (2026-05-13) — deps + tsconfig.scripts.json
+- 002 (2026-05-13) — scripts/linkedin-shared.ts (KV client, types, errors, pingKv)
+- 003 (2026-05-13) — scripts/linkedin-refresh-token.ts (refreshIfNeeded, refreshNow, daysUntilExpiry)
 
-**Up next after 002:** 003 (refresh-token logic), then Phase 1 fan-out (010 + 011 + 012 in parallel).
+**Milestone M1 reached:** KV reachable, shared module compiles, refresh logic in place.
+
+**Up next — Phase 1 parallel fan-out (Group A):**
+- 010 — scripts/linkedin-auth.ts (OAuth one-shot CLI)
+- 011 — scripts/linkedin-publish.ts (publish CLI with --target=personal)
+- 012 — .claude/skills/publish-linkedin/SKILL.md (orchestrator)
+
+These three are independent and can run as parallel Claude Code agents per
+the dispatch recipe in tasks/TASK-INDEX.md "Recipe 1".
+
+After all three return: 013 (package.json scripts), 014 (E2E test).
 
 **Notes:**
+- KV smoke-test passes: `linkedin-member-client-id` reachable, length 14.
+- `daysUntilExpiry` math verified on a 30-day-future token.
 - LinkedIn Community Management API submitted 2026-05-13; expect approval 2–6 weeks.
-- KV `sprk-demo-kv` has `linkedin-member-client-id` and `linkedin-member-client-secret` populated.
-- 17 audit warnings in `npm install` output are pre-existing transitive deps, not from new packages.
+- Real-refresh path (`refreshNow`) is not yet exercised — needs first OAuth run (task 010).
