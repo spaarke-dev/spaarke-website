@@ -1,34 +1,42 @@
 # Current task — LinkedIn Publishing
 
-**Active task:** none — Phase 1 complete (M2 reached)
+**Active task:** none — Phase 2 + Phase 4 complete
 
-**Last completed:**
-- 001 (2026-05-13) — deps + tsconfig.scripts.json
-- 002 (2026-05-13) — scripts/linkedin-shared.ts
-- 003 (2026-05-13) — scripts/linkedin-refresh-token.ts
-- 010 (2026-05-13) — scripts/linkedin-auth.ts (parallel agent)
-- 011 (2026-05-13) — scripts/linkedin-publish.ts (parallel agent)
-- 012 (2026-05-13) — .claude/skills/publish-linkedin/SKILL.md (parallel agent)
-- 013 (2026-05-13) — package.json scripts
-- **014 (2026-05-13) — E2E personal post live: https://www.linkedin.com/feed/update/urn:li:share:7460418660302573568/**
+**Completed this session:**
+- 001–003 (Phase 0 — foundation)
+- 010–014 (Phase 1 — personal end-to-end + first real LinkedIn post)
+- **020–024 (Phase 2 — refresh function): M3 reached**
+- **040–043 (Phase 4 — polish + docs)**
 
-**🟢 Milestone M2 reached** — first real LinkedIn post via the system, end-to-end through the 7-gate workflow.
+**🟢 Milestone M3 reached** — refresh function deployed to Azure.
 
-**What worked end-to-end:**
-- KV-backed OAuth (one-shot, port 3030)
-- Token rotation logic exists (not yet exercised — first refresh is ~53 days away)
-- Skill orchestrator drove all 7 gates: validate → image → commentary draft → preview → approve → publish → record
-- Personal-voice placeholder profile produced a usable post on the first attempt
-- Image rendered cleanly in LinkedIn feed; link card resolves to canonical URL on spaarke.com
-- Calendar row + linkedin-posts/<slug>.md record both auto-updated
-- No partial-state markers left behind
+```
+Azure Function:        spaarke-linkedin-refresh
+Resource group:        rg-spaarke-demo
+Plan:                  Consumption (Windows, Node 24)
+Timer schedule:        0 0 2 * * *   (daily 02:00 UTC)
+Identity:              system-assigned, principalId d9b76737-…
+KV role:               Key Vault Secrets Officer on sprk-demo-kv
+Functions registered:  refresh (timerTrigger, enabled)
+First scheduled run:   tomorrow at 02:00 UTC
+Manual trigger test:   HTTP 202 (queued — verify in App Insights)
+```
 
-**Up next — parallel paths available:**
-- **Phase 2** — refresh function (tasks 020–024). Independent. Can dispatch Group B fan-out (021 + 022 + 023) after 020.
-- **Phase 4** — polish & docs (tasks 040–043). Four-way parallel via agents.
-- **Phase 3** — company posting (tasks 030–032). Still blocked on LinkedIn Community Management API approval (submitted 2026-05-13; 2–6 week SLA).
+**Operator follow-ups (when convenient):**
+1. Add three KV secrets to enable the SendGrid alerting path:
+   - `sendgrid-api-key` — copy from the site's `SENDGRID_API_KEY` env var
+   - `notification-email-operator` — your address
+   - `notification-email-from` — must be a SendGrid-verified sender (e.g., `noreply@spaarke.com`)
+   Until these are present, the function works silently — no email on failure, no Monday summary. The refresh logic itself is unaffected.
+2. After the first scheduled run completes, check App Insights for the `spaarke-linkedin-refresh` resource to confirm zero errors.
+
+**Phase 3 — Company posting (blocked):** still gated on LinkedIn Community Management API approval. Once approved:
+- Task 030: operator runs `npx tsx scripts/linkedin-auth.ts --app=org`
+- Tasks 031, 032 wrap up company-page publishing end-to-end
+
+**Up next:** Task 090 (project wrap-up — verification + lessons-learned). Or wait on Phase 3 to merge in once LinkedIn approves.
 
 **Notes:**
-- Personal voice placeholder produced good copy first try. Could codify a `personal-voice-ralph.md` from this + future hand-written posts later.
-- The `npm run` arg-stripping issue was fixed by switching the skill to invoke `npx tsx` directly. `npm run linkedin:auth -- --app=member` still works via the parser's bare-positional fallback.
-- Port 3030 (not 3000) is the OAuth callback to avoid Next.js dev conflict.
+- Node 20 was rejected (EOL'd April 2026); function runs Node 24.
+- Function App was Linux-rejected by the RG (existing apps in the RG block dynamic Linux workers); ran on Windows kind instead — no impact for Node code.
+- `az role assignment create` failed in main session with "MissingSubscription"; operator ran the command from PowerShell and it worked. Worth flagging for future cross-environment KV ops.
