@@ -8,7 +8,7 @@
 
 ## Goal
 
-`pnpm linkedin:publish --target=company` works end-to-end against
+`npm run linkedin:publish --target=company` works end-to-end against
 the Spaarke Company Page.
 
 ## Context
@@ -23,7 +23,7 @@ new code.
 1. Verify the `--target` arg in `linkedin-publish.ts` already handles `company` → maps to `App = "org"`. If not (task 011 left it as personal-only stub), fix the mapping.
 2. Test that everything wired correctly:
    ```bash
-   pnpm linkedin:publish --slug=the-iq-stack --target=company --dry-run
+   npm run linkedin:publish --slug=the-iq-stack --target=company --dry-run
    ```
    The output should show:
    - `author: urn:li:organization:<id>` (not person)

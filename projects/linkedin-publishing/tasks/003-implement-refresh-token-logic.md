@@ -30,7 +30,7 @@ operator message.
 2. Import `App`, `LinkedInTokens`, `getCredentials`, `getTokens`, `setTokens`, `LinkedInAuthError` from `./linkedin-shared.ts`.
 3. Export `refreshIfNeeded(app: App, windowDays = 7): Promise<LinkedInTokens>`:
    - Loads tokens via `getTokens(app)`.
-   - If null → throw `LinkedInAuthError("No tokens stored for app=<app>. Run pnpm linkedin:auth --app=<app>.")`.
+   - If null → throw `LinkedInAuthError("No tokens stored for app=<app>. Run npm run linkedin:auth --app=<app>.")`.
    - If `expiresAt` is more than `windowDays` away → return tokens unchanged.
    - Otherwise call `refreshNow(app)`.
 4. Export `refreshNow(app: App): Promise<LinkedInTokens>`:
@@ -41,7 +41,7 @@ operator message.
      - `client_id=<clientId>`
      - `client_secret=<clientSecret>`
    - On 200: parse `{ access_token, expires_in, refresh_token, refresh_token_expires_in }`. Build new `LinkedInTokens`. Persist via `setTokens(app, ...)`. Return.
-   - On 401: throw `LinkedInAuthError("Refresh token rejected for app=<app>. The refresh token is expired, revoked, or invalid. Run pnpm linkedin:auth --app=<app> to re-authorize.")`.
+   - On 401: throw `LinkedInAuthError("Refresh token rejected for app=<app>. The refresh token is expired, revoked, or invalid. Run npm run linkedin:auth --app=<app> to re-authorize.")`.
    - On any other error: throw `LinkedInAuthError(\`Refresh failed (HTTP <status>): <body>\`)`.
 5. Export `daysUntilExpiry(tokens: LinkedInTokens): number` — pure helper, used by the Function for logging.
 6. Compute `expiresAt`: `new Date(Date.now() + expires_in * 1000).toISOString()`.

@@ -16,7 +16,7 @@ one-shot.
 When LinkedIn approves the **Community Management API** request on
 the second app, the operator must:
 1. Add the second app's Client ID and Client Secret to KV.
-2. Run `pnpm linkedin:auth --app=org` to do the OAuth flow.
+2. Run `npm run linkedin:auth --app=org` to do the OAuth flow.
 
 This task is a checklist. No code changes.
 
@@ -34,7 +34,7 @@ This task is a checklist. No code changes.
    Do this in a terminal that doesn't log to chat. Verify with `az keyvault secret list ... | grep linkedin-org`.
 4. Run the OAuth flow:
    ```bash
-   pnpm linkedin:auth --app=org
+   npm run linkedin:auth --app=org
    ```
 5. The browser opens, you sign in as a Spaarke Company Page administrator, approve the requested scopes.
 6. If you administer multiple LinkedIn pages, the script will show a picker — choose Spaarke.
@@ -52,7 +52,7 @@ This task is a checklist. No code changes.
 
 ## Acceptance Criteria
 
-- [ ] `pnpm linkedin:test-kv --app=org` (after task 040 extends it) returns OK.
+- [ ] `npm run linkedin:test-kv --app=org` (after task 040 extends it) returns OK.
 - [ ] `linkedin-org-author-urn` starts with `urn:li:organization:`.
 - [ ] No secret values logged to chat or terminal capture.
 

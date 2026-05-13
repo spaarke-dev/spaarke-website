@@ -32,7 +32,7 @@ company page, and runs a real post as the milestone.
 4. If the draft is off (too casual, wrong pronouns, etc.), refine the prompts in the skill and re-test.
 5. Real post:
    - When the draft is good, type `approve`.
-   - Skill invokes `pnpm linkedin:publish --slug=<slug> --target=company`.
+   - Skill invokes `npm run linkedin:publish --slug=<slug> --target=company`.
    - Post URL returned.
 6. Verify on LinkedIn:
    - Post appears on the **Spaarke Company Page feed** (not on the operator's personal feed).

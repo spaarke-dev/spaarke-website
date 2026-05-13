@@ -1,4 +1,4 @@
-# Task 041: Implement `pnpm linkedin:revoke`
+# Task 041: Implement `npm run linkedin:revoke`
 
 **Phase:** 4 — Polish & docs
 **Status:** not-started
@@ -38,7 +38,7 @@ path.
      - `linkedin-<app>-refresh-token`
      - `linkedin-<app>-token-expires-at`
      - `linkedin-<app>-author-urn`
-5. Print: "Revoked. To re-authorize, run `pnpm linkedin:auth --app=<app>`."
+5. Print: "Revoked. To re-authorize, run `npm run linkedin:auth --app=<app>`."
 
 ## Expected Outputs
 
@@ -46,9 +46,9 @@ path.
 
 ## Acceptance Criteria
 
-- [ ] `pnpm linkedin:revoke --app=member` (no --confirm) shows what would be revoked; exits 0.
-- [ ] `pnpm linkedin:revoke --app=member --confirm` deletes the four KV secrets; subsequent `pnpm linkedin:status` shows "Not authenticated" for member.
-- [ ] Re-running `pnpm linkedin:auth --app=member` after revoke restores function.
+- [ ] `npm run linkedin:revoke --app=member` (no --confirm) shows what would be revoked; exits 0.
+- [ ] `npm run linkedin:revoke --app=member --confirm` deletes the four KV secrets; subsequent `npm run linkedin:status` shows "Not authenticated" for member.
+- [ ] Re-running `npm run linkedin:auth --app=member` after revoke restores function.
 - [ ] No accidental deletion of `linkedin-<app>-client-id` or `linkedin-<app>-client-secret` (those are app-level).
 
 ## Notes

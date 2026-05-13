@@ -11,14 +11,14 @@
 
 The Claude Code skill the operator invokes. Defines the gated
 workflow, the voice-aware drafting prompts, the approval gate,
-and the call out to `pnpm linkedin:publish`.
+and the call out to `npm run linkedin:publish`.
 
 ## Context
 
 Per [spec §4](../spec.md). This is the operator's only interface.
 Everything else is invisible. The skill is spec-driven — it doesn't
 import code from `scripts/linkedin-*.ts`, only shells out to
-`pnpm linkedin:publish`. That means this task can be drafted in
+`npm run linkedin:publish`. That means this task can be drafted in
 parallel with the CLI implementations as long as the CLI contract
 in spec §6.1 holds.
 
@@ -42,12 +42,12 @@ in spec §6.1 holds.
    - Step 3: Resolve commentary (existing file, draft fresh with voice, --draft-fresh flag).
    - Step 4: Preview in chat (target, author URN, image, link, title, description, commentary, char count).
    - Step 5: Approval gate (`approve` | `edit "<copy>"` | `regenerate` | `cancel`).
-   - Step 6: Publish (invoke `pnpm linkedin:publish --slug=<slug> --target=<target>` via Bash).
+   - Step 6: Publish (invoke `npm run linkedin:publish --slug=<slug> --target=<target>` via Bash).
    - Step 7: Record (show URL, offer commit of the linkedin-posts/<slug>.md update).
 6. **Voice profiles** section — references:
    - Company voice: `content-platform/voice/style-guide.md` + `content-platform/voice/brand-positioning.md`; rules from spec §7.1.
    - Personal voice: `content-platform/voice/personal-voice-ralph.md` if present, else the placeholder profile from spec §7.2.
-7. **Error handling** — map common script failures to operator-friendly chat messages (token expired → "I'll need you to run `pnpm linkedin:auth --app=member`").
+7. **Error handling** — map common script failures to operator-friendly chat messages (token expired → "I'll need you to run `npm run linkedin:auth --app=member`").
 8. **Success criteria** — pipeline complete when post URL is returned and `published/linkedin-posts/<slug>.md` is updated.
 9. **Integration with other skills** — note the relationship with `content-pipeline` (this skill picks up where that one leaves off).
 

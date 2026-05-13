@@ -58,10 +58,10 @@ through this script.
 
 ## Acceptance Criteria
 
-- [ ] `pnpm linkedin:publish --slug=the-iq-stack --target=personal --dry-run` prints the request body without making any API calls.
-- [ ] `pnpm linkedin:publish --slug=the-iq-stack --target=personal` posts to the operator's personal LinkedIn feed; the printed URL renders the link card and the 1920×1080 image.
+- [ ] `npm run linkedin:publish --slug=the-iq-stack --target=personal --dry-run` prints the request body without making any API calls.
+- [ ] `npm run linkedin:publish --slug=the-iq-stack --target=personal` posts to the operator's personal LinkedIn feed; the printed URL renders the link card and the 1920×1080 image.
 - [ ] On 422 (e.g., commentary > 3000): exits with the spec-defined message.
-- [ ] On 401: exits with a message that tells the operator to run `pnpm linkedin:auth --app=member`.
+- [ ] On 401: exits with a message that tells the operator to run `npm run linkedin:auth --app=member`.
 - [ ] After success, `published/linkedin-posts/the-iq-stack.md` has frontmatter with `posted_url` and the calendar has a new entry.
 - [ ] Crash between image upload and post creation does NOT leave the calendar dirty.
 

@@ -31,10 +31,10 @@ posting) gated on LinkedIn Community Management API approval
 ## Local setup
 
 ```bash
-pnpm install
+npm install
 az login                                    # KV access via your Azure session
-pnpm linkedin:auth --app=member             # one-shot OAuth, writes tokens to KV
-pnpm linkedin:publish --slug=<slug> --target=personal --dry-run
+npm run linkedin:auth --app=member             # one-shot OAuth, writes tokens to KV
+npm run linkedin:publish --slug=<slug> --target=personal --dry-run
 ```
 
 ## Two LinkedIn apps
@@ -49,7 +49,7 @@ pnpm linkedin:publish --slug=<slug> --target=personal --dry-run
 The operator invokes `/publish-linkedin <slug> [--target=company\|personal]`
 in Claude Code. The skill drafts commentary in the right voice,
 resolves the 1920×1080 LinkedIn image, gates on chat approval, and
-invokes `pnpm linkedin:publish` to do the actual API call. See
+invokes `npm run linkedin:publish` to do the actual API call. See
 [spec.md §4](spec.md) for the full flow.
 
 ## Deployment

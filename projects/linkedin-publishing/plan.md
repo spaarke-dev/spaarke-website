@@ -19,7 +19,7 @@ refresh-token logic that's reused by the CLI and the Azure Function.
 - `scripts/linkedin-refresh-token.ts` — reusable refresh logic
 - Deps + `tsconfig.scripts.json` in place
 
-**Acceptance:** From a fresh checkout, `pnpm install && pnpm
+**Acceptance:** From a fresh checkout, `npm install && npm run
 linkedin:test-kv` reads both `linkedin-member-client-*` secrets from
 KV successfully.
 
@@ -40,10 +40,10 @@ publish to their personal LinkedIn account from Claude Code chat.
 - 013 and 014 run sequentially after the three above land.
 
 **Deliverables:**
-- `scripts/linkedin-auth.ts` (`pnpm linkedin:auth --app=member`)
+- `scripts/linkedin-auth.ts` (`npm run linkedin:auth --app=member`)
 - `scripts/linkedin-publish.ts` with `--target=personal`
 - `.claude/skills/publish-linkedin/SKILL.md`
-- `pnpm linkedin:*` scripts wired in `package.json`
+- `npm run linkedin:*` scripts wired in `package.json`
 
 **Milestone:** First real personal LinkedIn post created via the
 skill, with the link card and 1920×1080 image rendering correctly
@@ -110,8 +110,8 @@ format)
   four agents.
 
 **Deliverables:**
-- `pnpm linkedin:status` — token health check (both apps).
-- `pnpm linkedin:revoke` — clean disposal for operator handoff.
+- `npm run linkedin:status` — token health check (both apps).
+- `npm run linkedin:revoke` — clean disposal for operator handoff.
 - `docs/linkedin-publishing.md` — operator runbook.
 - New "linkedin-posted" column in `content-platform/calendar.md`.
 

@@ -26,11 +26,11 @@ without reading the spec.
 2. Sections (each one a real "how do I" answer):
    - **First-time setup** — how to add an operator (KV roles, az login, run auth)
    - **Publishing an article** — the happy-path workflow in 4–5 lines
-   - **Checking system health** — `pnpm linkedin:status`
+   - **Checking system health** — `npm run linkedin:status`
    - **Re-authorizing when a token expires** — exact command
    - **What to do when a publish fails** — table of error → action
    - **Adding a new LinkedIn app** (e.g., a future second company page) — abstract steps
-   - **Decommissioning an operator** — `pnpm linkedin:revoke` flow
+   - **Decommissioning an operator** — `npm run linkedin:revoke` flow
    - **How the system stays alive without intervention** — describes the refresh function in plain language
 3. Include 2–3 actual screenshots/transcripts from a publish run (operator chat with Claude, the email from the refresh function on a successful Monday summary).
 4. Add a "FAQ" section with answers to:

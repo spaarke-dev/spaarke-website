@@ -72,7 +72,7 @@ merge conflicts, agent C4 should rebase before pushing.
 
 | ID | Title | Phase | Status | Dependencies | Tags |
 |---|---|---|---|---|---|
-| 001 | Add dependencies and scripts TypeScript config | 0 | not-started | — | typescript, deps, config |
+| 001 | Add dependencies and scripts TypeScript config | 0 | **complete** | — | typescript, deps, config |
 | 002 | Implement linkedin-shared.ts | 0 | not-started | 001 | typescript, azure, keyvault, foundation |
 | 003 | Implement refresh-token logic | 0 | not-started | 002 | typescript, oauth, linkedin |
 | 010 | Implement linkedin-auth.ts (OAuth CLI) | 1 | not-started | 002 | typescript, oauth, linkedin, cli |
@@ -113,7 +113,7 @@ After 001/002/003 are committed, in a single Claude message dispatch:
                 "Implement this task. Touch only files listed in 'Expected
                 Outputs'. The 'scripts/linkedin-shared.ts' module already
                 exists from task 002 — import from it, don't redefine its
-                exports. Run pnpm exec tsc -p tsconfig.scripts.json to
+                exports. Run npx tsc -p tsconfig.scripts.json to
                 verify before declaring done.">)
 
   Agent(description="Implement LinkedIn publish CLI",
@@ -123,7 +123,7 @@ After 001/002/003 are committed, in a single Claude message dispatch:
   Agent(description="Author publish-linkedin skill",
         subagent_type="general-purpose",
         prompt=<contents of 012, plus "This skill shells out to
-                'pnpm linkedin:publish' — assume that CLI exists with
+                'npm run linkedin:publish' — assume that CLI exists with
                 the contract documented in spec §6.1. You don't need
                 to run the actual publish.">)
 ```

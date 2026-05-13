@@ -30,8 +30,8 @@ publishes happen ad hoc from Claude Code.
    - §8 Image — both default-path and rasterize-fallback verified.
    - §9 Failure modes — confirmed via the forced-failure tests in
      tasks 014 and 024.
-2. Run `pnpm linkedin:status` — confirm both apps green.
-3. Run `pnpm linkedin:test-kv` — confirm KV reachable.
+2. Run `npm run linkedin:status` — confirm both apps green.
+3. Run `npm run linkedin:test-kv` — confirm KV reachable.
 4. Trigger the refresh function manually — confirm it runs clean.
 5. Update `projects/linkedin-publishing/README.md` status to
    "🟢 Complete".
@@ -61,7 +61,7 @@ publishes happen ad hoc from Claude Code.
 - [ ] All spec §2 goals verified.
 - [ ] All phase milestones ticked.
 - [ ] No partial state on disk anywhere.
-- [ ] `pnpm linkedin:status` exits 0.
+- [ ] `npm run linkedin:status` exits 0.
 - [ ] Refresh function has had at least 3 successful daily runs visible in App Insights.
 - [ ] Operator-runbook smoke-tested by reading it end-to-end fresh.
 

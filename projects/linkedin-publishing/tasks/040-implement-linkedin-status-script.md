@@ -1,4 +1,4 @@
-# Task 040: Implement `pnpm linkedin:status`
+# Task 040: Implement `npm run linkedin:status`
 
 **Phase:** 4 — Polish & docs
 **Status:** not-started
@@ -24,7 +24,7 @@ shippable.
 
 1. Create `scripts/linkedin-status.ts`.
 2. For each app (`member`, `org`):
-   - Try `getTokens(app)`. If null → "Not authenticated. Run pnpm linkedin:auth --app=<app>."
+   - Try `getTokens(app)`. If null → "Not authenticated. Run npm run linkedin:auth --app=<app>."
    - If tokens present: print `expiresAt`, `daysUntilExpiry`, `authorUrn`.
    - Warn (yellow) if `daysUntilExpiry < 14`.
    - Error (red) if expired or invalid.
@@ -50,7 +50,7 @@ shippable.
 
 ## Acceptance Criteria
 
-- [ ] `pnpm linkedin:status` prints the report and exits 0 in a healthy state.
+- [ ] `npm run linkedin:status` prints the report and exits 0 in a healthy state.
 - [ ] When `linkedin-org-*` is unpopulated (pre-OAuth), org row says "Not authenticated".
 - [ ] Output uses simple ANSI colors (no big terminal library).
 - [ ] No secret values appear in output.

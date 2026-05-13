@@ -42,7 +42,7 @@ no other script hardcodes secret names.
     - `LinkedInAuthError` — for OAuth / token problems
     - `LinkedInApiError` — for API response errors (with `httpStatus` + `responseBody`)
     - `LinkedInConfigError` — for missing KV secrets or env
-11. Add a tiny self-check function `pingKv()` that reads `linkedin-member-client-id` and returns its length (used by `pnpm linkedin:test-kv`).
+11. Add a tiny self-check function `pingKv()` that reads `linkedin-member-client-id` and returns its length (used by `npm run linkedin:test-kv`).
 
 ## Expected Outputs
 
@@ -50,8 +50,8 @@ no other script hardcodes secret names.
 
 ## Acceptance Criteria
 
-- [ ] `pnpm exec tsc -p tsconfig.scripts.json --noEmit` exits 0.
-- [ ] `pnpm tsx -e "import { pingKv } from './scripts/linkedin-shared.ts'; pingKv().then(n => console.log('OK', n))"` prints `OK 14` (the client-id length).
+- [ ] `npx tsc -p tsconfig.scripts.json --noEmit` exits 0.
+- [ ] `npx tsx -e "import { pingKv } from './scripts/linkedin-shared.ts'; pingKv().then(n => console.log('OK', n))"` prints `OK 14` (the client-id length).
 - [ ] No secret values logged anywhere — only lengths or counts.
 - [ ] All exported types are named (no anonymous `as` casts at boundaries).
 

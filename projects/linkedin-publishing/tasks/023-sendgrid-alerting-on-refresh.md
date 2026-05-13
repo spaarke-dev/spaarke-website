@@ -48,7 +48,7 @@ sends from `noreply@spaarke.com` to the operator's address.
    ```
 5. Email content:
    - **Failure email subject**: `[LinkedIn refresh] <app> token refresh failed`
-   - **Body**: error message + remediation step (e.g., "Run `pnpm linkedin:auth --app=member` from your dev machine.")
+   - **Body**: error message + remediation step (e.g., "Run `npm run linkedin:auth --app=member` from your dev machine.")
    - **Weekly summary subject**: `[LinkedIn refresh] Weekly health: member=<N>d, org=<M>d`
    - **Body**: token expiry status for both apps.
 6. Wire `notifyOnResults` into `refresh/index.ts` (the stub from task 021).

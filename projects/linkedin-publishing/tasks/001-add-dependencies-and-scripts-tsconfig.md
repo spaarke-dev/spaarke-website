@@ -37,20 +37,20 @@ eventual Function deployment picks them up.
    - `noEmit`: true
    - `include`: `["scripts/**/*.ts"]`
 4. Add a `.gitignore` entry for `scripts/.linkedin-cache/` (used later for token-state-during-OAuth).
-5. Run `pnpm install` and verify no warnings.
+5. Run `npm install` and verify no warnings.
 
 ## Expected Outputs
 
 - `package.json` — dependencies + devDependencies updated
-- `pnpm-lock.yaml` — refreshed
+- `package-lock.json` — refreshed
 - `tsconfig.scripts.json` — new file at repo root
 - `.gitignore` — one new line
 
 ## Acceptance Criteria
 
-- [ ] `pnpm install` runs clean.
-- [ ] `pnpm exec tsc -p tsconfig.scripts.json --noEmit` exits 0 (no scripts yet, so trivially passes).
-- [ ] `pnpm tsx --version` shows a working tsx runner.
+- [ ] `npm install` runs clean.
+- [ ] `npx tsc -p tsconfig.scripts.json --noEmit` exits 0 (no scripts yet, so trivially passes).
+- [ ] `npx tsx --version` shows a working tsx runner.
 - [ ] `git status` shows only the four files above modified.
 
 ## Notes

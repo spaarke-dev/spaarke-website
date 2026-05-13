@@ -52,8 +52,8 @@ Management API scopes.
 
 ## Acceptance Criteria
 
-- [ ] `pnpm linkedin:auth --app=member` opens the browser, completes the LinkedIn flow, and exits with "Token stored" plus an expiry date.
-- [ ] After success, `pnpm linkedin:test-kv` (from task 002) can read `linkedin-member-access-token` and `linkedin-member-author-urn`.
+- [ ] `npm run linkedin:auth --app=member` opens the browser, completes the LinkedIn flow, and exits with "Token stored" plus an expiry date.
+- [ ] After success, `npm run linkedin:test-kv` (from task 002) can read `linkedin-member-access-token` and `linkedin-member-author-urn`.
 - [ ] On state mismatch, the server returns 400 and exits with a clear error.
 - [ ] On Linkedin denial (operator clicks "Cancel" in the LinkedIn consent screen), the script exits cleanly with the LinkedIn-provided error description.
 - [ ] No secret values logged. The access token, refresh token, and client secret never appear in stdout/stderr.

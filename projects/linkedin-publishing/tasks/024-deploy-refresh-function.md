@@ -53,7 +53,7 @@ Azure.
    - In KV, set `linkedin-member-refresh-token` to garbage.
    - Invoke the function.
    - Verify the operator receives a SendGrid failure email.
-   - Restore the original refresh token (via running `pnpm linkedin:auth --app=member` again).
+   - Restore the original refresh token (via running `npm run linkedin:auth --app=member` again).
 
 ## Expected Outputs
 
@@ -74,4 +74,4 @@ Azure.
 
 - Consumption plan cold-starts can add ~5 seconds to first invocation — fine for a daily timer.
 - If the function fails to access KV with a 403, the managed-identity role assignment from task 022 didn't propagate yet — wait 5 min and retry.
-- Reset any test-modified KV values before declaring done. Run `pnpm linkedin:test-kv` and `pnpm linkedin:status` (once task 040 exists) to verify clean state.
+- Reset any test-modified KV values before declaring done. Run `npm run linkedin:test-kv` and `npm run linkedin:status` (once task 040 exists) to verify clean state.

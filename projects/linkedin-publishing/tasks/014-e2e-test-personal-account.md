@@ -20,12 +20,12 @@ and post to the operator's personal account.
 
 ## Steps
 
-1. Confirm operator has already run `pnpm linkedin:auth --app=member` once and KV has fresh tokens.
+1. Confirm operator has already run `npm run linkedin:auth --app=member` once and KV has fresh tokens.
 2. Pick a test article — recommend `the-iq-stack` (live, hero exists).
 3. From Claude Code chat, invoke: `/publish-linkedin the-iq-stack --target=personal`.
 4. Skill walks through the 7 gates. Operator reviews each preview.
 5. At the approval gate, operator types `approve`.
-6. Skill invokes `pnpm linkedin:publish --slug=the-iq-stack --target=personal`.
+6. Skill invokes `npm run linkedin:publish --slug=the-iq-stack --target=personal`.
 7. CLI uploads image, posts, returns URL.
 8. Open the returned URL in a browser.
 9. Verify:

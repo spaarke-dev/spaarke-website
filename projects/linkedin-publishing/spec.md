@@ -97,7 +97,7 @@ You (Claude Code chat):
 │   4. Preview in chat → wait for approve       │
 │   5. Invoke publish script with --slug+--target│
 └──────────────────────────────────────────────┘
-       │  pnpm linkedin:publish --slug=… --target=…
+       │  npm run linkedin:publish --slug=… --target=…
        ▼
 ┌──────────────────────────────────────────────┐
 │ scripts/linkedin-publish.ts (Node CLI)        │
@@ -256,7 +256,7 @@ The skill follows the same gate-pattern as `content-pipeline`:
        `cancel`         → exit without posting
 
 6. Publish
-     Invoke: pnpm linkedin:publish --slug=<slug> --target=<target>
+     Invoke: npm run linkedin:publish --slug=<slug> --target=<target>
      The script writes the approved commentary to published/
        linkedin-posts/<slug>.md before posting, so the file always
        reflects what actually ran.
@@ -285,7 +285,7 @@ Run once per app per ~year (or whenever the refresh token expires
 and the operator is notified). Usage:
 
 ```bash
-pnpm linkedin:auth --app=member   # or --app=org
+npm run linkedin:auth --app=member   # or --app=org
 ```
 
 Behavior:
@@ -315,7 +315,7 @@ that are within 7 days of expiry, writes new tokens back to KV.
 
 On refresh failure (e.g., refresh token revoked or expired), logs
 to App Insights with a clear error message ("LinkedIn member token
-expired — operator must run `pnpm linkedin:auth --app=member`
+expired — operator must run `npm run linkedin:auth --app=member`
 again") and sends a notification (see §10 for the alerting
 channel).
 
@@ -419,7 +419,7 @@ cleanly to user-facing messages:
 
 | HTTP | Message to operator |
 |---|---|
-| 401 | "LinkedIn token rejected — run `pnpm linkedin:auth --app=<member\|org>` to re-auth." |
+| 401 | "LinkedIn token rejected — run `npm run linkedin:auth --app=<member\|org>` to re-auth." |
 | 403 | "LinkedIn permission denied. For company posts you must be ADMINISTRATOR on the Spaarke Company Page. For personal posts, the access token must include `w_member_social` scope." |
 | 422 | "LinkedIn rejected the post body. Most common cause: commentary > 3000 chars or invalid mention syntax." |
 | 429 | "LinkedIn rate-limited — wait 5 min and retry. (Daily quota is ~~150 posts.)" |
@@ -512,7 +512,7 @@ written, the skill detects mtime drift and offers to re-rasterize.
 |---|---|---|
 | KV unavailable | Skill stops at validate step. | Retry; verify `az login` session. |
 | Access token expired and refresh succeeds | Transparent — operator sees no change. | n/a |
-| Refresh token expired or revoked | Publish script returns 401. | Operator runs `pnpm linkedin:auth --app=<…>`. |
+| Refresh token expired or revoked | Publish script returns 401. | Operator runs `npm run linkedin:auth --app=<…>`. |
 | Image upload succeeds, post creation crashes | Orphaned image URN. | None needed — LinkedIn GCs. |
 | Post creation succeeds, local file-write crashes | Post is live; local record missing. | Re-run skill; partial-state detection kicks in. |
 | Operator approves, post fails 422 | Nothing live, draft preserved. | Skill suggests editing commentary or image. |
@@ -628,14 +628,14 @@ Independent of Phase 1; can run in parallel.
 **Phase 3 — company-page publishing (gated on LinkedIn approval)**
 Triggered when Community Management API is approved.
 
-- Operator runs `pnpm linkedin:auth --app=org`.
+- Operator runs `npm run linkedin:auth --app=org`.
 - Extend `linkedin-publish.ts` with `--target=company`.
 - Extend the skill with the company voice path.
 - End-to-end test against a low-stakes article.
 
 **Phase 4 — polish & docs**
-- `pnpm linkedin:status` helper showing token health.
-- `pnpm linkedin:revoke` for clean disposal.
+- `npm run linkedin:status` helper showing token health.
+- `npm run linkedin:revoke` for clean disposal.
 - README section under `docs/` for operator workflow.
 
 ---
