@@ -47,17 +47,17 @@ After all four return: **014** (timer-trigger orchestrator) — sequential, inte
 
 | ID | Title | Phase | Status | Dependencies | Tags |
 |---|---|---|---|---|---|
-| 001 | Scaffold content-reminder Function project | 0 | not-started | — | azure, functions, scaffold |
-| 002 | Implement calendar parser | 0 | not-started | 001 | typescript, parser, content-platform |
-| 010 | Implement GitHub integration (Octokit) | 1 | not-started | 001 | typescript, github, octokit |
-| 011 | Implement SendGrid integration | 1 | not-started | 001 | typescript, sendgrid, email |
-| 012 | Implement link builders | 1 | not-started | 001 | typescript, urls |
-| 013 | Implement digest templating | 1 | not-started | 002, 012 | typescript, templating, email |
-| 014 | Implement timer-trigger orchestrator | 1 | not-started | 010, 011, 012, 013 | azure, functions, orchestration, milestone |
-| 020 | Create GitHub PAT + KV secret | 2 | not-started | — | github, security, kv, manual |
-| 021 | Provision content-reminder Function App | 2 | not-started | 014 | azure, functions, provisioning |
-| 022 | Configure managed identity + KV RBAC | 2 | not-started | 021 | azure, identity, rbac |
-| 023 | Deploy + verify | 2 | not-started | 014, 020, 021, 022 | azure, deploy, milestone |
+| 001 | Scaffold content-reminder Function project | 0 | **complete** | — | azure, functions, scaffold |
+| 002 | Implement calendar parser | 0 | **complete** | 001 | typescript, parser, content-platform |
+| 010 | Implement GitHub integration (Octokit) | 1 | **complete** | 001 | typescript, github, octokit |
+| 011 | Implement SendGrid integration | 1 | **complete** | 001 | typescript, sendgrid, email |
+| 012 | Implement link builders | 1 | **complete** | 001 | typescript, urls |
+| 013 | Implement digest templating | 1 | **complete** | 002, 012 | typescript, templating, email |
+| 014 | Implement timer-trigger orchestrator | 1 | **complete** ✅ M1 | 010, 011, 012, 013 | azure, functions, orchestration, milestone |
+| 020 | Create GitHub PAT + KV secret | 2 | 🟡 blocked-on-operator | — | github, security, kv, manual |
+| 021 | Provision content-reminder Function App | 2 | **complete** | 014 | azure, functions, provisioning |
+| 022 | Configure managed identity + KV RBAC | 2 | 🟡 identity-done, role-pending-on-operator | 021 | azure, identity, rbac |
+| 023 | Deploy + verify | 2 | code-deployed; verification pending on 020+022 | 014, 020, 021, 022 | azure, deploy, milestone |
 | 090 | Project wrap-up | wrap | not-started | all | verification, milestone |
 
 ---
