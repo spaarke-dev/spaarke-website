@@ -26,13 +26,29 @@ You need three things before you can publish:
      --scope /subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.KeyVault/vaults/sprk-demo-kv
    ```
 
-   **Shell quirk to be aware of:** on some Linux/macOS terminals, `az role
-   assignment create` returns a misleading `(MissingSubscription)` error
-   for KV-scoped writes even though the session is valid (writes at other
-   resource scopes still work). If you hit this, retry the exact same
-   command from Windows PowerShell — it usually works first try from
-   there. The cause appears to be a session-token-binding edge case in
-   the az CLI, not a real permissions issue.
+   **Cross-shell az quirk** *(reproduced across multiple projects —
+   worth knowing the general pattern):*
+   `az role assignment create` and `az role assignment list` calls
+   against `Microsoft.KeyVault/vaults/*` scopes return a misleading
+   `(MissingSubscription)` error from some Bash sessions on
+   Windows / WSL — even when the user is a valid subscription Owner
+   and the same session reads/writes KV secrets fine.
+   Writes at other resource scopes (e.g., subscription-level,
+   resource-group-level) are unaffected.
+
+   **Workaround:** retry the exact same command from a native
+   **Windows PowerShell** session. Works first try.
+
+   Reproduced on:
+   - `linkedin-token-refresh` deployment (2026-05-13)
+   - `content-reminder` deployment (2026-05-14)
+
+   Root cause appears to be a session-token-binding edge case
+   between the az CLI's Bash/WSL bridge and the
+   `Microsoft.Authorization` provider — not a real permissions
+   issue. If you ever see `(MissingSubscription)` from az on a
+   `roleAssignments` write you expect to succeed: shell switch first,
+   debug second.
 
 3. A clone of this repo with `npm install` completed.
 
