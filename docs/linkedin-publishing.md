@@ -26,6 +26,14 @@ You need three things before you can publish:
      --scope /subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.KeyVault/vaults/sprk-demo-kv
    ```
 
+   **Shell quirk to be aware of:** on some Linux/macOS terminals, `az role
+   assignment create` returns a misleading `(MissingSubscription)` error
+   for KV-scoped writes even though the session is valid (writes at other
+   resource scopes still work). If you hit this, retry the exact same
+   command from Windows PowerShell — it usually works first try from
+   there. The cause appears to be a session-token-binding edge case in
+   the az CLI, not a real permissions issue.
+
 3. A clone of this repo with `npm install` completed.
 
 Then run the one-shot OAuth for each LinkedIn app you'll publish from:
@@ -79,28 +87,26 @@ npm run linkedin:status
 Expected output (both apps healthy):
 
 ```
-LinkedIn publishing — token status
-
-  member  access token valid until 2026-07-12 (62 days)
-          refresh token valid until 2027-05-13 (367 days)
-          author urn:li:person:abc123
-  org     access token valid until 2026-07-12 (62 days)
-          refresh token valid until 2027-05-13 (367 days)
-          author urn:li:organization:9876543
-
-Last refresh function run: 2026-05-11 02:00 UTC (success)
+LinkedIn integration status:
+  ✓ member: token valid, 62.0 days remaining (urn:li:person:abc123)
+      expires at 2026-07-12T19:47:10.867Z
+      Last publish: 2026-05-13 — the-iq-stack
+  ✓ org:    not authenticated yet (CM API approval pending)
 ```
 
 Read it like this:
 
-- **Access token < 7 days**: the refresh function should fix this
-  tonight. If it doesn't, run step 4.
-- **Refresh token < 30 days**: manual re-auth required soon. Run the
-  command in step 4 at your convenience.
-- **`secret not found`** for an app: that app has never been
-  authorized. Go back to step 1.
-- **"Last refresh function run" > 48h ago**: the function is broken.
-  See `azure/functions/linkedin-token-refresh/` logs in App Insights.
+- **Days remaining < 14**: the refresh function should fix this in the
+  next nightly run. If it doesn't, run step 4.
+- **`Not authenticated`**: that app has never been authorized. Go back
+  to step 1 for that app.
+- **`token rejected (401)`**: the refresh token itself was revoked
+  outside this system. Re-auth required (step 4).
+
+To check whether the refresh function ran cleanly, check the
+`spaarke-linkedin-refresh` Application Insights resource directly in
+the Azure Portal — `linkedin:status` reads only KV, not function-run
+history.
 
 ---
 
@@ -248,6 +254,30 @@ to App Insights and sends an email via SendGrid so you know to run
 `linkedin-auth.ts` before the refresh token itself expires. As long
 as the function is healthy, the operator only re-authenticates once
 per year per app.
+
+### SendGrid alerting configuration
+
+The function emails on refresh failures and sends a weekly summary on
+Mondays. It reads three secrets from `sprk-demo-kv`:
+
+| Secret name | Purpose | Example |
+|---|---|---|
+| `sendgrid-api-key` | API key for `sgMail.setApiKey()`. Best practice: dedicated key with "Mail Send" permission only, not the site's shared key. | `SG.…` |
+| `notification-email-operator` | Recipient address. | `ralph.schroeder@spaarke.com` |
+| `notification-email-from` | Sender address. Must be a SendGrid-verified sender. | `noreply@spaarke.com` |
+
+If any of the three is missing, the function logs a notice and
+proceeds to refresh tokens anyway — alerting is best-effort. To set
+or rotate:
+
+```bash
+az keyvault secret set --vault-name sprk-demo-kv --name sendgrid-api-key --value "<key>"
+az keyvault secret set --vault-name sprk-demo-kv --name notification-email-operator --value "<email>"
+az keyvault secret set --vault-name sprk-demo-kv --name notification-email-from --value "noreply@spaarke.com"
+```
+
+The function reads KV at runtime, so secret rotation takes effect on
+the next scheduled run — no redeploy needed.
 
 ---
 
