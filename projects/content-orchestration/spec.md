@@ -92,7 +92,7 @@ Azure Function (daily timer 13:00 UTC ≈ 09:00 ET):
 ### 3.1 Repo layout
 
 ```
-azure/functions/content-orchestration-reminder/
+azure/functions/content-reminder/
   host.json
   package.json
   tsconfig.json
@@ -120,7 +120,7 @@ projects/content-orchestration/
 
 | Resource | Name | Notes |
 |---|---|---|
-| Function App | `spaarke-content-orchestration` | Consumption plan, Node 24, Windows kind (same RG-level limitation as the refresh function — no Linux dynamic workers in `rg-spaarke-demo`) |
+| Function App | `spaarke-content-reminder` | Consumption plan, Node 24, Windows kind (same RG-level limitation as the refresh function — no Linux dynamic workers in `rg-spaarke-demo`) |
 | Application Insights | auto-attached by `func azure functionapp create` | Default name matches the Function App |
 | Managed identity | system-assigned | Same pattern as refresh; needs **Key Vault Secrets User** (read-only is enough; this function never writes secrets) |
 
@@ -347,29 +347,32 @@ then decide what's worth automating next.
 
 ---
 
-## 9. Open questions / decisions to confirm
+## 9. Decisions (locked 2026-05-13)
 
-1. **Issue-number lookup**: §5.5 (a) vs (b). Lean (b) — search-link
-   no extra calls. Confirm?
-2. **Time-of-day**: 09:00 ET. Adjust for operator timezone?
-3. **Calendar source**: GitHub API (chosen). Alternative was checkout
-   via Azure DevOps. GH API simpler. Confirm?
-4. **Github token format**: fine-grained PAT or classic? Fine-grained
-   recommended (scoped to one repo, one permission). Confirm?
-5. **GitHub PAT rotation**: classic PATs don't expire by default;
-   fine-grained PATs require rotation. Should the function log a
-   warning when the PAT is within 14 days of expiring? Lean yes —
-   tiny code addition, prevents silent breakage.
-6. **HTML vs plain-text email**: ship both as multipart, or just
-   plain-text for v1? Lean both (multipart) — HTML is a few extra
-   lines.
-7. **Function name**: `spaarke-content-orchestration` — too vague?
-   Could be `spaarke-content-reminder` to make scope clear. Lean
-   `spaarke-content-reminder` since the function only does reminders.
-8. **Hooks for content-pipeline skill**: should this function call
-   `/content-pipeline` skill output to drive its content (e.g., is
-   the brief signed off?)? Or stick to calendar.md only? Lean
-   calendar-only for v1 — fewer integration points.
+All 8 questions resolved per operator recommendation:
+
+1. **Issue-number lookup** → Link to `/issues?q=<slug>` search rather
+   than per-row GH API query. No extra network calls; robust to
+   missing issues.
+2. **Time-of-day** → 09:00 ET (= 13:00 UTC during DST, 14:00 UTC
+   standard time). Cron expression handles this directly; no
+   timezone library needed.
+3. **Calendar source** → GitHub Contents API via Octokit.
+4. **PAT format** → Fine-grained PAT scoped to
+   `spaarke-dev/spaarke-website` only, `Contents: Read` permission only.
+5. **PAT expiry warning** → Function checks the PAT's
+   `expiry` header on each run; logs a warning when < 14 days from
+   expiry. App Insights surfaces; email piggybacks on the daily
+   digest as a footer line.
+6. **Email format** → Multipart (HTML + plain text). HTML is ~30
+   extra lines of templating; gives Gmail/Outlook a clean render.
+7. **Function name** → `spaarke-content-reminder` (scope-clear).
+8. **Content-pipeline integration** → Calendar-only for v1. The
+   function does not parse brief/plan/draft files. Future phases may
+   add this.
+
+The architecture sections above already reflect these decisions;
+this section is the audit trail.
 
 ---
 
