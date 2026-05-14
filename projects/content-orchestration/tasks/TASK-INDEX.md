@@ -54,10 +54,10 @@ After all four return: **014** (timer-trigger orchestrator) — sequential, inte
 | 012 | Implement link builders | 1 | **complete** | 001 | typescript, urls |
 | 013 | Implement digest templating | 1 | **complete** | 002, 012 | typescript, templating, email |
 | 014 | Implement timer-trigger orchestrator | 1 | **complete** ✅ M1 | 010, 011, 012, 013 | azure, functions, orchestration, milestone |
-| 020 | Create GitHub PAT + KV secret | 2 | 🟡 blocked-on-operator | — | github, security, kv, manual |
+| 020 | Create GitHub PAT + KV secret | 2 | **complete** | — | github, security, kv, manual |
 | 021 | Provision content-reminder Function App | 2 | **complete** | 014 | azure, functions, provisioning |
-| 022 | Configure managed identity + KV RBAC | 2 | 🟡 identity-done, role-pending-on-operator | 021 | azure, identity, rbac |
-| 023 | Deploy + verify | 2 | code-deployed; verification pending on 020+022 | 014, 020, 021, 022 | azure, deploy, milestone |
+| 022 | Configure managed identity + KV RBAC | 2 | **complete** | 021 | azure, identity, rbac |
+| 023 | Deploy + verify | 2 | **complete** ✅ M2 | 014, 020, 021, 022 | azure, deploy, milestone |
 | 090 | Project wrap-up | wrap | not-started | all | verification, milestone |
 
 ---
