@@ -40,7 +40,7 @@ export default function SemanticSearchWalkthroughLanding() {
               Find documents by meaning, not just keywords. Spaarke's AI
               semantic search indexes every document on ingestion, maps
               their relationships, and connects them back to matters —
-              powered by SharePoint Embedded and Azure AI Search.
+              one module of the Spaarke Legal IQ stack.
             </Lede>
           </div>
 
