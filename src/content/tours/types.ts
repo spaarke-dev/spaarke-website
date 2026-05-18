@@ -3,7 +3,8 @@ export type SectionId =
   | "documents-email"
   | "collaboration"
   | "ai-automation"
-  | "spend-performance";
+  | "spend-performance"
+  | "semantic-search";
 
 export type Tour = {
   /** Stable id used in URLs (`/tour/<slug>`). */
@@ -113,6 +114,13 @@ export type Callout = {
    * "Get access | Why Spaarke →".
    */
   ctaSecondary?: CalloutCta;
+  /**
+   * Optional bulleted feature list rendered below the body. Currently
+   * surfaced in interstitial cards (intro/outro) where a scannable
+   * capability list reads better than dense prose. Ignored by the
+   * pointer-style Callout component.
+   */
+  bullets?: string[];
 };
 
 export type CalloutCta = {

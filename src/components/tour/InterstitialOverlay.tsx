@@ -273,6 +273,24 @@ export function InterstitialOverlay({ callout, nav, stepId }: Props) {
             </p>
           ))}
         </div>
+        {callout.bullets && callout.bullets.length > 0 ? (
+          <ul
+            style={{
+              margin: "0.875rem 0 0 0",
+              paddingLeft: "1.125rem",
+              fontSize: "0.95rem",
+              lineHeight: 1.55,
+              color: BODY_COLOR,
+              listStyleType: "disc",
+            }}
+          >
+            {callout.bullets.map((bullet, i) => (
+              <li key={i} style={{ marginBottom: "0.2rem" }}>
+                {bullet}
+              </li>
+            ))}
+          </ul>
+        ) : null}
         {callout.cta || callout.ctaSecondary ? (
           <div
             style={{
