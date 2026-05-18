@@ -1,7 +1,7 @@
 # publish-linkedin
 
 ---
-description: Publish a Spaarke blog article to LinkedIn as a feed-card post, with chat approval gate
+description: Publish a Spaarke piece to LinkedIn (blog promotion or standalone post), with chat approval gate
 tags: [linkedin, publishing, marketing, orchestration]
 appliesTo: ["publish to linkedin", "/publish-linkedin"]
 alwaysApply: false
@@ -9,12 +9,22 @@ alwaysApply: false
 
 ## Purpose
 
-**Orchestrator Skill** — The operator's only interface for promoting a
-published Spaarke blog article to LinkedIn. Drafts a feed-card
-commentary in the voice appropriate to the target surface (company
-page or personal account), resolves the 1920×1080 image, gates on a
-chat approval, then shells out to `npx tsx scripts/linkedin-publish.ts` which
-holds the OAuth credentials and talks to LinkedIn's Posts API.
+**Orchestrator Skill** — The operator's only interface for promoting
+Spaarke content to LinkedIn. Two modes:
+
+- **blog-promo** *(default)* — promotes a published blog article as a
+  feed-card post (link card with thumbnail and excerpt). Requires a
+  live `content/blog/<date>-<slug>.mdx` and a canonical URL on
+  `spaarke.com/why-spaarke/<slug>`.
+- **standalone** — posts a self-contained piece of content (no
+  backing blog article). Body comes from
+  `content-platform/articles/<slug>/draft.md`. Image is optional.
+
+Drafts commentary in the voice appropriate to the target surface
+(company page or personal account) for blog-promo; uses the
+draft.md body verbatim for standalone. Gates on chat approval, then
+shells out to `npx tsx scripts/linkedin-publish.ts` which holds the
+OAuth credentials and talks to LinkedIn's Posts API.
 
 Full architectural spec: [`projects/linkedin-publishing/spec.md`](../../../projects/linkedin-publishing/spec.md).
 The 7-gate workflow this skill implements is §4.2. The two-voice
@@ -50,14 +60,20 @@ evolve independently.
 
 - User says "publish to LinkedIn", "publish <slug> to LinkedIn", or
   invokes `/publish-linkedin <slug>`.
-- A `content/blog/<date>-<slug>.mdx` file exists, has `draft: false`,
-  and the corresponding URL is live on `spaarke.com/why-spaarke/<slug>`.
-- After the article has gone through the `content-pipeline` workflow
-  and been merged to `main`.
+- For **blog-promo** (default): a `content/blog/<date>-<slug>.mdx`
+  file exists, has `draft: false`, and the corresponding URL is live
+  on `spaarke.com/why-spaarke/<slug>`. After the article has gone
+  through the `content-pipeline` workflow and been merged to `main`.
+- For **standalone**: a `content-platform/articles/<slug>/draft.md`
+  file exists with the post body. No blog article required.
+
+Mode dispatch: if `--mode=` is not specified, the skill auto-detects
+by looking for `content/blog/<date>-<slug>.mdx`. If found,
+blog-promo; if absent but `articles/<slug>/draft.md` exists,
+standalone. If both or neither exist, asks the operator.
 
 Do **not** use this skill for:
 - Native LinkedIn Articles (Pulse) — out of scope per spec §2.
-- Posts that aren't promoting an existing `content/blog/` piece.
 - Scheduled future-dated posts — this is a single-click *now*
   publisher.
 
@@ -68,13 +84,23 @@ Do **not** use this skill for:
 ### Step 1 — Validate
 
 ```
-PARSE invocation: <slug> [--target=company|personal] [--draft-fresh]
+PARSE invocation: <slug> [--target=company|personal] [--mode=blog-promo|standalone] [--draft-fresh]
 
 IF --target is missing:
   -> ASK: "Which surface — company page or personal account?"
   -> WAIT for "company" | "personal"
 
-VALIDATE:
+RESOLVE mode:
+  IF --mode is provided -> use it.
+  ELSE auto-detect:
+    blog-mdx-exists  = exists(content/blog/<date>-<slug>.mdx)
+    draft-md-exists  = exists(content-platform/articles/<slug>/draft.md)
+    IF blog-mdx-exists AND NOT draft-md-exists -> mode = blog-promo
+    IF draft-md-exists AND NOT blog-mdx-exists -> mode = standalone
+    IF both -> ASK: "Both a blog article and a standalone draft exist. Which mode?"
+    IF neither -> STOP with helpful error.
+
+VALIDATE (blog-promo):
   1. content/blog/<date>-<slug>.mdx exists (glob by slug suffix).
   2. Frontmatter `draft:` is missing or false.
   3. Frontmatter has `title`, `description`, `summary`. Pull
@@ -86,11 +112,17 @@ VALIDATE:
        npx tsx scripts/linkedin-publish.ts --slug=<slug> --target=<target> --dry-run
      and capture any "secret not found" / "token expired" surface.
 
+VALIDATE (standalone):
+  1. content-platform/articles/<slug>/draft.md exists and has a non-empty body.
+  2. Skip the "live URL" check entirely — standalone posts have no backing article.
+  3. KV credentials for the chosen target exist. Probe by running:
+       npx tsx scripts/linkedin-publish.ts --slug=<slug> --target=<target> --mode=standalone --dry-run
+
 IF validation fails:
   -> STOP — surface the specific issue.
   -> If a 401 / token error: route to Error Handling §"Token expired".
-  -> If 404 on the canonical URL: "The article isn't live yet —
-       check the deploy or wait for SWA to finish."
+  -> If 404 on the canonical URL (blog-promo only): "The article
+     isn't live yet — check the deploy or wait for SWA to finish."
 ```
 
 **Output to user**:
@@ -114,6 +146,8 @@ Next: resolve the LinkedIn image.
 ---
 
 ### Step 2 — Resolve image
+
+**For blog-promo:**
 
 ```
 PRIMARY: public/articles/<slug>/linkedin-1920x1080.png
@@ -139,6 +173,22 @@ NO ASSET:
         hero.svg or linkedin-1920x1080.png and re-run."
 ```
 
+**For standalone:**
+
+```
+DEFAULT: skip image. Standalone posts are typically text-only —
+  LinkedIn auto-renders an OG link card from the first URL in
+  commentary, which is usually the desired behavior.
+
+IF operator wants an image:
+  -> ASK: "Standalone posts default to text-only. Want to attach an
+           image? Reply with the path (relative to repo root), or
+           'skip' to post text-only."
+  -> If a path: validate the file exists, is PNG/JPG, ≤ 8 MB.
+
+The CLI will pass --image=<path> (or omit) accordingly.
+```
+
 **Output to user**:
 ```
 Image resolved:
@@ -157,6 +207,8 @@ Next: resolve the commentary.
 ---
 
 ### Step 3 — Resolve commentary
+
+**For blog-promo:**
 
 ```
 DRAFT-FRESH PATH:
@@ -186,6 +238,22 @@ DRAFT FRESH:
 
 ALWAYS surface to operator the voice doc(s) used to draft, so they
 can override.
+```
+
+**For standalone:**
+
+```
+READ content-platform/articles/<slug>/draft.md.
+  -> Strip frontmatter; the body becomes the LinkedIn commentary.
+  -> Surface to operator: "Using draft from
+       content-platform/articles/<slug>/draft.md (the writer-approved
+       text — no voice re-drafting in standalone mode)."
+
+Standalone mode does NOT re-draft from frontmatter. The post body
+is whatever the writer wrote in draft.md. If the operator wants to
+change it, they can:
+  - Reply `edit "<copy>"` at the approval gate (Step 5).
+  - Or edit draft.md directly and re-invoke the skill.
 ```
 
 **Output to user**:
@@ -275,7 +343,12 @@ explicit `approve`.
 
 ```
 EXECUTE (Bash tool):
-  npx tsx scripts/linkedin-publish.ts --slug=<slug> --target=<target>
+  blog-promo:
+    npx tsx scripts/linkedin-publish.ts --slug=<slug> --target=<target>
+  standalone (text-only):
+    npx tsx scripts/linkedin-publish.ts --slug=<slug> --target=<target> --mode=standalone
+  standalone (with image):
+    npx tsx scripts/linkedin-publish.ts --slug=<slug> --target=<target> --mode=standalone --image=<path>
 
 The CLI:
   1. Loads tokens from KV for <target>; refreshes inline if needed.

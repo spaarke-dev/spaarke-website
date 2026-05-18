@@ -46,6 +46,10 @@ voice, and credential pair.
 
 - One-command publishing from Claude Code chat, voice-aware
   (company vs personal), with a chat-based approval gate.
+- Support both **blog promotion** (feed-card with link card to a
+  published article) and **standalone posts** (self-contained
+  commentary with no backing blog article — founder takes on
+  industry news, market observations, etc.).
 - Credentials in Azure Key Vault (`sprk-demo-kv`), never in `.env`,
   never in source, never in chat.
 - Automatic refresh-token loop so the operator doesn't have to
@@ -348,39 +352,51 @@ dependency.
 ```
 --slug          required, e.g. "the-iq-stack"
 --target        required: "personal" | "company"
+--mode          optional: "blog-promo" (default) | "standalone"
 --dry-run       optional: show the API call body without executing
 --commentary    optional: inline commentary, overrides file
---image         optional: path override (defaults to per-article png)
+--image         optional: path override (defaults to per-article png in blog-promo;
+                                          required-if-supplied in standalone)
 ```
 
+**Mode dispatch:**
+
+- **`blog-promo`** *(default — backward-compatible)* — the original
+  flow. Promotes a published blog article: requires a live
+  `content/blog/<date>-<slug>.mdx` and the canonical URL on
+  `spaarke.com/why-spaarke/<slug>`. Commentary lives in
+  `content-platform/published/linkedin-posts/<slug>.md`. Image is
+  required (defaults to `public/articles/<slug>/linkedin-1920x1080.png`).
+  Post body is the `content.article` content type (link card with
+  title, description, thumbnail).
+
+- **`standalone`** *(new)* — for self-contained LinkedIn posts that
+  don't promote a blog article (e.g., founder commentary on industry
+  news, syndication-of-syndication style threads). Reads commentary
+  from `content-platform/articles/<slug>/draft.md` (the writer's
+  workspace). Image is optional. Post body has no `content.article`
+  block — either text-only (no `content`) or text-plus-image
+  (`content.media`). LinkedIn's algorithm renders an OG link card
+  from the first URL in commentary, so multi-link standalone posts
+  work naturally.
+
 ### 6.2 Execution
+
+Shared across both modes:
 
 ```
 1. Load tokens from KV for the chosen target.
    If access-token expires-at < now + 5 min, call refresh inline.
 
-2. Validate image exists at the resolved path.
-   File size < 8 MB (LinkedIn limit).
+2. Validate commentary length (≤ 3000 chars). Warn at 2700.
 
-3. Upload image via Images API:
+3. Upload image via Images API (only if an image path resolved):
    a. POST /rest/images?action=initializeUpload
       body: { initializeUploadRequest: { owner: <author URN> } }
    b. PUT the binary to the returned uploadUrl.
    c. Receive image URN in the initializeUpload response.
 
-4. Build post body (article content type):
-     author:        <author URN>
-     commentary:    <approved copy>
-     visibility:    PUBLIC
-     distribution:  { feedDistribution: MAIN_FEED, targetEntities: [], thirdPartyDistributionChannels: [] }
-     content:
-       article:
-         source:      https://www.spaarke.com/why-spaarke/<slug>
-         thumbnail:   <image URN from step 3>
-         title:       <from frontmatter>
-         description: <from summary, ≤ 200 chars>
-     lifecycleState: PUBLISHED
-     isReshareDisabledByAuthor: false
+4. Build post body — SHAPE DIFFERS BY MODE (see below).
 
 5. POST /rest/posts with headers:
      Authorization: Bearer <token>
@@ -393,9 +409,40 @@ dependency.
 
 7. Write to disk:
      - published/linkedin-posts/<slug>.md   (commentary + post URL)
-     - content-platform/calendar.md         (new row)
+     - content-platform/calendar.md         (LinkedIn column updated)
 
 8. Output post URL to stdout for the skill to display.
+```
+
+Post-body shapes:
+
+```
+blog-promo (existing — content.article):
+    author:        <author URN>
+    commentary:    <approved copy>
+    visibility:    PUBLIC
+    distribution:  { feedDistribution: MAIN_FEED, ... }
+    content:
+      article:
+        source:      https://www.spaarke.com/why-spaarke/<slug>
+        thumbnail:   <image URN from step 3>
+        title:       <from frontmatter>
+        description: <from summary, ≤ 200 chars>
+    lifecycleState: PUBLISHED
+    isReshareDisabledByAuthor: false
+
+standalone (new — text-only OR content.media):
+    author:        <author URN>
+    commentary:    <draft.md body, verbatim>
+    visibility:    PUBLIC
+    distribution:  { feedDistribution: MAIN_FEED, ... }
+    [content:                          // ONLY if image supplied
+      media:
+        id: <image URN from step 3>
+        title: <optional alt text>
+    ]
+    lifecycleState: PUBLISHED
+    isReshareDisabledByAuthor: false
 ```
 
 ### 6.3 Idempotency

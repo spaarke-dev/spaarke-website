@@ -39,6 +39,11 @@ const SITE_BASE_URL = "https://www.spaarke.com/why-spaarke";
 const REPO_ROOT = process.cwd();
 const CACHE_DIR = path.join(REPO_ROOT, ".linkedin-cache");
 const BLOG_DIR = path.join(REPO_ROOT, "content", "blog");
+const ARTICLES_DIR = path.join(
+  REPO_ROOT,
+  "content-platform",
+  "articles",
+);
 const LINKEDIN_POSTS_DIR = path.join(
   REPO_ROOT,
   "content-platform",
@@ -61,9 +66,12 @@ const REFRESH_WINDOW_DAYS = 0.0035; // ~5 minutes
 /*  Arg parsing                                                        */
 /* ------------------------------------------------------------------ */
 
+type Mode = "blog-promo" | "standalone";
+
 interface CliArgs {
   slug: string;
   target: "personal" | "company";
+  mode: Mode;
   dryRun: boolean;
   commentary: string | null;
   imagePath: string | null;
@@ -72,6 +80,7 @@ interface CliArgs {
 function parseArgs(argv: string[]): CliArgs {
   let slug: string | null = null;
   let target: string | null = null;
+  let mode: string | null = null;
   let dryRun = false;
   let commentary: string | null = null;
   let imagePath: string | null = null;
@@ -98,6 +107,14 @@ function parseArgs(argv: string[]): CliArgs {
       target = argv[++i] ?? null;
       continue;
     }
+    if (a.startsWith("--mode=")) {
+      mode = a.slice("--mode=".length);
+      continue;
+    }
+    if (a === "--mode") {
+      mode = argv[++i] ?? null;
+      continue;
+    }
     if (a.startsWith("--commentary=")) {
       commentary = a.slice("--commentary=".length);
       continue;
@@ -118,7 +135,7 @@ function parseArgs(argv: string[]): CliArgs {
 
   if (!slug) {
     throw new LinkedInConfigError(
-      "Missing required --slug. Usage: linkedin:publish --slug=<slug> --target=personal|company [--dry-run] [--commentary '<text>'] [--image <path>]",
+      "Missing required --slug. Usage: linkedin:publish --slug=<slug> --target=personal|company [--mode=blog-promo|standalone] [--dry-run] [--commentary '<text>'] [--image <path>]",
     );
   }
   if (target !== "personal" && target !== "company") {
@@ -126,8 +143,15 @@ function parseArgs(argv: string[]): CliArgs {
       "Missing or invalid --target. Must be 'personal' or 'company'.",
     );
   }
+  // Default mode = blog-promo (current behavior; backward-compatible).
+  const resolvedMode: Mode = mode === "standalone" ? "standalone" : "blog-promo";
+  if (mode !== null && mode !== "blog-promo" && mode !== "standalone") {
+    throw new LinkedInConfigError(
+      `Invalid --mode '${mode}'. Must be 'blog-promo' (default) or 'standalone'.`,
+    );
+  }
 
-  return { slug, target, dryRun, commentary, imagePath };
+  return { slug, target, mode: resolvedMode, dryRun, commentary, imagePath };
 }
 
 function targetToApp(target: "personal" | "company"): App {
@@ -262,6 +286,71 @@ function imageContentType(filePath: string): string {
   const ext = path.extname(filePath).toLowerCase();
   if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg";
   return "image/png";
+}
+
+/* ------------------------------------------------------------------ */
+/*  Standalone-mode helpers                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Standalone mode: load the post body from the writer's workspace,
+ * `content-platform/articles/<slug>/draft.md`. This is the canonical
+ * source while the post is in flight.
+ *
+ * The frontmatter is stripped; only the body becomes the LinkedIn
+ * commentary verbatim.
+ */
+function loadDraftCommentary(slug: string, override: string | null): string {
+  if (override !== null && override.length > 0) {
+    return override;
+  }
+  const candidate = path.join(ARTICLES_DIR, slug, "draft.md");
+  if (!fs.existsSync(candidate)) {
+    throw new LinkedInConfigError(
+      `No draft found at ${candidate}. Provide --commentary, or write the post body to that path before running. Standalone mode reads from the per-piece workspace, not from published/linkedin-posts/.`,
+    );
+  }
+  const raw = fs.readFileSync(candidate, "utf8");
+  const parsed = matter(raw);
+  const body = parsed.content.trim();
+  if (!body) {
+    throw new LinkedInConfigError(
+      `Draft file ${candidate} has empty body.`,
+    );
+  }
+  return body;
+}
+
+/**
+ * Standalone mode: image is optional. Returns the resolved path if
+ * the operator passed --image=<path>, or null if no image was
+ * provided. Unlike blog-promo mode, we do not look in
+ * public/articles/<slug>/ for a default — standalone posts often
+ * ship text-only.
+ */
+function resolveOptionalImagePath(override: string | null): string | null {
+  if (!override || override.length === 0) {
+    return null;
+  }
+  const candidate = path.resolve(REPO_ROOT, override);
+  if (!fs.existsSync(candidate)) {
+    throw new LinkedInConfigError(
+      `Image not found at --image path: ${candidate}.`,
+    );
+  }
+  const ext = path.extname(candidate).toLowerCase();
+  if (ext !== ".png" && ext !== ".jpg" && ext !== ".jpeg") {
+    throw new LinkedInConfigError(
+      `Image must be PNG or JPG: got ${ext} (${candidate}).`,
+    );
+  }
+  const stat = fs.statSync(candidate);
+  if (stat.size > IMAGE_MAX_BYTES) {
+    throw new LinkedInConfigError(
+      `Image ${candidate} is ${stat.size} bytes (> ${IMAGE_MAX_BYTES} = 8 MB LinkedIn limit).`,
+    );
+  }
+  return candidate;
 }
 
 /* ------------------------------------------------------------------ */
@@ -465,13 +554,70 @@ function buildPostBody(args: {
   };
 }
 
+/**
+ * Body shape for a standalone post — text-only by default, or a
+ * single-image post when `mediaUrn` is supplied. LinkedIn's
+ * auto-detection renders an OG link card from the first URL in
+ * `commentary`, so embedded links surface naturally without us
+ * forcing an article block. The `content` field is omitted entirely
+ * for text-only posts; LinkedIn's Posts API treats that as a
+ * commentary-only post.
+ */
+interface StandalonePostBody {
+  author: string;
+  commentary: string;
+  visibility: "PUBLIC";
+  distribution: {
+    feedDistribution: "MAIN_FEED";
+    targetEntities: never[];
+    thirdPartyDistributionChannels: never[];
+  };
+  content?: {
+    media: {
+      id: string;
+      title?: string;
+    };
+  };
+  lifecycleState: "PUBLISHED";
+  isReshareDisabledByAuthor: boolean;
+}
+
+function buildStandalonePostBody(args: {
+  authorUrn: string;
+  commentary: string;
+  mediaUrn: string | null;
+  mediaTitle?: string;
+}): StandalonePostBody {
+  const body: StandalonePostBody = {
+    author: args.authorUrn,
+    commentary: args.commentary,
+    visibility: "PUBLIC",
+    distribution: {
+      feedDistribution: "MAIN_FEED",
+      targetEntities: [],
+      thirdPartyDistributionChannels: [],
+    },
+    lifecycleState: "PUBLISHED",
+    isReshareDisabledByAuthor: false,
+  };
+  if (args.mediaUrn) {
+    body.content = {
+      media: {
+        id: args.mediaUrn,
+        ...(args.mediaTitle ? { title: args.mediaTitle } : {}),
+      },
+    };
+  }
+  return body;
+}
+
 interface CreatePostResult {
   postUrn: string;
   postUrl: string;
 }
 
 async function createPost(
-  body: PostBody,
+  body: PostBody | StandalonePostBody,
   tokens: LinkedInTokens,
 ): Promise<CreatePostResult> {
   const res = await fetch(POSTS_ENDPOINT, {
@@ -706,17 +852,31 @@ async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
   const app = targetToApp(args.target);
 
-  // 4. Load article frontmatter.
-  const article = loadArticleMeta(args.slug);
-
-  // 5. Load commentary.
-  const commentary = loadCommentary(args.slug, args.commentary);
+  // Mode-specific: load source data + commentary + image.
+  //
+  // blog-promo (default): requires a live blog article at
+  //   content/blog/<date>-<slug>.mdx; commentary lives in
+  //   content-platform/published/linkedin-posts/<slug>.md; image is
+  //   required and resolved from public/articles/<slug>/.
+  //
+  // standalone: no blog article needed; commentary lives in
+  //   content-platform/articles/<slug>/draft.md (the writer's
+  //   workspace); image is optional (only used if --image=<path>
+  //   was supplied).
+  const article = args.mode === "blog-promo" ? loadArticleMeta(args.slug) : null;
+  const commentary =
+    args.mode === "blog-promo"
+      ? loadCommentary(args.slug, args.commentary)
+      : loadDraftCommentary(args.slug, args.commentary);
 
   // 6. Validate commentary length.
   validateCommentary(commentary);
 
-  // 7. Resolve image (validated).
-  const imagePath = resolveImagePath(args.slug, args.imagePath);
+  // 7. Resolve image.
+  const imagePath =
+    args.mode === "blog-promo"
+      ? resolveImagePath(args.slug, args.imagePath)
+      : resolveOptionalImagePath(args.imagePath);
 
   // 8. Refresh tokens (5-minute window).
   const tokens = await refreshIfNeeded(app, REFRESH_WINDOW_DAYS);
@@ -732,43 +892,70 @@ async function main(): Promise<void> {
 
   // 9. Dry-run: build the body and print it. Skip API calls.
   if (args.dryRun) {
-    const previewBody = buildPostBody({
-      authorUrn: tokens.authorUrn,
-      commentary,
-      slug: args.slug,
-      thumbnailUrn: "<image URN — populated at post time>",
-      title: article.title,
-      summary: article.summary || article.description,
-    });
-    console.log("DRY RUN — no API calls will be made.");
-    console.log(`Article:    ${article.filePath}`);
-    console.log(`Target:     ${args.target} (app=${app})`);
-    console.log(`Author URN: ${tokens.authorUrn}`);
-    console.log(`Image:      ${imagePath}`);
-    console.log(`Link:       ${previewBody.content.article.source}`);
-    console.log(`Title:      ${previewBody.content.article.title}`);
-    console.log(
-      `Description: ${previewBody.content.article.description}`,
-    );
-    console.log(`Char count: ${commentary.length} / ${COMMENTARY_HARD_LIMIT}`);
-    console.log("Request body:");
-    console.log(JSON.stringify(previewBody, null, 2));
+    if (args.mode === "blog-promo" && article) {
+      const previewBody = buildPostBody({
+        authorUrn: tokens.authorUrn,
+        commentary,
+        slug: args.slug,
+        thumbnailUrn: "<image URN — populated at post time>",
+        title: article.title,
+        summary: article.summary || article.description,
+      });
+      console.log("DRY RUN — no API calls will be made.");
+      console.log(`Mode:       blog-promo`);
+      console.log(`Article:    ${article.filePath}`);
+      console.log(`Target:     ${args.target} (app=${app})`);
+      console.log(`Author URN: ${tokens.authorUrn}`);
+      console.log(`Image:      ${imagePath}`);
+      console.log(`Link:       ${previewBody.content.article.source}`);
+      console.log(`Title:      ${previewBody.content.article.title}`);
+      console.log(
+        `Description: ${previewBody.content.article.description}`,
+      );
+      console.log(`Char count: ${commentary.length} / ${COMMENTARY_HARD_LIMIT}`);
+      console.log("Request body:");
+      console.log(JSON.stringify(previewBody, null, 2));
+    } else {
+      // standalone
+      const previewBody = buildStandalonePostBody({
+        authorUrn: tokens.authorUrn,
+        commentary,
+        mediaUrn: imagePath ? "<image URN — populated at post time>" : null,
+      });
+      console.log("DRY RUN — no API calls will be made.");
+      console.log(`Mode:       standalone`);
+      console.log(`Draft:      content-platform/articles/${args.slug}/draft.md`);
+      console.log(`Target:     ${args.target} (app=${app})`);
+      console.log(`Author URN: ${tokens.authorUrn}`);
+      console.log(`Image:      ${imagePath ?? "(text-only — no image)"}`);
+      console.log(`Char count: ${commentary.length} / ${COMMENTARY_HARD_LIMIT}`);
+      console.log("Request body:");
+      console.log(JSON.stringify(previewBody, null, 2));
+    }
     return;
   }
 
-  // 10. Upload image.
-  const imageUrn = await uploadImage(imagePath, tokens);
+  // 10. Upload image (only if image path resolved).
+  const imageUrn = imagePath ? await uploadImage(imagePath, tokens) : null;
 
   // Build the post body before writing the marker so a body-build
   // error doesn't leave a marker behind.
-  const postBody = buildPostBody({
-    authorUrn: tokens.authorUrn,
-    commentary,
-    slug: args.slug,
-    thumbnailUrn: imageUrn,
-    title: article.title,
-    summary: article.summary || article.description,
-  });
+  const postBody: PostBody | StandalonePostBody =
+    args.mode === "blog-promo" && article
+      ? buildPostBody({
+          authorUrn: tokens.authorUrn,
+          commentary,
+          slug: args.slug,
+          // blog-promo requires an image; imageUrn must be non-null here.
+          thumbnailUrn: imageUrn ?? "",
+          title: article.title,
+          summary: article.summary || article.description,
+        })
+      : buildStandalonePostBody({
+          authorUrn: tokens.authorUrn,
+          commentary,
+          mediaUrn: imageUrn,
+        });
 
   // 16. Write pending marker BEFORE the POST.
   writePendingMarker({
