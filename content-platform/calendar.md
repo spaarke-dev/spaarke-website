@@ -13,6 +13,7 @@ firm publish date yet.
 | Slug | Type | Publish | Status | Author | Campaign | LinkedIn (personal) | LinkedIn (company) | Notes |
 |---|---|---|---|---|---|---|---|---|
 | welcome-to-spaarke | blog-post | 2026-05-11 | published | rs | 2026-05-spaarke-launch |  |  | Hero/launch article |
+| context-is-only-one-layer | linkedin-post | 2026-05-18 | brief | rs | 2026-05-spaarke-launch |  |  | Subtle counter-positioning to NetDocuments "Context Graph for Legal Work" PR (2026-05-14). Founder voice. Closes with walkthrough CTA. Issue #52. |
 | legal-iq-and-the-future-of-legal-operations | blog-post | 2026-05-19 | brief | rs | 2026-05-spaarke-launch |  |  | Introduces Legal IQ as the operational-intelligence layer; foundational positioning piece |
 | legal-ops-after-the-ai-hype-cycle | linkedin-post | 2026-05-20 | brief | rs | 2026-05-spaarke-launch |  |  | Practical observations on the shift from experimentation to operationalization |
 | ai-is-moving-from-tools-to-operating-models | blog-post | 2026-05-26 | brief | rs | 2026-05-spaarke-launch |  |  | Why legal AI is evolving beyond drafting assistants into operational orchestration |
