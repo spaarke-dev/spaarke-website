@@ -8,10 +8,12 @@ import type { Tour } from "./types";
  */
 // TOURS — append new imports + map entries below.
 import { fullWalkthrough } from "./full-walkthrough";
+import { semanticSearchWalkthrough } from "./semantic-search-walkthrough";
 
 export const TOURS: Record<string, Tour> = {
   // (entries appended by content tasks)
   [fullWalkthrough.slug]: fullWalkthrough,
+  [semanticSearchWalkthrough.slug]: semanticSearchWalkthrough,
 };
 
 export function getTour(slug: string): Tour | undefined {

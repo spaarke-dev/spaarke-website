@@ -8,33 +8,43 @@ import { submissionProps } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TOUR_PATH = "/tour/full-walkthrough";
+const DEFAULT_TOUR_PATH = "/tour/full-walkthrough";
+const DEFAULT_SOURCE = "take-tour";
 
 type Status = "idle" | "submitting" | "error";
 
 /**
  * Home-hero "Take tour" form — same visual shape as the platform-hero
- * Get-access form. Submits to /api/early-release with source:"take-tour"
- * to capture the lead, then redirects the user to the full product
- * walkthrough at /tour/full-walkthrough.
+ * Get-access form. Submits to /api/early-release to capture the lead,
+ * then redirects to the configured walkthrough.
+ *
+ * `targetPath` (defaults to `/tour/full-walkthrough`) sets the
+ * redirect destination so this component can gate any registered
+ * tour. Focused walkthroughs (e.g. `/tour/semantic-search-walkthrough`)
+ * reuse this form via the prop rather than a copy-pasted variant.
+ *
+ * `source` (defaults to `"take-tour"`) tags the lead-capture row so
+ * Plausible/App Insights segment which funnel produced the signup.
  *
  * `secondary` renders an inline text-arrow link to the right of the
- * submit button (used in the home Closing section to keep "See
- * platform" on the same line as the form).
+ * submit button.
  *
- * `tone` controls input-pill styling so the form reads correctly on
- * either a dark hero (default) or the cream platform hero.
+ * `tone` controls input-pill styling for dark vs cream backdrops.
  */
 export function TakeTourCTAs({
   recaptchaSiteKey,
   secondary,
   tone = "dark",
   className,
+  targetPath = DEFAULT_TOUR_PATH,
+  source = DEFAULT_SOURCE,
 }: {
   recaptchaSiteKey: string;
   secondary?: { label: string; href: string };
   tone?: "dark" | "light";
   className?: string;
+  targetPath?: string;
+  source?: string;
 }) {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -94,7 +104,7 @@ export function TakeTourCTAs({
           name: nameTrim,
           email: emailTrim,
           captchaToken,
-          source: "take-tour",
+          source,
           attribution,
         }),
       });
@@ -121,10 +131,10 @@ export function TakeTourCTAs({
 
       track("Take Tour Submit", attribution);
 
-      // Lead captured — redirect to the full walkthrough. Keep status as
-      // "submitting" until navigation completes so the button doesn't
-      // flash back to "Take tour" mid-redirect.
-      router.push(TOUR_PATH);
+      // Lead captured — redirect to the configured walkthrough. Keep
+      // status as "submitting" until navigation completes so the button
+      // doesn't flash back to "Take tour" mid-redirect.
+      router.push(targetPath);
     } catch {
       setStatus("error");
       setError("Network error. Please try again.");
