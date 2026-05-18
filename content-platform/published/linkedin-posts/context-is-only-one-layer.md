@@ -1,17 +1,14 @@
 ---
 slug: context-is-only-one-layer
 type: linkedin-post
-publish_date: 2026-05-18
-channels: [linkedin]
-status: review                       # ready for human review
+target: personal
 byline: ralph-schroeder
-audience: corporate-counsel
-length_target: 280
 campaign: 2026-05-spaarke-launch
-hook: |
-  A context graph is necessary but not sufficient.
-  The Legal IQ platform also requires inference and memory.
+publish_date: 2026-05-18
+posted_at: 2026-05-18T16:00:00Z
+posted_url: https://www.linkedin.com/posts/ralphschroeder_institutional-knowledge-is-walking-out-the-activity-7462188296975118336-tVBx
 hashtags: [LegalOps, LegalTech]
+triggered_by: NetDocuments "Context Graph for Legal Work" press release, 2026-05-14
 ---
 
 A context graph is necessary but not sufficient.
