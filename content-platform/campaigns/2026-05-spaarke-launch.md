@@ -64,7 +64,7 @@ in the argument.
 | 2026-05-20 | linkedin-post | legal-ops-after-the-ai-hype-cycle | brief | linkedin (rs) | New standalone (calendar) |
 | 2026-05-21 | blog-post | probabilistic-vs-deterministic | published | website | Practitioner primer; picks up the IQ-stack Inference thread. |
 | 2026-05-22 | linkedin-post | legal-iq-future-syndication | planned | linkedin (rs) | Syndicates the May 19 piece |
-| 2026-05-25 | linkedin-post | probabilistic-vs-deterministic-syndication | idea | linkedin (org) | Syndicates the 5/21 blog post (org page); idea queued |
+| 2026-05-25 | linkedin-post | probabilistic-vs-deterministic-syndication | brief | linkedin (org) | Syndicates the 5/21 blog post (org page). Hook locked. Issue [#63](https://github.com/spaarke-dev/spaarke-website/issues/63). |
 | 2026-05-26 | blog-post | ai-is-moving-from-tools-to-operating-models | brief | website | New piece (calendar) |
 | 2026-05-27 | linkedin-post | what-legal-departments-actually-need-from-ai | brief | linkedin (rs) | New standalone (calendar) |
 | 2026-05-29 | linkedin-post | tools-to-operating-models-syndication | planned | linkedin (rs) | Syndicates the May 26 piece |
