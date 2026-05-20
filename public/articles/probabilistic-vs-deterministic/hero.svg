@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Two visual fields — a precise geometric lattice on the left representing deterministic computation, and a soft probabilistic dot-scatter on the right, interleaving at the seam to signal the hybrid pattern the article describes.">
-  <title>Legal AI is not deterministic — a precise lattice on the left dissolves into a probabilistic scatter on the right.</title>
-  <desc>A dark navy field with a 3-by-3 grid of small Spaarke-blue dots connected by faint slate lattice lines on the left — disciplined, exact, deterministic. The grid dissolves moving right: in the transition zone dots drift off their grid positions; on the right, dots scatter in varied sizes and opacities with no connecting lines — a probabilistic cloud. A low-opacity purple glow sits behind the seam.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="An embedding-vector field across a soft navy slab. On the left, a 3-by-3 grid of light-blue points, each with an arrow pointing in the same direction — ordered, deterministic vectors. Across the middle, arrows progressively diverge. On the right, points are scattered with arrows pointing in varied directions — a probabilistic distribution of vectors in an embedding space.">
+  <title>Probabilistic vs deterministic — an embedding-vector field where the same point can produce a different direction</title>
+  <desc>An embedding-vector visualization on a softly lit navy slab. The left third of the field shows a 3-by-3 grid of small light-blue points, each emitting an arrow that points in the same up-right direction — the visual analog of a deterministic system producing the same output every time. Across the middle, the arrows progressively diverge from that common direction. The right two thirds of the field show points scattered in varied positions, with arrows pointing in many different directions — the visual analog of how a probabilistic system, like generative AI, samples from a distribution of possible outputs. A soft purple glow sits behind the seam where the order dissolves.</desc>
   <defs>
-    <radialGradient id="bg" cx="50%" cy="50%" r="80%">
-      <stop offset="0%" stop-color="#1A1230"/>
-      <stop offset="60%" stop-color="#0A0A14"/>
-      <stop offset="100%" stop-color="#0A0A0A"/>
+    <radialGradient id="bg" cx="50%" cy="50%" r="85%">
+      <stop offset="0%" stop-color="#34325E"/>
+      <stop offset="55%" stop-color="#23224A"/>
+      <stop offset="100%" stop-color="#161630"/>
     </radialGradient>
     <radialGradient id="seamGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.18"/>
+      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.32"/>
       <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
     </radialGradient>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 8 3, 0 6" fill="#A8C2FF"/>
+    </marker>
   </defs>
   <rect width="1600" height="900" fill="url(#bg)"/>
   <!-- Soft purple glow behind the seam -->
-  <ellipse cx="800" cy="450" rx="420" ry="260" fill="url(#seamGlow)"/>
-  <!-- Deterministic zone (left): lattice lines -->
-  <g stroke="#3A3858" stroke-opacity="0.55" stroke-width="1.5" fill="none">
+  <ellipse cx="820" cy="450" rx="450" ry="270" fill="url(#seamGlow)"/>
+  <!-- Deterministic zone (left): faint lattice -->
+  <g stroke="#5A6090" stroke-opacity="0.35" stroke-width="1" fill="none">
     <line x1="160" y1="290" x2="540" y2="290"/>
     <line x1="160" y1="450" x2="540" y2="450"/>
     <line x1="160" y1="610" x2="540" y2="610"/>
@@ -25,43 +28,79 @@
     <line x1="350" y1="290" x2="350" y2="610"/>
     <line x1="540" y1="290" x2="540" y2="610"/>
   </g>
-  <!-- Deterministic zone (left): grid dots -->
-  <g fill="#000BFF">
-    <circle cx="160" cy="290" r="8"/>
-    <circle cx="350" cy="290" r="8"/>
-    <circle cx="540" cy="290" r="8"/>
-    <circle cx="160" cy="450" r="8"/>
-    <circle cx="350" cy="450" r="8"/>
-    <circle cx="540" cy="450" r="8"/>
-    <circle cx="160" cy="610" r="8"/>
-    <circle cx="350" cy="610" r="8"/>
-    <circle cx="540" cy="610" r="8"/>
+  <!-- Deterministic zone (left): grid of points with aligned arrows (all at ~25 degrees up-right) -->
+  <g stroke="#A8C2FF" stroke-width="2" stroke-linecap="round">
+    <line x1="160" y1="290" x2="214" y2="265" marker-end="url(#arrowhead)"/>
+    <line x1="350" y1="290" x2="404" y2="265" marker-end="url(#arrowhead)"/>
+    <line x1="540" y1="290" x2="594" y2="265" marker-end="url(#arrowhead)"/>
+    <line x1="160" y1="450" x2="214" y2="425" marker-end="url(#arrowhead)"/>
+    <line x1="350" y1="450" x2="404" y2="425" marker-end="url(#arrowhead)"/>
+    <line x1="540" y1="450" x2="594" y2="425" marker-end="url(#arrowhead)"/>
+    <line x1="160" y1="610" x2="214" y2="585" marker-end="url(#arrowhead)"/>
+    <line x1="350" y1="610" x2="404" y2="585" marker-end="url(#arrowhead)"/>
+    <line x1="540" y1="610" x2="594" y2="585" marker-end="url(#arrowhead)"/>
   </g>
-  <!-- Transition zone (middle): slightly jittered grid, fading lattice -->
-  <g fill="#000BFF">
-    <circle cx="725" cy="278" r="8" opacity="0.95"/>
-    <circle cx="750" cy="448" r="9" opacity="0.95"/>
-    <circle cx="730" cy="618" r="8" opacity="0.95"/>
-    <circle cx="935" cy="262" r="7" opacity="0.85"/>
-    <circle cx="900" cy="463" r="10" opacity="0.85"/>
-    <circle cx="920" cy="635" r="7" opacity="0.85"/>
+  <g fill="#A8C2FF">
+    <circle cx="160" cy="290" r="6"/>
+    <circle cx="350" cy="290" r="6"/>
+    <circle cx="540" cy="290" r="6"/>
+    <circle cx="160" cy="450" r="6"/>
+    <circle cx="350" cy="450" r="6"/>
+    <circle cx="540" cy="450" r="6"/>
+    <circle cx="160" cy="610" r="6"/>
+    <circle cx="350" cy="610" r="6"/>
+    <circle cx="540" cy="610" r="6"/>
   </g>
-  <!-- Probabilistic zone (right): scatter with varying sizes and opacity -->
-  <g fill="#000BFF">
-    <circle cx="1090" cy="228" r="6" opacity="0.7"/>
-    <circle cx="1160" cy="305" r="11" opacity="0.92"/>
-    <circle cx="1110" cy="455" r="5" opacity="0.6"/>
-    <circle cx="1185" cy="488" r="9" opacity="0.95"/>
-    <circle cx="1135" cy="655" r="7" opacity="0.75"/>
-    <circle cx="1285" cy="248" r="9" opacity="0.85"/>
-    <circle cx="1345" cy="325" r="6" opacity="0.6"/>
-    <circle cx="1300" cy="445" r="11" opacity="0.92"/>
-    <circle cx="1375" cy="512" r="5" opacity="0.55"/>
-    <circle cx="1315" cy="628" r="8" opacity="0.8"/>
-    <circle cx="1455" cy="285" r="7" opacity="0.7"/>
-    <circle cx="1520" cy="355" r="5" opacity="0.5"/>
-    <circle cx="1485" cy="450" r="10" opacity="0.9"/>
-    <circle cx="1430" cy="540" r="6" opacity="0.65"/>
-    <circle cx="1500" cy="648" r="8" opacity="0.85"/>
+  <!-- Transition zone (middle): arrows begin to diverge -->
+  <g stroke="#A8C2FF" stroke-width="2" stroke-linecap="round">
+    <line x1="725" y1="278" x2="774" y2="244" marker-end="url(#arrowhead)" opacity="0.95"/>
+    <line x1="750" y1="448" x2="806" y2="427" marker-end="url(#arrowhead)" opacity="0.95"/>
+    <line x1="730" y1="618" x2="782" y2="588" marker-end="url(#arrowhead)" opacity="0.95"/>
+    <line x1="935" y1="262" x2="960" y2="207" marker-end="url(#arrowhead)" opacity="0.9"/>
+    <line x1="900" y1="463" x2="959" y2="453" marker-end="url(#arrowhead)" opacity="0.9"/>
+    <line x1="920" y1="635" x2="950" y2="683" marker-end="url(#arrowhead)" opacity="0.9"/>
+  </g>
+  <g fill="#A8C2FF">
+    <circle cx="725" cy="278" r="6" opacity="0.95"/>
+    <circle cx="750" cy="448" r="6" opacity="0.95"/>
+    <circle cx="730" cy="618" r="6" opacity="0.95"/>
+    <circle cx="935" cy="262" r="6" opacity="0.9"/>
+    <circle cx="900" cy="463" r="6" opacity="0.9"/>
+    <circle cx="920" cy="635" r="6" opacity="0.9"/>
+  </g>
+  <!-- Probabilistic zone (right): scatter with arrows pointing in varied directions -->
+  <g stroke="#A8C2FF" stroke-width="2" stroke-linecap="round">
+    <line x1="1090" y1="228" x2="1111" y2="172" marker-end="url(#arrowhead)" opacity="0.85"/>
+    <line x1="1160" y1="305" x2="1108" y2="275" marker-end="url(#arrowhead)" opacity="0.95"/>
+    <line x1="1110" y1="455" x2="1071" y2="501" marker-end="url(#arrowhead)" opacity="0.75"/>
+    <line x1="1185" y1="488" x2="1175" y2="429" marker-end="url(#arrowhead)" opacity="0.95"/>
+    <line x1="1135" y1="655" x2="1174" y2="701" marker-end="url(#arrowhead)" opacity="0.8"/>
+    <line x1="1285" y1="248" x2="1341" y2="227" marker-end="url(#arrowhead)" opacity="0.9"/>
+    <line x1="1345" y1="325" x2="1289" y2="346" marker-end="url(#arrowhead)" opacity="0.7"/>
+    <line x1="1300" y1="445" x2="1300" y2="385" marker-end="url(#arrowhead)" opacity="0.95"/>
+    <line x1="1375" y1="512" x2="1431" y2="533" marker-end="url(#arrowhead)" opacity="0.7"/>
+    <line x1="1315" y1="628" x2="1276" y2="582" marker-end="url(#arrowhead)" opacity="0.85"/>
+    <line x1="1455" y1="285" x2="1485" y2="233" marker-end="url(#arrowhead)" opacity="0.8"/>
+    <line x1="1520" y1="355" x2="1461" y2="345" marker-end="url(#arrowhead)" opacity="0.65"/>
+    <line x1="1485" y1="450" x2="1485" y2="510" marker-end="url(#arrowhead)" opacity="0.9"/>
+    <line x1="1430" y1="540" x2="1400" y2="592" marker-end="url(#arrowhead)" opacity="0.75"/>
+    <line x1="1500" y1="648" x2="1552" y2="618" marker-end="url(#arrowhead)" opacity="0.85"/>
+  </g>
+  <g fill="#A8C2FF">
+    <circle cx="1090" cy="228" r="5" opacity="0.85"/>
+    <circle cx="1160" cy="305" r="6" opacity="0.95"/>
+    <circle cx="1110" cy="455" r="5" opacity="0.75"/>
+    <circle cx="1185" cy="488" r="6" opacity="0.95"/>
+    <circle cx="1135" cy="655" r="5" opacity="0.8"/>
+    <circle cx="1285" cy="248" r="6" opacity="0.9"/>
+    <circle cx="1345" cy="325" r="5" opacity="0.7"/>
+    <circle cx="1300" cy="445" r="6" opacity="0.95"/>
+    <circle cx="1375" cy="512" r="5" opacity="0.7"/>
+    <circle cx="1315" cy="628" r="6" opacity="0.85"/>
+    <circle cx="1455" cy="285" r="5" opacity="0.8"/>
+    <circle cx="1520" cy="355" r="5" opacity="0.65"/>
+    <circle cx="1485" cy="450" r="6" opacity="0.9"/>
+    <circle cx="1430" cy="540" r="5" opacity="0.75"/>
+    <circle cx="1500" cy="648" r="6" opacity="0.85"/>
   </g>
 </svg>
