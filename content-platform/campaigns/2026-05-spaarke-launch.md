@@ -62,8 +62,9 @@ in the argument.
 | 2026-05-15 | linkedin-post | iq-stack-syndication | planned | linkedin (rs) | Repromotes existing The Legal IQ Stack |
 | 2026-05-19 | blog-post | legal-iq-and-the-future-of-legal-operations | brief | website | New piece (calendar) |
 | 2026-05-20 | linkedin-post | legal-ops-after-the-ai-hype-cycle | brief | linkedin (rs) | New standalone (calendar) |
-| 2026-05-21 | blog-post | probabilistic-vs-deterministic | published | website | Practitioner primer; picks up the IQ-stack Inference thread. LinkedIn syndication deferred pending live-site review. |
+| 2026-05-21 | blog-post | probabilistic-vs-deterministic | published | website | Practitioner primer; picks up the IQ-stack Inference thread. |
 | 2026-05-22 | linkedin-post | legal-iq-future-syndication | planned | linkedin (rs) | Syndicates the May 19 piece |
+| 2026-05-25 | linkedin-post | probabilistic-vs-deterministic-syndication | idea | linkedin (org) | Syndicates the 5/21 blog post (org page); idea queued |
 | 2026-05-26 | blog-post | ai-is-moving-from-tools-to-operating-models | brief | website | New piece (calendar) |
 | 2026-05-27 | linkedin-post | what-legal-departments-actually-need-from-ai | brief | linkedin (rs) | New standalone (calendar) |
 | 2026-05-29 | linkedin-post | tools-to-operating-models-syndication | planned | linkedin (rs) | Syndicates the May 26 piece |
@@ -85,8 +86,9 @@ Existing-library pieces repromoted this campaign:
 | 2026-05-19 | website | Publish "Legal IQ and the future of legal operations" |
 | 2026-05-19 | linkedin | Spaarke company-page post for the May 19 piece |
 | 2026-05-20 | linkedin (rs) | Standalone post: "legal ops after the AI hype cycle" |
-| 2026-05-21 | website | Publish "Legal AI Is Not Deterministic — And That Matters" *(LinkedIn syndication deferred — live-site review first)* |
+| 2026-05-21 | website | Publish "Legal AI Is Not Deterministic — And That Matters" |
 | 2026-05-22 | linkedin (rs) | Syndicate the May 19 piece |
+| 2026-05-25 | linkedin (org) | Syndicate the May 21 piece (org page; brief pending) |
 | 2026-05-26 | website | Publish "AI is moving from tools to operating models" |
 | 2026-05-26 | linkedin | Spaarke company-page post |
 | 2026-05-27 | linkedin (rs) | Standalone: "what legal departments actually need from AI" |
