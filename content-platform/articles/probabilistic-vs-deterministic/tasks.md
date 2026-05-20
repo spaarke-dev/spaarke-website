@@ -19,53 +19,48 @@
 
 ## 2. Draft (gate: complete prose at length target)
 
-- [ ] Opening drafted (per plan.md §Opening)
-- [ ] Each section drafted in order
-- [ ] Close drafted (per plan.md §Close)
-- [ ] Length within target (blog: 1,000–1,800 words; ideal ~1,400; this piece targets 1,600)
-- [ ] Internal cross-links inserted at the points named in plan.md
-- [ ] No `**TBD — confirm**` markers (or, if any remain, they are
-      explicitly listed for the reviewer)
-- [ ] Draft written to `draft.mdx` in this article's workspace
+- [x] Opening drafted (per plan.md §Opening)
+- [x] Each section drafted in order
+- [x] Close drafted (per plan.md §Close)
+- [x] Length within target (blog: 1,000–1,800 words; ideal ~1,400; this piece targets 1,600) — landed at 1,656
+- [x] Internal cross-links inserted at the points named in plan.md
+- [x] No `**TBD — confirm**` markers
+- [x] Draft written to `draft.mdx` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
 
-- [ ] Reviewer feedback captured
-- [ ] Revisions applied in `draft.mdx` (no version-suffix files —
-      keep one source of truth)
-- [ ] Revision rounds repeat as needed; mark complete only when the
-      reviewer accepts the prose
+- [x] Reviewer feedback captured — *no revisions requested; accepted on first read*
+- [x] Revisions applied in `draft.mdx`
+- [x] Revision rounds — *one round, accepted*
 
 ## 4. Polish (gate: pre-publish checklist clean)
 
-- [ ] Frontmatter validated against `src/lib/blog.ts` shape
-- [ ] `description` field is a real SEO meta description (~155 chars)
-- [ ] `summary` is 2–3 sentences, ~150–280 chars
-- [ ] `keyTakeaways` are 3–5 bullets, 18–35 words each
-- [ ] Tags drawn from canonical taxonomy (no inventions)
-- [ ] All cross-link slugs verified to exist
-- [ ] **Final-pass sweep against `voice/examples/avoid-this.md`** —
-      AI-tells, marketing-speak, do-not-say items
-- [ ] **Final-pass sweep against `voice/style-guide.md` §5** —
-      do-not-do list. Specifically: no "by design" as casual shorthand for the probabilistic property (see `brief.md` Voice notes — the property is a *consequence* of how the system works, not a design opt-in)
-- [ ] **Audience sweep** — draft reads cleanly to both `legal-ops-director` and `corporate-counsel` (co-equal primary per brief)
+- [x] Frontmatter validated against `src/lib/blog.ts` shape (author "Spaarke Team" matches existing library convention; flagged for verification in live-site review)
+- [x] `description` field is a real SEO meta description (~155 chars)
+- [x] `summary` is 2–3 sentences, ~150–280 chars
+- [x] `keyTakeaways` are 3–5 bullets, 18–35 words each
+- [x] Tags drawn from canonical taxonomy (no inventions)
+- [x] All cross-link slugs verified to exist
+- [x] **Final-pass sweep against `voice/examples/avoid-this.md`** — zero hits on AI-tells, marketing-speak, do-not-say items
+- [x] **Final-pass sweep against `voice/style-guide.md` §5** — zero "by design" instances; anti-by-design framing explicit in §1 ("This is not an opt-in design choice. It is a consequence of how the system works.")
+- [x] **Audience sweep** — draft reads cleanly to both `legal-ops-director` and `corporate-counsel`
 
 ## 5. Hero (gate: image present at expected path)
 
-- [ ] Hero produced per `voice/visual-identity.md`:
-      - Default: SVG at `public/articles/probabilistic-vs-deterministic/hero.svg` (1600×900 viewBox)
-      - Or paste-ready prompt for Midjourney/DALL-E/Firefly if photographic
-- [ ] Alt text written (a real description, not "hero image")
-- [ ] LinkedIn header generated via `node scripts/generate-linkedin-headers.mjs`
+- [x] Hero produced per `voice/visual-identity.md`:
+      - SVG at `public/articles/probabilistic-vs-deterministic/hero.svg` (1600×900 viewBox)
+      - Concept: 3×3 grid of Spaarke-blue dots with faint slate lattice lines on the left (deterministic), dissolving through a jittered transition into a varied-size scatter on the right (probabilistic); low-opacity purple glow behind the seam
+- [x] Alt text written (real description, not "hero image")
+- [ ] **LinkedIn header DEFERRED** — user explicitly held LinkedIn publication for live-site review first. Run `node scripts/generate-linkedin-headers.mjs` after live-site approval.
 
 ## 6. Ship (gate: live + tracked)
 
-- [ ] `draft.mdx` moved to `content/blog/2026-05-21-probabilistic-vs-deterministic.mdx`
-- [ ] `draft: false` in frontmatter
-- [ ] `calendar.md` row updated to `published`
-- [ ] GitHub Project's *Pipeline status* moved to `Published`
-- [ ] GitHub Issue closed
-- [ ] Campaign file (`2026-05-spaarke-launch.md`) updated to reflect actual publish
+- [x] `draft.mdx` copied to `content/blog/2026-05-21-probabilistic-vs-deterministic.mdx` (workspace `draft.mdx` retained as historical record)
+- [x] `draft: false` in the published frontmatter
+- [x] `calendar.md` row updated to `published`
+- [x] GitHub Project's *Pipeline status* moved to `Published`
+- [ ] **GitHub Issue close DEFERRED** — leaving Issue #57 open until live-site review completes; user will close after final review
+- [x] Campaign file (`2026-05-spaarke-launch.md`) updated to reflect actual publish
 
 ---
 
