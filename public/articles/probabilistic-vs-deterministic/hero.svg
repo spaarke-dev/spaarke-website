@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Two visual fields — a precise geometric lattice on the left representing deterministic computation, and a soft probabilistic dot-scatter on the right, interleaving at the seam to signal the hybrid pattern the article describes.">
+  <title>Legal AI is not deterministic — a precise lattice on the left dissolves into a probabilistic scatter on the right.</title>
+  <desc>A dark navy field with a 3-by-3 grid of small Spaarke-blue dots connected by faint slate lattice lines on the left — disciplined, exact, deterministic. The grid dissolves moving right: in the transition zone dots drift off their grid positions; on the right, dots scatter in varied sizes and opacities with no connecting lines — a probabilistic cloud. A low-opacity purple glow sits behind the seam.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="80%">
+      <stop offset="0%" stop-color="#1A1230"/>
+      <stop offset="60%" stop-color="#0A0A14"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+    <radialGradient id="seamGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <!-- Soft purple glow behind the seam -->
+  <ellipse cx="800" cy="450" rx="420" ry="260" fill="url(#seamGlow)"/>
+  <!-- Deterministic zone (left): lattice lines -->
+  <g stroke="#3A3858" stroke-opacity="0.55" stroke-width="1.5" fill="none">
+    <line x1="160" y1="290" x2="540" y2="290"/>
+    <line x1="160" y1="450" x2="540" y2="450"/>
+    <line x1="160" y1="610" x2="540" y2="610"/>
+    <line x1="160" y1="290" x2="160" y2="610"/>
+    <line x1="350" y1="290" x2="350" y2="610"/>
+    <line x1="540" y1="290" x2="540" y2="610"/>
+  </g>
+  <!-- Deterministic zone (left): grid dots -->
+  <g fill="#000BFF">
+    <circle cx="160" cy="290" r="8"/>
+    <circle cx="350" cy="290" r="8"/>
+    <circle cx="540" cy="290" r="8"/>
+    <circle cx="160" cy="450" r="8"/>
+    <circle cx="350" cy="450" r="8"/>
+    <circle cx="540" cy="450" r="8"/>
+    <circle cx="160" cy="610" r="8"/>
+    <circle cx="350" cy="610" r="8"/>
+    <circle cx="540" cy="610" r="8"/>
+  </g>
+  <!-- Transition zone (middle): slightly jittered grid, fading lattice -->
+  <g fill="#000BFF">
+    <circle cx="725" cy="278" r="8" opacity="0.95"/>
+    <circle cx="750" cy="448" r="9" opacity="0.95"/>
+    <circle cx="730" cy="618" r="8" opacity="0.95"/>
+    <circle cx="935" cy="262" r="7" opacity="0.85"/>
+    <circle cx="900" cy="463" r="10" opacity="0.85"/>
+    <circle cx="920" cy="635" r="7" opacity="0.85"/>
+  </g>
+  <!-- Probabilistic zone (right): scatter with varying sizes and opacity -->
+  <g fill="#000BFF">
+    <circle cx="1090" cy="228" r="6" opacity="0.7"/>
+    <circle cx="1160" cy="305" r="11" opacity="0.92"/>
+    <circle cx="1110" cy="455" r="5" opacity="0.6"/>
+    <circle cx="1185" cy="488" r="9" opacity="0.95"/>
+    <circle cx="1135" cy="655" r="7" opacity="0.75"/>
+    <circle cx="1285" cy="248" r="9" opacity="0.85"/>
+    <circle cx="1345" cy="325" r="6" opacity="0.6"/>
+    <circle cx="1300" cy="445" r="11" opacity="0.92"/>
+    <circle cx="1375" cy="512" r="5" opacity="0.55"/>
+    <circle cx="1315" cy="628" r="8" opacity="0.8"/>
+    <circle cx="1455" cy="285" r="7" opacity="0.7"/>
+    <circle cx="1520" cy="355" r="5" opacity="0.5"/>
+    <circle cx="1485" cy="450" r="10" opacity="0.9"/>
+    <circle cx="1430" cy="540" r="6" opacity="0.65"/>
+    <circle cx="1500" cy="648" r="8" opacity="0.85"/>
+  </g>
+</svg>
