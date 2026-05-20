@@ -51,7 +51,7 @@
       - SVG at `public/articles/probabilistic-vs-deterministic/hero.svg` (1600×900 viewBox)
       - Concept: 3×3 grid of Spaarke-blue dots with faint slate lattice lines on the left (deterministic), dissolving through a jittered transition into a varied-size scatter on the right (probabilistic); low-opacity purple glow behind the seam
 - [x] Alt text written (real description, not "hero image")
-- [ ] **LinkedIn header DEFERRED** — user explicitly held LinkedIn publication for live-site review first. Run `node scripts/generate-linkedin-headers.mjs` after live-site approval.
+- [x] **LinkedIn header generated** — `public/articles/probabilistic-vs-deterministic/linkedin-1920x1080.png` (SVG→PNG, 145KB). Source: revised hero (PR #60) — light periwinkle dots + embedding-vector arrows on lifted navy.
 
 ## 6. Ship (gate: live + tracked)
 
@@ -59,8 +59,9 @@
 - [x] `draft: false` in the published frontmatter
 - [x] `calendar.md` row updated to `published`
 - [x] GitHub Project's *Pipeline status* moved to `Published`
-- [ ] **GitHub Issue close DEFERRED** — leaving Issue #57 open until live-site review completes; user will close after final review
-- [x] Campaign file (`2026-05-spaarke-launch.md`) updated to reflect actual publish
+- [x] GitHub Issue #57 closed *(2026-05-20, after user live-site sign-off)*
+- [x] Campaign file (`2026-05-spaarke-launch.md`) updated to reflect actual publish + the 5/25 syndication queue
+- [x] **LinkedIn syndication queued** — `content-platform/articles/probabilistic-vs-deterministic-syndication/idea.md`. Target date 2026-05-25 (org page). Run `/idea-to-brief probabilistic-vs-deterministic-syndication` when ready to draft.
 
 ---
 
