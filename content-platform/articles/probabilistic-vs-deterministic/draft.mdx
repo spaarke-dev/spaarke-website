@@ -64,7 +64,7 @@ The probabilistic candidates are the work that has always required judgement:
 - **Classification and tagging.** Practice area, matter type, sensitivity, risk level.
 - **Drafting recommendations.** Proposing the next step, the next call, the likely outcome — for a human to decide on.
 
-The two lists are not in competition. They describe the same operational surface, divided by what kind of computation is doing the work. The architectural decisions a legal team has to make — covered in [What Attorneys Need to Know About AI](/blog/2026-02-15-what-attorneys-need-to-know-about-ai) — all turn on knowing which side is doing what.
+The two lists are not in competition. They describe the same operational surface, divided by what kind of computation is doing the work. The architectural decisions a legal team has to make — covered in [What Attorneys Need to Know About AI](/why-spaarke/what-attorneys-need-to-know-about-ai) — all turn on knowing which side is doing what.
 
 ---
 
@@ -82,11 +82,11 @@ This is why architecture matters. In the [Legal IQ stack](/why-spaarke/the-iq-st
 
 ---
 
-## What this means for agents
+## What this means for AI agent systems
 
-A probabilistic step inside an agent loop does not stay one step. Small uncertainties compound across tool calls and decisions.
+An AI agent system starts with a probabilistic step. Before it acts, it looks at the available data and calculates whether that data falls within its relevance threshold — a prediction about what is and is not in scope for the question at hand. If the relevance estimate is off, even by a small fraction, the uncertainty does not stay at the start. It compounds across every downstream action the agent takes.
 
-Picture an agent doing matter intake routing. It reads the incoming request and classifies the matter type. It checks for conflicts. It assigns a priority. It picks a team. It drafts the intake memo. Five probabilistic decisions stacked, each with some uncertainty, each feeding into the next. The single-step error rate looks tolerable in isolation. The end-to-end error rate does not.
+And the relevance call is only the first of many. Picture an agent doing matter intake routing. It reads the incoming request and classifies the matter type. It checks for conflicts. It assigns a priority. It picks a team. It drafts the intake memo. Five probabilistic decisions stacked, each with some uncertainty, each feeding into the next. The single-step error rate looks tolerable in isolation. The end-to-end error rate does not.
 
 This is the part of legal AI that practitioners are most actively building right now, and the part that is easiest to under-think. An agent is a chain of probabilistic choices unless deterministic guardrails or human gates are placed deliberately at the consequential points. *Deliberately* is the load-bearing word. A guardrail at the front and another at the back is not the same as a guardrail at each consequential step in between.
 
@@ -96,7 +96,7 @@ The operational implications are specific:
 - **Pin critical tool calls to deterministic systems.** The conflicts check is not a guess. The deadline calculation is not a guess. The OCG enforcement is not a guess. If the agent reaches for one of these, the call goes to a deterministic system, and the agent uses the result without re-interpreting it.
 - **Require an explicit human gate before any action that writes to the operational record.** Probabilistic systems are excellent at proposing. They should not, on their own, be the system that commits.
 
-An agent built this way is still useful. It still does the work the operator hoped it would do. It just does that work without quietly compounding uncertainty into the record. The data-architecture argument in [The AI Readiness Gap](/blog/2026-03-01-the-ai-readiness-gap) sharpens here — agents make the underlying architecture more, not less, load-bearing.
+An agent built this way is still useful. It still does the work the operator hoped it would do. It just does that work without quietly compounding uncertainty into the record. The data-architecture argument in [The AI Readiness Gap](/why-spaarke/the-ai-readiness-gap) sharpens here — agents make the underlying architecture more, not less, load-bearing.
 
 ---
 
