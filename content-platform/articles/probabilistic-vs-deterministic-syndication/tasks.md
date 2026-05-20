@@ -8,7 +8,7 @@
 - [x] Plan.md filled in: hook (line 1–2 explicitly locked), body beats (6), close (CTA)
 - [x] Format chosen: **article-syndication**
 - [x] Hashtags drafted: `#LegalOps #LegalTech`
-- [ ] **Reviewer signed off on the hook + structure before draft starts**
+- [x] **Reviewer signed off on the hook + structure before draft starts** *(2026-05-20, RS via "proceed")*
 
 > The hook is locked verbatim in `brief.md`. The plan adds the body-
 > beat structure. The reviewer's job at this gate is to sign off on
@@ -17,30 +17,28 @@
 
 ## 2. Draft (gate: complete post at length target)
 
-- [ ] Hook drafted (lines 1–2, locked verbatim — no rewrite)
-- [ ] Body drafted (4–5 short paragraphs, 1–3 sentences each)
-- [ ] CTA drafted (`Read the full primer →` + URL on its own line)
-- [ ] Length within target (syndication: 200–250 words; this piece targets 240)
-- [ ] No `**TBD — confirm**` markers
-- [ ] Draft written to `draft.md` in this article's workspace
-- [ ] **Inline link discipline**: exactly one link in the body (the article URL on its own line). LinkedIn deprioritizes posts with external links — one is the right number; zero defeats the purpose; more than one looks spammy.
+- [x] Hook drafted (lines 1–2, locked verbatim — no rewrite)
+- [x] Body drafted (4–5 short paragraphs, 1–3 sentences each) — 6 paragraphs total including the one-sentence bridge
+- [x] CTA drafted (`Read the full primer →` + URL on its own line)
+- [x] Length within target (syndication: 200–250 words; this piece targets 240) — landed at **236 words**
+- [x] No `**TBD — confirm**` markers
+- [x] Draft written to `draft.md` in this article's workspace
+- [x] **Inline link discipline**: exactly one link in the body (the article URL on its own line)
 
 ## 3. Revise (gate: reviewer accepts)
 
-- [ ] Reviewer feedback captured
-- [ ] Revisions applied in `draft.md` (one source of truth)
-- [ ] Revision rounds repeat as needed; mark complete only when the
-      reviewer accepts
-- [ ] **Hook integrity check**: the locked hook lines must survive any revision pass unless the reviewer explicitly authorizes a hook change in writing (and the brief's Unresolved item is updated)
+- [x] Reviewer feedback captured — *no revisions requested; accepted on first read (2026-05-20)*
+- [x] Revisions applied — n/a
+- [x] **Hook integrity check** — hook verbatim from brief, unchanged
 
 ## 4. Polish (gate: pre-publish checklist clean)
 
-- [ ] Hook reads cleanly cold — no context that requires the reader to know Spaarke or the source article
-- [ ] Hashtags are 2, at the bottom, on their own line, separated from the body by a blank line
-- [ ] Byline is `spaarke` (organizational; company-page post) — *not* `ralph-schroeder` or any named team member
-- [ ] **Final-pass sweep against `voice/examples/avoid-this.md`** — AI-tells, marketing-speak, do-not-say items
-- [ ] **Final-pass sweep against `voice/style-guide.md` §5** — do-not-do list. Specifically: no "by design" as casual shorthand; no "AI-powered"; no demo CTAs; no exclamation points; no Unicode bold tricks
-- [ ] **No copy-paste from the source article opening** — verify the post does NOT reproduce the calculator/advisor pair (that's the article's hook; reusing it here burns the click-earner)
+- [x] Hook reads cleanly cold — declarative claim, no Spaarke prior knowledge required
+- [x] Hashtags are 2 (`#LegalOps #LegalTech`), at the bottom, on their own line, separated from the body by a blank line
+- [x] Byline is `spaarke` (organizational; company-page post)
+- [x] **Final-pass sweep against `voice/examples/avoid-this.md`** — zero hits
+- [x] **Final-pass sweep against `voice/style-guide.md` §5** — zero hits on "by design", "AI-powered", demo CTAs, exclamation points, Unicode tricks
+- [x] **No copy-paste from the source article opening** — confirmed; calculator/advisor analogy NOT present in the draft (grep verified)
 
 ## 5. Image (gate: existing asset re-used)
 
@@ -64,3 +62,4 @@
 
 - **2026-05-20 — Brief and plan locked.** Hook locked verbatim. Byline `spaarke` (org page). Target 5/25 (Monday, 4 days after the blog publish). Image: existing LinkedIn header PNG.
 - **2026-05-20 — Founder double-up deferred.** Decision tied to 5/25 metrics. If org post performs above campaign average, a parallel founder-voice version from `ralph-schroeder` can run 5/26 or 5/27 with a different hook (close-inversion from the source article).
+- **2026-05-20 — Draft accepted on first read.** 236 words; sweep clean; project status → Scheduled. Awaiting 2026-05-25 for manual post; on posting day, move `draft.md` to `published/linkedin-posts/probabilistic-vs-deterministic-syndication.md` and capture the live LinkedIn URL.
