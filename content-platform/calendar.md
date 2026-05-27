@@ -20,6 +20,7 @@ firm publish date yet.
 | probabilistic-vs-deterministic-syndication | linkedin-post | 2026-05-25 | scheduled | spaarke | 2026-05-spaarke-launch |  |  | Org-page LinkedIn syndication of the 5/21 blog post. Draft accepted on first read (236 words). Awaiting manual post on 5/25. Issue [#63](https://github.com/spaarke-dev/spaarke-website/issues/63). |
 | ai-is-moving-from-tools-to-operating-models | blog-post | 2026-05-26 | brief | rs | 2026-05-spaarke-launch |  |  | Why legal AI is evolving beyond drafting assistants into operational orchestration |
 | what-legal-departments-actually-need-from-ai | linkedin-post | 2026-05-27 | brief | rs | 2026-05-spaarke-launch |  |  | Legal buyers want operational reliability more than flashy demos |
+| the-ux-that-legal-iq-requires | blog-post | 2026-05-27 | published | spaarke | — |  |  | UX expectations Legal IQ requires — conversational AI alone doesn't meet them. Six interaction patterns + three-surfaces argument (Assistant, Workspace, Context) + inline AI inside content, all powered by Spaarke Insights Engine and Actions Engine. Standalone, no campaign. Issue [#66](https://github.com/spaarke-dev/spaarke-website/issues/66). Companion LinkedIn syndications (company + personal/rs) drafted for ~1 week after publish. |
 
 ## 2026-06
 
