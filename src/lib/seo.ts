@@ -1,6 +1,37 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
 import type { BlogPostMeta } from "@/lib/blog";
 import { flattenTags } from "@/lib/blog";
+
+/**
+ * Resolve the og:image URL for a post. LinkedIn, Twitter/X, and Slack
+ * don't reliably render SVG as the Open Graph image — when the hero is
+ * an SVG, prefer a PNG sibling on disk if one exists. Falls through to
+ * the SVG if no PNG sibling is present.
+ *
+ * Naming conventions checked, in order:
+ *   /articles/<slug>/hero.svg          -> /articles/<slug>/hero.png
+ *   /articles/<slug>/hero.svg          -> /articles/<slug>/hero-og.png
+ *   /articles/<slug>/hero.svg          -> /articles/<slug>/linkedin-1920x1080.png
+ */
+function resolveOgImage(heroImage: string | undefined, siteUrl: string): string {
+  if (!heroImage) return `${siteUrl}/images/og-default.png`;
+  if (!heroImage.endsWith(".svg")) return heroImage;
+
+  const publicDir = path.join(process.cwd(), "public");
+  const candidates = [
+    heroImage.replace(/\.svg$/, ".png"),
+    heroImage.replace(/\.svg$/, "-og.png"),
+    heroImage.replace(/\/[^/]+\.svg$/, "/linkedin-1920x1080.png"),
+  ];
+  for (const candidate of candidates) {
+    if (existsSync(path.join(publicDir, candidate))) {
+      return candidate;
+    }
+  }
+  return heroImage;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Site-wide constants                                                */
@@ -48,7 +79,7 @@ export function generateBlogPostMetadata(
   siteUrl: string,
 ): Metadata {
   const url = `${siteUrl}/why-spaarke/${post.slug}`;
-  const ogImage = post.heroImage ?? `${siteUrl}/images/og-default.png`;
+  const ogImage = resolveOgImage(post.heroImage, siteUrl);
   const allTags = flattenTags(post.tags);
 
   return {

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">The UX That Legal IQ Requires</title>
+  <desc id="hero-desc">Three parallel offset planes on a soft navy field connected by thin light-blue threads — three coordinated surfaces sharing context and continuity. The center plane carries a subtle horizontal split, suggesting two registers stacked.</desc>
+
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="55%" r="82%">
+      <stop offset="0%" stop-color="#34325E"/>
+      <stop offset="52%" stop-color="#23224A"/>
+      <stop offset="100%" stop-color="#161630"/>
+    </radialGradient>
+
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.28"/>
+      <stop offset="60%" stop-color="#7B5BFF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="planeLeft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3D3B72"/>
+      <stop offset="100%" stop-color="#26244E"/>
+    </linearGradient>
+
+    <linearGradient id="planeCenter" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4D4890"/>
+      <stop offset="100%" stop-color="#332E62"/>
+    </linearGradient>
+
+    <linearGradient id="planeRight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3D3B72"/>
+      <stop offset="100%" stop-color="#26244E"/>
+    </linearGradient>
+
+    <linearGradient id="splitBand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#7B5BFF" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <!-- Glow halos behind connection points -->
+  <ellipse cx="358" cy="450" rx="230" ry="170" fill="url(#glow)"/>
+  <ellipse cx="820" cy="450" rx="300" ry="200" fill="url(#glow)"/>
+  <ellipse cx="1318" cy="450" rx="230" ry="170" fill="url(#glow)"/>
+
+  <!-- Left plane: tall and narrow (with 2.5D side panel) -->
+  <polygon points="240,160 240,740 264,728 264,172" fill="#1A1838" opacity="0.85"/>
+  <rect x="264" y="172" width="200" height="568" fill="url(#planeLeft)" stroke="#4060DC" stroke-width="2"/>
+
+  <!-- Center plane: wider, with horizontal split-line indicating two registers -->
+  <polygon points="580,240 580,680 604,668 604,252" fill="#1A1838" opacity="0.85"/>
+  <rect x="604" y="252" width="440" height="420" fill="url(#planeCenter)" stroke="#7B5BFF" stroke-width="2.4"/>
+  <rect x="604" y="446" width="440" height="28" fill="url(#splitBand)"/>
+  <line x1="604" y1="460" x2="1044" y2="460" stroke="#A8C2FF" stroke-width="1.4" opacity="0.78"/>
+
+  <!-- Right plane: smaller -->
+  <polygon points="1180,300 1180,660 1204,648 1204,312" fill="#1A1838" opacity="0.85"/>
+  <rect x="1204" y="312" width="240" height="340" fill="url(#planeRight)" stroke="#4060DC" stroke-width="2"/>
+
+  <!-- Connecting threads passing through all three planes (shared context across surfaces) -->
+  <line x1="160" y1="380" x2="1500" y2="380" stroke="#A8C2FF" stroke-width="1.8" opacity="0.88"/>
+  <line x1="160" y1="520" x2="1500" y2="520" stroke="#A8C2FF" stroke-width="1.8" opacity="0.88"/>
+
+  <!-- Thread nodes at intersection points -->
+  <circle cx="364" cy="380" r="4" fill="#A8C2FF"/>
+  <circle cx="364" cy="520" r="4" fill="#A8C2FF"/>
+  <circle cx="824" cy="380" r="5" fill="#A8C2FF"/>
+  <circle cx="824" cy="520" r="5" fill="#A8C2FF"/>
+  <circle cx="1324" cy="380" r="4" fill="#A8C2FF"/>
+  <circle cx="1324" cy="520" r="4" fill="#A8C2FF"/>
+</svg>

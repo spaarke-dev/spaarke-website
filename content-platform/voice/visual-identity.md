@@ -65,42 +65,96 @@ guide.
 
 ## 3. Color palette
 
-Pulled from `src/app/globals.css`. The site is dark-default and the
-hero composition lives inside a `Slab tone="dark"` at the top of the
-article.
+Pulled from `src/app/globals.css` plus tones proven in the existing
+hero library. The site is dark-default and the hero composition lives
+inside a `Slab tone="dark"` at the top of the article.
 
-**Backgrounds (foreground of the hero canvas)**
-- `#0A0A0A` — page background (`--v2-bg`).
+**The contrast rule.** Foreground shapes (planes, geometric forms,
+typographic marks) must be visibly lighter than the background. The
+deepest tones (`#0A0A0A`, `#0A0A14`) are *canvas-only* colors —
+reserved for the background gradient. Using them as shape fills makes
+the shapes invisible. Use the mid-tones below for shapes.
+
+**Background canvas tones (use for the slab itself, not shapes)**
+- `#0A0A0A` — page background (`--v2-bg`); only the outermost edge
+  of a hero gradient.
 - `#111111` — surface (`--v2-surface`).
-- `#0A0A14` — deepest navy used in the existing Legal IQ stack hero
-  gradient.
-- `#1A1230` and `#2D1F5E` — deep purple-navy mid-tones from the
-  existing Legal IQ stack hero radial.
+- `#0A0A14` and `#161630` — deepest navies for outer gradient stops.
+- `#1A1230` and `#23224A` — deep navy mid-stops for the gradient.
+- `#2D1F5E` and `#34325E` — lifted center colors. **For a high-
+  contrast background, prefer `#34325E → #23224A → #161630` (the
+  `probabilistic-vs-deterministic` recipe) over the
+  `#0A0A0A → #0A0A14 → #2D1F5E` recipe used in older heroes.**
 
-**Accents (the hero's confident color note)**
-- `#000BFF` — Spaarke Blue (`--color-spaarke-blue`); the brand's
-  electric primary. Use as a single confident accent, not as a wash.
-- `#4060DC` — CTA blue (`--color-cta-blue`); softer, sits in the
-  same family as the home-page footlight glow.
-- `#7B5BFF` — soft purple from the existing Legal IQ stack hero glow; use
-  as a low-opacity wash, not a hard fill.
-- `#FF4DCB` — magenta accent from the same hero glow; very low
-  opacity (≤ 20%) and only as a glow halo, never as fill.
+**Shape fills (mid-tones that read against the background)**
+- `#26244E` — deep mid-navy for the darker side of a plane gradient.
+- `#332E62` — mid-navy for plane fills.
+- `#3D3B72` — lifted mid-navy for plane fills — distinctly visible
+  on the dark canvas.
+- `#4D4890` — brightest plane mid-tone — use for the focal/center
+  shape when it should command attention.
+- These are *fill* colors, not accents. They carry the silhouette
+  of the shape against the background.
+
+**Stroke and edge accents**
+- `#4060DC` — CTA blue (`--color-cta-blue`); the workhorse stroke
+  for shape edges that should be visible without being loud.
+- `#7B5BFF` — soft purple; use for stroke on the focal element or
+  as the glow halo color at moderate opacity (20–32%).
+- `#A8C2FF` — soft light-blue used in `probabilistic-vs-deterministic`
+  for thread lines and small dots. Very high contrast against the
+  navy canvas. Reserve for fine accents (1–2px lines, small
+  circles) — using it as a fill would over-brighten.
+
+**Hot accents (the single confident color note)**
+- `#000BFF` — Spaarke Blue (`--color-spaarke-blue`); brand electric
+  primary. Single accent, not a wash.
+- `#FF4DCB` — magenta accent for glow halos; very low opacity
+  (≤ 20%), never as fill.
 
 **Allowed warm/neutral accents (sparingly, one per piece)**
 - Muted copper/gold (~`#CB9959`) — used in `the-iq-stack` and
-  `what-is-legal-operations-intelligence` heroes; acceptable when the
-  piece is foundational/category-defining and a non-blue accent earns
-  a second of attention.
+  `what-is-legal-operations-intelligence` heroes; acceptable when
+  the piece is foundational/category-defining and a non-blue accent
+  earns a second of attention.
 - Muted maroon (~`#7A2A2A`) and warm orange (~`#D9803A`) — only as
-  small accent shapes inside an otherwise navy/blue composition (see
-  `loi-maturity-model`).
+  small accent shapes inside an otherwise navy/blue composition
+  (see `loi-maturity-model`).
 
-Foreground/background convention for hero compositions: **dark slab
-background (#0A0A0A → #0A0A14 → #2D1F5E gradient), single blue or
-copper accent for the focal element, low-opacity purple/magenta glow
-optional.** The article title sits on the surface above the hero, in
-white — the hero must read confidently against neighboring white text.
+### Default hero composition recipe
+
+A starter recipe that hits the contrast rule on the first attempt.
+Use this as the baseline; depart from it deliberately, not by
+accident.
+
+```
+Background gradient (radial, center 50%/55%, r 80–85%):
+  0%   #34325E      ← lifted center
+  52%  #23224A      ← mid stop
+  100% #161630      ← edge
+
+Primary shape fills (planes, geometric forms):
+  Highlight stop  #4D4890   (focal element only)
+  Mid stop        #3D3B72   (standard shapes)
+  Shadow stop     #26244E   (lower edge of gradient fills)
+
+Shape strokes:
+  Standard edge   #4060DC at 1.8–2px
+  Focal edge      #7B5BFF at 2.2–2.6px
+
+Fine accents (threads, dots, hairlines):
+  #A8C2FF at 1.4–1.8px, 80–90% opacity
+
+Glow halos (behind focal points):
+  #7B5BFF at 22–32% opacity, large soft radial
+  #FF4DCB at ≤ 20% opacity, optional secondary
+
+Side-panel 2.5D shadows:
+  #1A1838 at 70–85% opacity, 16–24px offset
+```
+
+The article title sits on the surface above the hero, in white —
+the hero must read confidently against neighboring white text.
 
 ## 4. Composition principles
 

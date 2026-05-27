@@ -1,0 +1,96 @@
+---
+title: "The UX That Legal IQ Requires"
+description: "Both generative and agentic AI surfaces require a new approach to how users interact with their systems — well beyond the conversational interface."
+summary: "Conversational AI matches the work in legal drafting and document Q&A. Legal operations require more: a richer user experience where generative and agentic AI patterns are embedded across multiple surfaces inside the system of record — not just a single chat pane."
+date: "2026-05-27"
+author: "Spaarke Team"
+tags:
+  organization: [corporate-legal]
+  function: [attorney, operations, it, executive]
+  topic: [ai-copilot, workflow, matter-management, reporting]
+  theme: [ai-strategy, iq-stack, platform, buyer-enablement]
+heroImage: "/articles/the-ux-that-legal-iq-requires/hero.svg"
+heroImagePosition: "center"
+draft: false
+keyTakeaways:
+  - Users now expect interactive, natural-language-directed engagement with enterprise information — and they expect the system to proactively surface what matters, not just respond when asked.
+  - First-generation generative AI made conversation the primary UX, and that was right for tasks like attorney drafting and document Q&A. Embedded enterprise AI needs more than that.
+  - Adding a conversational side pane to an existing application does not embed AI into the system, and does not meet the new UX expectations.
+  - AI outputs appear across many surfaces — summaries, analyses, classifications, tasks, notifications, dashboards. Generative AI (content) and agentic AI (action) each need their own user-experience treatment.
+  - Spaarke organizes Legal IQ around three coordinated surfaces — Assistant, Workspace, and Context — driven by the Spaarke Insights Engine and Actions Engine and built natively in your Microsoft tenant.
+featured: false
+---
+
+The legal-tech demos this season have a tell. The vendor opens an existing application — a matter list, an invoice-review screen, a contract repository — and shows a chat panel on the right side of the screen. "AI-native," the pitch goes. The change is cosmetic.
+
+The chat panel is the visible difference. The application underneath is unchanged. That is the gap. And the gap is not a UI problem — it is a UX problem.
+
+Users now expect to interact with enterprise systems differently. They expect to pivot a matter list with a sentence. They expect to drill from a spend dashboard to the firms behind it. They expect to interrogate a summary for its source documents. They expect to act on a notification without leaving it. And they expect the system to surface what matters before they ask. The expectation runs across every kind of output, and Legal IQ — AI inference embedded in a legal system of record — is where meeting it matters most.
+
+## The gap is UX, not UI
+
+Two terms get used as if they were the same thing. They are not.
+
+ User interface is the narrower surface: the visual design and the controls through which user experience is delivered. User experience is how the user and the system collaborate — the interaction patterns, the modalities, the feedback, the experience over time. The interface is what you can point to on the screen. The experience is what happens between the person and the software.
+
+Conversation is a legitimate part of the user experience. When natural-language input matches the task — drafting a clause, asking a question of a document, exploring a body of matters — it is the right interaction modality, and it should be there. The problem is that conversation has been treated as the whole user experience. When the entire AI capability of an application is reachable only through a chat panel, the workspaces underneath stay the same. That is a UX problem. Until it is recognized as one, every fix will land at the UI layer — a different panel, a different color, a different button — without changing the experience the user will benefit from.
+
+## Conversation was the right first move
+
+Conversation became the primary user experience for first-wave generative AI for good reasons. The LLM providers led with chat — that was the natural surface for what a language model does, and how generative AI first reached a wide audience. The first generation of legal AI followed suit. For attorney drafting, document question-and-answer, and exploratory research, natural-language input matches the work; the output is meant to be read, refined, or both; and a conversation thread is the easiest way to demonstrate what a language model can do. Drafting assistants, document Q&A tools, and discovery copilots launched as conversational interfaces. Many of them are useful and used. That pattern was right then, and it remains right for those use cases now.
+
+But AI capabilities and use cases have grown well beyond chat-friendly tasks. Summaries now live on records, suggestions at intake, anomaly flags on invoices, scheduled tasks across workflows, insights inside dashboards. None of those fit inside a conversation thread. So existing solution providers responded by retrofitting the chat experience onto their system-of-record applications — adding a chat panel beside an unchanged matter list, invoice screen, or contract repository.
+
+## Adding a conversational pane doesn't embed AI
+
+That retrofit is a UI change. It is not a UX change. The user still fills the same forms. The user still pages through the same queues. The user still hunts through the same tabs to find the records that ground whatever the AI just said. AI is adjacent to the work. It is not part of it.
+
+This matters because most of the AI value in an enterprise system of record does not live in a chat thread. AI now actively produces summaries, similar-matter suggestions, document classifications, invoice anomaly flags, drafted responses, routed tasks, scheduled calendar events, and dashboard insights — much of it without being asked. The conversational surface is one entry point into that capability; it is not the work. A partner reviewing an AI-summarized matter still has to verify the summary. An operations leader investigating a flagged invoice still has to see what fired the flag. A general counsel asking about exposure still has to act on each matter.
+
+That is what makes the "AI-native" label wrong when it stops at the chat panel. AI-native means the workspaces — not just the side panel — are AI-supported. The underlying interaction model has been redesigned around the fact that AI is part of how information gets surfaced, evaluated, and acted on. Adding a conversational surface without redesigning those workspaces is a graft, not an embedding. The operating model is the frame; the surface is one part of it.
+
+## What active engagement with information requires
+
+The deeper shift is not specific to AI. Users now expect to interact with the information enterprise software holds — not just read it. The expectation does not care whether the answer was calculated, retrieved, or inferred. It cares that the user can engage with it actively.
+
+But that is only half the shift. AI lets the system do the engaging too. An AI-supported system of record continuously assesses what is happening across matters, documents, invoices, deadlines, and counsel performance, and surfaces what the practitioner needs to see without being asked. The morning briefing is not a report the user runs; it is what the system already noticed. The anomaly flag on an invoice is its standing analysis. The similar-matter suggestion at intake is pattern recognition the situation called for. AI is not just available to answer when queried; it is on duty across the full range of operational concerns.
+
+This is the situation [Legal Operations Intelligence](/why-spaarke/what-is-legal-operations-intelligence) describes — the discipline behind what we call Legal IQ. The architecture is a system of record where AI produces a range of outputs alongside the facts; the user reads them, refines them, and acts on them, often on the same screen. Two kinds of AI matter for the user experience. **Generative AI** produces content — summaries, analyses, drafts, suggestions — often surfaced before the user thinks to ask. **Agentic AI** takes action — tasks routed, calendar events scheduled, invoices flagged, exceptions escalated — often without waiting for a prompt. Each requires a different interaction treatment. Neither is well-served by a chat panel alone.
+
+Six interaction patterns follow. Each is a UX requirement first; the UI consequences follow.
+
+**Active interaction over passive viewing.** From any view, the user can pivot, drill, filter, or ask a follow-up without leaving the surface. The user refines a matter list by sentence — "show only matters with budget overruns this quarter." The user interrogates an AI-generated summary for the documents that grounded it.
+
+**Multi-modal intent capture.** How the user expresses what they want depends on the task. Sometimes a form. Sometimes a structured query. Sometimes a natural-language sentence. Sometimes a selection inside a document. The system offers the right input for each task, rather than defaulting everything into a conversational surface.
+
+**Grounding and provenance for every system output.** From any insight the system surfaces, the user can step to what produced it — the records, the rules, the model output, the policy that authorized an action. A billing-report aggregation drills to the invoices behind it. An AI classification links to the documents that grounded it. An agentic action shows the policy that authorized it and the action history that led there.
+
+**Generative outputs render with their grounding visible.** Summaries, analyses, drafts, and suggestions render with citations, confidence cues, and source records in the primary visual layer — not in a separate panel. Where the model produces inferred content alongside stored fields, the user can tell at a glance which is which. This is the user-experience consequence of the property [Legal AI Is Not Deterministic — And That Matters](/why-spaarke/probabilistic-vs-deterministic) describes: AI outputs need to be acted on with their basis visible.
+
+**Agentic outputs render with their authority visible.** When the system takes action — routes a task, schedules a calendar event, flags an OCG concern, escalates an exception — the user sees what action was taken, under what policy, with what authority, and how to unwind it. A summary is read and refined; an action is reviewed and either confirmed, modified, or undone.
+
+**Cross-surface continuity.** Actions and context carry across surfaces. A matter pinned in one view stays present in the next. A search refined in one place is recognized in another. A conversation that started on the Assistant enriches the Workspace the user moves to. The system follows the user.
+
+These are not UI patterns for AI-native software. They are what active engagement looks like in practice. Most demos labeled "AI-native" implement none of them — because the underlying application was not redesigned. Only the chat panel was added.
+
+## The Spaarke shape: three surfaces
+
+This is what we are building Legal IQ around. Three coordinated surfaces, plus AI inside the work itself, plus continuity across all of them. Not one surface that does everything. Not three siloed ones either.
+
+**The Assistant surface.** The conversational AI — natural-language access, exploratory questions, drafting, intent capture. The inheritor of the first-generation pattern, kept where it actually works. In product, the Assistant is matter question-and-answer, find-similar, summarization, drafting, and the Copilot-native experiences inside Microsoft 365.
+
+**The Workspace surface.** Where the work happens. The record itself — its facts, its history, and the AI outputs the system has surfaced against it (summaries, similar-matter suggestions, OCG pattern flags, classifications, citations, suggested actions) — rendered on the same surface so the user engages with all of it in one place. In product, the Workspace is the matter record with its AI summary, intake with similar-matter suggestions, invoice review with OCG flags, daily briefings, and embedded Power BI dashboards.
+
+**The Context surface.** Provenance, evidence, and audit. When the Assistant or the Workspace surfaces an output — a flag, a suggestion, a summary, a completed action — the Context surface answers: what records grounded it, what policy applied, what the system was uncertain about, what action history led here. Context is what turns a surfaced insight or action into a defensible one.
+
+**Inline AI inside content.** Not a separate surface — the same AI capability available *inside* the work. Word in-place co-authoring with grounded Copilot. Selection-driven actions inside documents and analysis surfaces. The AI is part of the editing surface, not a tab to leave the work for.
+
+**Cross-surface integration.** The three surfaces share session, context, and intent. Asking the Assistant about a matter pins it in the Workspace. Selecting text in a document deepens what the Assistant knows. The Context surface reflects what either of the others has surfaced. This is what "AI-supported" means at the user-experience level — coordinated surfaces working as one.
+
+This is what [the Legal IQ stack](/why-spaarke/the-iq-stack) looks like at the surface. Data, Memory, and Inference are not three layers the user sees as layers — they are three things the user can reach through the surfaces they already work in.
+
+## The legal stakes
+
+The legal stakes are not optional. Privilege, audit, and compliance constraints make grounding and provenance non-negotiable for any system output — generative, agentic, or rule-driven. A legal system of record where conclusions and actions cannot be traced to their basis is a system that cannot be defended. The UX requirements are not a design preference. They fall out of the operating environment.
+
+[See it in the walkthrough.](/tour/full-walkthrough)
