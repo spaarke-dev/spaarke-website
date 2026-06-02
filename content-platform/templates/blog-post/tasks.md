@@ -66,6 +66,62 @@
 - [ ] GitHub Issue closed
 - [ ] Campaign file (if applicable) updated to reflect actual publish
 
+## 7. Syndicate to LinkedIn (gate: posted to each target)
+
+LinkedIn syndication uses **standalone-mode** workspaces. Each
+target (company / personal) is its own piece with its own slug, so
+each post has a single source of truth and the publish CLI can
+read commentary from a deterministic path.
+
+**Slug convention:** `<blog-slug>-syndication-<target>` where
+`<target>` is `company` or `personal`. Example for blog slug
+`my-article`:
+
+- `content-platform/articles/my-article-syndication-company/draft.md`
+- `content-platform/articles/my-article-syndication-personal/draft.md`
+
+**Per target:**
+
+- [ ] Create `content-platform/articles/<blog-slug>-syndication-<target>/draft.md`
+      - Frontmatter: `slug`, `type: linkedin-post`, `target`, `byline`,
+        `hashtags`, `format: article-syndication`, `mode: standalone`,
+        `syndication_target.blog`, `syndication_target.url`,
+        `hero_image`
+      - Body: the LinkedIn post text — verbatim, in the voice
+        appropriate to the target (organizational for company,
+        first-person for personal). LinkedIn auto-unfurls the
+        article URL in the body as a link card using the blog's
+        `og:image`.
+- [ ] Char count under 3000 (LinkedIn hard limit; warn at 2700)
+- [ ] Dry-run: `npx tsx scripts/linkedin-publish.ts --slug=<syndication-slug> --target=<target> --mode=standalone --dry-run`
+- [ ] Auth verified: `npm run linkedin:status` — token for the chosen
+      app (`member` for personal, `org` for company) is valid
+- [ ] Publish via the skill: `/publish-linkedin <syndication-slug> --target=<target>`
+      *(the skill auto-detects standalone mode from the draft.md
+      location and walks through preview + approval gates)*
+- [ ] Post URL recorded back to
+      `content-platform/published/linkedin-posts/<syndication-slug>.md`
+      *(the CLI writes this after a successful publish)*
+- [ ] `calendar.md` LinkedIn (personal) / (company) column updated
+      with the actual post URL *(the CLI appends a calendar row;
+      verify and link from the blog's calendar row too)*
+
+**Common gotchas**
+
+- The skill's spec mentions multi-target sections in a single
+  `published/linkedin-posts/<slug>.md` file. The CLI does **not**
+  implement that — it reads the file body verbatim. Per-target
+  standalone workspaces (this convention) are the only working
+  multi-target pattern.
+- For the company target, the LinkedIn org app must be OAuth'd
+  first: `npx tsx scripts/linkedin-auth.ts --app=org`. The personal
+  member app similarly: `--app=member`. One-time setup per app per
+  operator machine.
+- Image attachment defaults to *off* in standalone mode — the URL
+  in the body produces an OG link card from the article, which
+  uses the blog's `linkedin-1920x1080.png` automatically (via
+  `src/lib/seo.ts`'s SVG→PNG sibling resolution).
+
 ---
 
 ## Notes / decisions log
