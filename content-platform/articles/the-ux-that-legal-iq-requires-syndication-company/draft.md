@@ -6,6 +6,7 @@ byline: spaarke
 publish_date: TBD
 hashtags: [LegalOps, LegalTech]
 format: article-syndication
+mode: standalone
 syndication_target:
   blog: the-ux-that-legal-iq-requires
   url: https://www.spaarke.com/why-spaarke/the-ux-that-legal-iq-requires

@@ -67,19 +67,48 @@
 
 ## 6. Ship (gate: live + tracked)
 
-- [ ] `draft.mdx` moved to `content/blog/<YYYY-MM-DD>-the-ux-that-legal-iq-requires.mdx`
-- [ ] `draft: false` in frontmatter
-- [ ] `calendar.md` row updated to `published`
-- [ ] GitHub Project's *Pipeline status* moved to `Published`
-- [ ] GitHub Issue closed
-- [ ] Companion LinkedIn syndication workspace
-      (`the-ux-that-legal-iq-requires-syndication`) created and
-      scheduled ~1 week after blog publish
+- [x] `draft.mdx` copied to `content/blog/2026-05-27-the-ux-that-legal-iq-requires.mdx`
+- [x] `draft: false` in frontmatter
+- [x] `calendar.md` row updated to `published`
+- [x] GitHub Project's *Pipeline status* moved to `Published`
+- [x] GitHub Issue #66 closed
+- [x] CTA updated post-publish to point to spaarke.com (was walkthrough)
+
+## 7. Syndicate to LinkedIn (gate: posted to each target)
+
+LinkedIn syndication uses **standalone-mode** workspaces, one per
+target (canonical pattern documented in
+`content-platform/templates/blog-post/tasks.md` §7).
+
+**Slug convention:**
+- Company: `the-ux-that-legal-iq-requires-syndication-company`
+- Personal: `the-ux-that-legal-iq-requires-syndication-personal`
+
+**Workspaces created:**
+- [x] `articles/the-ux-that-legal-iq-requires-syndication-company/draft.md`
+- [x] `articles/the-ux-that-legal-iq-requires-syndication-personal/draft.md`
+
+**Per target:**
+
+Company (Spaarke Page):
+- [x] Draft.md written with org voice, char count 1,389 / 3,000
+- [ ] Dry-run successful — *blocked: org app not yet OAuth'd*
+- [ ] One-time auth: `npx tsx scripts/linkedin-auth.ts --app=org`
+- [ ] Publish: `/publish-linkedin the-ux-that-legal-iq-requires-syndication-company --target=company`
+- [ ] Post URL recorded in `published/linkedin-posts/the-ux-that-legal-iq-requires-syndication-company.md`
+- [ ] `calendar.md` LinkedIn (company) column updated with post URL
+
+Personal (Ralph Schroeder):
+- [x] Draft.md written with first-person voice, char count 1,349 / 3,000
+- [x] Dry-run successful — author URN resolved, full request body valid
+- [ ] Publish: `/publish-linkedin the-ux-that-legal-iq-requires-syndication-personal --target=personal`
+- [ ] Post URL recorded in `published/linkedin-posts/the-ux-that-legal-iq-requires-syndication-personal.md`
+- [ ] `calendar.md` LinkedIn (personal) column updated with post URL
 
 ---
 
 ## Notes / decisions log
 
-<Use this section to capture decisions made during the writing
-process — what got cut, why, what was added. Useful for future
-similar pieces.>
+- **2026-05-27**: Published the blog at `/why-spaarke/the-ux-that-legal-iq-requires`.
+- **2026-06-02**: CTA updated from walkthrough link to spaarke.com homepage. Feature Walkthrough for Assistant/Workspace/Context planned separately.
+- **2026-06-02**: LinkedIn syndication refactored to two-workspace standalone-mode pattern after discovering the publish CLI doesn't implement multi-target sections within a single `published/linkedin-posts/<slug>.md` file. New convention documented in `templates/blog-post/tasks.md` §7 for future pieces.
