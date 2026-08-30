@@ -30,6 +30,18 @@ const nextConfig: NextConfig = {
         destination: "/why-spaarke/:slug*",
         permanent: true,
       },
+      // Print-campaign QR landing slots. Each /go/<code> is printed on
+      // physical media, so the path must never 404. Until a real landing
+      // page exists at the route, it temporarily redirects to the
+      // homepage. permanent: false is required — a cached 308 would keep
+      // sending visitors to the interim destination after the real page
+      // ships. To launch a page: delete its entry here and add the page
+      // at src/app/go/<code>/.
+      {
+        source: "/go/more-info-1",
+        destination: "/",
+        permanent: false,
+      },
     ];
   },
 };
