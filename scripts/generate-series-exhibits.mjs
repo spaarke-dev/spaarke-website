@@ -121,16 +121,22 @@ const out = {};
         path(`M 516 ${doorY + 32} C 620 ${doorY + 32}, 640 ${y + bh / 2}, ${bx - 8} ${y + bh / 2}`)
       ),
       box(250, 470, 400, 96, ["Data returned from every channel", "demand, cost, turnaround, outcome"], { size: 18 }),
-      // One return path, run below the channel stack so it crosses nothing.
-      path(`M 1160 ${ys[4] + bh} C 1200 612, 1200 640, 450 640 L 450 574`, false, true),
-      label(700, 690, "Every channel returns data to the function that routed the work.", { anchor: "middle", size: 15, italic: true }),
+      // A collector down the right of the stack, with a stub from each channel,
+      // so the return reads as coming from all five and not from the last one.
+      ...ys.map(
+        (y) =>
+          `    <line x1="${bx + bw}" y1="${y + bh / 2}" x2="1192" y2="${y + bh / 2}" stroke="${C.thread}" stroke-width="1.5" opacity="0.75" stroke-dasharray="7 6"/>`
+      ),
+      `    <line x1="1192" y1="${ys[0] + bh / 2}" x2="1192" y2="${ys[4] + bh / 2}" stroke="${C.thread}" stroke-width="1.7" opacity="0.8" stroke-dasharray="7 6"/>`,
+      path(`M 1192 ${ys[4] + bh / 2} L 1192 640 L 450 640 L 450 574`, false, true),
+      label(700, 688, "Every channel returns data to the function that routed the work.", { anchor: "middle", size: 15, italic: true }),
     ].join("\n"),
   });
 }
 
 /* ============================================ article 1, exhibit 2 */
 {
-  const w = 1240, h = 520;
+  const w = 1240, h = 450;
   const mid = 620, line = 250;
   const pro = [["Spend trend"], ["Capacity gap"], ["Recurring risk"]];
   const re = [["Subpoena"], ["Budget overrun"], ["Sudden departure"]];
@@ -143,11 +149,11 @@ const out = {};
       `    <text x="${w / 2}" y="70" text-anchor="middle" font-size="21" fill="${C.text}" font-weight="600">and both depend on information the department already holds.</text>`,
       `    <line x1="70" y1="${line}" x2="1170" y2="${line}" stroke="${C.thread}" stroke-width="2" opacity="0.55"/>`,
       `    <polygon points="${mid},${line - 30} ${mid + 26},${line} ${mid},${line + 30} ${mid - 26},${line}" fill="${C.hot}"/>`,
-      label(mid, line - 48, "The event", { anchor: "middle", fill: C.text, weight: 600, size: 19 }),
-      label(190, 128, "Proactive readiness", { anchor: "middle", fill: C.text, weight: 600, size: 19 }),
-      label(190, 152, "seen before it happens", { anchor: "middle", size: 16 }),
-      label(1050, 128, "Reactive readiness", { anchor: "middle", fill: C.text, weight: 600, size: 19 }),
-      label(1050, 152, "answered after it happens", { anchor: "middle", size: 16 }),
+      // One label row: each word centred over what it names, the event over the
+      // diamond and the two states over their own boxes.
+      label(324, 128, "Proactive", { anchor: "middle", fill: C.text, weight: 600, size: 20 }),
+      label(mid, 128, "The event", { anchor: "middle", fill: C.text, weight: 600, size: 20 }),
+      label(944, 128, "Reactive", { anchor: "middle", fill: C.text, weight: 600, size: 20 }),
       ...pro.map((t, i) => box(80 + i * 168, line - 96, 152, 56, t, { size: 17 })),
       ...re.map((t, i) => box(700 + i * 168, line - 96, 152, 56, t, { size: 17 })),
       ...pro.map((_, i) => `    <line x1="${156 + i * 168}" y1="${line - 40}" x2="${156 + i * 168}" y2="${line - 10}" stroke="${C.thread}" stroke-width="1.6" opacity="0.8"/>`),
@@ -158,7 +164,6 @@ const out = {};
       `    <rect x="700" y="${line + 62}" width="464" height="86" rx="9" fill="${C.box}" stroke="${C.boxEdge}" stroke-width="1.8"/>`,
       label(932, line + 96, "The department answers from what it holds", { anchor: "middle", fill: C.text, weight: 500, size: 18 }),
       label(932, line + 124, "records that exist in usable form, or do not", { anchor: "middle", size: 16 }),
-      label(620, 476, "Administration keeps the department running. Management also keeps it ready.", { anchor: "middle", size: 15, italic: true }),
     ].join("\n"),
   });
 }

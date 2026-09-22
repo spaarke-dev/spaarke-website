@@ -42,6 +42,12 @@
     <rect x="250" y="470" width="400" height="96" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
     <text x="450" y="512" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Data returned from every channel</text>
     <text x="450" y="536" text-anchor="middle" font-size="16" fill="#A8B4D8" font-weight="400">demand, cost, turnaround, outcome</text>
-    <path d="M 1160 500 C 1200 612, 1200 640, 450 640 L 450 574" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
-    <text x="700" y="690" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400" font-style="italic">Every channel returns data to the function that routed the work.</text>
+    <line x1="1160" y1="148" x2="1192" y2="148" stroke="#A8C2FF" stroke-width="1.5" opacity="0.75" stroke-dasharray="7 6"/>
+    <line x1="1160" y1="228" x2="1192" y2="228" stroke="#A8C2FF" stroke-width="1.5" opacity="0.75" stroke-dasharray="7 6"/>
+    <line x1="1160" y1="308" x2="1192" y2="308" stroke="#A8C2FF" stroke-width="1.5" opacity="0.75" stroke-dasharray="7 6"/>
+    <line x1="1160" y1="388" x2="1192" y2="388" stroke="#A8C2FF" stroke-width="1.5" opacity="0.75" stroke-dasharray="7 6"/>
+    <line x1="1160" y1="468" x2="1192" y2="468" stroke="#A8C2FF" stroke-width="1.5" opacity="0.75" stroke-dasharray="7 6"/>
+    <line x1="1192" y1="148" x2="1192" y2="468" stroke="#A8C2FF" stroke-width="1.7" opacity="0.8" stroke-dasharray="7 6"/>
+    <path d="M 1192 468 L 1192 640 L 450 640 L 450 574" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+    <text x="700" y="688" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400" font-style="italic">Every channel returns data to the function that routed the work.</text>
 </svg>
