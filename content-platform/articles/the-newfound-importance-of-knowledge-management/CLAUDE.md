@@ -91,7 +91,63 @@ full done-when checklist per gate.
 6. **Ship**: move to `content/blog/`, and update the calendar, the
    Project, and the Issue.
 
-## 6. What you don't do here
+## 6. Model and guardrails
+
+The writer set this on 2026-09-22. The gates below name the model to
+run each step at, and the guardrails that make the choice safe.
+
+### Which model runs which gate
+
+- **Draft, revise, and the voice sweeps: Opus 5.** The register this
+  piece is written in is demanding, and a smaller model reproduces the
+  constructions that `../../voice/examples/ai-tells.md` exists to
+  remove, which is the failure the readers reported in September 2026.
+  Opus is the default for every step that produces or judges prose.
+- **Review: Opus 5, in three passes, each reading for one thing.** A
+  single reviewer reading for everything misses more than three
+  reviewers reading for one thing each. The three lenses are voice
+  (section 5 of the style guide and `ai-tells.md`), fidelity (does the
+  draft do what `brief.md` and `plan.md` say, section by section), and
+  evidence (every figure, quotation, date, and attribution against the
+  brief's evidence tables).
+- **Mechanical steps: Sonnet is enough.** Checking off gates in
+  `tasks.md`, moving the GitHub Project status, adding the calendar row,
+  generating the hero SVG from the exhibit specification the plan
+  already carries, and running the LinkedIn header script. None of
+  these produces prose that a reader sees.
+- **Do not draft below Opus.** A cheaper draft costs more in the
+  revise gate than it saves, because the patterns it produces have to
+  be found and removed one sentence at a time.
+
+### The guardrails that make the choice safe
+
+These run at every gate, whatever the model:
+
+1. **The lint, before any gate is marked done.** From the repository
+   root: `npm run voice:lint -- content-platform/articles/the-newfound-importance-of-knowledge-management/draft.mdx`.
+   0 errors is the gate. Every warning is read, and one that is
+   accepted has its reason recorded in the decisions log at the foot
+   of `tasks.md`.
+2. **The three sweeps at the polish gate**, against `ai-tells.md`
+   (its section 8 checklist), the style guide section 5, and
+   `../../voice/examples/avoid-this.md`. Each covers the title, the
+   headings, the alt text, and the `description`, `summary`, and
+   `keyTakeaways` fields as well as the body.
+3. **Date discipline, checked against the display date in
+   `brief.md`.** The piece cites nothing dated on or after that date,
+   and the held-out list in the brief's "Must NOT include" is the
+   checklist. In-body links go only to series pieces with earlier
+   display dates.
+4. **Evidence fidelity.** Every figure and quotation comes from the
+   brief's evidence tables with the status recorded there. A figure
+   the brief does not carry does not enter the draft. A quotation
+   marked confirmed is reproduced exactly; one that is not confirmed
+   is paraphrased or left out. Nothing is invented, and an unverified
+   claim carries `**TBD — confirm**`.
+5. **No publishing without a human.** The ship gate is the writer's,
+   and no agent moves a draft into `content/blog/`.
+
+## 7. What you don't do here
 
 - Do not auto-publish. Final publish is human-driven.
 - Do not fabricate stats, sources, or quotes. Mark unverified claims

@@ -9,12 +9,14 @@
 
 ## 1. Outline (gate: human sign-off)
 
-- [ ] Plan.md filled in: format and length, spine, sections (H2 +
+- [x] Plan.md filled in: format and length, spine, sections (H2 +
       claim + evidence), opening + close
-- [ ] Every H2 heading in the plan states the point of its section
-- [ ] All "Sources to verify" have a candidate source (or are flagged TBD)
-- [ ] Hero direction sketched
-- [ ] **Reviewer signed off on the outline before draft starts**
+- [x] Every H2 heading in the plan states the point of its section
+- [x] All "Sources to verify" have a candidate source (or are flagged TBD)
+- [x] Hero direction sketched
+- [x] **Reviewer signed off on the outline before draft starts** (the
+      writer approved `brief.md` on 2026-09-22 and directed the series
+      to the next step; see the decisions log)
 
 > Do not begin §2 until the human has reviewed the plan. The outline
 > review catches structural problems that cost hours to fix in a
@@ -189,3 +191,19 @@ campaign retro and for future similar pieces.>
   URL comes from the research digest, where the finding is confirmed,
   and is listed so that the draft can cite the page whose wording it
   uses.
+
+### 2026-09-22: the brief and outline gates
+
+The writer approved all five `brief.md` files on 2026-09-22, after two
+rounds of feedback, and directed that the series move to the next step.
+The outline gate is recorded as passed on that basis: `plan.md` was
+generated from the brief by `content-pipeline` and realigned to the
+approved brief in the same session, so the plan carries no structural
+decision that the writer has not seen in the brief. The four mechanical
+items above were checked against the file. The writer did not review
+`plan.md` as a separate document, and anything in the plan that goes
+beyond the brief is listed under "Open questions before drafting" at
+the foot of it.
+
+Model and guardrails for the gates that follow are in section 6 of this
+piece's `CLAUDE.md` (writer's direction, 2026-09-22).
