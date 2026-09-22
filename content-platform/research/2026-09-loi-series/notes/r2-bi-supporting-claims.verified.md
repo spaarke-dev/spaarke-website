@@ -1,6 +1,6 @@
 # r2-bi-supporting-claims: verification notes
 
-Checked 2026-09-21. Method: fetched each cited URL (WebFetch, or curl with a browser UA where WebFetch was blocked), followed to primaries where the citation was secondary or gated. Downloaded files sit in this folder (legalops.html, complete-ref.webp/.png, pyramid.png, sb-schedule.json, acc-mm.pdf/.txt, harbor.html, core12*.html, rllb-*.html, elevate.html, lw-forces.html, smbtech.html, gcp-legal.html, everlaw.html, brightflag.html, snowflake.html, lexpert.html, ossie-spec.md).
+Checked 2026-09-21. Method: fetched each cited URL (WebFetch, or curl with a browser UA where WebFetch was blocked), followed to primaries where the citation was secondary or gated. Downloaded files sit in the private research archive, C:code_filesspaarke-research6-09-loi-seriessource-captures-r2 (legalops.html, complete-ref.webp/.png, pyramid.png, sb-schedule.json, acc-mm.pdf/.txt, harbor.html, core12*.html, rllb-*.html, elevate.html, lw-forces.html, smbtech.html, gcp-legal.html, everlaw.html, brightflag.html, snowflake.html, lexpert.html, ossie-spec.md).
 
 Verdict key: confirmed = seen at the source; corrected = a detail differs; unverified = could not see it.
 
