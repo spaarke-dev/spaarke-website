@@ -14,7 +14,7 @@ triggered_by: Ontology-centric platform strategy synopsis v2.0 (Ralph / Claude w
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
 title: "The Legal Operations Intelligence Ontology"
-description: "The ontology is the foundation of legal operations intelligence: the comprehensive context across every system a department uses, meaning the entities it works on, their relationships, the actions it may take on them, and the rules that govern those actions."
+description: "The foundation of legal operations intelligence is an ontology, the model of the entities a department works on and the actions it may take on them."
 summary: "Every legal department has a matter table, a document repository, and an invoice feed, and each holds one dimension of the work, bounded by its own data model. An ontology holds the context across all of them: the relationships among those records, the actions the department may take, and the record of what it decided to do. That context is what turns a record into an insight, and it is why the ontology is the foundation of legal operations intelligence."
 date: 2026-07-21                    # display date
 posted: "**TBD — confirm**"         # the real publish date: push week 3 Tuesday of the campaign's distribution sequence, entered when the push start date is set (writer, 2026-09-22)

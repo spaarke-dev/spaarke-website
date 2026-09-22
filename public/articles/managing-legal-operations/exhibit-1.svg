@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 720" role="img" aria-labelledby="ex-title ex-desc" font-family="system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+  <title id="ex-title">Where legal work gets done</title>
+  <desc id="ex-desc">A request enters through the legal front door and is routed to one of five channels: business self-service inside guardrails, an automated or AI-assisted workflow, an in-house lawyer, outside counsel, or an alternative provider. Legal operations holds the routing rules and the risk thresholds, and the data returned from every channel comes back to it.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#A8C2FF"/>
+    </marker>
+    <marker id="arrowHot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4C63FF"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="1238" height="718" rx="14" fill="#13132B" stroke="#2A2A52" stroke-width="2"/>
+    <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">Legal operations owns the routing rules, the risk thresholds,</text>
+    <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">and the data that returns from every channel.</text>
+    <rect x="214" y="110" width="472" height="510" rx="12" fill="none" stroke="#7B5BFF" stroke-width="1.8" stroke-dasharray="8 7"/>
+    <text x="450" y="146" text-anchor="middle" font-size="19" fill="#E8ECFF" font-weight="600">Legal operations</text>
+    <text x="450" y="170" text-anchor="middle" font-size="16" fill="#A8B4D8" font-weight="400">routing rules and risk thresholds</text>
+    <rect x="52" y="252" width="136" height="64" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="120" y="290" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Request</text>
+    <line x1="192" y1="284" x2="242" y2="284" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <rect x="250" y="236" width="260" height="96" rx="9" fill="#3A3576" stroke="#7B5BFF" stroke-width="2.4"/>
+    <text x="380" y="277.8333333333333" text-anchor="middle" font-size="19" fill="#E8ECFF" font-weight="500">Legal front door</text>
+    <text x="380" y="302.8333333333333" text-anchor="middle" font-size="17" fill="#A8B4D8" font-weight="400">intake and triage</text>
+    <rect x="760" y="116" width="400" height="64" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="960" y="142" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Business self-service</text>
+    <text x="960" y="166" text-anchor="middle" font-size="16" fill="#A8B4D8" font-weight="400">inside guardrails</text>
+    <rect x="760" y="196" width="400" height="64" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="960" y="222" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Automated or AI-assisted</text>
+    <text x="960" y="246" text-anchor="middle" font-size="16" fill="#A8B4D8" font-weight="400">workflow</text>
+    <rect x="760" y="276" width="400" height="64" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="960" y="314" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">In-house lawyer</text>
+    <rect x="760" y="356" width="400" height="64" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="960" y="394" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Outside counsel</text>
+    <rect x="760" y="436" width="400" height="64" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="960" y="474" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Alternative provider</text>
+    <path d="M 516 284 C 620 284, 640 148, 752 148" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <path d="M 516 284 C 620 284, 640 228, 752 228" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <path d="M 516 284 C 620 284, 640 308, 752 308" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <path d="M 516 284 C 620 284, 640 388, 752 388" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <path d="M 516 284 C 620 284, 640 468, 752 468" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <rect x="250" y="470" width="400" height="96" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="450" y="512" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Data returned from every channel</text>
+    <text x="450" y="536" text-anchor="middle" font-size="16" fill="#A8B4D8" font-weight="400">demand, cost, turnaround, outcome</text>
+    <path d="M 1160 500 C 1200 612, 1200 640, 450 640 L 450 574" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+    <text x="700" y="690" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400" font-style="italic">Every channel returns data to the function that routed the work.</text>
+</svg>

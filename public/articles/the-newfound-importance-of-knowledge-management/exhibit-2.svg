@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 640" role="img" aria-labelledby="ex-title ex-desc" font-family="system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+  <title id="ex-title">The curation loop</title>
+  <desc id="ex-desc">Nine sources of knowledge feed curation, curation feeds the four uses that make a model specific to a department, those uses produce AI output, an expert corrects the output, and the correction returns to the sources so the corpus improves with use.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#A8C2FF"/>
+    </marker>
+    <marker id="arrowHot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4C63FF"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="1238" height="638" rx="14" fill="#13132B" stroke="#2A2A52" stroke-width="2"/>
+    <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">Expert corrections of AI output return to the sources of knowledge,</text>
+    <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">so the corpus improves with use.</text>
+    <rect x="56" y="204" width="236" height="140" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="174" y="245.16666666666666" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">Sources of knowledge</text>
+    <text x="174" y="268.16666666666663" text-anchor="middle" font-size="13.5" fill="#A8B4D8" font-weight="400">precedents, playbooks, matter</text>
+    <text x="174" y="291.16666666666663" text-anchor="middle" font-size="14" fill="#A8B4D8" font-weight="400">history, email, transcripts,</text>
+    <text x="174" y="314.16666666666663" text-anchor="middle" font-size="13" fill="#A8B4D8" font-weight="400">negotiation and billing records</text>
+    <rect x="352" y="204" width="236" height="140" rx="9" fill="#3A3576" stroke="#7B5BFF" stroke-width="2.4"/>
+    <text x="470" y="256.6666666666667" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">Curation</text>
+    <text x="470" y="279.6666666666667" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400">owner, standards, review,</text>
+    <text x="470" y="302.6666666666667" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400">retirement, permissions</text>
+    <line x1="296" y1="274" x2="344" y2="274" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <rect x="648" y="204" width="236" height="140" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="766" y="256.6666666666667" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">Four uses</text>
+    <text x="766" y="279.6666666666667" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400">ground, instruct,</text>
+    <text x="766" y="302.6666666666667" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400">exemplify, evaluate</text>
+    <line x1="592" y1="274" x2="640" y2="274" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <rect x="944" y="204" width="240" height="140" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="1064" y="256.6666666666667" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">AI output</text>
+    <text x="1064" y="279.6666666666667" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400">an answer the department</text>
+    <text x="1064" y="302.6666666666667" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400">can defend, or cannot</text>
+    <line x1="888" y1="274" x2="936" y2="274" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <rect x="648" y="424" width="236" height="86" rx="9" fill="#3A3576" stroke="#7B5BFF" stroke-width="2.4"/>
+    <text x="766" y="461.1666666666667" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">Expert correction</text>
+    <text x="766" y="484.1666666666667" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400">the most direct signal</text>
+    <path d="M 1064 348 C 1064 424, 940 467, 890 467" fill="none" stroke="#4C63FF" stroke-width="2.4" opacity="0.9" marker-end="url(#arrowHot)"/>
+    <path d="M 644 467 C 420 467, 174 440, 174 352" fill="none" stroke="#4C63FF" stroke-width="2.4" opacity="0.9" stroke-dasharray="7 6" marker-end="url(#arrowHot)"/>
+    <text x="408" y="512" text-anchor="middle" font-size="15" fill="#4C63FF" font-weight="400">the correction returns to the sources</text>
+    <text x="620" y="588" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400" font-style="italic">A repository holds what was filed. A corpus fit for grounding has an owner, a status, and a way to test what it produces.</text>
+</svg>
