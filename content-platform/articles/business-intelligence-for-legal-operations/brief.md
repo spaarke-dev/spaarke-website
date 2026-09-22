@@ -28,11 +28,11 @@ heroImage: "/articles/business-intelligence-for-legal-operations/hero.svg"
 heroImagePosition: "center"
 draft: true
 keyTakeaways:
-  - Business intelligence is established in spend analytics: 62% of departments routinely report spend by law firm, while service, cycle time, and outcome measures are reported by fewer than one in five (Thomson Reuters, 2025).
-  - Business intelligence is the deterministic dimension of legal operations intelligence and a capability co-equal with AI within the platform. Legal decision making and legal operations require exact outputs that a probabilistic system cannot supply, so a measure is defined once, governed, computed the same way for every reader, and traceable to the records behind it.
-  - The audience for legal department information now includes the CEO and the board, finance and procurement, IT as co-funder of legal technology, and the business units that submit requests.
-  - Measures now feed automated processes as well as people. When a measure triggers an action, its definition and its currency matter more than when it fills a chart.
-  - Business intelligence measures are defined over the same entities the ontology models, so a matter, a request, and an outcome mean the same thing in a report, a workflow, and an AI answer.
+  - "Business intelligence is established in spend analytics: 62% of departments routinely report spend by law firm, while service, cycle time, and outcome measures are reported by fewer than one in five (Thomson Reuters, 2025)."
+  - "Business intelligence is the deterministic dimension of legal operations intelligence and a capability co-equal with AI within the platform. Legal decision making and legal operations require exact outputs that a probabilistic system cannot supply, so a measure is defined once, governed, computed the same way for every reader, and traceable to the records behind it."
+  - "The audience for legal department information now includes the CEO and the board, finance and procurement, IT as co-funder of legal technology, and the business units that submit requests."
+  - "Measures now feed automated processes as well as people. When a measure triggers an action, its definition and its currency matter more than when it fills a chart."
+  - "Business intelligence measures are defined over the same entities the ontology models, so a matter, a request, and an outcome mean the same thing in a report, a workflow, and an AI answer."
 ---
 
 # Topic

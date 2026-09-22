@@ -28,12 +28,12 @@ heroImage: "/articles/the-newfound-importance-of-knowledge-management/hero.svg"
 heroImagePosition: "center"
 draft: true
 keyTakeaways:
-  - Four in five legal operations teams already count knowledge management among their responsibilities. AI changes what that responsibility requires, and the function that runs the systems where new knowledge is created is its natural curator.
-  - A model becomes specific to a department through four mechanisms (grounding, instruction, example, and evaluation), and each one consumes a knowledge asset that someone in the department has to maintain.
-  - Legal research tools built on retrieval over curated content still hallucinated 17% to 33% of the time in the Stanford RegLab study, so corpus quality and an evaluation set are management responsibilities.
-  - Knowledge now includes email, transcripts, negotiation history, billing narratives, intake answers, and expert corrections of AI output, and material that grounds an AI answer needs a known author, date, status, and permissions.
-  - The practical work is capture and codification. An obligation from a contract, a position taken in a negotiation, or a lawyer's correction of an AI draft is recorded with an owner, a date, a status, and permissions, and bound to the matter, party, or obligation it concerns, so the ontology carries it to every measure, workflow, or agent that reaches that entity.
-  - Curation includes deciding what AI must not see. Privilege, ethical walls, retention, and stale content each become a rule about what enters the corpus, who may retrieve it, and when it is retired.
+  - "Four in five legal operations teams already count knowledge management among their responsibilities. AI changes what that responsibility requires, and the function that runs the systems where new knowledge is created is its natural curator."
+  - "A model becomes specific to a department through four mechanisms (grounding, instruction, example, and evaluation), and each one consumes a knowledge asset that someone in the department has to maintain."
+  - "Legal research tools built on retrieval over curated content still hallucinated 17% to 33% of the time in the Stanford RegLab study, so corpus quality and an evaluation set are management responsibilities."
+  - "Knowledge now includes email, transcripts, negotiation history, billing narratives, intake answers, and expert corrections of AI output, and material that grounds an AI answer needs a known author, date, status, and permissions."
+  - "The practical work is capture and codification. An obligation from a contract, a position taken in a negotiation, or a lawyer's correction of an AI draft is recorded with an owner, a date, a status, and permissions, and bound to the matter, party, or obligation it concerns, so the ontology carries it to every measure, workflow, or agent that reaches that entity."
+  - "Curation includes deciding what AI must not see. Privilege, ethical walls, retention, and stale content each become a rule about what enters the corpus, who may retrieve it, and when it is retired."
 ---
 
 # Topic

@@ -28,12 +28,12 @@ heroImage: "/articles/legal-operations-ontology/hero.svg"
 heroImagePosition: "center"
 draft: true
 keyTakeaways:
-  - An ontology adds relationships, permitted actions, inquiries, typed outputs, and governing rules to the tables a department already has. Most departments have a matter table; few hold the relationships, such as the invoice line bound to the budget.
-  - A system of record sees one dimension of the department's work, bounded by its own data model, and it returns raw data without the context that makes data insight. The ontology holds the context across every system, and that is why it is the foundation of legal operations intelligence and why no single system of record can be.
-  - Business intelligence reports what happened and does that job well. An ontology also records what the department decided to do about it, who acted, and under which policy, and business intelligence reads that record too.
-  - AI lowers the cost of building the model, and agents raise the value of having one. An agent that reads governed entities has less room to invent them, and all agents share one vocabulary.
-  - An AI model can be replaced through configuration, and the ontology belongs to the department. Solutions built on it inherit its definitions and permissions, which requires the systems beneath to expose documented, permission-aware interfaces.
-  - Rules dominate a legal ontology: privilege travels with the entity, counterparty paper is an adversarial source, and ethical walls partition the graph. Generic enterprise models carry none of these rules.
+  - "An ontology adds relationships, permitted actions, inquiries, typed outputs, and governing rules to the tables a department already has. Most departments have a matter table; few hold the relationships, such as the invoice line bound to the budget."
+  - "A system of record sees one dimension of the department's work, bounded by its own data model, and it returns raw data without the context that makes data insight. The ontology holds the context across every system, and that is why it is the foundation of legal operations intelligence and why no single system of record can be."
+  - "Business intelligence reports what happened and does that job well. An ontology also records what the department decided to do about it, who acted, and under which policy, and business intelligence reads that record too."
+  - "AI lowers the cost of building the model, and agents raise the value of having one. An agent that reads governed entities has less room to invent them, and all agents share one vocabulary."
+  - "An AI model can be replaced through configuration, and the ontology belongs to the department. Solutions built on it inherit its definitions and permissions, which requires the systems beneath to expose documented, permission-aware interfaces."
+  - "Rules dominate a legal ontology: privilege travels with the entity, counterparty paper is an adversarial source, and ethical walls partition the graph. Generic enterprise models carry none of these rules."
 ---
 
 # Topic

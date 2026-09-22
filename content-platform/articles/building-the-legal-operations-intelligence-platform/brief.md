@@ -28,12 +28,12 @@ heroImage: "/articles/building-the-legal-operations-intelligence-platform/hero.s
 heroImagePosition: "center"
 draft: true
 keyTakeaways:
-  - A legal operations intelligence platform is the department's capability, across process, people, and technology, to consolidate information and bring each decision to the person who has the authority to make it.
-  - What sets the platform apart is that it combines data and information with context, in two ways: by integrating information from every system the department runs and by augmenting it with the organization's own knowledge. A single system of record cannot supply that context, because its data model bounds what it can hold.
-  - The build starts from legal's role in the company and from the decisions the business needs from it, and process and ownership are defined before the technology that carries them out, because software can enforce an approval rule only after someone has decided who approves what.
-  - The practical test is whether the loop from insight to action to recorded outcome closes inside one governed environment and leaves a record of each decision linked to the information behind it.
-  - AI is added last and works through the same governed actions and permissions as people; the entity model, the actions, and the decision record carry over when the department changes its AI model.
-  - The foundation of the platform is an ontology, a model of the department's entities and of the actions it may take on them, built from a deep understanding of its processes and its people. It gives multidimensional insight across the systems of record and provides the actions, inquiries, policies, typed outputs, and governance the platform runs on.
+  - "A legal operations intelligence platform is the department's capability, across process, people, and technology, to consolidate information and bring each decision to the person who has the authority to make it."
+  - "What sets the platform apart is that it combines data and information with context, in two ways: by integrating information from every system the department runs and by augmenting it with the organization's own knowledge. A single system of record cannot supply that context, because its data model bounds what it can hold."
+  - "The build starts from legal's role in the company and from the decisions the business needs from it, and process and ownership are defined before the technology that carries them out, because software can enforce an approval rule only after someone has decided who approves what."
+  - "The practical test is whether the loop from insight to action to recorded outcome closes inside one governed environment and leaves a record of each decision linked to the information behind it."
+  - "AI is added last and works through the same governed actions and permissions as people; the entity model, the actions, and the decision record carry over when the department changes its AI model."
+  - "The foundation of the platform is an ontology, a model of the department's entities and of the actions it may take on them, built from a deep understanding of its processes and its people. It gives multidimensional insight across the systems of record and provides the actions, inquiries, policies, typed outputs, and governance the platform runs on."
 ---
 
 # Topic
