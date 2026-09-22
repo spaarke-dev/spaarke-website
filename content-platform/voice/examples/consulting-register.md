@@ -197,9 +197,9 @@ The five passages were written for this file, in Spaarke's subject area, at the 
 >
 > The frameworks describe what the function does. They say much less about how the function decides, and that gap has become expensive. Suppose a CFO asks whether $4.2 million was a reasonable amount to spend on employment litigation last year. The answer depends on matter data, invoice data, and outcome data. In most departments those records sit in three systems that were never designed to be read together.
 >
-> We argue that managing legal operations now means managing that shared data as a single asset. Doing so requires three decisions. Someone must own the matter taxonomy, one system must hold the record of each matter, and outcomes must be recorded when a matter closes.
+> Managing legal operations now means managing that shared data as a single asset. Doing so requires three decisions. Someone must own the matter taxonomy, one system must hold the record of each matter, and outcomes must be recorded when a matter closes.
 
-What it does: the first paragraph gives a situation that the reader accepts, the second introduces the complication through a concrete case, and the third states the answer and previews a counted framework. The thesis arrives at about word 140, inside the limit for a short post and well inside the limit for a long-form article. Sentences average about 17 words, and the short ones are short because they carry a point. The three decisions should reappear as headings, and the dollar figure is illustrative.
+What it does: the first paragraph gives a situation that the reader accepts, the second introduces the complication through a concrete case, and the third states the answer and previews a counted framework. The thesis is a direct declarative sentence. A framing phrase such as "we argue that" is reserved for a position the reader might reasonably contest (6.2 shows one); an observation about where the field is moving is stated as the observation it is (writer decision, 2026-09-22). The thesis arrives at about word 140, inside the limit for a short post and well inside the limit for a long-form article. Sentences average about 17 words, and the short ones are short because they carry a point. The three decisions should reappear as headings, and the dollar figure is illustrative.
 
 ### 6.2 Opening: a tension between two numbers
 
@@ -207,7 +207,7 @@ What it does: the first paragraph gives a situation that the reader accepts, the
 >
 > Our position is that knowledge management has become the limiting factor in legal AI. Many departments allowed the discipline to lapse after earlier document-management projects disappointed, and they are now paying for that decision. The sections that follow explain why retrieval depends on curation and describe a workable knowledge program for a department of 20 to 60 professionals. They close with two investments that should come before any further AI licensing.
 
-What it does: the first sentence attributes two figures to a named instrument with its sample and year and reports them as what respondents said. The gap between the figures is the complication, and the second paragraph commits to a position with "Our position is that". The roadmap lists three real parts of the article across two sentences. Sentences average about 20 words. The figures are illustrative.
+What it does: the first sentence attributes two figures to a named instrument with its sample and year and reports them as what respondents said. The gap between the figures is the complication, and the second paragraph commits to a position with "Our position is that", which is warranted here because a reader could reasonably hold that model quality, and not knowledge management, is the limiting factor. Where the thesis is an observation about a change already under way, the phrase is dropped and the sentence states the observation directly, as 6.1 does. The roadmap lists three real parts of the article across two sentences. Sentences average about 20 words. The figures are illustrative.
 
 ### 6.3 Evidence paragraph: a statistic introduced and interpreted
 
