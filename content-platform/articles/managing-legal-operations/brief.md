@@ -10,14 +10,14 @@ length_target: open                 # long-form article; the length is whatever 
 byline: spaarke                     # organizational byline, which the series decision keeps (voice/bylines.md section 1); the closing contact line names Ralph Schroeder, Founder and CEO (section 6)
 campaign: 2026-06-legal-operations-intelligence   # the series campaign (content-platform/campaigns/2026-06-legal-operations-intelligence.md; GitHub milestone "2026-06 Legal Operations Intelligence", number 5)
 github_issue: 78   # https://github.com/spaarke-dev/spaarke-website/issues/78 (created by content-pipeline, 2026-09-22)
-triggered_by: idea.md rev. 4 (2026-09-21, the writer's feedback applied); rev. 5 of 2026-09-22 moved the display date to the Tuesday and applied the writer's fallbacks for the two undated sources
+triggered_by: idea.md rev. 4 (2026-09-21, the writer's feedback applied); rev. 5 of 2026-09-22 moved the display date to the Tuesday and applied the writer's fallbacks for the two undated sources; writer's brief feedback applied 2026-09-22
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
 title: "The New Mandate for Legal Operations"
 description: "Legal operations now decides how legal work gets done, as the legal department, the legal function, and the outside counsel relationship all change at once."
 summary: "The department is absorbing more demand on flat resources, the business wants legal judgment at more decision points, and companies are rethinking what they send to outside counsel. Each change reaches legal operations as a decision about how legal work gets done."
 date: 2026-06-16                    # display date
-posted: "**TBD — confirm**"         # the real publish date, set when the Q4 push schedules the piece
+posted: "**TBD — confirm**"         # the real publish date: push week 1 Tuesday of the campaign's distribution sequence, entered when the push start date is set (writer, 2026-09-22)
 author: "Spaarke Team"
 tags:
   organization: [corporate-legal]
@@ -31,6 +31,7 @@ keyTakeaways:
   - "Three things around legal operations are changing: the legal department, the function's place in the business, and the outside counsel relationship. Each arrives as a decision about how legal work gets done."
   - "The largest driver is a new view of what the department needs in people and roles. In the 2026 ACC survey, 63% of chief legal officers expect stable headcount while roles change around AI."
   - "The business is taking a direct part in its legal risk through the front door and self-service, and legal operations decides which work it may complete alone, within which thresholds, and with what escalation path."
+  - "The goal of deciding what the business may complete on its own is to take legal out of the bottleneck wherever technology can manage the risk, so that the business is informed, understands the implications, and proceeds with legal as its partner."
   - "General counsel claim a strategic role that most of the C-suite does not credit (86% against 17% in Thomson Reuters' 2026 report), and legal operations produces the evidence, in business terms, that the C-suite can see."
   - "Every requirement depends on information the department can act on: its demand at the front door, its spend, its capacity, and its recurring risks, seen before they become events."
 ---
@@ -47,10 +48,17 @@ critical consideration of the business, the general counsel contributes
 to strategy, direction, and decision making, and the business takes a
 direct part in managing its own legal risk. The outside counsel
 relationship is changing in what companies send out and in what they
-expect back. The piece is written for readers who already run the
-function, so it defines nothing that a director of legal operations
-knows. It spends its length on three questions: what is changing, why,
-and what effective management now requires.
+expect back. Underneath the three changes, the role and contribution
+of the general counsel and the legal department to the business are
+changing, and so is what the business expects from legal in how legal
+issues and requirements are addressed. Technology is driving a shift
+toward more integrated handling, and toward self-service, for certain
+legal activities that were historically handled strictly and directly
+by legal (writer's direction, 2026-09-22). The piece is written for
+readers who already run the function, so it defines nothing that a
+director of legal operations knows. It spends its length on three
+questions: what is changing, why, and what effective management now
+requires.
 
 This is article 1 of 5 in the Legal Operations Intelligence series and
 the premise that the other four build on. Article 2 describes the
@@ -69,13 +77,16 @@ and every section heading is a statement as well.
 separated administrative legal operations from strategic legal
 operations. This piece takes the next step and describes how the
 strategic remit itself is widening. The thesis, in the single sentence
-that will appear in the opening: *We argue that managing legal
-operations effectively now means directing the changes under way in
-the legal department, in the legal function's place in the business,
-and in the outside counsel relationship.* The sentence that follows it
-gives the reason: *Each of those changes reaches legal operations as a
-decision about how legal work gets done, and every such decision
-depends on information the department can act on.* The thesis does not
+that will appear in the opening: *Managing legal operations
+effectively now means directing the changes under way in the legal
+department, in the legal function's place in the business, and in the
+outside counsel relationship.* The sentence that follows it gives the
+reason: *Each of those changes reaches legal operations as a decision
+about how legal work gets done, and every such decision depends on
+information the department can act on.* The thesis is a direct
+statement of a change already under way in the field, and the draft
+does not frame it as an argument or a debate position (writer,
+2026-09-22; `voice/style-guide.md` section 3). The thesis does not
 restate the title candidate the writer ruled out in rev. 3 ("Managing
 legal operations means being ready to act"). Readiness is a practical
 test applied late in the piece, and the statements of effective
@@ -108,12 +119,29 @@ in Must include:
    support the business needs, at the points where it decides, and
    choosing how each part is delivered: by in-house lawyers, by the
    business under guardrails, by an automated or AI-assisted workflow,
-   or by outside providers.
+   or by outside providers. The legal department's role in this is to
+   ensure that the business is informed, is aware, and understands the
+   legal implications and risks of what it is doing, and to partner
+   with the business to address them (writer's direction, 2026-09-22).
+   The business's expectation has changed with it: it expects legal
+   issues and requirements to be addressed inside its own processes
+   and at the point of decision.
 4. **The business is turning from a recipient of legal service into a
    participant in it.** Effective management means deciding which work
    the business may complete on its own, within which risk thresholds,
    and with what escalation path, and treating the front door as the
-   department's best source of demand data.
+   department's best source of demand data. The goal of those decisions
+   is to remove legal as the bottleneck wherever the risk can be
+   managed effectively through technology: guardrails, thresholds,
+   playbooks, automated and AI-assisted workflows, and escalation paths
+   (writer's direction, 2026-09-22). The idea the reader should keep is
+   legal as an enabler of the business; the writer's own phrase is
+   "legal as an enabler, not a roadblock", and the draft states the
+   positive form without the contrast construction (`voice/style-guide.md`
+   section 5, rule 15). Technology is what makes integrated and
+   self-service handling possible without the risk going unmanaged,
+   which is why the decision about which work the business may
+   complete alone sits with legal operations.
 5. **Legal operations is what allows the general counsel to contribute
    to strategy.** It runs the department so that the general counsel's
    time goes to the business, and it produces the evidence, in business
@@ -138,10 +166,13 @@ AI in place at 98% of departments and concluded that the operating
 model had not kept up. The piece takes that finding as its frame:
 self-service for the business, AI-assisted workflows, new provider
 types, and changing firm structures are each an operating-model
-decision, and each one arrives at legal operations. The piece also
-distinguishes administration, which keeps the department running day
-to day, from management, which also keeps it ready for events that
-nobody scheduled. The Legal IQ stack is not invoked in this piece. The
+decision, and each one arrives at legal operations. The writer's
+direction of 2026-09-22 (belief 4) fits the same frame, in which
+technology enables the shift and legal operations designs the
+operating model around it. The piece also distinguishes
+administration, which keeps the department running day to day, from
+management, which also keeps it ready for events that nobody
+scheduled. The Legal IQ stack is not invoked in this piece. The
 hand-off to the platform, the ontology, business intelligence, and
 knowledge management does that work, so the `iq-stack` theme is not
 tagged. The `platform` theme is not tagged either, because the piece
@@ -235,7 +266,9 @@ which belongs to article 2 and is not used here.
   Global Institute 2026 agenda, and one Gartner prediction, labelled as
   such. The named cases the research
   found (Liberty Mutual, Palo Alto Networks, iFood, Mercado Libre) are
-  all dated September 2026 and are held out for the standalone piece.
+  all dated September 2026 and are held out as cited evidence for the
+  standalone piece; their specifics may inform the unnamed scenes in
+  the operating-model section (writer, 2026-09-22).
 - **The library has a gap.** It has a piece on what legal operations is
   not (`legal-ops-is-not-it-for-lawyers`) and a piece that maps the
   category to the maturity frameworks (`loi-maturity-model`). It has no
@@ -358,11 +391,17 @@ section; the plan may merge two where one needs only a paragraph.
   Study (2025-04-09; 1,000 general counsel and chief legal officers at
   companies above $1 billion in revenue) shows why decision support is
   hard to supply: 52% report disorganized data and 44% report
-  disconnected legal and business platforms. State effective
-  management here as sizing the capability and the decision support at
-  the points where the business decides, and choosing how each part is
-  delivered. This section sets up the front door, the sourcing
-  decision, Exhibit 1, and the close. Link to `breaking-the-silo`.
+  disconnected legal and business platforms. Add one sentence, as the
+  piece's own observation, on the business's changed expectation of
+  how legal addresses its issues and requirements: integrated into the
+  business's own processes and available at the point of decision,
+  where legal was historically a separate step handled strictly and
+  directly by the department (writer's direction, 2026-09-22). State
+  effective management here as sizing the capability and the decision
+  support at the points where the business decides, and choosing how
+  each part is delivered. This section sets up the front door, the
+  sourcing decision, Exhibit 1, and the close. Link to
+  `breaking-the-silo`.
 - **The business taking a direct part in its own legal risk.**
   Candidate heading: *The business is becoming a participant in its own
   legal risk*. The visible forms are the legal
@@ -382,11 +421,26 @@ section; the plan may merge two where one needs only a paragraph.
   is mentioned once, paraphrased, attributed to the analyst, and
   labelled as a prediction (writer decision, rev. 4). Adoption of front
   doors and self-service is visible and unmeasured, and the piece
-  implies no number. State effective management here as deciding which
-  work the business may complete on its own, within which risk
-  thresholds, and with what escalation path, and as treating the front
-  door as the department's best source of demand data. An optional link
-  to [Legal AI Is Not Deterministic](/why-spaarke/probabilistic-vs-deterministic)
+  implies no number. Three points from the writer's direction of
+  2026-09-22 belong in this section, stated as the piece's own
+  position and without a citation. First, the goal of the guardrails,
+  thresholds, playbooks, automated and AI-assisted workflows, and
+  escalation paths is to remove legal as the bottleneck wherever the
+  risk can be managed effectively through technology. Second, legal is
+  an enabler of the business, stated in the positive form; belief 4 of
+  the Angle records the writer's phrase, and the draft does not print
+  it as a contrast (`voice/style-guide.md` section 5, rule 15). Third,
+  the legal department's role is to ensure that the business is
+  informed, is aware, and understands the legal implications and risks
+  of what it is doing, and to partner with the business to address
+  them. State effective management here as deciding which work the
+  business may complete on its own, within which risk thresholds, and
+  with what escalation path, so that legal stops being the bottleneck
+  where technology manages the risk and so that the business is
+  informed and understands the implications of what it decides, and as
+  treating the front door as the department's best source of demand
+  data. An optional link to
+  [Legal AI Is Not Deterministic](/why-spaarke/probabilistic-vs-deterministic)
   (short title as link text) belongs where the piece asks which answers
   can be automated.
 - **Legal operations as the condition of the strategic general
@@ -492,9 +546,18 @@ section; the plan may merge two where one needs only a paragraph.
   case inside the window exists for intake or self-service, so each
   example is a described scene with specifics and no company name,
   written as illustration rather than as a sourced case, in the manner
-  of `voice/examples/consulting-register.md` section 4.9; any figure
-  inside an example is illustrative, the plan labels it so, and the
-  draft never presents it as a finding. This section carries Exhibit 1.
+  of `voice/examples/consulting-register.md` section 4.9. The specifics
+  of a scene may be drawn from the September 2026 named cases the
+  research found (Liberty Mutual, Palo Alto Networks, iFood, and
+  Mercado Libre, in `gap-intake-and-self-service-named-cases.md`),
+  written as unnamed illustrations with no company name, no citation,
+  and no figure presented as a finding (writer, 2026-09-22); date
+  discipline holds because nothing is cited. Any figure inside an
+  example is illustrative, the plan labels it so, and the draft never
+  presents it as a finding. This section carries Exhibit 1, which is
+  also the visual form of the enabler point: the front door routes
+  each request to the channel that manages its risk at the right cost,
+  and legal operations owns the routing.
 - **Readiness, proactive and reactive, as a practical test of every
   change above.** Candidate heading: *Readiness before and after the
   event is the practical test*. This is the piece's own contribution and
@@ -520,14 +583,18 @@ section; the plan may merge two where one needs only a paragraph.
   department has to see its demand, its spend, its capacity, and its
   recurring risks before it can direct any of the changes or prepare
   for an event, and the decision support the business now expects
-  depends on the same information. The hand-off goes first to article
-  2, which describes the platform that brings process, people, and
-  technology together; the ontology then makes information actionable
-  (article 3), business intelligence supplies the deterministic view
-  (article 4), and knowledge management supplies the context that AI
-  needs (article 5). No piece is framed as replacing another. The
-  single Spaarke reference sits here and nowhere else: one light link
-  to [What Is Legal Operations Intelligence?](/why-spaarke/what-is-legal-operations-intelligence)
+  depends on the same information. The consequence may add one clause:
+  the same information is what lets the department tell the business,
+  with evidence, where the risk is and where the business may proceed
+  on its own (writer's direction, 2026-09-22). The hand-off goes first
+  to article 2, which describes the platform that brings process,
+  people, and technology together; the ontology then makes information
+  actionable (article 3), business intelligence supplies the
+  deterministic view (article 4), and knowledge management supplies
+  the context that AI needs (article 5). No piece is framed as
+  replacing another. The single Spaarke reference sits here and
+  nowhere else: one light link to
+  [What Is Legal Operations Intelligence?](/why-spaarke/what-is-legal-operations-intelligence)
   as the category-level piece the series continues, with no capability,
   module, or product name described. The close has no "Conclusion"
   heading, no summary, and no pitch.
@@ -544,7 +611,10 @@ section; the plan may merge two where one needs only a paragraph.
     provider. Legal operations is shown owning the routing rules, the
     risk thresholds, and the data that returns from every channel. It
     carries argument points 3, 4, 6, and 8 and is the visual form of
-    the phrase "however it is delivered". Alt text: *Diagram of a
+    the phrase "however it is delivered" and of the enabler point: each
+    request goes to the channel that manages its risk at the right
+    cost, and legal operations owns the routing (writer's direction,
+    2026-09-22). Alt text: *Diagram of a
     request entering through the legal front door and routed to one of
     five channels, with legal operations holding the routing rules, the
     risk thresholds, and the data returned from each channel.*
@@ -565,7 +635,7 @@ section; the plan may merge two where one needs only a paragraph.
   later display dates, so the body links to none of them. Argument
   point 7 depends on article 5 and still may not link to it in the
   body. A series-navigation block at the end of the article lists
-  article 2 ([Building the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
+  article 2 ([How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
   2026-07-14), article 3 ([The Legal Operations Intelligence Ontology](/why-spaarke/legal-operations-ontology),
   2026-07-21), article 4 ([A Business Intelligence Approach to Legal Operations](/why-spaarke/business-intelligence-for-legal-operations),
   2026-09-01), article 5 ([The Newfound Importance of Knowledge Management](/why-spaarke/the-newfound-importance-of-knowledge-management),
@@ -648,9 +718,12 @@ section; the plan may merge two where one needs only a paragraph.
   2026 findings (28% against 83%); CLOC's AI Intensive; ILTACON 2026
   and the ILTA 2026 survey; RLLB 2026 and everything said there,
   including the TCDI and CCBJ recaps; the ACC Corporate Counsel Now
-  case write-ups (Liberty Mutual, Palo Alto Networks, Mercado Libre);
-  iFood; Fulkerson Advisors; CLOC's certification; and OpenAI's legal
-  launch. Held out as undated: Deloitte US, "2026 Predictions for Chief
+  case write-ups (Liberty Mutual, Palo Alto Networks, Mercado Libre)
+  and iFood, which are out as cited evidence and usable only as the
+  unnamed source of a scene's specifics in the operating-model
+  section, with no company name, no citation, and no figure presented
+  as a finding (writer, 2026-09-22); Fulkerson Advisors; CLOC's
+  certification; and OpenAI's legal launch. Held out as undated: Deloitte US, "2026 Predictions for Chief
   Legal Officers" (dropped by the writer on 2026-09-22; the Harbor
   index and the ACC survey carry its points), and the KPMG 2026 Global
   General Counsel Outlook (no publication month and no verbatim check).
@@ -1237,7 +1310,10 @@ founded CLOC and when differ.
   article 4.
 - Liberty Mutual, Palo Alto Networks, and Mercado Libre (ACC Corporate
   Counsel Now, 2026-09-16), iFood (CCBJ, 2026-09-18), and Fulkerson
-  Advisors (2026-09-16): the standalone piece only.
+  Advisors (2026-09-16): the standalone piece only as cited evidence.
+  The four named cases may supply the specifics of the unnamed scenes
+  in this piece's operating-model section, without a name, a citation,
+  or a figure presented as a finding (writer, 2026-09-22).
 - CLOC's certification (2026-09-16) and AI Intensive (2026-08-19).
 - Deloitte US, "2026 Predictions for Chief Legal Officers" (undated):
   its three confirmed passages are recorded in section H for a later
@@ -1285,20 +1361,22 @@ tracked in the campaign file and following the revised voice.
   AI-native firms' self-reported claims). Copyright limits apply, and
   the ACC and Major, Lindsey & Africa report is held out in any case.
 - **Pronouns and role names.** "We" for Spaarke's positions ("we
-  argue"); readers by role in analysis ("general counsel", "legal
-  operations directors"); "you" only in the diagnostic questions of the
-  readiness section. Write "general counsel" and "chief legal officers"
-  in lower case except as a title before a name (`voice/vocabulary.md`
-  section 3); the idea file capitalizes the role, and the draft does
-  not follow it. Write "legal operations" in full in long-form prose
-  and never "LegalOps" as one word except in the organization name
-  LegalOps.com. Write "outside counsel", never "external counsel";
-  "alternative provider" for an ALSP, with the acronym spelled out on
-  first use; "legal professionals" or "the legal team" for shared
-  operational work and "in-house lawyer" where the act is a lawyer's;
-  "the legal front door" and "self-service" as the field's terms, each
-  introduced after the change it names has been described; "legal
-  engineer" as the role name Law360 Pulse reports.
+  recommend", "we found"; the thesis itself is stated directly and
+  not introduced with "we argue"); readers by role in analysis
+  ("general counsel", "legal operations directors"); "you" only in the
+  diagnostic questions of the readiness section. Write "general
+  counsel" and "chief legal officers" in lower case except as a title
+  before a name (`voice/vocabulary.md` section 3); the idea file
+  capitalizes the role, and the draft does not follow it. Write "legal
+  operations" in full in long-form prose and never "LegalOps" as one
+  word except in the organization name LegalOps.com. Write "outside
+  counsel", never "external counsel"; "alternative provider" for an
+  ALSP, with the acronym spelled out on first use; "legal
+  professionals" or "the legal team" for shared operational work and
+  "in-house lawyer" where the act is a lawyer's; "the legal front
+  door" and "self-service" as the field's terms, each introduced after
+  the change it names has been described; "legal engineer" as the role
+  name Law360 Pulse reports.
 - **The six drivers.** State them in the writer's order in the opening
   and keep the same labels wherever the piece refers back to them, so
   that a reader can find a driver again. Point 8 draws them together;
@@ -1419,7 +1497,11 @@ from the display-date rule that governs the rest of the brief.
   which are argument points 1 to 8 of `idea.md` rev. 5 as the writer
   reviewed them in rev. 4; the readiness test and the close, points 9
   and 10, are carried in Must include. The six drivers and their order
-  are the writer's.
+  are the writer's. The thesis is stated directly, without the "We
+  argue that" framing, because the piece describes a change already
+  under way in the field and takes no debate position (writer,
+  2026-09-22); beliefs 3 and 4 carry the writer's added points on the
+  department's role, the bottleneck, and legal as an enabler.
 - [x] **Primary audience**: `legal-ops-director`, with
   `corporate-counsel` secondary and `legal-tech-cio` and
   `firm-operations-leader` as sanity-check readers (the series audience
@@ -1477,18 +1559,29 @@ from the display-date rule that governs the rest of the brief.
   of the names dated on or before 2026-06-15 would reopen the point;
   the evidence section F in `idea.md` still carries the earlier
   reasoning and is corrected in a separate edit.
-- [ ] **`posted`**: the real publish date, set when the Q4 push
-  schedules the piece.
-- [ ] **The Thomson Reuters 68% against 36% pair**: recorded by the
-  researcher and listed by neither fact-checker; the plan does not rely
-  on it. If the draft wants it, verify it in the report PDF first. Can
-  wait for the polish gate.
-- [ ] **The ACC and Everlaw date in `voice/research-sources.md`**: that
-  file records 2025-10-29 (the Bloomberg Law report) where the release
-  is dated 2025-10-14. The draft cites the release; the correction to
-  the research-sources entry is a separate documentation commit.
-- [ ] **Worked examples in the operating-model section**: the four
-  scenes are illustrative and unnamed, because every named intake and
-  self-service case the research found is dated September 2026. If the
-  writer has a real, dated example of their own from before
-  2026-06-16, it replaces one of the scenes at the plan stage.
+- [x] **`posted`**: follows the campaign schedule (writer, 2026-09-22).
+  The piece publishes on the Tuesday of push week 1 of the campaign's
+  distribution sequence, and the date is entered when the push start
+  date is set. Entering it is a scheduling step and not a writer
+  decision, so the frontmatter keeps the marker until then.
+- [x] **The Thomson Reuters 68% against 36% pair**: include if useful;
+  no specific reference required (writer, 2026-09-22). The pair may be
+  used where it helps the piece, verified in the report PDF before any
+  number is printed; where it cannot be confirmed, the point is made
+  as the article's own observation without the figures. The polish
+  gate still checks any figure the draft prints, and the research
+  pointer in section B stays as the record of where it came from.
+- [x] **The ACC and Everlaw date in `voice/research-sources.md`**:
+  handling accepted by the writer on 2026-09-22. The draft cites the
+  release date of 2025-10-14, and the correction to the
+  research-sources entry is a separate documentation commit.
+- [x] **Worked examples in the operating-model section**: the four
+  scenes may draw their specifics from the September 2026 named cases
+  the research found (Liberty Mutual, Palo Alto Networks, iFood, and
+  Mercado Libre, in `gap-intake-and-self-service-named-cases.md`),
+  written as unnamed illustrations with no company name, no citation,
+  and no figure presented as a finding; no specific reference is
+  required (writer, 2026-09-22). Date discipline holds because nothing
+  is cited. If the writer has a real, dated example of their own from
+  before 2026-06-16, it still replaces one of the scenes at the plan
+  stage.

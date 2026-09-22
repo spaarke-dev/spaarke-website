@@ -4,20 +4,20 @@ type: blog-post
 publish_date: 2026-07-21            # display date (a Tuesday, settled 2026-09-22); article 3 of 5 in the Legal Operations Intelligence series. The real publish date goes in posted.
 channels: [website, linkedin]
 status: brief                       # brief | outline | draft | review | scheduled | published
-priority: high                      # first public expression of the ontology frame; time-sensitive against the "context graph" framing that entered the legal vocabulary in May 2026
+priority: high                      # first public expression of the ontology frame; time-sensitive against the "context graph" framing that entered the legal vocabulary in May 2026; the key article for Spaarke: it defines the foundation of the solution (writer, 2026-09-22)
 audience: legal-ops-director        # primary; corporate-counsel and legal-tech-cio secondary
 length_target: open                 # long-form article; the length is whatever the topic requires (content-types/blog-post.md section 2.1)
 byline: spaarke                     # organizational byline, which the series decision keeps (voice/bylines.md section 1); the closing contact line names Ralph Schroeder, Founder and CEO (section 6)
 campaign: 2026-06-legal-operations-intelligence   # the series campaign (content-platform/campaigns/2026-06-legal-operations-intelligence.md; GitHub milestone "2026-06 Legal Operations Intelligence", number 5), which carries each article as an asset
 github_issue: 79   # https://github.com/spaarke-dev/spaarke-website/issues/79 (created by content-pipeline, 2026-09-22)
-triggered_by: Ontology-centric platform strategy synopsis v2.0 (Ralph / Claude working session; kept outside this public repository) and idea.md rev. 4 (series refinement)
+triggered_by: Ontology-centric platform strategy synopsis v2.0 (Ralph / Claude working session; kept outside this public repository) and idea.md rev. 4 (series refinement); writer's brief feedback applied 2026-09-22 (the brief moves from v2 to v3)
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
 title: "The Legal Operations Intelligence Ontology"
-description: "The ontology is the foundation of legal operations intelligence: the entities a department works on, their relationships, and the actions it may take on them."
-summary: "Every legal department has a matter table, a document repository, and an invoice feed, and business intelligence reports what happened across them. An ontology adds the relationships among those records and the record of what the department decided to do about them."
+description: "The ontology is the foundation of legal operations intelligence: the comprehensive context across every system a department uses, meaning the entities it works on, their relationships, the actions it may take on them, and the rules that govern those actions."
+summary: "Every legal department has a matter table, a document repository, and an invoice feed, and each holds one dimension of the work, bounded by its own data model. An ontology holds the context across all of them: the relationships among those records, the actions the department may take, and the record of what it decided to do. That context is what turns a record into an insight, and it is why the ontology is the foundation of legal operations intelligence."
 date: 2026-07-21                    # display date
-posted: "**TBD — confirm**"         # the real publish date, set when the piece is scheduled
+posted: "**TBD — confirm**"         # the real publish date: push week 3 Tuesday of the campaign's distribution sequence, entered when the push start date is set (writer, 2026-09-22)
 author: "Spaarke Team"
 tags:
   organization: [corporate-legal]
@@ -28,7 +28,8 @@ heroImage: "/articles/legal-operations-ontology/hero.svg"
 heroImagePosition: "center"
 draft: true
 keyTakeaways:
-  - An ontology adds relationships, permitted actions, and governing rules to the tables a department already has. Most departments have a matter table; few hold the relationships, such as the invoice line bound to the budget.
+  - An ontology adds relationships, permitted actions, inquiries, typed outputs, and governing rules to the tables a department already has. Most departments have a matter table; few hold the relationships, such as the invoice line bound to the budget.
+  - A system of record sees one dimension of the department's work, bounded by its own data model, and it returns raw data without the context that makes data insight. The ontology holds the context across every system, and that is why it is the foundation of legal operations intelligence and why no single system of record can be.
   - Business intelligence reports what happened and does that job well. An ontology also records what the department decided to do about it, who acted, and under which policy, and business intelligence reads that record too.
   - AI lowers the cost of building the model, and agents raise the value of having one. An agent that reads governed entities has less room to invent them, and all agents share one vocabulary.
   - An AI model can be replaced through configuration, and the ontology belongs to the department. Solutions built on it inherit its definitions and permissions, which requires the systems beneath to expose documented, permission-aware interfaces.
@@ -41,34 +42,51 @@ An overview of what an *ontology* is when it serves as the foundation of
 a Legal Operations Intelligence platform. The ontology is the model of
 the entities a legal department works on (matter, project, invoice,
 request, document, communication, obligation, policy), the
-relationships among them, and the actions the department may take on
-them under rules it wrote. It is bound to the systems where the
-department's data already sits. It supplies the entity and action
-model, and its purpose is to make information actionable for people,
-for business intelligence (BI), and for AI agents. Article 2 of the series,
-[Building the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
+relationships among them, the actions the department may take on them
+under rules it wrote, the inquiries that can be put to them, and the
+typed outputs those actions produce. It is bound to the systems where
+the department's data already sits, and it holds the context across
+all of those systems that no one of them holds. It supplies the entity
+and action model, and its purpose is to make information actionable
+for people, for business intelligence (BI), and for AI agents. Article
+2 of the series,
+[How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
 describes the platform as the department's capabilities across process,
 people, and technology, with technology as the tangible instantiation,
-and it closes by naming the foundation that holds those capabilities
-together. This piece opens from there. It introduces the term to a
-legal operations reader who has heard "data model", "knowledge graph",
-and "context graph" and needs to know why this one is different and why
-it matters more than whichever AI model sits on top.
+and its final section introduces the ontology in five concepts: the
+platform combines data and information with context, by integrating
+multiple sources and by augmenting them with organizational knowledge;
+a system of record gives one-dimensional insight bounded by its own
+data model; the ontology is the foundation and provides
+multidimensional insight across the systems of record; the ontology
+carries actions, inquiries, policies, typed outputs, and governance;
+and the ontology must be built with a deep understanding of process
+and people. This piece opens from there and develops each of those
+five concepts. It introduces the term to a legal operations reader
+who has heard "data model", "knowledge graph", and "context graph" and
+needs to know why this one is different and why it matters more than
+whichever AI model sits on top.
 
 # Angle / Point of view
 
 [The AI Readiness Gap in Legal Departments](/why-spaarke/the-ai-readiness-gap)
 argued that the data architecture, more than the tool, limits what
 legal AI can do. This piece names what that architecture has to be. The
-thesis, in the single sentence that will appear in the opening, is
-written so that it does not wait for the term (`voice/style-guide.md`
-section 3): *We argue that the foundation of legal operations
-intelligence is a shared model of the entities a department works on,
-the relationships among them, and the actions it may take on them.*
-The sentence that follows it gives the reason: *That model is the one
-layer that people, business intelligence, and AI agents can all read
-from and act through.* The reader should walk away believing three
-things:
+thesis is a direct statement, and it leads with the definition and the
+reason the ontology is foundational. The writer asked on 2026-09-22
+that the definition and its value come up front, so the opening may
+introduce the word early, provided that the scene or the gap comes
+first within the first section (`voice/style-guide.md` section 3). The
+sentence that will appear in the opening: *The foundation of legal
+operations intelligence is an ontology: a shared model of the entities
+a department works on, the relationships among them, the actions it
+may take on them, and the rules that govern those actions.* The
+sentence that follows it says why that model is high-value: *That
+model is the one layer that people, business intelligence, and AI
+agents can all read from and act through, and it holds the context
+across every system the department uses, which is what turns the
+records those systems hold into insight.* The reader should walk away
+believing four things:
 
 1. **An ontology adds relationships, permitted actions, and governing
    rules to the tables a department already has.** Most departments
@@ -76,7 +94,28 @@ things:
    thread bound to the matter, the invoice line bound to the budget,
    and the department's matter bound to the firm's matter, and those
    relationships are the asset.
-2. **The unit of value is a governed decision.** Business intelligence
+2. **A system of record holds one dimension of the work, and the
+   ontology holds the context across all of them.** Matter management,
+   contract lifecycle management, document management, and e-billing
+   each see one dimension of the department's work, bounded by their
+   own data models. Where a system has no field for a piece of
+   information, that information does not exist for it. Each holds raw
+   data and returns raw data, without the context that turns data into
+   insight. The ontology holds the comprehensive context: the entities
+   across all of those systems, their attributes and relationships,
+   the actions permitted on them, the inquiries that can be put to
+   them, the policies that govern them, the typed outputs they
+   produce, and the governance around all of it. That is the
+   difference between a record and an insight. It is also why the
+   ontology is the foundation of legal operations intelligence,
+   because no single system of record holds enough of the context to
+   be that foundation. The contrast concerns the data model of any
+   single system, which applies to Spaarke's own system of record
+   capabilities as much as to any vendor's, so it stays consistent
+   with the both-modes positioning, names no vendor, and disparages no
+   product category. The article states this belief strongly, because
+   the piece defines the foundation of the solution.
+3. **The unit of value is a governed decision.** Business intelligence
    and its dashboards report what happened, and they do that job well.
    The ontology adds the record of what the organization decided to do
    about it (who acted, under which policy, and on which facts), and
@@ -84,30 +123,35 @@ things:
    and four quarters the decision record becomes evidence that the
    department could not otherwise assemble, because the decisions were
    never captured as data.
-3. **An AI model can be replaced through configuration, and the
+4. **An AI model can be replaced through configuration, and the
    ontology belongs to the department.** Rebuilding the semantic layer
    that makes a department's data intelligible takes years. Where a
    department runs several AI tools at once, the lasting asset is the
    layer that gives all of them the same definitions.
 
-What Spaarke pushes back on is the treatment of a data warehouse or a
-data lake as the platform's foundation. Both can hold every record the
-department produces, and neither models what may be done to those
-records, by whom, or under which rule. Business intelligence is the
-deterministic dimension of the platform: it reads across the entities
-the ontology defines, computes facts such as a budget variance the same
-way every time, and reports them, and the ontology gives it a place to
-act and a decision record to read back. The two "context graph"
-announcements of May 2026 cover document management content and
-activity. The first lists documents organized by matter,
-communications, people, activity, and permissions, and it does not
-mention spend, e-billing, outside counsel management, or matter
-management; the second was reported with a similar scope. Context
-drawn from documents is therefore one layer of the model, and the
-department's operations reach further. The article names neither
-provider and argues that observation on its merits. The ontology gives
-structure to the Data and Memory layers of the Legal IQ stack, and it
-is what lets Inference read over a record instead of a pile.
+What Spaarke pushes back on is the treatment of a data warehouse, a
+data lake, or a single system of record as the platform's foundation.
+The warehouse and the lake can hold every record the department
+produces, and neither models what may be done to those records, by
+whom, or under which rule. A single system of record models its own
+slice of the work and nothing beyond its data model, so it returns raw
+data without the context that makes data insight, whereas the
+ontology, which holds the context across all of the systems, provides
+the insight. Business intelligence is the deterministic dimension of
+the platform: it reads across the entities the ontology defines,
+computes facts such as a budget variance the same way every time, and
+reports them, and the ontology gives it a place to act and a decision
+record to read back. The two "context graph" announcements of May 2026
+cover document management content and activity. The first lists
+documents organized by matter, communications, people, activity, and
+permissions, and it does not mention spend, e-billing, outside counsel
+management, or matter management; the second was reported with a
+similar scope. Context drawn from documents is therefore one layer of
+the model, and the department's operations reach further. The article
+names neither provider and argues that observation on its merits. The
+ontology gives structure to the Data and Memory layers of the Legal IQ
+stack, and it is what lets Inference read over a record instead of a
+pile.
 
 # Why now
 
@@ -203,15 +247,24 @@ evidence it rests on; the status of every row is in `idea.md` (evidence
 tables A to I) and in the research digest.
 
 - **A concrete opening that reaches the definition within the first
-  section.** Open on the budget-variance scene or on "every department
-  has a matter table", and let the reader feel the gap before the word
-  arrives. The reader is experienced, so the build is short and the
+  section and states, in the same passage, why the ontology is
+  high-value and why it is the core and foundational basis of legal
+  operations intelligence.** Open on the budget-variance scene or on
+  "every department has a matter table", and let the reader feel the
+  gap before the word arrives. The reader is experienced, so the build
+  is short, the word may arrive early (writer, 2026-09-22), and the
   definition lands by the end of the first H2. The working definition
   the reader can carry: *an ontology is a model of the things a legal
   department works on, the attributes of those things, the
   relationships among them, the actions that may be taken on them, and
   the rules that govern those actions, bound to the systems where the
-  data already sits.* The definition uses "relationships"; after it,
+  data already sits.* The same passage says why that model is
+  high-value and foundational: it holds the context across every
+  system the department uses, that context is what turns the records
+  those systems hold into insight, and it is the one layer that
+  people, business intelligence, and AI agents can all read from and
+  act through, so everything else in legal operations intelligence
+  rests on it. The definition uses "relationships"; after it,
   the article may use "links" as the shorter working word. "Bound to
   the systems where the data already sits" is Spaarke's design
   principle, and the article attributes live or copy-free behaviour to
@@ -235,15 +288,81 @@ tables A to I) and in the research digest.
   any wording, because it mirrors the source's headline sentence. Cite
   [What Is Legal Operations Intelligence?](/why-spaarke/what-is-legal-operations-intelligence)
   once, near the definition.
-- **The three-way distinction, in one paragraph.** A data lake stores
-  data, a data warehouse organizes data for reporting, and an ontology
-  models the entities, the relationships among them, and the actions
-  permitted on them, so it sits alongside the lake and the warehouse
-  and replaces neither. No feature table. The glossary definitions in
-  the research notes were not fact-checked, so the paragraph is in
-  Spaarke's words and quotes nothing (see References, table A).
+- **The concepts article 2 introduced, developed here.** Article 2,
+  [How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
+  introduces the ontology in its final section, and the first of the
+  two planned in-body links to article 2 belongs here, where this
+  piece picks the concepts up (the second is in the section on the
+  systems already in place). Each of the five is developed in a named
+  place:
+  - *Data and information combined with context*, by integrating
+    multiple sources and by augmenting them with organizational
+    knowledge: developed in the definition and in the contrast
+    section.
+  - *One-dimensional insight from a system of record*, bounded by its
+    own data model: developed in the contrast section.
+  - *Multidimensional insight across the systems of record*: developed
+    in the relationships part and in the worked example.
+  - *Actions, inquiries, policies, typed outputs, and governance*:
+    developed in "The three parts" and in the worked example.
+  - *A model built with a deep understanding of process and people*:
+    developed in "How it is built".
+- **The three-way distinction, in one paragraph, or two if one is not
+  enough.** A data lake stores data, a data warehouse organizes data
+  for reporting, and both hold records without the context that makes
+  them insight. The ontology holds the comprehensive context that
+  insight requires: the entities, their attributes, the relationships
+  among them across every system, the actions permitted on them, the
+  inquiries that can be put to them, the policies that govern the
+  actions, the typed outputs they produce, and the governance around
+  all of it. It is what turns the records the lake and the warehouse
+  hold into something a person, a BI measure, or an agent can
+  understand and act on. The passage says in plain words that the
+  ontology provides insight where a database provides raw data without
+  context, and it says that the ontology still sits alongside the lake
+  and the warehouse and replaces neither. The full list of context
+  elements is prescribed for the definition passage, for this
+  distinction, and for the contrast section that follows; the plan
+  spells it out once, wherever it lands best, and refers to it in
+  short form elsewhere (the context described above), so that the
+  draft does not print the same enumeration three times. No feature
+  table. The glossary definitions in the research notes were not
+  fact-checked, so the passage is in Spaarke's words and quotes
+  nothing (see References, table A).
+- **A system of record holds one dimension of the work, and the
+  ontology holds the context across all of them.** A section under
+  that candidate heading (sentence case; the plan may shorten it),
+  placed after the three-way distinction and before "The three parts",
+  drives the contrast home. A system of record, whether matter
+  management, contract lifecycle management, document management, or
+  e-billing, sees one dimension of the department's work, bounded by
+  its own data model. Where it has no field for a piece of
+  information, that information does not exist for it. It holds raw
+  data and returns raw data, without the context that turns data into
+  insight. One concrete illustration carries the section: the same
+  matter seen through the matter system, the document system, the
+  e-billing platform, and the inbox, each holding a slice (the budget
+  and the status, the drafts and the executed agreement, the invoice
+  lines, the correspondence with the firm) and none holding the
+  relationships among the slices, so that nobody can read from any one
+  of them which invoice line belongs to which scope change or which
+  email settled the question the invoice describes. The ontology holds
+  the context across all four: the entities, their attributes and
+  relationships, the actions permitted on them, the inquiries that can
+  be put to them, the policies that govern them, the typed outputs
+  they produce, and the governance around all of it. The section says
+  plainly that the ontology provides insight where a database provides
+  raw data without context, and it draws the conclusion in the
+  article's own voice, that the foundation of legal operations
+  intelligence has to be the layer that holds the context across all
+  of the systems, and that no single system of record holds it. The
+  contrast concerns the data model of any single system, so it applies
+  to Spaarke's own system of record capabilities as much as to any
+  vendor's, names no vendor, disparages no product category, and stays
+  consistent with the both-modes section later in the piece.
 - **The three parts, in order: entities, relationships, and actions
-  governed by rules.**
+  governed by rules, with inquiries and typed outputs named inside the
+  actions part and governance called by that name.**
   - *Entities.* A spine of matter, project, and invoice that everything
     else connects to, with the operational entities around them:
     request, document, communication, party, engagement, timekeeper,
@@ -269,6 +388,20 @@ tables A to I) and in the research digest.
     The release envelope is what "AI-directed, human-controlled" means
     in structural terms. The article states it as Spaarke's design and
     cites no vendor's default for it.
+  - *Inquiries and typed outputs, inside the actions part.* The
+    **inquiries** are the questions that can be put to the model in
+    business terms (which matters are running over budget, which
+    obligations fall due this quarter, which firm's invoices carry the
+    most rejected lines), and the model answers them from the entities
+    and relationships, which no single system's tables can supply. The
+    **typed outputs** are what actions and inquiries produce: the
+    fact, the observation, the outcome, and the report card, each with
+    a defined shape that a person, a BI measure, or an agent can read.
+    Governance is the rules and the release envelope taken together,
+    and the article uses that word for it, so that every element the
+    writer listed (entities, attributes, relationships, actions,
+    inquiries, policies, typed outputs, and governance) is named in
+    this section.
 - **The worked example, run twice.** *"This matter is running over
   budget; ask outside counsel to investigate."* Business intelligence
   does its job in both runs: it computes the variance and shows that
@@ -292,8 +425,8 @@ tables A to I) and in the research digest.
   actions. This remains the longest and most concrete section.
 - **The sentence that closes that section:** *A warehouse records what
   happened to the business, an ontology also records what the
-  organization decided to do about it, and business intelligence reads
-  both records.*
+  organization decided to do about it and the context that connects
+  them, and business intelligence reads both records.*
 - **The dashboard contrast, in one explicit paragraph, written so that
   the dashboard remains a legitimate BI output.** A dashboard does its
   job when it shows that a matter is over budget. The reader must still
@@ -329,9 +462,9 @@ tables A to I) and in the research digest.
   the rule that facts are computed deterministically, so that no model
   call produces the variance. Link to
   [Legal AI Is Not Deterministic](/why-spaarke/probabilistic-vs-deterministic)
-  as the piece that explains why that split matters. (**TBD — confirm**
-  that fact, observation, and inference is approved public vocabulary;
-  see Unresolved.)
+  as the piece that explains why that split matters. The writer
+  confirmed on 2026-09-22 that fact, observation, and inference is
+  approved public vocabulary (see Unresolved).
 - **Why AI has raised what an ontology can do, and why agents need
   one.** The argument runs in two directions: AI lowers the cost of
   building and maintaining the model, and agents raise the value of
@@ -375,7 +508,7 @@ tables A to I) and in the research digest.
     department gains confidence. This is the release envelope, stated
     as Spaarke's design.
 
-  The third belief in the Angle follows from these mechanisms: an AI
+  The fourth belief in the Angle follows from these mechanisms: an AI
   model can be replaced through configuration, whereas the semantic
   work that makes a department's data intelligible takes years and
   belongs to the department.
@@ -399,9 +532,8 @@ tables A to I) and in the research digest.
 - **How it is built.** The build starts from a decision the department
   has to make, where many data projects start from a source system or
   a dashboard request. It models the department's reality in the
-  department's own terms, because a model that copies each system's
-  tables column by column reproduces the fragmentation it was meant to
-  resolve. It begins with the spine of matter, project, and invoice,
+  department's own terms, for the reason the writer's sentence below
+  gives. It begins with the spine of matter, project, and invoice,
   defines each entity once, binds it to the systems where the data
   lives, adds the relationships, and then adds policies and gated
   actions. It grows one use case at a time and is tested against the
@@ -409,7 +541,12 @@ tables A to I) and in the research digest.
   on people who know how intake, matter management, invoice review,
   and outside counsel management run, where the information sits and
   in what shape, and what a general counsel or a finance partner needs
-  in order to decide. Independent observers of the general-purpose
+  in order to decide. The article states the writer's point in one
+  sentence of its own, and states it once in this section: the
+  ontology must be built with a deep understanding of the department's
+  processes and its people, and a model built from the systems' tables
+  alone reproduces their limits, including the fragmentation the model
+  was meant to resolve. Independent observers of the general-purpose
   offerings make the same point, and both quotations are confirmed
   verbatim: "Creating an ontology, in Fabric or elsewhere, is a major
   effort and requires on-going maintenance, so there's no getting out
@@ -522,7 +659,7 @@ tables A to I) and in the research digest.
   access as a selection criterion, and no verified named build by a
   corporate legal department outside the AI industry, so the article
   says so and presents building as an emerging practice. The argument
-  connects to the third belief: a department's requirements are
+  connects to the fourth belief: a department's requirements are
   specific to its business, so it will need custom solutions, and
   custom solutions built on a governed entity and action model inherit
   its definitions, permissions, and audit record, whereas solutions
@@ -543,7 +680,7 @@ tables A to I) and in the research digest.
 - **Series wiring.** In-body links to article 1,
   [The New Mandate for Legal Operations](/why-spaarke/managing-legal-operations),
   and article 2,
-  [Building the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
+  [How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
   where each supports a point. The article must also stand alone, so
   the links support the argument and are never a prerequisite for it.
   A series-navigation block at the end of the article reaches article 4
@@ -712,10 +849,10 @@ Internal (link from the draft):
 - [The New Mandate for Legal Operations](/why-spaarke/managing-legal-operations):
   article 1 of the series (display date 2026-06-16). In-body link where
   the changed mandate supports a point.
-- [Building the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform):
+- [How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform):
   article 2 (display date 2026-07-14), where the platform is defined.
-  Link from the opening and from the section on the systems already in
-  place.
+  Link from the opening (the concepts passage) and from the section on
+  the systems already in place.
 - [The Legal IQ Stack: Data, Memory, Inference](/why-spaarke/the-iq-stack):
   the ontology gives structure to the Data and Memory layers. Link
   where the stack is invoked, and do not restate that article.
@@ -816,9 +953,10 @@ checked):
   The critique of the vendor's no-copy claim (Elementum, 2026-07-16)
   is inside the window under the 2026-07-21 display date and is left
   out by decision, because the article names neither company.
-- The three-way distinction (lake, warehouse, ontology): one paragraph
-  in Spaarke's words. The glossary definitions in the notes were not
-  fact-checked, so **TBD — confirm** if a definition is quoted.
+- The three-way distinction (lake, warehouse, ontology): one or two
+  paragraphs in Spaarke's words. The glossary definitions in the notes
+  were not fact-checked, so **TBD — confirm** if a definition is
+  quoted.
 
 *Why AI has raised what an ontology can do (table B).*
 
@@ -1134,7 +1272,7 @@ sources behind the generic statements.
   stitched across entities and time so precedent becomes searchable";
   "systems of record for decisions, not just objects". It is the origin
   of the term, and its definition centres on decision records, which
-  supports the second belief. Naming the essay is allowed.
+  supports the third belief. Naming the essay is allowed.
 - Afraz Jaffri (LinkedIn, about 2026-01-08) and Jessica Talisman, "The
   Trillion-Dollar Rebranding" (2026-01-28). Confirmed, with the primary
   sources named in the `.verified.md` file: the practitioner critique
@@ -1198,7 +1336,10 @@ calendar and follow the revised voice.
   budget-variance scene or on "every department has a matter table",
   and let the reader feel the gap before the word arrives. The reader
   is experienced, so the build is short and the definition lands within
-  the first H2.
+  the first H2. The writer asked on 2026-09-22 that the definition and
+  its value come up front, so the word may arrive early, provided that
+  the scene or the gap comes first, and the passage that defines the
+  term also says why the ontology is high-value and foundational.
 - **The worked example carries the argument.** It should be the longest
   section and the most concrete, with typed outcomes and named entities
   and without abstractions. "200 matters" is a library motif; use it.
@@ -1236,14 +1377,16 @@ calendar and follow the revised voice.
   anything beyond what that vendor announced.
 - **Headings** are sentence-case statements. Candidate H2 set for the
   plan (merge where two need only a paragraph): *Every department has
-  a matter table, and few hold the relationships*; *The relationships
-  are the asset*; *Actions belong on entities, and each carries a
-  gate*; *Business intelligence and the ontology read the same record*;
-  *AI has lowered the cost of the model and raised its value*; *A legal
-  ontology carries rules that generic models lack*; *The build starts
-  from a decision*; *Open interfaces make the model practical*; *An
-  owned model makes building safe*; *An AI model can be replaced
-  through configuration, and the ontology belongs to the department*.
+  a matter table, and few hold the relationships*; *A system of record
+  holds one dimension of the work, and the ontology holds the context
+  across all of them*; *The relationships are the asset*; *Actions
+  belong on entities, and each carries a gate*; *Business intelligence
+  and the ontology read the same record*; *AI has lowered the cost of
+  the model and raised its value*; *A legal ontology carries rules
+  that generic models lack*; *The build starts from a decision*; *Open
+  interfaces make the model practical*; *An owned model makes building
+  safe*; *An AI model can be replaced through configuration, and the
+  ontology belongs to the department*.
 - **Images.** Hero SVG (below) plus one supporting diagram of the entity
   spine and example relationships. Both are abstract and in the
   visual-identity palette, and neither is a product screenshot.
@@ -1355,31 +1498,41 @@ from the display-date rule that governs the rest of the brief.
   `content-platform/campaigns/2026-06-legal-operations-intelligence.md`
   (GitHub milestone "2026-06 Legal Operations Intelligence", number 5).
   The frontmatter carries `campaign: 2026-06-legal-operations-intelligence`.
-- [ ] **Argument / take**: largely resolved by the writer's feedback
-  (the three beliefs and the nine arguments in `idea.md`). Confirm at
-  brief time that the reworded beliefs in §Angle are the take. Confirm
-  as well, at brief sign-off, that Anthropic, iManage, Thomson Reuters,
-  LawVu, LexisNexis, and the connectors that Anthropic describes may be
-  named in this piece under the series naming decision, because the
-  writer's literal round-two answer for this piece was "can name
-  Microsoft; otherwise keep the frame generic".
-- [ ] **Fact, observation, and inference as public vocabulary**: used in
-  internal doctrine; the research library does not settle it, and no
-  round of feedback has addressed it. Recommendation: keep the three
-  words, because the worked example depends on them and they are plain
-  English.
-- [ ] **Title**: "The Legal Operations Intelligence Ontology" is the
-  series title, and the brief adopts it. The v1 title, "What an
-  ontology does for legal operations", is the alternative if the writer
-  prefers a statement of benefit.
-- [ ] **External figures**: partly resolved by the research library.
-  Every row in the evidence tables carries a status. The items that
-  still carry the marker in this brief (the iManage chief executive's
-  quotation, the Thomson Reuters phrasing, the CLOC roundtable reading,
-  the BI gap-track findings, the Forrester post, the GraphRAG and
-  Sequeda papers, the dbt benchmark, the Callander articles, the MCP
-  origin sentence, and the glossary definitions if quoted) are checked
-  before the draft cites them, or the draft does without them. This can
-  wait for the polish gate.
-- [ ] **`posted`**: the real publish date, set when the piece is
-  scheduled.
+- [x] **Argument / take**: resolved by the writer's brief feedback of
+  2026-09-22 ("follow feedback"). The beliefs in §Angle are re-shaped
+  by that feedback: the definition-led thesis stated directly, the
+  contrast with systems of record as a belief of its own, and the
+  comprehensive context as what the ontology holds. The naming
+  question follows the series naming decision of 2026-09-21: vendors
+  may be named neutrally and with a source, so Anthropic, iManage,
+  Thomson Reuters, LawVu, LexisNexis, and the connectors that
+  Anthropic describes may be named; Microsoft may be named; the two
+  "context graph" providers and the unnamed platform vendor are not.
+- [x] **Fact, observation, and inference as public vocabulary**: the
+  writer confirmed on 2026-09-22 ("yes keep this terminology"). The
+  three words are public vocabulary, the marker on the Must include
+  bullet is removed, and the worked example uses them as planned.
+- [x] **Title**: "The Legal Operations Intelligence Ontology" is the
+  series title, and the writer left it as adopted on 2026-09-22. The
+  v1 title, "What an ontology does for legal operations", is no longer
+  under consideration.
+- [x] **External figures**: the writer answered on 2026-09-22 ("follow
+  what provided in research; refine based on final draft requirements;
+  no specific reference required if not available"). The draft uses
+  the research library as provided and refines at the draft and polish
+  gates; where a specific reference is not available, the point is
+  presented as the article's own observation, without a citation and
+  without a number that would need one. The individual markers on the
+  source entries stay (the iManage chief executive's quotation, the
+  Thomson Reuters phrasing, the CLOC roundtable reading, the BI
+  gap-track findings, the Forrester post, the GraphRAG and Sequeda
+  papers, the dbt benchmark, the Callander articles, the MCP origin
+  sentence, and the glossary definitions if quoted), because they tell
+  the polish gate what to check on any figure or quotation the draft
+  does print.
+- [x] **`posted`**: follows the campaign schedule (writer, 2026-09-22).
+  The article publishes in push week 3, on the Tuesday, of the
+  distribution sequence in
+  `content-platform/campaigns/2026-06-legal-operations-intelligence.md`;
+  the calendar date is entered when the push start date is set, which
+  is a scheduling step and not a writer decision.

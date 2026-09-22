@@ -32,24 +32,32 @@ argument is removed here, before drafting.
 The argument in three to five sentences. The first sentence is the
 thesis, and it should reappear almost unchanged in the opening.
 
-> We argue that business intelligence is the deterministic dimension of
-> legal operations intelligence, and that rising expectations now
-> require it to measure service, risk, and value alongside cost, to
-> answer on demand, and to feed the processes that AI orchestrates. Most
-> departments already run that layer for spend, and a department that
-> relies on AI for more of its work needs one layer in which the same
-> question always returns the same number. A governed measure is defined
-> once, computed the same way for every reader, traceable to the records
-> behind it, and defined over the same entities the ontology models, so
-> a matter, a request, and an outcome mean the same thing in a report,
-> in a workflow, and in an AI answer. The measure now has two consumers,
-> a person who reads it and decides and an automated process that uses
-> it as a trigger, a threshold, or a routing rule, and when a measure
-> triggers an action its definition and its currency matter more than
-> when it filled a chart. A department that governs its measures before
-> they start triggering actions can let AI take on more of its work, and
-> one that does not will find actions recorded against numbers that
-> nobody can reproduce.
+> Business intelligence is the deterministic dimension of legal
+> operations intelligence, a capability co-equal with AI within the
+> platform, because legal decision making and legal operations require
+> exact, repeatable outputs that a probabilistic system cannot supply;
+> rising expectations now require it to measure service, risk, and
+> value alongside cost, to answer on demand, and to feed the processes
+> that AI orchestrates. Most departments already run that layer for
+> spend, and a department that relies on AI for more of its work needs
+> one layer in which the same question always returns the same number.
+> A governed measure is defined once, computed the same way for every
+> reader, traceable to the records behind it, and defined over the same
+> entities the ontology models, so a matter, a request, and an outcome
+> mean the same thing in a report, in a workflow, and in an AI answer.
+> The measure now has two consumers, a person who reads it and decides
+> and an automated process that uses it as a trigger, a threshold, or a
+> routing rule, and when a measure triggers an action its definition
+> and its currency matter more than when it filled a chart, because the
+> requirement for an exact output is then absolute. A department that
+> governs its measures before they start triggering actions can let AI
+> take on more of its work, and one that does not will find actions
+> recorded against numbers that nobody can reproduce.
+
+The thesis carries no framing phrase, because it describes a change
+already under way in the field (`voice/style-guide.md` section 3;
+writer, 2026-09-22). The draft may print it as two consecutive
+sentences, split at the semicolon, with the same content.
 
 ## Sections
 
@@ -176,10 +184,12 @@ previews a count that the H3 labels then deliver in order.
   programming covers, alongside prompt engineering and agentic AI
   (CCBJ, 2025-08-06; E25, wording confirmed). CLOC's Compass maturity
   tool, launched in May 2026 (2026-05-12), assesses Business
-  Intelligence as one of its twelve modules (E21; print the module fact
-  only, and keep the four stage names out until a fact-checker
-  re-verifies them). Treat BI with the same seriousness as financial
-  management or vendor management.
+  Intelligence as one of its twelve modules (E21; print the module
+  fact; the four stage names may be named only if the draft finds them
+  helpful and a fact-checker re-verifies them first, and otherwise the
+  passage refers to Compass without naming its stages, per the writer's
+  answer of 2026-09-22). Treat BI with the same seriousness as
+  financial management or vendor management.
 - **Exhibit:** none.
 - **Cross-link:** [article 2](/why-spaarke/building-the-legal-operations-intelligence-platform)
   where the piece first names the platform, and
@@ -299,14 +309,28 @@ previews a count that the H3 labels then deliver in order.
   behind it. Spend against budget, cycle time, and matter counts are
   calculated from the records by the governed measure, and when an
   assistant or an agent needs such a number it calls that measure
-  instead of estimating the figure with a language model. This is the
-  central claim.
+  instead of estimating the figure with a language model. The section
+  also states, as the article's own position and without a citation,
+  that BI is a capability co-equal with AI within the platform, and it
+  gives the reason from legal decision making: a settlement authority,
+  a budget approval, a privilege call, and a regulatory deadline each
+  require an exact output, as do spend against budget, cycle time,
+  matter counts, and rate compliance, and a probabilistic system cannot
+  supply one. AI's probabilistic outputs have their place in
+  classification, extraction, summarization, and drafting, so the
+  platform carries both capabilities and ranks neither above the other.
+  "Co-equal" is the writer's word (2026-09-22), and the piece may use
+  it. This is the central claim.
 - **Evidence:** The earlier article's definitions: deterministic
   software computes the same answer from the same inputs on every run,
   generative AI predicts, and the most reliable patterns pair
   probabilistic surfacing with deterministic enforcement on the same
-  record. Outside support: Forrester, Boris Evelson (2026-07-23), tells
-  organizations to "treat semantic layers and context graphs not as
+  record. The co-equal statement and the list of decisions that need
+  an exact output are the article's own position and carry no source
+  (the series evidence standard presents a point without a confirmed
+  source as discussion). Outside support: Forrester, Boris Evelson
+  (2026-07-23), tells organizations to "treat semantic layers and
+  context graphs not as
   analytics features but as enterprise infrastructure for data,
   analytics, and AI" (R4, wording confirmed). Axiom's 2026 In-House
   Legal AI Report (2026-06-29; n=528 in-house legal leaders, six
@@ -325,8 +349,9 @@ previews a count that the H3 labels then deliver in order.
   consistency and does not use the word in the April 2025 or June 2026
   posts (T3); the July and August 2026 posts (R4 and R5) were not
   checked for the term, so the caveat covers the two checked posts
-  unless the check under Open questions is done first
-  (**TBD — confirm**). Second, natural-language layers differ in how
+  unless the check, which the writer approved on 2026-09-22 for the
+  polish gate, is done first (**TBD — confirm**). Second,
+  natural-language layers differ in how
   strictly they keep to governed measures: some only call them, while
   Microsoft's Power BI Copilot documentation says it "uses the measures
   and other data fields in your semantic model (or even creates new DAX
@@ -356,7 +381,10 @@ previews a count that the H3 labels then deliver in order.
   interpreted, and the argument does not rest on them. Three real
   quotations carry contrast constructions in the speakers' own words;
   the piece's own prose states positive claims. No positioning against
-  a named vendor.
+  a named vendor. The section never frames BI as a lesser or
+  transitional capability that AI will absorb, or as a stage on the
+  way to AI; BI and AI are co-equal within the platform, and the piece
+  says so (brief, Must NOT include; writer, 2026-09-22).
 
 ### Section 7: Measures and actions share one entity model
 
@@ -409,8 +437,10 @@ previews a count that the H3 labels then deliver in order.
 - **Claim:** A person reads the measure and decides, and an automated
   process uses it as a trigger, a threshold, or a routing rule. When a
   measure triggers an action, its definition and its currency matter
-  more than when it fills a chart, which is the practical case for
-  Section 6.
+  more than when it fills a chart, and the requirement for an exact
+  output is absolute, which is the practical case for Section 6 and
+  the practical form of the co-equal point made there. One sentence
+  states that consequence, as the article's own position.
 - **Evidence:** The May 2026 announcements, cited as dated market facts
   about what vendors announced, with no evidence of results, and
   limited to the ones that carry the argument: Wolters Kluwer's Invoice
@@ -534,7 +564,13 @@ previews a count that the H3 labels then deliver in order.
   by fewer than one in five departments (E1, E5), and 28% of teams
   track time to resolution (R1). The example is a labeled illustrative
   composite, accepted by the writer, anchored on those public numbers
-  and on the Gartner forecast (E14, labeled as a forecast). One
+  and on the Gartner forecast (E14, labeled as a forecast). The
+  writer's answer of 2026-09-22 allows an ACC Value Champions intake
+  case (Analog Devices, 2026, or Pearson, 2020), if a browser check
+  finds one dated before 2026-09-01, to replace the composite at the
+  plan stage; no such check has been made as of this revision, so the
+  composite stands, and a case found later may still replace it only
+  with the writer's agreement and with its date confirmed. One
   sentence may note that no association framework treats intake as a
   function of its own (T11; in ACC's model, intake and triage appear
   only as a maturity marker inside Internal Resources Management and
@@ -588,7 +624,8 @@ previews a count that the H3 labels then deliver in order.
   of record capabilities and ontology architecture over the systems a
   department already runs, so BI measures can be defined over records
   that Spaarke holds and over records that a third-party system holds
-  (exact wording confirmed at brief sign-off; **TBD — confirm**). The
+  (the writer confirmed the wording and the one-reference limit on
+  2026-09-22). The
   sentence on article 5: knowledge management supplies the context that
   AI needs, in the same way that BI supplies the exact numbers; article
   5 is named in prose and linked only from the series-navigation block.
@@ -639,20 +676,25 @@ articles 1 and 2 are not yet planned, so check them at draft time).
   (one clause; the May 2026 announcements are held for Section 8). The
   spend report answers none of those questions on its own. About 70 to
   90 words.
-- **¶3, frame:** the thesis, in the sentence from the brief's Angle:
-  *We argue that business intelligence (BI) is the deterministic
-  dimension of legal operations intelligence, and that rising
+- **¶3, frame:** the thesis, in the sentence from the brief's Angle
+  and with no framing phrase: *Business intelligence (BI) is the
+  deterministic dimension of legal operations intelligence, a
+  capability co-equal with AI within the platform, because legal
+  decision making and legal operations require exact, repeatable
+  outputs that a probabilistic system cannot supply; rising
   expectations now require it to measure service, risk, and value
   alongside cost, to answer on demand, and to feed the processes that
-  AI orchestrates.* Then its reason: *A department that relies on AI
-  for more of its work needs one layer in which the same question
-  always returns the same number, and most departments already run
-  that layer for spend.* Link
+  AI orchestrates.* The draft may print it as two consecutive
+  sentences, split at the semicolon, with the same content. Then its
+  reason: *A department that relies on AI for more of its work needs
+  one layer in which the same question always returns the same number,
+  and most departments already run that layer for spend.* Link
   [Legal AI Is Not Deterministic](/why-spaarke/probabilistic-vs-deterministic)
   on this first naming of the deterministic dimension. The piece has no
   counted framework at the top level, so no preview is required; the
   writer may add one sentence that names what the sections establish.
-  About 60 to 80 words, which keeps the whole opening under 250.
+  About 80 to 100 words, which keeps the whole opening under 250 if ¶1
+  and ¶2 stay near the low end of their ranges.
 
 Rules for the opening: do not open with a definition of BI; do not
 compare legal with finance, sales, or any other function; no series
@@ -722,10 +764,10 @@ external number is attributed in the sentence that carries it.
 - [ ] "captured by less than 20% of respondent legal departments" and "tracking metrics related nearly exclusively to cost and to a lesser extent, efficiency" (E5; confirmed, wording seen verbatim) (source: same PDF; the same wording appears in [Zach Warren's analysis, 2025-10-08](https://www.thomsonreuters.com/en-us/posts/corporates/2025-ldo-index-legal-success-metrics/))
 - [ ] 86% of general counsel say the department contributes significantly to organizational objectives; 17% of C-suite respondents agree; 42% "a little" or "not at all"; the "visibility gap" (E6; corrected, headline figures confirmed) (source: [Thomson Reuters 2026 State of the Corporate Law Department](https://www.thomsonreuters.com/en/institute/reports/state-of-the-corporate-law-department-report-2026); 2026-03-24; more than 2,300 general counsel interviews; C-suite sample not stated)
 - [ ] "institute metrics for success that translate to the rest of the business" (sentence begins "This also means that"); legal spend as a percentage of revenue; internal matter cycle time; technology as a strategic priority from 14% to 28% (E7; confirmed) (source: same report)
-- [ ] 68% of general counsel rate dialogue with business units as their most valuable source on emerging risks; 36% rate technology highly valuable for risk management (researcher-read, not fact-checked; optional; **TBD — confirm** before use) (source: same report)
-- [ ] 84% of CLOs report to the CEO; 79% almost always attend board meetings; 64% oversee compliance; 62% oversee the corporate secretary function; 74% provide proactive strategic counsel; legal expertise "integrated into business planning during the inception of projects rather than at the point of crisis" (E9; confirmed; name no sponsor; the prior-year comparison is **TBD — confirm** and is not printed) (source: [2026 ACC Chief Legal Officers Survey, Key Findings](https://www.acc.com/sites/default/files/2026-01/2026-ACC-Chief-Legal-Officers-Survey-Key-Findings.pdf); January 2026; n=1,049 CLOs, 20 industries, 43 countries)
-- [ ] Shared enterprise funding of legal technology 29% overall (from 25% in 2024); 43% at US$5 billion to US$20 billion in revenue (from 29%); 45% at US$20 billion and above; 53% funded entirely within the legal budget (E10; confirmed) (source: TBD, a key-findings or press-release URL for the ACC and Major, Lindsey & Africa 2026 Law Department Management Benchmarking Report; the fact-checker read the full report PDF, which the piece does not cite; June 2026, exact day **TBD — confirm**; n=576 legal departments, 45 countries, fielded 2026-02-11 to 2026-04-17)
-- [ ] Eight lawyers per legal operations professional; legal spend at a median 0.43% of revenue; legal operations at about 5% of department staff; legal technology at a median 3% of legal spend (E11; confirmed; only the ratio is planned) (source: TBD, same key-findings or press-release URL)
+- [ ] 68% of general counsel rate dialogue with business units as their most valuable source on emerging risks; 36% rate technology highly valuable for risk management (researcher-read, not fact-checked; optional; **TBD — confirm** before use; the writer confirmed on 2026-09-22 that the draft cites neither until checked, or does without them) (source: same report)
+- [ ] 84% of CLOs report to the CEO; 79% almost always attend board meetings; 64% oversee compliance; 62% oversee the corporate secretary function; 74% provide proactive strategic counsel; legal expertise "integrated into business planning during the inception of projects rather than at the point of crisis" (E9; confirmed; name no sponsor; the prior-year comparison is **TBD — confirm** and is not printed until checked, per the writer's confirmation of 2026-09-22) (source: [2026 ACC Chief Legal Officers Survey, Key Findings](https://www.acc.com/sites/default/files/2026-01/2026-ACC-Chief-Legal-Officers-Survey-Key-Findings.pdf); January 2026; n=1,049 CLOs, 20 industries, 43 countries)
+- [ ] Shared enterprise funding of legal technology 29% overall (from 25% in 2024); 43% at US$5 billion to US$20 billion in revenue (from 29%); 45% at US$20 billion and above; 53% funded entirely within the legal budget (E10; confirmed) (source: TBD, a key-findings or press-release URL for the ACC and Major, Lindsey & Africa 2026 Law Department Management Benchmarking Report; the fact-checker read the full report PDF, which the piece does not cite; June 2026, exact day **TBD — confirm**; n=576 legal departments, 45 countries, fielded 2026-02-11 to 2026-04-17; the writer's rule of 2026-09-22 applies: if no key-findings or press-release URL can be confirmed, the figures are not printed and Section 5 makes the co-funding point as the article's own observation, without a number)
+- [ ] Eight lawyers per legal operations professional; legal spend at a median 0.43% of revenue; legal operations at about 5% of department staff; legal technology at a median 3% of legal spend (E11; confirmed; only the ratio is planned) (source: TBD, same key-findings or press-release URL; the same rule applies, and Section 10.3 does without the ratio if the URL cannot be confirmed)
 - [ ] 32% of departments expect lawyer headcount to increase, down from 42% (E12; confirmed, including the prior-year value from the Harbor release) (source: [CLOC 2026 State of the Industry release](https://cloc.org/newsdesk/cloc-releases-2026-state-of-the-industry-report-rising-legal-demand-outpaces-budget-and-staffing-growth-forcing-operational-shift/); 2026-03-02; 135 law departments, based on the 2025 Harbor Law Department Survey)
 - [ ] Metrics & Analytics definition "The system to collect, organize and use data to inform decision making and performance management"; Early "Uneven integrity/cleanliness of data"; Intermediate "Most metrics generated through manual synthesis of data from disparate systems"; Advanced leaders "directly access dashboards to filter data and answer questions" with a central data source and predictive analytics; intake and triage only as a maturity marker (E13, T11; confirmed) (source: [ACC Legal Operations Maturity Model 2.0](https://www.acc.com/sites/default/files/program-materials/upload/Legal-Opertaitons-Maturity-Model-2.0---ACC.pdf); cite as 2020)
 - [ ] By 2029, 60% of legal departments will use AI-driven intake systems that capture all requests and answer one-half without human intervention (E14; confirmed as a trade-press report; Gartner primary unverified; label as a forecast; do not print 2026-05-26) (source: [Lawyers Weekly, 2026-06-09](https://www.lawyersweekly.com.au/biglaw/44448-legal-tech-spending-set-to-double-by-2028-amid-ai-boom) and [SMBtech, 2026-05-27](https://smbtech.au/news/gartner-predicts-legal-tech-budgets-to-double-by-2028-as-ai-use-expands-across-legal-departments/))
@@ -733,8 +775,8 @@ external number is attributed in the sentence that carries it.
 - [ ] Wolters Kluwer: natural-language interrogation of invoices; the Invoice Review Agent "identifies non-compliant invoice line items and automatically implements adjustments", fully auditable and reversible (E16; confirmed) (source: [Wolters Kluwer press release](https://globalinstitute.cloc.org/wp-content/uploads/2026/05/Wolters-Kluwer-Press-Release.pdf); 2026-05-05)
 - [ ] Checkbox: AI Agent Actions create a populated matter and start a workflow; status from message activity so reporting separates "time spent by legal from time spent waiting on the business"; requests "answered instantly, escalated into a process, or routed to the right attorney" (E16, E17; confirmed) (source: [Checkbox press release](https://globalinstitute.cloc.org/wp-content/uploads/2026/05/Checkbox-Press-Release.pdf); 2026-05-11)
 - [ ] 83% of in-house teams cannot measure whether their AI spending is working; 7% have scaled AI (E18; confirmed; vendor research, name the sponsor) (source: [Axiom 2026 In-House Legal AI Report](https://www.axiomlaw.com/resources/articles/legal-ai-survey-report); 2026-06-29; n=528 in-house legal leaders, six countries, fielded March 2026 by InsightDynamo)
-- [ ] CLOC Compass assesses the twelve Core 12 functions, Business Intelligence among them; beta, members only, no aggregate findings (E21; confirmed by the round-two researcher; the four stage names are **TBD — confirm** and stay out) (source: [CLOC Compass launch release](https://cloc.org/newsdesk/cloc-launches-compass-an-interactive-platform-to-advance-legal-operations-maturity-in-partnership-with-neota-logic/) and [cloc.org/compass](https://cloc.org/compass/); 2026-05-12)
-- [ ] "Data-Driven Legal Department of the Year"; three winners (PayPal, Phillips 66, Total Quality Logistics); "The strongest entries demonstrated business outcomes backed by data." (E24; corrected in round two and confirmed on both pages; cite The Edge Room by publication name, byline **TBD — confirm**; 2025 awards only) (source: [The Edge Room, 2025-09-04](https://www.theedgeroom.com/2025/09/04/rllb-2025-awards-celebrating-excellence-in-legal-operations/) and the [RLLB awards page](https://rllb-2026.legalops.com/rllb-awards.html), undated)
+- [ ] CLOC Compass assesses the twelve Core 12 functions, Business Intelligence among them; beta, members only, no aggregate findings (E21; confirmed by the round-two researcher; the four stage names are **TBD — confirm** and appear only if the draft finds them helpful and they are verified first, otherwise Section 3 refers to Compass without naming its stages, per the writer's answer of 2026-09-22) (source: [CLOC Compass launch release](https://cloc.org/newsdesk/cloc-launches-compass-an-interactive-platform-to-advance-legal-operations-maturity-in-partnership-with-neota-logic/) and [cloc.org/compass](https://cloc.org/compass/); 2026-05-12)
+- [ ] "Data-Driven Legal Department of the Year"; three winners (PayPal, Phillips 66, Total Quality Logistics); "The strongest entries demonstrated business outcomes backed by data." (E24; corrected in round two and confirmed on both pages; cite The Edge Room by publication name, byline **TBD — confirm**, and the piece cites the publication without an author if the byline cannot be confirmed, per the writer's answer of 2026-09-22; 2025 awards only) (source: [The Edge Room, 2025-09-04](https://www.theedgeroom.com/2025/09/04/rllb-2025-awards-celebrating-excellence-in-legal-operations/) and the [RLLB awards page](https://rllb-2026.legalops.com/rllb-awards.html), undated)
 - [ ] Jeff Franke: LegalOps.com programming covers prompt engineering and agentic AI and "data and metrics" (E25; confirmed, list wording included) (source: [CCBJ interview by Kristin Calve](https://ccbjournal.com/articles/legal-ops-redefined-connie-brenton-jeff-franke-on-data-development-and-strategic-leadership); 2025-08-06)
 
 *BI technology, association text, and conference material (Table 2).*
@@ -757,21 +799,21 @@ external number is attributed in the sentence that carries it.
 - [ ] CLOC Core 12 Business Intelligence: "Make better decisions through data"; framework revised 2020-04-07; the "minimal use" sentence is not adopted (T10; confirmed) (source: [Core 12](https://cloc.org/cloc-core-12/), the [Business Intelligence page](https://cloc.org/cloc-core-12/business-intelligence-2/), and the [2020-04-07 release](https://cloc.org/newsdesk/cloc-announces-updates-to-its-core-12-functions-of-legal-operations/))
 - [ ] CLOC post-event release, 2026-05-15: Oyango Snell quotation; "nearly 2,400" attendees under a "More Than 2,300" headline (T14; confirmed; optional context) (source: [CLOC newsdesk](https://cloc.org/newsdesk/2026-cloc-global-institute-brings-more-than-2300/))
 - [ ] LegalOps.com reference model: "Performance Analysis" among 15 practice areas; unveiled at the first RLLB, October 2023; cite "as of August 2026" (T15; confirmed by inspection of the diagram; definitions member-gated) (source: [Reference Models page](https://www.legalops.com/reference-modal), undated, and [LawVision, 2023-10-30](https://lawvision.com/the-inaugural-rllb/), an affiliated source)
-- [ ] ILTA 2025 Technology Survey: 57% resistance to change; 54% security or risk; 80% use or explore generative AI; 580 law firms (T16; researcher's fetch; the 54% figure read from a third-party mirror is **TBD — confirm** against ILTA's own copy; law-firm context only) (source: [ILTA release, 2025-09-16](https://www.iltanet.org/blogs/ilta-news1/2025/09/16/press-release-ilta-releases-2025-legal-technology))
+- [ ] ILTA 2025 Technology Survey: 57% resistance to change; 54% security or risk; 80% use or explore generative AI; 580 law firms (T16; researcher's fetch; the 54% figure read from a third-party mirror is **TBD — confirm** against ILTA's own copy, and if the copy cannot be reached the 54% figure is not printed, per the writer's answer of 2026-09-22; law-firm context only) (source: [ILTA release, 2025-09-16](https://www.iltanet.org/blogs/ilta-news1/2025/09/16/press-release-ilta-releases-2025-legal-technology))
 
 *Round-two additions usable at 2026-09-01 (Table 3).*
 
 - [ ] 83% track outside counsel spend; 28% time to resolution; 12% outside counsel performance; 9% impact on business outcomes (R1; confirmed) (source: [Everlaw press release, 2025-11-17](https://www.everlaw.com/press/release/gen-ai-accelerates-legal-work-acc-everlaw-survey/); n=284 CLOs, GCs, and legal operations professionals; cite as "ACC and Everlaw, November 2025, n=284", naming both sponsors)
 - [ ] Barriers to measurement: lack of time or resources 57%; data scattered across systems 50%; limited tools for automation 43%; difficulty aligning metrics with business priorities 29% (R2; confirmed) (source: [ACC Corporate Counsel Now, 2026-07-30](https://corporatecounselnow.com/your-legal-teams-data-infrastructure-ai-ready), Blake E. Garcia and Mauro Whiteman)
 - [ ] "56 per cent of legal departments anticipate a headcount freeze or reduction in 2026" (R3; confirmed; sample not stated; do not mix the article's two lists of themes) (source: [Lawyers Weekly, 2026-07-28](https://www.lawyersweekly.com.au/corporate-counsel/44730-5-forces-set-to-redefine-legal-departments-by-2030), Grace Robbie, reporting Gartner)
-- [ ] Forrester, 2026-07-23: "treat semantic layers and context graphs not as analytics features but as enterprise infrastructure for data, analytics, and AI"; agents "can deliver alerts when thresholds are crossed, anomalies emerge, trends shift, or opportunities arise" (R4; confirmed; not yet checked for the word "deterministic") (source: [Forrester blog, Boris Evelson](https://www.forrester.com/blogs/the-future-of-enterprise-data-consumption-is-multimodal-semantic-and-agentic/))
-- [ ] Forrester, 2026-08-20: a context layer that "combines business semantics and governance of semantic layers with the ontological modeling of knowledge graphs." (R5; confirmed; inside the window by twelve days; not yet checked for the word "deterministic") (source: [Forrester blog, Evelson and Bandyopadhyay](https://www.forrester.com/blogs/the-next-evolution-of-ai-will-rely-on-context-layers/))
+- [ ] Forrester, 2026-07-23: "treat semantic layers and context graphs not as analytics features but as enterprise infrastructure for data, analytics, and AI"; agents "can deliver alerts when thresholds are crossed, anomalies emerge, trends shift, or opportunities arise" (R4; confirmed; not yet checked for the word "deterministic"; the writer approved that check on 2026-09-22, and it runs at the polish gate) (source: [Forrester blog, Boris Evelson](https://www.forrester.com/blogs/the-future-of-enterprise-data-consumption-is-multimodal-semantic-and-agentic/))
+- [ ] Forrester, 2026-08-20: a context layer that "combines business semantics and governance of semantic layers with the ontological modeling of knowledge graphs." (R5; confirmed; inside the window by twelve days; not yet checked for the word "deterministic"; the same polish-gate check, approved 2026-09-22) (source: [Forrester blog, Evelson and Bandyopadhyay](https://www.forrester.com/blogs/the-next-evolution-of-ai-will-rely-on-context-layers/))
 - [ ] Looker Agentic Workflows, preview from 2026-07-29 (Looker 26.08 and later): "When a metric crosses your defined threshold, the background agent does more than send a basic notification. It can automatically run a Key Driver Analysis (KDA) across the underlying data model", delivered to Slack or email (R6; confirmed) (source: [Google Cloud blog, Indumathi Velusamy](https://cloud.google.com/blog/products/business-intelligence/looker-adds-agentic-workflows-for-data-monitoring-and-insights))
 - [ ] Brightflag MCP connector: answers "come from your actual Brightflag data, not estimates, not model-generated approximations."; page shows "Updated August 18, 2026" (R7; confirmed; medium confidence on the date; one attributed sentence; do not add "read-only") (source: [Brightflag](https://brightflag.com/resources/brightflag-mcp-connector/))
 - [ ] ILTACON 2026 (August 23 to 27, Nashville): 5,700 registrations as of the Wednesday; "everyone is MCP-ing, API-ing, or otherwise integrating with everyone else." (R9; confirmed; law-firm context only; keep ILTA's undated 5,780 figure in the research library) (source: [LawSites, Bob Ambrogi, 2026-08-28](https://www.lawnext.com/2026/08/have-we-reached-peak-legal-tech-sure-felt-that-way-at-iltacon-this-week.html))
 - [ ] James Ding: "The point is not data science. The point is better decision-making." (R10; confirmed; written by vendor staff acting as correspondent; optional law-firm context) (source: [Artificial Lawyer, 2026-08-27](https://www.artificiallawyer.com/2026/08/27/iltacon-2026-day-three-briefing/))
 
-*Optional rows the plan does not place (listed so the draft cites none of them by accident).* E19 (FTI Technology and Relativity, 2026-03-11, vendor-sponsored), E20 (Axiom budgeting report, 2025-09-08; the 18-point figure only, and only if the authority gap is used), E22 (EY 2025; **TBD — confirm**; Section 11 only), E23 (Blickstein via Integreon; **TBD — confirm**), T8 (Power BI and Fabric user counts; say nothing about legal departments), T9 (Gartner Magic Quadrant, existence only), T12 (CLOC Global Institute 2026 program; the plan does not name the Westpac session, whose title contains a do-not-say word), T13 (Harbor 2026 release; no methodology published), R8 (Gemini Enterprise for Legal; omitted), and the CCBJ ILTACON piece of 2026-08-31 (R10; law firms).
+*Optional rows the plan does not place (listed so the draft cites none of them by accident).* E19 (FTI Technology and Relativity, 2026-03-11, vendor-sponsored), E20 (Axiom budgeting report, 2025-09-08; the 18-point figure only, and only if the authority gap is used), E22 (EY 2025; **TBD — confirm**; Section 11 only), E23 (Blickstein via Integreon; **TBD — confirm**), both of which the writer confirmed on 2026-09-22 stay out until checked, T8 (Power BI and Fabric user counts; say nothing about legal departments), T9 (Gartner Magic Quadrant, existence only), T12 (CLOC Global Institute 2026 program; the plan does not name the Westpac session, whose title contains a do-not-say word), T13 (Harbor 2026 release; no methodology published), R8 (Gemini Enterprise for Legal; omitted), and the CCBJ ILTACON piece of 2026-08-31 (R10; law firms).
 
 *Internal links (every display date is earlier than 2026-09-01).*
 
@@ -827,38 +869,60 @@ paste-ready raster prompt, style preset, and generator notes are in
 
 ## Open questions before drafting
 
-Carried from the brief's Unresolved list (unchecked items) and from
-decisions the plan made that the writer may reverse. Schedule dates
-are the real calendar.
+Carried from the brief's Unresolved list and from decisions the plan
+made that the writer may reverse. The writer answered the brief's open
+items on 2026-09-22; each is carried here as resolved, with the
+answer, and the items that remain open are the plan's own. Schedule
+dates are the real calendar.
 
-- [ ] **The single Spaarke reference (Section 11):** confirm the exact
-  wording at brief sign-off, and confirm that one reference is the
-  limit for this piece as it was for article 3.
-- [ ] **Tags:** `function: finance` is included because Section 5
-  brings finance and procurement in as readers and Section 10.1
-  addresses the CFO's question; drop it at sign-off if the piece
-  should carry `operations`, `executive`, and `it` only.
-- [ ] **Browser checks the research tools could not make:** a
+- [x] **The single Spaarke reference (Section 11):** the writer
+  confirmed the wording (Spaarke provides both system of record
+  capabilities and ontology architecture over the systems a department
+  already runs, so BI measures can be defined over records in either)
+  and confirmed that one reference is the limit for this piece, as it
+  was for article 3 (2026-09-22).
+- [x] **Tags:** `function: finance` stays, because Section 5 brings
+  finance and procurement in as readers and Section 10.1 addresses the
+  CFO's question (writer, 2026-09-22).
+- [x] **Browser checks the research tools could not make:** a
   key-findings or press-release URL for the ACC and Major, Lindsey &
   Africa 2026 report (E10, E11; Sections 5 and 10.3); The Edge Room
   byline (E24; Section 1); the ACC Value Champions write-ups (Analog
   Devices, 2026; Pearson, 2020) for a named intake case dated before
-  the display date (Section 10.2, which otherwise stays a labeled
-  composite); ILTA's own copy of the 2025 executive summary for the
-  54% figure (T16, context only). The draft can proceed with the
-  markers in place, and the polish gate resolves them.
-- [ ] **Forrester R4 and R5 checked for the word "deterministic":**
-  until done, the first caveat in Section 6 covers only the April 2025
-  and June 2026 posts.
-- [ ] **CLOC Compass stage names (E21):** stay out of print until a
-  fact-checker re-verifies them; Section 3 prints the module fact only.
-- [ ] **Optional figures still carrying the marker:** the two Thomson
+  the display date (Section 10.2); ILTA's own copy of the 2025
+  executive summary for the 54% figure (T16, context only). The
+  writer's answer (2026-09-22): include if helpful to the article, and
+  no specific reference is required if one is not available. Each item
+  may be used where it helps the piece; where a reference cannot be
+  confirmed, the point is presented as the article's own observation,
+  without a citation and without a figure that would need one, and the
+  polish gate still checks any figure or quotation the draft prints. A
+  named intake case found and dated before the display date may
+  replace the composite in Section 10.2 at the plan stage; no such
+  case has been found as of this revision, so the composite stands.
+  The research pointers remain the record of where the material came
+  from, and the markers on these rows stay in Sources to verify until
+  the polish gate resolves them.
+- [x] **Forrester R4 and R5 checked for the word "deterministic":**
+  approved by the writer (2026-09-22). The check runs at the polish
+  gate, because it needs the two posts read in full; until it is done,
+  the first caveat in Section 6 covers only the April 2025 and June
+  2026 posts.
+- [x] **CLOC Compass stage names (E21):** the writer's answer
+  (2026-09-22) is to include them if helpful and otherwise omit them,
+  with no specific reference required. The stage names may be used if
+  the draft finds them helpful and they are verified first; otherwise
+  Section 3 refers to Compass without naming its stages.
+- [x] **Optional figures still carrying the marker:** the two Thomson
   Reuters 2026 risk figures (Section 9), EY 2025 (E22; Section 11
   only), Blickstein (E23; unplaced), and the ACC prior-year comparison
-  (E9). The draft cites none of them until checked, or does without
-  them.
-- [ ] **`posted`:** the real publish date, set when the piece is
-  scheduled; `date` stays 2026-09-01.
+  (E9). The writer confirmed the recommendation (2026-09-22): the draft
+  cites none of them until checked, or does without them.
+- [x] **`posted`:** follows the campaign schedule
+  (`content-platform/campaigns/2026-06-legal-operations-intelligence.md`,
+  "Distribution sequence"): push week 4, Tuesday, with the push start
+  date still to be set. Entering the date is a scheduling step, not a
+  writer decision (writer, 2026-09-22). `date` stays 2026-09-01.
 - [ ] **Exhibit 1 placement:** the plan cites it at the end of Section 7
   so that Section 8 opens on the branches it shows; the brief allows
   the citation to sit in Section 8 instead. Confirm, and confirm the

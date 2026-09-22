@@ -10,14 +10,14 @@ length_target: open                 # long-form article; the length is whatever 
 byline: spaarke                     # organizational byline, which the series decision keeps (voice/bylines.md section 1); the closing contact line names Ralph Schroeder, Founder and CEO (section 6)
 campaign: 2026-06-legal-operations-intelligence   # the series campaign (content-platform/campaigns/2026-06-legal-operations-intelligence.md; GitHub milestone "2026-06 Legal Operations Intelligence", number 5), which carries this article and its LinkedIn companions as assets
 github_issue: 82   # https://github.com/spaarke-dev/spaarke-website/issues/82 (created by content-pipeline, 2026-09-22)
-triggered_by: idea.md rev. 4 (2026-09-21, writer feedback applied; display date and contact line settled 2026-09-22)
+triggered_by: idea.md rev. 4 (2026-09-21, writer feedback applied; display date and contact line settled 2026-09-22); writer's brief feedback applied 2026-09-22
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
-title: "Building the Legal Operations Intelligence Platform"
-description: "A legal department builds its intelligence platform from legal's role in the company and the decisions it makes, and it adds the software and the AI last."
-summary: "Legal departments are buying AI tools faster than they build what those tools connect to. The platform that makes the tools productive is the department's own process, people, and technology for bringing each decision, with its context, to whoever has the authority to make it."
+title: "How to Build the Legal Operations Intelligence Platform"
+description: "A legal operations intelligence platform combines the department's information with context from every system it runs and its own knowledge, and adds AI last."
+summary: "Legal departments are gaining experience with AI and improving its effectiveness where it makes sense. The platform that lets that experience accumulate, instead of resetting with each tool, is the process, people, and technology that bring each decision to the person with the authority to make it."
 date: 2026-07-14                    # display date
-posted: "**TBD — confirm**"         # the real publish date, set when the piece is scheduled
+posted: "**TBD — confirm**"         # the real publish date: push week 2 Tuesday of the campaign's distribution sequence, entered when the push start date is set (writer, 2026-09-22)
 author: "Spaarke Team"
 tags:
   organization: [corporate-legal]
@@ -29,10 +29,11 @@ heroImagePosition: "center"
 draft: true
 keyTakeaways:
   - A legal operations intelligence platform is the department's capability, across process, people, and technology, to consolidate information and bring each decision to the person who has the authority to make it.
-  - The build starts from legal's role in the company and from the decisions the business needs from it; a platform designed without that understanding optimizes the department for itself.
+  - What sets the platform apart is that it combines data and information with context, in two ways: by integrating information from every system the department runs and by augmenting it with the organization's own knowledge. A single system of record cannot supply that context, because its data model bounds what it can hold.
+  - The build starts from legal's role in the company and from the decisions the business needs from it, and process and ownership are defined before the technology that carries them out, because software can enforce an approval rule only after someone has decided who approves what.
   - The practical test is whether the loop from insight to action to recorded outcome closes inside one governed environment and leaves a record of each decision linked to the information behind it.
-  - Software can enforce an approval rule only after someone has decided who approves what, so process and ownership are defined before the technology that carries them out.
   - AI is added last and works through the same governed actions and permissions as people; the entity model, the actions, and the decision record carry over when the department changes its AI model.
+  - The foundation of the platform is an ontology, a model of the department's entities and of the actions it may take on them, built from a deep understanding of its processes and its people. It gives multidimensional insight across the systems of record and provides the actions, inquiries, policies, typed outputs, and governance the platform runs on.
 ---
 
 # Topic
@@ -54,23 +55,23 @@ person who has the authority to make it. Article 1 of the series,
 [The New Mandate for Legal Operations](/why-spaarke/managing-legal-operations),
 defines the function and its working scope. This piece explains the
 platform that function runs on and the order in which a department
-builds it, and it closes by naming the foundation that holds the
-platform together, which article 3 develops.
+builds it, and it introduces the foundation that holds the platform
+together in its final section, which article 3 develops.
 
 # Angle / Point of view
 
 [The AI Readiness Gap in Legal Departments](/why-spaarke/the-ai-readiness-gap)
 argued that the tool is rarely the bottleneck. This piece says what the
 department has to build instead, and in what order. The thesis, in the
-single sentence that will appear in the opening: *We argue that a legal
-operations intelligence platform is the department's own capability,
-across process, people, and technology, to consolidate information from
-every source and bring each decision, with the context it needs, to
-the person who has the authority to make it.* The sentence that follows
+single sentence that will appear in the opening: *A legal operations
+intelligence platform is the department's own capability, across
+process, people, and technology, to consolidate information from every
+source and bring each decision, with the context it needs, to the
+person who has the authority to make it.* The sentence that follows
 gives the method: *A department builds that capability by starting from
 legal's role in the company and from the decisions it makes, and it
 adds software and AI models once that foundation is in place.* The
-reader should walk away holding four beliefs:
+reader should walk away holding five beliefs:
 
 1. **The build starts from legal's role in the company.** Legal
    supplies strategic input (risk appetite, market entry, M&A,
@@ -80,7 +81,23 @@ reader should walk away holding four beliefs:
    department for itself. This belief distinguishes the piece from the
    usual "people, process, technology" treatment, and the diagram
    belongs here.
-2. **The platform is organized around decisions, and the test is a
+2. **The platform combines data and information with context, and
+   that is what sets it apart.** The definition the article carries
+   (the platform consolidates information from all sources and
+   provides the relevant context) has two halves, and the second is
+   the differentiator. Context comes from two sources, and the
+   platform needs both: integration, which brings the information from
+   every system the department runs into one view, so that a matter is
+   seen with its documents, its invoices, its communications, and its
+   people; and augmentation with the organization's own knowledge,
+   meaning its policies, its playbooks, its precedents, its history,
+   and the decisions it has made before. A single system of record
+   cannot supply the context, because its data model bounds what it
+   can hold, and what never fit a field is invisible to it. Article 5
+   develops organizational knowledge as context and article 3 develops
+   the model that holds the context; this piece states the
+   differentiator and moves on.
+3. **The platform is organized around decisions, and the test is a
    closed loop.** Data is one ingredient of a decision, together with
    the reasoning applied, the action taken, and the controls that
    govern it. In a reporting environment a person reads a figure and
@@ -94,13 +111,18 @@ reader should walk away holding four beliefs:
    the source of truth for their data, or it may supply system of
    record capabilities where the department lacks them, and the article
    presents neither mode as the rule.
-3. **Process and ownership come before the technology that carries
+4. **Process and ownership come before the technology that carries
    them.** Software can enforce an approval rule only after someone has
    decided who approves what. Technology is the part of the platform a
    department can point to and the part a provider can supply, and it
    delivers consolidation, governed actions, and the decision record
-   only once the processes and the roles are defined.
-4. **Decisions become data, and AI comes last.** Every governed action
+   only once the processes and the roles are defined. The foundation
+   the technology instantiates is the model of the department's
+   entities and of the actions it may take on them, which this piece
+   introduces in its final section and article 3 develops; that model
+   has to be built from a deep understanding of the department's
+   processes and its people, which is a second reason they come first.
+5. **Decisions become data, and AI comes last.** Every governed action
    is recorded, so the department gains a traceable history and
    material to learn from. AI sits as a layer over that record, works
    through the same governed actions and permissions as people, and
@@ -112,15 +134,22 @@ reader should walk away holding four beliefs:
 
 What Spaarke pushes back on is the treatment of the platform as a
 purchase. The evidence in the Why now section describes departments
-that own the tools and are still building the process, the roles, and
-the connected information that would make the tools productive. The
-piece also declines the either-or framing of consolidation: a
-department neither has to replace its document management system, its
-e-billing platform, or its business intelligence environment, nor has
-to accept that the platform can only be an overlay on systems that stay
-where they are. Business intelligence remains a core component of the
-platform, as its deterministic dimension, and nothing in this piece
-replaces it.
+that are gaining experience with AI, with governance in place and
+measurement as the next step, and as they gain that experience they
+are improving AI's effectiveness where it makes sense. The platform is
+what lets that experience accumulate and compound, in the process, the
+roles, and the connected information, instead of resetting with each
+tool the department adds. Nothing in the piece says or implies that AI
+has failed to show value or that departments are not getting a return.
+The pushback also applies to a single system of record standing in for
+the platform: no one system can supply the context, because its data
+model bounds what it can hold. The piece also declines the either-or
+framing of consolidation: a department neither has to replace its
+document management system, its e-billing platform, or its business
+intelligence environment, nor has to accept that the platform can only
+be an overlay on systems that stay where they are. Business
+intelligence remains a core component of the platform, as its
+deterministic dimension, and nothing in this piece replaces it.
 
 # Why now
 
@@ -128,30 +157,35 @@ Every bullet rests on evidence dated on or before 2026-07-13. The
 statuses come from the evidence section of `idea.md` and from
 `content-platform/research/2026-09-loi-series/DIGEST.md`.
 
-- **Departments are buying AI faster than they are building what it
-  connects to.** CLOC's 2026 State of the Industry report (released
-  2026-03-02; 135 departments in at least 15 industries, median
-  revenue US$13B; data from the 2025 Harbor Law Department Survey)
-  found that 85% of departments have a dedicated resource or committee
-  for AI oversight and that 80% name technology strategy as a legal
-  operations focus area. Both figures are confirmed. Axiom's 2026 Legal
-  AI Survey (articles page 2026-06-29, press release 2026-07-09; 528
-  in-house legal leaders in six countries, fielded March 2026 by
-  InsightDynamo, 77% from companies above US$1B) found that 7% have
-  scaled AI beyond pilots and that 83% cannot show whether last year's
-  AI spending paid off. Both figures are confirmed, Axiom is an
-  interested party, and the article says so. The 83% wording here is a
-  paraphrase: the articles page of 2026-06-29 says that 83% "cannot
-  measure whether their AI spending is working", and "last year's
-  spending paid off" is the researcher's summary of the release of
-  2026-07-09, confirmed for the number and not as a quotation. The
-  draft uses the wording of whichever page it cites and confirms the
-  release wording against the release before quoting it. Chris
-  Frickland, Axiom's
-  VP of AI Solutions, put the point this way: "The technology is not
-  the hard part. The layer around it is where value either shows up or
-  it doesn't." The quotation is confirmed exact, and the fact-checker
-  corrected the speaker.
+- **Departments are early on the AI learning curve, with governance in
+  place and measurement as the next step.** CLOC's 2026 State of the
+  Industry report (released 2026-03-02; 135 departments in at least 15
+  industries, median revenue US$13B; data from the 2025 Harbor Law
+  Department Survey) found that 85% of departments have a dedicated
+  resource or committee for AI oversight and that 80% name technology
+  strategy as a legal operations focus area. Both figures are
+  confirmed, and together they show the governance step taken. Axiom's
+  2026 Legal AI Survey (articles page 2026-06-29, press release
+  2026-07-09; 528 in-house legal leaders in six countries, fielded
+  March 2026 by InsightDynamo, 77% from companies above US$1B) found
+  that 7% have scaled AI beyond pilots and that 83% "cannot measure
+  whether their AI spending is working", in the wording of the articles
+  page of 2026-06-29. Both figures are confirmed, Axiom is an interested
+  party, and the article says so. The two Axiom figures describe where
+  departments are on the curve (most have not scaled AI beyond pilots)
+  and the measurement step ahead of them (most cannot yet measure
+  whether their AI spending is working), and the article uses them for
+  that and never as a verdict that AI is not paying off; the earlier
+  paraphrase of the release is dropped, and the draft prints the
+  articles-page wording.
+  Departments are gaining experience, and as they gain it they are
+  improving AI's effectiveness where it makes sense; the measurement
+  step is what lets them see where that is. Chris Frickland, Axiom's VP
+  of AI Solutions, put the point this way: "The technology is not the
+  hard part. The layer around it is where value either shows up or it
+  doesn't." The quotation is confirmed exact, the fact-checker
+  corrected the speaker, and it stays because it locates value in the
+  layer around the technology, which is the platform.
 - **The conversation has moved from adoption to governance and
   evidence.** At CLOC Global Institute 2026 (May 11 to 14, Chicago;
   nearly 2,400 attendees), CLOC's Oyango Snell said: "The AI
@@ -212,15 +246,23 @@ section, in the evidence section of `idea.md`, and in the research
 digest.
 
 - **A concrete opening that states the thesis within 250 words.** The
-  situation is a department that has bought its AI tools and set up its
-  governance committee, which the CLOC figures describe. The
-  complication is the Axiom finding that 7% have scaled and 83% cannot
-  show payoff, with the Frickland sentence as the one quotation. The
-  answer is the thesis and the method sentence from the Angle. Within
-  the same opening the article states its reading of "platform": the
-  department's capabilities across process, people, and technology,
-  with technology as the tangible instantiation; the word also names
-  the technology a provider supplies, and the two uses sit together.
+  situation is a department that has bought its AI tools, set up its
+  governance committee, which the CLOC figures describe, and gained
+  experience with the tools since. The complication is that the
+  experience is accumulating in people and in email rather than in
+  anything the next tool can build on, and that the measurement that
+  would tell the department where AI is working is still ahead of it.
+  The draft states where the experience lives as a positive claim in a
+  full sentence (the analysts who ran the pilots hold it, and the email
+  threads record it) and never lifts the contrast as a tagline. The
+  Axiom figures may describe that position on the curve, in the
+  articles-page wording, and the Frickland sentence is the one
+  quotation. The answer is the thesis and the method sentence from the
+  Angle. Within the same opening the article states its reading of
+  "platform": the department's capabilities across process, people, and
+  technology, with technology as the tangible instantiation; the word
+  also names the technology a provider supplies, and the two uses sit
+  together.
   The opening names no provider, and Spaarke's one appearance is the
   late sentence in the technology section. Link
   [What Is Legal Operations Intelligence?](/why-spaarke/what-is-legal-operations-intelligence)
@@ -261,13 +303,44 @@ digest.
   the mandate rather than as a scope item. Data is one ingredient of a
   decision, together with the reasoning applied, the action taken, and
   the controls that govern it; the article states the four ingredients
-  in a sentence and never as a fixed formula. The platform is judged by
-  whether decisions in those areas become easier to make well and
+  in a sentence and never as a fixed formula. The differentiator, in a
+  sentence the reader can carry: *what sets a legal operations
+  intelligence platform apart is that it combines data and information
+  with context.* The section says what context means here: the
+  relationships among the records (the matter behind the invoice, the
+  engagement terms behind the rate, the people responsible for each),
+  the organization's own knowledge (its policies, playbooks,
+  precedents, and history), and the record of what the department
+  decided before in similar situations. Context comes from two sources,
+  and the platform needs both: integration across the systems the
+  department runs, which brings the related records into one view, and
+  augmentation with organizational knowledge, which supplies what no
+  system of record captures. Article 5 develops organizational
+  knowledge as context and article 3 develops the model that holds the
+  context; both are reached through the series-navigation block, and
+  this section names them in a sentence each. The platform is judged
+  by whether decisions in those areas become easier to make well and
   easier to carry out.
+- **A single system of record sees one dimension.** Stated as the
+  article's own observation, with no citation and no vendor named. The
+  systems of record a department runs (matter management, contract
+  lifecycle management, document management, e-billing) each provide
+  one-dimensional insight, because each is limited by its own data
+  model: if the system has no field to capture a piece of information,
+  that information is not available to it, and what the department
+  knows about a matter that never fit a field lives in email, in
+  documents, and in people. The point concerns the data model of any
+  single system, and it applies to Spaarke's own system of record
+  capabilities as much as to any vendor's, which keeps it consistent
+  with the both-modes positioning; the passage disparages no product
+  category and names no product. It leads directly into the
+  fragmentation premise: the information a decision needs sits across
+  several such systems, each seeing one dimension.
 - **The fragmentation premise, sized by its evidence.** The article
   states the premise as discussion: matters, invoices, documents, and
-  communications live in separate systems, and the department
-  reconciles them by hand. The only fragmentation statistics it uses
+  communications live in separate systems, each seeing one dimension
+  of the same matter, and the department reconciles them by hand. The
+  only fragmentation statistics it uses
   are from the 2025 EY Law General Counsel Study (press release
   2025-04-09; 1,000 general counsel and chief legal officers at
   companies above US$1B in revenue, 21 countries): 52% of respondents
@@ -367,10 +440,11 @@ digest.
     the platform the department can point to, and the part a provider
     can supply. This is where the series' other subjects sit, and the
     article names them in one paragraph without developing them: the
-    ontology as the foundation (article 3), business intelligence as
-    the deterministic dimension (article 4), and knowledge management
-    as the context that AI needs (article 5), all reached through the
-    series-navigation block. Link
+    ontology as the foundation (article 3, and introduced in this
+    piece's final section), business intelligence as the deterministic
+    dimension (article 4), and knowledge management as the context that
+    AI needs (article 5), all reached through the series-navigation
+    block. Link
     [The UX That Legal IQ Requires](/why-spaarke/the-ux-that-legal-iq-requires)
     for the surfaces.
 - **What technology contributes, and what it depends on.** The
@@ -509,15 +583,32 @@ digest.
   are the parts that carry over when it does. The article names only
   these providers, makes no claim about how many frontier providers
   sell into legal, and does not write "one" or "several" of them.
-- **The close: one paragraph on the foundation, ending on
-  consequence.** What decides whether any of this holds together is a
-  shared model of the department's entities and of the actions that may
-  be taken on them, which is what makes information actionable. Name
-  the idea in a single paragraph, say that article 3 carries the detail,
-  and give no in-body link to it. The final sentence states what
-  follows for the reader: a decision about which operational decision
-  to model first, or the cost that grows while decisions keep being
-  made in email. No summary, no "Conclusion" heading, no pitch.
+- **The foundation: a short section that introduces the ontology.**
+  Candidate heading, in sentence case and stating the point: *The
+  foundation is a model of the department's entities and the actions
+  it may take on them*. The section introduces the ontology as the
+  foundation of the legal operations intelligence platform and says
+  what it provides. First, multidimensional insight across the systems
+  of record: the same matter seen through its documents, its invoices,
+  its communications, its obligations, and its people, because the
+  model holds the relationships that the single systems cannot. Second,
+  beyond insight, what the platform runs on: the actions the department
+  may take, the inquiries it can put to the model, the policies that
+  govern the actions, the typed outputs that actions and inquiries
+  produce, and the governance around all of it (who may act, under
+  which rule, with what record). The section states that the ontology
+  must be built with a deep understanding of the department's
+  processes and its people, which is why process and ownership come
+  before technology in this piece and why the build works backward
+  from decisions. It says that article 3 develops the ontology and
+  gives no in-body link to it (later display date); the
+  series-navigation block reaches it. The section develops none of the
+  ontology's internals, and the whole of it runs to a few paragraphs.
+- **The close: one paragraph, ending on consequence.** The close
+  follows the foundation section and returns to the reader. The final
+  sentence states what follows: a decision about which operational
+  decision to model first, or the cost that grows while decisions keep
+  being made in email. No summary, no "Conclusion" heading, no pitch.
 - **Series wiring.** One in-body link to article 1,
   [The New Mandate for Legal Operations](/why-spaarke/managing-legal-operations),
   where the working scope supports the definition; the article must
@@ -543,13 +634,19 @@ digest.
   appetite, market entry, M&A, regulatory posture, governance) and
   tactical input (contracts, disputes, employment questions, advice);
   arrows in, labelled requests and data; and, inside the legal box, the
-  three platform components (process, people, technology) if the
-  drawing stays legible. Original SVG in the visual-identity palette,
-  abstract, no product UI, no logos. Alt text: *Diagram of a legal
+  three platform components (process, people, technology). The writer's
+  direction (2026-09-22) is to follow whichever composition gives the
+  best visual, so the plan and the illustrator choose between the two
+  scopes (legal within the corporate structure alone, or with the
+  components inside the legal box) and the components appear only if
+  the drawing stays legible.
+  Original SVG in the visual-identity palette, abstract, no product UI,
+  no logos. Alt text, if the components are drawn: *Diagram of a legal
   department inside the corporate structure, with strategic and
   tactical input flowing out to the board and the business units,
   requests and data flowing in, and the department's process, people,
-  and technology shown inside the legal box.*
+  and technology shown inside the legal box.* If they are not, the alt
+  text ends after "flowing in".
 - **Exhibit 2, optional.** The closed loop of the running example:
   exception, context attached, decision in the queue, record against
   invoice, matter, and firm, write-back to the e-billing platform, and
@@ -622,6 +719,12 @@ digest.
 - **A prediction presented as a fact.** The Gartner figures and the
   Forrester position are predictions and analyst positions, cited as
   such and once each.
+- **An "AI is not delivering value" or "no return on AI" framing.**
+  The piece describes departments that are gaining experience with AI
+  and improving its effectiveness where it makes sense. The Axiom
+  figures describe where departments are on that curve and the
+  measurement step ahead of them, in Axiom's wording, and never a
+  verdict that AI has failed to pay off (writer, 2026-09-22).
 - **Anything dated on or after 2026-07-14, or a reference to a later
   event.** The held-out list in `idea.md` ("What date discipline means
   for this piece") is final: Forrester's posts of 2026-07-23 and
@@ -640,7 +743,10 @@ digest.
   article 4, so it is not used here.
 - **A knowledge management article, a business intelligence article, or
   an ontology article.** Those subjects belong to articles 5, 4, and 3.
-  This piece names each in a sentence or a paragraph and develops none.
+  This piece names knowledge management and business intelligence in a
+  sentence or a paragraph each. It introduces the ontology in one short
+  section, as the foundation of the platform and for what it provides,
+  and develops none of its internals; article 3 carries the detail.
 - **Demo call to action.** The close ends on consequence, and the
   contact line carries no offer.
 - **Do-not-say list items.** No `ecosystem`, `leverage`, `transform`,
@@ -792,12 +898,12 @@ is not cited until it is checked):
   (articles page 2026-06-29, press release 2026-07-09; 528 in-house
   legal leaders in six countries, fielded March 2026 by InsightDynamo;
   77% from companies above US$1B). Confirmed: 7% have scaled AI beyond
-  pilots; 83% cannot show whether last year's AI spending paid off
-  (paraphrased; the articles page reads "cannot measure whether their
-  AI spending is working", the "paid off" wording is the researcher's
-  summary of the release, and the draft uses the wording of the page it
-  cites, confirming the release wording first if it quotes the
-  release); 66% run general-purpose AI in its default configuration.
+  pilots; 83% "cannot measure whether their AI spending is working"
+  (the articles page's wording, which the draft prints; the
+  researcher's summary of the release is not used, by the writer's
+  direction of 2026-09-22); 66% run general-purpose AI in its default
+  configuration. The article uses the two figures to locate departments
+  on the learning curve and never as a verdict on AI's value.
   Corrected:
   the quotation "The technology is not the hard part. The layer around
   it is where value either shows up or it doesn't." is by Chris
@@ -992,8 +1098,9 @@ is not cited until it is checked):
   (2026-05-11). Researcher-read verbatim, writer waived the fact-check
   for article 1: "Technology is in place. The operating model has not
   kept up." (Kevin Clem). Sample size not disclosed; do not print
-  n=135 for this release. Optional here, as a vendor voice that
-  corroborates the Axiom finding.
+  n=135 for this release. Optional here, as a vendor voice on the layer
+  around the technology, consistent with the Frickland sentence and
+  never as a verdict on AI's value.
 
 *Fragmentation (table F).*
 
@@ -1156,7 +1263,10 @@ campaign file and the calendar and follow the revised voice.
 - **Headings** are sentence-case statements. Candidate H2 set for the
   plan (merge where two need only a paragraph): *Legal's role in the
   company sets what the platform must do*; *The platform is organized
-  around decisions, and data is one ingredient*; *The loop from insight
+  around decisions, and data is one ingredient*; *What sets the
+  platform apart is context, drawn from every system and from the
+  organization's own knowledge*; *A single system of record sees one
+  dimension of a matter*; *The loop from insight
   to action closes inside one governed environment*; *The platform
   knows who may decide and who may approve*; *Process determines
   what the department can record*; *People own the data, the process,
@@ -1165,7 +1275,9 @@ campaign file and the calendar and follow the revised voice.
   someone has decided it*; *Define the platform by writing each decision
   as one sentence*; *Build one decision at a time, and add AI last*;
   *Every decision becomes data the department can learn from*; *AI works
-  through the same actions and permissions as people*.
+  through the same actions and permissions as people*; *The foundation
+  is a model of the department's entities and the actions it may take
+  on them*.
 - **The running example carries the argument.** Invoice exception
   review, run twice, is the longest and most concrete section, with the
   named systems, the named records, and the typed outcome, and without
@@ -1256,7 +1368,14 @@ from the display-date rule that governs the rest of the brief.
   is set when the piece is scheduled.
 - [x] **Argument / take**: settled in `idea.md` rev. 4 (the ten
   arguments, restated here as four beliefs). The writer answered all
-  six rev. 3 questions on 2026-09-21.
+  six rev. 3 questions on 2026-09-21. On 2026-09-22 the writer's brief
+  feedback added a fifth belief (context as the differentiator, with
+  the one-dimensional limit of a single system of record), reframed
+  the evidence reading from departments buying tools to departments
+  gaining experience with AI, and expanded the close into a short
+  section that introduces the ontology as the foundation; all three
+  are applied in the Angle, Why now, Must include, Must NOT include,
+  and the frontmatter.
 - [x] **Primary audience**: `legal-ops-director`, with `legal-tech-cio`
   and `corporate-counsel` secondary (the series audience decision).
 - [x] **Campaign**: `2026-06-legal-operations-intelligence`, the single
@@ -1298,21 +1417,46 @@ from the display-date rule that governs the rest of the brief.
   is the only identifier.
 - [x] **Hero direction**: SVG per `voice/visual-identity.md` (the
   default applied).
-- [ ] **Title**: "Building the Legal Operations Intelligence Platform"
-  is the series title, and the brief adopts it. Confirm at brief
-  sign-off; no alternative is proposed.
-- [ ] **Exhibit 1 scope**: confirm whether the platform components
-  (process, people, technology) appear inside the legal box or the
-  diagram shows only legal within the corporate structure. The brief
-  includes them if the drawing stays legible.
-- [ ] **External figures still carrying the marker**: the publication
-  date of Deloitte's 2026 Predictions for Chief Legal Officers (or use
-  the copyright-year fallback with an access date); the EY 2025
-  figures (re-read the release); the Callander sentences; the
-  Dieudonne phrase; the ACC Maturity Model paraphrase (re-read page 3
-  of the PDF); whether the Foundation Capital essay and the two
-  counter-view pieces name the company behind the model section; and
-  any Law360 Pulse quotation before it is printed verbatim. These are
-  fact-check work for the polish gate and need no writer decision.
-- [ ] **`posted`**: the real publish date, set when the piece is
-  scheduled.
+- [x] **Title**: answered by the writer on 2026-09-22. The series
+  listing (the series tables in the idea files) now reads "The Legal
+  Operations Intelligence Platform", and the published title adopted in
+  this brief is "How to Build the Legal Operations Intelligence
+  Platform", the writer's own suggestion and the form HBR uses for a
+  method piece. The writer confirmed that title on 2026-09-22 over the
+  alternative the brief had offered ("What It Takes to Build the Legal
+  Operations Intelligence Platform"), so the title is settled. Link
+  texts across the series use the published title, and the slug and
+  URL do not change.
+- [x] **`description`**: decided in this brief on 2026-09-22. The
+  earlier sentence (the department builds the platform from legal's
+  role and its decisions, and adds the software and the AI last) is
+  replaced by one that names context as the differentiator and keeps
+  the build order, compressed to "adds AI last", in its closing clause,
+  within the meta-description length of about 155 characters. The
+  differentiator is the writer's key point for the piece and the
+  sentence a reader is least likely to have heard elsewhere, and the
+  full build order (legal's role and its decisions first, software and
+  AI last) still reaches the reader through the title, the third
+  takeaway, and the Angle's method sentence. The writer may restore
+  the earlier sentence at sign-off.
+- [x] **Exhibit 1 scope**: answered by the writer on 2026-09-22:
+  follow whichever approach gives the best visual. The plan and the
+  illustrator choose the composition that reads best, and the
+  components (process, people, technology) appear inside the legal box
+  only if the drawing stays legible. The Exhibit 1 bullet in Must
+  include records both scopes and both alt texts.
+- [x] **External figures still carrying the marker**: answered by the
+  writer on 2026-09-22: include if useful; no specific reference
+  required. Each item (the Deloitte publication date, the EY 2025
+  figures, the Callander sentences, the Dieudonne phrase, the ACC
+  Maturity Model paraphrase, the Foundation Capital question, and any
+  Law360 Pulse quotation) may be used where it helps the piece. Where a
+  specific reference cannot be confirmed, the point is presented as the
+  article's own observation, without a citation and without a number
+  that would need one, and the polish gate still checks any figure or
+  quotation the draft does print. The research pointers in References
+  stay as the record of where the material came from.
+- [x] **`posted`**: answered by the writer on 2026-09-22: follow the
+  schedule. The date follows the campaign's distribution sequence
+  (push week 2, Tuesday) and is entered when the push start date is
+  set; entering it is a scheduling step and needs no writer decision.

@@ -10,14 +10,14 @@ length_target: open                 # long-form article; the length is whatever 
 byline: spaarke                     # organizational byline, which the series decision keeps (voice/bylines.md section 1); the closing contact line names Ralph Schroeder, Founder and CEO (section 6)
 campaign: 2026-06-legal-operations-intelligence   # the series campaign (content-platform/campaigns/2026-06-legal-operations-intelligence.md; GitHub milestone "2026-06 Legal Operations Intelligence", number 5)
 github_issue: 80   # https://github.com/spaarke-dev/spaarke-website/issues/80 (created by content-pipeline, 2026-09-22)
-triggered_by: idea.md rev. 4 (2026-09-21; display date, contact line, and series campaign confirmed 2026-09-22)
+triggered_by: idea.md rev. 4 (2026-09-21; display date, contact line, and series campaign confirmed 2026-09-22); writer's brief feedback applied 2026-09-22
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
 title: "A Business Intelligence Approach to Legal Operations"
 description: "Legal departments already measure spend. Rising expectations now require governed measures of service, risk, and value, on demand and as inputs to automation."
-summary: "Most legal departments already report spend by law firm and matter type. The questions now reaching legal concern service, risk, and value, and the answers feed automated processes as well as people. This piece sets out what the department's business intelligence has to become."
+summary: "Most legal departments already report spend by law firm and matter type. The questions now reaching legal concern service, risk, and value, and the answers feed automated processes as well as people. Legal decision making requires exact outputs that a probabilistic system cannot supply, so business intelligence is a capability co-equal with AI within the platform. This piece sets out what the department's business intelligence has to become."
 date: 2026-09-01                    # display date
-posted: "**TBD — confirm**"         # the real publish date, set when the piece is scheduled
+posted: "**TBD — confirm**"         # the real publish date: push week 4 Tuesday of the campaign's distribution sequence, entered when the push start date is set (writer, 2026-09-22)
 author: "Spaarke Team"
 tags:
   organization: [corporate-legal]
@@ -29,7 +29,7 @@ heroImagePosition: "center"
 draft: true
 keyTakeaways:
   - Business intelligence is established in spend analytics: 62% of departments routinely report spend by law firm, while service, cycle time, and outcome measures are reported by fewer than one in five (Thomson Reuters, 2025).
-  - Business intelligence is the deterministic dimension of legal operations intelligence: a measure is defined once, governed, computed the same way for every reader, and traceable to the records behind it.
+  - Business intelligence is the deterministic dimension of legal operations intelligence and a capability co-equal with AI within the platform. Legal decision making and legal operations require exact outputs that a probabilistic system cannot supply, so a measure is defined once, governed, computed the same way for every reader, and traceable to the records behind it.
   - The audience for legal department information now includes the CEO and the board, finance and procurement, IT as co-funder of legal technology, and the business units that submit requests.
   - Measures now feed automated processes as well as people. When a measure triggers an action, its definition and its currency matter more than when it fills a chart.
   - Business intelligence measures are defined over the same entities the ontology models, so a matter, a request, and an outcome mean the same thing in a report, a workflow, and an AI answer.
@@ -38,8 +38,9 @@ keyTakeaways:
 # Topic
 
 Business intelligence (BI) as a core component of the Legal Operations
-Intelligence platform and as its deterministic dimension. The piece
-starts from maturity. Legal operations has built real BI capability
+Intelligence platform, as its deterministic dimension, and as a
+capability co-equal with AI within the platform. The piece starts
+from maturity. Legal operations has built real BI capability
 over the past few years, most visibly in spend analytics, and the piece
 explains what rising expectations now require of that capability.
 Those expectations run in four directions. Measures have to cover
@@ -66,14 +67,20 @@ the same inputs on every run, that generative AI predicts, and that the
 most reliable patterns pair probabilistic surfacing with deterministic
 enforcement on the same record. This piece names the layer of the
 platform that does the deterministic work. The thesis, in the single
-sentence that will appear in the opening: *We argue that business
-intelligence is the deterministic dimension of legal operations
-intelligence, and that rising expectations now require it to measure
-service, risk, and value alongside cost, to answer on demand, and to
-feed the processes that AI orchestrates.* The sentence that follows
-gives the reason: *A department that relies on AI for more of its work
-needs one layer in which the same question always returns the same
-number, and most departments already run that layer for spend.*
+sentence that will appear in the opening: *Business intelligence is
+the deterministic dimension of legal operations intelligence, a
+capability co-equal with AI within the platform, because legal
+decision making and legal operations require exact, repeatable
+outputs that a probabilistic system cannot supply; rising expectations
+now require it to measure service, risk, and value alongside cost, to
+answer on demand, and to feed the processes that AI orchestrates.* The
+sentence that follows gives the reason: *A department that relies on
+AI for more of its work needs one layer in which the same question
+always returns the same number, and most departments already run that
+layer for spend.* The draft may print the thesis as two consecutive
+sentences, split at the semicolon, with the same content. The thesis
+carries no framing phrase, because it describes a change already
+under way in the field (`voice/style-guide.md` section 3).
 
 The reader should walk away believing five things:
 
@@ -87,13 +94,21 @@ The reader should walk away believing five things:
    routinely reported by fewer than one in five departments (E1, E5).
    The piece presents this as maturity and rising expectations, and it
    compares legal with no other corporate function.
-2. **BI is a core component of the platform and its deterministic
-   dimension.** A BI measure is defined once, governed, computed the
-   same way for every reader, and traceable to the records behind it.
-   Spend against budget, cycle time, and matter counts are calculated
-   from the records by the governed measure, and when an assistant or
-   an agent needs such a number it calls the measure instead of
-   estimating the figure with a language model.
+2. **BI is a core component of the platform, its deterministic
+   dimension, and a capability co-equal with AI.** Legal decision
+   making (a settlement authority, a budget approval, a privilege
+   call, a regulatory deadline) and legal operations (spend against
+   budget, cycle time, matter counts, rate compliance) require exact,
+   deterministic outputs. A probabilistic system has its place in
+   classification, extraction, summarization, and drafting, so the
+   platform requires deterministic capabilities co-equal with AI, and
+   BI is where they live. A BI measure is defined once, governed,
+   computed the same way for every reader, and traceable to the
+   records behind it. Spend against budget, cycle time, and matter
+   counts are calculated from the records by the governed measure, and
+   when an assistant or an agent needs such a number it calls the
+   measure instead of estimating the figure with a language model.
+   "Co-equal" is the writer's word, and the piece may use it.
 3. **BI is aligned with the ontology, and neither replaces the
    other.** Measures are defined over the entities that article 3
    models, so "matter", "request", and "outcome" mean the same thing
@@ -104,8 +119,10 @@ The reader should walk away believing five things:
 4. **A measure now has two consumers.** A person reads it and decides,
    and an automated process uses it as a trigger, a threshold, or a
    routing rule. When a measure triggers an action, its definition and
-   its currency matter more than when it fills a chart, which is the
-   practical case for the deterministic dimension.
+   its currency matter more than when it fills a chart, and the
+   requirement for an exact output becomes absolute, which is the
+   practical case for the deterministic dimension and the practical
+   form of the co-equal point in belief 2.
 5. **BI is how the department identifies and manages risk.** Risk
    appears in operational data before it appears as an event: the
    matter type that keeps recurring, the business unit that generates
@@ -224,12 +241,15 @@ AI increases the value of a deterministic layer. Generative AI is
 probabilistic, as the library has already argued in "Legal AI Is Not
 Deterministic". A department that relies on AI for more of its work
 therefore needs one layer in which the same question always returns
-the same number. Axiom's 2026 survey (n=528 in-house legal leaders, vendor
-research, 2026-06-29) reports that 83% of in-house teams cannot
-measure whether their AI spending is working (E18), so the measurement
-of AI value is itself becoming a BI task. Forrester now tells
-organizations to "treat semantic layers and context graphs not as
-analytics features but as enterprise infrastructure for data,
+the same number. Legal decision making and legal operations require
+exact outputs of that kind, so the platform carries deterministic
+capabilities co-equal with AI, and BI supplies them (the article's own
+position; no citation). Axiom's 2026 survey (n=528 in-house legal
+leaders, vendor research, 2026-06-29) reports that 83% of in-house
+teams cannot measure whether their AI spending is working (E18), so
+the measurement of AI value is itself becoming a BI task. Forrester
+now tells organizations to "treat semantic layers and context graphs
+not as analytics features but as enterprise infrastructure for data,
 analytics, and AI" (2026-07-23; R4, wording confirmed).
 
 The field named BI as a core function long ago and now recognizes it in
@@ -341,8 +361,10 @@ sections where each needs only a paragraph.
   its programming covers, alongside prompt engineering and agentic AI
   (CCBJ, 2025-08-06; E25, wording confirmed). CLOC's Compass maturity
   tool, launched in May 2026, assesses Business Intelligence as one of
-  its twelve modules (E21; print the module fact and keep the four
-  stage names out until a fact-checker re-verifies them). Treat BI with
+  its twelve modules (E21; print the module fact, and name the four
+  stages only if the draft finds them helpful and a fact-checker
+  re-verifies them first; otherwise refer to Compass without naming
+  its stages, per the writer's answer of 2026-09-22). Treat BI with
   the same seriousness as financial management or vendor management.
   Link article 2 where the piece first names the platform, and link
   [What Is Legal Operations Intelligence?](/why-spaarke/what-is-legal-operations-intelligence)
@@ -418,7 +440,17 @@ sections where each needs only a paragraph.
   budget, cycle time, and matter counts are calculated from the records
   by the governed measure, and when an assistant or an agent needs such
   a number it calls that measure instead of estimating the figure with
-  a language model. Forrester's July 2026 sentence on semantic layers
+  a language model. The section also states, as the article's own
+  position and without a citation, that BI is a capability co-equal
+  with AI within the platform, and it gives the reason from legal
+  decision making: a settlement authority, a budget approval, a
+  privilege call, and a regulatory deadline each require an exact
+  output, as do spend against budget, cycle time, matter counts, and
+  rate compliance, and a probabilistic system cannot supply one. AI's
+  probabilistic outputs have their place in classification,
+  extraction, summarization, and drafting, so the platform carries
+  both capabilities and ranks neither above the other. Forrester's
+  July 2026 sentence on semantic layers
   as "enterprise infrastructure for data, analytics, and AI" (R4,
   wording confirmed) supports the claim from outside the vendor
   community. Three caveats keep the claim honest, and the round-two
@@ -429,7 +461,8 @@ sections where each needs only a paragraph.
   and consistency and does not use the word in the April 2025 or June
   2026 posts; the July and August 2026 posts (R4 and R5) were not
   checked for the term, so the piece limits the caveat to the two
-  checked posts unless the check in Unresolved is done first
+  checked posts unless the check, which the writer approved on
+  2026-09-22 for the polish gate, is done first
   (**TBD — confirm**). Second, natural-language layers differ in how
   strictly they keep to governed measures: some only call them, while
   Microsoft's Power BI Copilot documentation says it "uses the measures
@@ -506,8 +539,9 @@ sections where each needs only a paragraph.
   AI Is Not Deterministic", probabilistic surfacing paired with
   deterministic enforcement, and state the consequence: when a measure
   triggers an action, its definition and its currency matter more than
-  when it fills a chart, which is the practical case for the previous
-  section.
+  when it fills a chart, and the requirement for an exact output is
+  absolute, which is the practical form of the co-equal point made in
+  the deterministic section.
 - **BI is how the department identifies and manages risk.** *Risk
   appears in the operational data before it appears as an event.* The
   writer restored this as a numbered point with its worked example
@@ -555,7 +589,11 @@ sections where each needs only a paragraph.
     and intelligence.
   - *Service intake, the "legal front door".* The writer identified
     intake as a critical area and accepted a labeled composite for the
-    example. Intake is where service data originates: request volume by
+    example. If a browser check finds an ACC Value Champions intake
+    case (Analog Devices, 2026, or Pearson, 2020) dated before
+    2026-09-01, it may replace the composite at the plan stage;
+    otherwise the composite stands (see Unresolved, browser checks).
+    Intake is where service data originates: request volume by
     business unit and type, time to first response, cycle time divided
     between legal and the business, the share resolved through
     self-service, and routing. It is also the least measured area:
@@ -610,9 +648,9 @@ sections where each needs only a paragraph.
   comparison: Spaarke provides both system of record capabilities and
   ontology architecture over the systems a department already runs, so
   BI measures can be defined over records that Spaarke holds and over
-  records that a third-party system holds. The exact wording is
-  confirmed at brief sign-off (**TBD — confirm**; see Unresolved). The
-  sentence on article 5 also belongs here: knowledge management
+  records that a third-party system holds. The writer confirmed the
+  wording and the one-reference limit (2026-09-22; see Unresolved).
+  The sentence on article 5 also belongs here: knowledge management
   supplies the context that AI needs, in the same way that BI supplies
   the exact numbers. The piece points to article 5 in prose and links
   it only from the series-navigation block, because article 5 carries a
@@ -694,6 +732,10 @@ sections where each needs only a paragraph.
   does not announce the end of dashboards, and it does not repeat the
   sharper contrast between dashboards and intelligence from
   `the-20b-blind-spot`.
+- **BI as a lesser or transitional capability.** The piece never
+  frames BI as a capability that AI will absorb, or as a stage on the
+  way to AI. BI and AI are co-equal within the platform, and the piece
+  says so (writer, 2026-09-22).
 - **BI against the ontology, in either direction.** The ontology is
   the foundation, an entity and action model that makes information
   actionable, and neither a data warehouse nor a data lake. BI is
@@ -803,7 +845,7 @@ earlier than 2026-09-01):
 - [The New Mandate for Legal Operations](/why-spaarke/managing-legal-operations):
   article 1 of the series (display date 2026-06-16). In-body link in
   the risk section, for the proactive and reactive frame.
-- [Building the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform):
+- [How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform):
   article 2 (display date 2026-07-14), where the platform is defined.
   In-body link where the piece first names the platform and again in
   the foundation section.
@@ -1370,8 +1412,10 @@ tracked separately in the calendar and follow the revised voice.
   attorney-only, "outside counsel" and never "external counsel", and
   "e-billing platform". "Operational intelligence" is our term; do not
   substitute "productivity". Use "we" for Spaarke's positions ("we
-  argue", "we recommend"), describe readers by role in analysis, and
-  use "you" only for direct advice and diagnostic questions.
+  recommend", "we found"), never as a framing phrase on the thesis,
+  which is a direct declarative sentence (`voice/style-guide.md`
+  section 3). Describe readers by role in analysis, and use "you" only
+  for direct advice and diagnostic questions.
 - **Maturity framing.** Every section presents legal as a function that
   already has BI. The verbs are "extend", "add", and "govern", and the
   piece never says that legal "lacks" BI or is "behind".
@@ -1502,9 +1546,9 @@ from the display-date rule that governs the rest of the brief.
   section 6).
 - [x] **Campaign**: `2026-06-legal-operations-intelligence`, settled by
   the writer on 2026-09-22, with GitHub milestone "2026-06 Legal
-  Operations Intelligence" (number 5). The campaign file does not yet
-  exist under `content-platform/campaigns/`; `content-pipeline` creates
-  it, and the slug here matches the filename it will use.
+  Operations Intelligence" (number 5). The campaign file exists at
+  `content-platform/campaigns/2026-06-legal-operations-intelligence.md`
+  and carries the distribution sequence that `posted` follows.
 - [x] **Positioning**: Spaarke provides both system of record
   capabilities and ontology architecture over the systems a department
   already runs; neither mode is the norm. `voice/brand-positioning.md`
@@ -1523,32 +1567,52 @@ from the display-date rule that governs the rest of the brief.
 - [x] **The intake example**: a labeled illustrative composite,
   accepted by the writer, unless the browser check below finds a named
   case.
-- [ ] **The single Spaarke reference**: the sentence proposed in the
+- [x] **The single Spaarke reference**: the sentence proposed in the
   foundation section states that Spaarke provides both system of record
   capabilities and ontology architecture over the systems a department
   already runs, so BI measures can be defined over records in either.
-  Confirm the wording at brief sign-off, and confirm that one reference
-  is the limit for this piece as it was for article 3.
-- [ ] **Tags**: `function: finance` is included because the audience
+  The writer confirmed the wording and confirmed that one reference is
+  the limit for this piece, as it was for article 3 (2026-09-22).
+- [x] **Tags**: `function: finance` is included because the audience
   section brings finance and procurement in as readers and the spend
-  example addresses the CFO's question; drop it at sign-off if the
-  piece should carry `operations`, `executive`, and `it` only. All
-  values are canonical (`voice/taxonomy.md` section 2).
-- [ ] **Browser checks the research tools could not make**: a
+  example addresses the CFO's question. The writer confirmed that
+  finance stays (2026-09-22). All values are canonical
+  (`voice/taxonomy.md` section 2).
+- [x] **Browser checks the research tools could not make**: a
   key-findings or press-release URL for the ACC and Major, Lindsey &
   Africa 2026 report (E10, E11); The Edge Room byline (E24); the ACC
   Value Champions write-ups (Analog Devices, 2026; Pearson, 2020) for a
   named intake case dated before the display date; ILTA's own copy of
-  the 2025 executive summary for the 54% figure (T16). The draft can
-  proceed with the markers in place, and the polish gate resolves them.
-- [ ] **Forrester R4 and R5 checked for the word "deterministic"**, so
+  the 2025 executive summary for the 54% figure (T16). The writer's
+  answer (2026-09-22): include if helpful to the article, and no
+  specific reference is required if one is not available. Each item
+  may be used where it helps the piece; where a reference cannot be
+  confirmed, the point is presented as the article's own observation,
+  without a citation and without a figure that would need one, and the
+  polish gate still checks any figure or quotation the draft prints. A
+  named intake case found and dated before the display date may
+  replace the composite at the plan stage; otherwise the composite
+  stands. The research pointers above remain the record of where the
+  material came from.
+- [x] **Forrester R4 and R5 checked for the word "deterministic"**, so
   that the first caveat in the deterministic section can cover all four
-  Forrester posts instead of two.
-- [ ] **A fact-checker's re-verification of the four Compass stage
-  names** (E21), which stay out of print until it is done.
-- [ ] **Optional figures still carrying the marker**: the two Thomson
+  Forrester posts instead of two. The writer approved the check
+  (2026-09-22). It runs at the polish gate, because it needs the two
+  posts read in full, and until it is done the first caveat covers the
+  two posts already checked.
+- [x] **A fact-checker's re-verification of the four Compass stage
+  names** (E21). The writer's answer (2026-09-22): include if helpful,
+  otherwise omit; no specific reference is required. The stage names
+  may be used if the draft finds them helpful and they are verified
+  first; otherwise the passage refers to CLOC Compass without naming
+  its stages.
+- [x] **Optional figures still carrying the marker**: the two Thomson
   Reuters 2026 risk figures (68% and 36%), the EY 2025 study (E22), the
   Blickstein recap (E23), and the ACC prior-year comparison (E9). The
-  draft cites none of them until checked, or does without them.
-- [ ] **`posted`**: the real publish date, set when the piece is
-  scheduled.
+  writer confirmed the recommendation (2026-09-22): the draft cites
+  none of them until checked, or does without them.
+- [x] **`posted`**: follows the campaign schedule
+  (`content-platform/campaigns/2026-06-legal-operations-intelligence.md`,
+  "Distribution sequence"): push week 4, Tuesday, with the push start
+  date still to be set. Entering the date is a scheduling step, not a
+  writer decision (writer, 2026-09-22).

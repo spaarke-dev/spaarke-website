@@ -20,16 +20,29 @@ article also stands on its own. Article 1 establishes that the mandate
 of legal operations is changing, because the legal department, the
 legal function, and the outside counsel relationship are all changing,
 and that managing the function well now depends on information the
-department can act on. Article 2 describes the intelligence platform
-that supplies that information: the department's capabilities across
-process, people, and technology, with technology as the tangible
-instantiation. Articles 3 to 5 take the platform apart. The ontology
-is its foundation, the entity and action model that makes information
-actionable. Business intelligence is its deterministic dimension, the
-part that computes a fact such as a budget variance the same way every
-time. Knowledge management is the source material, the context that AI
-needs in order to be accurate and useful. No article frames one of
-these as replacing another (series decision, idea files rev. 4).
+department can act on; the goal of the changes it describes is to take
+legal out of the bottleneck wherever technology can manage the risk,
+with legal as the business's partner and enabler. Article 2 describes
+the intelligence platform that supplies that information: the
+department's capabilities across process, people, and technology, with
+technology as the tangible instantiation, and with context as the
+platform's differentiator, because it combines data and information
+with context by integrating many sources and by adding the
+organization's own knowledge, which no single system of record can do
+within its own data model. Articles 3 to 5 take the platform apart.
+The ontology is its foundation, the comprehensive context that turns
+records into insight: the entities across every system, their
+relationships, the actions the department may take, the inquiries it
+can put, the policies that govern them, the typed outputs, and the
+governance. Business intelligence is its deterministic dimension,
+co-equal with AI, the part that computes a fact such as a budget
+variance the same way every time, because legal decisions require
+exact outputs. Knowledge management is the source material, the
+context that AI needs in order to be accurate and useful, and the work
+is capturing and codifying that knowledge and making it available to
+the ontology. No article frames one of these as replacing another
+(series decision, idea files rev. 4; writer's brief feedback,
+2026-09-22).
 
 A reader who follows the five in order should come away believing that
 legal operations intelligence is a discipline with a structure, and
@@ -65,28 +78,33 @@ The reading order, if a reader followed every asset:
    outside counsel relationship all change. It sets the premise the
    other four build on, which is that effective management depends on
    information the department can act on.
-2. **Building the Legal Operations Intelligence Platform** (article 2,
-   2026-07-14). The platform: what an intelligence platform is and how
-   a department builds one across process, people, and technology,
-   with technology as the tangible instantiation. It closes by naming
-   the foundation that holds those capabilities together.
+2. **How to Build the Legal Operations Intelligence Platform** (article 2,
+   2026-07-14; listed in the series tables under the short name "The
+   Legal Operations Intelligence Platform"). The platform: what an
+   intelligence platform is, why context is its differentiator, and
+   how a department builds one across process, people, and technology,
+   with technology as the tangible instantiation. Its final section
+   introduces the ontology as the foundation that holds those
+   capabilities together.
 3. **The Legal Operations Intelligence Ontology** (article 3,
-   2026-07-21). The foundation: the entity and action model that makes
+   2026-07-21). The foundation: the comprehensive context that makes
    information actionable for people, for business intelligence, and
-   for AI agents. It is bound to the systems where the department's
+   for AI agents, and the reason a single system of record cannot be
+   that foundation. It is bound to the systems where the department's
    data already sits, and it sits alongside the data warehouse and the
    data lake rather than in place of either.
 4. **A Business Intelligence Approach to Legal Operations** (article 4,
    2026-09-01). The deterministic dimension: business intelligence as
-   a core component of the platform, aligned with the ontology and
-   working in conjunction with it.
+   a core component of the platform, co-equal with AI, aligned with
+   the ontology and working in conjunction with it.
 5. **The Newfound Importance of Knowledge Management** (article 5,
    2026-09-15). The source material: knowledge management as the
-   context that AI needs to be accurate and useful, and a curation
-   duty that is settling on legal operations.
+   context that AI needs to be accurate and useful, the work of
+   capturing and codifying that knowledge for the ontology, and a
+   curation duty that is settling on legal operations.
 
 Each article earns the next. Article 1 hands off to article 2 in its
-close, article 2 names the foundation that article 3 defines, and
+close, article 2 introduces the foundation that article 3 defines, and
 articles 3 to 5 each make their complementary point about the other
 two in one section before reaching them through the series-navigation
 block.
@@ -105,16 +123,20 @@ frontmatter, `date` carries the display date and `posted` carries the
 real publish date, which the Q4 push sets. Type is `blog-post`, the
 content type for long-form articles (`content-types/blog-post.md`
 section 2.1); length is open for every piece. Status follows the
-article workspace: articles 1, 2, 4, and 5 have an `idea.md` at rev. 4
-and go through `/idea-to-brief` next; article 3 has `brief.md` v2.
+article workspace: all five have a `brief.md` (the writer's brief
+feedback was applied on 2026-09-22), a `plan.md`, and a GitHub Issue
+(78, 82, 79, 80, and 81 in series order). In the series tables of the
+idea files, article 2 is listed under the writer's short name "The
+Legal Operations Intelligence Platform"; its published title is the one
+below.
 
 | Date | Type | Slug | Status | Channel(s) | Notes |
 |---|---|---|---|---|---|
-| 2026-06-16 | blog-post | managing-legal-operations | idea | website | Article 1: The New Mandate for Legal Operations |
-| 2026-07-14 | blog-post | building-the-legal-operations-intelligence-platform | idea | website | Article 2: Building the Legal Operations Intelligence Platform |
-| 2026-07-21 | blog-post | legal-operations-ontology | brief | website | Article 3: The Legal Operations Intelligence Ontology. Brief v2; its frontmatter still carries 2026-07-14 and `campaign: none`, **TBD — confirm** the update |
-| 2026-09-01 | blog-post | business-intelligence-for-legal-operations | idea | website | Article 4: A Business Intelligence Approach to Legal Operations |
-| 2026-09-15 | blog-post | the-newfound-importance-of-knowledge-management | idea | website | Article 5: The Newfound Importance of Knowledge Management |
+| 2026-06-16 | blog-post | managing-legal-operations | brief | website | Article 1: The New Mandate for Legal Operations (Issue 78) |
+| 2026-07-14 | blog-post | building-the-legal-operations-intelligence-platform | brief | website | Article 2: How to Build the Legal Operations Intelligence Platform (Issue 82) |
+| 2026-07-21 | blog-post | legal-operations-ontology | brief | website | Article 3: The Legal Operations Intelligence Ontology (Issue 79). Brief v3 |
+| 2026-09-01 | blog-post | business-intelligence-for-legal-operations | brief | website | Article 4: A Business Intelligence Approach to Legal Operations (Issue 80) |
+| 2026-09-15 | blog-post | the-newfound-importance-of-knowledge-management | brief | website | Article 5: The Newfound Importance of Knowledge Management (Issue 81) |
 | push week 1 | linkedin-post | managing-legal-operations-syndication | planned | linkedin, linkedin (rs) | Company-page post on publish day; founder post two days later |
 | push week 2 | linkedin-post | building-the-legal-operations-intelligence-platform-syndication | planned | linkedin, linkedin (rs) | Company-page post on publish day; founder post two days later |
 | push week 3 | linkedin-post | legal-operations-ontology-syndication | planned | linkedin, linkedin (rs) | Company-page post on publish day; founder post two days later |

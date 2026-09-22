@@ -10,14 +10,14 @@ length_target: open                 # long-form article; the length is whatever 
 byline: spaarke                     # organizational byline, which the series decision keeps (voice/bylines.md section 1); the closing contact line names Ralph Schroeder, Founder and CEO (section 6)
 campaign: 2026-06-legal-operations-intelligence   # content-platform/campaigns/2026-06-legal-operations-intelligence.md; GitHub milestone "2026-06 Legal Operations Intelligence" (number 5)
 github_issue: 81   # https://github.com/spaarke-dev/spaarke-website/issues/81 (created by content-pipeline, 2026-09-22)
-triggered_by: idea.md rev. 4 (2026-09-21, re-dated to 2026-09-15 on 2026-09-22); the writer's direction of 2026-09-21 that added the piece to the series as article 5
+triggered_by: idea.md rev. 4 (2026-09-21, re-dated to 2026-09-15 on 2026-09-22); the writer's direction of 2026-09-21 that added the piece to the series as article 5; writer's brief feedback applied 2026-09-22
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
 title: "The Newfound Importance of Knowledge Management"
 description: "AI has made a legal department's own knowledge the context its systems need in order to be accurate, and curating that knowledge now falls to legal operations."
-summary: "Legal departments have managed knowledge for years. AI changes what counts as knowledge, what it is for, and how it is curated, because the department's own material is the context an AI system needs to answer accurately. That work already sits with legal operations."
+summary: "Legal departments have managed knowledge for years. AI changes what counts as knowledge, what it is for, how it is captured, codified, and curated, and where it goes, because the department's own material is the context an AI system needs to answer accurately. That work already sits with legal operations."
 date: 2026-09-15                    # display date
-posted: "**TBD — confirm**"         # the real publish date, set when the piece is scheduled in the Q4 push
+posted: "**TBD — confirm**"         # the real publish date: push week 5 Tuesday of the campaign's distribution sequence, entered when the push start date is set (writer, 2026-09-22)
 author: "Spaarke Team"
 tags:
   organization: [corporate-legal]
@@ -32,6 +32,7 @@ keyTakeaways:
   - A model becomes specific to a department through four mechanisms (grounding, instruction, example, and evaluation), and each one consumes a knowledge asset that someone in the department has to maintain.
   - Legal research tools built on retrieval over curated content still hallucinated 17% to 33% of the time in the Stanford RegLab study, so corpus quality and an evaluation set are management responsibilities.
   - Knowledge now includes email, transcripts, negotiation history, billing narratives, intake answers, and expert corrections of AI output, and material that grounds an AI answer needs a known author, date, status, and permissions.
+  - The practical work is capture and codification. An obligation from a contract, a position taken in a negotiation, or a lawyer's correction of an AI draft is recorded with an owner, a date, a status, and permissions, and bound to the matter, party, or obligation it concerns, so the ontology carries it to every measure, workflow, or agent that reaches that entity.
   - Curation includes deciding what AI must not see. Privilege, ethical walls, retention, and stale content each become a rule about what enters the corpus, who may retrieve it, and when it is retired.
 ---
 
@@ -47,12 +48,22 @@ general-purpose model knows nothing about a department's positions,
 history, or standards, and everything it can see when it answers is
 the context the department supplies. The department's own knowledge
 has therefore become the material on which the accuracy of its AI
-systems depends. That raises the importance of an established function
-and adds new dimensions to it: what counts as knowledge, what knowledge
-is for, how it is curated, and what it must be kept from. The piece is
-article 5 of 5 in the Legal Operations Intelligence series, and it
-closes the series. It carries the full argument for a sentence in
-article 1,
+systems depends. Article 2,
+[How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
+names context as the platform's differentiator and gives it two
+sources, integration across the systems the department runs and
+augmentation with the organization's own knowledge. In the AI sense
+this piece uses, context is everything the model sees, which combines
+the data and information from those systems with the department's
+knowledge, and the knowledge is the part only the department can
+supply. The two senses agree, because article 2 names the two sources
+and this piece describes what the model receives once both are
+combined. The changed reader raises the importance of an established
+function and adds new dimensions to it: what counts as knowledge, what
+knowledge is for, how it is captured, codified, and curated, where it
+goes, and what it must be kept from. The piece is article 5 of 5 in
+the Legal Operations Intelligence series, and it closes the series. It
+carries the full argument for a sentence in article 1,
 [The New Mandate for Legal Operations](/why-spaarke/managing-legal-operations),
 which states that legal operations is taking on the curation of the
 department's knowledge as AI becomes more integral to the work. It also
@@ -60,7 +71,9 @@ describes the material that the entity and action model of article 3,
 [The Legal Operations Intelligence Ontology](/why-spaarke/legal-operations-ontology),
 organizes and that the model's agents consume. Knowledge management
 supplies the source material, and the ontology gives that material
-structure and makes it actionable. Business intelligence is the
+structure and makes it actionable. The practical work in between is
+capturing and codifying that material so that it can be bound to the
+entities the ontology holds. Business intelligence is the
 deterministic dimension, and the platform is the set of department
 capabilities (process, people, and technology, with technology as the
 tangible instantiation) that brings them together. The piece never
@@ -74,14 +87,14 @@ argued that context leaves with people and that documentation alone
 does not retain it. This piece begins where that article's single
 paragraph on AI stops. The thesis, in the single sentence that will
 appear in the opening, is written so that it does not wait for any new
-term (`voice/style-guide.md` section 3): *We argue that a legal
-department's own knowledge has become the context on which the
-accuracy of its AI systems depends, and that curating that knowledge
-for AI is now part of the legal operations mandate.* The sentence that
-follows gives the reason: *Legal operations already carries the
-responsibility in most departments, and it already runs the systems in
-which the new sources of knowledge are created.* The reader should walk
-away believing five things:
+term (`voice/style-guide.md` section 3): *A legal department's own
+knowledge has become the context on which the accuracy of its AI
+systems depends, and curating that knowledge for AI is now part of the
+legal operations mandate.* The sentence that follows gives the reason:
+*Legal operations already carries the responsibility in most
+departments, and it already runs the systems in which the new sources
+of knowledge are created.* The reader should walk away believing six
+things:
 
 1. **The constraint has moved from the model to the knowledge, and the
    knowledge is something departments already manage.** The earlier
@@ -91,15 +104,20 @@ away believing five things:
    the limiting factor. The piece reports that consensus with its
    limits stated: most of the voices are law firm knowledge leaders
    and vendors with an interest in the conclusion, the hard numbers are
-   thin, and a skeptical view holds that buyers cannot yet measure the
-   impact of AI at all.
+   thin, and Stephen Embry, the skeptical voice, holds that
+   consultancy figures published without their methodology deserve a
+   grain of salt.
 2. **Context is what a department supplies, and the reasons are
    technical.** Everything a model can see when it answers sits in a
    window of fixed size, and a model becomes specific to a department
    through four mechanisms, grounding, instruction, example, and
    evaluation, each of which consumes a knowledge asset that someone
-   has to maintain. Retrieval alone does not make AI accurate, which is
-   why the last two mechanisms matter as much as the first.
+   has to maintain. The department's knowledge is a core part of what
+   drives context for AI, alongside the data and information from the
+   systems of record that article 2 describes; context is the
+   combination, and knowledge is the part only the department can
+   supply. Retrieval alone does not make AI accurate, which is why the
+   last two mechanisms matter as much as the first.
 3. **What knowledge is, and what it is for, have both changed, and so
    have the criteria for curation.** AI systems can draw on material
    the department already produces and never wrote as knowledge, and
@@ -108,15 +126,26 @@ away believing five things:
    work product. A document that grounds an answer needs a known
    author, date, status, and permissions, because the system applies
    it without the judgment a lawyer would have applied.
-4. **Legal operations already holds the responsibility and is the
+4. **The practical challenge is capturing and codifying the
+   department's knowledge and making it available to the ontology.**
+   Much of that knowledge is created in email, transcripts,
+   negotiations, billing narratives, intake answers, and expert
+   corrections, and it is never written as knowledge. Capture and
+   codification put it into forms with a known author, date, status,
+   and permissions, and the destination is the ontology, the entity
+   and action model of article 3, which is where knowledge becomes
+   part of the context an agent or a person acts on. Knowledge
+   management supplies the material, the ontology organizes it and
+   makes it actionable, and the piece keeps that division.
+5. **Legal operations already holds the responsibility and is the
    natural curator of the department's knowledge for AI.** The
    frameworks that define the function still describe knowledge
    management as people reusing work product, and no industry body has
-   described what the responsibility now requires. The piece argues
+   described what the responsibility now requires. The piece states
    the case as its own position, states the role, and limits it to the
    owner, the standards, the review and retirement cycle, and the
    measures.
-5. **Curation includes deciding what AI must not see.** Privilege,
+6. **Curation includes deciding what AI must not see.** Privilege,
    confidentiality, ethical walls, stale content, provenance,
    retention, and unregulated tools each become a rule about what
    enters the corpus, who may retrieve it, when it is reviewed, and
@@ -228,7 +257,7 @@ evidence tables in `idea.md` (groups A to G) and from
   department's knowledge. The CLOC 2025 figure shows that the
   responsibility already sits with legal operations in four departments
   out of five, and no industry body has described what it now requires,
-  which leaves the position open for this piece to argue.
+  which leaves the position open for this piece to state.
 - **The library has a gap.** `institutional-knowledge` treats AI in a
   single paragraph near its end, and `the-ai-readiness-gap` treats data
   and knowledge readiness as the precondition for AI without saying
@@ -286,26 +315,26 @@ evidence it rests on; the status of every row is in `idea.md`
   [The AI Readiness Gap in Legal Departments](/why-spaarke/the-ai-readiness-gap)
   where the constraint is stated. Then give the limits in one
   paragraph: the voices are mostly law firm knowledge leaders and
-  vendors with an interest in the conclusion; Stephen Embry (Above the
-  Law, 2026-08-25) holds that buyers cannot yet measure the impact of
-  AI and that consultancy figures deserve "a grain of salt"
-  (confirmed, raw HTML); and Harbor's own report sentence reads that
-  "0% of participating top-tier law firms and global in-house
-  departments have a mature framework for measuring AI's business
-  impact" (confirmed, raw text; a consultancy source with undisclosed
-  methodology, labelled as such). Quote Harbor's sentence, which
-  includes in-house departments, and do not merge it with Embry's
-  version, which says "No participating firm". Close the section on
-  the context-over-content view (Weinberg, Walters), which introduces
-  the concept that organizes the next section.
+  vendors with an interest in the conclusion, the hard numbers are
+  thin, and Stephen Embry (Above the Law, 2026-08-25), the skeptical
+  voice, holds that consultancy figures published without their
+  methodology deserve "a grain of salt" (confirmed, raw HTML). Embry
+  stands alone in that role, cited on his own sentences. The Harbor
+  measurement sentence is not used (see Must NOT include). Close the
+  section on the context-over-content view (Weinberg, Walters), which
+  introduces the concept that organizes the next section.
 - **Context, and the four mechanisms that make a model specific to a
-  department (argument 2).** Define context and context engineering
-  from the Anthropic engineering post (2025-09-29; confirmed), with the
-  point that recall degrades as the window fills, so every item in the
-  department's corpus competes for the same finite capacity, which is
-  why curation and selection matter. Then the four mechanisms, each
-  with the knowledge asset it consumes, as H3 subsections or as four
-  paragraphs under one H2:
+  department (argument 2).** Open the section with the sentence that
+  the department's knowledge is a core part of what drives context for
+  AI, alongside the data and information from the systems of record
+  that article 2 describes; context is the combination, and knowledge
+  is the part only the department can supply. Then define context and
+  context engineering from the Anthropic engineering post (2025-09-29;
+  confirmed), with the point that recall degrades as the window fills,
+  so every item in the department's corpus competes for the same finite
+  capacity, which is why curation and selection matter. Then the four
+  mechanisms, each with the knowledge asset it consumes, as H3
+  subsections or as four paragraphs under one H2:
   - *Grounding and retrieval.* The system searches the department's
     own material at question time and hands the best matches to the
     model before it answers (Lewis et al., 2020-05-22; confirmed). The
@@ -437,8 +466,36 @@ evidence it rests on; the status of every row is in `idea.md`
   decision logs and approvals, outside counsel work product, intake
   answers, or expert corrections being managed as knowledge assets.
   Those items are the article's own argument and are presented that
-  way. A named practitioner example from the writer's network would
-  strengthen the section (**TBD — confirm**).
+  way. The writer confirmed on 2026-09-22 that no named practitioner
+  example is available, so the section stands on the confirmed
+  practitioner lines above and on the article's own argument.
+- **The work is capture and codification, and the destination is the
+  ontology.** A section under that candidate heading (sentence case)
+  follows the new sources and precedes the curation section. It
+  extends argument 3 as the article's own position, with no new
+  sources. Most of the material in the list above is created in
+  email, transcripts, negotiations, billing narratives, intake answers,
+  and expert corrections, and it is never written as knowledge, so the
+  practical challenge is to capture it, codify it, and make it
+  available to the ontology. The section takes the three in turn.
+  Capture is the act that turns work into a record, and the section
+  names it for each new source: an obligation extracted from a
+  contract, a position taken in a negotiation, a reason recorded when
+  an invoice line is reduced, an answer given at intake, a correction
+  a lawyer makes to an AI draft. Codification gives each record a
+  defined shape, an owner, a date, a status, and permissions that
+  travel with it. Available to the ontology means bound to the entity
+  the record is about, so that the matter, the party, the policy, or
+  the obligation carries it, and so that a measure, a workflow, or an
+  agent that reaches the entity reaches the knowledge too. The
+  ontology is the entity and action model of article 3, and the
+  section links
+  [The Legal Operations Intelligence Ontology](/why-spaarke/legal-operations-ontology)
+  at the sentence that names the destination; the series-placement
+  section may link it again if the distance warrants. Knowledge
+  management supplies the material, the ontology organizes it and
+  makes it actionable, and the section keeps that division without
+  setting one against the other.
 - **Knowledge now trains the systems that produce the work product,
   and the curation criteria change with it.** Finished work product
   used to be the end product of knowledge management: a lawyer found
@@ -547,7 +604,7 @@ evidence it rests on; the status of every row is in `idea.md`
   alongside 11 other services, and the ACC model lists "At least one
   full-time dedicated KM professional" as one of 13 advanced-stage
   markers (confirmed). No in-house knowledge management staffing
-  benchmark was found, and the piece says so. Then the case, argued as
+  benchmark was found, and the piece says so. Then the case, stated as
   Spaarke's own position, because no industry body assigns the role.
   CLOC and Harbor frame the legal operations role in AI as governance
   and operating model, and 85% of departments now "have dedicated AI
@@ -664,13 +721,16 @@ evidence it rests on; the status of every row is in `idea.md`
   ([The Legal Operations Intelligence Ontology](/why-spaarke/legal-operations-ontology),
   article 3) gives that material structure by attaching it to the
   entities and actions it concerns, and that structure is what makes it
-  actionable. Business intelligence
+  actionable. The capture and codification section has already named
+  the ontology as the destination for captured knowledge, so this
+  section places the function in the series without repeating that
+  point. Business intelligence
   ([A Business Intelligence Approach to Legal Operations](/why-spaarke/business-intelligence-for-legal-operations),
   article 4) is the deterministic dimension, the measures and facts
   computed from records and never generated by a model; link
   [Legal AI Is Not Deterministic](/why-spaarke/probabilistic-vs-deterministic)
   again here if the first link is far above. The platform
-  ([Building the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
+  ([How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
   article 2) is the set of department capabilities (process, people,
   and technology) that brings them together, with technology as the
   tangible instantiation. In the vocabulary of the existing library,
@@ -723,11 +783,14 @@ evidence it rests on; the status of every row is in `idea.md`
 - **Series wiring.** In-body links to articles 1 to 4 are permitted,
   because all four carry earlier display dates (2026-06-16, 2026-07-14,
   2026-07-21, and 2026-09-01). Link article 1 where the curator case is
-  made and articles 2, 3, and 4 where the piece places knowledge
-  management in the series. The article must also stand alone, so the
-  links support the argument and are never a prerequisite for it. A
-  series-navigation block at the end of the article lists articles 1
-  to 4 for readers who arrive at the series here, and it lists the
+  made, article 3 at the capture and codification section, and
+  articles 2 and 4 where the piece places knowledge management in the
+  series; article 2 may also be linked earlier, in the context section,
+  at the sentence on the systems of record it describes. The article
+  must also stand alone, so the links support the argument and are
+  never a prerequisite for it. A series-navigation block at the end of
+  the article lists articles 1 to 4 for readers who arrive at the
+  series here, and it lists the
   standalone companion, The State of Legal Operations (Fall 2026)
   (`state-of-legal-operations-fall-2026`, display date 2026-10-20),
   added when it ships. The standalone appears nowhere in the body. The
@@ -742,8 +805,10 @@ evidence it rests on; the status of every row is in `idea.md`
   [ralph.schroeder@spaarke.com](mailto:ralph.schroeder@spaarke.com), or
   visit [spaarke.com](https://spaarke.com).* It carries no offer, and
   the ban on a demo call to action stays.
-- **Cross-links.** In the body: articles 1, 2, 3, and 4;
-  `/why-spaarke/institutional-knowledge` (once, early);
+- **Cross-links.** In the body: articles 1, 2, 3, and 4 (article 3 at
+  the capture and codification section, where the ontology is named as
+  the destination, and again at the series placement if the distance
+  warrants); `/why-spaarke/institutional-knowledge` (once, early);
   `/why-spaarke/what-is-legal-operations-intelligence` (once, at the
   first use of the term); `/why-spaarke/the-ai-readiness-gap` (where
   the constraint is stated);
@@ -774,7 +839,7 @@ evidence it rests on; the status of every row is in `idea.md`
   roundtable, the SKILLS survey, Tiger Eye's practitioners), and the
   piece says where the in-house record is thin.
 - **A report that the industry has named legal operations the
-  curator.** No body has done so. The article argues the case as its
+  curator.** No body has done so. The article states the case as its
   own, on the confirmed fact that the responsibility already sits with
   legal operations in most departments. Write "the research found no
   statement," never "none exists."
@@ -796,8 +861,8 @@ evidence it rests on; the status of every row is in `idea.md`
   limited to the owner, the standards, the review and retirement cycle,
   and the measures. A later article expands it.
 - **Vendor statistics presented as neutral research.** The iManage
-  figures carry a vendor label, the Harbor figures a consultancy label,
-  the SKILLS write-up the name of its vendor host, and the Gartner
+  figures carry a vendor label, Harbor's ILTACON lines a consultancy
+  label, the SKILLS write-up the name of its vendor host, and the Gartner
   prediction (2025-02-26; cross-industry; corrected sample of 1,203)
   is used, if at all, once and as a prediction. Event-marketing
   statistics stay out. The iManage executive's quotation on
@@ -816,6 +881,15 @@ evidence it rests on; the status of every row is in `idea.md`
   headcount table (2, 3, 6, 8) could not be found in the PDF and is not
   cited. The Hintyr vendor blog (2026-03-27) is superseded by OWASP and
   Microsoft Learn.
+- **The Harbor measurement sentence.** Harbor's "0% of participating
+  top-tier law firms and global in-house departments have a mature
+  framework for measuring AI's business impact," and Embry's rendering
+  of it ("No participating firm in Harbor's 2026 legal lab reported
+  having a mature framework"), are not used, by the writer's direction
+  of 2026-09-22; the writer doubts the sentence's accuracy. Embry
+  remains the skeptical voice alone, cited on his own sentences, and
+  Harbor's other ILTACON 2026 lines (clean, connected data; the
+  recurring deliverable; fragmented ownership) stay in use.
 - **Alarm about risk, or legal advice about privilege.** The piece
   cites rulings as facts and describes operational consequences.
 - **A product piece.** Spaarke's term for the layer appears once, in
@@ -895,13 +969,18 @@ before 2026-09-15):
   the curator case is made; the piece supplies the argument for the
   sentence in article 1 that legal operations is taking on the curation
   of the department's knowledge.
-- [Building the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform):
+- [How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform):
   article 2 (display date 2026-07-14). Link in the series-placement
   section, where the platform is the set of capabilities that brings
-  the components together.
+  the components together. If the piece uses article 2 earlier, link
+  it in the context section, at "the systems of record that article 2
+  describes," and the series-placement mention may then stand without
+  a second link.
 - [The Legal Operations Intelligence Ontology](/why-spaarke/legal-operations-ontology):
-  article 3 (display date 2026-07-21). Link in the series-placement
-  section, where the ontology gives the source material structure.
+  article 3 (display date 2026-07-21). Link at the capture and
+  codification section, at the sentence that names the ontology as the
+  destination; link again at series placement if the distance
+  warrants.
 - [A Business Intelligence Approach to Legal Operations](/why-spaarke/business-intelligence-for-legal-operations):
   article 4 (display date 2026-09-01). Link in the series-placement
   section, where business intelligence is the deterministic dimension.
@@ -1013,12 +1092,15 @@ it is checked):
   frustration raised in roundtable discussions was fragmented ownership
   of AI security and governance decisions across IT, Risk, the General
   Counsel's office, and knowledge management"; "Governance needs a
-  clear owner and a defined, visible conversation." Harbor's own
-  report, cited by description, is summarized on the page as "0% of
-  participating top-tier law firms and global in-house departments
-  have a mature framework for measuring AI's business impact, despite
-  a 41% increase in average annual law firm software spending between
-  2021 and 2025."
+  clear owner and a defined, visible conversation." The page also
+  summarizes Harbor's own report in a sentence on the share of
+  participating firms and in-house departments with a mature framework
+  for measuring AI's business impact (the "0%" sentence, which pairs
+  the share with a 41% rise in average annual law firm software
+  spending from 2021 to 2025). That measurement sentence is not used,
+  by the writer's direction of 2026-09-22, who doubts its accuracy
+  (Must NOT include); the pointer stays as the record of where the
+  claim came from.
   [harborglobal.com](https://harborglobal.com/insights/briefs/iltacon-2026-why-ai-usage-isnt-the-same-as-ai-value/).
   Confirmed (round two; raw text). Consultancy source with undisclosed
   methodology; label it. The conference context is law firms.
@@ -1122,19 +1204,19 @@ it is checked):
   Confirmed from the press releases; the gated reports were not read.
 - Stephen Embry, Above the Law, "Law Firms Are Buying AI: But Are They
   Really Using It?" (2026-08-25), reviewing Harbor's 2026 legal lab.
-  Embry presents Harbor's sentence as a quotation: "No participating
-  firm in Harbor's 2026 legal lab reported having a mature framework
-  for measuring AI's business impact." Embry's own sentences: "The
-  average spend on technology increased 41% from 2021 to 2025"; "that
-  spend is now 5% to 6% of overall firm revenue"; "without obtaining
-  the methodology and information about the data, we have to take them
-  with a grain of salt." He also quotes Harbor: "Firms are measuring AI
-  activity more effectively than AI impact."
+  Embry's own sentences: "The average spend on technology increased
+  41% from 2021 to 2025"; "that spend is now 5% to 6% of overall firm
+  revenue"; "without obtaining the methodology and information about
+  the data, we have to take them with a grain of salt." He also quotes
+  Harbor: "Firms are measuring AI activity more effectively than AI
+  impact." Embry presents Harbor's measurement sentence as a quotation
+  ("No participating firm in Harbor's 2026 legal lab reported having a
+  mature framework for measuring AI's business impact"); that sentence
+  is not used in either version, by the writer's direction of
+  2026-09-22 (Must NOT include).
   [abovethelaw.com](https://abovethelaw.com/2026/08/law-firms-are-buying-ai-but-are-they-really-using-it/).
-  Confirmed (round two; raw HTML). Attribute the "mature framework"
-  sentence to Harbor as quoted by Embry, and see the Harbor entry for
-  the differently worded version on Harbor's own page; quote one
-  exactly.
+  Confirmed (round two; raw HTML). Embry is the skeptical voice of
+  argument 1, cited on his own sentences.
 - Pillsbury hired Benamram as its first Chief AI Officer (Artificial
   Lawyer, 2026-07-08).
   [artificiallawyer.com](https://www.artificiallawyer.com/2026/07/08/oz-joins-pillsbury-for-top-ai-role/).
@@ -1348,8 +1430,9 @@ it is checked):
   Confirmed.
 - Negotiation and redline history: only vendor marketing was located
   (products that convert prior redlines into playbooks), and it may not
-  be cited as evidence. A neutral source or a practitioner example is
-  needed: **TBD — confirm**.
+  be cited as evidence. The writer confirmed on 2026-09-22 that no
+  practitioner example is available, so the point is the article's
+  own, presented as discussion.
 - Expert corrections of AI output: one vendor press release (Checkbox,
   2026-05-11; recorded in `changing-role-of-legal-ops.md`) describes
   attorney corrections feeding future answers. Vendor collateral and
@@ -1646,8 +1729,11 @@ the campaign file if the writer wants it. All follow the revised voice.
   present it as discussion rather than as a sourced fact. Attribute
   every statistic in the sentence that carries it, report survey
   results as what respondents said, interpret the number, and state
-  each law firm source's scope in the citing sentence. Apply copyright
-  limits: reuse terms where allowed and omit content where prohibited.
+  each law firm source's scope in the citing sentence. Where a
+  quotation cannot be confirmed on the live page at the polish gate,
+  drop the quotation marks and state the point generically, without
+  attribution (writer, 2026-09-22). Apply copyright limits: reuse terms
+  where allowed and omit content where prohibited.
 - **Opening shape.** Vary it from the ontology article, which opens on
   a scene. The situation is the established practice (the 79% figure);
   the complication is the changed reader; the answer is the thesis
@@ -1680,12 +1766,13 @@ the campaign file if the writer wants it. All follow the revised voice.
   the department's best work*; *Evaluation consumes approved answers*);
   *Curated retrieval still leaves roughly one answer in five wrong*;
   *What counts as knowledge has widened past finished work product*;
-  *Knowledge now trains the systems that produce the work product*; *A
-  document that grounds an answer needs an author, a date, a status,
-  and permissions*; *The frameworks that define the function have not
-  caught up*; *Legal operations already holds the responsibility*;
-  *Curation includes deciding what AI must not see*; *Knowledge
-  management supplies the context, and the ontology gives it
+  *The work is capture and codification, and the destination is the
+  ontology*; *Knowledge now trains the systems that produce the work
+  product*; *A document that grounds an answer needs an author, a date,
+  a status, and permissions*; *The frameworks that define the function
+  have not caught up*; *Legal operations already holds the
+  responsibility*; *Curation includes deciding what AI must not see*;
+  *Knowledge management supplies the context, and the ontology gives it
   structure*; *A department can start with one recurring deliverable*.
 - **Exhibits.** Exhibit 1 is the context map table, Exhibit 2 is the
   curation loop diagram, and both titles state the finding as a full
@@ -1778,7 +1865,8 @@ from the display-date rule that governs the rest of the brief.
 - [x] **Display date and series position**: settled by the writer on
   2026-09-21 and re-dated on 2026-09-22. Article 5 of 5, display date
   2026-09-15 (a Tuesday); frontmatter `date` carries the display date
-  and `posted` carries the real publish date, which the Q4 push sets.
+  and `posted` carries the real publish date, which the campaign's
+  distribution sequence sets (push week 5, Tuesday).
 - [x] **Primary audience**: `legal-ops-director`, with
   `corporate-counsel` secondary and `legal-tech-cio` as the sanity
   check (the series audience decision, applied to this piece in
@@ -1795,7 +1883,10 @@ from the display-date rule that governs the rest of the brief.
   Operations Intelligence" (number 5). `content-pipeline` creates the
   Issue and assigns the milestone from this field.
 - [x] **Argument / take**: the eight arguments in `idea.md` rev. 4,
-  reworded here as the thesis and the five beliefs in §Angle. Context
+  reworded here as the thesis and the six beliefs in §Angle (the
+  sixth, on capture, codification, and the ontology as the
+  destination, added from the writer's feedback of 2026-09-22, which
+  also removed the "We argue that" framing from the thesis). Context
   is the organizing concept, "training" is used in the sense legal AI
   systems use it, and the curator role is stated and then limited.
 - [x] **Positioning**: Spaarke provides both system of record
@@ -1811,45 +1902,68 @@ from the display-date rule that governs the rest of the brief.
 - [x] **Spaarke references**: one default mention ("operational
   memory," with the link to `the-iq-stack`) and one further mention
   permitted where it helps the reader. No product features.
-- [ ] **The Harbor measurement sentence**: the default applied here is
-  to quote Harbor's own sentence ("0% of participating top-tier law
-  firms and global in-house departments ..."), with the consultancy
-  label, because it includes in-house departments. The alternative is
-  to drop the measurement point and keep Embry as the skeptical voice
-  alone. Confirm at brief sign-off.
-- [ ] **TBD items that carry weight**, to close before the draft cites
-  them: the ILTA 2026 Technology Survey quotations (group A; inside the
-  window since 2026-09-22 and used in arguments 1 and 5); the sample
-  sizes of the two Thomson Reuters reports (group A); the Core 12
-  revision date and the ACC publication year (group D; the piece can
-  say "neither text is recent" without them); the LegalOps.com listing
-  of Knowledge Management (group D); the Uber session description
-  (group B); Jamal Brown's employer (group E; name no employer for him
-  until resolved); and the Microsoft Copilot architecture page's update
-  stamp and quotation (group B; optional). The Deloitte predictions
-  document (group E) is optional for this piece and stays out unless
-  its date is confirmed.
-- [ ] **TBD items the piece can paraphrase or omit**: Benamram's
+- [x] **The Harbor measurement sentence**: not used. The writer's
+  answer of 2026-09-22 was "do not include this; seems not accurate."
+  The measurement point (Harbor's "0% of participating top-tier law
+  firms and global in-house departments ..." sentence and Embry's
+  rendering of it) is dropped from the Angle, Must include, and
+  References, it is listed in Must NOT include, and Embry is the
+  skeptical voice alone, cited on his own sentences.
+- [x] **TBD items that carry weight**: the ILTA 2026 Technology Survey
+  quotations (group A; inside the window since 2026-09-22 and used in
+  arguments 1 and 5); the sample sizes of the two Thomson Reuters
+  reports (group A); the Core 12 revision date and the ACC publication
+  year (group D; the piece can say "neither text is recent" without
+  them); the LegalOps.com listing of Knowledge Management (group D);
+  the Uber session description (group B); Jamal Brown's employer
+  (group E); and the Microsoft Copilot architecture page's update stamp
+  and quotation (group B; optional). The writer's answer of 2026-09-22
+  is "include if helpful; no specific reference required." Each item
+  may be used where it helps the piece; where a specific reference
+  cannot be confirmed, the point is presented as the article's own
+  observation, without a citation and without a number that would need
+  one, and the polish gate still checks any figure or quotation the
+  draft prints. The safety notes stand regardless: name no employer
+  for Brown until resolved, and the Deloitte predictions document
+  (group E) stays out unless its date is confirmed. The research
+  pointers in References remain the record of where the material came
+  from.
+- [x] **TBD items the piece can paraphrase or omit**: Benamram's
   "exposes poor KM" phrase; the Humberstone security line; de Maistre's
   further point; the Pillsbury role detail; the Legal.io "Verification
   Tax" phrase; the Bakal preprint; the ClearPeople provenance line and
   the LexisNexis interviewee quotation; Calve's enterprise data
   strategy line; the In-House Connect program; the unverified vendor
-  commentary (LexisNexis International, ClearPeople, Harvey). This can
-  wait for the polish gate.
-- [ ] **A named practitioner example** for the new sources of knowledge
+  commentary (LexisNexis International, ClearPeople, Harvey). The
+  writer's answer of 2026-09-22 is "include if helpful; no specific
+  reference required," and the same rule applies: use where it helps,
+  present as the article's own observation where a reference cannot
+  be confirmed, and let the polish gate check anything the draft
+  prints. The pointers stay in References.
+- [x] **A named practitioner example** for the new sources of knowledge
   (negotiation history, billing narratives, intake answers, expert
-  corrections), from the writer's network. Without it, the section
-  stands as the article's own argument, which the evidence standard
-  allows. Optional.
-- [ ] **Every quotation** is checked against the live page before
+  corrections): the writer's answer of 2026-09-22 is "no other sources
+  available; use what provided." No named example; the section stands
+  as the article's own argument on the confirmed practitioner lines,
+  which the evidence standard allows.
+- [x] **Every quotation** is checked against the live page before
   publication, including the confirmed ones, because the fetch tool
   altered "verbatim" quotations at least three times during the
-  research. This is the polish gate.
-- [ ] **Article 3's brief frontmatter** still carries `publish_date`
-  and `date` of 2026-07-14 and `campaign: none`; the settled display
-  date is 2026-07-21 and the campaign slug now exists. This brief links
-  to article 3 by slug, so nothing here depends on the fix, and the
-  campaign file records the update as **TBD — confirm**.
-- [ ] **`posted`**: the real publish date, set when the piece is
-  scheduled in the Q4 push (push week 5 in the campaign file).
+  research. Decision recorded 2026-09-22: the writer's answer is
+  "yes; if not specific references available then make generic or
+  unattributed." The polish gate checks every quotation, and where a
+  quotation cannot be confirmed on the live page, the draft drops the
+  quotation marks and states the point generically, without
+  attribution. The checking itself is polish-gate work.
+- [x] **Article 3's brief frontmatter**: resolved before this revision.
+  Article 3's brief now carries `publish_date: 2026-07-21`,
+  `date: 2026-07-21`, and
+  `campaign: 2026-06-legal-operations-intelligence`, so the stale note
+  (2026-07-14 and `campaign: none`) no longer applies. This brief links
+  to article 3 by slug, so nothing here depended on the fix. Recorded
+  2026-09-22.
+- [x] **`posted`**: follows the campaign schedule (push week 5,
+  Tuesday, of the distribution sequence in the campaign file), per the
+  writer's answer of 2026-09-22. Entering the date is a scheduling
+  step once the push start date is set, and it is no longer a writer
+  decision.

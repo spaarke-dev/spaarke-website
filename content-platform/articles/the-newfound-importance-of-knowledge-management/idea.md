@@ -21,7 +21,7 @@ within the legal operations intelligence platform.
 | # | Slug | Title | Display date | Job in the series |
 |---|---|---|---|---|
 | 1 | `managing-legal-operations` | The New Mandate for Legal Operations | 2026-06-16 | The function: what it takes to manage legal operations effectively as the legal department, the legal function, and the outside counsel relationship all change |
-| 2 | `building-the-legal-operations-intelligence-platform` | Building the Legal Operations Intelligence Platform | 2026-07-14 | The platform: what an intelligence platform is and how a department builds one across process, people, and technology, with technology as the tangible instantiation |
+| 2 | `building-the-legal-operations-intelligence-platform` | The Legal Operations Intelligence Platform | 2026-07-14 | The platform: what an intelligence platform is and how a department builds one across process, people, and technology, with technology as the tangible instantiation |
 | 3 | `legal-operations-ontology` | The Legal Operations Intelligence Ontology | 2026-07-21 | The foundation: the entity and action model that makes information actionable |
 | 4 | `business-intelligence-for-legal-operations` | A Business Intelligence Approach to Legal Operations | 2026-09-01 | The deterministic dimension: BI as a core component of the legal operations intelligence platform |
 | **5** | `the-newfound-importance-of-knowledge-management` | The Newfound Importance of Knowledge Management | 2026-09-15 | **This piece.** The source material: knowledge management as the context that AI needs to be accurate and useful |
