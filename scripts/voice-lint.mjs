@@ -24,6 +24,16 @@ const EN = String.fromCharCode(0x2013);
 // The workflow marker is a tool token, not prose. It is matched as a plain string.
 const TBD_MARKER = "**TBD " + EM + " confirm**";
 
+// A form of "to be" followed by a past participle. Used for the passive-share
+// statistic only (style guide section 2); it never raises an error, because a
+// legitimate passive is common and the judgement belongs to the writer.
+const PASSIVE_IRREGULAR =
+  "written|given|taken|made|held|seen|known|built|done|kept|shown|found|brought|put|set|sent|told|left|drawn|run|paid|met|lost|won|read|understood|chosen|driven|begun|spent|dealt|sold|bought|caught|taught|thought|meant|felt|led|said|heard";
+const PASSIVE = new RegExp(
+  `\\b(is|are|was|were|be|been|being)\\b(\\s+\\w+ly)?\\s+((?:${PASSIVE_IRREGULAR})|\\w+ed)\\b`,
+  "i"
+);
+
 // Hard errors: punctuation the house style bans outright.
 const ERRORS = [
   { re: new RegExp("[" + EM + BAR + "]", "g"), msg: "em dash: restructure with a comma pair, colon, parentheses, or a new sentence" },
@@ -130,6 +140,7 @@ for (const file of files) {
 
   let oneSentenceParas = 0;
   let paraCount = 0;
+  let passiveSentences = 0;
   const sentenceLengths = [];
   const paraLengths = [];
   for (const { at, para } of paras) {
@@ -140,6 +151,11 @@ for (const file of files) {
     const sentences = p.split(/(?<=[.?!])\s+/).filter((s) => s.trim().length > 0);
     paraLengths.push(p.split(/\s+/).length);
     for (const s of sentences) sentenceLengths.push(s.split(/\s+/).length);
+    // Passive share, reported as a statistic (style guide section 2). A quoted
+    // span is excluded, because a source's wording is never rewritten.
+    for (const s of sentences) {
+      if (PASSIVE.test(s.replace(/"[^"]*"/g, " "))) passiveSentences++;
+    }
     // A short lead-in that ends with a colon introduces a list; it is not a dramatic one-liner.
     if (sentences.length === 1 && p.split(/\s+/).length <= 12 && !p.endsWith(":")) {
       oneSentenceParas++;
@@ -170,7 +186,8 @@ for (const file of files) {
     console.log(
       `  stats: mean sentence ${mean(sentenceLengths).toFixed(1)} words (target 15 to 25); ` +
         `${share(sentenceLengths, (n) => n <= 8)}% of sentences at 8 words or fewer; ` +
-        `${share(sentenceLengths, (n) => n >= 40)}% at 40 or more; median paragraph ${median} words`
+        `${share(sentenceLengths, (n) => n >= 40)}% at 40 or more; median paragraph ${median} words; ` +
+        `${Math.round((100 * passiveSentences) / sentenceLengths.length)}% of sentences passive (ceiling about 15)`
     );
   }
   for (const r of report) {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">A Business Intelligence Approach to Legal Operations</title>
+  <desc id="hero-desc">Seven identical thin planes stacked in an even column on a deep navy field, the fourth lit brighter, with two fine lines leaving its right edge and ending in a small open circle and a small electric blue square, suggesting one governed measure read by a person and by an automated process.</desc>
+
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="55%" r="82%">
+      <stop offset="0%" stop-color="#34325E"/>
+      <stop offset="52%" stop-color="#23224A"/>
+      <stop offset="100%" stop-color="#161630"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.30"/>
+      <stop offset="55%" stop-color="#7B5BFF" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="plane" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3D3B72"/>
+      <stop offset="100%" stop-color="#26244E"/>
+    </linearGradient>
+    <linearGradient id="planeMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#332E62"/>
+      <stop offset="100%" stop-color="#26244E"/>
+    </linearGradient>
+    <linearGradient id="planeFocal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4D4890"/>
+      <stop offset="100%" stop-color="#332E62"/>
+    </linearGradient>
+    <linearGradient id="planeFlat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4D4890"/>
+      <stop offset="100%" stop-color="#3D3B72"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="500" cy="484" r="270" fill="url(#halo)"/>
+    <polygon points="304,286 500,242 696,286 500,330" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
+    <polygon points="304,352 500,308 696,352 500,396" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
+    <polygon points="304,418 500,374 696,418 500,462" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
+    <polygon points="304,484 500,440 696,484 500,528" fill="url(#planeFocal)" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round" opacity="0.96"/>
+    <polygon points="304,550 500,506 696,550 500,594" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
+    <polygon points="304,616 500,572 696,616 500,660" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
+    <polygon points="304,682 500,638 696,682 500,726" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
+    <path d="M 696 484 L 900 484 L 1010 392" fill="none" stroke="#A8C2FF" stroke-width="1.8" opacity="0.88" stroke-linejoin="round"/>
+    <path d="M 696 484 L 900 484 L 1010 594" fill="none" stroke="#A8C2FF" stroke-width="1.8" opacity="0.88" stroke-linejoin="round"/>
+    <circle cx="1040" cy="382" r="20" fill="none" stroke="#A8C2FF" stroke-width="2.2"/>
+    <rect x="1020" y="584" width="40" height="40" fill="none" stroke="#000BFF" stroke-width="2.8"/>
+</svg>

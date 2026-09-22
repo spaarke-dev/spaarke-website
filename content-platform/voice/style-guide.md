@@ -57,9 +57,16 @@ Claims are stated positively. Say what a thing is and why, and do not introduce 
 
 Subordinate clauses, semicolons, and conjunctions that name the logic ("because", "although", "whereas", "so") are the normal equipment of business prose, and one well-built compound sentence is preferable to three clipped ones. The earlier instructions to split any sentence that needs "scaffolding" and to cut whatever cannot be read aloud in one breath are withdrawn.
 
+Prefer the active voice. The test is whether the sentence has an actor who matters. Where a person, a team, or a system does the thing, name them and make them the subject. "Legal operations decides which work the business may complete on its own" is better than "A decision is made about which work the business may complete on its own", because the second hides the party the sentence is about. Active constructions also tend to be shorter and to force a claim into the open: a writer who has to name the actor finds out whether they know who it is.
+
+The passive is correct, and sometimes better, in three cases, and none of them needs rewriting. The actor is unknown or beside the point ("The report was published in March 2026"). The object is the topic of the passage, and promoting the actor would displace it ("Privilege travels with the entity, and it applies wherever the document has been copied"). Or the sentence reports a state of affairs rather than an act ("An outcome records what was decided and what followed from it").
+
+An agentless passive is not acceptable in a sentence about responsibility. Our subject matter is who decides, who owns, and who is accountable, so a sentence saying that work "is prioritized", that a standard "was agreed", or that a duty "has been assigned", without saying by whom, withholds the content the reader came for. Where the actor is genuinely unsettled, write that ("no framework names an owner for the practice") instead of concealing it in the grammar.
+
+Roughly 15% of sentences carrying a passive construction is a reasonable ceiling for an article, and `npm run voice:lint` reports the figure. A higher share is a reason to look rather than a failure in itself, since a piece that reports a body of research legitimately carries more.
+
 A few smaller rules complete the section:
 
-- Prefer the active voice. Use the passive only when the actor is unimportant or unknown.
 - A sentence may open with "But" or "Yet" when the word carries a real turn in the argument, as it does in McKinsey and Harvard Business Review prose. Use the device sparingly: never in consecutive sentences, never to launch a clipped dramatic line, and never "And" as a landing. A piece that replaces every such opening with "However," or "In addition," becomes stiff, which is a template of its own.
 - Common contractions ("it's", "don't", "won't") are acceptable in articles when used sparingly, because the register is business-like and not stiff. Do not use them in white papers or in passages that report research findings. LinkedIn posts and tweets may use them freely.
 - Use parallel structure and lists of three only when the content has that many parts.
