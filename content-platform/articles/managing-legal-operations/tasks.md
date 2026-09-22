@@ -24,13 +24,13 @@
 
 ## 2. Draft (gate: complete prose at the length the brief sets)
 
-- [ ] Opening drafted (per plan.md §Opening), with the thesis stated
+- [x] Opening drafted (per plan.md §Opening), with the thesis stated
       within the first 250 words of a long-form article or the first
       150 words of a short post, and no later than the third paragraph
-- [ ] Each section drafted in order
-- [ ] Close drafted (per plan.md §Close); it ends on consequence,
+- [x] Each section drafted in order
+- [x] Close drafted (per plan.md §Close); it ends on consequence,
       with no summary and no pitch
-- [ ] Length checked against `length_target` in brief.md:
+- [x] Length checked against `length_target` in brief.md:
       - `open` (long-form article): there is no cap. The check is that
         every section advances the argument and that nothing is padding.
       - A number above 1,800 (long-form article): the number is an
@@ -38,17 +38,20 @@
         reach the number.
       - A number from 1,000 to 1,800 (short post): the draft falls
         within that range, and about 1,400 words suits most short posts.
-- [ ] Internal cross-links inserted at the points named in plan.md
-- [ ] Exhibits, if any, cited in parentheses at the end of the
+- [x] Internal cross-links inserted at the points named in plan.md
+- [x] Exhibits, if any, cited in parentheses at the end of the
       sentence that states the finding, in the form "(Exhibit 1)"
-- [ ] No `**TBD — confirm**` markers (or, if any remain, they are
-      explicitly listed for the reviewer)
-- [ ] Draft written to `draft.mdx` in this article's workspace
+- [x] No `**TBD — confirm**` markers (or, if any remain, they are
+      explicitly listed for the reviewer) — one remains, the approved
+      `posted:` placeholder in the frontmatter, which the brief carries
+      and the writer fills when the push start date is set
+- [x] Draft written to `draft.mdx` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
 
-- [ ] Reviewer feedback captured
-- [ ] Revisions applied in `draft.mdx` (no version-suffix files;
+- [x] Reviewer feedback captured (three review lenses, 2026-09-22;
+      voice, fidelity, evidence)
+- [x] Revisions applied in `draft.mdx` (no version-suffix files;
       keep one source of truth)
 - [ ] Revision rounds repeat as needed; mark complete only when the
       reviewer accepts the prose
@@ -181,3 +184,95 @@ the foot of it.
 
 Model and guardrails for the gates that follow are in section 6 of this
 piece's `CLAUDE.md` (writer's direction, 2026-09-22).
+
+### 2026-09-22: the draft and revise gates
+
+The draft and revise gates ran as a single workflow: a first drafting
+pass (opening through Section 5), a second pass (Sections 6 to 9, the
+close, and the after-the-close blocks), then three independent review
+lenses over the finished file (voice, plan and brief fidelity, and
+evidence), then this fix pass. The reviewers returned 30 findings.
+Twenty-eight were applied. Two were recorded and not applied, for the
+reasons below.
+
+**Applied, by group.** The close was rebuilt: the six-sentence
+"requires knowing" recap that opened it is gone, and the section now
+opens on the four things the department has to see and runs straight
+into the consequence (style guide rules 22 and 25). The opening was
+rewritten so that it does not reuse the wording of the model passage in
+`voice/examples/consulting-register.md` section 6.1, which the brief
+prohibits: the first sentence now leads on the Thomson Reuters figure
+with its instrument and base rather than on "Most large legal
+departments now have", the second paragraph no longer restates the
+model's frameworks-and-directors sentence, and the verbatim lift "The
+frameworks describe what the function does." is gone from the Section 3
+transition. Two words on the `vocabulary.md` section 2 list were
+removed: "AI-driven" in four places and "enhancing" in one, each
+rewritten to say what the source says. Template rhythm was broken up in
+three runs: the four "Effective management ..." section closers, the
+four ordinal openers in the knowledge-curation section, and the four
+"X is the Nth area, and it now means Y rather than Z" openers in the
+operating-model section. The one-sentence transition paragraph at the
+head of Section 5 was folded into the paragraph it introduced (rule
+17). Four confidence overreaches were pulled back to what the brief
+records: the CLOC agenda reading is now stated as what the published
+program shows and not as a finding, the ACC January 2026 date is now
+the publication date of the key findings and not a fieldwork date, the
+35% barrier figure no longer claims to be the largest answer in the
+whole survey, and driver 6 no longer asserts what corporate software
+ships with. Two vendor-register paragraphs in the self-service section
+were replaced with the mechanism they were asserting, while keeping the
+writer's enabler point and the department's role in the work it hands
+over (brief beliefs 3 and 4). A recycled stock sentence in the same
+section was cut, an unsourced population claim in the readiness section
+("Most departments answer one or two of the four") was cut rather than
+invented a source for, the 30 January 2026 date was put in the article's
+month-day-year form, "twelve months" became "12 months", the
+announcement sentence before the four scenes was cut, and the
+terminology was held to one term: "legal practitioners" and "in-house
+counsel" became "the legal team" and "the department's lawyers". The
+frontier model providers were added back to the supply-side paragraph
+in Section 6 as a refer-back to driver 5, which the plan lists and the
+first pass dropped.
+
+**Where the reviewers conflicted.** Two places. First, the voice lens
+wanted the "informed, aware, understands" list and the "Technology is
+what makes ... possible" sentence cut outright; the brief makes both
+points mandatory content (Must include, the self-service section, and
+Angle beliefs 3 and 4). The brief governs on content and the style
+guide on voice, so the content was kept and the form fixed: the list of
+three collapsed to two distinct things, "partners with the business"
+became a described action, and the technology claim became the record a
+self-service path leaves behind. Second, the voice lens wanted the
+unsourced readiness claim relabelled as our own observation from
+assessments we have run; no such assessments are recorded in the brief,
+and the fix rules forbid introducing a new source, so the sentence was
+cut instead.
+
+**Not applied.** Two nits. The forward pointer from driver 3 to Section
+3 was left out: the ACC inception-of-projects finding gets its first
+full attribution in Section 3, which `plan.md`'s own open question
+permits, and adding "Section 3 takes it up" would be signposting (rule
+21). The series-navigation placeholder keeps its merged one-sentence
+form rather than the drafting guide's two-sentence wording, because the
+two-sentence form trips a lint warning and the sibling drafts in this
+series use the merged form; the content is identical.
+
+**Lint.** `node scripts/voice-lint.mjs
+content-platform/articles/managing-legal-operations/draft.mdx` reports
+0 errors and 0 warnings. Nothing was accepted, because nothing was
+raised. The run reports one TBD marker still open: the approved
+`posted: "**TBD — confirm**"` value in the frontmatter, which the brief
+carries and the writer fills when the push start date is set. That is
+also the only em dash in the file.
+
+**Left for the polish gate.** The frontmatter field checks (§4), the
+cross-link slug verification, the ai-tells section 8 and style guide
+section 5 sweeps over the title, headings and frontmatter fields, and
+the hero and its alt text (§5). Two prose notes for that gate: the
+thesis sentence now completes at about word 228 of the 250 allowed,
+with the sentence that gives its reason completing at about 256, and
+Harbor's operating-model finding stays in the second paragraph because
+`plan.md` §Opening assigns it there as the frame; the two exhibits are
+still referenced and not drawn, which the drafting guide defers to a
+later gate.

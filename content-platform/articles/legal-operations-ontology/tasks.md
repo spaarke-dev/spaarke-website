@@ -24,13 +24,13 @@
 
 ## 2. Draft (gate: complete prose at the length the brief sets)
 
-- [ ] Opening drafted (per plan.md §Opening), with the thesis stated
+- [x] Opening drafted (per plan.md §Opening), with the thesis stated
       within the first 250 words of a long-form article or the first
       150 words of a short post, and no later than the third paragraph
-- [ ] Each section drafted in order
-- [ ] Close drafted (per plan.md §Close); it ends on consequence,
+- [x] Each section drafted in order
+- [x] Close drafted (per plan.md §Close); it ends on consequence,
       with no summary and no pitch
-- [ ] Length checked against `length_target` in brief.md:
+- [x] Length checked against `length_target` in brief.md:
       - `open` (long-form article): there is no cap. The check is that
         every section advances the argument and that nothing is padding.
       - A number above 1,800 (long-form article): the number is an
@@ -38,17 +38,19 @@
         reach the number.
       - A number from 1,000 to 1,800 (short post): the draft falls
         within that range, and about 1,400 words suits most short posts.
-- [ ] Internal cross-links inserted at the points named in plan.md
-- [ ] Exhibits, if any, cited in parentheses at the end of the
+- [x] Internal cross-links inserted at the points named in plan.md
+- [x] Exhibits, if any, cited in parentheses at the end of the
       sentence that states the finding, in the form "(Exhibit 1)"
-- [ ] No `**TBD — confirm**` markers (or, if any remain, they are
-      explicitly listed for the reviewer)
-- [ ] Draft written to `draft.mdx` in this article's workspace
+- [x] No `**TBD — confirm**` markers (or, if any remain, they are
+      explicitly listed for the reviewer) — one remains, the `posted`
+      frontmatter field, which the drafting guide directs be left as
+      the brief has it until the push start date is set
+- [x] Draft written to `draft.mdx` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
 
-- [ ] Reviewer feedback captured
-- [ ] Revisions applied in `draft.mdx` (no version-suffix files;
+- [x] Reviewer feedback captured
+- [x] Revisions applied in `draft.mdx` (no version-suffix files;
       keep one source of truth)
 - [ ] Revision rounds repeat as needed; mark complete only when the
       reviewer accepts the prose
@@ -181,3 +183,99 @@ the foot of it.
 
 Model and guardrails for the gates that follow are in section 6 of this
 piece's `CLAUDE.md` (writer's direction, 2026-09-22).
+
+### 2026-09-22: the draft and revise gates
+
+The draft and revise gates ran as a single workflow: a first drafting
+pass through sections 1 to 7 (pass A), a second through sections 8 to
+13 and the material after the close (pass B), three independent review
+lenses over the finished draft (voice, fidelity, evidence), and this
+fix pass. The draft runs 8,114 words in the body across 13 H2
+sections, and the lint reports 0 errors.
+
+**Findings.** The three lenses returned 38 findings between them: 5
+must-fix, 19 should-fix, and 14 nits. All 5 must-fix and all 19
+should-fix items were applied, one of them (the `posted` marker) by
+record rather than by edit, because the drafting guide directs that
+the field be left as the brief has it. Ten of the 14 nits were
+applied. The four that were not are listed here with their reasons:
+
+- *The frontmatter `description` adjective "comprehensive" (voice,
+  nit).* The brief's Angle and its Must include list both make "the
+  comprehensive context" the operative phrase, and the frontmatter
+  block is the writer-approved version. Content governed, and the
+  adjective stays. The two frontmatter changes that were made are
+  different in kind: "Solutions" in `keyTakeaways` is a do-not-say
+  item, and "the context that makes data insight" was ungrammatical.
+- *The five-concept mapping in section 1 (fidelity, nit).* The plan
+  asks the passage to name each concept and say where the article
+  develops it. The draft names all five and says only that it takes
+  them in turn. Recorded here as a decision: style-guide rule 2's ban
+  on signposting outranks the mapping instruction, and the plan itself
+  warns that the passage must not read as a series recap.
+- *Sam Grange as a second vendor voice in section 11 (fidelity, nit).*
+  One vendor voice carries the point, a second would lengthen a
+  section the brief asks to keep tight, and the Grange row still
+  carries "source: TBD" for its URL, which the plan's open questions
+  say must be resolved before the draft cites it.
+- *The `posted` TBD marker and Exhibit 1 (evidence, nit).* Both are
+  production items for later gates, and both are listed under what the
+  polish gate still owes.
+
+**Where two lenses conflicted.** Three places, resolved on the rule
+that the style guide governs voice and the brief governs content:
+
+1. *The one-sentence paragraph closing section 5.* The style guide
+   prohibits a one-sentence paragraph used as a landing (section 3,
+   rule 17); the brief names that exact sentence as the one that
+   closes the section. Both were satisfied by folding the sentence,
+   word for word, into the end of the preceding paragraph. The
+   dashboard contrast then became the longest paragraph in the piece,
+   so the article 1 link and the closing sentence were split off as a
+   short two-sentence paragraph, which keeps the dashboard contrast in
+   one paragraph as the brief requires.
+2. *The MCP cautions paragraph.* The voice lens asked that the
+   252-word paragraph be split; the brief says twice that the cautions
+   receive one paragraph. The brief won, the two paragraphs were
+   merged into one, and the paragraph was tightened instead. The
+   paragraph-length relief the voice lens wanted was taken from the
+   relationships paragraph in section 3 and the eight-element sentence
+   in section 1 instead.
+3. *The word "solution" in the single Spaarke sentence.* The brief
+   licenses Spaarke to be named once "as providing a Legal Operations
+   Intelligence ontology solution"; `vocabulary.md` section 2 puts
+   "solution" on the do-not-say list and names "platform" as the word
+   we use. The style guide governed the word, the brief governed the
+   sentence's placement and its factual, comparison-free form, and the
+   sentence now reads "Spaarke provides a Legal Operations
+   Intelligence ontology platform for corporate legal departments" at
+   the foot of the section the brief designates.
+
+**Lint.** `node scripts/voice-lint.mjs
+content-platform/articles/legal-operations-ontology/draft.mdx` reports
+0 errors and 1 warning. The warning is accepted: it fires on L213,
+which is the series-navigation MDX comment
+(`{/* Series navigation: added when the series completes. See
+campaigns/2026-06-legal-operations-intelligence.md. */}`), whose two
+short sentences the lint reads as an aphoristic landing. The comment
+is the placeholder the drafting guide prescribes verbatim, it is not
+prose, and it carries no argument. The lint also reports 1 TBD marker
+still open, which is the `posted` field.
+
+**What the polish gate still owes.**
+
+- Replace `posted: "**TBD — confirm**"` with the quoted push date once
+  the campaign's start date is set, and rerun the lint to confirm 0
+  TBD markers.
+- Produce Exhibit 1, the entity-spine diagram cited at L79, per the
+  brief's diagram bullet and plan.md section 3, with alt text that is
+  a real sentence.
+- Confirm the nine plan.md sources that still carry `source: TBD`
+  URLs for any source the draft cites. The draft cites none of the
+  held-out or marker-carrying rows.
+- Rhythm remains at the top of the band: mean sentence 24.8 words, 7%
+  of sentences at 8 words or fewer, median paragraph 105 words. The
+  three paragraphs the voice lens named were split or tightened; a
+  further short-sentence pass at polish would bring the mean down.
+- The style-guide and `ai-tells.md` final sweeps, the hero, and the
+  LinkedIn header are untouched by this pass.

@@ -24,13 +24,14 @@
 
 ## 2. Draft (gate: complete prose at the length the brief sets)
 
-- [ ] Opening drafted (per plan.md §Opening), with the thesis stated
+- [x] Opening drafted (per plan.md §Opening), with the thesis stated
       within the first 250 words of a long-form article or the first
       150 words of a short post, and no later than the third paragraph
-- [ ] Each section drafted in order
-- [ ] Close drafted (per plan.md §Close); it ends on consequence,
+      (the thesis is the third paragraph and completes at word 249)
+- [x] Each section drafted in order
+- [x] Close drafted (per plan.md §Close); it ends on consequence,
       with no summary and no pitch
-- [ ] Length checked against `length_target` in brief.md:
+- [x] Length checked against `length_target` in brief.md:
       - `open` (long-form article): there is no cap. The check is that
         every section advances the argument and that nothing is padding.
       - A number above 1,800 (long-form article): the number is an
@@ -38,17 +39,24 @@
         reach the number.
       - A number from 1,000 to 1,800 (short post): the draft falls
         within that range, and about 1,400 words suits most short posts.
-- [ ] Internal cross-links inserted at the points named in plan.md
-- [ ] Exhibits, if any, cited in parentheses at the end of the
+- [x] Internal cross-links inserted at the points named in plan.md
+      (all twelve; the category link moved off the thesis sentence to
+      the sentence after the method sentence, with the brief's link
+      text)
+- [x] Exhibits, if any, cited in parentheses at the end of the
       sentence that states the finding, in the form "(Exhibit 1)"
-- [ ] No `**TBD — confirm**` markers (or, if any remain, they are
-      explicitly listed for the reviewer)
-- [ ] Draft written to `draft.mdx` in this article's workspace
+      (Exhibit 1 in section 2, Exhibit 2 in section 13, now committed)
+- [x] No `**TBD — confirm**` markers (or, if any remain, they are
+      explicitly listed for the reviewer): one remains, the `posted`
+      frontmatter field, which the drafting guide directs be left as
+      the brief has it and which the scheduling step replaces
+- [x] Draft written to `draft.mdx` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
 
-- [ ] Reviewer feedback captured
-- [ ] Revisions applied in `draft.mdx` (no version-suffix files;
+- [x] Reviewer feedback captured (voice, fidelity, and evidence lenses,
+      2026-09-22; 39 findings)
+- [x] Revisions applied in `draft.mdx` (no version-suffix files;
       keep one source of truth)
 - [ ] Revision rounds repeat as needed; mark complete only when the
       reviewer accepts the prose
@@ -207,3 +215,59 @@ the foot of it.
 
 Model and guardrails for the gates that follow are in section 6 of this
 piece's `CLAUDE.md` (writer's direction, 2026-09-22).
+
+### 2026-09-22: the draft and revise gates
+
+Both gates ran as one workflow: a first drafting pass (pass A) and a
+second (pass B) produced the full 17-section draft, three reviewers
+then read it on separate lenses (voice, fidelity to the brief and the
+plan, and evidence), and this fix pass applied their findings. The
+three lenses returned 39 findings between them. Thirty-four were
+applied, including every must-fix except the frontmatter marker, and
+five were not, for the reasons below.
+
+**Not applied.**
+
+- *The `posted` field's `**TBD — confirm**` marker* (voice must-fix;
+  fidelity nit). It is the file's only em dash. The drafting guide
+  directs that `posted` be left as the brief has it at the draft gate,
+  the brief records that the date follows the campaign's push
+  sequence, and the fidelity lens states that no change is due at this
+  gate. Entering a date now would invent one. The marker is listed
+  here as the last open item: the scheduling step replaces it with the
+  real publish date (push week 2, Tuesday) before publication, which
+  also removes the file's only em dash.
+- *An access date on the Deloitte US 2026 Predictions citation*
+  (evidence should-fix; fidelity nit). The brief's fallback is the
+  copyright year with an access date, but no access date is recorded
+  in the brief, the idea file, or the research note, and inventing one
+  would breach the evidence rule. Carried to the polish gate.
+- *Aligning `voice/product-knowledge.md` section 3.5 with the series
+  worked example* (fidelity should-fix). The draft follows the brief,
+  which governs, so no draft change was due. The voice file is shared
+  by all five articles and the other four are being drafted in
+  parallel, so the edit is left to the campaign owner rather than made
+  from inside one article's fix pass.
+
+**Lint.** `node scripts/voice-lint.mjs` on the draft reports 0 errors
+and 1 warning. The warning is accepted: it flags the MDX comment
+placeholder for the series-navigation block
+(`{/* Series navigation: added when the series completes. */}`) as a
+paragraph ending on clipped sentences. The placeholder is the form the
+drafting guide prescribes, it is a comment and renders nothing, and
+the campaign replaces it when the last article ships. The run also
+reports 1 TBD marker still open, which is the `posted` field above.
+
+**Left for the polish gate.** The four EY 2025 figures printed in
+section 5 need a re-read of the 2025-04-09 release, with the fallback
+of stating the fragmentation premise as discussion. The Harbor 2026
+release is now paraphrased rather than quoted, because the Kevin Clem
+quotation's fact-check waiver covers article 1 only; confirm the
+paraphrase or extend the waiver. Exhibit 2 is now committed by the
+draft and has to be drawn, and its entry added to the campaign file's
+image list. The "Related reading" H2 label is kept as a series
+convention and should be confirmed once in the campaign file. Two
+section headings were shortened against the plan's wording to meet the
+15-word ceiling, so the plan headings need syncing if the writer wants
+the two files to read identically. The full list is at the foot of
+`plan.md`.

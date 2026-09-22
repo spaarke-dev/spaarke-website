@@ -24,13 +24,14 @@
 
 ## 2. Draft (gate: complete prose at the length the brief sets)
 
-- [ ] Opening drafted (per plan.md §Opening), with the thesis stated
+- [x] Opening drafted (per plan.md §Opening), with the thesis stated
       within the first 250 words of a long-form article or the first
       150 words of a short post, and no later than the third paragraph
-- [ ] Each section drafted in order
-- [ ] Close drafted (per plan.md §Close); it ends on consequence,
+      (the thesis sentence opens the third paragraph at word 212)
+- [x] Each section drafted in order
+- [x] Close drafted (per plan.md §Close); it ends on consequence,
       with no summary and no pitch
-- [ ] Length checked against `length_target` in brief.md:
+- [x] Length checked against `length_target` in brief.md:
       - `open` (long-form article): there is no cap. The check is that
         every section advances the argument and that nothing is padding.
       - A number above 1,800 (long-form article): the number is an
@@ -38,17 +39,20 @@
         reach the number.
       - A number from 1,000 to 1,800 (short post): the draft falls
         within that range, and about 1,400 words suits most short posts.
-- [ ] Internal cross-links inserted at the points named in plan.md
-- [ ] Exhibits, if any, cited in parentheses at the end of the
+- [x] Internal cross-links inserted at the points named in plan.md
+- [x] Exhibits, if any, cited in parentheses at the end of the
       sentence that states the finding, in the form "(Exhibit 1)"
-- [ ] No `**TBD — confirm**` markers (or, if any remain, they are
-      explicitly listed for the reviewer)
-- [ ] Draft written to `draft.mdx` in this article's workspace
+- [x] No `**TBD — confirm**` markers (or, if any remain, they are
+      explicitly listed for the reviewer): one remains, on the
+      frontmatter `posted` field, which the brief's approved
+      frontmatter block carries and which the ship gate resolves
+- [x] Draft written to `draft.mdx` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
 
-- [ ] Reviewer feedback captured
-- [ ] Revisions applied in `draft.mdx` (no version-suffix files;
+- [x] Reviewer feedback captured (three review lenses, 2026-09-22:
+      voice, fidelity to brief and plan, evidence)
+- [x] Revisions applied in `draft.mdx` (no version-suffix files;
       keep one source of truth)
 - [ ] Revision rounds repeat as needed; mark complete only when the
       reviewer accepts the prose
@@ -181,3 +185,95 @@ the foot of it.
 
 Model and guardrails for the gates that follow are in section 6 of this
 piece's `CLAUDE.md` (writer's direction, 2026-09-22).
+
+### 2026-09-22: the draft and revise gates
+
+The draft and revise gates ran as one workflow: a first drafting pass
+(frontmatter, opening, sections 1 to 6), a second pass (sections 7 to
+11, the close, and the after-the-close blocks), then three independent
+review lenses on the finished draft, then this fix pass. The lenses
+were voice (style guide, `ai-tells.md`, `vocabulary.md`), fidelity to
+`brief.md` and `plan.md`, and evidence. All three returned
+"fix-needed" on detail while accepting the structure, the evidence
+discipline, and the close.
+
+The three lenses returned 34 findings: 5 voice must-fix, 13 voice
+should-fix, 4 voice nits, 1 fidelity should-fix, 5 fidelity nits, 3
+evidence should-fix, and 3 evidence nits. Thirty-two were applied. Two
+were not:
+
+- The voice nit on "technology as the tangible instantiation of the
+  other two" (section 3) was skipped on the reviewer's own advice.
+  The phrase is the series' fixed definitional wording, set in this
+  article's `brief.md` and `idea.md` and used verbatim in article 2,
+  so changing it here alone would break the series. If the writer
+  wants it out, both drafts and both planning files change together.
+- The evidence nit asking for the ILTACON registration figure to be
+  qualified as a Wednesday snapshot was overtaken by the voice
+  should-fix that removed the two ILTACON sentences entirely. The
+  style guide governs on voice, and the sentences were a
+  law-firm-market fact whose own caveat ran longer than the claim.
+  The LawSites material (R9) is therefore not cited in this article.
+
+Where the lenses touched the same text they agreed. The fidelity and
+evidence lenses both flagged the IT co-funding sentence in section 5
+as reading like a sourced market fact when the E10 figures had been
+dropped; one repair covers both, and the prevalence claim and the
+technology-leader claim now sit inside a single observation framing
+with no number.
+
+Notable content repairs: the "A department that ..." conditional frame
+was recast in six places (four distinct instances remain, spread
+across the piece); the section 10 lead-in, which recapped the article
+and then announced the section, was deleted; "AI-driven", "actually"
+as an intensifier and "is worth noting" were removed; the Axiom 83%
+and the Thomson Reuters 63%/29% split each gained the interpreting
+sentence the style guide requires; "rather than" fell from 19 uses to
+13, with the three tagline-shaped uses replaced by positive claims;
+the Power BI preview and generally-available statuses were added as
+the brief requires; and "conducted in November 2025" became
+"published in November 2025" for the ACC and Everlaw survey, which
+carries a release date and no field dates.
+
+Lint: `node scripts/voice-lint.mjs
+content-platform/articles/business-intelligence-for-legal-operations/draft.mdx`
+reports 0 errors and 0 warnings, 68 paragraphs, 0 one-sentence
+paragraphs, mean sentence 24.5 words, median paragraph 94 words. One
+`**TBD — confirm**` marker remains, on the frontmatter `posted` field,
+which the brief's approved frontmatter block carries and the ship gate
+resolves. No warning had to be accepted.
+
+Deviation recorded: the series-navigation placeholder reads
+"... added when the series completes, per
+campaigns/2026-06-legal-operations-intelligence.md." rather than the
+drafting guide's literal "... added when the series completes. See
+campaigns/2026-06-legal-operations-intelligence.md." The guide's two
+short trailing sentences trip the lint's aphoristic-landing check on a
+comment line. The meaning and the placeholder role are unchanged. If
+the campaign tooling matches on the literal string, revert it there.
+
+Left for the polish gate:
+
+- E10 (shared enterprise funding of legal technology at 29% overall,
+  43% at US$5 billion to US$20 billion, 45% above US$20 billion) and
+  E11 (eight lawyers per legal operations professional) were dropped
+  under the contingency in `plan.md` "Sources to verify", because the
+  drafting session had no browser with which to confirm a key-findings
+  or press-release URL for the ACC and Major, Lindsey & Africa 2026
+  Law Department Management Benchmarking Report. The condition was met
+  by the absence of a check, not by a check that failed. Both rows stay
+  unticked in "Sources to verify" so the polish gate runs the URL
+  check. If a URL is confirmed there, the figures can be restored to
+  section 5 and section 10.3 with no other change to the draft.
+- The Forrester "deterministic" check on the July and August 2026
+  posts (R4 and R5), which the writer approved for the polish gate.
+  The draft limits the caveat to the two checked posts until then.
+- The plan's open question on the opening's shape against articles 1
+  to 3 is now resolved: article 1 opens "In the Thomson Reuters
+  Institute's 2025 Legal Department Operations Index, drawn from a
+  July 2025 survey of 128 US respondents, 82% reported ...", so this
+  article's opening was recast to put the institute in subject
+  position and fold the sample gloss into a parenthesis.
+- The in-body link to article 3's UX piece now uses the published
+  title in title case, "The UX That Legal IQ Requires", matching the
+  brief and the related-reading list.

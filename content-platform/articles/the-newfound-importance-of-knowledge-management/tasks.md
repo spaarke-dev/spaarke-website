@@ -24,13 +24,13 @@
 
 ## 2. Draft (gate: complete prose at the length the brief sets)
 
-- [ ] Opening drafted (per plan.md §Opening), with the thesis stated
+- [x] Opening drafted (per plan.md §Opening), with the thesis stated
       within the first 250 words of a long-form article or the first
       150 words of a short post, and no later than the third paragraph
-- [ ] Each section drafted in order
-- [ ] Close drafted (per plan.md §Close); it ends on consequence,
+- [x] Each section drafted in order
+- [x] Close drafted (per plan.md §Close); it ends on consequence,
       with no summary and no pitch
-- [ ] Length checked against `length_target` in brief.md:
+- [x] Length checked against `length_target` in brief.md:
       - `open` (long-form article): there is no cap. The check is that
         every section advances the argument and that nothing is padding.
       - A number above 1,800 (long-form article): the number is an
@@ -38,17 +38,18 @@
         reach the number.
       - A number from 1,000 to 1,800 (short post): the draft falls
         within that range, and about 1,400 words suits most short posts.
-- [ ] Internal cross-links inserted at the points named in plan.md
-- [ ] Exhibits, if any, cited in parentheses at the end of the
+- [x] Internal cross-links inserted at the points named in plan.md
+- [x] Exhibits, if any, cited in parentheses at the end of the
       sentence that states the finding, in the form "(Exhibit 1)"
-- [ ] No `**TBD — confirm**` markers (or, if any remain, they are
-      explicitly listed for the reviewer)
-- [ ] Draft written to `draft.mdx` in this article's workspace
+- [x] No `**TBD — confirm**` markers (or, if any remain, they are
+      explicitly listed for the reviewer) — one remains, the `posted`
+      frontmatter field; it is listed for the polish gate below
+- [x] Draft written to `draft.mdx` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
 
-- [ ] Reviewer feedback captured
-- [ ] Revisions applied in `draft.mdx` (no version-suffix files;
+- [x] Reviewer feedback captured
+- [x] Revisions applied in `draft.mdx` (no version-suffix files;
       keep one source of truth)
 - [ ] Revision rounds repeat as needed; mark complete only when the
       reviewer accepts the prose
@@ -181,3 +182,100 @@ the foot of it.
 
 Model and guardrails for the gates that follow are in section 6 of this
 piece's `CLAUDE.md` (writer's direction, 2026-09-22).
+
+### 2026-09-22: the draft and revise gates
+
+Both gates ran as one automated workflow: a drafting pass (pass A) that
+wrote the frontmatter, the opening, and sections 1 to 6, a second pass
+(pass B) that wrote sections 7 to 13 and the close, then three
+independent review lenses over the finished file (voice, fidelity,
+evidence), then this fix pass. No human reviewer has read the prose yet,
+so §3's third box stays open until one does.
+
+The three lenses returned 35 findings: 5 must-fix, 14 should-fix, and
+16 nits, with one finding raised by two lenses (the repeated "from the
+attack side" clause at section 11). **29 were applied as prose edits,
+all 5 must-fix and all 14 should-fix among them, plus 10 of the nits.**
+Four more were resolved as recorded decisions rather than edits (the
+accepted lint warning, the open `posted` marker, the omitted Uber
+quotation, and the cross-link placement). One was skipped, and one was
+resolved the other way from the reviewer's suggestion:
+
+- *Skipped.* The evidence lens flagged four unsourced quantities as
+  illustrations a later reviewer might stop on (the 40 retrieved
+  documents at §2, the 300-term taxonomy and the 12 lawyers at §6 and
+  §7, the several dozen fragments at §8). The reviewer said no change
+  was required if each reads as an illustration. Each does, and the
+  fragment count follows arithmetically from the 512-token chunk size
+  the same paragraph cites, so all four stand.
+- *Resolved against one reviewer.* The voice lens asked that the
+  `summary` frontmatter field be reworded so it no longer matches the
+  thesis paragraph's closing sentence. The body sentence was rewritten
+  as a counted list of five, which removes the overlap, but the
+  frontmatter block was left alone: the brief governs on content and
+  the writer signed that block off field for field on 2026-09-22.
+
+Where the two lenses differed on the `institutional knowledge` /
+`institutional memory` phrasing in the `legal-ops-is-not-it-for-lawyers`
+cross-link, the brief governed and "institutional memory" was restored.
+Where the voice lens and the brief differed on the Exhibit 2 caption
+wording, the brief's approved sentence was used verbatim.
+
+Plan open questions resolved in the draft, recorded here as the plan
+asked:
+
+- The `what-is-legal-operations-intelligence` link stays in section 12
+  and now carries the article title as its link text, per the brief. The
+  term's first prose use is one section earlier, in the Spaarke sentence
+  at section 11, so the link sits on the second use; moving it would
+  attach the definitional article to a product sentence.
+- The CLOC Global Institute 2026 Uber session quotation ("training the
+  model on our curated legal knowledge base...") is **omitted**. The
+  brief marks it TBD and the writer's answer of 2026-09-22 was "include
+  if helpful; no specific reference required." Section 7 makes its point
+  from the four mechanisms without it.
+
+**Voice lint: 0 errors, 1 warning, 1 TBD marker still open.**
+
+- *Warning accepted.* L266, "paragraph ends on two clipped sentences
+  (aphoristic landing)", fires on the MDX series-navigation comment,
+  `{/* Series navigation: added when the series completes. See
+  campaigns/2026-06-legal-operations-intelligence.md. */}`. The lint's
+  paragraph scanner does not skip JSX comments. The wording is
+  prescribed by the series drafting guide and the two sibling drafts
+  carry it character for character, so consistency across the series
+  wins over a clean lint line. Accepted on that basis.
+- *Not a warning, but open.* The lint reports mean sentence length at
+  25.5 words against a 15 to 25 target, with 11% of sentences at 40
+  words or more. That is the top of the band rather than outside it, and
+  the long sentences are the ones carrying a source, an instrument, and
+  a year inline. Left for the polish gate to judge.
+
+Owed to the polish gate:
+
+1. Resolve `posted: "**TBD — confirm**"` to the intended posting date.
+   It is the only em dash left in the file, and no marker may survive to
+   publication.
+2. Produce `exhibit-2.svg` at
+   `public/articles/the-newfound-importance-of-knowledge-management/exhibit-2.svg`
+   and place it under the caption already in the file at section 10. The
+   caption and the alt text are given verbatim in the brief. The two
+   sibling drafts reference their SVG exhibits without a caption line;
+   this piece carries one because the reference would otherwise dangle,
+   and the series should be aligned one way or the other.
+3. Confirm the two ILTA 2026 Technology Survey paraphrases against the
+   executive summary PDF. Section 1 now keeps the underdeveloped
+   knowledge infrastructure claim and the completed platform migration
+   as two separate statements, because the source does not itself draw
+   the comparison the first draft made.
+4. Confirm the CLOC 2025 reading now stated in section 10, that at least
+   half of surveyed departments place 12 of the 15 listed services with
+   legal operations, which is what "alongside the 11 other services"
+   rests on.
+5. Jamal Brown's employer is still TBD. Section 10 names no individual
+   and now attributes the JPMorganChase and Guggenheim Investments
+   pairing to the agenda listing rather than asserting it.
+6. Section 10 shares three evidence items with article 1 (the O'Carroll
+   quotation, the CLOC Global Institute session, and the 85% AI-oversight
+   figure). A reader of the series meets all three twice. Worth a
+   series-level decision at polish.

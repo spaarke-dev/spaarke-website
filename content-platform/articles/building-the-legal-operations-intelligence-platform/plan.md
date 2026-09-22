@@ -1234,3 +1234,41 @@ decision.
       brief or the campaign file acknowledges the collision. Before
       the calendar step runs, decide whether the older row moves or
       stays, and record the outcome in the campaign file.
+
+## Decisions taken at the draft and revise gates (2026-09-22)
+
+- [x] **Exhibit 2 is drawn.** The draft prints "(Exhibit 2)" on the
+      report-card sentence in section 13, so the optional exhibit is now
+      committed and the polish gate has to produce it to the title, the
+      content, and the alt text recorded in the section 13 entry above.
+      The campaign file's image list still needs the same entry; that is
+      a polish-gate item, left to the campaign owner so that the five
+      articles do not write to the shared file in parallel.
+- [x] **"Related reading" label.** Settled across the series on
+      2026-09-22 as a bold lead-in (`**Related reading:**`) and not an
+      H2. The style guide (section 5, rule 4) allows the list and does
+      not fix its label, so consistency decided it: four of the five
+      drafts used the bold form, and this one was brought into line.
+      The list itself stays a plain list of links with no recap
+      paragraph.
+- [x] **Two headings shortened against the plan's wording.** Section 3
+      now reads "Context from every system and from the organization's
+      knowledge sets the platform apart" and section 17 "An ontology of
+      the department's entities and actions is the foundation". Both
+      plan headings ran to 16 and 17 words, over the 15-word ceiling in
+      `consulting-register.md` section 4.5; the claim of each section is
+      unchanged. Sync the plan headings at the polish gate if the writer
+      wants the plan and the draft to read identically.
+- [ ] **Polish-gate verification list, carried from the review.** Four
+      EY 2025 figures (52%, 44%, 41%, 75%) are printed in section 5 and
+      were writer-verified on 2026-05-07 without a September re-read:
+      re-read the release of 2025-04-09 and confirm all four, or drop
+      the numbers and state the fragmentation premise as discussion,
+      which the brief permits. The Harbor 2026 release is now used in
+      section 11 as a paraphrase rather than as the Kevin Clem
+      quotation, because the quotation's fact-check waiver covers
+      article 1 only; confirm the paraphrase or extend the waiver. The
+      Deloitte US 2026 Predictions document is cited by its copyright
+      year with no access date, because no access date is recorded in
+      the research library: supply one, or cite the publication date
+      once it is confirmed.
