@@ -10,22 +10,22 @@ alwaysApply: false
 
 ## Purpose
 
-**Tier 1 Skill** — The content equivalent of `design-to-spec`.
-Transforms a writer's free-form idea (raw notes, links, half-thoughts)
-into a canonical `brief.md` — the formal specification for a single
+**Tier 1 Skill**: the content equivalent of `design-to-spec`.
+Converts a writer's free-form idea (raw notes, links, half-thoughts)
+into a canonical `brief.md`, the formal specification for a single
 piece of content. The brief is what `content-pipeline` consumes to
 produce the per-piece workspace (plan, tasks, per-piece CLAUDE.md,
 GitHub Issue).
 
 **Key Features**:
 - Reads the Spaarke voice constitution before producing a brief, so
-  the brief is voice-aware from creation
+  the brief is voice-aware from creation.
 - Picks the right per-type brief template (blog-post, linkedin-post,
-  white-paper, tweet) based on the intended type
-- Asks targeted clarifying questions for gaps
+  white-paper, tweet) based on the intended type.
+- Asks targeted clarifying questions for gaps.
 - Validates tags against the canonical taxonomy in
-  `content-platform/voice/taxonomy.md` — refuses to invent new tag
-  values
+  `content-platform/voice/taxonomy.md`, and refuses to invent new tag
+  values.
 - Proposes a campaign assignment based on the active campaigns in
   `content-platform/campaigns/`
 - Flags unverified stats and quotes as `**TBD — confirm**`
@@ -42,12 +42,12 @@ GitHub Issue).
 ## Input/Output
 
 **Input** (one of):
-- `content-platform/articles/<slug>/idea.md` — raw idea file
+- `content-platform/articles/<slug>/idea.md` (the raw idea file)
 - User-provided text/notes via conversation (the skill creates the
   idea.md from the conversation, then proceeds)
 
 **Output**:
-- `content-platform/articles/<slug>/brief.md` — canonical brief
+- `content-platform/articles/<slug>/brief.md`, the canonical brief
   built from the matching `content-platform/templates/<type>/brief.md` template
 
 ## Workflow Position
@@ -82,8 +82,8 @@ plan.md, tasks.md, per-piece CLAUDE.md, GitHub Issue
 ### Step 1: Load the voice constitution (non-negotiable)
 
 Before reading the idea or producing anything, load these in this
-order. Do not skip — the brief is voice-aware from creation, not
-"voiced up later."
+order. Do not skip this step, because the brief is voice-aware from
+creation and is never "voiced up later."
 
 ```
 READ in this order:
@@ -92,9 +92,13 @@ READ in this order:
   3. content-platform/voice/audience-personas.md
   4. content-platform/voice/taxonomy.md   (canonical tag values)
   5. content-platform/voice/vocabulary.md (do/don't language)
+  6. content-platform/voice/examples/consulting-register.md (the
+     positive model for the register)
+  7. content-platform/voice/examples/ai-tells.md (constructions the
+     brief must not model or ask for)
 ```
 
-If any of these don't exist, halt and tell the user — the
+If any of these don't exist, halt and tell the user, because the
 constitution is the prerequisite.
 
 ---
@@ -129,9 +133,12 @@ The brief template differs by type. Pick one before proceeding.
 
 ```
 INFER from the idea content:
-  - Long argument with sections, sources, ~1,400 words           -> blog-post
-  - Short hook + body + close, ~150-400 words                    -> linkedin-post
-  - Long evidence-led document with citations, 2,500-5,000 words -> white-paper
+  - Argument with sections and sources, at any length            -> blog-post
+      (long-form article, the primary thought-leadership format:
+       length_target open, or a number chosen for the topic, with
+       no cap; short post: 1,000 to 1,800 words)
+  - Short hook + body + close, 150 to 400 words                  -> linkedin-post
+  - Long evidence-led document with citations, 2,500 to 5,000 words -> white-paper
   - Single thought or thread idea, ≤280 chars per beat           -> tweet
 
 IF ambiguous:
@@ -149,18 +156,20 @@ for type-specific calibration (length, structure, CTA conventions).
 ```
 EXTRACT (best-effort) from idea.md:
 
-1. TOPIC — what is this about, in one sentence?
-2. ANGLE — what's the specific argument the reader should walk
-   away believing? (Not the topic — the take.)
-3. WHY NOW — market trigger, calendar moment, gap in library
-4. AUDIENCE — primary persona (one of the personas in
+1. TOPIC: what is this about, in one sentence?
+2. ANGLE: what's the specific argument the reader should walk
+   away believing? (The take, as distinct from the topic.)
+3. WHY NOW: market trigger, calendar moment, gap in library
+4. AUDIENCE: primary persona (one of the personas in
    audience-personas.md)
-5. MUST INCLUDE — sub-claims, named evidence, scenarios, sources
-6. MUST NOT INCLUDE — adjacent topics for separate pieces, items
-   from voice/examples/avoid-this.md, marketing-speak closes
-7. REFERENCES — internal articles to link, external sources to cite
-8. PROPOSED LENGTH — fit to type (blog ~1,400, LI 150-400, WP
-   2,500-5,000, tweet ≤280/beat)
+5. MUST INCLUDE: sub-claims, named evidence, scenarios, sources
+6. MUST NOT INCLUDE: adjacent topics for separate pieces, items
+   from voice/examples/avoid-this.md and voice/examples/ai-tells.md,
+   marketing-speak closes
+7. REFERENCES: internal articles to link, external sources to cite
+8. PROPOSED LENGTH: fit to type (blog long-form article: open, or a
+   number chosen for the topic, with no cap; blog short post: 1,000
+   to 1,800; LI 150 to 400; WP 2,500 to 5,000; tweet ≤280/beat)
 
 FLAG missing elements for Step 5 clarification.
 ```
@@ -179,18 +188,18 @@ GAP TYPES -> QUESTION PATTERNS:
 1. UNDEFINED ARGUMENT
    Gap: idea names a topic but not the take
    Question: "The idea is about <topic>. What's the specific argument?
-             What should the reader walk away believing — and what
+             What should the reader walk away believing, and what
              would Spaarke push back on?"
 
 2. AUDIENCE AMBIGUOUS
    Gap: could be aimed at corporate-counsel, legal-ops, or IT
-   Question: "Primary persona — who's this written *to*? Options:
+   Question: "Primary persona: who's this written *to*? Options:
              corporate-counsel, legal-operations, corporate-it,
              law-firm-leadership."
 
 3. UNVERIFIED CLAIMS
    Gap: idea cites a stat or quote without source
-   Question: "You mention '<claim>' — do you have a source? If not,
+   Question: "You mention '<claim>'. Do you have a source? If not,
              I'll mark it **TBD — confirm** in the brief."
 
 4. MISSING CROSS-LINKS
@@ -206,7 +215,7 @@ GAP TYPES -> QUESTION PATTERNS:
 
 6. UNCLEAR HERO DIRECTION
    Gap: idea doesn't suggest a visual concept
-   Question: "Hero direction — should this be the standard SVG
+   Question: "Hero direction: should this be the standard SVG
              treatment (geometric/abstract per visual-identity.md)
              or something else?"
 
@@ -282,7 +291,7 @@ FILL in:
     visual-identity.md format)
   - For linkedin-post: Hook (the explicit first 1-2 lines), Format
   - For white-paper: Citation style, structure (exec summary +
-    sections + conclusion + action steps), expected PDF artifact
+    sections + closing section + action steps), expected PDF artifact
   - For tweet: standalone vs thread, beat per tweet
 
 MARK any unresolved claims `**TBD — confirm**` and list them in a
@@ -299,7 +308,7 @@ OUTPUT brief.md content to user (or path + summary if too long
 
 SHOW summary:
   - Type: <type>
-  - Length target: <words>
+  - Length target: <open | words>
   - Primary audience: <persona>
   - Campaign: <slug> or "standalone"
   - Number of TBD-confirm markers
@@ -337,8 +346,9 @@ IF user said 'done':
   `voice/taxonomy.md`. Adding a new value is a separate, gated
   decision that updates the taxonomy file first.
 - Do **not** include items from `voice/examples/avoid-this.md` or
-  break the do-not-say list in `voice/style-guide.md` §5. The brief
-  itself should model the voice it specifies.
+  `voice/examples/ai-tells.md`, or break the do-not-do list in
+  `voice/style-guide.md` §5 (which includes the rule against em
+  dashes). The brief itself should model the voice it specifies.
 - Do **not** auto-generate the plan, tasks, or per-piece CLAUDE.md.
   That's `content-pipeline`'s job. This skill stops at the brief.
 

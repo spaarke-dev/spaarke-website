@@ -18,10 +18,10 @@ First draft. Team revises in T11.
 | operational intelligence | productivity | productivity is what individual tools sell; we sell something larger |
 | operational memory | knowledge base / institutional knowledge (when naming the layer) | "operational memory" is our term for the system; "institutional knowledge" is what's in people's heads |
 | institutional knowledge | tribal knowledge / organizational know-how | "institutional" treats it as legitimate; "tribal" carries baggage |
-| Microsoft-native | Microsoft-integrated / built for Microsoft | "native" means built on, not bolted on — that distinction is the argument |
+| Microsoft-native | Microsoft-integrated / built for Microsoft | "native" means the product is built on the Microsoft platform, whereas "integrated" describes a product attached to it afterward; that distinction is the argument |
 | customer-tenant | customer-side / client-hosted | matches our deployment language; "tenant" is the precise Microsoft term |
 | data-rich and insight-poor | underutilized data / missed insights | a real phrase from the library that lands; preserve it |
-| fragmented systems | legacy tools / disconnected solutions | accurate and concrete — names what's actually wrong |
+| fragmented systems | legacy tools / disconnected solutions | accurate and concrete; it names what is wrong |
 | discipline | category / space / market | LOI is a discipline first; "category" comes second |
 | operating layer | middleware / integration layer | "operating layer" is positioning; "middleware" is plumbing |
 | inference | AI / machine learning (when describing the Legal IQ stack layer) | the layer is named Inference; use the term we coined |
@@ -36,24 +36,27 @@ First draft. Team revises in T11.
 | AI-directed, human-controlled | human-in-the-loop AI / AI-assisted | our positioning line; preserve it verbatim |
 | Microsoft 365 | Office 365 / Microsoft Office | "Microsoft 365" is current; "Office 365" dates the writer |
 | Copilot | Microsoft Copilot (after first use) | the field calls it Copilot |
-| we | the reader / one / users | direct; matches our voice |
-| consider | imagine / picture | "imagine" is a banned opener |
+| we (for Spaarke's own evidence and positions: "we recommend", "we found") | one / the authors / Spaarke in the third person (when the sentence states our own position) | the analytical "we" states a position and then defends it (style guide, section 1); the announcement "we" stays banned (section 5, rule 8) |
+| general counsel / legal operations directors (readers named by role in analysis); "you" for direct advice, checklists, and diagnostic questions | the reader / one / users | the pronoun rule in the style guide, section 1 |
+| (the scenario itself, stated with names, dates, and figures) | imagine / picture / now consider | `Imagine if` is a banned opener and `Now consider` is signposting (style guide, section 5, rules 3 and 21) |
 | examine / look at | dive into / dive deep into | "dive" is a cliché |
 | use | leverage / utilize | leverage is the most common consultantism in legal-ops writing |
 | build on | leverage the foundation of | shorter, more honest |
 | because | due to the fact that | shorter |
 | help | empower / enable (when "help" works) | "empower" is corporate-speak; "help" is human |
 | answer | solution (when answering a question) | "solution" is overused and almost meaningless |
-| legal professionals / the legal team / practitioners / users | attorneys / lawyers (when work isn't attorney-only) | corporate legal includes paralegals, legal-ops, contract managers, compliance officers — saying "attorneys" for shared operational work alienates the non-attorney majority of the function. See §3. |
+| legal professionals / the legal team / practitioners / users | attorneys / lawyers (when work isn't attorney-only) | corporate legal includes paralegals, legal-ops, contract managers, and compliance officers, so saying "attorneys" for shared operational work alienates the non-attorney majority of the function. Choose one of these terms per piece and keep it (style guide, section 2). See §3. |
 
 ---
 
 ## 2. Terms to avoid
 
+The first 35 rows are the original do-not-say list. The rows from `delve` onward were added on 2026-09-21 from the research on AI-written prose, which is summarized in `examples/ai-tells.md` (section 5) and recorded in `content-platform/research/2026-09-loi-series/notes/ai-writing-tells.md`. Readers treat these words as signs of machine-written text, especially when several appear in one paragraph. Rule 27 of `style-guide.md` points to this table.
+
 | Don't say | Use instead | Why |
 |---|---|---|
 | transformative / transform / transformation | (a specific verb: change, replace, restructure) | most overused word in B2B writing; the library leans on it; cut and be specific |
-| categorically different / categorically | (specific contrast) | audit flags this — stacked with "transformative," the writing goes breathless |
+| categorically different / categorically | (specific contrast) | the audit flags this; stacked with "transformative," it makes the writing breathless |
 | revolutionary / revolutionize | (cut) | over-claim; we don't make this kind of promise |
 | game-changing / game-changer | (specific claim) | hype; signals marketing |
 | best-in-class / world-class | (specific evidence) | self-promotion without proof |
@@ -87,41 +90,80 @@ First draft. Team revises in T11.
 | in today's fast-paced legal environment | (cut entirely; open with a specific scene) | the canonical AI-tell opener |
 | imagine if / imagine a world where | (cut; show the actual scenario) | banned opener |
 | mission-critical | important / required | inflated |
+| delve / delve into | examine / look closely at | the best-known marker of machine-written text; the audit found it in a published article |
+| tapestry / realm / landscape (as a metaphor for a field or a market) | the field, or the named set of vendors, rules, or frameworks | stock metaphors that stand in for a specific noun |
+| testament / stands as a testament to / serves as a reminder | (state what the fact shows) | presents an ordinary fact as proof of something larger |
+| pivotal / crucial / paramount / vital | important, or better, the reason it matters | asserts importance and leaves the reader to supply the evidence |
+| plays a key role / plays a crucial role / plays a pivotal role | (say what it does) | inflated significance; name the action and its effect |
+| marks a shift toward / reflects a broader trend / setting the stage for / evolving landscape | (the dated fact and its source) | claims a movement without evidence of one |
+| underscore / underscores / highlights the importance of | shows, or state the finding directly | a claim of significance with no finding attached |
+| foster / fostering / cultivate | build / encourage / (the specific action taken) | vague verbs that name no mechanism |
+| showcase / showcasing / boasts | shows / has / includes | promotional register |
+| enhance / elevate / supercharge | improve / raise, with the measured change | benefit language without a measure |
+| streamline | simplify / shorten, with the before and the after | a vendor verb that hides the measurable result |
+| navigate / navigating (complexity, change, challenges) | manage / handle / work through | a metaphor in place of the task |
+| utilize | use | a longer word with the same meaning |
+| intricate / intricacies / multifaceted / nuanced | (describe the complication) | labels complexity without describing it |
+| vibrant / profound / renowned / groundbreaking | (cut, or give the evidence) | promotional adjectives that carry no information |
+| meticulous / meticulously | careful, or describe the check that was performed | praises the work without describing it |
+| interplay | (name the relation: depends on, competes with, feeds) | points at a relation without naming it |
+| garner / bolster | get / earn / support / strengthen | ornate substitutes for plain verbs |
+| align with / resonate with | match / fit / agree with | a vague connection; say how the two things relate |
+| valuable insights / key insights / key considerations | (state the insight) | announces content without delivering it |
+| myriad / plethora / a diverse array of | many, or better, the count | inflated quantity words |
+| ever-evolving / rapidly evolving / fast-paced | (cut; give the dated change) | stock scene-setting |
+| serves as / stands as / functions as / represents (where "is" would do) | is / are | copula avoidance; the plain verb is clearer |
+| fundamentally / genuinely / truly / deeply / enormously | (cut; state the difference and its size) | intensifiers doing the work of evidence; the audit counted "fundamentally" 13 times in the library |
+| actually (as an intensifier) | (cut) | the audit counted 24 uses in the library |
+| quietly (as in "quietly reshaping") | (cut) | listed as a "magic adverb" in the tropes.fyi catalog; it adds atmosphere and no information |
+| load-bearing (as a metaphor) | (say what depends on it) | a metaphor that readers associate with machine-written text; the audit found it three times in the library |
+| stark / staggering | (give the number) | the number should persuade without the adjective |
+| significantly (without a figure) | (give the figure) | unmeasured magnitude |
+| flywheel (more than once in a piece, or as a slogan) | describe the loop: which output feeds which input | the audit counted four uses, often chained into slogans |
+| moreover / furthermore / additionally / importantly | (cut, or a connective that names the logic: because, however, as a result) | additive filler that joins sentences without relating them |
+| it is worth noting that / it is important to note | (cut; state the point) | announces a point and delays it |
+| when it comes to | for / in, or restructure the sentence | filler |
+| more than ever / now more than ever | (cut, or give the comparison) | stock intensifier |
+| experts say / industry reports suggest / observers note / studies show | the named source, with its year and sample | vague attribution is not evidence (style guide, section 5, rule 12) |
+| here is the thing / here is why / let us unpack / let us dive in / now consider | (start with the point) | signposting (style guide, section 5, rule 21) |
+| the honest answer / it has a name | (give the answer; introduce the term in a full sentence) | staged reveals; both recur in the library |
+| in conclusion / in summary / this article explored | (cut; end on consequence) | summary closer (style guide, section 5, rule 25) |
+| despite these challenges / the future remains bright | (cut; end on the last substantive point) | formula conclusion |
 
 ---
 
-## 3. Industry-specific terms — usage notes
+## 3. Industry-specific terms: usage notes
 
-**Outside counsel guidelines (OCG)** — Capitalize the acronym. Spell out on first use, OCG thereafter. Use "OCG compliance" when the governance document is the subject; "billing guideline compliance" for the broader practice.
+**Outside counsel guidelines (OCG).** Capitalize the acronym. Spell out on first use, OCG thereafter. Use "OCG compliance" when the governance document is the subject; "billing guideline compliance" for the broader practice.
 
-**Spend management** — In legal context, means outside-counsel spend specifically, not total legal department spend (which would include headcount, tech, etc.). Don't conflate. For total department budget, say "legal department budget" or "total legal spend."
+**Spend management.** In legal context, means outside-counsel spend specifically, not total legal department spend (which would include headcount, tech, etc.). Don't conflate. For total department budget, say "legal department budget" or "total legal spend."
 
-**Matter type vs. practice area** — Matter type is the broad category (litigation, corporate, regulatory, IP, employment, M&A). Practice area is narrower and more firm-side ("M&A" is a practice area within "corporate"). Don't use interchangeably. "Matter type" is corporate-counsel register; "practice area" is firm register.
+**Matter type vs. practice area.** Matter type is the broad category (litigation, corporate, regulatory, IP, employment, M&A). Practice area is narrower and more firm-side ("M&A" is a practice area within "corporate"). Don't use interchangeably. "Matter type" is corporate-counsel register; "practice area" is firm register.
 
-**Legal operations vs. legal ops** — Both are correct. "Legal operations" is formal — use in long-form, white papers, and first reference. "Legal ops" is casual — fine in social, internal headings, and second-mention. Never "LegalOps" as one word.
+**Legal operations vs. legal ops.** Both are correct. "Legal operations" is formal; use it in long-form, white papers, and first reference. "Legal ops" is casual and is fine in social, internal headings, and second-mention. Never "LegalOps" as one word.
 
-**E-billing** — Hyphenated, lowercase, even at sentence start ("E-billing platforms…" is correct). Never "ebilling" or "eBilling." Canonical phrase: "e-billing platform" or "e-billing system."
+**E-billing.** Hyphenated, lowercase, even at sentence start ("E-billing platforms…" is correct). Never "ebilling" or "eBilling." Canonical phrase: "e-billing platform" or "e-billing system."
 
-**Practice management** — Law-firm-side software (billing, time tracking, conflicts) — distinct from corporate-counsel matter management. Not a synonym for what Spaarke does. We do matter management for corporate legal; practice management is a firm-side category.
+**Practice management.** Law-firm-side software (billing, time tracking, conflicts), distinct from corporate-counsel matter management. Not a synonym for what Spaarke does. We do matter management for corporate legal; practice management is a firm-side category.
 
-**Enterprise legal management (ELM)** — The legacy industry term for the broader category (matter management, e-billing, spend analytics). Cite by name (with acronym) when contrasting Spaarke against the older generation. Don't position Spaarke as "an ELM" — we are LOI, and ELM is the predecessor category.
+**Enterprise legal management (ELM).** The legacy industry term for the broader category (matter management, e-billing, spend analytics). Cite by name (with acronym) when contrasting Spaarke against the older generation. Don't position Spaarke as "an ELM", because we are LOI, and ELM is the predecessor category.
 
-**Contract lifecycle management (CLM)** — Adjacent category, not ours. We integrate with CLM systems; we are not a CLM. Be precise: "matters and contracts," not collapsed.
+**Contract lifecycle management (CLM).** Adjacent category, not ours. We integrate with CLM systems; we are not a CLM. Be precise: "matters and contracts," not collapsed.
 
-**Document management system (DMS)** — The file/folder storage layer (iManage, NetDocuments, SharePoint). Necessary infrastructure but not where intelligence happens; we position DMS as substrate, not competitor.
+**Document management system (DMS).** The file/folder storage layer (iManage, NetDocuments, SharePoint). Necessary infrastructure but not where intelligence happens; we position DMS as substrate, not competitor.
 
-**General counsel** — Lowercase except as a title before a name ("General Counsel Jane Doe"). GC is widely accepted; spell out on first use, GC after. "Chief Legal Officer" (CLO) is used at larger enterprises; treat as synonym but default to "general counsel" unless the persona is specifically a CLO.
+**General counsel.** Lowercase except as a title before a name ("General Counsel Jane Doe"). GC is widely accepted; spell out on first use, GC after. "Chief Legal Officer" (CLO) is used at larger enterprises; treat as synonym but default to "general counsel" unless the persona is specifically a CLO.
 
-**CLOC and ACC** — Industry bodies the audience respects: Corporate Legal Operations Consortium and Association of Corporate Counsel. Cite by name when grounding a structural claim (the audit flags this as a strength). Spell out on first reference for non-legal-ops audiences.
+**CLOC and ACC.** Industry bodies the audience respects: Corporate Legal Operations Consortium and Association of Corporate Counsel. Cite by name when grounding a structural claim (the audit flags this as a strength). Spell out on first reference for non-legal-ops audiences.
 
-**LEDES** — Standard e-billing file format. All caps, no periods. Spell out (Legal Electronic Data Exchange Standard) only for non-technical audiences; the field knows the term.
+**LEDES.** Standard e-billing file format. All caps, no periods. Spell out (Legal Electronic Data Exchange Standard) only for non-technical audiences; the field knows the term.
 
-**Attorneys vs. legal professionals** — Corporate legal departments include paralegals, legal-ops practitioners, contract managers, compliance professionals, e-discovery specialists, and admin staff. Many operational tasks (matter intake, billing review, matter coordination, vendor management, knowledge capture, document workflow) are non-attorney work in well-run departments. Default to **"legal professionals," "the legal team," "practitioners,"** or **"users"** unless the activity is genuinely attorney-only — drafting privileged advice, signing off on legal positions, taking depositions, asserting attorney-client privilege. Saying "attorneys" for shared operational work alienates the meaningful share of our audience inside the function who do most of the operational work. The Phase-2 piece "What Attorneys Need to Know About AI" is an intentional attorney-positioning exception; broader articles should default to inclusive language.
-
----
-
-*Section 1: 36. Section 2: 35. Section 3: 13. Add when patterns emerge; cut what stops earning its place.*
+**Attorneys vs. legal professionals.** Corporate legal departments include paralegals, legal-ops practitioners, contract managers, compliance professionals, e-discovery specialists, and admin staff. Many operational tasks (matter intake, billing review, matter coordination, vendor management, knowledge capture, document workflow) are non-attorney work in well-run departments. Default to **"legal professionals," "the legal team," "practitioners,"** or **"users"** unless the activity is attorney-only, such as drafting privileged advice, signing off on legal positions, taking depositions, or asserting attorney-client privilege. Saying "attorneys" for shared operational work alienates the meaningful share of our audience inside the function who do most of the operational work. The Phase-2 piece "What Attorneys Need to Know About AI" is an intentional attorney-positioning exception; broader articles should default to inclusive language.
 
 ---
 
-*Locked 2026-05-07 — see git log for history.*
+*Section 1: 36. Section 2: 74. Section 3: 13. Add when patterns emerge; cut what stops earning its place.*
+
+---
+
+*Locked 2026-05-07. Revised 2026-09-21 (no em dashes; AI-era terms added to section 2; pronoun and opener rows in section 1 aligned with the style guide); see git log for history.*

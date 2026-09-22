@@ -1,4 +1,4 @@
-# Per-piece session contract — <piece slug>
+# Per-piece session contract: <piece slug>
 
 > This file is the session router for a single piece of content. When
 > you (Claude) are working on this article, load files in this order
@@ -7,8 +7,8 @@
 
 ## 1. The constitution (always)
 
-Read parent `../../CLAUDE.md` first — it routes you through the
-voice constitution. The non-negotiable load order is:
+Read parent `../../CLAUDE.md` first, because it routes you through
+the voice constitution. The non-negotiable load order is:
 
 1. `../../voice/style-guide.md`
 2. `../../voice/brand-positioning.md`
@@ -19,25 +19,31 @@ voice constitution. The non-negotiable load order is:
 
 Read these in order:
 
-1. `brief.md` — the spec for THIS article
-2. `plan.md` — the structural outline (do not draft until this is
+1. `brief.md`: the spec for THIS article
+2. `plan.md`: the structural outline (do not draft until this is
    signed off)
-3. `tasks.md` — the workflow gates; check off as you go
+3. `tasks.md`: the workflow gates; check off as you go
 
 ## 3. Selective references (load on demand)
 
 Pull only when the brief calls for them:
 
-- `../../voice/product-knowledge.md` — when the piece touches
+- `../../voice/product-knowledge.md`: when the piece touches
   Spaarke architecture
-- `../../voice/domain-knowledge.md` — when the piece touches
+- `../../voice/domain-knowledge.md`: when the piece touches
   industry stats or terms of art
-- `../../voice/vocabulary.md` — consult when reaching for a word
-- `../../voice/examples/good-articles.md` — pattern-match before
-  writing the opening
-- `../../voice/examples/avoid-this.md` — **always run as final-pass
+- `../../voice/vocabulary.md`: consult when reaching for a word
+- `../../voice/examples/consulting-register.md`: the positive model
+  for the register; read before writing the opening
+- `../../voice/examples/good-articles.md`: pattern-match before
+  writing the opening (where it conflicts with the style guide, the
+  style guide governs)
+- `../../voice/examples/ai-tells.md`: **always run as final-pass
+  checklist** (no em dashes and no AI-sounding constructions, in
+  any format)
+- `../../voice/examples/avoid-this.md`: **always run as final-pass
   checklist** (see tasks.md §4 Polish)
-- `../../voice/visual-identity.md` — when generating the hero
+- `../../voice/visual-identity.md`: when generating the hero
 
 ## 4. Adjacent context
 
@@ -51,22 +57,24 @@ Pull only when the brief calls for them:
 
 ## 5. Workflow
 
-Five gates, no skipping:
+The gates run in order, and none is skipped. tasks.md holds the full
+done-when checklist for each gate:
 
-1. **Outline** — fill plan.md, get human sign-off → THEN draft
-2. **Draft** — write to `draft.mdx` in this directory
-3. **Revise** — apply reviewer feedback in same file
-4. **Polish** — frontmatter, alt text, cross-links, avoid-this sweep
-5. **Hero** — SVG (default) or photographic prompt
-6. **Ship** — move to `content/papers/` + publish PDF, update calendar + Project + Issue
-
-See tasks.md for the full done-when checklist per gate.
+1. **Outline**: fill plan.md, get human sign-off → THEN draft
+2. **Draft**: write to `draft.mdx` in this directory
+3. **Revise**: apply reviewer feedback in same file
+4. **Polish**: frontmatter, alt text, cross-links, avoid-this and ai-tells sweeps, voice lint at 0 errors
+5. **Hero**: SVG (default) or photographic prompt
+6. **Ship**: move to `content/papers/` + publish PDF, update calendar + Project + Issue
 
 ## 6. What you don't do here
 
 - Do not auto-publish. Final publish is human-driven.
 - Do not fabricate stats, sources, or quotes. Mark unverified claims
   `**TBD — confirm**`.
+- Do not use an em dash, or a spaced hyphen or double hyphen in its
+  place, anywhere in the piece. The TBD marker above is the only
+  exception, and it never survives to publication.
 - Do not skip the outline gate. Do not draft before plan.md is
   approved.
 - Do not invent new tag values. Tags must come from the canonical

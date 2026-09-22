@@ -5,9 +5,9 @@
 
 ## 1. Outline (gate: human sign-off)
 
-- [ ] Plan.md filled in: spine, executive summary, 3–5 numbered
-      sections (claim + evidence + sources per section), conclusion,
-      action steps
+- [ ] Plan.md filled in: spine, executive summary, numbered argument
+      sections (3 to 5 is typical; claim + evidence + sources per
+      section), closing section, action steps
 - [ ] Every numerical claim has a candidate source identified
 - [ ] Citation style decided (footnoted or end-noted)
 - [ ] Hero direction sketched
@@ -18,12 +18,16 @@
 
 - [ ] Executive summary drafted
 - [ ] Each section drafted in order
-- [ ] Conclusion + action steps drafted
-- [ ] Length within target (2,500–5,000 words)
+- [ ] Closing section + action steps drafted (the close states the
+      consequence for the reader; it does not restate the paper and
+      carries no "Conclusion" heading)
+- [ ] Length within the brief's target (no fixed cap; most papers need
+      2,500 words or more, and padding is cut at any length)
 - [ ] Every numerical claim cited; no `**TBD — confirm**` markers
       remain (or remaining ones explicitly listed for reviewer)
-- [ ] Heavy use of headings, lists, callouts (white papers earn
-      trust through structure)
+- [ ] Headings state the point of each section; lists, tables, and
+      callouts hold reference material, and paragraphs carry the
+      argument
 - [ ] Draft written to `draft.mdx` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
@@ -39,10 +43,15 @@
       sources; URLs return 200)
 - [ ] Cross-links to other Spaarke pieces resolved
 - [ ] Frontmatter validated
-- [ ] CTA is low-pressure ("Talk to our team," "Read more in
-      [related]") — white papers earn trust, they don't close
+- [ ] CTA is low-pressure (a contact line outside the argument, or
+      "Read more in [related]"), because white papers earn trust and
+      do not close
 - [ ] **Final-pass sweep against `voice/examples/avoid-this.md`**
 - [ ] **Final-pass sweep against `voice/style-guide.md` §5**
+- [ ] **Final-pass sweep against `voice/examples/ai-tells.md`** (no em
+      dashes, no dash substitutes, no AI-sounding constructions)
+- [ ] `npm run voice:lint -- <path to draft.mdx>` reports 0 errors, and
+      every warning has been read and either fixed or accepted
 
 ## 5. Hero + PDF artifact (gate: both files present)
 
@@ -55,7 +64,7 @@
 ## 6. Ship (gate: live + tracked)
 
 - [ ] `draft.mdx` moved to `content/papers/<slug>.mdx` *(once route
-      exists — Phase 3)*, OR landing page updated to reference PDF
+      exists, in Phase 3)*, OR landing page updated to reference PDF
 - [ ] PDF download link tested
 - [ ] `calendar.md` row updated to `published`
 - [ ] GitHub Project's *Pipeline status* moved to `Published`

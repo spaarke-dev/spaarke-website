@@ -5,20 +5,20 @@
 
 ## 1. Outline (gate: human sign-off)
 
-- [ ] Plan.md filled in: hook (line 1–2 explicitly), body beats, close
+- [ ] Plan.md filled in: hook (lines 1 to 2 explicitly), body beats, close
 - [ ] Format chosen: text-only | carousel | article-syndication
 - [ ] Hashtags drafted (≤3)
 - [ ] **Reviewer signed off on the hook + structure before draft starts**
 
-> The hook is the most load-bearing element — LinkedIn truncates
-> around line 3 on mobile. Lock it before drafting.
+> The hook carries more weight than any other element, because
+> LinkedIn truncates around line 3 on mobile. Lock it before drafting.
 
 ## 2. Draft (gate: complete post at length target)
 
-- [ ] Hook drafted (line 1–2, no setup)
-- [ ] Body drafted (short paragraphs, 1–3 sentences each)
+- [ ] Hook drafted (lines 1 to 2, no setup)
+- [ ] Body drafted (short paragraphs, 1 to 3 sentences each)
 - [ ] Close drafted (CTA, question, or syndication link)
-- [ ] Length within target (text-only: 150–400 words)
+- [ ] Length within target (text-only: 150 to 400 words)
 - [ ] No `**TBD — confirm**` markers
 - [ ] Draft written to `draft.md` in this article's workspace
 
@@ -38,20 +38,24 @@
       voice over org voice)
 - [ ] **Final-pass sweep against `voice/examples/avoid-this.md`**
 - [ ] **Final-pass sweep against `voice/style-guide.md` §5**
+- [ ] **Final-pass sweep against `voice/examples/ai-tells.md`** (no em
+      dashes, no dash substitutes, no AI-sounding constructions)
+- [ ] `npm run voice:lint -- <path to draft.md>` reports 0 errors, and
+      every warning has been read and either fixed or accepted
 
-## 5. Image (gate: optional — skip if text-only)
+## 5. Image (gate: optional; skip if text-only)
 
 LinkedIn posts often ship without an image. Include this step only
 if the brief specifies a graphic, carousel, or syndication header.
 
-- [ ] Carousel slides drafted (5–10 slides, key idea per slide), or
+- [ ] Carousel slides drafted (5 to 10 slides, key idea per slide), or
 - [ ] Article-syndication header at `public/articles/<slug>/linkedin-1920x1080.png`
 - [ ] Alt text written
 
 ## 6. Ship (gate: live + tracked)
 
 - [ ] `draft.md` moved to `content-platform/published/linkedin-posts/<slug>.md`
-- [ ] Posted to LinkedIn (manual — capture the LinkedIn URL in
+- [ ] Posted to LinkedIn (manual; capture the LinkedIn URL in
       `published/linkedin-posts/<slug>.md` frontmatter as `posted_url`)
 - [ ] `calendar.md` row updated to `published`
 - [ ] GitHub Project's *Pipeline status* moved to `Published`

@@ -1,4 +1,4 @@
-# Spaarke content platform — research sources
+# Spaarke content platform: research sources
 
 > Repository of authoritative surveys, benchmarks, and reports we cite
 > in long-form content. Updated as new editions release. Each entry
@@ -10,7 +10,7 @@ Last updated: 2026-05-07.
 ## How to use
 
 - When a brief calls for a stat, look here first.
-- If a stat in this file is older than 18 months, treat as stale —
+- If a stat in this file is older than 18 months, treat as stale;
   re-verify before citing.
 - New report? Add it here when you read it.
 - Verify each stat by reading the source page. Don't cite figures
@@ -18,7 +18,7 @@ Last updated: 2026-05-07.
 
 ---
 
-## M365 Copilot adoption — broad enterprise
+## M365 Copilot adoption: broad enterprise
 
 ### Source: Microsoft FY25 Q1 earnings call (October 30, 2024)
 - **What it says**: 70% of the Fortune 500 had adopted Microsoft 365
@@ -49,7 +49,7 @@ Last updated: 2026-05-07.
   Microsoft-defined and includes free-tier consumer Copilot. Paid
   enterprise seat number (15M) is the more conservative figure.
 
-### Source: Microsoft 2025 Work Trend Index — "Year of the Frontier Firm" (April 23, 2025)
+### Source: Microsoft 2025 Work Trend Index: "Year of the Frontier Firm" (April 23, 2025)
 - **What it says**: 24% of leaders say their companies have already
   deployed AI organization-wide; 12% in pilot. 82% of leaders view
   the year as pivotal for rethinking strategy and operations. 81%
@@ -66,7 +66,7 @@ Last updated: 2026-05-07.
 
 ---
 
-## M365 Copilot adoption — corporate legal specifically
+## M365 Copilot adoption: corporate legal specifically
 
 ### Source: Counselwell × Spellbook, "AI in Legal Departments: 2025 Benchmarking Report" (June 2025)
 - **What it says**: Among AI-adopting in-house legal departments,
@@ -78,7 +78,7 @@ Last updated: 2026-05-07.
 - **Date of source**: 2025-06-05
 - **Date checked**: 2026-05-07
 - **How we cite**: "Among in-house legal departments using AI, ~40%
-  use Microsoft Copilot — second only to ChatGPT (Counselwell/Spellbook
+  use Microsoft Copilot, second only to ChatGPT (Counselwell/Spellbook
   2025 Benchmarking Report)."
 - **Caveat**: Heavy Canadian skew (87%); small sample (n=256); vendor
   co-published (Spellbook is a legal-AI vendor). Use as directional,
@@ -95,13 +95,13 @@ Last updated: 2026-05-07.
 - **Date checked**: 2026-05-07
 - **How we cite**: "More than 90% of legal professionals now use at
   least one AI tool daily (Wolters Kluwer Future Ready Lawyer 2026)."
-- **Caveat**: Vendor-published. "AI tool" is broad — includes generic
+- **Caveat**: Vendor-published. "AI tool" is broad; it includes generic
   ChatGPT-style tools, not just enterprise-deployed Copilot. Mixed
   law-firm/in-house sample.
 
 ### Source: ACC × Everlaw, "In-House Counsel Use of GenAI" (October 29, 2025)
 - **What it says**: 52% of in-house legal departments now use
-  generative AI, up from 23% in 2024 — more than doubled in one year.
+  generative AI, up from 23% in 2024 (more than doubled in one year).
   64% expect to reduce outsourcing to law firms; 50% anticipate
   cutting outside counsel spend. n=657 in-house legal professionals
   across 30 countries.
@@ -111,7 +111,7 @@ Last updated: 2026-05-07.
 - **How we cite**: "In-house generative-AI use jumped from 23% to 52%
   in one year (ACC × Everlaw 2025; reported Bloomberg Law)."
 - **Caveat**: ACC member-survey skew (larger departments
-  over-represented). Co-sponsored by Everlaw — vendor caveat applies.
+  over-represented). Co-sponsored by Everlaw; vendor caveat applies.
   Doesn't isolate Microsoft Copilot from generic gen-AI tools.
 
 ---
@@ -136,8 +136,8 @@ Last updated: 2026-05-07.
 
 ### Source: 2026 ACC Chief Legal Officers Survey (January 2026)
 - **What it says**: 45% of CLOs plan to increase outside-counsel
-  spend in 2025 — a 17-point jump from 28% the prior year, reversing
-  years of in-sourcing cost-containment. n=1,049 CLOs across 43
+  spend in 2025, a 17-point jump from 28% the prior year. The increase
+  reverses years of in-sourcing cost-containment. n=1,049 CLOs across 43
   countries. The 2026 edition also reports 63% of CLOs expect
   headcount to remain stable, leaning on AI and upskilling instead.
 - **URL**: https://www.acc.com/resource-library/2026-acc-chief-legal-officers-survey
@@ -177,10 +177,10 @@ Last updated: 2026-05-07.
 - **URL**: https://www.ey.com/en_gl/newsroom/2025/04/ey-law-study-reveals-disruptors-prompting-the-evolution-of-legal-departments-and-the-key-barriers-to-change
 - **Date of source**: 2025-04-09
 - **Date checked**: 2026-05-07
-- **How we cite**: "More than half of legal departments — 52% —
+- **How we cite**: "More than half of legal departments (52%)
   report disorganized data; 75% are actively rebuilding their tech
   and data strategies (2025 EY Law General Counsel Study)."
-- **Caveat**: EY Law is a vendor in the legal-services market —
+- **Caveat**: EY Law is a vendor in the legal-services market;
   treat the survey as legitimate research but acknowledge author
   interest. Strong methodology and sample (large companies, n=1,000).
 
@@ -192,7 +192,7 @@ Last updated: 2026-05-07.
   not to a Wolters Kluwer original survey)
 - **Date of source**: 2021
 - **Date checked**: 2026-05-07
-- **How we cite**: Avoid in current pieces — figure is ~5 years old.
+- **How we cite**: Avoid in current pieces; figure is ~5 years old.
   Use the 2025 EY Law GC Study figures instead (52% disorganized
   data, 75% reworking data strategy).
 - **Caveat**: The "94%" figure has been widely re-quoted (often
@@ -206,7 +206,7 @@ Last updated: 2026-05-07.
 
 ### Source: ACC, "US In-house Counsel Population Statistics" (September 30, 2025)
 - **What it says**: US in-house counsel population grew from 78,000
-  in 2008 to 145,000 in 2024 — an 87% increase. Comparable growth in
+  in 2008 to 145,000 in 2024, an 87% increase. Comparable growth in
   the same period: law firms +23%, government legal +38%. Source data
   is the US Bureau of Labor Statistics Occupational Employment and
   Wage Statistics (OEWS) annual report.
@@ -214,11 +214,11 @@ Last updated: 2026-05-07.
 - **Date of source**: 2025-09-30
 - **Date checked**: 2026-05-07
 - **How we cite**: "US in-house counsel population nearly doubled
-  between 2008 and 2024, growing 87% — far outpacing law-firm (23%)
+  between 2008 and 2024, growing 87% and far outpacing law-firm (23%)
   and government (38%) growth (ACC, citing US BLS data, 2025)."
 - **Caveat**: BLS OEWS is a robust government data source; ACC's
   analysis is a re-presentation. Period covers 16 years, not a clean
-  "decade" — adjust the framing accordingly when citing. The "~30%
+  "decade"; adjust the framing accordingly when citing. The "~30%
   growth over the past decade" phrasing previously used in our domain
   knowledge significantly understates the actual figure.
 
@@ -235,11 +235,11 @@ Last updated: 2026-05-07.
 - **URL**: https://www.acc.com/about/newsroom/news/new-report-examines-stress-landscape-among-house-legal-professionals-impacting
 - **Date of source**: 2025-12-15
 - **Date checked**: 2026-05-07
-- **How we cite**: "Among high-stress in-house counsel — a majority
-  of the population — 24% plan to leave within a year (2025 ACC State
+- **How we cite**: "Among high-stress in-house counsel, who are a
+  majority of the population, 24% plan to leave within a year (2025 ACC State
   of Stress Among In-house Legal Professionals)."
 - **Caveat**: Intent-to-leave is a leading indicator, not realized
-  turnover — actual departure rates run lower. Use as a turnover-risk
+  turnover; actual departure rates run lower. Use as a turnover-risk
   signal, not as a "20% of in-house attorneys turn over each year"
   factual claim. The previous "20%" figure in our domain knowledge
   conflated several looser measures.
@@ -262,7 +262,7 @@ Last updated: 2026-05-07.
 
 ## Wolters Kluwer Future Ready Lawyer
 
-### Source: Wolters Kluwer Future Ready Lawyer 2026 (March 10, 2026) — current edition
+### Source: Wolters Kluwer Future Ready Lawyer 2026 (March 10, 2026), current edition
 - **What it says** (key claims): 92% of respondents use at least one
   AI tool daily; 62% report time savings of 6-20% of work week; 60%
   expect AI investment to grow over three years; 61% growing
@@ -290,7 +290,7 @@ Last updated: 2026-05-07.
 - **Date checked**: 2026-05-07
 - **How we cite**: Cite when the 2026 edition lacks the equivalent
   in-house-specific cut.
-- **Caveat**: Now superseded by the 2026 edition — verify before
+- **Caveat**: Now superseded by the 2026 edition; verify before
   citing.
 
 ---
@@ -310,12 +310,12 @@ Last updated: 2026-05-07.
 - **Date of source**: 2025-04
 - **Date checked**: 2026-05-07
 - **How we cite**: "Active gen-AI use in legal organizations nearly
-  doubled in 2025 — 14% to 26% — while 78% expect it to become
+  doubled in 2025, from 14% to 26%, while 78% expect it to become
   central to their work within five years (Thomson Reuters Institute,
   2025 Generative AI in Professional Services)."
 - **Caveat**: Thomson Reuters is a vendor with legal-AI products;
   conservative-buyer framing is a strength of TR research. The 95%
-  figure is across all professional services, not legal-only — be
+  figure is across all professional services, not legal-only; be
   precise.
 
 ### Source: Bloomberg Law 2025 State of Practice Survey
@@ -345,7 +345,7 @@ Last updated: 2026-05-07.
 - **How we cite**: "30% of legal departments already use AI; 54%
   plan adoption within two years (2025 CLOC State of the Industry
   Report)."
-- **Caveat**: CLOC member panel — practitioner-driven; smaller sample
+- **Caveat**: CLOC member panel (practitioner-driven); smaller sample
   (n=186) than Wolters Kluwer or Thomson Reuters. Strong on
   legal-ops capability framing, weaker on raw market sizing.
 
@@ -379,4 +379,4 @@ For transparency. Listed so we don't accidentally re-introduce them.
 
 ---
 
-*Locked 2026-05-07 — see git log for history.*
+*Locked 2026-05-07; see git log for history.*

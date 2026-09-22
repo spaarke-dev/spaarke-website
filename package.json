@@ -12,7 +12,8 @@
     "linkedin:publish": "tsx scripts/linkedin-publish.ts",
     "linkedin:refresh": "tsx scripts/linkedin-refresh-token.ts",
     "linkedin:test-kv": "tsx scripts/linkedin-test-kv.ts",
-    "linkedin:status": "tsx scripts/linkedin-status.ts"
+    "linkedin:status": "tsx scripts/linkedin-status.ts",
+    "voice:lint": "node scripts/voice-lint.mjs"
   },
   "dependencies": {
     "@azure/data-tables": "^13.3.2",

@@ -31,11 +31,15 @@
 - [ ] Hook tweet reads cold
 - [ ] Hashtags minimal; lowercase or camelCase per Spaarke style
 - [ ] **Final-pass sweep against `voice/examples/avoid-this.md`**
+- [ ] **Final-pass sweep against `voice/examples/ai-tells.md`** (no em
+      dashes, no dash substitutes, no verbless fragments)
+- [ ] `npm run voice:lint -- <path to draft.md>` reports 0 errors, and
+      every warning has been read and either fixed or accepted
 
 ## 5. Ship (gate: live + tracked)
 
 - [ ] `draft.md` moved to `content-platform/published/tweets/<slug>.md`
-- [ ] Posted to X (manual — capture URL of first tweet in
+- [ ] Posted to X (manual; capture URL of first tweet in
       `posted_url` field)
 - [ ] `calendar.md` row updated to `published`
 - [ ] GitHub Project's *Pipeline status* moved to `Published`

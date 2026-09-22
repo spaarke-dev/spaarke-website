@@ -1,46 +1,48 @@
 # Content type: tweet (X)
 
-Calibration for tweets and threads. Read alongside `voice/style-guide.md`. The shortest format Spaarke ships, with the highest density per word.
+This document calibrates the house voice for tweets and threads. Read it alongside `voice/style-guide.md` and `voice/examples/ai-tells.md`. The tweet is the shortest format Spaarke ships, and it has the highest density per word.
 
 ---
 
 ## 1. Purpose
 
-Tweets are punchier than LinkedIn. Higher density per character, no preview-cutoff to engineer around — every tweet is the hook. Audience skews toward `legal-tech-cio` and analyst types, with sharper share-velocity when a thread lands.
+Tweets are punchier than LinkedIn posts and carry more per character. There is no preview cutoff to write around, so every tweet is its own hook. The audience skews toward `legal-tech-cio` and analyst types, and share velocity is higher when a thread works.
 
-Two jobs: sharp positioning (a single tweet compressing Microsoft-native or operational-intelligence into 280 characters), and argument distribution (a 3–8-tweet thread adapting a blog post). Cadence 3–5 per week. A forgettable tweet is worse than no tweet.
+Tweets do two jobs. The first is sharp positioning: a single tweet that compresses the Microsoft-native or operational-intelligence position into 280 characters. The second is argument distribution: a thread of three to eight tweets that adapts a blog post. The cadence is three to five tweets per week. A forgettable tweet is worse than no tweet.
 
 ## 2. Variants
 
-- **Single tweet** — one self-contained idea, ≤ 280 characters. Best for sharp observations, positioning claims, industry comments.
-- **Thread** — 3–8 tweets typical. Builds an argument across tweets, each one earning the next. Threads beyond 8 should probably be a blog post.
+- **Single tweet**: one self-contained idea in 280 characters or fewer. It is best for sharp observations, positioning claims, and comments on industry news.
+- **Thread**: typically three to eight tweets. A thread builds an argument across tweets, and each tweet earns the next. A thread that needs more than eight tweets should probably be a blog post.
 
-A hero image is generally **not** included in a tweet — the words carry the hook, and X penalizes link-laden / image-heavy posts in the algorithm. When a single tweet or thread does use an image (a positioning post, a thread anchored on a chart), hero treatment follows `voice/visual-identity.md` the same way blog posts do; the brief's `# Hero graphic` section captures the prompt.
+A hero image is generally **not** included in a tweet, because the words carry the hook and the X algorithm penalizes posts that are heavy with links or images. When a single tweet or a thread does use an image (a positioning post, or a thread anchored on a chart), hero treatment follows `voice/visual-identity.md` in the same way that blog posts do, and the brief's `# Hero graphic` section captures the prompt.
 
 ## 3. Construction rules
 
-- **280 characters per tweet, hard.** Draft to 270 for polish room. URLs auto-shorten to ~23 chars; spaces and handles count.
+- **The limit of 280 characters per tweet is hard.** Draft to 270 to leave room for polish. URLs shorten automatically to about 23 characters, and spaces and handles count.
 - **One idea per tweet.** Two claims dilute each other.
-- **Threads earn each next tweet.** Each stands alone *and* leaves the reader wanting tweet n+1.
-- **No links in early thread tweets** — X penalizes outbound links. Link goes in the last tweet only, or in bio.
-- **First tweet is the hook** — same discipline as a LinkedIn opener.
-- **Numbering optional.** Use "1/", "2/" for threads of 5+.
+- **Threads earn each next tweet.** Each tweet stands alone *and* leaves the reader wanting tweet n+1.
+- **No links in early thread tweets.** X penalizes outbound links, so the link goes in the last tweet only, or in the bio.
+- **The first tweet is the hook.** It requires the same discipline as a LinkedIn opener.
+- **Numbering is optional.** Use "1/", "2/" for threads of five or more tweets.
 
 ## 4. Voice calibration
 
-Defer to `voice/style-guide.md`. Tweet-specific calibration:
+Defer to `voice/style-guide.md` for the baseline. Sections 4 and 5 of that guide apply to tweets in full, including the ban on em dashes and dash substitutes and the ban on the constructions listed in `voice/examples/ai-tells.md`. The tweet-specific calibration is as follows:
 
-- **Idiomatic for X.** Sentence fragments OK. Em-dashes work hard. End-of-tweet periods optional.
-- **Less formal than blog or LinkedIn**, strong opinions rewarded — but "less formal" is not "marketing-speak." §5 forbidden phrases still apply.
-- **Byline**: usually the organizational account. Named-team-member tweets happen on personal accounts.
+- **Idiomatic for X.** Short sentences suit the medium, and contractions are acceptable. Each sentence still has a subject and a verb, so verbless fragments and stacks of fragments are not used (`style-guide.md` §5, rule 16). End-of-tweet periods are optional.
+- **No em dashes.** Earlier versions of this file said that em dashes work hard in tweets, and that advice is withdrawn. A tweet uses a comma, a colon, parentheses, or a second sentence, and it never uses a spaced hyphen or a double hyphen as a stand-in.
+- **Compression without the tells.** The character limit invites negation followed by correction (`It is not X. It is Y.`), `not just X but Y`, a question answered in the next sentence, a colon reveal such as `The result:`, and a closing pair of clipped symmetrical sentences. State the claim positively and give the reason or the number.
+- **Less formal than a blog post or a LinkedIn post.** Strong opinions are rewarded. Informality is no excuse for marketing-speak, and the forbidden phrases in style-guide §5 still apply.
+- **Byline**: usually the organizational account. Tweets from named team members happen on their personal accounts.
 
 ## 5. CTA convention
 
-- **Link in the last tweet of a thread** — when previewing a long-form piece. One link per thread, last tweet, on its own line.
-- **Link in bio** — when the tweet stands alone but discoverability matters. Bio carries `spaarke.com` permanently.
-- **No CTA** — when the goal is engagement (replies, quotes, reposts). Often the right move; X is not a conversion channel.
+- **Link in the last tweet of a thread**, when the thread previews a long-form piece. Use one link per thread, in the last tweet, on its own line.
+- **Link in bio**, when the tweet stands alone but discoverability matters. The bio carries `spaarke.com` permanently.
+- **No CTA**, when the goal is engagement (replies, quotes, reposts). This is often the right choice, because X is a poor conversion channel.
 
-Never "DM me for…" or "Comment 'INFO'…" — both signal low-rent marketing. X is harsher about this than LinkedIn.
+Never write "DM me for…" or "Comment 'INFO'…", because both signal low-rent marketing. Readers on X are harsher about this than readers on LinkedIn.
 
 ## 6. Frontmatter
 
@@ -50,7 +52,7 @@ Tweet briefs add the following fields on top of the universal frontmatter (see `
 ---
 type: tweet
 format: thread                       # single | thread
-tweet_count: 5                       # 1 for single; n for thread (3-8 typical)
+tweet_count: 5                       # 1 for single; n for thread (3 to 8 typical)
 link_target: <url-or-slug>           # only when there's a link in the last tweet
 audience: legal-ops-director         # persona slug; see voice/audience-personas.md
 companion_piece:                     # if this thread adapts a longer piece
@@ -62,25 +64,26 @@ T10 builds the brief template from these fields. The brief body for a thread typ
 
 ## 7. Common pitfalls
 
-- **Padded threads.** A 5-tweet thread that should have been 3. Cut tweets that recap or transition.
-- **Buried hook.** Tweet 1 is the whole pitch — open with the claim.
-- **Link in tweet 1.** Algorithm penalty. Last tweet only.
-- **LinkedIn voice on X.** Long-form first-person reflection reads out of place.
+- **Padded threads.** A five-tweet thread that should have been three tweets is padded. Cut the tweets that recap or transition.
+- **Buried hook.** Tweet 1 is the whole pitch, so open with the claim.
+- **Link in tweet 1.** The algorithm penalizes it. The link belongs in the last tweet only.
+- **LinkedIn voice on X.** Long-form first-person reflection reads as out of place.
+- **Dashes and fragments for speed.** An em dash or a verbless fragment saves a few characters and marks the tweet as machine-written. Rewrite the sentence.
 
 ## 8. Worked example
 
-**Brief sketch** (hypothetical): *2026-05-09 — 5-tweet thread adapting the OCG enforcement blog post.* Audience `legal-ops-director`; companion piece blog `where-ocg-enforcement-actually-fails`; link in tweet 5 only.
+**Brief sketch** (hypothetical, with illustrative figures): *2026-05-09, five-tweet thread adapting the OCG enforcement blog post.* The audience is `legal-ops-director`, the companion piece is the blog post `where-ocg-enforcement-actually-fails`, and the link appears in tweet 5 only.
 
 The five tweets, sketched:
 
-1. *Hook.* "Most legal departments don't have an OCG problem. They have an OCG-enforcement-timing problem. The clauses are right — they just don't fire until after the invoice's already been approved."
-2. *Mechanism.* E-billing was built to process invoices, not to enforce policy. Every OCG check is a post-hoc audit.
-3. *Cost.* 4–8% of outside-counsel spend leaks through OCG gaps. On a $20M panel that's $800K–$1.6M/year recovered through disputes instead of prevented.
-4. *Fix.* Enforcement intelligence catches violations at intake and on the invoice line, before approval. Same terms, different point in the workflow.
-5. *CTA + link.* "Wrote up the four enforcement-failure modes. Full piece: spaarke.com/blog/where-ocg-enforcement-actually-fails"
+1. *Hook.* "Most legal departments enforce their OCGs after the invoice has already been approved. The clauses are right, but they fire too late to stop the spend."
+2. *Mechanism.* E-billing systems were built to process invoices, so every OCG check they run is a post-hoc audit.
+3. *Cost.* Between 4% and 8% of outside-counsel spend leaks through OCG gaps. On a $20M panel that's $800K to $1.6M a year recovered through disputes instead of prevented.
+4. *Fix.* Enforcement intelligence catches violations at intake and on the invoice line, before approval. The terms stay the same, and the check moves earlier in the workflow.
+5. *CTA + link.* "We wrote up the four enforcement-failure modes here: spaarke.com/blog/where-ocg-enforcement-actually-fails"
 
-Each tweet works alone and earns the next. Link sits in tweet 5 only.
+Each tweet works alone and earns the next, and each states its claim positively in complete sentences. The link sits in tweet 5 only.
 
 ---
 
-*Locked 2026-05-07 — see git log for history.*
+*Revised 2026-09-21 (no em dashes, AI-tells ban applied to short formats), see git log for history.*

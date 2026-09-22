@@ -1,4 +1,4 @@
-# Per-piece session contract — <piece slug>
+# Per-piece session contract: <piece slug>
 
 > This file is the session router for a single piece of content. When
 > you (Claude) are working on this article, load files in this order
@@ -7,60 +7,81 @@
 
 ## 1. The constitution (always)
 
-Read parent `../../CLAUDE.md` first — it routes you through the
-voice constitution. The non-negotiable load order is:
+Read the parent `../../CLAUDE.md` first, because it routes you
+through the voice constitution. The non-negotiable load order is:
 
-1. `../../voice/style-guide.md`
-2. `../../voice/brand-positioning.md`
-3. `../../voice/audience-personas.md`
-4. `../../content-types/blog-post.md`
+1. `../../voice/style-guide.md` (the rules; where any other voice
+   document, template, or published article conflicts with it, the
+   style guide governs)
+2. `../../voice/examples/consulting-register.md` (the positive
+   model: the register, the traits, and the model passages to write
+   toward)
+3. `../../voice/examples/ai-tells.md` (the removal guide: the
+   constructions that readers identify as machine-written, each with
+   a before and an after)
+4. `../../voice/brand-positioning.md`
+5. `../../voice/audience-personas.md`
+6. `../../content-types/blog-post.md` (long-form articles and short
+   posts; `length_target` in brief.md says which this piece is)
 
 ## 2. This piece (always)
 
 Read these in order:
 
-1. `brief.md` — the spec for THIS article
-2. `plan.md` — the structural outline (do not draft until this is
+1. `brief.md`: the spec for THIS article
+2. `plan.md`: the structural outline (do not draft until this is
    signed off)
-3. `tasks.md` — the workflow gates; check off as you go
+3. `tasks.md`: the workflow gates; check off as you go
 
 ## 3. Selective references (load on demand)
 
 Pull only when the brief calls for them:
 
-- `../../voice/product-knowledge.md` — when the piece touches
-  Spaarke architecture
-- `../../voice/domain-knowledge.md` — when the piece touches
-  industry stats or terms of art
-- `../../voice/vocabulary.md` — consult when reaching for a word
-- `../../voice/examples/good-articles.md` — pattern-match before
-  writing the opening
-- `../../voice/examples/avoid-this.md` — **always run as final-pass
-  checklist** (see tasks.md §4 Polish)
-- `../../voice/visual-identity.md` — when generating the hero
+- `../../voice/product-knowledge.md`, when the piece touches
+  Spaarke architecture.
+- `../../voice/domain-knowledge.md`, when the piece touches
+  industry stats or terms of art.
+- `../../voice/vocabulary.md`, to consult when reaching for a word.
+- `../../voice/bylines.md`, for the `author:` value and the closing
+  contact line (section 6).
+- `../../voice/examples/good-articles.md`, for subject matter only.
+  Before writing the opening, match it against the model passages in
+  `consulting-register.md`, section 6, first. `good-articles.md`
+  was re-edited in September 2026 and is now a secondary reference.
+  Do not pattern-match against the articles published before that
+  date, because they use constructions that the style guide now
+  prohibits.
+- `../../voice/examples/avoid-this.md`, as a final-pass checklist
+  for marketing language (see tasks.md §4 Polish). Where one of its
+  "Better" examples conflicts with the style guide, the style guide
+  governs.
+- `../../voice/visual-identity.md`, when generating the hero.
 
 ## 4. Adjacent context
 
-- **Campaign:** see `brief.md` frontmatter `campaign:` field, then
-  read `../../campaigns/<campaign-slug>.md` for the narrative arc
-  this piece sits inside
+- **Campaign:** see the `campaign:` field in the `brief.md`
+  frontmatter, then read `../../campaigns/<campaign-slug>.md` for
+  the narrative arc this piece sits inside.
 - **Calendar row:** `../../calendar.md` (this piece's row, for
-  cadence + cross-references)
-- **GitHub Issue:** see `brief.md` frontmatter `github_issue:` field
-  for status tracking
+  cadence and cross-references).
+- **GitHub Issue:** see the `github_issue:` field in the `brief.md`
+  frontmatter for status tracking.
 
 ## 5. Workflow
 
-Five gates, no skipping:
+The gates run in order, and none is skipped. See tasks.md for the
+full done-when checklist per gate.
 
-1. **Outline** — fill plan.md, get human sign-off → THEN draft
-2. **Draft** — write to `draft.mdx` in this directory
-3. **Revise** — apply reviewer feedback in same file
-4. **Polish** — frontmatter, alt text, cross-links, avoid-this sweep
-5. **Hero** — SVG (default) or photographic prompt
-6. **Ship** — move to `content/blog/`, update calendar + Project + Issue
-
-See tasks.md for the full done-when checklist per gate.
+1. **Outline**: fill plan.md and get human sign-off before drafting.
+2. **Draft**: write to `draft.mdx` in this directory.
+3. **Revise**: apply reviewer feedback in the same file.
+4. **Polish**: frontmatter, alt text, and cross-links; then
+   `npm run voice:lint` on the draft with 0 errors and every warning
+   read; then the sweeps against `ai-tells.md`, the style guide
+   (section 5), and `avoid-this.md`.
+5. **Hero**: SVG (default) or photographic prompt.
+6. **Ship**: move to `content/blog/`, and update the calendar, the
+   Project, and the Issue.
 
 ## 6. What you don't do here
 
@@ -71,3 +92,21 @@ See tasks.md for the full done-when checklist per gate.
   approved.
 - Do not invent new tag values. Tags must come from the canonical
   taxonomy in `../../voice/taxonomy.md`.
+- Do not use an em dash anywhere in the piece: the body, the title,
+  the headings, the alt text, or the `description`, `summary`, and
+  `keyTakeaways` fields. A spaced en dash, a double hyphen, and a
+  spaced hyphen are not substitutes, and ranges are written with
+  "to". The workflow marker above is the single exception.
+- Do not write the constructions that readers identify as
+  machine-written (style guide, section 5, rules 14 to 27):
+  negation followed by correction, `X, not Y` taglines, verbless
+  fragments, one-sentence paragraphs used for effect, clipped
+  aphoristic closers, a rhetorical question followed by its own
+  answer, colon reveals, signposting, lists of three used for
+  rhythm, present-participle tails, inflated abstractions, and
+  summary closers.
+- Do not cut a long-form article to a word count. When
+  `length_target` is `open` there is no cap, and the test is whether
+  every section advances the argument.
+- Do not declare the draft done until `npm run voice:lint` reports 0
+  errors on it.
