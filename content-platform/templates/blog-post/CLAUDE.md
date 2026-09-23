@@ -13,16 +13,39 @@ through the voice constitution. The non-negotiable load order is:
 1. `../../voice/style-guide.md` (the rules; where any other voice
    document, template, or published article conflicts with it, the
    style guide governs)
-2. `../../voice/examples/consulting-register.md` (the positive
-   model: the register, the traits, and the model passages to write
-   toward)
-3. `../../voice/examples/ai-tells.md` (the removal guide: the
+2. `../../voice/stance.md` (the posture: where the writer stands
+   toward the evidence, the causes, the reader, and the other
+   parties. On sentence mechanics the style guide governs; on
+   posture this file governs)
+3. `../../voice/examples/consulting-register.md` (the external
+   register we are measured against. Sections 1 to 3 record the
+   research provenance, the evidence limits, and the fact-check
+   labels; they are reference material for whoever maintains the
+   file, and the drafting load is sections 4 and 6)
+4. `../../voice/examples/ai-tells.md` (the removal guide: the
    constructions that readers identify as machine-written, each with
    a before and an after)
-4. `../../voice/brand-positioning.md`
-5. `../../voice/audience-personas.md`
-6. `../../content-types/blog-post.md` (long-form articles and short
-   posts; `length_target` in brief.md says which this piece is)
+5. `../../voice/examples/house-exemplar.md` (the house positive
+   model: the one published article the writer has approved as house
+   voice, with the eight traits that carry it annotated. The rules
+   are stated as removals, and a draft can satisfy every one of them
+   and still have no speaker in it; read the exemplar to know what
+   to reproduce)
+6. `../../voice/brand-positioning.md`
+7. `../../voice/audience-personas.md`
+8. `../../voice/vocabulary.md` (the words we use and the words we do
+   not; check the "we don't say" column before locking phrasing)
+9. `../../voice/domain-knowledge.md`, section 3 (the field's terms
+   of art)
+10. `../../content-types/blog-post.md` (long-form articles and short
+    posts; `length_target` in brief.md says which this piece is)
+
+Items 8 and 9 sit here rather than in section 3 because the
+decisions they govern, what a thing is called and which term of art
+applies, are made before the first sentence rather than at the
+sentence. The offset that keeps the total load roughly neutral is
+item 3: sections 1 to 3 of `consulting-register.md` are no longer
+read at drafting.
 
 ## 2. This piece (always)
 
@@ -39,9 +62,9 @@ Pull only when the brief calls for them:
 
 - `../../voice/product-knowledge.md`, when the piece touches
   Spaarke architecture.
-- `../../voice/domain-knowledge.md`, when the piece touches
-  industry stats or terms of art.
-- `../../voice/vocabulary.md`, to consult when reaching for a word.
+- `../../voice/domain-knowledge.md`, sections 1, 2 and 4 to 7, when
+  the piece touches industry stats or the field's sensitivities.
+  Section 3 is in the always-load list above.
 - `../../voice/bylines.md`, for the `author:` value and the closing
   contact line (section 6).
 - `../../voice/examples/good-articles.md`, for subject matter only.
@@ -78,7 +101,13 @@ full done-when checklist per gate.
 4. **Polish**: frontmatter, alt text, and cross-links; then
    `npm run voice:lint` on the draft with 0 errors and every warning
    read; then the sweeps against `ai-tells.md`, the style guide
-   (section 5), and `avoid-this.md`.
+   (section 5), and `avoid-this.md`; then the stance lens, which
+   reads the draft against `../../voice/stance.md` and the eight
+   traits in `../../voice/examples/house-exemplar.md` section 2.
+   Review runs on four lenses: voice, fidelity, evidence, and
+   stance. The stance lens exists because the judgement calls it
+   catches, who holds which authority and whether the piece takes a
+   position, fall outside the other three and outside the lint.
 5. **Hero**: SVG (default) or photographic prompt.
 6. **Ship**: move to `content/blog/`, and update the calendar, the
    Project, and the Issue.

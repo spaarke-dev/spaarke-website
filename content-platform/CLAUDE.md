@@ -35,16 +35,38 @@ context and govern every piece.
   formatting, and the list of things we do not do. Where any other
   voice document, template, or published article conflicts with it,
   the style guide governs.
-- `voice/examples/consulting-register.md`: the positive model. It
-  describes the register, quotes the publications we are measured
-  against, and gives model passages to write toward.
+- `voice/stance.md`: the posture. It says where the writer stands
+  toward the evidence, the causes, the reader, and the other parties.
+  On sentence mechanics the style guide governs; on posture this file
+  governs.
+- `voice/examples/consulting-register.md`: the external register we
+  are measured against. Sections 1 to 3 record the research
+  provenance, the evidence limits, and the fact-check labels; they
+  are reference material for whoever maintains the file, and the
+  drafting load is sections 4 and 6.
 - `voice/examples/ai-tells.md`: the removal guide. It lists the
   constructions that readers identify as machine-written, with a
   before and an after for each, and it ends with the pre-review
   checklist.
+- `voice/examples/house-exemplar.md`: the house positive model. It
+  names the one published article the writer has approved as house
+  voice and annotates the eight traits that carry it. The rules are
+  stated as removals, and a draft can satisfy every one of them and
+  still have no speaker in it; read the exemplar to know what to
+  reproduce.
 - `voice/brand-positioning.md`: what Spaarke stands for, the core
   narratives, the proof points.
 - `voice/audience-personas.md`: who we are writing to.
+- `voice/vocabulary.md`: the words we use and the words we do not.
+  Check the "we don't say" column before locking phrasing.
+- `voice/domain-knowledge.md`, section 3: the field's terms of art.
+
+The last two sit here rather than in section 4 because the decisions
+they govern, what a thing is called and which term of art applies,
+are made before the first sentence rather than at the sentence. The
+offset that keeps the total load roughly neutral is
+`consulting-register.md`: sections 1 to 3 are no longer read at
+drafting.
 
 ### 2. Content type (when relevant)
 
@@ -69,10 +91,9 @@ Pull these only when the piece or task calls for them:
 
 - `voice/product-knowledge.md`, when the work touches Spaarke's
   architecture, modules, integration surfaces, or the AI layer.
-- `voice/domain-knowledge.md`, when touching industry trends,
-  legal-ops stats, or terms of art.
-- `voice/vocabulary.md`, to consult when reaching for a word; check
-  the "we don't say" column before locking phrasing.
+- `voice/domain-knowledge.md`, sections 1, 2 and 4 to 7, when
+  touching industry trends, legal-ops stats, or the field's
+  sensitivities. Section 3 is in the always-load list above.
 - `voice/taxonomy.md`, for canonical tag values. Never invent tags.
 - `voice/bylines.md`, for the byline convention, the `author:`
   value, and the closing contact line.
@@ -102,7 +123,13 @@ the full done-when checklist for each gate.
 4. **Polish**: frontmatter, alt text, and cross-links; then the voice
    lint (see the next section); then the sweeps against
    `voice/examples/ai-tells.md`, the style guide (section 5), and
-   `voice/examples/avoid-this.md`.
+   `voice/examples/avoid-this.md`; then the stance lens, which reads
+   the draft against `voice/stance.md` and the eight traits in
+   `voice/examples/house-exemplar.md` section 2. Review runs on four
+   lenses: voice, fidelity, evidence, and stance. The stance lens
+   exists because the judgement calls it catches, who holds which
+   authority and whether the piece takes a position, fall outside the
+   other three and outside the lint.
 5. **Hero**: SVG by default; photographic prompt for atmospheric
    pieces (rare).
 6. **Ship**: move to `content/blog/` (or `published/`), update
