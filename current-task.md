@@ -75,23 +75,62 @@ The method, which is what matters for the next rewrite:
   September 2026 correction. Fix the structural and repeated cases;
   report single occurrences for the writer.
 
-Still open, all small and all the writer's call:
+The writer's rulings, 2026-09-23, all applied:
 
-1. Is "critically important" permitted, and what distinguishes it from
-   `crucial`? Until he rules, the word stays banned and `style-guide.md`
-   section 3 quotes his sentence with the phrase removed.
-2. Is three bold lead-in lists per long-form article the right ceiling?
-   It is derived from his output, not stated by him, and it is the brake
-   that makes the reversal safe.
-3. Does the bibliographic "we" extend to LinkedIn posts, white papers
-   and tweets? Those type files were out of scope.
-4. Six single-occurrence collisions that may be slips rather than guide
-   errors: Mary O'Carroll cited with no institution, "Kevin Clem's"
-   repeated where the surname alone is house form, the close compressing
-   three of the six signal names, "streamlined", and "actually".
-5. The four new `brief.md` sections are not yet in either skill's
-   validation list. Adding them to the blocking validation would fail
-   every brief already on disk.
+1. "critically important" is permitted when appropriate and reviewed at
+   use. It is not a synonym for the words rule 27 still rules out, which
+   assert importance with no referent.
+2. Bold lead-in lists are permitted and reviewed at use. There is no
+   hard ceiling. The linter reports the count as a statistic and no
+   longer judges it.
+3. The two uses of "we" are now named in plain terms, because the label
+   "bibliographic" did not communicate. The **citing "we"** points at our
+   own earlier articles ("In our earlier article, [title], we
+   discussed"). The **arguing "we"** states a position as ours ("we
+   recommend", "in our view"). These are discussion pieces, so the
+   second is welcome wherever we give a judgment rather than report a
+   finding.
+4. Articles 2 to 5 are NOT to be re-read against the corrected guides.
+   The writer is reviewing them manually, one article at a time, and
+   will return edited versions.
+
+## How to handle each returned article
+
+Each edited version the writer returns is another controlled experiment,
+and the highest-value thing to do with it is the same diff that produced
+this pass. For each one:
+
+1. Keep both versions. The pipeline draft is in git; the returned
+   version replaces `draft.mdx`.
+2. Diff them across positioning, register, structure, evidence and
+   vocabulary, and ask of each difference which guide line produced the
+   wrong output.
+3. Apply the fix to `voice/`, not to the article, wherever the guide is
+   what failed.
+4. Run the decisive test afterwards: read the approved article and ask
+   what the revised guides would still flag. A permission that lands
+   only in `style-guide.md` is not a permission, because `ai-tells.md`
+   and `avoid-this.md` load again as the removal sweep and will strip
+   it.
+5. Add any new trait to `voice/examples/house-exemplar.md` as a real
+   before-and-after pair.
+
+Expect the corrections to get smaller each time. Article 1's pass found
+26 collisions between the guides and the approved text; if article 2's
+pass finds a comparable number, the guides did not actually learn.
+
+Still open, and none of it blocking:
+
+- Does the citing "we" extend to LinkedIn posts, white papers and
+  tweets? Those type files were out of scope.
+- Six single-occurrence collisions in article 1 that may be slips rather
+  than guide errors: Mary O'Carroll cited with no institution, "Kevin
+  Clem's" repeated where the surname alone is house form, the close
+  compressing three of the six signal names, "streamlined", and
+  "actually".
+- The four new `brief.md` sections are not yet in either skill's
+  validation list. Adding them to the blocking validation would fail
+  every brief already on disk.
 
 ## What is done
 
@@ -112,7 +151,7 @@ Still open, all small and all the writer's call:
 
 ## What is outstanding
 
-- **The voice guides are corrected** (see above). Articles 2 to 5 have not been re-read against them.
+- **The voice guides are corrected** (see above). Articles 2 to 5 are in manual review with the writer, who returns edited versions one at a time.
 - **Articles 2 to 5 have not been reviewed by the writer.** Only article
   1 has been through a rewrite. Expect the same voice corrections to
   apply to the other four, which argues for fixing the guides first and

@@ -545,7 +545,7 @@ Run this checklist on the complete draft, including the title and the frontmatte
 - [ ] Every quotation is real.
 - [ ] In a sentence about legal judgment, no sentence gives legal operations "owns" or "decides", which belong to the department and the general counsel; legal operations may own an operating responsibility. And no sentence attaches legal risk to the business as something it holds, shares or participates in, though business teams may manage scoped legal-related activities and their risks inside guardrails the department sets (`voice/stance.md`, section 2).
 - [ ] No sentence refers to a cause by its ordinal.
-- [ ] Every bibliographic first-person reference to our own prior work has been left untouched by the sweep, wherever it sits. That covers "In our earlier article, [title], we discussed", "In our previous article", "In our earlier articles", and the one such construction rule 11 permits in the opening after the thesis. It also covers a bare link where the sentence's subject is the problem rather than our treatment of it (`style-guide.md`, section 1). Where a cross-link matches none of those forms, leave it and raise it with the writer rather than rewriting it.
+- [ ] Every citing first-person reference to our own prior work has been left untouched by the sweep, wherever it sits. That covers "In our earlier article, [title], we discussed", "In our previous article", "In our earlier articles", and the one such construction rule 11 permits in the opening after the thesis. It also covers a bare link where the sentence's subject is the problem rather than our treatment of it (`style-guide.md`, section 1). Where a cross-link matches none of those forms, leave it and raise it with the writer rather than rewriting it.
 
 **Substance**
 

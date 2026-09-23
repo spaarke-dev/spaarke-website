@@ -107,7 +107,8 @@ const TERMINAL_CAVEATS_PER_1000 = 1; // caveats that end on what a figure cannot
 const FULL_DATES_PER_1000 = 3; // "Month D, YYYY" density
 const SECTION_WEIGHT_RATIO = 2; // a section against the median section
 const BOLD_LIST_MIN_ITEMS = 3; // consecutive bold lead-in items that make a block
-const BOLD_LIST_MAX = 3; // blocks per long-form article
+// Bold lead-in lists are permitted and reviewed at use (writer, 2026-09-23).
+// The count is reported as a statistic; there is no ceiling to fail.
 const LONG_FORM_WORDS = 3000; // above this, a piece is expected to carry at least one block
 const THESIS_FORMULA_ANCHORS = 3; // opening, the heading that proves it, the close
 const KEY_TAKEAWAYS_MAX = 6;
@@ -493,12 +494,6 @@ for (const file of files) {
       });
     }
 
-    // The ceiling on bold lead-in lists, against the count taken above.
-    if (boldListBlocks > BOLD_LIST_MAX) {
-      push("warn", firstBoldList, `${boldListBlocks} bold lead-in lists against a ceiling of ${BOLD_LIST_MAX} for a long-form article`);
-    } else if (boldListBlocks === 0 && bodyWords > LONG_FORM_WORDS) {
-      push("warn", sections.length ? sections[0].at : 0, "no bold lead-in list in a long-form article: a parallel enumeration written as ordinal prose is a list");
-    }
 
     // The thesis is a formula repeated at three anchors (style guide section 3).
     // Skipped in silence where plan.md declares none.
