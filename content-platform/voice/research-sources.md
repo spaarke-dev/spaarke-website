@@ -15,6 +15,23 @@ Last updated: 2026-05-07.
 - New report? Add it here when you read it.
 - Verify each stat by reading the source page. Don't cite figures
   carried by intermediary blogs or vendor compilations.
+- The **Caveat** field is a decision input for the drafter, not text for
+  the article. Read it, then decide. If the interest can be disclosed in
+  a short appositive that instructs the reader to discount nothing
+  ("with Everlaw as a vendor co-sponsor", "run by the Blickstein Group
+  with FTI Consulting"), cite the source with the appositive. If
+  disclosing it takes a whole sentence telling the reader how far to
+  discount the finding, do not cite the source at all. A warning label
+  is worse than the finding's absence, because it spends the reader's
+  attention on a number we have already told them not to trust, and it
+  makes us sound uncertain rather than careful.
+- Prefer a third party's act to a vendor's claim about itself. An
+  investor putting $50 million into a firm is reportable; the firm's own
+  funding total is not, and it needs no sentence explaining why.
+- The article reports findings, not the search for them. What we could
+  not find, which sources we checked and did not use, and what we
+  decided no number could support are notes for this file and for the
+  piece's `plan.md`. They never appear in the prose.
 
 ---
 

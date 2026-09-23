@@ -1,6 +1,6 @@
 # Consulting register: the positive model
 
-This file shows what to write toward. The rules are in `../style-guide.md`, and the constructions to remove are in `ai-tells.md`. Load this file before drafting a long-form article, and measure the draft against the model passages in section 6.
+This file shows what to write toward. The rules are in `../style-guide.md`, and the constructions to remove are in `ai-tells.md`. Load this file before drafting a long-form article, and measure the draft against the model passages in section 6. Sections 1 to 3 record the research provenance, the evidence limits, and the fact-check labels. They are reference material for whoever maintains this file. The drafting agent reads sections 4 and 6.
 
 The research behind the file is in `content-platform/research/2026-09-loi-series/notes/`: `consulting-voice-and-tone.md`, its fact-check in `consulting-voice-and-tone.verified.md`, and the follow-up on McKinsey in `gap-mckinsey-primary-text-for-voice.md`.
 
@@ -64,7 +64,7 @@ The target publications differ from our house style in two ways, and the file sh
 
 ### 4.1 State the thesis early
 
-The reader should know the claim within the first 150 words of a short post or the first 250 words of a long-form article, and never later than the third paragraph. State it in one sentence that the reader could repeat, with a plain verb of commitment such as "recommend", "find", "argue", or "suggest". McKinsey articles in the archive sample place the thesis in the opening paragraphs, and Harvard Business Review features sometimes delay it behind a short scene, but both deliver it within about 300 words.
+The reader should know the claim within the first 150 words of a short post or the first 250 words of a long-form article, and never later than the third paragraph. State it in one sentence that the reader could repeat. The default is a direct declarative in our own voice ("The mandate of legal operations is evolving rapidly"). A plain verb of commitment such as "recommend", "find", "argue", or "suggest" is reserved for a position the reader might reasonably contest, and 6.1 records the same distinction. McKinsey articles in the archive sample place the thesis in the opening paragraphs, and Harvard Business Review features sometimes delay it behind a short scene, but both deliver it within about 300 words.
 
 > "Our research suggests that assumption is wrong."
 
@@ -73,6 +73,8 @@ The reader should know the claim within the first 150 words of a short post or t
 ### 4.2 Open with a situation, a complication, a question, and an answer
 
 Begin with a situation that the reader already accepts. Introduce the complication, which is what has changed or what is going wrong. The complication raises a question in the reader's mind, and the article answers it. Barbara Minto's own site calls the device the Situation, Complication, Question framework, and consultants add the Answer to make SCQA. The question usually stays implicit.
+
+This is the register's standard opening and it is our alternative, reserved for a piece that has to overturn a position the reader currently holds, because there the situation is the position being overturned. The house default is to open on the claim itself, with the evidence after it (`../style-guide.md`, section 3, and section 5, rule 3).
 
 > "That close relationship is being disrupted."
 
@@ -86,9 +88,15 @@ Place the conclusion before the support, both in the article as a whole and insi
 
 - Source: Bryan Garner, quoted in O'Hara, "How to Improve Your Business Writing", Harvard Business Review, November 20, 2014. [hbr.org](https://hbr.org/2014/11/how-to-improve-your-business-writing). Fact-checked.
 
-### 4.4 Count the framework, and keep the labels
+### 4.4 Count what the reader acts on, and keep the labels
 
-Preview the framework as a counted list ("three decisions", "four failure modes"). Deliver it in the same order, and use the same labels in the preview, the headings, and the close. The count tells the reader how much is coming, and the stable labels allow a reader to find a part again.
+Count a framework only when its items are things the reader decides, tests, or performs: decisions, capabilities, channels, failure modes, moves. Size the set by two tests rather than by a house maximum. The reader has to be able to hold it after one reading, and every item has to carry its own content: its own evidence, its own worked example, or its own diagnostic question. A set of six passes when each of the six does work the other five do not, and a set of three fails when two of the three say the same thing. Preview the set as a counted list ("three decisions", "four capabilities"), deliver it in the same order, and use the same labels in the preview, in the list itself, and in the close.
+
+Never count causes. A standalone section that enumerates the forces behind a change ("six drivers", "five pressures") puts an inventory in front of the argument and then obliges every later section to point back at the numbering. Name one driving force in the opening, add at most two secondary shifts inline, and argue each remaining cause at the point where the argument needs it (`stance.md`, rule 3).
+
+An ordinal is not a cross-section reference handle. If a later section has to say "as the third driver showed", "the alternative provider market described under the fifth driver", or "the one the first driver moved", that material belonged in that section. The target is an ordinal that stands in for a counted cause the reader has to look back for. An ordinal pointing at an item named in the same sentence is ordinary English and is left alone: "what a department gives up when it cannot answer the second of those questions."
+
+Where the counted set is a diagnostic instrument, name it after the decision the article argues for rather than after the department's internal metrics, and repeat the same named set in the key takeaways, the exhibit caption, the alt text, the section body and the close, so that the reader leaves holding one instrument rather than five variants of it.
 
 > "Decision 2: Decide Where Human Authority Remains"
 
@@ -96,7 +104,7 @@ Preview the framework as a counted list ("three decisions", "four failure modes"
 
 ### 4.5 Write headings that carry a message
 
-A heading or an exhibit title states a finding or an instruction. A reader who reads only the headings should be able to reconstruct the argument. One secondary source on consulting practice advises that an action title should fit "within one or max two lines, up to 15 words" (Slideworks, updated September 20, 2023). The archive sample qualifies the usual claim about McKinsey. Its survey articles and its exhibit titles state findings in full sentences, whereas several of its practice articles use plain topic labels. The instruction to the drafting agent is therefore to write message-bearing headings because they serve the reader, and the agent should not assume that every McKinsey article does so.
+A heading or an exhibit title renders a verdict: what a thing is, what it needs, what it depends on, or what is being done to it. A reader who reads only the headings should collect the article's judgments. Report a movement only where the movement is itself the verdict. The verdict test governs the content of the heading and leaves its form open. A noun or gerund phrase qualifies where it names something the reader can act on ("The opportunity to open the legal service delivery model", "Managing ahead of events, not only in response to them"), and the heading of the close reuses the key term from the title (`../style-guide.md`, section 4). One secondary source on consulting practice advises that an action title should fit "within one or max two lines, up to 15 words" (Slideworks, updated September 20, 2023). The archive sample qualifies the usual claim about McKinsey. Its survey articles and its exhibit titles state findings in full sentences, whereas several of its practice articles use plain topic labels. The instruction to the drafting agent is therefore to write message-bearing headings because they serve the reader, and the agent should not assume that every McKinsey article does so.
 
 > "Many AI uses by legal groups have already been proven"
 
@@ -104,7 +112,7 @@ A heading or an exhibit title states a finding or an instruction. A reader who r
 
 ### 4.6 Keep sentences and paragraphs at a medium length
 
-The fact-checker's recount of eight Harvard Business Review articles found mean sentence lengths from 15.2 to 27.8 words, and the archive sample of eight McKinsey articles averaged 22.9. Bain's 2019 article averaged 76.9 words per paragraph, the other publications in the sample fell between 50 and 77, and the McKinsey sample fell between 60 and 76. Short sentences appear in every article, and the useful ones carry content: a topic sentence, a finding, or a definition. Our house targets are an average of roughly 15 to 25 words per sentence and paragraphs of 50 to 100 words.
+The fact-checker's recount of eight Harvard Business Review articles found mean sentence lengths from 15.2 to 27.8 words, and the archive sample of eight McKinsey articles averaged 22.9. Bain's 2019 article averaged 76.9 words per paragraph, the other publications in the sample fell between 50 and 77, and the McKinsey sample fell between 60 and 76. Short sentences appear in every article, and the useful ones carry content: a topic sentence, a finding, or a definition. Our house targets are an average of roughly 15 to 25 words per sentence and paragraphs of 50 to 110 words.
 
 > "Governance is one barrier to scaling."
 
@@ -118,7 +126,7 @@ The source, the instrument, the sample, and the date belong in the sentence that
 
 - Source: Shunko and Netessine, Harvard Business Review, September 14, 2026 (link in section 4.4). Fact-checked. The fact-checker confirmed the Harvard Business Review sentence and did not examine BCG's underlying report. The inner quotation marks are shown here as single marks.
 
-### 4.8 Interpret the number
+### 4.8 Say what the figure supports, and subordinate the limit
 
 A figure is followed by a sentence that says what it shows, what it cannot show, or what it should be compared with. Bain's 2019 article gives an example of comparison. It reports that 20% to 25% of legal departments used AI in at least one area, according to a LexisNexis survey, and it sets that figure beside 40% in finance and 54% in human resources. The survey is seven years old and should not be reused as a current figure.
 
@@ -126,13 +134,21 @@ A figure is followed by a sentence that says what it shows, what it cannot show,
 
 - Source: Shunko and Netessine, Harvard Business Review, September 14, 2026 (link in section 4.4). Fact-checked. The sentence follows two large operating figures and tells the reader what those figures do not yet prove.
 
-### 4.9 Tell cases in one paragraph, named and quantified
+Note the terminal position. That sentence is Harvard Business Review's, and it ends on what the figures do not prove because the paragraph that follows supplies the proof. House default is the other order: the caveat first and the usable fact last, so the sentence ends on what the number does support. "These are statements of intent rather than hiring records, but they show a clear plan to hold the size of the department and change the work its people do." End on the limit only where the next sentence answers it, and never for a run of statistics across a whole piece, which leaves the reader with an article whose every number has been talked down.
+
+Comparison is the more useful move and is under-used: Bain sets 20% to 25% AI use in legal departments beside 40% in finance and 54% in human resources.
+
+### 4.9 Tell cases in the past tense and illustrations in the present
 
 A case takes one paragraph and has three beats: the situation, the action, and the measured result, which is given as a before-and-after figure. Use one case per point. When the organization cannot be named, describe it with specifics. Deloitte Insights, for example, describes "a leading European telecommunications provider" that consolidated four knowledge silos serving 19 million customers (June 18, 2026; [deloitte.com](https://www.deloitte.com/us/en/insights/topics/talent/knowledge-management-plan.html)).
 
 > "Coca-Cola launched a self-service portal that reduced contract-drafting time for many matters from up to 10 hours to around 15 minutes."
 
 - Source: Heric and Goldman, Bain & Company, February 5, 2019 (link in section 4.5). Fact-checked.
+
+A case is something that happened. It is attributed, written in the past tense, and given a measured before-and-after result. An illustration is something we built to show how a claim works. It opens with "Consider", runs in the present tense, and hangs off the claim it illustrates rather than standing as a paragraph of its own: "**Service delivery: deciding who or what performs each type of work.** Consider, for example, a food delivery company that sorts its agreement types by risk."
+
+Because the tense and the opening word carry the signal at every instance, an article using illustrations needs no blanket disclaimer, and a disclaimer placed upstream of the scenes it governs never reaches a skimming reader in any case. Delete any sentence telling the reader the examples are illustrative; it breaks the frame and withdraws the evidence the paragraph just offered. A constructed illustration carries no before-and-after figure, because the figure would be invented. It ends instead on which part of the work was hard: "Most of the effort goes into defining the guardrails; configuring the tools is comparatively quick."
 
 ### 4.10 Allow one calibrated hedge per claim
 
@@ -158,13 +174,17 @@ The sentence states the finding, and the exhibit reference follows in parenthese
 
 - Source: an excerpt from a longer sentence in Tinkoff, Van der Veken, and Chui, "The state of AI in 2026: On the road to ROI", McKinsey, August 25, 2026. [mckinsey.com](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai). Archive snapshot. McKinsey spells out "percent", and our house style keeps the % sign.
 
+Where an exhibit carries the structure of its section rather than confirming one finding, state the structure in a single sentence, place the exhibit immediately after it, and then unpack its parts in the exhibit's own order under bold labels whose wording repeats the caption ("**Before the event: proactive readiness.**"). The caption, the alt text, the section's labels, the closing paragraph, and any `keyTakeaway` touching the exhibit all use the same words for the same parts, so the reader meets one named set rather than five variants of it.
+
 ### 4.13 End on consequence
 
-The final section is short. It returns to the stakes, says what follows for the reader, and stops. It does not summarize, and it carries no "Conclusion" heading. McKinsey articles in the archive sample often close on a sentence about which organizations will succeed. That formula should be rationed, because machine-written prose relies on it as well.
+The final section is short. It returns to the stakes, says what follows for the reader, and stops. It does not re-argue the piece in fresh words, and it carries no "Conclusion" heading. One short synthesis paragraph at the head of the close is house form, where it names the changes the article described and sets up the instructions that follow (`../style-guide.md`, section 3). McKinsey articles in the archive sample often close on a sentence about which organizations will succeed. That formula should be rationed, because machine-written prose relies on it as well.
 
 > "In a future crowded with agents, speed to market will matter, but not as much as trust, governance, and human capabilities."
 
 - Source: "How will AI agents fit into the human workplace?", Deloitte Insights, September 10, 2026. [deloitte.com](https://www.deloitte.com/us/en/insights/topics/technology-management/ai-agents-human-workplace.html). Fact-checked. It is the last sentence before the article's methodology note.
+
+"Says what follows for the reader" includes telling the reader where to start. The house exit, where the article has earned it, is the mandate named in a sentence and then the practical starting points as imperatives. None of that restates the argument; each imperative is a move the argument entitles the reader to make.
 
 ---
 
@@ -207,13 +227,13 @@ What it does: the first paragraph gives a situation that the reader accepts, the
 >
 > Our position is that knowledge management has become the limiting factor in legal AI. Many departments allowed the discipline to lapse after earlier document-management projects disappointed, and they are now paying for that decision. The sections that follow explain why retrieval depends on curation and describe a workable knowledge program for a department of 20 to 60 professionals. They close with two investments that should come before any further AI licensing.
 
-What it does: the first sentence attributes two figures to a named instrument with its sample and year and reports them as what respondents said. The gap between the figures is the complication, and the second paragraph commits to a position with "Our position is that", which is warranted here because a reader could reasonably hold that model quality, and not knowledge management, is the limiting factor. Where the thesis is an observation about a change already under way, the phrase is dropped and the sentence states the observation directly, as 6.1 does. The roadmap lists three real parts of the article across two sentences. Sentences average about 20 words. The figures are illustrative.
+What it does: the first sentence attributes two figures to a named instrument with its sample and year and reports them as what respondents said. The gap between the figures is the complication, and the second paragraph commits to a position with "Our position is that", which is warranted here because a reader could reasonably hold that model quality, and not knowledge management, is the limiting factor. Where the thesis is an observation about a change already under way, the phrase is dropped and the sentence states the observation directly, as 6.1 does. The roadmap lists three real parts of the article across two sentences. Sentences average about 20 words. The figures are illustrative. Note the limit of this model. It opens on two attributed figures because the tension between the two figures is itself the subject. Where the subject is a claim rather than a tension, open on the claim in our own voice, as 6.1 does, and bring the first figure in as support. An article whose first sentence is a citation has no speaker in it.
 
 ### 6.3 Evidence paragraph: a statistic introduced and interpreted
 
-> Invoice review is the control that most departments rely on, and its reach is narrower than its reputation suggests. In [study name]'s 2026 benchmarking study of 380 legal departments, respondents reported that line-item review adjusted a median of 3.1% of billed fees, and 64% of the adjustments corrected rate or timekeeper errors. These figures show that review catches mistakes in billing. They cannot show whether the work was staffed sensibly, because a correctly billed invoice for an overstaffed deposition passes every rule. A department that wants to influence the larger cost has to act earlier, through staffing plans and budgets agreed when the matter opens.
+> Invoice review is the control that most departments rely on, and its reach is narrower than its reputation suggests. In [study name]'s 2026 benchmarking study of 380 legal departments, respondents reported that line-item review adjusted a median of 3.1% of billed fees, and 64% of the adjustments corrected rate or timekeeper errors. Review catches billing mistakes, but a correctly billed invoice for an overstaffed deposition passes every rule, so the larger cost is settled before the invoice arrives. A department that wants to influence it should agree staffing plans and budgets when the matter opens.
 
-What it does: the topic sentence makes the claim, the second sentence attributes the statistic inline, and the third and fourth sentences say what the numbers show and what they cannot show. The final sentence draws the consequence. The paragraph runs to about 100 words, and the figures are illustrative.
+What it does: the topic sentence makes the claim, the second sentence attributes the statistic inline, and the third sentence concedes what review does catch and then turns on "but" to land on the reach of review, which is the paragraph's claim rather than a hedge on it. The final sentence says what the reader should do about it. Ending there is correct because the limit is itself the finding and the next sentence answers it, which is the condition section 4.8 sets. Where the limitation only discounts a figure the argument rests on, reverse the order: put it in the subordinate clause and end on what the figure does support. The paragraph runs to about 100 words, and the figures are illustrative.
 
 ### 6.4 Transition between sections
 
@@ -227,7 +247,7 @@ What it does: the conditional clause carries forward what the previous section e
 >
 > General counsel who plan to add headcount in 2027 should settle the intake process first. Otherwise each new lawyer inherits a queue that nobody can see. A department that can measure its intake can show the CFO where the next lawyer is needed, and that evidence makes a stronger budget case than a description of workload that only the legal team can feel.
 
-What it does: the close states what follows for the reader (a decision about sequence) and adds nothing by way of summary. The short sentences carry facts ("A team of 40 cannot" completes a comparison), and none of them exists only to land the sentence before it. The final sentence ends on the stakes for the general counsel. Sentences average about 17 words. The close contains no pitch and no restatement.
+What it does: the close states what follows for the reader (a decision about sequence) and adds nothing by way of summary. The short sentences carry facts ("A team of 40 cannot" completes a comparison), and none of them exists only to land the sentence before it. The final sentence ends on the stakes for the general counsel. Sentences average about 17 words. The close contains no pitch and no restatement. This passage models the consequence alone, which suits a short post. A long-form close runs in four beats under a heading that reuses the title's key term, and the first moves for the reader's role arrive as imperatives before the forward pointer (`../style-guide.md`, section 3).
 
 ---
 

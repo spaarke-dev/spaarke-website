@@ -12,9 +12,10 @@ First draft. Team revises in T11.
 |---|---|---|
 | matter | case | "case" is litigation-only; we cover every matter type |
 | outside counsel | external counsel / outside lawyers / external firms | the field uses "outside counsel" without exception |
-| corporate legal department | in-house legal team / corporate law department | the register our GCs and Legal Ops Directors actually use |
-| general counsel (GC) | Chief Legal Officer (when both fit) | broader and more recognized; spell out first, GC after |
-| platform | tool / app / suite / solution | "platform" implies the breadth we have; the others undersell |
+| corporate legal department (formal first reference) | in-house legal team | the register our GCs and Legal Ops Directors actually use |
+| law department / legal department / the department (running prose, after first reference) | (no restriction) | the field uses all three, and the major sources are titled "State of the Corporate Law Department" and "Law Department Survey"; avoiding "law department" outside quoted titles makes the prose read as though it is dodging the field's own word |
+| general counsel (GC) | Chief Legal Officer (when both fit) | broader and more recognized; spell out first, GC after. Keep a source's own term when reporting its respondents or its title ("ACC's 2026 Chief Legal Officers Survey", "63% of chief legal officers expect headcount to remain stable"), because changing it misreports the population (style guide, section 5, rule 12) |
+| platform | tool / app / suite / solution | "platform" implies the breadth we have; the others undersell. The row governs how we name our own product. "Tool" is the right word for someone else's software and for AI tools in general ("the limitations of today's AI tools", "configuring the tools is comparatively quick") |
 | operational intelligence | productivity | productivity is what individual tools sell; we sell something larger |
 | operational memory | knowledge base / institutional knowledge (when naming the layer) | "operational memory" is our term for the system; "institutional knowledge" is what's in people's heads |
 | institutional knowledge | tribal knowledge / organizational know-how | "institutional" treats it as legitimate; "tribal" carries baggage |
@@ -30,15 +31,17 @@ First draft. Team revises in T11.
 | structural | foundational / strategic | "structural" means "in the architecture"; the alternatives are softer |
 | concrete | tangible / real-world | tangible is a tell; concrete is what we write |
 | spend visibility | spend analytics (when context is broader) | analytics is a feature; visibility is the outcome |
+| visibility / transparency / insight (what legal produces for the business) | evidence (that legal's contribution is real) | "evidence" frames the business as a jury legal has to convince; visibility and insight frame it as a partner that needs to see what legal is doing, which is the relationship we argue for. "Evidence" stays the right word for what the writer owes the reader (style guide, section 5, rule 12) |
 | outside counsel spend | legal spend (when we mean specifically external counsel) | most "legal spend" conversations are about outside counsel; name it precisely |
 | matter intake | case opening / file opening / new matter setup | "intake" is the field's term across corporate and firm |
 | billing guideline compliance | invoice review (when the goal is OCG enforcement) | names the actual operational job |
 | AI-directed, human-controlled | human-in-the-loop AI / AI-assisted | our positioning line; preserve it verbatim |
 | Microsoft 365 | Office 365 / Microsoft Office | "Microsoft 365" is current; "Office 365" dates the writer |
 | Copilot | Microsoft Copilot (after first use) | the field calls it Copilot |
+| In our earlier article, [title], we discussed / explained / described / set out (or "In our previous article") | [title] describes / as described in an earlier article / an earlier Spaarke article covers | the bibliographic "we" is the house form for citing our own work; the third-person form makes our library read like third-party citation (style guide, section 1). The preference is normal practice and not an absolute, so this row is not a sweep instruction. Three published constructions stand and are left alone: a bare link where the sentence's subject is the problem rather than our treatment of it ("an old problem, described in [Institutional Knowledge Is Walking Out the Door]"); a possessive frame where the article itself is the actor ("Our earlier article, [From Reactive to Predictive], maps the frameworks against the maturity question in detail"); and Spaarke named as the actor in the third person ("Spaarke set out the category-level argument in [What Is Legal Operations Intelligence?]") |
 | we (for Spaarke's own evidence and positions: "we recommend", "we found") | one / the authors / Spaarke in the third person (when the sentence states our own position) | the analytical "we" states a position and then defends it (style guide, section 1); the announcement "we" stays banned (section 5, rule 8) |
 | general counsel / legal operations directors (readers named by role in analysis); "you" for direct advice, checklists, and diagnostic questions | the reader / one / users | the pronoun rule in the style guide, section 1 |
-| (the scenario itself, stated with names, dates, and figures) | imagine / picture / now consider | `Imagine if` is a banned opener and `Now consider` is signposting (style guide, section 5, rules 3 and 21) |
+| Consider a <organization described without a name> that <present-tense action>, with or without "for example" | imagine / imagine if / picture / a standalone `Now consider.` as a paragraph opener / a disclaimer sentence about the passage | "Consider" marks a scene as hypothetical inside the sentence that tells it, and both published forms are house form: "Consider, for example, a food delivery company that sorts its agreement types by risk" and "Consider a security software company that rewrites its non-disclosure agreement playbook". `Imagine if` remains a banned opener (style guide, rule 3) and `Now consider` standing alone remains signposting (rule 21) |
 | examine / look at | dive into / dive deep into | "dive" is a cliché |
 | use | leverage / utilize | leverage is the most common consultantism in legal-ops writing |
 | build on | leverage the foundation of | shorter, more honest |
@@ -71,7 +74,7 @@ The first 35 rows are the original do-not-say list. The rows from `delve` onward
 | leverage | use / build on | the single most common consultantism; cut on sight |
 | empower / empowered | help / let / make it possible to | corporate-speak; a tell of marketing-by-committee |
 | solution / solutions | platform / product / answer / approach | sales-y by default; we are a platform, not a "solution" |
-| AI-powered / AI-driven | (specific: AI-directed / built on / inference layer) | meaningless by 2026; on the do-not-claim list |
+| AI-powered / AI-driven (as a compound adjective attached to a product, a capability, or a platform) | (specific: AI-directed / built on / inference layer) | meaningless by 2026; on the do-not-claim list. The participial phrase that names AI as the force behind a change the piece then shows is the prime-mover construction and is house form: "Driven by the AI imperative, general counsel and their departments are reimagining how legal services are delivered" (`stance.md`, rule 3) |
 | ChatGPT for legal / Copilot for lawyers | Legal Operations Intelligence platform | undersells and miscategorizes us |
 | autonomous legal AI | AI-directed, human-controlled | overstates AI maturity; alienates buyers |
 | replace lawyers / replace attorneys | augment / support / accelerate | do-not-claim; alienates the entire market |
@@ -79,7 +82,7 @@ The first 35 rows are the original do-not-say list. The rows from `delve` onward
 | one-click | (cut) | unserious for enterprise legal |
 | paradigm shift | (specific change) | the field rolls its eyes at this |
 | synergy / synergies | (cut, or describe the actual interaction) | the canonical consultantism |
-| value creation / create value / unlock value / strategic value | (specific outcome) | abstract; audit flags as a recurring weakness |
+| value creation / create value / unlock value / strategic value | (specific outcome) | abstract; audit flags as a recurring weakness. A sentence that names who delivers what to whom, after the article has shown it, is not the target: "It moves legal operations from administering the department to managing how the department delivers value to the business" (style guide, section 3, the close's second beat) |
 | compounding intelligence | (cut, or "compound" as a verb tied to a layer) | audit flags overuse; the verb works, the noun phrase is a tell |
 | operational rigor | (specific practice) | abstract; describe what's actually being done |
 | holistic | (cut, or "across" / "end-to-end") | a tell |
@@ -109,11 +112,11 @@ The first 35 rows are the original do-not-say list. The rows from `delve` onward
 | interplay | (name the relation: depends on, competes with, feeds) | points at a relation without naming it |
 | garner / bolster | get / earn / support / strengthen | ornate substitutes for plain verbs |
 | align with / resonate with | match / fit / agree with | a vague connection; say how the two things relate |
-| valuable insights / key insights / key considerations | (state the insight) | announces content without delivering it |
+| valuable insights / key insights / key considerations (as an announcement, with no insight stated) | (state the insight) | announces content without delivering it; the noun "insight" is correct when it names what a report gives the reader |
 | myriad / plethora / a diverse array of | many, or better, the count | inflated quantity words |
-| ever-evolving / rapidly evolving / fast-paced | (cut; give the dated change) | stock scene-setting |
+| ever-evolving / rapidly evolving / fast-paced (as an attributive adjective setting a scene: "in an ever-evolving legal landscape", "today's fast-paced environment") | (cut; give the dated change) | stock scene-setting asserts a pace and names nothing that moved. The predicate is not the target: "The mandate of legal operations is evolving rapidly", with a named subject and a section that then shows the change, is house form under style guide rule 24 |
 | serves as / stands as / functions as / represents (where "is" would do) | is / are | copula avoidance; the plain verb is clearer |
-| fundamentally / genuinely / truly / deeply / enormously | (cut; state the difference and its size) | intensifiers doing the work of evidence; the audit counted "fundamentally" 13 times in the library |
+| fundamentally / genuinely / truly / deeply / enormously (as adverbs intensifying a claim the sentence does not support) | (cut; state the difference and its size) | intensifiers doing the work of evidence; the audit counted "fundamentally" 13 times in the library. A comparative that sizes a supported claim ("far more likely", "faster still", "rapidly") is permitted under style guide rule 24, as is the adjective "fundamental" where it states the scope of a change the section proves |
 | actually (as an intensifier) | (cut) | the audit counted 24 uses in the library |
 | quietly (as in "quietly reshaping") | (cut) | listed as a "magic adverb" in the tropes.fyi catalog; it adds atmosphere and no information |
 | load-bearing (as a metaphor) | (say what depends on it) | a metaphor that readers associate with machine-written text; the audit found it three times in the library |
@@ -125,10 +128,13 @@ The first 35 rows are the original do-not-say list. The rows from `delve` onward
 | when it comes to | for / in, or restructure the sentence | filler |
 | more than ever / now more than ever | (cut, or give the comparison) | stock intensifier |
 | experts say / industry reports suggest / observers note / studies show | the named source, with its year and sample | vague attribution is not evidence (style guide, section 5, rule 12) |
-| here is the thing / here is why / let us unpack / let us dive in / now consider | (start with the point) | signposting (style guide, section 5, rule 21) |
+| here is the thing / here is why / let us unpack / let us dive in / `Now consider` standing alone as a paragraph opener | (start with the point) | signposting (style guide, section 5, rule 21). "Consider" opening a hypothetical case inside the sentence that tells it is not signposting and is house form (section 1) |
 | the honest answer / it has a name | (give the answer; introduce the term in a full sentence) | staged reveals; both recur in the library |
 | in conclusion / in summary / this article explored | (cut; end on consequence) | summary closer (style guide, section 5, rule 25) |
 | despite these challenges / the future remains bright | (cut; end on the last substantive point) | formula conclusion |
+| bottleneck | impediment | "bottleneck" describes a queue and implies the fix is throughput; "impediment" names the relationship, and it is the word the business uses about legal (`stance.md`, rule 4) |
+| enabler of the business / legal as an enabler | (cut; say what the business can now do) | vendor vocabulary; the writer removed it without replacement |
+| participant in its own legal risk / the business takes on risk / shares the risk | business teams manage certain legal-related activities, clearly scoped and inside guardrails the department sets | a general counsel reads risk-sharing language as legal risk leaving the department (`stance.md`, section 2) |
 
 ---
 
@@ -162,7 +168,7 @@ The first 35 rows are the original do-not-say list. The rows from `delve` onward
 
 ---
 
-*Section 1: 36. Section 2: 74. Section 3: 13. Add when patterns emerge; cut what stops earning its place.*
+*Section 1: 39. Section 2: 77. Section 3: 13. Add when patterns emerge; cut what stops earning its place.*
 
 ---
 

@@ -2,7 +2,7 @@
 
 This file is a working reference for the drafting agent. Load it before drafting, so that the constructions are not written in the first place, and load it again before review, so that any that slipped through are removed. The rules themselves are in `../style-guide.md`, section 5 (rules 13 to 27). The positive model is in `consulting-register.md`.
 
-Three notes apply to the file itself. First, every before and after pair in sections 2 to 6 was written for this file in Spaarke's subject area, and the figures in those examples are illustrative. Second, the "before" examples contain the words and constructions under discussion, so `npm run voice:lint` reports warnings on this file by design; it must still report 0 errors. Third, this file never prints an em dash. Where an example needs one, the placeholder [EM DASH] marks the position.
+Three notes apply to the file itself. First, every before and after pair in sections 2 to 6 was written for this file in Spaarke's subject area, and the figures in those examples are illustrative. Second, the "before" examples contain the words and constructions under discussion, so `npm run voice:lint` reports warnings on this file by design; it must still report 0 errors. Third, no example in this file prints an em dash. Where an example needs one, the placeholder [EM DASH] marks the position. The single em dash in the file is the workflow marker defined in section 4.1, which is a tool token and has to appear in its literal form so that tools can find it.
 
 The research behind the file is in `content-platform/research/2026-09-loi-series/notes/`: `ai-writing-tells.md`, its fact-check in `ai-writing-tells.verified.md`, and the audit of our own library in `library-audit-local.md`.
 
@@ -22,9 +22,11 @@ The research ranked the tells by how much they matter to expert professional rea
 
 1. **Tier 1: empty content.** This tier covers inflated significance, vague attribution, participle tails that assert importance, conclusions that restate, and one point diluted across a whole piece. These readers are trained to ask who says so and on what evidence, and an unsupported claim costs credibility whoever wrote it.
 2. **Tier 2: manufactured drama.** This tier covers negation followed by correction, the self-answered question, the colon reveal, the one-sentence paragraph, signposting, and the aphoristic closer. These constructions have proved the most durable across model generations, and each one implies that the reader held a naive view that needed correcting. The Atlantic reported on July 12, 2026 that the `not just X but Y` pattern "has shown no signs of abating", and the detection vendor Pangram estimates that it appears three times as often in AI writing as in human writing.
-3. **Tier 3: template rhythm.** This tier covers reflexive lists of three, uniform paragraph length, a landing sentence on every paragraph, section announcements and recaps, template headings, and bold lead-in bullets. Readers may not name these devices, but the devices produce the feeling that the prose is statistically well behaved.
+3. **Tier 3: template rhythm.** This tier covers reflexive lists of three, uniform paragraph length, a landing sentence on every paragraph, section announcements and recaps, template headings, and bold labels in place of reasoning. Readers may not name these devices, but the devices produce the feeling that the prose is statistically well behaved.
 4. **Tier 4: dashes.** The em dash is weak evidence of authorship, because human writers and the target publications use it. In the ACL study cited above, experienced readers even treated dashes as a sign of human writing. The mark is nonetheless a strong trigger of suspicion among general readers, because a reader sees it before reading a single claim, and it is cheap to remove.
 5. **Tier 5: vocabulary.** Word lists matter least and age fastest. Wikipedia's catalog records that `delve` "dropped off sharply in 2025", and a preprint by Yakura and colleagues found the same words entering spontaneous human speech. Cut clusters of these words, and cut the older corporate fillers on plain-style grounds.
+
+The tiers rank how strongly a feature signals machine authorship. They do not rank how much the words matter. Tier 5 covers removal vocabulary: the words to cut. Naming vocabulary is a separate and first-order question, because the terms that name the decision, the actors, and what each produces carry the argument's claims about causation and authority, and a wrong name cannot be fixed by editing. Naming vocabulary is governed by `vocabulary.md`, `stance.md` section 2, and `domain-knowledge.md` section 3, and all three are read before drafting.
 
 ### Fix the vagueness as well as the sign
 
@@ -65,6 +67,13 @@ The form is `X, not Y`, in which two nouns or two adjectives stand in for an exp
 
 An ordinary contrast inside a sentence that goes on to explain the difference is normal English. The tell is the slogan that replaces the explanation.
 
+A concession is not a slogan. Where the contrast names a fault in the reader's own function, keep the fault and give it a subject and a finite verb.
+
+- Before: "Legal as an enabler, not a roadblock."
+- After: "Legal can become an impediment to the business. A business unit that waits in the department's queue for a standard non-disclosure agreement loses time, and a business that routinely waits learns to work around the department."
+
+The test is whether the negative half carries information the argument depends on. Where it does, promote it to a sentence of its own with the offending party as the subject; where it only supplies contrast, cut it.
+
 ### 2.4 Verbless fragments and fragment stacks (tier 2)
 
 A fragment is a string of words that is punctuated as a sentence but lacks a subject or a finite verb. Fragments are often stacked in threes, with `No` or `Not` at the front.
@@ -104,6 +113,8 @@ These phrases announce that a point is coming instead of making it. The forms in
 - Before: "Here is the thing about outside counsel guidelines. Let us unpack why they fail."
 - After: "Outside counsel guidelines fail when the billing system cannot enforce them, because a reviewer cannot check a 40-page document against every line of every invoice."
 
+`Consider, for example, X` is exempt, and so is the bare `Consider X` where X is the hypothetical case itself ("Consider an online marketplace that groups a year of matters by type and cost"). Hypothetical cases are told in the present tense and marked with "Consider" inside the sentence that tells them, never with a disclaimer sentence about the passage. What this entry catches is `Now consider` standing alone as a paragraph opener, where the words announce a point instead of making one.
+
 ### 2.9 The list of three used for rhythm (tier 3)
 
 Three adjectives, three verbs, or three parallel clauses are chosen because three sounds complete. The test is whether the writer could defend each item separately.
@@ -118,6 +129,8 @@ Three or more consecutive sentences open with the same words, so that repetition
 - Before: "They wanted visibility. They wanted control. They wanted answers."
 - After: "The general counsel asked for one report each month: outside counsel spend by business unit, compared with budget."
 
+A diagnostic list is exempt, and so is deliberate repetition inside reference material. Where each item of a list is a question addressed to "you", the sentence that follows the question may use a repeated frame saying what a "no" would reveal, and the repeated wording is what makes the list scannable (`style-guide.md`, section 5, rules 19 and 22). Leave those runs alone during a sweep. What this entry catches is consecutive sentences in running prose, where the repetition supplies emphasis the content has not earned.
+
 ### 2.11 The present-participle tail (tier 1)
 
 A clause that begins with a participle is attached to the end of a sentence in order to claim significance. The forms include `, highlighting the importance of`, `, underscoring the need for`, and `, reflecting a broader shift toward`. Researchers measured present participial clauses in instruction-tuned models at two to five times the human rate (Reinhart and colleagues, PNAS, 2025).
@@ -131,6 +144,13 @@ The sentence uses a `from X to Y` construction in which X and Y are not the ends
 
 - Before: "From the first request to the final invoice, from the mailroom to the boardroom, legal operations touches everything."
 - After: "Legal operations manages four processes in this department: matter intake, outside counsel selection, invoice review, and reporting to the general counsel."
+
+### 2.13 The compressed antithesis (tier 2)
+
+A paragraph's last sentence ends on a constructed contrast between two nouns, so that the shape of the sentence stands in for the claim. It passes every check aimed at the two-sentence version (2.5) and every check aimed at the tagline (2.3).
+
+- Before: "That evidence is the difference between a guardrail the business trusts and a rule the business routes around."
+- After: "Business teams are far more likely to follow guardrails they understand and trust."
 
 ---
 
@@ -152,6 +172,13 @@ Each paragraph closes with a line that restates its point in compressed form, so
 - Before: "The firm's estimates were 30% below actual cost on four of six matters. And that is why budgets matter."
 - After: "The firm's estimates were 30% below actual cost on four of six matters."
 
+The tell is a sentence that restates the paragraph in compressed form. A sentence saying what the evidence means for the reader's own department is content, and an evidence paragraph is usually better for having one.
+
+- Before: "Fewer than one in five of those departments had pressed their firms to show what their use of AI had saved. The dissatisfaction is therefore largely unspoken, and a firm that has never been asked the question has nothing to answer."
+- After: "Fewer than one in five departments had pressed their firms to show what AI had saved. Departments that want to see AI savings will need to ask for them."
+
+The "before" ending is a further observation about the market; it is well made and the reader can do nothing with it. The "after" ending is an instruction.
+
 ### 3.3 Uniform paragraph length and rhythm (tier 3)
 
 Every paragraph has the same number of sentences, and every sentence falls in the same narrow range of length. The repair is to let content set the length, and variety is never manufactured with fragments.
@@ -165,6 +192,8 @@ A final paragraph or section restates the article. It is often introduced by `In
 
 - Before: "In summary, knowledge management is more important than ever, and departments that invest in people, process, and technology will be well placed for the future."
 - After: "In each of the three departments described here, the precedent library had no named owner, and its contents were out of date within a year of launch. A department that plans a knowledge program should name the owner before it chooses the tool."
+
+The four-beat close described in `style-guide.md`, section 3, is exempt. Beat 1 of that close is one short synthesis paragraph naming the changes the article described, and it is followed by the thesis in the words the opening used, by a paragraph of first moves addressed to the reader's role, and by the forward pointer. That paragraph is orientation for a reader who skipped a section, and the beats after it carry the instructions. Leave it in place during a sweep, and leave the heading that reuses the title's key term in place with it. What this entry catches is the final paragraph or section that restates the article and stops there, with no first move after it.
 
 ### 3.5 The "despite these challenges" formula (tier 1)
 
@@ -180,12 +209,16 @@ Each section announces what it will do, does it, and then says what it did. The 
 - Before: "In this section, we will explore three key considerations for matter intake. As we have seen, intake matters."
 - After: "The first consideration is who may submit a request."
 
+This entry covers the recap paragraph. It does not restrict naming our own prior work, which is house form wherever it sits in the piece: "In our earlier article, [From Reactive to Predictive](/why-spaarke/loi-maturity-model), we mapped the frameworks against the maturity question in detail." One such construction may sit in the opening itself, after the thesis, where it credentials the claim just made, and a long-form article in a series normally carries five or six in all (`style-guide.md`, section 5, rule 11). "In our previous article" and "In our earlier articles" are the same construction. Do not remove or reword any of them during a sweep, in the opening or in the body. The tell this entry names is an opening paragraph spent on what the earlier articles said; a sentence that makes Spaarke the actor of its own citation does the opposite, because it tells the reader whose evidence they are reading.
+
 ### 3.7 One point diluted across the piece (tier 1)
 
 The same claim returns in every section in fresh words, sometimes as a recycled stock sentence, and the article never moves past it.
 
 - Before: "The claim that fragmented data limits AI appears in the opening and is then restated, in different words, in each of five sections."
 - After: "The claim is stated once, in the opening. The remaining sections supply the evidence, a counter-case, the limits of the claim, and what the reader should do about it."
+
+One repetition is correct and is not dilution. Fix a single phrase for the piece's central positioning claim and repeat it almost verbatim at three anchors: the opening thesis, the heading of the section that proves it, and the close. One published article anchors its thesis with "Legal operations is the facilitator and catalyst for that decision", then "Legal operations is the catalyst and manager of the operating model", then "Legal operations is the facilitator, catalyst, and manager of that change" (`content/blog/2026-06-16-managing-legal-operations.mdx`). That is quoted to show the anchoring, and the phrase is that article's own rather than a house formula. Do not paraphrase the phrase chosen for a piece to avoid repetition; the reader should be able to repeat the phrase after one reading. The tell this entry names is the argument returning in fresh words in every section, which leaves nothing fixed in the reader's memory.
 
 ---
 
@@ -260,14 +293,14 @@ After any replacement, reread the paragraph. If it now carries three colons or t
 
 One em dash is permitted in the repository. The workflow marker **TBD — confirm** is a tool token that flags an unverified fact. It is written exactly that way so that tools can find it, and it must never survive to publication.
 
-### 4.2 Bold lead-in bullets (tier 3)
+### 4.2 Bold labels in place of reasoning (tier 3)
 
-Each item in a vertical list opens with a bolded word or phrase and continues with a sentence or two. Earlier voice documents called this the library's signature pattern, and the audit counted 303 instances.
+The tell is a bolded phrase followed by an assertion that nothing supports, repeated down the page so that the formatting supplies the structure the argument lacks. The fault sits under the label rather than in it: the bulleted form is house form in the cases set out in `style-guide.md`, section 4, and a one-word label is correct where the item carries its own content.
 
 - Before: "**Visibility.** Spend data arrives in real time. **Control.** Guidelines are enforced automatically. **Insight.** Trends surface without manual work."
-- After: "E-billing gives the department two things it lacked. It shows spend by matter as invoices arrive, and it applies the billing guidelines to every line item before a reviewer sees the invoice. Trend reporting depends on a third element, consistent matter coding, which the next section addresses."
+- After: "**Visibility.** Invoices post to the matter as they arrive, so the department sees committed spend before the month closes. **Control.** Every line item is tested against the billing guidelines before a reviewer opens the invoice, which is the only point at which a 40-page document can be applied to 4,000 lines. **Insight.** The same records answer the question the guidelines cannot reach, which is whether a matter was staffed at the level the work needed."
 
-The pattern remains acceptable in reference material such as glossaries, specifications, and step lists, where each item is a separate entry.
+The labels are unchanged between the two versions, and that is the point of the pair. What changes is the evidence under each one, and the repair is always to supply the missing fact and keep the list. A bare noun label ("**Cost.**", "**Risk level.**", "**Timing.**") is house form where the item carries its own evidence, its own worked example, or the question it tests. The fuller "Name: what it does" label is the better choice where the label alone has to tell the reader what the item is for, such as a counted framework of capabilities. Both forms are correct, and a sweep does not convert one into the other. Convert to paragraphs only where the items are not parallel, or where an item needs a full paragraph of reasoning to stand up; in that case every item gets a paragraph and each one keeps its bold label.
 
 ### 4.3 Mechanical bold in running text (tier 3)
 
@@ -337,6 +370,8 @@ One thing is given a new name each time it appears, in order to avoid repetition
 
 Lawyers read a change of term as a change of meaning, so one noun should be chosen and repeated.
 
+Choose the noun that names the actor, not the shortest abstraction. "The function", "the organization", and "the practice" have no actor and, in a piece that also discusses the legal function and the business's functions, force the reader to resolve the referent on every use. Write "legal operations" or "the department" in full and accept the repetition: the repeated noun is the thing the article is arguing about, and repetition of the subject is not synonym cycling. Keep "function" only where a modifier does real work, as in "a capable legal operations function".
+
 ### 5.6 Invented concept labels (tier 3)
 
 A coined name with a definite article, such as "the visibility paradox" or "the intake trap", appears once as decoration.
@@ -344,7 +379,7 @@ A coined name with a definite article, such as "the visibility paradox" or "the 
 - Before: "We call this the visibility paradox."
 - After: "The department holds five years of invoice data and cannot say what a typical employment matter costs."
 
-A coined term is justified when the article defines it and then uses it repeatedly to organize the argument.
+Before coining a term, establish that the field has none. Legal operations directors already say "legal service delivery", "the delivery model", "matter intake", "the front door", and "alternative legal service provider", and a house coinage in place of one of those reads as a vendor renaming a thing the reader already owns (`domain-knowledge.md`, section 3). A coinage is justified only when the article names something the field has no word for, defines it in a full sentence, and then uses it to organize the argument. A name invented so that later sections can refer back to an earlier passage ("the sizing question", "the four gaps", "that routing table") is a handle, not a term, and it obliges the reader to hold a definition in order to follow the argument. Introduce a recurring decision by listing its actual options inside the sentence. One published article does it this way: "which work belongs with an in-house lawyer, which with the business under defined guardrails, which with an AI-assisted workflow, and which with an outside provider" (`content/blog/2026-06-16-managing-legal-operations.mdx`). That is quoted to show the technique, and the four options are that article's own. They are not a house set, and another piece names the options its own argument turns on. Spaarke's own product terms (Legal Operations Intelligence, operational memory, the Legal IQ stack) are established coinages and are not affected.
 
 ---
 
@@ -388,6 +423,8 @@ The writer credits both sides of a choice and offers no judgment between them.
 
 - Before: "Both approaches have merits, and the right choice depends on your needs."
 - After: "We would centralize intake in any department with more than 15 lawyers. Decentralized intake works only where each practice group has its own coordinator."
+- Before: "Meeting that expectation or declining it is itself a design decision, and the business tends to work around a department that declines it."
+- After: "The better answer is to agree in advance which activities the business can handle and on what terms, with legal still part of the decision."
 
 ### 6.6 The patronizing analogy (tier 2)
 
@@ -451,7 +488,7 @@ The originals are quoted from the audit notes (`library-audit-local.md`), which 
     Rewrite: "Delete the recap. End the article on its final substantive paragraph, and list any related reading as plain links."
 13. AI-era vocabulary. `content/blog/2026-05-11-welcome-to-spaarke.mdx:80`
     Original: "To delve deeper, we recommend reading"
-    Rewrite: "Two earlier articles develop these points in more detail."
+    Rewrite: "In our earlier articles, [Legal Ops Is Not IT for Lawyers](/why-spaarke/legal-ops-is-not-it-for-lawyers) and [The AI Readiness Gap in Legal Departments](/why-spaarke/the-ai-readiness-gap), we developed these points in more detail." The tell in the original is `delve`, not the first person. Keep the actor.
 
 ---
 
@@ -470,20 +507,21 @@ Run this checklist on the complete draft, including the title and the frontmatte
 - [ ] The draft contains no em dash, spaced en dash, double hyphen, or spaced hyphen, in the body, the title, the headings, or the `description`, `summary`, and `keyTakeaways` fields.
 - [ ] Numeric ranges are written with "to".
 - [ ] No paragraph carries three colons or three semicolons as a result of dash replacement.
-- [ ] Bullets hold only parallel items that a reader will scan, and no list of bold lead-ins carries the argument.
+- [ ] Every parallel enumeration of three or more one-claim items is rendered as a bulleted or numbered list, each item carries a bold label and a claim the item itself supports, and no bold label stands in place of evidence. Either label form is correct: a bare noun where the item carries its own content, or "Name: what it does" where the label has to say what the item is for. Where genuinely parallel items each need a full paragraph of reasoning, they stay as paragraphs with a bold label on each, worded the same way across the set (`style-guide.md`, section 4).
+- [ ] The article carries no more than the number of bold lead-in lists that `style-guide.md`, section 4, allows for its length. Bold-labelled paragraphs are not counted against that ceiling.
 - [ ] Headings are in sentence case and state the point of each section. None is a topic label or a template.
 - [ ] Running text has no mechanical bold, no emoji, and no decorative arrows.
 
 **Sentences**
 
 - [ ] No `It is not X. It is Y.`, no `not just X but Y`, and no `Not because X. Because Y.`
-- [ ] No `X, not Y` tagline used as a heading, a bolded line, or a closer.
+- [ ] No `X, not Y` tagline used as a heading, a bolded line, or a closer. A heading of the form `X, not only Y` is permitted where the section treats both halves (`style-guide.md`, section 5, rule 15), as is a contrast inside a sentence that goes on to explain the difference.
 - [ ] No verbless fragment and no fragment stack.
 - [ ] No pair of clipped symmetrical sentences at the end of a paragraph or of the article.
 - [ ] No question that the writer answers in the next sentence. The only questions are diagnostic questions for the reader and a title question permitted by the style guide.
 - [ ] No colon used as a drum roll.
 - [ ] No signposting phrase (`Here is the thing`, `Here is why`, `Let us unpack`, `Now consider`).
-- [ ] Every list of three has three real items, and no run of sentences opens with the same words.
+- [ ] Every list of three has three real items, and no run of sentences in running prose opens with the same words. A diagnostic list is exempt: each question there may be followed by one sentence in a repeated frame saying what a "no" would reveal, and so is deliberate repetition inside reference material (`style-guide.md`, section 5, rules 19 and 22).
 - [ ] No participle tail that claims significance.
 - [ ] Sentences are complete, and the lint reports a mean sentence length of roughly 15 to 25 words. A sentence opens with "But" or "Yet" only where the word carries a real turn, never in consecutive sentences, and never to launch a clipped line.
 
@@ -494,7 +532,8 @@ Run this checklist on the complete draft, including the title and the frontmatte
 - [ ] No one-sentence paragraph is used for effect.
 - [ ] Paragraphs do not all end on a landing sentence.
 - [ ] No section announces itself or recaps itself, and the opening does not recap the series.
-- [ ] The close ends on consequence. It has no summary, no "Conclusion" heading, no reassuring forecast, and no pitch.
+- [ ] The close runs in four beats under a heading that reuses the title's key term (`style-guide.md`, section 3): one short synthesis paragraph naming the changes the article described, the thesis in the words the opening used together with the sentence that discharges the title, a paragraph of first moves addressed to the reader's role as bare imperatives, and the forward pointer. Beat 1 stays; what is out is a closing section that restates the argument in fresh words and stops there.
+- [ ] The close carries no "Conclusion" heading, no reassuring forecast, and no pitch, and it leaves the reader with a first move rather than a risk alone.
 
 **Vocabulary and tone**
 
@@ -504,6 +543,9 @@ Run this checklist on the complete draft, including the title and the frontmatte
 - [ ] One term is used for one thing throughout.
 - [ ] No claim carries more than one hedge.
 - [ ] Every quotation is real.
+- [ ] In a sentence about legal judgment, no sentence gives legal operations "owns" or "decides", which belong to the department and the general counsel; legal operations may own an operating responsibility. And no sentence attaches legal risk to the business as something it holds, shares or participates in, though business teams may manage scoped legal-related activities and their risks inside guardrails the department sets (`voice/stance.md`, section 2).
+- [ ] No sentence refers to a cause by its ordinal.
+- [ ] Every bibliographic first-person reference to our own prior work has been left untouched by the sweep, wherever it sits. That covers "In our earlier article, [title], we discussed", "In our previous article", "In our earlier articles", and the one such construction rule 11 permits in the opening after the thesis. It also covers a bare link where the sentence's subject is the problem rather than our treatment of it (`style-guide.md`, section 1). Where a cross-link matches none of those forms, leave it and raise it with the writer rather than rewriting it.
 
 **Substance**
 
@@ -511,6 +553,9 @@ Run this checklist on the complete draft, including the title and the frontmatte
 - [ ] No claim rests on `experts say` or `industry reports`.
 - [ ] The article takes a position and says under what condition the alternative would be right.
 - [ ] For every sentence flagged above, the repair added the missing fact (a source, a number, a case, or a reason) and did more than remove the pattern.
+- [ ] Every statistic names its source, its year, and its sample size and population on first use; later uses take a short name, unless the first mention was deliberately light so the claim could come first; and no descriptor survives whose only job is to limit how far the finding generalizes.
+- [ ] No limitation stands as a sentence of its own at the end of a paragraph, and the piece carries at most two full two-sentence interpretations.
+- [ ] The piece states at least one claim from practice, and at least one recommendation where a choice exists.
 
 ---
 

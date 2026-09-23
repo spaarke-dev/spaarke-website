@@ -228,6 +228,32 @@ Gartner (1 to 5). Practitioners self-assess regularly.
 applications live. For CIO-audience pieces, "deployed within your
 own tenant" is a governance statement.
 
+**Legal service delivery.** The field's name for how a piece of legal
+work is performed and by whom: an in-house lawyer, the business under
+guardrails, an automated or AI-assisted workflow, or an outside
+provider. "The delivery model" is the same thing as a standing
+arrangement. Use these terms rather than a paraphrase ("how legal work
+gets done") or a coinage. The decision is made request by request, not
+as an annual sizing exercise.
+
+**ALSP (Alternative Legal Service Provider).** Axiom, Elevate,
+UnitedLex, the Big Four legal arms, and the managed-services arms of
+firms. Spell out on first mention, ALSP thereafter, exactly as with OCG.
+Do not use "alternative provider" as a standing paraphrase for the category in analysis, where ALSP is the term the audience uses. It is correct where it names a routing channel in a list of channels, because "an ALSP" will not sit beside "an in-house lawyer" and "outside counsel": "business self-service inside guardrails, an automated or AI-assisted workflow, an in-house lawyer, outside counsel, or an alternative provider." Where a piece names the channel that way, the caption, the alt text and the exhibit use the same words.
+
+**External providers.** The collective noun for everything outside the
+department: outside counsel, ALSPs, AI-native firms, and frontier model
+providers. Open a section on the supply side with it, then name the
+specific category. Four parallel lists of provider types in one section
+is a sign the collective noun is missing.
+
+**Signals.** The attributes of a piece of work that a routing decision
+reads: business impact, risk level, cost, timing, required skills, and
+resource availability. Each is a property of the work, not a
+department-level quantity. "Its spend", "its capacity", and "its demand"
+are dashboard metrics read after the fact; signals are what the decision
+consumes at the moment it is made.
+
 ---
 
 ## 4. Trends with our point of view
@@ -395,10 +421,19 @@ sources we lean on most, with the standing caveat for each.
 
 ---
 
-## 7. Things the field is sensitive about
+## 7. Things the field is sensitive about, and the one criticism we do make
 
-Topics where the audience splits or framing carries political
-weight. Engage carefully or not at all.
+Topics where the audience splits or framing carries political weight.
+Engage on the terms below. Silence is not the default, and nothing here
+licenses a piece with no position.
+
+- **Legal as an impediment to the business.** Not on the do-not-engage
+  list. We say it plainly, about the function and never about a named
+  department or person, and we pair it with the remedy in the same
+  section. The full rule and the wording are in `voice/stance.md`,
+  rule 4. What stays off the table is unchanged: taking sides between
+  in-house and firms, on the billable hour, or on whether legal is
+  "really" strategic.
 
 - **AI replacing lawyers.** Outside firms hear it as a fee-reduction
   threat; in-house teams as a hiring-pause threat. Frame AI as

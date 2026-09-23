@@ -61,7 +61,7 @@ The passage credits the generic capability and then names the specific operation
 
 > The three layers reinforce one another over time. Richer data gives the memory layer more patterns to record, deeper memory makes inference more accurate, and better inference shows which data the department should capture next. A department that buys separate tools gets none of this effect, because each tool improves its own function and contributes nothing to the others. The choice between a connected platform and a collection of tools therefore determines whether the department's systems are worth more in their second year than in their first.
 
-The close states what follows from the argument for the reader, and then it stops. Earlier versions of this file offered the clipped pair `One learns. The other just runs.` as the better close. That pair is now an example of the clipped aphoristic closer (section 13).
+The close states what follows from the argument for the reader, and it adds no call to action. Where a long-form article has earned it, the close then gives the reader the first moves as imperatives and hands off to the next piece (style guide, section 3, beats 3 and 4). Earlier versions of this file offered the clipped pair `One learns. The other just runs.` as the better close. That pair is now an example of the clipped aphoristic closer (section 13).
 
 ---
 
@@ -135,9 +135,9 @@ The opening states a sourced number, says what the number can and cannot show, a
 
 ### Better: write (written for this file, on the subject of `the-iq-stack`)
 
-> Point solutions divide a legal department's information. Billing data sits in one tool, contract terms sit in a second, and matter status sits in a third, so each new matter begins without the lessons of the last one. The Legal IQ stack is the architecture that we propose in response. It has three layers (data, memory, and inference), and the argument of this article is that each layer becomes more useful as the other two improve. The category that the stack supports is defined in our earlier article on Legal Operations Intelligence.
+> Point solutions divide a legal department's information. Billing data sits in one tool, contract terms sit in a second, and matter status sits in a third, so each new matter begins without the lessons of the last one. The Legal IQ stack is the architecture that we propose in response. It has three layers (data, memory, and inference), and the argument of this article is that each layer becomes more useful as the other two improve. In our earlier article, [What Is Legal Operations Intelligence?](/why-spaarke/what-is-legal-operations-intelligence), we defined the category the stack supports.
 
-The opening spends its first sentences on the argument of the present piece, and the connection to the earlier article arrives afterward, inside the body. Earlier versions of this file offered the published opening of `the-iq-stack` as the better version. That opening begins with `In our previous article, we introduced`, which the style guide now names in section 5, rule 11, and it ends on a question that the article then answers (rule 19).
+The opening spends its first sentences on the argument of the present piece, and the connection to the earlier article arrives afterward, with Spaarke as the actor of its own citation (style guide, section 1). Earlier versions of this file offered the published opening of `the-iq-stack` as the better version. That opening is ruled out because it puts the recap first, not because it says "we".
 
 ---
 
@@ -364,6 +364,8 @@ A colon that introduces a list, a definition, or a specification after a complet
 
 Three items are right when the content has three items, as it does in the second rewrite.
 
+A diagnostic list is exempt from the anaphora half of this entry, and so is deliberate repetition inside reference material. Where each item is a question addressed to "you", the sentence that follows the question may use a repeated frame saying what a "no" would reveal, and the repeated wording is what makes the list scannable (style guide, section 5, rules 19 and 22; `ai-tells.md`, section 2.10). Leave those runs in place during a sweep. What this entry catches is a run of consecutive sentences in running prose, where the repeated opening supplies an emphasis the content has not earned.
+
 ---
 
 ## 17. Participle tails and intensifiers
@@ -412,11 +414,11 @@ Each rewrite replaces the claim of importance with the fact that makes the point
 
 > A general counsel who receives the forecast in the first quarter can adjust budgets, revisit staffing, or engage alternative counsel for overflow before the spend materializes. Without the forecast, the same information arrives as an annual total, when the only remaining task is to explain the variance.
 
-The article ends on its last substantive paragraph, which states the consequence for the reader. Related reading may follow as a plain list of links, without a recap.
+The passage states the consequence for the reader, which is what a close has to reach. A long-form article reaches it in four beats (style guide, section 3): one short synthesis paragraph naming the changes the article described, then the thesis in the words the opening used together with the sentence that discharges the title, then a paragraph of first moves addressed to the reader's role as bare imperatives, and then the forward pointer to the next piece or to the question the evidence leaves open. Beat 1 is permitted and expected, and a sweep leaves it alone. What this section catches is a closing section that restates the article in fresh words and stops there, with no first move after it. Related reading may follow as a plain list of links, without a recap.
 
 ---
 
-## 19. Bold lead-in bullets that carry the argument
+## 19. Bold labels that stand in for an argument
 
 - Rule: style guide, section 4 and section 5, rule 26.
 - Full entry: `ai-tells.md`, section 4.2.
@@ -437,7 +439,7 @@ The article ends on its last substantive paragraph, which states the consequence
 
 > Legal departments bring AI into Microsoft 365 for three connected reasons. The corporate security team has usually evaluated the platform already, so the enterprise agreement and the risk assessment are in place. Copilot works inside Word, Outlook, Teams, and SharePoint, where legal work is done, so lawyers have no second interface to learn. Because Copilot operates within the Microsoft 365 tenant, data does not leave the organizational boundary for AI processing, and departments that handle privileged communications treat that boundary as a requirement.
 
-The pattern remains acceptable in reference material, such as glossaries, specifications, and step lists, in which each item is a separate entry that a reader looks up.
+The pattern is house form in the cases set out in `style-guide.md`, section 4, which is the authority on when a bold lead-in list is correct and how many a piece carries. What fails above is that the three bolded phrases carry assertions nothing supports; the list form itself is not the fault, and neither is the length of the label. The repair is to supply the fact under each label, or to write the paragraph.
 
 ---
 
