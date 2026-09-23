@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 720" role="img" aria-labelledby="ex-title ex-desc" font-family="system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
   <title id="ex-title">Where legal work gets done</title>
-  <desc id="ex-desc">A request enters through the legal front door and is routed to one of five channels: business self-service inside guardrails, an automated or AI-assisted workflow, an in-house lawyer, outside counsel, or an alternative provider. Legal operations holds the routing rules and the risk thresholds, and the data returned from every channel comes back to it.</desc>
+  <desc id="ex-desc">A request enters through the legal front door and is routed to one of five channels: business self-service inside guardrails, an automated or AI-assisted workflow, an in-house lawyer, outside counsel, or an alternative provider. Legal operations manages the routing rules and the risk thresholds, and captures the data returned from every channel.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#A8C2FF"/>
@@ -11,8 +11,8 @@
     </marker>
   </defs>
   <rect x="1" y="1" width="1238" height="718" rx="14" fill="#13132B" stroke="#2A2A52" stroke-width="2"/>
-    <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">Legal operations owns the routing rules, the risk thresholds,</text>
-    <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">and the data that returns from every channel.</text>
+    <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">Legal operations manages the routing rules and the risk thresholds,</text>
+    <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">and captures the data that returns from every channel.</text>
     <rect x="214" y="110" width="472" height="510" rx="12" fill="none" stroke="#7B5BFF" stroke-width="1.8" stroke-dasharray="8 7"/>
     <text x="450" y="146" text-anchor="middle" font-size="19" fill="#E8ECFF" font-weight="600">Legal operations</text>
     <text x="450" y="170" text-anchor="middle" font-size="16" fill="#A8B4D8" font-weight="400">routing rules and risk thresholds</text>

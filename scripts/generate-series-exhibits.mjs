@@ -105,11 +105,11 @@ const out = {};
   out["managing-legal-operations/exhibit-1.svg"] = svg({
     w, h,
     title: "Where legal work gets done",
-    desc: "A request enters through the legal front door and is routed to one of five channels: business self-service inside guardrails, an automated or AI-assisted workflow, an in-house lawyer, outside counsel, or an alternative provider. Legal operations holds the routing rules and the risk thresholds, and the data returned from every channel comes back to it.",
+    desc: "A request enters through the legal front door and is routed to one of five channels: business self-service inside guardrails, an automated or AI-assisted workflow, an in-house lawyer, outside counsel, or an alternative provider. Legal operations manages the routing rules and the risk thresholds, and captures the data returned from every channel.",
     body: [
-      caption(w, "Legal operations owns the routing rules, the risk thresholds,"),
-      `    <text x="${w / 2}" y="70" text-anchor="middle" font-size="21" fill="${C.text}" font-weight="600">and the data that returns from every channel.</text>`,
-      // The dashed region is what legal operations owns: the door, the rules, and the data that comes back.
+      caption(w, "Legal operations manages the routing rules and the risk thresholds,"),
+      `    <text x="${w / 2}" y="70" text-anchor="middle" font-size="21" fill="${C.text}" font-weight="600">and captures the data that returns from every channel.</text>`,
+      // The dashed region is what legal operations manages: the door, the rules, and the data that comes back.
       `    <rect x="214" y="110" width="472" height="510" rx="12" fill="none" stroke="${C.focalEdge}" stroke-width="1.8" stroke-dasharray="8 7"/>`,
       label(450, 146, "Legal operations", { anchor: "middle", fill: C.text, weight: 600, size: 19 }),
       label(450, 170, "routing rules and risk thresholds", { anchor: "middle", size: 16 }),
