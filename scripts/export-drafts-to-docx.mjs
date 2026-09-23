@@ -21,7 +21,7 @@ const SLUGS = [
   "building-the-legal-operations-intelligence-platform",
   "legal-operations-ontology",
   "from-spend-analytics-to-legal-operations-intelligence",
-  "the-newfound-importance-of-knowledge-management",
+  "knowledge-management-legal-operations-intelligence",
 ];
 
 mkdirSync(REVIEW, { recursive: true });

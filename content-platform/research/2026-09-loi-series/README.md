@@ -53,7 +53,7 @@ Legal Operations, 2026-06-16), 2 is
 `building-the-legal-operations-intelligence-platform` (2026-07-14), 3 is
 `legal-operations-ontology` (2026-07-21), 4 is
 `from-spend-analytics-to-legal-operations-intelligence` (2026-09-01), and 5 is
-`the-newfound-importance-of-knowledge-management` (2026-09-15). The
+`knowledge-management-legal-operations-intelligence` (2026-09-15). The
 notes files, `DIGEST.md`, and `findings.json` were written under the
 earlier numbering (2 was business intelligence, 3 the platform, 4 the
 ontology); read their article numbers with that mapping. Round-two

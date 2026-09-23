@@ -732,7 +732,7 @@ the article, and it does not pitch.
   order: article 1 (`managing-legal-operations`, 2026-06-16), article 2
   (`building-the-legal-operations-intelligence-platform`, 2026-07-14),
   article 3 (`legal-operations-ontology`, 2026-07-21), this piece,
-  article 5 (`the-newfound-importance-of-knowledge-management`,
+  article 5 (`knowledge-management-legal-operations-intelligence`,
   2026-09-15), and the standalone companion
   (`state-of-legal-operations-fall-2026`, 2026-10-20); article 5 and
   the companion are added as each ships and are linked nowhere in the

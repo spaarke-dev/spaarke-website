@@ -485,6 +485,22 @@ Article 1's headings render a verdict or name a thing the reader can act on. Art
 
 The verdict test still governs the content of a heading. What article 2 shows is that the test is about whether the reader collects a judgment, not about the grammatical mood of the sentence.
 
+### 4a.4 Five articles, five ways of telling the reader what to do
+
+By the end of the series, beat 3 of the close had taken five forms, one per article, and none repeated:
+
+| Article | Form |
+|---|---|
+| 1, the mandate | a run of bare imperatives: "Understand the department's demand at the front door. Define the guardrails..." |
+| 2, the platform | a named first step: "The practical first step is to choose which decision to model first." |
+| 3, the ontology | the decisions that outlast the tools: "the lasting decisions are who defines 'matter', 'budget', and 'obligation'..." |
+| 4, business intelligence | an instruction plus imperatives: "The practical instruction ... is to govern first the metric that is about to trigger an action. Write down what a request is..." |
+| 5, knowledge management | a sequence, in a dedicated section before the close: "the sequence is to name the owner, inventory the sources, choose the deliverable..." |
+
+Article 5 also moves the beat out of the close entirely, into its own penultimate section, which leaves the close free to synthesise.
+
+The check in `voice-lint.mjs` had to be widened for every one of articles 2 to 5, and once more to look at the section before the close. It fires correctly on the pipeline drafts, which genuinely left the reader with nothing to do, so it earns its place. But five widenings in five articles is the finding: there is no house grammar for beat 3, only a house requirement. Treat a warning here as a question, not a verdict, and check the last two sections by eye before changing a word of the article.
+
 ## 5. What this file does not settle
 
 Two questions are open with the writer. Until he rules on them, this file does not treat either as decided.

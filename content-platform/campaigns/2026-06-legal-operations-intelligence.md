@@ -97,7 +97,7 @@ The reading order, if a reader followed every asset:
    2026-09-01). The deterministic dimension: business intelligence as
    a core component of the platform, co-equal with AI, aligned with
    the ontology and working in conjunction with it.
-5. **The Newfound Importance of Knowledge Management** (article 5,
+5. **Knowledge Management: The Context Behind Legal Operations Intelligence** (article 5,
    2026-09-15). The source material: knowledge management as the
    context that AI needs to be accurate and useful, the work of
    capturing and codifying that knowledge for the ontology, and a
@@ -136,12 +136,12 @@ below.
 | 2026-07-14 | blog-post | building-the-legal-operations-intelligence-platform | brief | website | Article 2: How to Build the Legal Operations Intelligence Platform (Issue 82) |
 | 2026-07-21 | blog-post | legal-operations-ontology | brief | website | Article 3: The Legal Operations Intelligence Ontology (Issue 79). Brief v3 |
 | 2026-09-01 | blog-post | from-spend-analytics-to-legal-operations-intelligence | brief | website | Article 4: From Spend Analytics to Legal Operations Intelligence (Issue 80) |
-| 2026-09-15 | blog-post | the-newfound-importance-of-knowledge-management | brief | website | Article 5: The Newfound Importance of Knowledge Management (Issue 81) |
+| 2026-09-15 | blog-post | knowledge-management-legal-operations-intelligence | brief | website | Article 5: Knowledge Management: The Context Behind Legal Operations Intelligence (Issue 81) |
 | push week 1 | linkedin-post | managing-legal-operations-syndication | planned | linkedin, linkedin (rs) | Company-page post on publish day; founder post two days later |
 | push week 2 | linkedin-post | building-the-legal-operations-intelligence-platform-syndication | planned | linkedin, linkedin (rs) | Company-page post on publish day; founder post two days later |
 | push week 3 | linkedin-post | legal-operations-ontology-syndication | planned | linkedin, linkedin (rs) | Company-page post on publish day; founder post two days later |
 | push week 4 | linkedin-post | from-spend-analytics-to-legal-operations-intelligence-syndication | planned | linkedin, linkedin (rs) | Company-page post on publish day; founder post two days later |
-| push week 5 | linkedin-post | the-newfound-importance-of-knowledge-management-syndication | planned | linkedin, linkedin (rs) | Company-page post on publish day; founder post two days later |
+| push week 5 | linkedin-post | knowledge-management-legal-operations-intelligence-syndication | planned | linkedin, linkedin (rs) | Company-page post on publish day; founder post two days later |
 
 Related asset outside the series:
 

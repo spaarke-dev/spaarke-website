@@ -1,6 +1,6 @@
 # Research notes: Knowledge management (KM) in the AI / legal-intelligence era, 2025-2026
 
-Track for the planned article "The Newfound Importance of Knowledge Management".
+Track for the planned article "Knowledge Management: The Context Behind Legal Operations Intelligence".
 Research date: 2026-09-21. Researcher: subagent (web research only).
 
 ## Method and caveats (read first)

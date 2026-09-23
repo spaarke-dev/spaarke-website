@@ -189,7 +189,7 @@ campaign retro and for future similar pieces.>
   and the other four series workspaces (`managing-legal-operations`,
   `legal-operations-ontology`,
   `from-spend-analytics-to-legal-operations-intelligence`, and
-  `the-newfound-importance-of-knowledge-management`) carry the same
+  `knowledge-management-legal-operations-intelligence`) carry the same
   expansion, so restoring the template text here would leave this
   piece the odd one out.
 - **2026-09-22, outline.** The plan's Sources to verify entry for the

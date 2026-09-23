@@ -345,7 +345,7 @@ const out = {};
 /* ============================================ article 5, exhibit 2 */
 {
   const w = 1240, h = 640;
-  out["the-newfound-importance-of-knowledge-management/exhibit-2.svg"] = svg({
+  out["knowledge-management-legal-operations-intelligence/exhibit-2.svg"] = svg({
     w, h,
     title: "The curation loop",
     desc: "Nine sources of knowledge feed curation, curation feeds the four uses that make a model specific to a department, those uses produce AI output, an expert corrects the output, and the correction returns to the sources so the corpus improves with use.",

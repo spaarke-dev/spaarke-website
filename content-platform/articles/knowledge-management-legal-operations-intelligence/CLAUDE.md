@@ -1,4 +1,4 @@
-# Per-piece session contract: the-newfound-importance-of-knowledge-management
+# Per-piece session contract: knowledge-management-legal-operations-intelligence
 
 > This file is the session router for a single piece of content. When
 > you (Claude) are working on this article, load files in this order
@@ -124,7 +124,7 @@ run each step at, and the guardrails that make the choice safe.
 These run at every gate, whatever the model:
 
 1. **The lint, before any gate is marked done.** From the repository
-   root: `npm run voice:lint -- content-platform/articles/the-newfound-importance-of-knowledge-management/draft.mdx`.
+   root: `npm run voice:lint -- content-platform/articles/knowledge-management-legal-operations-intelligence/draft.mdx`.
    0 errors is the gate. Every warning is read, and one that is
    accepted has its reason recorded in the decisions log at the foot
    of `tasks.md`.

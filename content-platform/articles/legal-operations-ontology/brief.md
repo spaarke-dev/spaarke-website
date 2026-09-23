@@ -880,7 +880,7 @@ Internal (link from the draft):
 - `/platform`: optional related reading for the reader who wants to see
   the entities and actions in product. Never a call to action.
 - Article 4 (`from-spend-analytics-to-legal-operations-intelligence`), article 5
-  (`the-newfound-importance-of-knowledge-management`), and the
+  (`knowledge-management-legal-operations-intelligence`), and the
   standalone companion (`state-of-legal-operations-fall-2026`) carry
   later display dates and are reached only through the
   series-navigation block.

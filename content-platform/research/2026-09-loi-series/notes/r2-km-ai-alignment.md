@@ -1,6 +1,6 @@
 # Research notes (round 2): knowledge management and AI alignment
 
-Track: extra research for "The Newfound Importance of Knowledge Management"
+Track: extra research for "Knowledge Management: The Context Behind Legal Operations Intelligence"
 (display date 2026-09-14; sources dated on or before 2026-09-13 are usable).
 Research date: 2026-09-21. Researcher: subagent (web research only).
 Extends `content-platform/research/2026-09-loi-series/notes/knowledge-management-and-ai.md`

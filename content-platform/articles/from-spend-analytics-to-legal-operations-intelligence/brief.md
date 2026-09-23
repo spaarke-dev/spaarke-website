@@ -692,7 +692,7 @@ sections where each needs only a paragraph.
   links support the argument and are never a prerequisite for it. A
   series-navigation block at the end of the article lists the series
   in order and reaches article 5
-  (`the-newfound-importance-of-knowledge-management`, 2026-09-15) and
+  (`knowledge-management-legal-operations-intelligence`, 2026-09-15) and
   the standalone companion (`state-of-legal-operations-fall-2026`,
   2026-10-20), added as each ships; neither is linked in the body.
 - **Related reading and the closing contact line.** Related reading
@@ -880,7 +880,7 @@ earlier than 2026-09-01):
   section 5, rule 10).
 - `/platform`: optional related reading after the close. Never a call
   to action.
-- Article 5 (`the-newfound-importance-of-knowledge-management`,
+- Article 5 (`knowledge-management-legal-operations-intelligence`,
   2026-09-15) and the standalone companion
   (`state-of-legal-operations-fall-2026`, 2026-10-20) carry later
   display dates and are reached only through the series-navigation

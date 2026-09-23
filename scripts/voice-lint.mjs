@@ -67,7 +67,7 @@ const ISO_DATE = /[0-9]{4}-[0-9]{2}(?:-[0-9]{2})?(?![0-9])/g;
 const WORDS = [
   "delve", "delves", "delving", "tapestry", "testament", "realm", "landscape",
   "pivotal", "crucial", "paramount", "underscore", "underscores", "underscoring",
-  "foster", "fosters", "fostering", "leverage", "leverages", "leveraging",
+  "foster", "fosters", "fostering", "leverages", "leveraging",
   "seamless", "seamlessly", "robust", "unlock", "unlocks", "unleash", "harness",
   "empower", "empowers", "empowering", "transform", "transforms", "transformative",
   "transformation", "revolutionize", "revolutionary", "game-changing", "game-changer",
@@ -78,6 +78,9 @@ const WORDS = [
 ];
 
 const PHRASES = [
+  // The verb takes an object; the noun does not. "what leverage existed" is the
+  // field's own word and stays (style guide, section 5, rule 27).
+  { re: /\bleverage (?:the|our|its|their|a|an|this|existing|these)\b/gi, msg: "word to avoid: \"leverage\" as a verb" },
   { re: /\bin today's\b/gi, msg: "stock opener (\"in today's ...\")" },
   { re: /\bit(?:'s| is) (?:important|worth) (?:to note|noting)\b/gi, msg: "filler hedge" },
   { re: /\bhere(?:'s| is) the (?:thing|catch|kicker|reality|truth)\b/gi, msg: "signposting" },
@@ -115,7 +118,7 @@ const KEY_TAKEAWAYS_MAX = 6;
 const KEY_TAKEAWAYS_WITH_STATISTIC_MAX = 1;
 const CLOSE_IMPERATIVES_MIN = 2;
   "^(?:\\*\\*)?(?:Then |First |Next |Begin by )?(?:Understand|Define|Make|Designate|Put|Start|Agree|Decide|Name|Record|Write|Govern|Settle|Choose|Pick|Map|Identify|Assign|Document|Review|Confirm|Begin|Establish|Set|List|Check|Ask|Treat|Keep|Build|Add|Run)\\b"
-const CLOSE_FIRST_STEP = /(?:the )?(?:practical )?first (?:step|move)\b|starts? by\b|begins with\b|where to start\b|the strongest candidates are\b|the (?:lasting|first|real|important) (?:decisions?|questions?|choices?) (?:are|is)\b|the decisions? that matters?\b|who defines\b|the practical (?:instruction|step|move)|the instruction for/i;
+const CLOSE_FIRST_STEP = /(?:the )?(?:practical )?first (?:step|move)\b|starts? by\b|begins with\b|where to start\b|the strongest candidates are\b|the (?:lasting|first|real|important) (?:decisions?|questions?|choices?) (?:are|is)\b|the decisions? that matters?\b|who defines\b|the practical (?:instruction|step|move)|the instruction for|the sequence (?:is|for)\b|\bis to (?:name|start|begin|choose|define|govern|write|build|inventory|map|settle|identify|assign|pick|set|agree|record)\b/i;
 
 // A heading that reports a movement instead of rendering a verdict
 // (style guide section 4). The plain "is or are plus a gerund" test the
@@ -535,7 +538,13 @@ for (const file of files) {
         .split(/(?<=[.?!])\s+|\n[ \t]*\n/)
         .map((s) => s.trim())
         .filter((s) => CLOSE_IMPERATIVE.test(s)).length;
-      const namesFirstStep = CLOSE_FIRST_STEP.test(closeText);
+      // The reader's next move may sit in a dedicated section just before the close
+      // ("Start with one recurring deliverable"), which leaves the close free to
+      // synthesise. Test both, and warn only when neither carries it.
+      const priorSection = sections.length > 1 ? sections[sections.length - 2] : null;
+      const priorText = priorSection ? body.slice(priorSection.start, priorSection.end) : "";
+      const scope = closeText + " " + priorText;
+      const namesFirstStep = CLOSE_FIRST_STEP.test(scope);
       if (imperatives < CLOSE_IMPERATIVES_MIN && !namesFirstStep) {
         push("warn", closeSection.at, "the close names no first move: give the reader a run of imperatives, or name one first step");
       }

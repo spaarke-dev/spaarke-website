@@ -1,4 +1,4 @@
-# Tasks: the-newfound-importance-of-knowledge-management
+# Tasks: knowledge-management-legal-operations-intelligence
 
 > The workflow gates. Each step has an explicit done-when. Do not
 > skip a step, and do not mark a step complete before its done-when
@@ -63,7 +63,7 @@
 - [ ] Tags drawn from canonical taxonomy (no inventions)
 - [ ] All cross-link slugs verified to exist
 - [ ] **Required: voice lint.** From the repository root, run
-      `npm run voice:lint -- content-platform/articles/the-newfound-importance-of-knowledge-management/draft.mdx`.
+      `npm run voice:lint -- content-platform/articles/knowledge-management-legal-operations-intelligence/draft.mdx`.
       The run reports 0 errors, and every warning has been read and
       either fixed or accepted for a stated reason (record the reason
       in the decisions log at the foot of this file). The lint covers
@@ -257,7 +257,7 @@ Owed to the polish gate:
    It is the only em dash left in the file, and no marker may survive to
    publication.
 2. Produce `exhibit-2.svg` at
-   `public/articles/the-newfound-importance-of-knowledge-management/exhibit-2.svg`
+   `public/articles/knowledge-management-legal-operations-intelligence/exhibit-2.svg`
    and place it under the caption already in the file at section 10. The
    caption and the alt text are given verbatim in the brief. The two
    sibling drafts reference their SVG exhibits without a caption line;

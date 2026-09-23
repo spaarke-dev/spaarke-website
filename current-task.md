@@ -16,11 +16,11 @@ open as [PR #77](https://github.com/spaarke-dev/spaarke-website/pull/77).
 
 | # | Slug | Display date | Gate | Issue |
 |---|---|---|---|---|
-| 1 | `managing-legal-operations` | 2026-06-16 | draft, writer rewrote it | 78 |
-| 2 | `building-the-legal-operations-intelligence-platform` | 2026-07-14 | draft | 82 |
-| 3 | `legal-operations-ontology` | 2026-07-21 | draft | 79 |
-| 4 | `from-spend-analytics-to-legal-operations-intelligence` | 2026-09-01 | draft | 80 |
-| 5 | `the-newfound-importance-of-knowledge-management` | 2026-09-15 | draft | 81 |
+| 1 | `managing-legal-operations` | 2026-06-16 | writer's redraft adopted | 78 |
+| 2 | `building-the-legal-operations-intelligence-platform` | 2026-07-14 | writer's redraft adopted | 82 |
+| 3 | `legal-operations-ontology` | 2026-07-21 | writer's redraft adopted | 79 |
+| 4 | `from-spend-analytics-to-legal-operations-intelligence` | 2026-09-01 | writer's redraft adopted | 80 |
+| 5 | `knowledge-management-legal-operations-intelligence` | 2026-09-15 | writer's redraft adopted | 81 |
 
 Standalone: `state-of-legal-operations-fall-2026` (2026-10-20) is at the
 idea stage and has no brief.
@@ -151,7 +151,7 @@ Still open, and none of it blocking:
 
 ## What is outstanding
 
-- **The voice guides are corrected** (see above). Articles 2 to 5 are in manual review with the writer, who returns edited versions one at a time.
+- **All five articles have been through the writer's manual review** and their redrafts are adopted. Two were retitled and reslugged in the process, articles 4 and 5.
 - **Articles 2 to 5 have not been reviewed by the writer.** Only article
   1 has been through a rewrite. Expect the same voice corrections to
   apply to the other four, which argues for fixing the guides first and

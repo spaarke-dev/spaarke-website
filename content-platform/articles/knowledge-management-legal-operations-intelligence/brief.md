@@ -1,5 +1,5 @@
 ---
-slug: the-newfound-importance-of-knowledge-management
+slug: knowledge-management-legal-operations-intelligence
 type: blog-post
 publish_date: 2026-09-15            # display date; article 5 of 5 in the Legal Operations Intelligence series (a Tuesday; moved from 2026-09-14 on 2026-09-22). The real publish date goes in posted.
 channels: [website, linkedin]
@@ -13,7 +13,7 @@ github_issue: 81   # https://github.com/spaarke-dev/spaarke-website/issues/81 (c
 triggered_by: idea.md rev. 4 (2026-09-21, re-dated to 2026-09-15 on 2026-09-22); the writer's direction of 2026-09-21 that added the piece to the series as article 5; writer's brief feedback applied 2026-09-22
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
-title: "The Newfound Importance of Knowledge Management"
+title: "Knowledge Management: The Context Behind Legal Operations Intelligence"
 description: "AI has made a legal department's own knowledge the context its systems need in order to be accurate, and curating that knowledge now falls to legal operations."
 summary: "Legal departments have managed knowledge for years. AI changes what counts as knowledge, what it is for, how it is captured, codified, and curated, and where it goes, because the department's own material is the context an AI system needs to answer accurately. That work already sits with legal operations."
 date: 2026-09-15                    # display date
@@ -24,7 +24,7 @@ tags:
   function: [operations, executive, it]
   topic: [dms, ai-copilot, compliance, matter-management, contracts]
   theme: [legal-operations-intelligence, operational-memory, ai-strategy, iq-stack, data-sovereignty]
-heroImage: "/articles/the-newfound-importance-of-knowledge-management/hero.svg"
+heroImage: "/articles/knowledge-management-legal-operations-intelligence/hero.svg"
 heroImagePosition: "center"
 draft: true
 keyTakeaways:
@@ -770,7 +770,7 @@ evidence it rests on; the status of every row is in `idea.md`
   uses may
   carry the AI terms from the context map as secondary labels. Original
   SVG in the visual-identity palette, abstract, with no product UI, at
-  `public/articles/the-newfound-importance-of-knowledge-management/exhibit-2.svg`.
+  `public/articles/knowledge-management-legal-operations-intelligence/exhibit-2.svg`.
   The exhibit title states the finding as a full sentence: *Expert
   corrections of AI output return to the sources of knowledge, so the
   corpus improves with use.* The alt text is a real sentence: *A loop
@@ -1691,7 +1691,7 @@ it is checked):
   ACC 2026 Annual Meeting content; Jamal Brown's current employer.
 
 Companion pieces (not written here): a LinkedIn syndication on the
-company page (`the-newfound-importance-of-knowledge-management-syndication`,
+company page (`knowledge-management-legal-operations-intelligence-syndication`,
 push week 5 of the campaign) and a founder post two days later. A
 further LinkedIn post aimed at in-house knowledge professionals and the
 law firm knowledge community (ILTA's knowledge management community,
@@ -1839,7 +1839,7 @@ panels, no streaming data particles, no circuit-board diagonals.
 - **Aspect ratio**: 16:9 (the default, which matches
   `ArticleHeader.tsx`); the focal aperture sits in the center band.
 - **Output path**:
-  `public/articles/the-newfound-importance-of-knowledge-management/hero.svg`
+  `public/articles/knowledge-management-legal-operations-intelligence/hero.svg`
   (1600 by 900 viewBox).
 - **Alt text**: A fan of thin translucent navy planes on a deep navy
   field, with fine light-blue threads running from each plane and

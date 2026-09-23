@@ -41,7 +41,7 @@ on information the department can act on.
 | 2 | `building-the-legal-operations-intelligence-platform` | The Legal Operations Intelligence Platform | 2026-07-14 | The platform: what an intelligence platform is and how a department builds one across process, people, and technology, with technology as the tangible instantiation |
 | 3 | `legal-operations-ontology` | The Legal Operations Intelligence Ontology | 2026-07-21 | The foundation: the entity and action model that makes information actionable |
 | 4 | `from-spend-analytics-to-legal-operations-intelligence` | From Spend Analytics to Legal Operations Intelligence | 2026-09-01 | The deterministic dimension: BI as a core component of the legal operations intelligence platform |
-| 5 | `the-newfound-importance-of-knowledge-management` | The Newfound Importance of Knowledge Management | 2026-09-15 | The source material: knowledge management as the context that AI needs to be accurate and useful |
+| 5 | `knowledge-management-legal-operations-intelligence` | Knowledge Management: The Context Behind Legal Operations Intelligence | 2026-09-15 | The source material: knowledge management as the context that AI needs to be accurate and useful |
 
 Standalone companion, not part of the series: `state-of-legal-operations-fall-2026`, The State of Legal Operations (Fall 2026), display date 2026-10-20.
 
