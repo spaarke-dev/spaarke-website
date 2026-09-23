@@ -5,14 +5,14 @@
 
   <defs>
     <radialGradient id="bg" cx="50%" cy="55%" r="82%">
-      <stop offset="0%" stop-color="#34325E"/>
-      <stop offset="52%" stop-color="#23224A"/>
+      <stop offset="0%" stop-color="#524058"/>
+      <stop offset="52%" stop-color="#322A49"/>
       <stop offset="100%" stop-color="#161630"/>
     </radialGradient>
     <radialGradient id="halo" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.30"/>
-      <stop offset="55%" stop-color="#7B5BFF" stop-opacity="0.10"/>
-      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#D9803A" stop-opacity="0.24"/>
+      <stop offset="55%" stop-color="#D9803A" stop-opacity="0.09"/>
+      <stop offset="100%" stop-color="#D9803A" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="plane" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#3D3B72"/>
@@ -44,5 +44,5 @@
     <path d="M 696 484 L 900 484 L 1010 392" fill="none" stroke="#A8C2FF" stroke-width="1.8" opacity="0.88" stroke-linejoin="round"/>
     <path d="M 696 484 L 900 484 L 1010 594" fill="none" stroke="#A8C2FF" stroke-width="1.8" opacity="0.88" stroke-linejoin="round"/>
     <circle cx="1040" cy="382" r="20" fill="none" stroke="#A8C2FF" stroke-width="2.2"/>
-    <rect x="1020" y="584" width="40" height="40" fill="none" stroke="#000BFF" stroke-width="2.8"/>
+    <rect x="1020" y="584" width="40" height="40" fill="none" stroke="#D9803A" stroke-width="2.8"/>
 </svg>

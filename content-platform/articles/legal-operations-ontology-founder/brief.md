@@ -1,7 +1,7 @@
 ---
 slug: legal-operations-ontology-founder
 type: linkedin-post
-publish_date: 2026-09-25
+publish_date: 2026-09-24
 channels: [linkedin]
 status: brief
 priority: high
@@ -23,7 +23,7 @@ campaign: 2026-06-legal-operations-intelligence
 # Topic
 
 The founder post for article 3 of the Legal Operations Intelligence series,
-two days after the company-page post at
+the day after the company-page post at
 `legal-operations-ontology-syndication`.
 
 # Angle / Point of view
@@ -59,7 +59,7 @@ the company page cannot credibly do.
 
 # Must NOT include
 
-- A restatement of the company-page post. The two run two days apart and a
+- A restatement of the company-page post. The two run a day apart and a
   reader may see both.
 - Em dashes, and the constructions in `voice/examples/ai-tells.md`.
 - Any sales close or product mention. Spaarke is not named.
