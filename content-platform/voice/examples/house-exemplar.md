@@ -457,6 +457,26 @@ The heading is a noun phrase, which the heading rule permits where the phrase na
 
 ---
 
+## 4a. Variants the second article adds
+
+The exemplar above is article 1. When the writer rewrote article 2, `building-the-legal-operations-intelligence-platform`, two traits came back in a second form. Both are house; the article chooses.
+
+### 4a.1 The close names a first step, not always a run of imperatives
+
+Article 1 closes on five bare imperatives, annotated at 4.14. Article 2 names one first step instead, because its argument converges on a single choice rather than several.
+
+> The practical first step is to choose which decision to model first. The strongest candidates are the decisions the department makes most often and records least well, such as the invoice exception described above, matter intake, outside counsel selection, budget approval, and settlement authority.
+
+What both forms share is that the reader leaves knowing where to start. The rule in `style-guide.md`, section 3, beat 3, was written from article 1 alone and said "built from bare imperatives". Article 2 contradicted it, so the rule now carries both forms. This is the second article to correct a rule derived from a single piece, and the lesson generalises: a rule taken from one output is a hypothesis until a second output agrees with it.
+
+### 4a.2 An imperative heading, where the section is the move
+
+Article 1's headings render a verdict or name a thing the reader can act on. Article 2 adds a third form, an imperative, where the section is the move itself.
+
+> ## Close the loop from insight to action
+
+The verdict test still governs the content of a heading. What article 2 shows is that the test is about whether the reader collects a judgment, not about the grammatical mood of the sentence.
+
 ## 5. What this file does not settle
 
 Two questions are open with the writer. Until he rules on them, this file does not treat either as decided.

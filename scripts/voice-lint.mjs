@@ -114,6 +114,8 @@ const THESIS_FORMULA_ANCHORS = 3; // opening, the heading that proves it, the cl
 const KEY_TAKEAWAYS_MAX = 6;
 const KEY_TAKEAWAYS_WITH_STATISTIC_MAX = 1;
 const CLOSE_IMPERATIVES_MIN = 2;
+// A close may instead name one first step declaratively (style guide, section 3, beat 3).
+const CLOSE_FIRST_STEP = /(?:the )?(?:practical )?first (?:step|move)\b|starts? by\b|begins with\b|where to start\b|the strongest candidates are\b/i;
 
 // A heading that reports a movement instead of rendering a verdict
 // (style guide section 4). The plain "is or are plus a gerund" test the
@@ -427,7 +429,7 @@ for (const file of files) {
       push(
         "warn",
         spaarkeLinks[0].index,
-        `${biblioWe} bibliographic "we" against ${spaarkeLinks.length} links to Spaarke articles: introduce our own work as "In our earlier article, [title], we ..."`
+        `${biblioWe} citing "we" against ${spaarkeLinks.length} links to Spaarke articles: introduce our own work as "In our earlier article, [title], we ..."`
       );
     }
 
@@ -533,8 +535,9 @@ for (const file of files) {
         .split(/(?<=[.?!])\s+|\n[ \t]*\n/)
         .map((s) => s.trim())
         .filter((s) => CLOSE_IMPERATIVE.test(s)).length;
-      if (imperatives < CLOSE_IMPERATIVES_MIN) {
-        push("warn", closeSection.at, "the close issues no first moves: name what the reader does next, as imperatives");
+      const namesFirstStep = CLOSE_FIRST_STEP.test(closeText);
+      if (imperatives < CLOSE_IMPERATIVES_MIN && !namesFirstStep) {
+        push("warn", closeSection.at, "the close names no first move: give the reader a run of imperatives, or name one first step");
       }
       // Where the title names something, the close says what it is and what it
       // changes (style guide section 3).
