@@ -1,4 +1,4 @@
-# Per-piece session contract — <piece slug>
+# Per-piece session contract: <piece slug>
 
 > This file is the session router for a single piece of content. When
 > you (Claude) are working on this article, load files in this order
@@ -7,60 +7,111 @@
 
 ## 1. The constitution (always)
 
-Read parent `../../CLAUDE.md` first — it routes you through the
-voice constitution. The non-negotiable load order is:
+Read the parent `../../CLAUDE.md` first, because it routes you
+through the voice constitution. The non-negotiable load order is:
 
-1. `../../voice/style-guide.md`
-2. `../../voice/brand-positioning.md`
-3. `../../voice/audience-personas.md`
-4. `../../content-types/blog-post.md`
+1. `../../voice/style-guide.md` (the rules; where any other voice
+   document, template, or published article conflicts with it, the
+   style guide governs)
+2. `../../voice/stance.md` (the posture: where the writer stands
+   toward the evidence, the causes, the reader, and the other
+   parties. On sentence mechanics the style guide governs; on
+   posture this file governs)
+3. `../../voice/examples/consulting-register.md` (the external
+   register we are measured against. Sections 1 to 3 record the
+   research provenance, the evidence limits, and the fact-check
+   labels; they are reference material for whoever maintains the
+   file, and the drafting load is sections 4 and 6)
+4. `../../voice/examples/ai-tells.md` (the removal guide: the
+   constructions that readers identify as machine-written, each with
+   a before and an after)
+5. `../../voice/examples/house-exemplar.md` (the house positive
+- `voice/examples/author-calibration.md`: the writer's own before and after tables from his September 2026 rewrite of the series. Sentence-level calibration; if a line you are about to write resembles a "before", it will be rejected.
+   model: the one published article the writer has approved as house
+   voice, with the eight traits that carry it annotated. The rules
+   are stated as removals, and a draft can satisfy every one of them
+   and still have no speaker in it; read the exemplar to know what
+   to reproduce)
+6. `../../voice/brand-positioning.md`
+7. `../../voice/audience-personas.md`
+8. `../../voice/vocabulary.md` (the words we use and the words we do
+   not; check the "we don't say" column before locking phrasing)
+9. `../../voice/domain-knowledge.md`, section 3 (the field's terms
+   of art)
+10. `../../content-types/blog-post.md` (long-form articles and short
+    posts; `length_target` in brief.md says which this piece is)
+
+Items 8 and 9 sit here rather than in section 3 because the
+decisions they govern, what a thing is called and which term of art
+applies, are made before the first sentence rather than at the
+sentence. The offset that keeps the total load roughly neutral is
+item 3: sections 1 to 3 of `consulting-register.md` are no longer
+read at drafting.
 
 ## 2. This piece (always)
 
 Read these in order:
 
-1. `brief.md` — the spec for THIS article
-2. `plan.md` — the structural outline (do not draft until this is
+1. `brief.md`: the spec for THIS article
+2. `plan.md`: the structural outline (do not draft until this is
    signed off)
-3. `tasks.md` — the workflow gates; check off as you go
+3. `tasks.md`: the workflow gates; check off as you go
 
 ## 3. Selective references (load on demand)
 
 Pull only when the brief calls for them:
 
-- `../../voice/product-knowledge.md` — when the piece touches
-  Spaarke architecture
-- `../../voice/domain-knowledge.md` — when the piece touches
-  industry stats or terms of art
-- `../../voice/vocabulary.md` — consult when reaching for a word
-- `../../voice/examples/good-articles.md` — pattern-match before
-  writing the opening
-- `../../voice/examples/avoid-this.md` — **always run as final-pass
-  checklist** (see tasks.md §4 Polish)
-- `../../voice/visual-identity.md` — when generating the hero
+- `../../voice/product-knowledge.md`, when the piece touches
+  Spaarke architecture.
+- `../../voice/domain-knowledge.md`, sections 1, 2 and 4 to 7, when
+  the piece touches industry stats or the field's sensitivities.
+  Section 3 is in the always-load list above.
+- `../../voice/bylines.md`, for the `author:` value and the closing
+  contact line (section 6).
+- `../../voice/examples/good-articles.md`, for subject matter only.
+  Before writing the opening, match it against the model passages in
+  `consulting-register.md`, section 6, first. `good-articles.md`
+  was re-edited in September 2026 and is now a secondary reference.
+  Do not pattern-match against the articles published before that
+  date, because they use constructions that the style guide now
+  prohibits.
+- `../../voice/examples/avoid-this.md`, as a final-pass checklist
+  for marketing language (see tasks.md §4 Polish). Where one of its
+  "Better" examples conflicts with the style guide, the style guide
+  governs.
+- `../../voice/visual-identity.md`, when generating the hero.
 
 ## 4. Adjacent context
 
-- **Campaign:** see `brief.md` frontmatter `campaign:` field, then
-  read `../../campaigns/<campaign-slug>.md` for the narrative arc
-  this piece sits inside
+- **Campaign:** see the `campaign:` field in the `brief.md`
+  frontmatter, then read `../../campaigns/<campaign-slug>.md` for
+  the narrative arc this piece sits inside.
 - **Calendar row:** `../../calendar.md` (this piece's row, for
-  cadence + cross-references)
-- **GitHub Issue:** see `brief.md` frontmatter `github_issue:` field
-  for status tracking
+  cadence and cross-references).
+- **GitHub Issue:** see the `github_issue:` field in the `brief.md`
+  frontmatter for status tracking.
 
 ## 5. Workflow
 
-Five gates, no skipping:
+The gates run in order, and none is skipped. See tasks.md for the
+full done-when checklist per gate.
 
-1. **Outline** — fill plan.md, get human sign-off → THEN draft
-2. **Draft** — write to `draft.mdx` in this directory
-3. **Revise** — apply reviewer feedback in same file
-4. **Polish** — frontmatter, alt text, cross-links, avoid-this sweep
-5. **Hero** — SVG (default) or photographic prompt
-6. **Ship** — move to `content/blog/`, update calendar + Project + Issue
-
-See tasks.md for the full done-when checklist per gate.
+1. **Outline**: fill plan.md and get human sign-off before drafting.
+2. **Draft**: write to `draft.mdx` in this directory.
+3. **Revise**: apply reviewer feedback in the same file.
+4. **Polish**: frontmatter, alt text, and cross-links; then
+   `npm run voice:lint` on the draft with 0 errors and every warning
+   read; then the sweeps against `ai-tells.md`, the style guide
+   (section 5), and `avoid-this.md`; then the stance lens, which
+   reads the draft against `../../voice/stance.md` and the eight
+   traits in `../../voice/examples/house-exemplar.md` section 2.
+   Review runs on four lenses: voice, fidelity, evidence, and
+   stance. The stance lens exists because the judgement calls it
+   catches, who holds which authority and whether the piece takes a
+   position, fall outside the other three and outside the lint.
+5. **Hero**: SVG (default) or photographic prompt.
+6. **Ship**: move to `content/blog/`, and update the calendar, the
+   Project, and the Issue.
 
 ## 6. What you don't do here
 
@@ -71,3 +122,21 @@ See tasks.md for the full done-when checklist per gate.
   approved.
 - Do not invent new tag values. Tags must come from the canonical
   taxonomy in `../../voice/taxonomy.md`.
+- Do not use an em dash anywhere in the piece: the body, the title,
+  the headings, the alt text, or the `description`, `summary`, and
+  `keyTakeaways` fields. A spaced en dash, a double hyphen, and a
+  spaced hyphen are not substitutes, and ranges are written with
+  "to". The workflow marker above is the single exception.
+- Do not write the constructions that readers identify as
+  machine-written (style guide, section 5, rules 14 to 27):
+  negation followed by correction, `X, not Y` taglines, verbless
+  fragments, one-sentence paragraphs used for effect, clipped
+  aphoristic closers, a rhetorical question followed by its own
+  answer, colon reveals, signposting, lists of three used for
+  rhythm, present-participle tails, inflated abstractions, and
+  summary closers.
+- Do not cut a long-form article to a word count. When
+  `length_target` is `open` there is no cap, and the test is whether
+  every section advances the argument.
+- Do not declare the draft done until `npm run voice:lint` reports 0
+  errors on it.

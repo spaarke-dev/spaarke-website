@@ -1,0 +1,250 @@
+---
+title: "The Legal Operations Intelligence Ontology"
+description: "The legal operations intelligence ontology encodes a department's data, logic, actions, and security across its systems, and is its intellectual capital."
+summary: "Ontology is a term legal operations leaders need to know. Each system of record a department runs is limited by its purpose and design and sees one dimension of the work. The legal operations intelligence ontology is multidimensional: a governed model of the department's data, logic, actions, and security, connected across those systems. It is the foundation of the platform and the department's intellectual capital."
+date: "2026-07-21"
+posted: "2026-07-21"
+author: "Spaarke Team"
+tags:
+  organization: [corporate-legal]
+  function: [operations, it, executive]
+  topic: [matter-management, workflow, legal-spend, compliance, ai-copilot]
+  theme: [legal-operations-intelligence, operational-memory, platform, iq-stack, ai-strategy]
+heroImage: "/articles/legal-operations-ontology/hero.svg"
+heroImagePosition: "center"
+draft: false
+keyTakeaways:
+  - "Ontology is a term legal operations leaders need to add to their vocabulary. It is the governed model that encodes the department's data, logic, actions, and security for decisions made by people and AI together."
+  - "Data from each system of record is limited by the system's purpose and design, and is inherently one-dimensional. The ontology is multidimensional, and it is what enables the intelligence platform."
+  - "The ontology is the department's intellectual capital. It is proprietary, it has to be protected, and AI is the point at which it is most exposed."
+  - "Building the model forces decisions about ambiguous vocabulary and ownership, such as what counts as a matter or a contract and who defines \"active\" or \"closed\", and the model has to evolve as the business changes."
+  - "Every action combines the legal object, authority, policy, evidence, approval, and an auditable outcome, so governance is built into the work rather than reconstructed afterward."
+  - "AI both helps build the ontology and depends on it. The ontology is designed around the legal decisions it supports, and it is built on the systems already in place."
+
+---
+
+Ontology is the technical term that best captures the full purpose of legal operations, and it is one that legal operations leaders need to add to their vocabulary. An ontology is the system that encodes the department's data, logic, actions, and security for operational decisions made by people and AI together. The ontology is the foundation on which the legal operations intelligence platform is built. Because it captures how the department defines its work, makes its decisions, and applies its policies, it is also the department's intellectual capital: proprietary, valuable, and worth protecting.
+
+Every legal department has a matter system, a document repository, an invoice feed from its e-billing platform, and a reporting layer that reads across them to tell the general counsel what was spent last quarter and which matters are open. Each of those systems was built for a purpose, and its data is limited by that purpose and design. None of them holds the relationships among the parts of the work. The email in which the firm agreed to a revised scope sits in an inbox, unconnected to the matter it changed. The invoice line that records the resulting work sits in the e-billing platform, unconnected to the budget it consumed. The department's matter and the firm's matter are two records that no one has joined. Nor does any system hold what the department decided when the variance report came back, so next quarter the department knows no more about that firm than it did before.
+
+In the second article in this series, [How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform), we described how a department builds context into its platform through two paths: system integration, which brings related data together into a consolidated view, and knowledge management, which adds the why, the who, and the how. The combination is the legal operations intelligence ontology. This article describes what the ontology contains, how it is built, what makes a legal ontology different, and why it is the part of the platform the department owns and has to protect.
+
+The ontology also underpins the mandate described in the first article in this series, [The New Mandate for Legal Operations](/why-spaarke/managing-legal-operations). The service delivery, sourcing, reporting, and knowledge management decisions that legal operations manages all draw on it. For additional background, our article [What Is Legal Operations Intelligence?](/why-spaarke/what-is-legal-operations-intelligence) defines the category the ontology supports.
+
+## Ontology: the legal department's intellectual capital
+
+The ontology is a core concept of today's legal operations, and the intelligence platform depends on it. In practical terms, it is a governed legal operating model that connects matters, agreements, people, legal entities, obligations, documents, and workflows across the organization's existing systems. It defines the things the department works on, the relationships among them, the actions the department may take on them, and the rules that govern those actions.
+
+The definition is not specific to legal work. Microsoft's documentation for its own ontology capability describes an ontology as "a shared, machine-understandable vocabulary of your business", made up of things, facts, and connections, kept consistent by rules, and linked to the organization's data sources.
+
+The ontology is the technical foundation that enables:
+
+- **Integration once, against a canonical legal model,** rather than repeatedly against each vendor's schema.
+- **Matter-scoped, entity-aware retrieval,** rather than indexes of documents alone.
+- **Traceable outputs** attached to durable business objects and the source evidence behind them.
+- **Human approvals and policy-constrained write-back** to the systems of record.
+- **Cross-system legal operations intelligence** without requiring the department to replace its existing platforms.
+
+Unlike any single system of record, the ontology is multidimensional. It also holds something reporting data models rarely include: the record of each decision. For each decision, it holds the rule that evaluated it, the person who approved it, and the outcome, alongside the records the decision concerned. A budget variance is a computed number in any data warehouse. The approval of a scope change, the delegation policy that allowed the approver to approve it, and the write-off that followed are computed nowhere. In most departments they exist only in an inbox and in whatever the approver entered in a spreadsheet.
+
+That combination is what makes the ontology the department's intellectual capital. It encodes how the department defines a matter, which positions it accepts, how it applies its outside counsel guidelines, who may approve what, and what it decided in thousands of situations. It is specific to the department and cannot be bought from a vendor. It is proprietary, and it has to be protected like any other confidential asset of the business. AI raises the stakes. The same model that makes AI useful also concentrates the department's knowledge in one place, and every AI tool that reads it, or that absorbs the department's playbooks into its own configuration, is a point at which that knowledge could be exposed or pass out of the department's control. We return to that risk later in this article.
+
+## Each system of record holds one dimension of the work
+
+A system of record's data is limited by the system's purpose and design, which makes it inherently one-dimensional. Matter management holds the matter and its status, contract lifecycle management the agreement and its stage, document management the file and its versions, and e-billing the invoice and its line items. Each is bounded by its own data model, and information for which a system has no field does not exist in that system.
+
+Consider, for example, a single matter viewed through each system in turn. The matter system shows the budget and the status. The document system holds the drafts and the executed agreement. The e-billing platform holds the invoice lines. The inbox holds the correspondence with the firm, including the exchange in which the scope was renegotiated in March. Every fact about the matter sits somewhere in that set, but none of the four holds the relationships among them. No one can read from any single system which invoice lines belong to the March scope change, or which email settled the question a disputed invoice describes. The person reading supplies those connections from memory.
+
+That is a property of data models rather than of any particular product, and it applies to any system that owns one part of the work, however well it does so.
+
+## Building the entity relationship model
+
+The first question in building the model is which entities it has to connect and which connections are worth defining. The entities are the easier half. Three form the core, because nearly everything else a department does connects to one of them: the matter, the project, and the invoice. Around them sit the operational entities: requests, documents, communications, parties, engagements, timekeepers, obligations, deadlines, clauses, budgets, and policies.
+
+Two of these are rarely modeled as entities at all. Policy is one. Outside counsel guidelines, triage rules, service level definitions, and delegation thresholds are all written by the legal team, versioned, and applied the same way each time. Obligation is the other. It is extracted from a document, linked to the parties and dates that bind it, and changes status over the life of the agreement, which a document repository cannot represent because a document has no status of its own.
+
+Much of the model's value lies in the relationships, which no system holds today. A communication belongs to a thread, and the thread belongs to a matter, so a question asked in March can be found in September by someone reading the invoice the answer produced. An invoice line belongs to a timekeeper and an activity code, and through the matter it belongs to a budget. That chain ties a variance to particular work rather than to an accounting period, and it lets a finance partner see the same number the legal team sees, a point we discussed in our earlier article, [Breaking the Silo Between Legal, Finance, and the Business](/why-spaarke/breaking-the-silo).
+
+Other chains do the same work elsewhere. A document contains clauses, a clause creates an obligation, the obligation binds a party, and it falls due on a date. A request becomes a matter, so intake volume and matter volume become one measurement taken at two points, rather than two figures kept in separate systems that never agree. The engagement relationship connects the department's matter to the firm's matter. Few departments hold it, yet it determines whether the department can compare what it planned with what it was billed without someone doing the comparison by hand (Exhibit 1).
+
+<figure>
+  <img src="/articles/legal-operations-ontology/exhibit-1.svg" alt="A spine of matter, project, and invoice at the centre, with the operational entities of a legal department arranged around them and the relationships the article names drawn between them, including the engagement relationship that binds the department's matter to the firm's matter." />
+  <figcaption>Exhibit 1. Much of the model's value lies in the relationships among a department's records, which no system holds today.</figcaption>
+</figure>
+
+Building the model forces decisions about ambiguous vocabulary and ownership that most departments have never had to make explicitly:
+
+- **Organizational structure.** How the model represents business units, geographies, functions, and products, and which structure a given decision follows.
+- **What a contract is.** Whether a contract is the signed document, the negotiated arrangement, its amendments, or the consolidated set of obligations that results.
+- **What a matter is.** Whether a legal matter is a case, an investigation, a claim, an advice request, a dispute, a project, or a portfolio grouping.
+- **Who owns the definitions.** Who decides what counts as "active", "approved", "at risk", "privileged", or "closed".
+
+The model also has to evolve with acquisitions, reorganizations, new regulations, policy changes, replaced source systems, and new product lines. Enterprise ontology projects that falter tend to do so for the same reasons: heavy demands on people's time, incomplete understanding across domains, unclear ownership, weak governance, and drift as business processes change. A department that plans for those risks from the start, with named owners for its definitions and a defined process for changing them, is far better placed to sustain the model.
+
+## Actions, authority, and governance
+
+Relationships make a legal operating model intelligible. They show how matters, agreements, legal entities, people, documents, obligations, invoices, and work are connected. An operational platform also has to provide a governed way for people and AI agents to act through those relationships.
+
+In the ontology, an action is a defined, auditable operation performed on one or more legal objects, not simply a button on a screen or a step in a workflow. Sending a budget inquiry to outside counsel is an action on an engagement or an invoice. Approving a scope change is an action on a matter. Accepting an AI-extracted obligation is an action on an agreement and the clause from which the obligation was derived. Releasing a litigation hold is an action on the hold, its custodians, and the documents within its scope.
+
+Traditional workflow tools typically attach these activities to a particular form, queue, or process definition, and the record of the action may sit apart from the matter, contract, document, or obligation it affected. The ontology instead binds the action to the relevant objects, relationships, evidence, and resulting change. A department can later reconstruct not only that an action occurred, but what it changed, why it was permitted, what evidence supported it, and who was responsible.
+
+Each significant action carries explicit authority and provenance. Authority defines who may initiate, approve, delegate, or carry out the action, and under what conditions. The authority to approve an outside counsel rate exception, waive a contract requirement, issue or release a legal hold, accept a material obligation, or authorize an external communication belongs in the operating model, not in institutional memory, an unwritten convention, or an isolated workflow configuration.
+
+Provenance records the context of the decision: the policy, playbook, or delegation rule that authorized the action and the version in force at the time; the sources and evidence considered; the person or agent that initiated the action; the reviewer or approver; and the resulting change. For AI-assisted work, provenance also captures the agent or model used, the relevant policy or prompt version, the evidence retrieved, the rationale, and the reviewer's decision.
+
+This matters because a department often has to explain a decision long after it was made. Consider an obligation created from an executed agreement. A defensible record shows the agreement version, the clause and text it came from, the extraction or review process that identified it, the assigned owner, the policy that determined whether approval was required, and the lawyer or business owner who accepted it. If the agreement is later amended or the policy revised, the historical record remains intact.
+
+Governance is therefore built into each action, rather than performed as a separate reporting exercise after the fact. Every action combines six elements: the legal object, the authority, the policy, the evidence, the approval, and an auditable outcome.
+
+That structure supports a practical division of labor between people and AI. An agent may identify a likely matter association, extract a candidate obligation, prepare a contract review finding, or propose a budget inquiry, but its ability to act is limited by the same authority, policy, evidence, and approval rules that govern a person. The department sets the level of human review for each type of action:
+
+- **Automatic release** for low-risk actions produced by a deterministic rule within defined limits, such as recalculating an accrual or updating a matter's status when the docket changes.
+- **Single confirmation** by a named person, the ordinary case for anything that leaves the department.
+- **Counsel review, escalation, or explicit delegated authority** for consequential legal actions and for acts that only an attorney may perform.
+
+The department can relax the level of review for an action type as it gains confidence in the rule or agent behind it, and each change is itself recorded. This is what we mean by AI-directed, human-controlled: a rule or an agent proposes the action, and a person controls whether it proceeds.
+
+The model also answers questions. A director can ask which matters are running over budget, which obligations fall due this quarter, or which firm's invoices carry the most rejected lines, in the department's own terms and without knowing which table holds the answer. No single system can answer them, because each depends on relationships across systems. These are the questions behind the six signals described in the first article.
+
+A department that keeps its outside counsel guidelines in a document and its delegation thresholds in a spreadsheet has governance records that no system reads. Written into the ontology, they are consulted by every action, question, and agent. The result is a legal operating environment in which workflow, legal judgment, AI assistance, and the audit record stay connected to the matter, agreement, document, or obligation they concern, rather than being scattered across screens, emails, automations, and system logs.
+
+## An illustrative example: a budget variance, two approaches
+
+Consider an instruction a legal operations director hears in some form every quarter: this matter is running over budget, so ask outside counsel to explain.
+
+**In a traditional reporting-oriented approach,** the analysis would start and end with the variance. The reporting tool reads the invoice lines and the budget, computes the variance, and shows that the matter has passed the department's threshold, but it cannot act on that finding. Someone opens the report, switches to email, and writes to the partner from memory of what the matter was expected to cost. A reply arrives two days later. The director reads it, concludes that the overage reflects a scope change the business had approved, and notes that in a spreadsheet that four people know how to find. The variance was correct and the decision was sound, but the only records the department kept were the invoice lines that started the exchange.
+
+**With an ontology-based approach,** the variance arrives as a fact attached to the matter, traceable to the invoice lines that produced it, and connected to the budget, the engagement, the firm, and any scope changes already approved. A policy the department wrote evaluates the fact and flags that it exceeds the threshold, and the director sees the variance together with that context. The ontology proposes the next action, a budget inquiry to the firm, which the director confirms. The firm's reply is linked to the inquiry, so the engagement holds the question and the answer together, and the director records the outcome against the matter from a defined set: a write-off, a revised accrual, an approved scope change, or no action. Nothing in that sequence writes to the e-billing system, which continues to own and process the invoices.
+
+The ontology-based approach delivers value in two ways. In the near term, the director sees the variance in context and acts on it in one place, without reconstructing its history from several systems. Over time, the recorded outcomes accumulate across matters, firms, practice areas, and periods. Across 200 matters and four quarters, they form the outside counsel report card: which firms produced variances, which variances were justified by approved scope changes, which ended in write-offs, and how long each firm took to respond. That knowledge returns to business intelligence as new input for the next quarter's questions.
+
+While dashboards are useful, they cannot provide the more sophisticated insights the ontology supports, nor can they directly support decisions that span multiple systems. The ontology brings the decision, the information needed to make it, and the means to act into one place, and it records the outcome against the same entity.
+
+## Business intelligence and the ontology work together
+
+None of this diminishes the role of established business intelligence. Reports and dashboards remain necessary, and the ontology depends on them. Business intelligence is the deterministic side of the platform: it computes the variance the same way every time, and no AI model produces that number. That matters, because a figure a general counsel takes to the CFO cannot change between two readings of the same data.
+
+The ontology protects that discipline by identifying what kind of statement each result is. A fact, such as a budget variance, is computed the same way every time. An observation is what a department policy concludes from a fact, such as a variance that exceeds the threshold. An inference is probabilistic, such as an obligation an AI model extracted from a contract or its classification of a firm's reply. Outcomes record what was decided and what followed, and report cards aggregate outcomes across a firm, a practice area, or a period. Because the model knows which kind of statement it holds, a department can use AI where it helps while keeping probabilistic output out of places that require the same answer twice. In our earlier article, [Legal AI Is Not Deterministic](/why-spaarke/probabilistic-vs-deterministic), we explained why that separation matters.
+
+The ontology gives business intelligence consistent entities to read across systems, so a measure of spend by practice area does not depend on which of three systems supplied the matter list. It gives the department a place to act on what the measure shows.
+
+Jessica Talisman put the distinction briefly in Metadata Weekly on January 22, 2026: "meaning isn't the same as measurement". A semantic layer built for business intelligence standardizes measurement, and an ontology standardizes meaning. The fourth article in this series takes up business intelligence in detail.
+
+## AI both helps build the ontology and depends on it
+
+AI plays a dual role. It helps build and maintain the ontology, and it depends on the ontology to be effective. AI has lowered the cost of building the model and increased the value of having one.
+
+**AI helps create the ontology.** Extraction is where the cost fell furthest. Pulling parties, clauses, dates, and obligations from a contract once required a person to abstract each document by hand, which is why most departments abstracted only their largest agreements. AI now does much of that work. It can also propose candidate entities and relationships from existing records, suggest where the same counterparty or matter appears across systems, map source-system fields to the department's definitions, and draft descriptions of policies from the documents that contain them. The harder part remains matching what AI extracts to entities that already exist, such as the same counterparty under three spellings or the same matter under the firm's number and the department's. Jason Cui and Jennifer Li of a16z, writing on March 10, 2026, named "canonical entities, identity resolution" as part of the context layer that AI agents need, and identity resolution across systems is an area where the work is still maturing. In every case, AI proposes and people decide. The definitions, the relationships the department relies on, and the policies it adopts are confirmed by the people accountable for them, through the same levels of review that govern any other action.
+
+**AI depends on the ontology.** Once the model exists, it is what makes AI useful and safe:
+
+- **Grounding.** An agent that reads governed entities and deterministic facts has less room to invent them. A question about a matter's budget resolves to a fact with provenance, and the system returns that number rather than composing a plausible one. Gartner's Rita Sallam stated the principle directly: "Agentic AI outcomes depend on context including semantic representations of data."
+- **A shared vocabulary.** A department running an assistant in Word, a review tool in its contract process, and an agent over its spend data needs all three to mean the same thing by "matter", "budget", and "obligation", and the only way they can is to read the same definitions.
+- **Questions in business terms.** A director can ask which matters ran over budget in the second quarter, and the model translates the question into queries against the systems where the data sits. The terms are the department's own.
+- **Safer actions.** Actions defined on entities give an agent something safer to call than the systems beneath them. The agent receives the same defined actions a person has, with the same preconditions, permissions, audit record, and levels of review, rather than open write access to a matter table. The Model Context Protocol specification states the accompanying principle: "For trust & safety and security, there SHOULD always be a human in the loop with the ability to deny tool invocations."
+
+**The dual role raises the stakes for protection.** Because AI both helps build the ontology and reads from it, AI is also the point at which the department's intellectual capital is most exposed. An AI tool with broad access can surface privileged or confidential information to people who should not see it, and a provider's tools can absorb the department's playbooks, positions, and definitions into configurations the department does not control. The ontology's permissions, ethical walls, and provenance have to apply to every AI tool as fully as they apply to people, and the department should know where its knowledge is held and who can use it.
+
+## The ontology is defined by the unique requirements of the legal department
+
+Legal departments are unique in the artifacts that define their intelligence ontology, and those requirements change how the model has to be built. A department evaluating a general-purpose ontology tool should test it against each of the following.
+
+**Privilege travels with the record.** A generic enterprise model decides access from outside the model, through a folder permission, an application role, or a security rule, and the record itself carries no notion of who may read it. Privilege attaches to the communication and the advice within it, and it survives every copy, export, and extract. A model that stores privilege on the entity can answer whether a document is privileged wherever it has traveled, while one that relies on folder permissions knows only about the folder.
+
+**The document is often the record itself.** In most enterprise models, a record describes something that exists elsewhere: an order that shipped, a customer, a payment that cleared. In legal work, the executed agreement is the obligation, and the court's order is the instruction itself. A legal model therefore treats the document as an entity with its own clauses, versions, dates, and obligations, rather than as an attachment to a matter record.
+
+**Counterparty documents come from an adversary.** A limitation of liability clause extracted from a supplier's draft records what the supplier proposed, which differs from the same clause in the department's own template or in an executed agreement. Values that come from the other side carry a different level of trust, and the model records the source of each extracted value so that a later reader can tell a proposal from an accepted term.
+
+**Rules outnumber facts.** Outside counsel guidelines, billing guidelines, retention schedules, ethical walls, and delegation thresholds all govern what may be done, by whom, and on which records, and each changes on its own schedule. Much of what a legal model holds is rules about what may be done rather than facts about what happened, the reverse of most enterprise data models. A model that cannot hold rules as content leaves them in documents and spreadsheets, where no action can read them and compliance depends on whoever happens to be on duty.
+
+**Ethical walls apply to relationships as well as records.** Row-level security keeps records away from people who should not see them. An ethical wall also has to protect the relationships, because the existence of an engagement, the identity of the other party, and the fact that a particular timekeeper worked on a matter can each be a disclosure. In a model whose value lies in its relationships, the wall has to apply to the connections between entities, and the department has to be able to show afterward that it held.
+
+## Design the legal operating model around the decisions it supports
+
+The ontology is, in effect, the department's legal operating model expressed in a form its systems and AI tools can use. It cannot be derived by inspecting the schemas of the systems a department already uses. Matter management, e-billing, document management, contract lifecycle management, CRM, ERP, HR, and collaboration platforms each represent part of legal work for their own purposes. Their data models reflect the function, history, and constraints of each product, not how the legal department makes decisions across the enterprise.
+
+The ontology should therefore be built backward from recurring legal decisions, rather than forward from source-system tables, an approach the second article also described. Begin with a decision that matters and recurs, such as:
+
+- Whether to approve a proposed scope or budget change.
+- Which firm should receive the next matter of a particular type, jurisdiction, or risk profile.
+- Whether an invoice, accrual, rate exception, or expense should be approved, challenged, or escalated.
+
+Then work backward from the decision: to the evidence it requires, the legal objects and relationships that hold that evidence, the source systems where the data lives, the policy and authority that govern the decision, and finally the governed action that carries it out. For a scope change, the model may need the matter, engagement, firm, timekeepers, budget, scope change, invoices or accruals, legal entity, responsible attorney, and approval, connected to records in the matter, e-billing, finance, and document systems.
+
+Each concept is defined once at the level of the legal operating model, while preserving the fact that its data may come from several systems. A matter is not simply the matter table in one application. It is a canonical legal object with its own identity, lifecycle, relationships, and security context, linked to the identifiers each participating system uses.
+
+The approach does not require replacing the systems already in place. It establishes a governed layer above and between them:
+
+| Existing system | What it continues to do | What the ontology adds |
+|---|---|---|
+| Matter management | Maintains matter records, workflow, assignments, and status | Connects matters to agreements, spend, documents, legal entities, obligations, evidence, and cross-system actions |
+| E-billing | Receives invoices, applies billing rules, and manages rates and guidelines | Connects spend to matter strategy, budget, scope, firm performance, approval authority, and related legal work |
+| Contract lifecycle management | Manages the agreement lifecycle, clause review, negotiation, and signature | Connects agreements and obligations to matters, business entities, requests, documents, policies, and downstream work |
+| Document management and Microsoft 365 | Stores, shares, retains, and protects legal content | Associates content with matters and other legal objects, and preserves evidence, version, access, and provenance context |
+| ERP and finance | Maintains financial master data, payments, cost centers, and accounting treatment | Supplies authoritative financial facts that legal can interpret in its operating context |
+| CRM and HR | Maintains account, organizational, employee, and reporting data | Supplies party, organization, role, and ownership context for legal decisions |
+
+As the second article noted, some entities, such as the request that arrived by email or the record of the action taken, have no system of record today, and the platform can supply one. Identity is the precondition for all of it, since the same matter may carry one number in the matter system, another on the firm's bill, and a third in a folder name.
+## Build the model one use case at a time
+
+
+The model should grow one high-value use case at a time, and each use case should add only the entities, relationships, policies, actions, and evidence needed to make that decision more consistent, faster, safer, or easier to explain. That avoids the common failure of trying to define all of legal before delivering any operational value. A practical build sequence is:
+
+1. **Select a recurring decision** with clear business impact, identifiable owners, and measurable friction.
+2. **Identify the legal objects, relationships, evidence, policies, and authority** required to make that decision responsibly.
+3. **Map each required attribute** to its source system, its status as the source of truth, how it is refreshed, and the level of data quality it needs.
+4. **Define the canonical objects and relationships,** including stable identities, lifecycle states, security context, and provenance requirements.
+5. **Expose the decision as a governed action,** with validation, review thresholds, approvals, audit records, and controlled write-back where appropriate.
+6. **Test the model** against the questions legal leaders, finance partners, outside counsel managers, and matter teams ask repeatedly.
+7. **Expand only after the model supports a complete operational loop:** evidence, decision, action, outcome, and review.
+
+The practical work depends on the people who understand the department's real operations. They know where information is stored, which identifiers outside counsel actually use, why a cost center and a matter number may not align, which exceptions are legitimate, and what a general counsel, legal operations leader, or finance partner needs to see before deciding. That is why ontology design is less a data modeling exercise than a structured effort to make the department's operating knowledge explicit and reusable. The most difficult, and most valuable, part is reaching agreement on definitions: what counts as a matter, an engagement, an approved exception, an active obligation, a completed hold, or a decision that requires legal review. Nikola Ilic, writing at Data Mozart on February 3, 2026, cautioned that "If your organization struggles to agree on basic definitions now, an ontology won't magically create consensus".
+
+Legal work already has standards that supply part of the vocabulary, and the model should use them. SALI's matter specification publishes over 18,000 tags, each with a unique identifier, which supply values for matter attributes that would otherwise be free text. LEDES and UTBMS define the structure of billing data, which is what makes an invoice line comparable across two firms. The standards say how to label a matter and how to format a bill. The relationships, actions, policies, and decision record remain the department's to define.
+
+The reach of the model matters as well. In May 2026, two document management providers announced context layers within weeks of each other, covering documents organized by matter together with communications, people, activity, and permissions, including ethical walls. Context drawn from documents is useful, but it covers only part of the department's work. A department's operations extend into intake, spend, obligations, and the decisions taken about all three, and a context layer that stops at the document boundary leaves undefined the relationships that cross it. For a legal department, the practical question is which systems the layer reaches, because that determines how much of the department's work the model can govern.
+
+## Open interfaces make the ontology practical
+
+An ontology that sits above a department's existing systems depends on its connections to them. It has to read from each system of record and, where a decision completes in one of them, write back through an interface that system governs, with the same permissions, approvals, and audit record as any other action. Whether a system exposes documented, permission-aware interfaces for reading and writing is therefore a question for every technology purchase the department makes.
+
+The market is moving in that direction. iManage released an MCP server in May 2026 and stated that "All AI access to iManage content via MCP is authenticated, permission-bound, and fully logged, respecting existing ethical walls and access controls." LawVu announced an MCP server in June 2026, describing write actions such as the ability to "Create matters or trigger contract workflows directly from an AI tool". Many of these announcements were aimed at law firms rather than corporate legal departments, so they indicate a direction more than current availability inside a department.
+
+Openness brings its own considerations. The protocol leaves much to those who implement it, and its specification states that "Authorization is OPTIONAL for MCP implementations." A dependence can also form one layer up. ComplexDiscovery observed in May 2026 that a team teaching a plugin its house style and thresholds "is building institutional knowledge inside the model", which "deepens the lock-in to Claude". A department that encodes its playbooks in one provider's plugin format has moved its dependence rather than removed it, and has placed part of its intellectual capital in a format it does not control. Keeping those definitions in an ontology the department owns keeps the dependence reversible and the knowledge protected.
+
+The same interfaces let departments build tools of their own, which is an emerging practice. Whoever builds a tool also has to maintain it. What the ontology changes is the starting point. A tool built on a governed ontology inherits the definitions, permissions, and audit record the model already enforces, so the person building it can focus on the question the tool exists to answer. A tool built directly against each system's tables has to establish all three again, and the next tool starts over. Across several small tools, building on the ontology keeps every one of them under the same governance.
+
+## Conclusion: the foundation of legal operations intelligence
+
+Ontology belongs in the vocabulary of every legal operations leader. Each system of record a department runs is limited by its purpose and design, and it sees one dimension of the work. The ontology is multidimensional. It encodes the department's data, logic, actions, and security in one governed model, connected across those systems, for decisions made by people and AI together. It is the foundation of the legal operations intelligence platform.
+
+It is also the department's intellectual capital, with a very different lifespan from the tools that use it. A department can change the AI models it uses through configuration. What cannot change on that schedule is the agreement about what a matter is, the relationships that support the questions the department asks, the outside counsel guidelines written as rules an action can read, and the record of what was decided under them. That work takes years, no vendor can perform it on the department's behalf, and the result belongs to the department whichever tools read it.
+
+In our earlier article, [The Legal IQ Stack: Data, Memory, Inference](/why-spaarke/the-iq-stack), we described the same division. The ontology is what the data and memory layers are made of: the entities and relationships connected to the systems where the data lives, and the operational memory of decisions, provenance, and outcomes that builds up as the department works. Inference draws on both, and it is the layer that changes most often and costs least to change. A department that invests only in that layer depends on whichever model it happens to be using.
+
+For a legal operations leader, the lasting decisions are who defines "matter", "budget", and "obligation" for every tool the department uses, where the department keeps the record of its own decisions, and how it protects that knowledge as AI tools multiply. A department that leaves those definitions to each tool rebuilds them with every new tool and risks its knowledge ending up in places it does not control. It also ends each year without the record the example produced: across 200 matters and four quarters, what was decided, by whom, under which rule, and what followed. That record cannot be reconstructed later from invoices and inboxes, so the sooner a department starts keeping it, the more it will have to draw on.
+
+The fourth article in this series takes up the deterministic side of the platform, business intelligence, and how it works with the ontology to give the department numbers it can rely on.
+
+{/* Series navigation: added when the series completes, per campaigns/2026-06-legal-operations-intelligence.md. */}
+
+**Sources**
+
+- [Microsoft Learn, What Is Ontology (Preview)?](https://learn.microsoft.com/en-us/fabric/iq/ontology/overview)
+- Jessica Talisman, Metadata Weekly, January 2026
+- [Andreessen Horowitz, Your Data Agents Need Context](https://a16z.com/your-data-agents-need-context/)
+- [Gartner, Lack of semantics causes inaccurate AI agents and wasted spending](https://web.archive.org/web/20260709022118/https://www.gartner.com/en/newsroom/press-releases/2026-05-11-gartner-says-lack-of-semantics-causes-inaccurate-artificial-intelligence-agents-and-wasted-spending)
+- [Model Context Protocol, specification 2025-06-18](https://modelcontextprotocol.io/specification/2025-06-18/server/tools)
+- Nikola Ilic, Data Mozart, February 2026
+- [iManage, MCP Server Now Available for Broader AI Ecosystem](https://imanage.com/resources/resource-center/news/mcp-server-available-broader-ai-ecosystem/)
+- [LawVu, Introducing the LawVu MCP Server](https://lawvu.com/articles/connecting-ai-tools-to-the-legal-operating-system-introducing-the-lawvu-mcp-server/)
+- ComplexDiscovery, on plugins and institutional knowledge, May 2026
+
+**Related reading:**
+
+- [Institutional Knowledge Is Walking Out the Door](/why-spaarke/institutional-knowledge)
+
+---
+
+*For questions or comments about this article, contact Ralph Schroeder, Founder and CEO of Spaarke, at [ralph.schroeder@spaarke.com](mailto:ralph.schroeder@spaarke.com), or visit [spaarke.com](https://spaarke.com).*

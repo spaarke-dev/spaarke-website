@@ -10,25 +10,25 @@ alwaysApply: false
 
 ## Purpose
 
-**Orchestrator Skill** — The content equivalent of `project-pipeline`.
+**Orchestrator Skill**: the content equivalent of `project-pipeline`.
 Given a canonical `brief.md`, produces the rest of the per-piece
 workspace (plan.md + tasks.md + per-piece CLAUDE.md), creates the
-GitHub Issue, adds it to the Project, and sets the custom fields —
-gated by human confirmation at each step.
+GitHub Issue, adds it to the Project, and sets the custom fields.
+Each step is gated by human confirmation.
 
 **Key Features**:
-- Validates brief.md against required sections + frontmatter
-- Generates plan.md (the structural outline — section + claim +
+- Validates brief.md against required sections + frontmatter.
+- Generates plan.md (the structural outline: section + claim +
   evidence per section, opening + close beats, sources to verify,
   hero direction) using the matching `templates/<type>/plan.md`
-- Generates tasks.md from `templates/<type>/tasks.md` (the 5- or
-  6-gate workflow checklist)
+- Generates tasks.md from `templates/<type>/tasks.md` (the 5- to
+  7-gate workflow checklist)
 - Generates per-piece CLAUDE.md from `templates/<type>/CLAUDE.md`
   (the session contract for this piece)
 - Creates the GitHub Issue with the right title, body, labels,
   and Milestone (campaign)
 - Adds the Issue to the GitHub Project, sets Pipeline status =
-  Brief, sets Publish date
+  Brief, sets Publish date.
 - Updates `content-platform/calendar.md` with a row for this piece
   (or updates the existing row's status)
 
@@ -71,7 +71,7 @@ VALIDATE:
   - Tags validated against content-platform/voice/taxonomy.md
 
 IF validation fails:
-  -> STOP — list missing/invalid elements
+  -> STOP and list missing/invalid elements
   -> Offer: "Run /idea-to-brief <slug> to regenerate, or fix the
             brief manually and re-run /content-pipeline <slug>."
 ```
@@ -81,7 +81,7 @@ IF validation fails:
 brief.md validated:
   - Type: <type>
   - Audience: <persona>
-  - Length target: <words>
+  - Length target: <open | words>
   - Campaign: <slug or "standalone">
   - Tags validated against canonical taxonomy
   - <N> TBD-confirm markers (in non-blocking positions)
@@ -98,24 +98,41 @@ Next: generate plan.md, tasks.md, per-piece CLAUDE.md.
 ### Step 2: Load voice constitution + content-type calibration
 
 Before generating the plan, read the constitution. The plan inherits
-voice constraints — section structure, callout conventions, the
+voice constraints: section structure, callout conventions, the
 do-not-include list.
 
 ```
 READ in this order:
   1. content-platform/voice/style-guide.md
-  2. content-platform/voice/brand-positioning.md
-  3. content-platform/voice/audience-personas.md  (just the
+  2. content-platform/voice/stance.md (the posture; governs on
+     posture)
+  3. content-platform/voice/brand-positioning.md
+  4. content-platform/voice/audience-personas.md  (just the
      persona named in brief.md frontmatter)
-  4. content-platform/content-types/<type>.md
-  5. content-platform/voice/examples/good-articles.md (for the
-     opening pattern)
+  5. content-platform/voice/vocabulary.md (do/don't language)
+  6. content-platform/voice/domain-knowledge.md, section 3 (the
+     field's terms)
+  7. content-platform/content-types/<type>.md
+  8. content-platform/voice/examples/consulting-register.md (the
+     positive model; section 6 has the model openings and close)
+  9. content-platform/voice/examples/ai-tells.md (constructions the
+     plan must not ask for)
+  10. content-platform/voice/examples/house-exemplar.md (the house
+     positive model)
+  11. content-platform/voice/examples/good-articles.md (subject
+     matter only; it predates the September 2026 revision, so do
+     not pattern-match its constructions)
+
+Items 5 and 6 are not conditional. The plan is where section
+headings and concept names are first fixed, so the terminology
+files are read every time.
 
 IF the brief touches Spaarke architecture:
   -> READ content-platform/voice/product-knowledge.md
 
 IF the brief cites domain stats:
-  -> READ content-platform/voice/domain-knowledge.md
+  -> READ the rest of content-platform/voice/domain-knowledge.md
+     (sections 1, 2, and 4 to 7)
 
 IF a campaign is assigned:
   -> READ content-platform/campaigns/<campaign-slug>.md (for the
@@ -132,13 +149,17 @@ COPY content-platform/templates/<type>/plan.md
 
 FILL in:
   - Spine: 3-5 sentence compression of the brief's Angle
-  - Sections: 3-5 H2s, each with claim + evidence + cross-link.
+  - Sections: as many H2s as the argument needs for a long-form
+    article (length_target open, or a number above 1,800; no cap);
+    3 to 5 H2s for a short post. Each has claim + evidence +
+    cross-link.
     Pull cross-link slugs from brief.md's References section.
-  - Opening: 1-2 paragraph beats (hook + frame). Pattern-match
-    against voice/examples/good-articles.md openings; do NOT
-    copy.
-  - Close: 1-2 paragraph beats (punch + cross-link to next piece
-    in the campaign arc, if any)
+  - Opening: paragraph beats per the template (hook, complication,
+    frame), with the thesis in the frame. Pattern-match against the
+    model openings in voice/examples/consulting-register.md
+    section 6 first; do NOT copy.
+  - Close: 1-2 paragraph beats (a close that ends on consequence +
+    cross-link to next piece in the campaign arc, if any)
   - Sources to verify: every named number/quote from the brief,
     flagged with "TBD" if no URL provided
   - Hero direction: per voice/visual-identity.md (default SVG)
@@ -147,7 +168,7 @@ FILL in:
 For LinkedIn posts: replace section structure with hook + body
   beats + close (per content-types/linkedin-post.md).
 For white papers: extend section structure to executive summary +
-  numbered sections + conclusion + action steps.
+  numbered sections + closing section + action steps.
 For tweets: replace section structure with thread structure
   (one beat per tweet).
 ```
@@ -226,7 +247,7 @@ EXECUTE:
   1. Create the Issue (with body referencing the article workspace):
      gh issue create --repo spaarke-dev/spaarke-website \
        --title "<Type-Prefix>: <slug>" \
-       --body "<body — see template below>" \
+       --body "<body: see template below>" \
        --label "type:<type>,persona:<persona>" \
        --milestone "<campaign milestone title>"
 
@@ -307,7 +328,7 @@ Workspace ready. Hand off to writer.
 
 Suggested next action for the writer:
   1. Open content-platform/articles/<slug>/CLAUDE.md
-  2. Fill in plan.md (the outline gate — see tasks.md §1)
+  2. Fill in plan.md (the outline gate; see tasks.md §1)
   3. Get human sign-off on plan
   4. Move Pipeline status to "Outline" in the GitHub Project
   5. Then drafting begins (tasks.md §2)
@@ -317,12 +338,12 @@ Suggested next action for the writer:
 
 ## Things this skill must not do
 
-- Do **not** start drafting. The output is the workspace — plan,
+- Do **not** start drafting. The output is the workspace: plan,
   tasks, per-piece CLAUDE.md, Issue. Drafting is the next step,
   done by the writer (or by Claude in a separate session that
   loads the per-piece CLAUDE.md).
 - Do **not** invent plan content. If the brief is sparse, the plan
-  inherits that sparseness — flag the gaps in plan.md's "Open
+  inherits that sparseness. Flag the gaps in plan.md's "Open
   questions" section so the writer fills them before drafting.
 - Do **not** skip the human-in-loop gates. Each step waits for `y`.
 - Do **not** create the Issue if the user has already created one
@@ -363,7 +384,7 @@ content-pipeline (THIS SKILL)
     +-> Updates calendar.md
            |
            v
-[Writer takes over — drafts in articles/<slug>/draft.{mdx|md}]
+[Writer takes over and drafts in articles/<slug>/draft.{mdx|md}]
            |
            v
 [Human moves draft to content/blog/ or published/ for publish]

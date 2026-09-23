@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 620" role="img" aria-labelledby="ex-title ex-desc" font-family="system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+  <title id="ex-title">The governed metric loop</title>
+  <desc id="ex-desc">Records feed a governed metric, the metric feeds a person who decides and an automated process that routes, the resulting action is recorded as an outcome, and the outcome returns as the next period's input.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#A8C2FF"/>
+    </marker>
+    <marker id="arrowHot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4C63FF"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="1238" height="618" rx="14" fill="#13132B" stroke="#2A2A52" stroke-width="2"/>
+    <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">A governed metric feeds a person and an automated process,</text>
+    <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">and the recorded outcome returns as the next period's input.</text>
+    <rect x="64" y="268" width="230" height="96" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="179" y="310" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Records</text>
+    <text x="179" y="334" text-anchor="middle" font-size="14.5" fill="#A8B4D8" font-weight="400">matters, invoices, requests</text>
+    <rect x="360" y="268" width="230" height="96" rx="9" fill="#3A3576" stroke="#7B5BFF" stroke-width="2.4"/>
+    <text x="475" y="310" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Governed metric</text>
+    <text x="475" y="334" text-anchor="middle" font-size="12" fill="#A8B4D8" font-weight="400">defined once, computed the same way</text>
+    <line x1="298" y1="316" x2="352" y2="316" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <rect x="678" y="150" width="250" height="86" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="803" y="187" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">A person reads it</text>
+    <text x="803" y="211" text-anchor="middle" font-size="16" fill="#A8B4D8" font-weight="400">and decides</text>
+    <rect x="678" y="392" width="250" height="86" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="803" y="429" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">An automated process</text>
+    <text x="803" y="453" text-anchor="middle" font-size="15.5" fill="#A8B4D8" font-weight="400">triggers, routes, escalates</text>
+    <path d="M 594 300 C 640 300, 636 193, 670 193" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <path d="M 594 332 C 640 332, 636 435, 670 435" fill="none" stroke="#4C63FF" stroke-width="2.4" opacity="0.9" marker-end="url(#arrowHot)"/>
+    <rect x="990" y="268" width="196" height="96" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="1088" y="310" text-anchor="middle" font-size="18" fill="#E8ECFF" font-weight="500">Outcome</text>
+    <text x="1088" y="334" text-anchor="middle" font-size="16" fill="#A8B4D8" font-weight="400">recorded</text>
+    <path d="M 928 193 C 968 193, 1080 236, 1082 260" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" marker-end="url(#arrow)"/>
+    <path d="M 928 435 C 968 435, 1080 396, 1082 372" fill="none" stroke="#4C63FF" stroke-width="2.4" opacity="0.9" marker-end="url(#arrowHot)"/>
+    <path d="M 1088 364 C 1088 540, 180 556, 178 372" fill="none" stroke="#A8C2FF" stroke-width="1.7" opacity="0.9" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+    <text x="620" y="540" text-anchor="middle" font-size="16" fill="#A8B4D8" font-weight="400" font-style="italic">The recorded outcome is the next period's input.</text>
+    <text x="620" y="578" text-anchor="middle" font-size="15" fill="#A8B4D8" font-weight="400" font-style="italic">When a metric triggers an action, its definition and its currency matter more than when it fills a chart.</text>
+</svg>

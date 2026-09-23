@@ -1,0 +1,99 @@
+# Gap follow-up: in-house demand for openness and build
+
+Track: inhouse-demand-for-openness-and-build. Supports Article 4 (primary), Article 3.
+Research date: 2026-09-21.
+
+## Method and limits (read first)
+
+- The session-wide WebSearch budget was already exhausted (200 of 200). All three WebSearch calls I issued returned "Web search was not performed". No general web search ran on this track.
+- General search engines via WebFetch/curl were also unusable: DuckDuckGo HTML returned a CAPTCHA, Brave 429, Mojeek 403, Bing returned unrelated junk results (bot-degraded). web.archive.org is blocked for the fetch tool.
+- Substitute discovery: on-site search pages fetched directly. Artificial Lawyer (9 queries), LawNext (5), Above the Law (3), Legal Dive (1 + topic page), ACC Corporate Counsel Now, formerly ACC Docket (2, both empty), CLOC (2), LawVu (1), plus vendor on-site searches for "MCP" at Mitratech, Onit, Agiloft, Icertis.
+- Pages fetched: 60+ (WebFetch and curl with a browser user agent; raw HTML saved under scratchpad/research/gap/).
+- Blocked or unreachable primaries: Wolters Kluwer site (403 on everything except one Passport product page fetched by curl), Gartner newsroom (403), Bloomberg Law pro.bloomberglaw.com (PerimeterX 403), ACC acc.com (403), Legal IT Insider (bot wall), EY / KPMG / Deloitte / FTI report URLs (404 on every guessed path), Thomson Reuters developer portal (JavaScript app, catalog sits behind login redirect).
+- Consequence: part (a) is only partly answered, part (b) is essentially unanswered, part (c) is answered for every vendor except a full Wolters Kluwer newsroom check.
+
+---
+
+## (c) Vendor check: public API / MCP or agent connector / write access, as of 2026-09-21
+
+| Vendor | Public API | MCP server or third-party agent connector | Write access via agent/API | Evidence (all accessed 2026-09-21) |
+|---|---|---|---|---|
+| LawVu | Yes. Developer portal at developer.lawvu.com; docs need registration ("Existing customers and third-party developers can register") | YES, MCP server announced. Names Claude, ChatGPT, Microsoft Copilot | YES, stated for initial release: create matters, trigger contract workflows, update matter status, create tasks, set deadlines | https://lawvu.com/articles/connecting-ai-tools-to-the-legal-operating-system-introducing-the-lawvu-mcp-server/ (visible date June 8, 2026; JSON-LD datePublished 2026-06-02). https://lawvu.com/workspace/integrations/ |
+| Icertis | Yes, "licensed public APIs" | YES, "Agent Interoperability" section lists OpenAI Agent, Claude (Anthropic) Agent, Microsoft Copilot Agent, SAP Joule Agent. The word "MCP" does not appear on platform or integrations pages; protocol not stated | Not stated for agents. Adapters described as "bi-directional data exchange". Vera embedded in Microsoft 365 Copilot (May 13, 2026 release) | https://www.icertis.com/products/integrations/ ; https://www.icertis.com/products/platform/ ; https://www.icertis.com/company/news/icertis-expands-strategic-partnership-with-microsoft-to-advance-ai-native--contract-intelligence/ |
+| Agiloft | Yes ("API and custom integrations"; "custom API platform to build custom APIs with precise access controls"; 1,000+ connectors via integration hub) | No MCP announcement found. Aug 20, 2026: Agiloft for Salesforce listed on Salesforce AgentExchange (a managed package; the release mentions MCP servers only as something AgentExchange hosts, not as an Agiloft product). Own in-product agents (Ask AI intake and guided updates) GA July 14, 2026 | Write exists inside own agents (guided record updates) and in the Salesforce sync; no third-party-agent write path documented | https://www.agiloft.com/platform/integrations ; https://www.agiloft.com/news/agiloft-announces-general-availability-of-agiloft-astra ; https://www.agiloft.com/news/agiloft-for-salesforce-on-salesforce-agentexchange ; newsroom list 2026 checked |
+| Checkbox | Yes: "native connectors, webhooks, and REST APIs"; API keys or OAuth | No MCP or agent-connector mention on integrations page or in 12 most recent blog posts (Jul-Sep 2026). Native integrations: Slack, Teams, Gmail/Outlook, Salesforce, Ironclad, Ivo | Not specified | https://www.checkbox.ai/integrations ; https://www.checkbox.ai/blog |
+| Mitratech | Yes at product level (TeamConnect: "Native APIs and integrations connect legal with HR, Procurement, Sales, Finance, and more") | No. On-site search for "MCP" and "Model Context Protocol" returned nothing relevant. ARIES is described as Mitratech's own "AI ecosystem built into" its products; nine 2026 press releases reviewed, none mention MCP, third-party agents, Claude, ChatGPT or Copilot | Not stated | https://mitratech.com/products/aries/ ; https://mitratech.com/products/teamconnect/ ; https://mitratech.com/news/ ; https://mitratech.com/resource-hub/pressreleases/mitratech-heads-to-cloc-2026-to-showcase-the-future-of-legal/ (May 11, 2026) ; https://mitratech.com/resource-hub/pressreleases/mitratech-legal-2026-ai-awards/ (June 8, 2026) |
+| Onit (Unity, OnitX, BusyLamp) and SimpleLegal | Yes: "hundreds of prebuilt-integrations and powerful APIs"; no-code App Builder. simplelegal.com/integrations now 301-redirects to onit.com (SimpleLegal is listed as an Onit product) | No. On-site search for "MCP" returns "Sorry, No Results." Only two 2026 press releases (Mar 9 and May 11, 2026, both Unity RFP). Own "dedicated AI agents for matter, spend, request, and contract management" | Not stated | https://www.onit.com/platform/ ; https://www.onit.com/news/ ; https://www.onit.com/?s=MCP |
+| Thomson Reuters Legal Tracker | Partial. Features page lists "Accounts Payable Data Exchange API", a Power BI Data Connector over the data warehouse "through its APIs", and Tableau Connect to the "Data Warehouse and Data API". TR developer portal is login-gated; could not see a Legal Tracker entry | No MCP or CoCounsel/agent connection mentioned on Legal Tracker pages. (TR's MCP work is CoCounsel Legal and HighQ, per earlier track) | AP API pushes invoice payment information into Legal Tracker (narrow write). Reporting APIs are read | https://legal.thomsonreuters.com/en/products/legal-tracker/features ; https://legal.thomsonreuters.com/en/products/legal-tracker |
+| Wolters Kluwer ELM (Passport, TyMetrix 360) | Extensibility claimed: "Passport toolkits allow teams to configure, extend, and develop new applications or modules on the platform"; "Passport connector library". The word API does not appear on the Passport page | No MCP mention on the Passport page. Sept 15, 2026: WK added an embedded "Outside Counsel Management Agent" to TyMetrix 360 (Law.com, lede only, rest behind registration). WK newsroom itself returned 403, so this is NOT a complete check | Not stated | https://www.wolterskluwer.com/en/solutions/enterprise-legal-management/passport ; https://www.law.com/legaltechnews/2026/09/15/wolters-kluwer-introduces-agentic-ai-tool-for-outside-counsel-management/ |
+
+Carry-over from earlier track (already verified): Brightflag MCP connector 2026-08-18; Docusign MCP server opening to every agent 2026-09-30; iManage MCP GA 2026-05-14.
+
+### What this changes for Article 4
+- The earlier "silent on MCP" list was wrong for two names. LawVu has an MCP server with stated write actions (June 2026). Icertis advertises agent interoperability with Claude, OpenAI, Copilot and Joule (protocol unstated).
+- Every vendor checked advertises some API. None can accurately be called "closed" in the sense of having no API. The defensible distinction is narrower: which vendors expose a documented, agent-usable, read-and-write surface to third-party agents (LawVu; Icertis in part; Brightflag read; Docusign) versus which describe AI only as their own embedded assistant (Mitratech ARIES, Onit Unity agents, Agiloft Ask AI, WK TyMetrix agent, Checkbox).
+- "No announcement found" is still only negative evidence. Safe wording: "as of September 2026 we found no public MCP or third-party agent connector announcement from X". Do not write "X does not support".
+- Developer documentation is commonly gated (LawVu needs registration; TR portal needs login; Icertis APIs are "licensed"). "Public API" in this market usually means "available to customers", not open docs.
+
+---
+
+## (a) Survey data from corporate legal departments (2025 to 2026)
+
+Found and verified:
+
+1. Icertis survey, May 11, 2026 (vendor-commissioned; "more than 1,000 U.S. corporate legal practitioners"). Verbatim from the release: "Nearly a quarter (23 percent) say their legal AI tools operate in full isolation from other systems." Also: 47 percent "would not detect an unauthorized or incorrect AI action until after it had occurred". Survey firm and field dates not stated in the release. https://www.icertis.com/company/news/half-of-legal-teams-lack-visibility-into-autonomous-ai-according-to-icertis-survey/
+2. Counselwell and Spellbook 2025 in-house AI report, reported by LawNext June 5, 2025. n = 256 in-house legal professionals, 86.8% Canada, 10.5% US. "System integration issues" cited as a barrier by 36% (fourth, after trust/quality 60%, data privacy 57%; cost 33%). Tools used: ChatGPT 74%, Microsoft Copilot 40%. SECONDARY source only (LawNext); primary report not fetched. https://www.lawnext.com/2025/06/legal-departments-show-growing-ai-adoption-but-implementation-challenges-remain-new-survey-finds.html
+3. LegalOn 2026 In-House Legal Pulse (vendor; n and dates not disclosed on landing page). "92% of in-house teams use AI today, but only 11% of teams have reached 'connected' or 'full workflow' maturity". Artificial Lawyer (Aug 18, 2026) gives the breakdown: 54.9% experimentation, 26.5% standardized prompts and workflows, 8.8% connected knowledge, 2% full workflow. https://www.legalontech.com/resources/2026-in-house-legal-pulse ; https://www.artificiallawyer.com/2026/08/18/inhouse-embraces-aiand-does-little-with-it/
+4. Axiom 2026 In-House Legal AI Report, June 29, 2026 (n = 528 in-house legal leaders, six countries, fielded March 2026 by InsightDynamo). 83% cannot measure whether AI spending is working; 7% have scaled AI across the organization; 100% of AI-using teams plan to raise AI budget; landing page says "most teams are running AI in tools that were never built for legal work" (no percentage given on the public page). https://www.axiomlaw.com/resources/articles/2025-legal-ai-report (URL slug says 2025; page is the 2026 report)
+5. ACC and Everlaw, "Generative AI's Growing Strategic Value for Corporate Law Departments", Oct 14, 2025, n = 657. 64% expect reduced reliance on law firms; US in-house GenAI use 52% (from 23%). Bears on "control", not on openness. https://www.everlaw.com/blog/ai-and-law/in-house-teams-turn-to-genai-for-efficiency-raising-new-expectations-for-law/
+6. CLOC 2026 State of the Industry (Mar 2, 2026; 135 departments; Harbor 2025 Law Department Survey): technology strategy a priority for 80%. CLOC Board Chair Laura Dieudonne (Delta Air Lines), CLOC blog May 6, 2026: departments are applying AI "with serious attention to governing adoption and managing tool overload." No tool-count or integration percentage is published in the public summaries. https://cloc.org/newsdesk/cloc-releases-2026-state-of-the-industry-report-rising-legal-demand-outpaces-budget-and-staffing-growth-forcing-operational-shift/ ; https://cloc.org/blog/cloc/what-the-numbers-are-telling-us-and-what-we-owe-each-other/
+7. iManage Knowledge Work Benchmark Report 2026: "32% cite integration complexity as one of the biggest barriers to AI adoption". Sample is "over 3000 business and technical decision makers" "across industries". It is NOT a corporate-legal-only sample and the landing page gives no legal-department cut. https://imanage.com/benchmark-report-2026/
+8. Litera, "Legal Departments at the Leading Edge", July 1-2, 2026, about 100 senior legal leaders at Fortune 1000 companies (US and Canada): 57% say greater automation and legal technology use would accelerate decision-making. Nothing on integration or build. Secondary via LawNext. https://www.lawnext.com/2026/07/in-house-legal-is-winning-on-risk-instinct-losing-on-governance-infrastructure-says-new-litera-report.html
+9. ACC/MLA 2026 Law Department Management Benchmarking (local PDF text): technology section covers budget only. Median legal technology spend runs from US$65,000 (smallest companies) to US$2.5 million (largest); 53% of departments hold legal technology spending entirely within their own budget; under US$1B revenue, 61% fully contain it (55% in 2024). It contains NO data on integration, APIs, number of systems, or build versus buy.
+10. Thomson Reuters 2025 Legal Department Operations Index (local PDF text): discusses underutilized tools in the stack (e-billing/spend management 42% "valuable"), no integration or build metrics.
+
+Not found (see gaps): any 2025-2026 corporate-legal survey that reports (i) integration or API availability as a selection criterion, (ii) a build-versus-buy or "built our own" percentage, (iii) average number of systems in the legal tech stack, (iv) share manually reconciling data.
+
+---
+
+## (b) Named corporate legal departments (outside the AI industry) that built their own tools or agents
+
+Result: none verified. Site searches of Artificial Lawyer, LawNext, Above the Law, Legal Dive and ACC Corporate Counsel Now surfaced only law-firm builders (Clifford Chance / Jamie Tso, Quinn Emanuel / Christopher Kercher, Freshfields, Kirkland, Willkie, Hanson Bridgett, Bird & Bird) and vendors. Law.com Corporate Counsel and Bloomberg Law could not be searched.
+
+Closest signals, all weak:
+- Accenture legal: Mindy Lok, Global IP Legal Lead and Legal Chief Technology Officer, quoted on Anthropic's Claude for Legal page (May 12, 2026): "My legal team at Accenture put Claude to work on everyday legal matters". This is use, not a described build. Vendor page.
+- HUMAN (cybersecurity): Patty Corey, Legal Operations Manager, Bloomberg Law Jan 5, 2026, predicts teams will "use AI, vibe coding, and light tech skills to build and iterate on real solutions quickly". A forecast, not a described build. Re-read today: the other people quoted in that article are vendors or ALSPs (Icertis, ContractPodAi, Lawtrades, Epiq) plus Palo Alto Networks GC Bruce Byrd (AI-adjacent industry), who speaks of tools, not building.
+- CLOC San Francisco roundtable "Working with Agents (Agentic AI)", event page published Feb 3, 2026, moderated by Deborah Haile, Associate Director, Legal Operations, Gilead Sciences: "whether you have already built your own agents, or are just getting started". Shows peer-level building is an assumed activity; names no builds.
+- CLOC AI Intensive (press release Aug 19, 2026): practitioner-led workshops including "workflow and agent design"; first event Oct 27, 2026, New York; about 40 participants. Quoted: Alex Gao, Senior Director, Legal Operations, Hilton Worldwide (CLOC board).
+- Parker Poe / BARBRI-Lega workshop, Sept 10, 2026 (press release on LawNext Sept 16; Law.com covered it Sept 15): general counsel and legal ops leaders built and tested AI assistants side by side with firm attorneys. Named in-house participant: Zach Porfiris, general counsel, Symphonic Distribution. Law-firm-hosted, vendor platform (Lega AI Builder Lab).
+- Mark Pike (Anthropic) hearsay, AL May 12, 2026: "in-house legal ops teams are open-sourcing outside counsel management tools on GitHub so peers can fork them". No team named.
+
+---
+
+## Non-vendor practitioner voice on demand for open, buildable platforms (new, strong)
+
+Ken Callander, Managing Principal, Value Strategies LLC; former Head of Legal Operations at Uber Technologies. Above the Law, two-part series, not sponsored. Text pulled verbatim by curl.
+- Part 1, published 2026-06-15: https://abovethelaw.com/2026/06/why-you-should-choose-legal-ops-tools-you-can-build-on-part-1/
+  - "The better question for Legal Operations buyers this year is whether the tool gives your team the ability to build the agents you actually need."
+  - "Those that do not will become closed appliances running someone else's product strategy." (preceding sentence: "The tools that expose open APIs, accept structured inputs from external orchestrators, and let you define your own agent logic on top of their data are the ones positioned to grow with you.")
+  - "Ask the vendor whether you can build an agent that reads from their system, makes a decision, and writes back, all without a user clicking anything."
+  - "A tool you cannot build on becomes a ceiling on your operations the moment conditions change"
+  - Buildability test he gives: documented API covering the full data model; real-time event triggers; structured write-back without manual steps; service-account authentication for agents; rate limits sized for agents; data model stability.
+  - "Most Legal Ops buyers are still scoring vendors against the same RFP rubric they used five years ago" (his observation; cuts against any claim that openness is already a mainstream selection criterion).
+- Part 2, published 2026-06-23: https://abovethelaw.com/2026/06/why-you-should-choose-legal-ops-tools-you-can-build-on-part-1-2/
+  - "Vendors supply the system of record. The Legal Operations function holds the design."
+  - "anything that encodes how the department defines a good outcome belongs in-house"
+  - "Does the vendor provide a platform that the legal department can direct, or does the vendor attempt to own the workflow logic itself?"
+  - Cites Celonis 2026 Process Optimization Report via VentureBeat (85 percent of enterprises plan agentic deployment within three years; 76 percent say operations cannot yet support it). Cross-industry, third-hand; not checked at source.
+- Caveat: Callander is a consultant and ex-practitioner, not a sitting legal ops head. He also says teams can build "you or a partner", and that what can be partnered out includes "integration build".
+
+## Counter-view worth keeping
+- Checkbox blog, "Build vs. Buy Legal AI: The Real Cost of Tokens" (dated July 22-23, 2026, vendor): "A DIY tool that succeeds costs more every month, and the bill reports what happened last month rather than what was budgeted." No data cited. https://www.checkbox.ai/blog/build-vs-buy-legal-ai-the-real-cost-of-tokens
+- Richard Tromans, Artificial Lawyer, Apr 28, 2026 (law-firm framed): duplication cost of adding Claude beside a retained stack. https://www.artificiallawyer.com/2026/04/28/is-claude-really-cheaper-than-your-legal-tech-stack/
+- Mitratech CLOC release, May 11, 2026: "Legal teams don't want another AI tool to evaluate; they want AI that already understands their matters, their spend, and their workflows." (embedded-AI position; exact wording from fetch-tool extraction, not re-verified by raw HTML).
+
+## Bottom line for the article claims
+1. "Departments want more control": supported by survey data on insourcing and law-firm reliance (ACC/Everlaw 64%), by CLOC priorities (80% technology strategy), and by one practitioner essay. Reasonable.
+2. "Departments want to build custom solutions": supported by practitioner commentary and CLOC programming, NOT by any survey percentage and NOT by any verified named corporate build outside the AI industry. Phrase as an emerging practice, not a measured trend.
+3. "Vendors must provide open environments": this remains an argument, voiced by a former Uber legal ops head, by vendors with MCP products (LawVu, Brightflag, iManage) and by trade press. No corporate-legal survey found ranks openness or API access as a selection criterion; Callander says most buyers still use an older rubric.
+4. Fragmentation for Article 3: only vendor-commissioned data points (Icertis 23% isolation; LegalOn 8.8% connected; Counselwell/Spellbook 36% integration barrier) plus CLOC chair's "tool overload" remark. No count of systems per department found.

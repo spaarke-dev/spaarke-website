@@ -3,6 +3,11 @@
 This is the root routing doc. Before doing anything, identify what
 kind of work the session is about and route to the right place.
 
+> **Work in progress:** [`current-task.md`](current-task.md) records the
+> state of the Legal Operations Intelligence series, what it is waiting
+> on, and the conventions that apply to it. Read it before picking that
+> work up. Delete it when the series closes.
+
 ## Domain dispatcher
 
 | If the work is… | Read first |

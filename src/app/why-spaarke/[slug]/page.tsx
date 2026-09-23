@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 import { Button, Shell, Slab } from "@/components/primitives";
 import { ArticleHeader } from "@/components/article/ArticleHeader";
 import { ArticleTOC } from "@/components/article/ArticleTOC";
@@ -54,6 +55,7 @@ export default async function WhySpaarkeArticle({ params }: Props) {
     options: {
       parseFrontmatter: false,
       mdxOptions: {
+        remarkPlugins: [remarkGfm],
         rehypePlugins: [rehypeSlug],
       },
     },

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 520" role="img" aria-labelledby="ex-title ex-desc" font-family="system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+  <title id="ex-title">The readiness timeline</title>
+  <desc id="ex-desc">A timeline with proactive readiness before the event and reactive readiness after it, and beneath both a single band naming the six signals that serve each: business impact, risk level, cost, timing, required skills, and resource availability.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#A8C2FF"/>
+    </marker>
+    <marker id="arrowHot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4C63FF"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="1238" height="518" rx="14" fill="#13132B" stroke="#2A2A52" stroke-width="2"/>
+    <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">The same six signals serve proactive readiness before an event</text>
+    <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">and reactive readiness after it.</text>
+    <line x1="70" y1="250" x2="1170" y2="250" stroke="#A8C2FF" stroke-width="2" opacity="0.55"/>
+    <polygon points="620,220 646,250 620,280 594,250" fill="#4C63FF"/>
+    <text x="324" y="128" text-anchor="middle" font-size="20" fill="#E8ECFF" font-weight="600">Proactive</text>
+    <text x="620" y="128" text-anchor="middle" font-size="20" fill="#E8ECFF" font-weight="600">The event</text>
+    <text x="944" y="128" text-anchor="middle" font-size="20" fill="#E8ECFF" font-weight="600">Reactive</text>
+    <rect x="80" y="154" width="152" height="56" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="156" y="187.66666666666666" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">Spend trend</text>
+    <rect x="248" y="154" width="152" height="56" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="324" y="187.66666666666666" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">Capacity gap</text>
+    <rect x="416" y="154" width="152" height="56" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="492" y="187.66666666666666" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">Recurring risk</text>
+    <rect x="700" y="154" width="152" height="56" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="776" y="187.66666666666666" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">Subpoena</text>
+    <rect x="868" y="154" width="152" height="56" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="944" y="187.66666666666666" text-anchor="middle" font-size="17" fill="#E8ECFF" font-weight="500">Budget overrun</text>
+    <rect x="1036" y="154" width="152" height="56" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="1112" y="187.66666666666666" text-anchor="middle" font-size="15" fill="#E8ECFF" font-weight="500">Sudden departure</text>
+    <line x1="156" y1="210" x2="156" y2="240" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="324" y1="210" x2="324" y2="240" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="492" y1="210" x2="492" y2="240" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="776" y1="210" x2="776" y2="240" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="944" y1="210" x2="944" y2="240" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="1112" y1="210" x2="1112" y2="240" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <path d="M 324 284 L 324 312 L 620 312 L 944 312 L 944 284" fill="none" stroke="#A8C2FF" stroke-width="1.6" opacity="0.7"/>
+    <text x="620" y="348" text-anchor="middle" font-size="19" fill="#E8ECFF" font-weight="600">Both are read from the same six signals</text>
+    <rect x="35" y="372" width="190" height="62" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="130" y="408.3333333333333" text-anchor="middle" font-size="16" fill="#E8ECFF" font-weight="500">Business impact</text>
+    <rect x="231" y="372" width="190" height="62" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="326" y="408.3333333333333" text-anchor="middle" font-size="16" fill="#E8ECFF" font-weight="500">Risk level</text>
+    <rect x="427" y="372" width="190" height="62" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="522" y="408.3333333333333" text-anchor="middle" font-size="16" fill="#E8ECFF" font-weight="500">Cost</text>
+    <rect x="623" y="372" width="190" height="62" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="718" y="408.3333333333333" text-anchor="middle" font-size="16" fill="#E8ECFF" font-weight="500">Timing</text>
+    <rect x="819" y="372" width="190" height="62" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="914" y="408.3333333333333" text-anchor="middle" font-size="16" fill="#E8ECFF" font-weight="500">Required skills</text>
+    <rect x="1015" y="372" width="190" height="62" rx="9" fill="#262450" stroke="#4060DC" stroke-width="1.8"/>
+    <text x="1110" y="408.3333333333333" text-anchor="middle" font-size="15" fill="#E8ECFF" font-weight="500">Resource availability</text>
+</svg>

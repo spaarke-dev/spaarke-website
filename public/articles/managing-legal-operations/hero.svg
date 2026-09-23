@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">The New Mandate for Legal Operations</title>
+  <desc id="hero-desc">Three angled navy planes overlapping at a single point on the left of a deep navy field, a bright blue hexagon centred on that point, and a white line running from it to the right that ends in a bright blue dot, suggesting three changes converging on one decision.</desc>
+
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="55%" r="82%">
+      <stop offset="0%" stop-color="#34325E"/>
+      <stop offset="52%" stop-color="#23224A"/>
+      <stop offset="100%" stop-color="#161630"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.30"/>
+      <stop offset="55%" stop-color="#7B5BFF" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="plane" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3D3B72"/>
+      <stop offset="100%" stop-color="#26244E"/>
+    </linearGradient>
+    <linearGradient id="planeMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#332E62"/>
+      <stop offset="100%" stop-color="#26244E"/>
+    </linearGradient>
+    <linearGradient id="planeFocal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4D4890"/>
+      <stop offset="100%" stop-color="#332E62"/>
+    </linearGradient>
+    <linearGradient id="planeFlat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4D4890"/>
+      <stop offset="100%" stop-color="#3D3B72"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="540" cy="450" r="320" fill="url(#halo)"/>
+    <polygon points="542.24,497.96 166.52,253.96 209,188.54 584.72,432.54" fill="url(#planeFlat)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.95"/>
+    <polygon points="568,489 120,489 120,411 568,411" fill="url(#planeFlat)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.95"/>
+    <polygon points="584.72,467.46 209,711.46 166.52,646.04 542.24,402.04" fill="url(#planeFlat)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.95"/>
+    <line x1="540" y1="450" x2="1214" y2="450" stroke="#FFFFFF" stroke-width="3" opacity="0.92"/>
+    <circle cx="1246" cy="450" r="20" fill="#4C63FF" stroke="#A8C2FF" stroke-width="3"/>
+    <polygon points="586.77,423 586.77,477 540,504 493.23,477 493.23,423 540,396" fill="#4C63FF" stroke="#A8C2FF" stroke-width="3" stroke-linejoin="round"/>
+</svg>

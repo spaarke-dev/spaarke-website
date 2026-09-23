@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">The Legal Operations Intelligence Ontology</title>
+  <desc id="hero-desc">A constellation of small geometric nodes joined by fine light blue lines on a deep navy field, three heavier hexagons at the center and a single electric blue edge reaching out to a lone node at the right, suggesting an ontology of connected legal entities.</desc>
+
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="55%" r="82%">
+      <stop offset="0%" stop-color="#34325E"/>
+      <stop offset="52%" stop-color="#23224A"/>
+      <stop offset="100%" stop-color="#161630"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.30"/>
+      <stop offset="55%" stop-color="#7B5BFF" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="plane" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3D3B72"/>
+      <stop offset="100%" stop-color="#26244E"/>
+    </linearGradient>
+    <linearGradient id="planeMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#332E62"/>
+      <stop offset="100%" stop-color="#26244E"/>
+    </linearGradient>
+    <linearGradient id="planeFocal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4D4890"/>
+      <stop offset="100%" stop-color="#332E62"/>
+    </linearGradient>
+    <linearGradient id="planeFlat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4D4890"/>
+      <stop offset="100%" stop-color="#3D3B72"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="574" cy="486" r="300" fill="url(#halo)"/>
+    <line x1="566" y1="372" x2="482" y2="214" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="566" y1="372" x2="668" y2="258" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="566" y1="372" x2="330" y2="300" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="462" y1="552" x2="352" y2="470" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="462" y1="552" x2="300" y2="636" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="462" y1="552" x2="520" y2="706" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="694" y1="534" x2="726" y2="690" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="694" y1="534" x2="888" y2="566" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="694" y1="534" x2="806" y2="402" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="330" y1="300" x2="352" y2="470" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="806" y1="402" x2="888" y2="566" stroke="#A8C2FF" stroke-width="1.6" opacity="0.8"/>
+    <line x1="566" y1="372" x2="462" y2="552" stroke="#A8C2FF" stroke-width="2" opacity="0.85"/>
+    <line x1="462" y1="552" x2="694" y2="534" stroke="#A8C2FF" stroke-width="2" opacity="0.85"/>
+    <line x1="694" y1="534" x2="566" y2="372" stroke="#A8C2FF" stroke-width="2" opacity="0.85"/>
+    <line x1="694" y1="534" x2="1298" y2="452" stroke="#000BFF" stroke-width="3.2" opacity="0.95"/>
+    <circle cx="330" cy="300" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
+    <circle cx="352" cy="470" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
+    <circle cx="300" cy="636" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
+    <circle cx="520" cy="706" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
+    <circle cx="726" cy="690" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
+    <circle cx="806" cy="402" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
+    <circle cx="668" cy="258" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
+    <circle cx="888" cy="566" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
+    <circle cx="482" cy="214" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
+    <circle cx="1320" cy="450" r="26" fill="#3D3B72" stroke="#000BFF" stroke-width="2.6"/>
+    <polygon points="598.91,353 598.91,391 566,410 533.09,391 533.09,353 566,334" fill="#4D4890" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round"/>
+    <polygon points="494.91,533 494.91,571 462,590 429.09,571 429.09,533 462,514" fill="#4D4890" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round"/>
+    <polygon points="726.91,515 726.91,553 694,572 661.09,553 661.09,515 694,496" fill="#4D4890" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round"/>
+</svg>

@@ -1,8 +1,19 @@
-# Good articles — annotated extracts
+# Good articles: annotated extracts
 
-Annotated passages from the strongest articles in `content/blog/`. Each
-extract is verbatim. The annotations name the specific traits that
-make these passages work, so a draft can reach for them deliberately.
+This file collects passages from the published library that model traits the revised style guide still asks for. It is a secondary reference. The primary positive model is `consulting-register.md`, which describes the target register, quotes the publications we are measured against, and gives model passages for an opening, an evidence paragraph, a transition, and a close. Read that file first, and use this one to see how the same traits have appeared in our own subject matter.
+
+**The extracts have been edited to the September 2026 standard and are no longer verbatim.** Earlier versions of this file quoted the published articles exactly, and their annotations praised devices that the 2026-09-21 revision of `../style-guide.md` prohibits: em dashes, short parallel landings, one-sentence paragraphs used as hinges, negation followed by a diagnosis, two-noun framings, escalating three-sentence reveals, and a "closing-rhythm signature". Every extract that remains has been re-punctuated and lightly edited, and each one still names its source article. A line headed "What was edited" follows each extract, so that the changes are visible. The published articles themselves have not been changed, which means that an extract will not match the text on the site. Do not pattern-match against the published articles, and do not restore the original wording.
+
+The extracts model six traits that still hold:
+
+1. A concrete scene comes before any claim.
+2. Evidence is named, and the number is interpreted.
+3. The vocabulary is specific and operational.
+4. Adjacent categories receive credit.
+5. Knowledge is quoted in the voice of the person who held it.
+6. Paired examples show a difference that a description could only assert.
+
+The constructions to avoid are catalogued in `ai-tells.md`, and section 7 of that file rewrites several of the passages that this file used to praise.
 
 Source articles (all from `content/blog/`):
 
@@ -18,38 +29,33 @@ Source articles (all from `content/blog/`):
 
 ### Why this article
 
-Cleanest example of the category-definition move in the library. Opens
-with a concrete scene, names the structural problem in operator terms,
-and distinguishes the term from adjacent categories without
-straw-manning.
+This article is the library's clearest example of a category definition. It opens with a concrete scene, describes the structural problem in operational terms, and distinguishes the new term from adjacent categories while giving those categories credit.
 
-### Extract: opening
+### Extract: opening (trait 1)
 
-> Consider the legal department of a Fortune 500 company. It employs some of the most analytically rigorous professionals in the enterprise. It manages outside counsel relationships worth tens of millions of dollars annually. It oversees risk that can alter the trajectory of the entire business.
+> Consider the legal department of a Fortune 500 company. It employs some of the most analytically rigorous professionals in the enterprise, manages outside counsel relationships worth tens of millions of dollars annually, and oversees risk that can alter the trajectory of the entire business.
 >
-> Now consider how that department actually operates.
->
-> Matter data lives in one system. Invoices flow through another. Contracts sit in a third. Institutional knowledge — the rationale behind a settlement strategy, the context for choosing one firm over another, the precedent that should inform a new dispute — lives in the heads of senior attorneys. When those attorneys leave, the knowledge leaves with them.
+> The information that supports this work is far less organized than the work itself. Matter data lives in one system, invoices flow through another, and contracts sit in a third. Institutional knowledge (the rationale behind a settlement strategy, the context for choosing one firm over another, and the precedent that should inform a new dispute) lives in the heads of senior practitioners, and when those practitioners leave, the knowledge leaves with them.
 
-**What's working here**:
+**What is working here**:
 
-- Opens with a concrete invitation ("Consider the legal department of a Fortune 500 company"), not a generic abstraction. The reader is placed inside a specific scene before any claim is made.
-- "Now consider how that department actually operates" is a one-sentence paragraph used as a hinge. The structure does the argumentative work; no rhetorical question, no "but here's the thing."
-- Three short parallel sentences ("Matter data lives in one system. Invoices flow through another. Contracts sit in a third.") set up the longer institutional-knowledge sentence to land harder.
+- The reader is placed inside a specific scene, with its scale stated in dollars and in kinds of risk, before any claim is made.
+- The second paragraph opens with a topic sentence that states the contrast, and the sentences after it supply the detail.
+- The parenthetical list names three particular kinds of knowledge, which is more persuasive than the abstract noun "context" would be.
 
-### Extract: middle (category distinction)
+**What was edited**: The published version set the department's three attributes and its three systems as two runs of short parallel sentences, used a one-sentence paragraph as a hinge between them, and set off the list with a pair of em dashes. The edited version joins each run into one sentence, replaces the hinge with a topic sentence, and uses parentheses. In a new article, a scene of this kind must be short enough for the thesis to arrive within the first 150 words.
 
-> It is worth distinguishing LOI from adjacent categories that it builds upon but is not limited to:
->
-> - **Legal technology** refers to individual tools — contract lifecycle management, e-billing platforms, document management systems. LOI connects and transcends these tools.
-> - **Legal analytics** refers to dashboards and reports. LOI includes analytics but extends to prediction and recommendation.
-> - **AI for lawyers** typically means document review and contract analysis. LOI applies intelligence to the full operational surface of the legal department, not just document-level tasks.
+### Extract: middle, the category distinction (trait 4)
 
-**What's working here**:
+> LOI builds on three adjacent categories, and it is useful to say how it differs from each. Legal technology refers to individual tools, such as contract lifecycle management, e-billing platforms, and document management systems; LOI connects the data that those tools hold. Legal analytics refers to dashboards and reports, which LOI includes and extends to prediction and recommendation. AI for lawyers typically means document review and contract analysis, whereas LOI applies intelligence to the full operational surface of the legal department.
 
-- Distinguishes the new category by naming adjacent categories the reader already knows. The reader's existing mental model becomes the ladder, not the obstacle.
-- "Builds upon but is not limited to" credits the adjacent categories instead of dismissing them. Avoids the startup tic of straw-manning competitors.
-- Each bullet's second sentence states a specific operational extension, not a superlative.
+**What is working here**:
+
+- The passage distinguishes the new category by naming adjacent categories that the reader already knows, so the reader's existing understanding becomes the starting point.
+- The phrase "builds on" credits the adjacent categories, and the passage avoids the startup habit of misrepresenting the alternatives in order to dismiss them.
+- Each comparison ends on a specific operational extension, and none ends on a superlative.
+
+**What was edited**: The published version was a list of three bold lead-in bullets with an em dash, an opening filler phrase, and a closing `not just` contrast. The three comparisons form one argument, so the edited version is a paragraph (style guide, section 5, rule 26).
 
 ---
 
@@ -57,48 +63,31 @@ straw-manning.
 
 ### Why this article
 
-Tightest architectural piece in the library. Each layer gets its own
-register (Data is operational, Memory is reflective, Inference is
-comparative). The closing names a system effect in plain prose
-without reaching for "synergy" as decoration.
+This is the most carefully structured architectural piece in the library. Its value as a model lies in two passages: one that describes institutional knowledge in the working vocabulary of a negotiator, and one that sets two answers to the same question side by side.
 
-### Extract: opening (Layer 2: Memory parallels)
+### Extract: the Memory layer (trait 3)
 
-> - **Documents capture outcomes.** A signed contract shows the final terms. Memory captures the negotiation dynamics — what was conceded, what leverage worked, and what the fallback position was.
-> - **Documents capture snapshots.** A matter summary tells you what happened. Memory captures the pattern — how this matter type typically unfolds, where delays occur, and what early signals predict escalation.
-> - **Documents are static.** Once filed, they sit. Memory compounds — each new matter adds context that enriches the understanding of every similar matter that follows.
+> A signed contract records the final terms. The negotiation that produced them (what was conceded, which arguments worked, and what the fallback position was) is recorded nowhere unless the department captures it. A matter summary likewise records what happened in one matter and leaves out the pattern: how this type of matter typically unfolds, where delays occur, and which early signals predict escalation. Memory, as the article uses the term, is the record of those negotiations and patterns, and it grows because each new matter adds context to the similar matters that follow.
 
-**What's working here**:
+**What is working here**:
 
-- Three bullets in identical structure: **Bolded contrast about Documents.** + one-sentence example + Memory-captures construction. Reading them in sequence builds an internalized rhythm.
-- Each bullet is a two-noun framing (outcomes vs. negotiation dynamics; snapshots vs. pattern; static vs. compounds). The contrasts let the reader hold the thesis in working memory.
-- Specific operational vocabulary (conceded, leverage, fallback) instead of abstractions like "context" or "nuance."
+- The vocabulary is specific and operational ("conceded", "fallback position", "early signals", "escalation"), where a weaker draft would have written "context" or "nuance".
+- Each abstract claim about memory is tied to a document that the reader handles every week, such as a signed contract or a matter summary.
+- The definition arrives after the examples, so the term labels something that the reader has already recognized.
 
-### Extract: middle (side-by-side voice pattern)
+**What was edited**: The published version was three bold lead-in bullets in identical structure, each built on a two-noun contrast and an em dash. The edited version is a paragraph of complete sentences. One phrase that used a word from the do-not-say list in `vocabulary.md`, section 2, was replaced with "which arguments worked".
 
-> Consider the difference in practice:
->
-> - **Generic AI**: "Similar matters in the industry typically cost between $200K and $500K." Useful as a benchmark, but too broad to drive decisions.
-> - **Legal IQ stack Inference**: "Based on 200 similar matters your department has handled, this one will likely cost $280K and take 14 months. The last three matters of this type with this outside counsel came in 12% over initial estimate — consider building that into the budget."
->
-> That is the difference between information and intelligence. The first gives you a range. The second gives you a decision framework built on your own history.
+### Extract: two answers to one question (trait 6)
 
-**What's working here**:
+> Consider a budgeting question put to two systems. A generic AI tool answers, "Similar matters in the industry typically cost between $200K and $500K." That answer is a useful benchmark, but it is too broad to drive a decision. A system that draws on the department's own records answers, "Based on 200 similar matters your department has handled, this one will likely cost $280K and take 14 months. The last three matters of this type with this outside counsel came in 12% over the initial estimate, so consider building that margin into the budget." The second answer gives the department a forecast built on its own history and a specific adjustment to make.
 
-- Two quoted examples in parallel structure. The reader sees the difference rather than being told about it. The library's most reliable rhetorical move and the cleanest instance of it.
-- The second example contains specific numbers (200, $280K, 14 months, 12%) where the first contains a range. The contrast in specificity is itself the argument — generic AI rounds; grounded inference commits.
+**What is working here**:
 
-### Extract: closing (How the Three Layers Compound)
+- Two quoted examples stand side by side, so the reader sees the difference and does not have to take it on trust. This is the most reliable device in the library.
+- The second example contains specific numbers (200 matters, $280K, 14 months, 12%), whereas the first contains a range. The contrast in specificity carries the argument.
+- The generic answer receives credit as a benchmark before its limit is stated.
 
-> This is a flywheel, not a feature stack. Point solutions can never achieve this because they operate in isolation. Each tool optimizes its own narrow function without contributing to the intelligence of the whole.
->
-> This is the fundamental architectural difference between Legal Operations Intelligence and assembling a collection of legal tech tools. One learns. The other just runs.
-
-**What's working here**:
-
-- "One learns. The other just runs." — two short sentences in parallel, each four words or fewer. After the longer compounding-returns paragraph, this lands as a controlled-rhythm punchline.
-- "This is a flywheel, not a feature stack" — a two-noun framing reused as the section's anchor. The article does not name "flywheel" until it has shown the system effect across the previous three layers.
-- No CTA. Ends on the argument's punchline.
+**What was edited**: The published version presented the two answers as bold-labeled bullets, joined the recommendation to the second answer with an em dash, and closed on a short symmetrical pair of sentences. The edited version is one paragraph, and its last sentence states what the second answer provides.
 
 ---
 
@@ -106,44 +95,19 @@ without reaching for "synergy" as decoration.
 
 ### Why this article
 
-Cleanest example of the library's argument structure: name the gap,
-define it precisely, explain why the obvious fix won't work. "Plausible
-bad output" is a coined phrase the rest of the platform can reuse. The
-model when a draft has to dismantle a seductive shortcut before naming
-the harder path.
+The article coins a term, "plausible bad output", that it defines and then uses, which is the condition under which a coined term is justified (`ai-tells.md`, section 5.6). It builds the term on a saying that the reader already knows.
 
-### Extract: opening (defining the gap)
+### Extract: "plausible bad output" (trait 6)
 
-> The AI readiness gap is not about technology maturity. The models are capable. The tools exist. The gap is operational: the distance between the state of your legal data, processes, and institutional knowledge and the minimum threshold required for AI to produce genuinely useful output.
+> "Garbage in, garbage out" has an updated version, and the updated version is more dangerous than the original. When a spreadsheet contains bad data, its reader can at least see that it is a spreadsheet. When an AI assistant returns a well-formatted, articulate answer built on incomplete and inconsistent inputs, the answer looks authoritative and sounds right, and it may be entirely wrong. The risk with AI is therefore *plausible* bad output: the kind that becomes embedded in decisions before anyone realizes that the foundation was unreliable.
 
-**What's working here**:
+**What is working here**:
 
-- "Not about technology maturity. The models are capable. The tools exist." — three short sentences clearing the reader's likely first explanation before naming the actual one. The same negation-then-diagnosis move as `institutional-knowledge`'s opening.
-- Defines a new term ("readiness gap") by stating what it is *not* before stating what it is. The definition lands as a correction, not an assertion.
+- The passage updates a saying that the reader already accepts, which is a more modest and more credible move than announcing a new framework.
+- The spreadsheet and the AI assistant form a pair, and the pair shows why the second failure is harder to detect than the first.
+- One word is italicized, and the argument depends on that word. The colon introduces a definition after a complete clause, which is the correct use of the mark.
 
-### Extract: middle ("plausible bad output")
-
-> The AI does not produce intelligence. It produces confident-sounding noise. This is the updated version of "garbage in, garbage out" — and it is more dangerous than the original. When a spreadsheet gives you bad data, you can see it is a spreadsheet. When an AI assistant gives you a well-formatted, articulate answer built on incomplete and inconsistent inputs, it looks authoritative. It sounds right. And it may be entirely wrong.
->
-> With AI, the risk is not bad output. It is *plausible* bad output — the kind that gets embedded into decisions before anyone realizes the foundation was unreliable.
-
-**What's working here**:
-
-- Updates a cliché the reader already knows ("garbage in, garbage out") rather than asserting a new framework. Earns the right to coin "plausible bad output" by first acknowledging the prior formulation.
-- Italicizes one word (*plausible*) in the coinage. The emphasis is structural, not decorative — the whole argument turns on that word.
-- Three short sentences in escalating reveal ("It looks authoritative. It sounds right. And it may be entirely wrong.") — the cadence simulates the experience of trusting then questioning AI output.
-
-### Extract: closing (the sequencing argument)
-
-> An AI tool layered on fragmented data gives you fragmented answers — faster. It does not solve the underlying problem. It accelerates it.
->
-> The tool is not the bottleneck. The data architecture is.
-
-**What's working here**:
-
-- "Faster" as a one-word landing on an em-dash. The hedge is the argument — the tool *does* deliver something, but the something is acceleration of the wrong thing.
-- "It does not solve the underlying problem. It accelerates it." — two short sentences where the second inverts the first by one verb. Compresses an entire critique of AI-as-shortcut into eight words.
-- "The tool is not the bottleneck. The data architecture is." — two-sentence close in the library's signature short-parallel landing form. Names the diagnosis in operator terms; refuses to name a product as the answer.
+**What was edited**: The published version opened with a negation followed by a correction, used two em dashes, and built to three short sentences in an escalating reveal, the last of which opened with "And". The edited version states the claim positively and folds the three short sentences into one.
 
 ---
 
@@ -151,38 +115,36 @@ the harder path.
 
 ### Why this article
 
-Strongest example of a financial argument written for a non-financial
-reader. Grounds a category claim in an analogy the reader already
-accepts (CAC, procurement variance) before extending to legal. The
-"Reporting vs. Intelligence" contrast in the back half is reusable as
-a model for any "what does this look like" passage.
+This is the library's strongest example of a financial argument written for a reader who is not a finance specialist. It grounds its claim in comparisons that the reader already accepts, and its contrast between a report and a forecast can serve as a model for any passage that has to show what a capability looks like in use.
 
-### Extract: opening (The Last Department Without a Dashboard)
+### Extract: opening comparison (traits 1 and 6)
 
-> The CFO can tell you marketing's customer acquisition cost by channel, in real time. Procurement tracks supplier spend against negotiated rates with automated variance alerts. These are table stakes for any function managing significant budget.
+> The CFO can tell you marketing's customer acquisition cost by channel in real time, with confidence intervals. Procurement tracks supplier spend against negotiated rates, with automated variance alerts and external benchmarks. Those functions reached that position because they built an architectural layer above their data: unified models, retained context, and inference applied across the history of the function.
 >
-> Now ask the general counsel a comparable question. Your company spent $4.2 million on employment litigation last year. Was that high? Low? Reasonable? Compared to what? Most GCs cannot answer — not because they lack judgment, but because they lack the data architecture to make the comparison meaningful.
+> A comparable question can be put to the general counsel. Suppose that the company spent $4.2 million on employment litigation last year. Most general counsel cannot say with confidence whether that figure was high, low, or reasonable, or what it should be compared with (the department's own history, an industry average, or the outcomes that those matters produced). Legal operations teams have done the administrative work, and the dashboards now in place aggregate and report. They do not yet reason across the department's history.
 
-**What's working here**:
+**What is working here**:
 
-- Anchors the claim by citing functions the reader already trusts (marketing's CAC, procurement variance alerts). The legal reader cannot dispute that those capabilities exist, so the comparison forces self-examination.
-- Four short questions ("Was that high? Low? Reasonable? Compared to what?") simulate the actual experience of being asked. The reader feels the inability to answer rather than being told about it.
-- "Not because they lack judgment, but because they lack the data architecture" — acknowledges the reader's competence before naming the structural problem.
+- The claim is anchored in functions that the reader already trusts, namely marketing and procurement. The legal reader cannot dispute that those capabilities exist, so the comparison prompts an honest look at the legal department.
+- The questions that a general counsel would be asked appear as content inside a sentence, with a specific dollar figure, and the reader can put the same questions to their own department.
+- The passage acknowledges the work that legal operations teams have already done before it names the structural gap, which keeps the tone collegial.
 
-### Extract: closing (From Reporting to Intelligence)
+**What was edited**: The extract now follows the current published text, which was revised after the earlier version of this file was written. The published version staged the questions as a run of one-word fragments, gave its reasons in two `not because` constructions, and used two em dashes. The edited version states each reason positively.
 
-> **Reporting:** "We spent $4.2 million on employment litigation last year."
+### Extract: a report and a forecast (trait 6)
+
+> A report says, "We spent $4.2 million on employment litigation last year." The statement is accurate, and it is of little use for a decision, because it says what happened without saying whether the number is good or bad, what drove it, or what to expect next.
 >
-> That is a fact. It is accurate. And it is almost entirely useless for decision-making. It tells you what happened. It does not tell you whether the number is good or bad, what drove it, or what to expect next.
->
-> **Intelligence:** "Based on current matter pipeline and historical patterns, employment litigation spend will reach $4.8 million this year, with 60% concentrated in Q2 and Q3 due to seasonal filing patterns. Three matters currently in early stages match the profile of cases that historically exceed initial budget estimates by 25% or more. Adjusting forecasts accordingly."
+> Intelligence says, "Based on the current matter pipeline and historical patterns, employment litigation spend will reach $4.8 million this year, with 60% concentrated in Q2 and Q3 because of seasonal filing patterns. Three matters now in their early stages match the profile of cases that have historically exceeded their initial budget estimates by 25% or more, and the forecast has been adjusted accordingly." The general counsel can act on the second statement (by adjusting budgets, revisiting staffing, or engaging alternative counsel for overflow) before the spend materializes.
 
-**What's working here**:
+**What is working here**:
 
-- Two labeled quotes in parallel, the second three-and-a-half times longer than the first. The visual asymmetry is the argument — reporting is short because it has nothing to say; intelligence is long because it carries decision-ready content.
-- The first uses round numbers ($4.2M, "last year"). The second uses operational variables (60%, Q2 and Q3, 25%). The contrast in granularity tracks the contrast in usefulness.
-- "That is a fact. It is accurate. And it is almost entirely useless for decision-making." — three short sentences crediting the report on different dimensions before disqualifying it. The reader cannot dismiss the comparison as unfair.
-- "Adjusting forecasts accordingly" closes the Intelligence quote in the operational register a department head would actually use.
+- Two quoted statements stand in parallel, and the second is more than three times as long as the first. The report is short because it has little to say, and the forecast is long because it carries content that a decision can use.
+- The first statement uses a round annual total. The second uses operational variables (60%, two named quarters, 25%), and the difference in granularity follows the difference in usefulness.
+- The report is credited as accurate before its limit is stated, so the reader cannot dismiss the comparison as unfair.
+- The passage ends on what the general counsel can do with the second statement, which is a consequence for the reader.
+
+**What was edited**: The published version used bold labels, commented on the report in three short sentences (the third opening with "And"), ended the forecast on a verbless fragment, and set off the list of actions with em dashes. The edited version uses complete sentences throughout.
 
 ---
 
@@ -190,45 +152,46 @@ a model for any "what does this look like" passage.
 
 ### Why this article
 
-The most concrete piece in the library. Four named scenarios in "The
-Hidden Cost of Knowledge Loss" do more argumentative work than pages
-of abstraction would. The model for writing about people-driven
-legal-ops problems without going maudlin or generic.
+This is the most concrete piece in the library. The four scenarios in its section on the hidden cost of knowledge loss do more for the argument than pages of abstraction would, and the article interprets its one external figure with care.
 
-### Extract: opening
+### Extract: a named estimate, interpreted (trait 2)
 
-> Approximately 20% of the legal workforce turns over in any given year. Retirement, lateral moves, promotions, burnout — the reasons vary, but the result is the same. Every departure is an unrecoverable data loss event. Not because the documents disappear. The briefs are still on the server. The contracts are still in the repository.
->
-> What disappears is context.
+> Research from the Center for American Progress estimates that replacing a highly skilled employee costs 100% to 213% of the employee's annual salary. That figure captures recruitment and training. It leaves out the value of lost institutional context, meaning the months that a replacement needs to rebuild pattern recognition, relationship intelligence, and decision-making shortcuts. For legal departments, where individual decisions can carry seven-figure consequences, the full cost is therefore likely to be higher than the estimate.
 
-**What's working here**:
+**What is working here**:
 
-- Specific statistic (20%) anchors the argument before any claim is made.
-- "Retirement, lateral moves, promotions, burnout" — four-element em-dash list in escalating order of unmanageability.
-- "Not because the documents disappear. The briefs are still on the server. The contracts are still in the repository." — three short negation sentences clear the reader's likely first explanation.
-- "What disappears is context." — one-sentence paragraph. Four words landing the entire opening.
+- The source is named in the sentence that carries the number, and the range is written with "to".
+- The sentences that follow say what the figure measures and what it omits, which is the interpretation that the style guide requires of every statistic (section 3).
+- The final sentence carries one hedge ("likely to be"), and it draws the consequence for legal departments with "therefore".
 
-### Extract: middle (named scenarios)
+**What was edited**: This extract replaces the article's opening, which the earlier version of this file quoted. That opening rested on a 20% annual turnover figure that `research-sources.md` has since retired. In the present extract, a sentence that opened with "But" and an em dash were removed, and "almost certainly higher than any study has measured" became a single calibrated hedge. The extract names its source but gives no year, so a new piece must add the year of the study and confirm the figure against the source before reuse.
 
-> **The contract manager who remembered the hard-won terms.** "We already tried that clause with this counterparty in 2023. They rejected it, but accepted it with this modification — and here is why that modification gave us better protection." Without this person, the next negotiation starts from zero.
+### Extract: knowledge in the voice of the person who held it (trait 5)
 
-**What's working here**:
+> The contract manager remembered the hard-won terms: "We already tried that clause with this counterparty in 2023. They rejected it, but they accepted it with this modification, and I can explain why the modification gave us better protection." Without this person, the next negotiation starts from zero, and the team spends weeks arriving at a position that it had already reached two years earlier.
 
-- Anchored to a specific role (contract manager) rather than a generic "experienced employee." The reader builds a mental picture of a real person before the consequence is named.
-- Quotes the institutional knowledge in the voice of the person who held it. Showing what the knowledge sounds like is more persuasive than describing it.
-- The quoted sentence contains specific operational variables (year 2023, "this counterparty," "this modification") that an outsider could not have invented.
+**What is working here**:
 
-### Extract: closing
+- The scenario is anchored to a specific role (a contract manager), so the reader pictures a colleague before the consequence is named.
+- The knowledge is quoted in the voice of the person who held it, and showing what the knowledge sounds like is more persuasive than describing it. The article presents the speaker as an illustrative scenario, and a draft must never present an invented quotation as the words of a real person (`ai-tells.md`, section 6.7).
+- The quoted sentences contain operational details (the year 2023, "this counterparty", "this modification") of the kind that only someone who did the work would mention.
 
-> An organization without operational memory resets to zero with every departure, every reorganization, every new hire. It re-learns lessons it already learned. It re-makes mistakes it already made. It pays — in time, in money, in outcomes — for knowledge it once had and failed to retain.
->
-> The cost is invisible on any single day. Over a decade, it is enormous.
-
-**What's working here**:
-
-- "It re-learns lessons it already learned. It re-makes mistakes it already made." — two short sentences in identical structure. The repetition mimics the repetition the article is criticizing.
-- Two-sentence close: long-then-short, abstract-then-concrete, individual-then-cumulative. The library's closing-rhythm signature.
+**What was edited**: The published version opened with a bold lead-in phrase and joined the last clause of the quotation with an em dash and the words `here is why`. The edited version uses a plain sentence to introduce the quotation.
 
 ---
 
-*Locked 2026-05-07 — see git log for history.*
+## Extracts removed in this revision
+
+Five extracts were dropped because their only value was a device that the style guide now prohibits. They are listed here so that nobody restores them.
+
+- `the-iq-stack`, closing: a two-noun tagline followed by the clipped pair `One learns. The other just runs.` A rewrite is in `ai-tells.md`, section 7, item 4.
+- `the-ai-readiness-gap`, opening: a definition delivered as a negation followed by a diagnosis, in three short sentences.
+- `the-ai-readiness-gap`, closing: a one-word landing on an em dash and a two-sentence negation closer. A rewrite is in `ai-tells.md`, section 7, item 9.
+- `institutional-knowledge`, opening: an em dash list, three short negation sentences, a one-sentence paragraph, and a retired statistic. A rewrite of the one-sentence paragraph is in `ai-tells.md`, section 7, item 5.
+- `institutional-knowledge`, closing: an anaphora pair, an em dash pair, and the two-sentence ending that the earlier version called the library's "closing-rhythm signature". A rewrite is in `ai-tells.md`, section 7, item 10.
+
+For a model of a close that ends on consequence, use `consulting-register.md`, section 6.5.
+
+---
+
+*Revised 2026-09-21 (extracts edited to the September 2026 standard, no em dashes), see git log for history.*

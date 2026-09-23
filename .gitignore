@@ -61,3 +61,6 @@ next-env.d.ts
 
 # Windows shell shortcuts
 *.lnk
+
+# Word exports for content review (scripts/export-drafts-to-docx.mjs)
+review/

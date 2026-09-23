@@ -1,0 +1,193 @@
+---
+title: "Knowledge Management: The Context Behind Legal Operations Intelligence"
+description: "Knowledge management is now the memory layer of legal operations intelligence, supplying the context AI needs to answer in the department's own terms."
+summary: "Legal departments have a well-established knowledge management capability focused on collaboration, sharing, and codifying best practices and internal standards. As part of legal operations intelligence, that knowledge now provides both a wealth of existing material and the foundation for new approaches that ground AI in the company's own practices. Part of our series on building the legal operations intelligence capability, this article shows how knowledge management fits within it and why legal operations is its natural curator."
+date: "2026-09-15"
+posted: "2026-09-15"
+author: "Spaarke Team"
+tags:
+  organization: [corporate-legal]
+  function: [operations, executive, it]
+  topic: [dms, ai-copilot, compliance, matter-management, contracts]
+  theme: [legal-operations-intelligence, operational-memory, ai-strategy, iq-stack, data-sovereignty]
+heroImage: "/articles/knowledge-management-legal-operations-intelligence/hero.svg"
+heroImagePosition: "center"
+draft: false
+keyTakeaways:
+  - "Knowledge management has moved from training and reuse to intelligence. The department's knowledge is the memory layer from which AI draws the context it needs to answer in the department's own terms."
+  - "AI becomes specific to a department through four mechanisms (grounding, instruction, examples, and evaluation), and each draws on a knowledge asset the department has to maintain."
+  - "Knowledge for AI has to be structured, related, and governed: each item carries an authoritative status, an owner, effective dates, and permissions, and is connected through the ontology to the matters, parties, and obligations it concerns."
+  - "The most valuable knowledge is often the reasoning behind a result, such as why a position was accepted, what was rejected, and who approved the exception, and it is the least often captured."
+  - "Legal operations already holds the knowledge management responsibility in most departments and runs the systems where new knowledge is created, which makes it the natural curator."
+  - "Curation includes deciding what AI must not see. Privilege, confidentiality, ethical walls, and retention each become a rule, and the curated knowledge is intellectual capital the department has to protect."
+
+---
+
+Legal departments have a well-established knowledge management capability focused on collaboration, sharing, and codifying best practices and internal standards. As part of legal operations intelligence, those knowledge resources now provide both a wealth of existing material and the foundation for new approaches that align and ground AI in the company's own proprietary practices. The department's knowledge becomes the institutional memory from which its AI systems draw context, and the quality of that knowledge determines how accurate and trustworthy those systems can be.
+
+In most departments the responsibility already sits with legal operations. In CLOC's 2025 State of the Industry Report, drawn from the 2024 Harbor Law Department Survey of 186 organizations, 79% of respondents placed knowledge management within their legal operations team's responsibilities. Meanwhile, AI adoption is accelerating. In the Thomson Reuters 2026 AI in Professional Services Report, 47% of corporate legal departments said their legal teams were using generative AI, up from 23% a year earlier. A general-purpose model knows nothing about a department's positions, history, or standards, so what it can draw on when it answers is what the department supplies.
+
+In the first article in this series, [The New Mandate for Legal Operations](/why-spaarke/managing-legal-operations), we described legal operations as the natural curator of the department's knowledge and of the content its AI draws on. This article sets out what that role involves and how knowledge management connects to the AI principles and the ontology that underpin legal operations intelligence. For additional background, our earlier article [Institutional Knowledge Is Walking Out the Door](/why-spaarke/institutional-knowledge) describes what a department loses when its knowledge leaves with its people.
+
+## From knowledge management to knowledge intelligence
+
+Traditional knowledge management follows a simple sequence: capture, classify, store, search, and reuse. A lawyer finds a precedent and adapts it. AI extends that sequence considerably. Knowledge now has to be captured, structured, related to the entities it concerns, and governed, so that it can be retrieved as context for a particular question, used by AI to draw an inference, validated by a person, and turned into new knowledge from the outcome.
+
+That sequence maps directly to the framework we described in our earlier article, [The Legal IQ Stack: Data, Memory, Inference](/why-spaarke/the-iq-stack):
+
+- **Data** records what happened: the matters, contracts, invoices, and requests held in the department's systems.
+- **Knowledge, or memory,** records what the department knows about it: what it decided, why, and how each item relates to everything else.
+- **Context** is the portion of that knowledge relevant to a particular question, matter, or decision.
+- **Inference** is what AI concludes, explains, drafts, or recommends from the relevant facts and knowledge.
+- **Action and outcome** record what happened as a result.
+- **New knowledge** is what the department learns from that outcome, which returns to its memory.
+
+That last step is what makes knowledge management the way a department's AI grows more capable over time. The improvement comes from knowledge that becomes richer, better structured, better connected, and easier to retrieve, rather than from retraining the underlying model.
+
+The field has reached a similar view. Oz Benamram, writing in Artificial Lawyer's 2026 predictions, observed that "Clean, structured, context-rich KM (precedents, outcomes, expertise signals) becomes decisive." Harbor reported from ILTACON in September 2026 that "clean, connected data is the precondition for AI producing anything useful", and Kristin Calve, writing for Corporate Counsel Business Journal, put it directly: "The bottleneck may not always be model quality; it may be record quality." Two predictions summarized where the work has moved. Ed Walters of Clio wrote "Out: Prompt engineering. In: Context engineering." Winston Weinberg of Harvey wrote "In 2026, context wins." In our earlier article, [The AI Readiness Gap in Legal Departments](/why-spaarke/the-ai-readiness-gap), we made the same argument for in-house departments.
+
+## Context is what the department supplies
+
+In the second article in this series, [How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform), we described two paths for building context into the platform: system integration, which brings related data together, and knowledge management, which adds the why, the who, and the how. The department's systems describe what happened. Its knowledge describes what it concluded, conceded, approved, or corrected, and why.
+
+Context also has a precise technical meaning. Anthropic's engineering team defines it as "the set of tokens included when sampling from a large-language model (LLM)", and context engineering as "the set of strategies for curating and maintaining the optimal set of tokens (information) during LLM inference." Tokens are the units of text a model reads, so context is everything placed in front of the model for a single answer: the question, standing instructions, retrieved documents, and the results of any tools the system calls.
+
+That capacity is finite, and Anthropic describes a model's attention as a budget to be spent. Every precedent, playbook, transcript, and intake answer competes for the same limited space, and a system that retrieves 40 plausible documents for a question that needed three has spent the budget badly. Selecting the right material depends on curation. Knowledge that carries a status, a date, and an owner can be filtered before it is retrieved, while an undifferentiated repository cannot.
+
+## Four mechanisms make AI specific to a department
+
+A general-purpose model becomes useful to a particular department through four mechanisms: grounding, instruction, examples, and evaluation. Each draws on a different kind of material the department holds, and each depends on an asset someone has to build and keep current. One example runs through all four: a department that wants its AI assistant to answer questions about non-disclosure agreements, including which positions the department takes, which it will concede, and what a business unit should do with an incoming form.
+
+**Grounding draws on the corpus.** Grounding ties an answer to source material supplied at the time the question is asked, so the answer can be checked against something the department recognizes. The technique that does most of this work, retrieval-augmented generation, was described by Lewis and colleagues in 2020 and pairs a model with a searchable document store. The asset is a corpus: a body of the department's own material that is current, authoritative, permissioned, and tagged well enough to be found. In the NDA example, the corpus is the approved template and the prior negotiated agreements, each with a known status and, where recorded, a known outcome. In our earlier article, [What Attorneys Need to Know About AI Architecture](/why-spaarke/what-attorneys-need-to-know-about-ai), we explained how retrieval behaves in a legal setting.
+
+**Instruction draws on the playbook.** Grounding tells the system what the department has, and instruction tells it what the department does. System prompts, negotiation playbooks, clause libraries with fallback positions, and procedures packaged as agent skills all carry standing rules: the department's position, the range it will accept, and the point at which a person has to decide. Anthropic describes agent skills as "folders that include instructions, scripts, and resources that Claude can load when needed", and its legal plugin is "configurable to your organization's playbook". The asset is the playbook, and its quality is a legal judgment, because its positions are the department's positions and they change with its risk appetite and with the law. In the NDA example, the playbook states the standard positions, the acceptable ranges, and the escalation triggers, and a lawyer has to approve it.
+
+**Examples draw on the department's best work.** Instruction states the rule, and an example shows what following it looks like. Brown and colleagues showed in 2020 that a handful of worked examples placed in the prompt can steer a model, and the technique has been standard practice since. The selection matters. A system shown an average sample of the department's output will reproduce the average, including the memo written under deadline at the end of a quarter. In the NDA example, the examples are three of the department's strongest negotiated agreements, chosen by someone qualified to say why they are the strongest.
+
+**Evaluation draws on approved answers.** The first three mechanisms improve the system's chances, and the fourth shows whether they worked. An evaluation set is a collection of real questions with approved answers and criteria for what counts as correct, and running it after a change shows whether accuracy moved. The Vals Legal AI Report of February 2025 was built this way: "The Consortium Firms together created the dataset used for the study", turning more than 500 samples of finished work product into a benchmark. In the NDA example, the evaluation set is a dozen real questions the business has asked, each with an answer a lawyer approved. When a lawyer corrects an answer the system produced, the correction becomes the next test case.
+
+Taken together, the four mechanisms give the department's existing knowledge a new set of uses, and each kind of content it already maintains maps to at least one of them (Exhibit 1).
+
+<figure>
+
+| Knowledge management content | AI mechanism | How it is used |
+|---|---|---|
+| Precedents, memos, policies, and matter records | Grounding and retrieval | Source material the answer draws on and cites, with a known author, date, and status |
+| Clause libraries | Grounding and instruction | Material to ground on, and configuration that states the department's positions |
+| Playbooks, checklists, and process guides | Instruction | System prompts, agent skills, and configuration stating positions, ranges, and escalation triggers |
+| Model documents and the department's strongest work | Examples | Worked examples that show the model what good work looks like |
+| Matter histories | Grounding and retrieval | Situational detail, such as what happened the last three times with a counterparty |
+| Decision logs and approved answers | Evaluation and examples | Test cases that record what the right answer was and who approved it |
+| Expert corrections of AI output | Evaluation and examples | The most direct record of the gap between what the system produced and the department's standard |
+
+<figcaption>Exhibit 1. Every kind of knowledge management content a department maintains maps to an AI mechanism that uses it.</figcaption>
+</figure>
+
+## Curation improves accuracy, and evaluation measures it
+
+Grounding on curated content improves accuracy but does not guarantee it. In the Stanford RegLab study, published in the Journal of Empirical Legal Studies in 2025, the legal research tools tested, all built on retrieval over professionally maintained content, "each hallucinate between 17% and 33% of the time." Rebecca Fordon's review of the research for AI Law Librarians in February 2026 attributed the better performance of legal platforms, compared with general-purpose assistants, to their search over "curated, verified legal databases with citators".
+
+Those studies measured published legal content, not a department's own material, and the only way a department can know its own accuracy is through its own evaluation set. That changes how knowledge management itself is measured. Traditional knowledge management asks whether lawyers can find what they need. Knowledge management for AI also has to ask whether, for a realistic question, the retrieval system found the correct authoritative information and whether the AI used it properly. As we explained in our earlier article, [Legal AI Is Not Deterministic](/why-spaarke/probabilistic-vs-deterministic), the same question can produce different answers on different runs, so evaluation has to continue for as long as the system is in use.
+
+## Knowledge now includes the reasoning behind the work
+
+Traditional knowledge management collected finished work product, such as memos, templates, and precedents, written by people who intended them to be reused. AI can draw on a much wider set of material, most of which the department already produces:
+
+- email and chat;
+- meeting transcripts;
+- matter metadata;
+- negotiation and redline history;
+- decision logs and approvals;
+- outside counsel advice and work product;
+- billing narratives;
+- intake requests and the answers given to them;
+- expert corrections of AI output.
+
+These sources add the reasoning behind the result. A final agreement records what was agreed. It rarely records why the department agreed to it, what was rejected, what leverage existed, who authorized the exception, or whether the result should be treated as precedent. Negotiation history, decision logs, and approvals hold that reasoning, and they are what allow an AI system to answer a question the way the department would. Intake answers record what the business asked and what legal said, and in most departments they survive only in individual mailboxes.
+
+Expert corrections of AI output may be the most valuable source of all and are the least often collected. Each records a specific gap between what the system produced and what the department's standard requires. A department that captures nothing else from its AI deployment should capture these, because they measure how far the system is from the department's own judgment. A law firm roundtable at ILTACON 2025 described this wider material as "scattered across OneDrive, SharePoint, Teams, and personal folders", which is a fair description of most in-house environments as well.
+
+## Structuring knowledge for intelligence
+
+Most of this material is created in the course of other work: a position taken in a negotiation, a reason given for reducing an invoice line, an answer typed into an email, a lawyer's correction of an AI draft. Turning it into knowledge an AI system can use calls for a set of practices that extend traditional knowledge management:
+
+- **Inventory knowledge sources, not only repositories.** Identify contracts, matter records, playbooks, templates, decisions made in email, outside counsel advice, policies, regulatory material, and operational data, and establish what each source is authoritative for.
+- **Distinguish authoritative from historical knowledge.** A signed contract, an approved template, a negotiated example, and a lawyer's working draft do not carry the same weight. Mark each item as canonical, approved, superseded, draft, or historical.
+- **Use a common legal taxonomy.** Standardize matter types, practice areas, agreement types, jurisdictions, legal issues, and document categories across systems, so the same concept carries the same label everywhere.
+- **Connect knowledge to the ontology.** In the third article in this series, [The Legal Operations Intelligence Ontology](/why-spaarke/legal-operations-ontology), we described the model of the department's entities, relationships, and actions. Each knowledge item should be bound to the matter, party, policy, or obligation it concerns, so that a metric, a workflow, or an AI agent that reaches the entity also reaches the knowledge attached to it. The ontology should be built around real use cases rather than an attempt to model all of law.
+- **Capture metadata automatically where possible.** AI extraction can propose classifications, entities, dates, clauses, and relationships, with lawyers or workflows verifying the high-value fields, rather than asking lawyers to tag everything by hand.
+- **Capture rationale, not only outcomes.** Record the reason a position was accepted, what was rejected, and who approved it, at the moment the decision is made.
+- **Manage the lifecycle.** Every important knowledge item needs an owner, a review status, effective dates, supersession rules, and retention rules. Duplicates, obsolete precedents, and conflicting metadata are what cause AI to present stale information with confidence.
+- **Make retrieval permission-aware.** Privilege, ethical walls, confidentiality, matter access, and privacy constraints have to survive indexing, embeddings, knowledge graphs, and retrieval, not merely exist on the source document.
+- **Preserve provenance through the AI chain.** Each statement an AI produces should be traceable from the answer to the retrieved passage, to the knowledge item, and to the original authoritative source.
+
+In the NDA example, this means the negotiator who accepts an indemnity cap the department would normally resist records the decision with the date, the type of counterparty, the reason, and the approver, and the record is linked to the agreement and the counterparty in the ontology.
+
+## Knowledge management is the pipeline to AI effectiveness
+
+A lawyer who reused a memo supplied the judgment the document lacked. She could tell which parts had aged, which position had been taken under a regulatory regime that has since changed, and whether the author would still stand behind the reasoning. An AI system applies whatever it retrieves without that judgment, so the knowledge has to carry it: its status, its dates, its owner, its permissions, and its provenance. Knowledge management is the pipeline through which that information reaches the AI.
+
+The pipeline has a technical constraint. Retrieval systems index documents as passages, cutting each into pieces small enough to search. Microsoft's guidance for Azure AI Search suggests starting from a chunk size of "512 tokens (approximately 2,000 characters)", so a 30-page agreement enters the index as several dozen fragments, any of which can be retrieved on its own. A document's status, version, and access rights reach the model only if the system attaches them to every passage. A legal operations leader can test this by asking which fields travel with a retrieved passage. If status and permissions are missing, the system can return a withdrawn clause from a file only the deal team was meant to open, with nothing in the output to show it.
+
+The pipeline also breaks when applications copy content into their own stores. Josh Baxter, chief executive of NetDocuments, told Corporate Counsel Business Journal in August 2026 that such copies produce "micro and incomplete DMSs." Each copy is another curation problem, so the department's standards have to name where the authoritative version of each item lives.
+
+Two examples show the difference. In the first, a department withdraws an indemnity position after a regulatory change, but the memo arguing for it remains in the repository. A retrieval system with no status field ranks it as highly relevant because it addresses the question asked, and passes it to the model as authority. A status set when the memo was superseded keeps it out. In the second, a business unit asks whether a vendor contract needs a data processing addendum, and a lawyer answers by email. When a second unit asks the same question six months later, a department that kept the first answer as knowledge can let the assistant ground on it and cite it, and can show where the answer came from.
+
+## Legal operations is the natural curator
+
+As the first article noted, the profession's frameworks define knowledge management for a human reader, as the collection and distribution of material to people who will judge it. As noted at the outset, legal operations already holds the responsibility in most departments. What has changed is what the responsibility requires, and capacity is the challenge. The median legal operations function in CLOC's 2025 report was five full-time equivalents, carrying knowledge management alongside many other services, and ACC's maturity model places "At least one full-time dedicated KM professional" among the markers of its advanced stage.
+
+Three reasons make legal operations the natural curator. First, it runs the systems in which the new sources of knowledge are created: intake, matter management, e-billing, outside counsel management, and the technology platform. Capturing a negotiated position or the reason for an invoice reduction means changing the moment at which that work is recorded, and legal operations already owns those moments. Second, without a named owner, responsibility fragments. Harbor reported from ILTACON 2026 "a recurring frustration raised in roundtable discussions" over "fragmented ownership of AI security and governance decisions across IT, Risk, the General Counsel's office, and knowledge management." In a legal department, IT owns the tenant, the general counsel's office owns privilege, procurement owns the vendor contract, and no one in particular owns the knowledge. Third, curation is operational work of a kind legal operations already does: naming owners, writing standards, running review cycles, retiring material, setting permissions, and reporting results. Lawyers remain the authors of the department's knowledge and the judges of its quality, and legal operations owns the system that collects, structures, maintains, and measures it.
+
+That system runs as a continuous loop. Sources of knowledge feed a curation stage that assigns owners, applies standards, reviews and retires material, and sets permissions. Curation feeds the four mechanisms, which produce AI output, and a lawyer's correction of that output returns to the sources as new knowledge (Exhibit 2). The loop is also where the program is measured: the share of questions answered from the department's own knowledge, the share of answers a reviewer corrected, and the age of the items retrieved most often.
+
+<figure>
+  <img src="/articles/knowledge-management-legal-operations-intelligence/exhibit-2.svg" alt="Nine sources of knowledge feed curation, curation feeds the four mechanisms that make a model specific to a department, those mechanisms produce AI output, an expert corrects the output, and the correction returns to the sources so the corpus improves with use." />
+  <figcaption>Exhibit 2. Expert corrections of AI output return to the sources of knowledge, so the corpus improves with use.</figcaption>
+</figure>
+
+In our earlier article, [Legal Ops Is Not IT for Lawyers](/why-spaarke/legal-ops-is-not-it-for-lawyers), we described how strategic legal operations builds institutional memory. Curating knowledge for AI extends that work.
+
+## Curation includes deciding what AI must not see
+
+Deciding what stays out of the department's knowledge is as important as deciding what goes in. As the third article described, the ontology and the knowledge attached to it are the department's intellectual capital, and AI is the point at which that capital is most exposed. We describe the relevant rulings as facts, and questions of privilege remain for each department and its own counsel.
+
+**Privilege.** In United States v. Heppner, in the Southern District of New York, Judge Rakoff held in a February 2026 memorandum that a defendant's exchanges with a consumer generative AI tool were protected by neither attorney-client privilege nor the work product doctrine. The case concerned an individual using a consumer product, not an enterprise deployment at counsel's direction, so it does not settle the enterprise question. It does show that which tool produced a record, and under whose terms, is part of what a department needs to know about that record.
+
+**Confidentiality and ethical walls.** In the Thomson Reuters 2026 Future of Professionals Report, 96% of respondents said AI tools must carry safeguards for confidential data. The OWASP Top 10 for Large Language Model Applications warns that "Inadequate or misaligned access controls can lead to unauthorized access to embeddings containing sensitive information", and calls for "permission-aware vector and embedding stores". Enterprise indexes such as Microsoft's semantic index are built to honor "the user identity-based access boundary so that the grounding process only accesses content that the current user is authorized to access", but an index can enforce only the permissions it is given. Any system that copies documents into a separate store has to rebuild the permission controls of the source system. In our earlier article, [AI Without Giving Away the Keys](/why-spaarke/ai-without-giving-away-the-keys), we discussed why the location of a department's knowledge bears on privilege and confidentiality.
+
+**Retention.** Mayer Brown noted in June 2026 that transcripts produced by AI notetakers create records that "may be accessed by individuals who were not present", widening the scope of legal holds and discovery. Retention and disposition rules therefore have to apply when material enters the department's knowledge, not only afterward.
+
+**Unsanctioned tools.** In iManage's Knowledge Work Benchmark Report 2026, a survey of 3,185 decision-makers across legal and other professional services, nearly one third of organizations reported an incident involving unregulated AI tools. A lawyer who cannot get a usable answer from the governed system may paste a document into an ungoverned one. The quality of the department's knowledge is therefore a security control as well as a measure of accuracy.
+
+## Start with one recurring deliverable
+
+A program of this scope can stall if a department attempts all of it at once. A better start is an inventory of the department's knowledge sources, with the name of whoever controls each one today. Harbor's advice to law firms applies equally in-house: "govern only the data behind a specific, recurring deliverable, such as a report produced regularly or a request fielded constantly, and expand from there." Scope set that way can be tested within a quarter, with a body of knowledge small enough for one person to curate and an evaluation set small enough for a lawyer to approve.
+
+The NDA example is one such deliverable, and its four assets are already defined: the approved template and prior agreements with their status and outcomes, the playbook, three strong examples, and a dozen approved questions and answers. For a legal operations leader who wants to begin next quarter, the sequence is to name the owner, inventory the sources, choose the deliverable, build its four assets, and write the review and retirement rules at the same time. Setting status and ownership at entry costs far less than adding them later, and the second deliverable will cost less than the first.
+
+## Conclusion: knowledge management builds the department's institutional intelligence
+
+Knowledge management works alongside the other components of legal operations intelligence described in this series. It supplies the context AI needs to answer in the department's own terms, just as business intelligence, discussed in [From Spend Analytics to Legal Operations Intelligence](/why-spaarke/from-spend-analytics-to-legal-operations-intelligence), supplies exact numbers. The two answer different questions. What an employment matter cost last year is a computation over records. The department's position on an indemnity cap is a retrieval over curated knowledge. The ontology connects both to the entities they concern, and the platform brings them together for the people and AI tools that make the department's decisions.
+
+The next AI assistant a department deploys will draw on whatever knowledge it is given. Knowledge that is structured, connected, and governed lets it answer from the department's current positions, within the permissions the department has set, and with sources the department can stand behind. Each outcome then adds to what the department knows. That is why knowledge management belongs at the center of legal operations.
+
+**Sources**
+
+- [CLOC with Harbor, 2025 State of the Industry Report](https://cloc.org/wp-content/uploads/2025/02/2025-CLOC-2025-SOTI-Report.pdf)
+- Thomson Reuters, 2026 AI in Professional Services Report
+- [Artificial Lawyer, predictions 2026](https://www.artificiallawyer.com/2026/01/08/artificial-lawyer-predictions-2026/)
+- [Journal of Empirical Legal Studies, Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools](https://doi.org/10.1111/jels.12413)
+- Rebecca Fordon, AI Law Librarians, February 2026
+- [Artificial Lawyer, ILTACON day two: AI, KM, the hour, human capital](https://www.artificiallawyer.com/2025/08/13/iltacon-day-two-ai-km-the-hour-human-capital/)
+- [Microsoft Learn, Chunk documents in vector search](https://learn.microsoft.com/en-us/azure/search/vector-search-how-to-chunk-documents)
+- [Corporate Counsel Business Journal, Rented Models, Enduring Memory](https://ccbjournal.com/blog/rented-models-enduring-memory)
+- [Harbor, ILTACON 2026: Why AI usage isn't the same as AI value](https://harborglobal.com/insights/briefs/iltacon-2026-why-ai-usage-isnt-the-same-as-ai-value/)
+- Thomson Reuters, 2026 Future of Professionals Report
+- [iManage, Knowledge Work Benchmark Report 2026](https://imanage.com/benchmark-report-2026/)
+
+{/* Series navigation: added when the series completes, per campaigns/2026-06-legal-operations-intelligence.md. */}
+
+---
+
+*For questions or comments about this article, contact Ralph Schroeder, Founder and CEO of Spaarke, at [ralph.schroeder@spaarke.com](mailto:ralph.schroeder@spaarke.com), or visit [spaarke.com](https://spaarke.com).*

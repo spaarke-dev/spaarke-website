@@ -13,18 +13,19 @@ caveats). Unverified numbers in this file: `**TBD — confirm**`.
 Corporate legal in 2026 is under simultaneous pressure to modernize
 and to prove operational value. In-house teams have nearly doubled
 since 2008 (US in-house counsel population grew 87%, from 78,000 to
-145,000 — ACC, citing US BLS, 2025; see voice/research-sources.md),
+145,000, according to ACC, citing US BLS, 2025; see
+voice/research-sources.md),
 exposing a function still running on seven-or-more disconnected
 systems, free-text matter coding, and institutional knowledge that
 lives in people rather than systems. CFOs are asking harder questions
 about a discretionary spend category that, at large enterprises,
-routinely runs into the tens of millions per company — the median
+routinely runs into the tens of millions per company: the median
 total legal spend at companies above $20B in revenue is $80M (ACC/MLA
 2024). AI vendors are
 flooding the market faster than buyers can evaluate them. OCGs have
-grown longer and more procedural. The legal-operations profession —
-formalized through CLOC, ACC, and a generation of practitioners
-hired to operationalize legal — is the through-line connecting
+grown longer and more procedural. The legal-operations profession
+(formalized through CLOC, ACC, and a generation of practitioners
+hired to operationalize legal) is the through-line connecting
 these pressures and the audience most pieces in this library are
 written for.
 
@@ -33,10 +34,11 @@ written for.
 ## 2. Common pain points
 
 - **Matter sprawl.** Teams manage hundreds of active matters across
-  litigation, employment, IP, regulatory, M&A, and commercial work
-  — tracked across a matter-management system, a contracts tool,
-  e-billing, shared drives, and email. No one can answer "what's in
-  flight right now?" without assembling a spreadsheet by hand.
+  litigation, employment, IP, regulatory, M&A, and commercial work.
+  The matters are tracked across a matter-management system, a
+  contracts tool, e-billing, shared drives, and email. No one can
+  answer "what's in flight right now?" without assembling a
+  spreadsheet by hand.
 
 - **Outside-counsel spend visibility.** Departments spending tens of
   millions annually typically cannot tell you, by matter type, firm,
@@ -44,7 +46,7 @@ written for.
   General Counsel Study finds 52% of legal departments report
   disorganized data and 75% are actively rebuilding their technology
   and data strategies (see voice/research-sources.md). The CFO's
-  table-stakes question — "is this number high or low?" — usually
+  table-stakes question ("is this number high or low?") usually
   goes unanswered.
 
 - **Document chaos.** Version 14 in someone's inbox, version 12 on
@@ -53,21 +55,21 @@ written for.
   initiatives at most large departments stalled because they were
   treated as documentation exercises rather than architectural ones.
 
-- **OCG compliance.** OCGs run 30–60 pages covering billing,
+- **OCG compliance.** OCGs run 30 to 60 pages covering billing,
   staffing, conflicts, communications, and conduct. Tracking
-  adherence across dozens of firms is overwhelmingly manual —
+  adherence across dozens of firms is overwhelmingly manual:
   line-item invoice review. The client writes the rules; enforcing
   them is a labor problem the client absorbs.
 
 - **Institutional-knowledge loss.** Turnover risk is high and
-  rising: among high-stress in-house counsel — a majority of the
-  population — 24% plan to leave within a year (ACC State of Stress
+  rising: among high-stress in-house counsel, who are a majority of
+  the population, 24% plan to leave within a year (ACC State of Stress
   Among In-house Legal Professionals, December 2025; directional, see
   voice/research-sources.md for caveats on intent-to-leave vs.
-  realized turnover). Each departure removes context — why a vendor
+  realized turnover). Each departure removes context: why a vendor
   was chosen, how a judge prefers filings, which clauses were
   hard-won. Center for American Progress places replacement cost at
-  100–213% of salary, and that figure does not count institutional
+  100 to 213% of salary, and that figure does not count institutional
   context.
 
 - **AI vendor fatigue.** Since late 2023, nearly every legal-tech
@@ -76,7 +78,7 @@ written for.
   have lengthened and pilots are demanded by default.
 
 - **The AI readiness gap.** Most departments aren't ready to extract
-  value from AI — not because the models are immature but because
+  value from AI, not because the models are immature but because
   the underlying data, processes, and memory are. AI on fragmented
   inputs produces "plausible bad output": confident answers built on
   unreliable foundations.
@@ -100,7 +102,7 @@ written for.
 
 - **Matter-coding inconsistency.** Free-text taxonomy makes analysis
   unreliable. "Employment dispute," "labor litigation," "workplace
-  claims," and "litigation — other" often refer to the same work in
+  claims," and "litigation (other)" often refer to the same work in
   the same department.
 
 - **Predictive-spend blindness.** Departments can answer "what did
@@ -112,19 +114,19 @@ written for.
 
 ## 3. Industry terms and how they're used
 
-Usage notes — how the term lands, the shorthand the field uses,
+Usage notes: how the term lands, the shorthand the field uses,
 and what a Spaarke piece should assume.
 
 **OCG (Outside Counsel Guidelines).** Document corporate legal
 issues to outside firms specifying billing, staffing, conflicts,
-and conduct. Often 30–60 pages. Spell out on first mention; "OCG"
+and conduct. Often 30 to 60 pages. Spell out on first mention; "OCG"
 thereafter.
 
 **ELM (Enterprise Legal Management).** Category covering matter
 management, e-billing, and spend analytics. SimpleLegal/Onit,
 Mitratech, Wolters Kluwer Passport, Brightflag, Legal Tracker.
 
-**Matter.** Unit of legal work — broader than "case." Litigation,
+**Matter.** Unit of legal work, broader than "case." Litigation,
 contract negotiation, regulatory filing, M&A deal, investigation, or
 advisory request. Always "matter," never "case."
 
@@ -136,12 +138,12 @@ Pronounced "LEE-dez."
 collected at standard rates. Firm-side; corporate-legal pieces
 don't engage.
 
-**AFA (Alternative Fee Arrangement).** Non-hourly fee structure —
+**AFA (Alternative Fee Arrangement).** Non-hourly fee structure:
 fixed, capped, success, retainer, blended. "We moved that matter to
 an AFA."
 
-**Outside counsel.** External lawyers/firms. Always — not "external
-counsel" (off-tone).
+**Outside counsel.** External lawyers/firms. Always "outside
+counsel," not "external counsel" (off-tone).
 
 **In-house.** The corporate legal team. "In-house counsel,"
 "in-house team." Avoid "internal legal."
@@ -167,7 +169,7 @@ practice area or region.
 
 **Matter intake.** Structured process by which new legal requests
 enter the department. Where intake is informal (an email to
-legal@), the department is typically Level 1–2 on most maturity
+legal@), the department is typically Level 1 to 2 on most maturity
 models.
 
 **E-billing.** Electronic invoice submission, review, and payment
@@ -183,7 +185,7 @@ most departments.
 for legal work product. iManage, NetDocuments, SharePoint (used as
 a DMS at many corporate departments).
 
-**Practice area.** Functional category of legal work — litigation,
+**Practice area.** Functional category of legal work: litigation,
 employment, IP, M&A, regulatory, commercial, privacy. How matters
 are typically grouped for benchmarking.
 
@@ -200,7 +202,7 @@ often lock rates by attorney seniority.
 
 **RFP / panel review.** Competitive process for selecting
 outside-counsel firms. Mature departments run panel reviews on a
-2–3 year cadence.
+2 to 3 year cadence.
 
 **ESI (Electronically Stored Information).** Litigation term:
 electronic data subject to discovery. Volumes drive significant
@@ -211,8 +213,8 @@ client-lawyer communications. Careless phrasing about AI processing
 privileged material loses readers.
 
 **Knowledge management (KM).** Industry term for retaining
-institutional knowledge — historically document templates and
-precedent libraries. We prefer "operational memory"; KM is the
+institutional knowledge (historically, document templates and
+precedent libraries). We prefer "operational memory"; KM is the
 field's term.
 
 **Operationalize.** Take an ad-hoc process and make it systematic,
@@ -220,18 +222,44 @@ measurable, repeatable.
 
 **Maturity model.** Framework for assessing functional capability.
 CLOC Core 12 (Reactive → Leading), ACC 2.0 (Early → Advanced),
-Gartner (1–5). Practitioners self-assess regularly.
+Gartner (1 to 5). Practitioners self-assess regularly.
 
 **Tenant (M365).** Customer-controlled environment where data and
 applications live. For CIO-audience pieces, "deployed within your
 own tenant" is a governance statement.
+
+**Legal service delivery.** The field's name for how a piece of legal
+work is performed and by whom: an in-house lawyer, the business under
+guardrails, an automated or AI-assisted workflow, or an outside
+provider. "The delivery model" is the same thing as a standing
+arrangement. Use these terms rather than a paraphrase ("how legal work
+gets done") or a coinage. The decision is made request by request, not
+as an annual sizing exercise.
+
+**ALSP (Alternative Legal Service Provider).** Axiom, Elevate,
+UnitedLex, the Big Four legal arms, and the managed-services arms of
+firms. Spell out on first mention, ALSP thereafter, exactly as with OCG.
+Do not use "alternative provider" as a standing paraphrase for the category in analysis, where ALSP is the term the audience uses. It is correct where it names a routing channel in a list of channels, because "an ALSP" will not sit beside "an in-house lawyer" and "outside counsel": "business self-service inside guardrails, an automated or AI-assisted workflow, an in-house lawyer, outside counsel, or an alternative provider." Where a piece names the channel that way, the caption, the alt text and the exhibit use the same words.
+
+**External providers.** The collective noun for everything outside the
+department: outside counsel, ALSPs, AI-native firms, and frontier model
+providers. Open a section on the supply side with it, then name the
+specific category. Four parallel lists of provider types in one section
+is a sign the collective noun is missing.
+
+**Signals.** The attributes of a piece of work that a routing decision
+reads: business impact, risk level, cost, timing, required skills, and
+resource availability. Each is a property of the work, not a
+department-level quantity. "Its spend", "its capacity", and "its demand"
+are dashboard metrics read after the fact; signals are what the decision
+consumes at the moment it is made.
 
 ---
 
 ## 4. Trends with our point of view
 
 **Rise of in-house headcount.** Corporate legal teams have grown
-dramatically as work shifted from outside firms inward — the US
+dramatically as work shifted from outside firms inward: the US
 in-house counsel population rose 87% between 2008 and 2024 (78,000
 to 145,000), far outpacing law-firm (+23%) and government legal
 (+38%) growth (ACC, citing US BLS data, 2025; see
@@ -245,9 +273,9 @@ more pressure on the internal operating model.
 > in-house function needs.
 
 **AI vendor proliferation and consolidation pressure.** A wave of
-AI-first legal-tech startups launched in 2023–2025. Buyer adoption
-has accelerated — in-house generative-AI use more than doubled from
-23% in 2024 to 52% in 2025 (ACC × Everlaw, 2025) — but buyer
+AI-first legal-tech startups launched in 2023 to 2025. Buyer adoption
+has accelerated: in-house generative-AI use more than doubled from
+23% in 2024 to 52% in 2025 (ACC × Everlaw, 2025). However, buyer
 sophistication has caught up. Pilots, references, and operational
 depth are the default ask; consolidation pressure is building (see
 voice/research-sources.md).
@@ -262,15 +290,15 @@ shops have or are rolling out M365 Copilot. More than 70% of the
 Fortune 500 had adopted M365 Copilot by late 2024 (Microsoft FY25 Q1
 earnings), and by Q1 2026 Microsoft reported 15M paid M365 Copilot
 seats and 420M monthly active Copilot users (Work Trend Index 2026;
-see voice/research-sources.md for caveats — "adoption" is license
+see voice/research-sources.md for caveats: "adoption" is license
 purchase, not enterprise-wide deployment, and most rollouts are
 phased). Legal is typically a later enterprise adopter; deployment
 posture is established.
 
 > POV: Microsoft is becoming the operating layer for corporate
 > legal whether vendors acknowledge it or not. Building inside the
-> customer's tenant — integrated with Outlook, Teams, Word,
-> SharePoint, Copilot Studio — is a structural choice. The
+> customer's tenant (integrated with Outlook, Teams, Word,
+> SharePoint, Copilot Studio) is a structural choice. The
 > alternative asks customers to maintain integration debt the rest
 > of the enterprise has stopped tolerating.
 
@@ -279,22 +307,22 @@ years (SimpleLegal/Onit, Mitratech roll-ups, Wolters Kluwer
 Passport acquisitions). Buyers report dissatisfaction with the
 legacy stack even as it remains entrenched.
 
-> POV: consolidation has not produced category renewal — it has
+> POV: consolidation has not produced category renewal; it has
 > produced larger versions of the same architecture. The
 > opportunity is not a better ELM but the intelligence layer that
 > sits across ELM, CLM, DMS, and e-billing.
 
 **Spend scrutiny from CFO and procurement.** Corporate legal spend
 is increasingly under procurement-style scrutiny. CFOs ask about
-variance, benchmarks, predictive forecast, optimization — the same
-questions they ask of marketing and procurement.
+variance, benchmarks, predictive forecast, optimization. These are
+the same questions they ask of marketing and procurement.
 
 > POV: the most durable demand signal in the market. A GC who can
 > run the CFO conversation with forecasts, benchmarks, and
 > optimization operates from a structurally stronger position.
 
 **The shift from productivity AI to operational AI.** First-wave
-legal AI was framed as productivity — drafting, contract-review,
+legal AI was framed as productivity: drafting, contract-review,
 summarization. The next wave is operational: AI that reasons across
 matters, spend, and history to support decisions, not just tasks.
 
@@ -317,8 +345,8 @@ Risk-sensitive functions lead this.
 
 ## 5. Sources we cite
 
-The full repository — verified claims, source URLs, dates checked,
-and caveats — lives in `voice/research-sources.md`. Look there
+The full repository (verified claims, source URLs, dates checked,
+and caveats) lives in `voice/research-sources.md`. Look there
 first when a brief calls for a stat. The shortlist below names the
 sources we lean on most, with the standing caveat for each.
 
@@ -337,13 +365,13 @@ sources we lean on most, with the standing caveat for each.
 
 - **CLOC.** State of the Industry Report (with Harbor); Core 12;
   Maturity Assessment Playbook. The vocabulary of legal-ops comes
-  from here. Caveat: practitioner-driven, not research-grade —
+  from here. Caveat: practitioner-driven, not research-grade;
   strong for frameworks, weaker for raw market sizing.
 
 - **Wolters Kluwer Future Ready Lawyer.** Annual survey of legal
   professionals across the US, China, and Europe. Useful current
   reading on AI adoption; the 2026 edition is current. Caveat:
-  vendor-published — cite specific quantified claims, not
+  vendor-published; cite specific quantified claims, not
   promotional framings, and avoid the dated "94%" data-difficulty
   figure (see research-sources.md for provenance).
 
@@ -393,10 +421,19 @@ sources we lean on most, with the standing caveat for each.
 
 ---
 
-## 7. Things the field is sensitive about
+## 7. Things the field is sensitive about, and the one criticism we do make
 
-Topics where the audience splits or framing carries political
-weight. Engage carefully or not at all.
+Topics where the audience splits or framing carries political weight.
+Engage on the terms below. Silence is not the default, and nothing here
+licenses a piece with no position.
+
+- **Legal as an impediment to the business.** Not on the do-not-engage
+  list. We say it plainly, about the function and never about a named
+  department or person, and we pair it with the remedy in the same
+  section. The full rule and the wording are in `voice/stance.md`,
+  rule 4. What stays off the table is unchanged: taking sides between
+  in-house and firms, on the billable hour, or on whether legal is
+  "really" strategic.
 
 - **AI replacing lawyers.** Outside firms hear it as a fee-reduction
   threat; in-house teams as a hiring-pause threat. Frame AI as
@@ -404,7 +441,7 @@ weight. Engage carefully or not at all.
 
 - **The billable hour.** Some firms defend it; some legal-ops
   practitioners attack it; some clients prefer the predictability.
-  Don't take sides. Write spend visibility and forecasting — both
+  Don't take sides. Write spend visibility and forecasting; both
   work whether the firm bills hourly or via AFA.
 
 - **Specific regulatory regimes.** GDPR, CCPA/CPRA, DSA, EU AI Act,
@@ -413,7 +450,7 @@ weight. Engage carefully or not at all.
   don't editorialize on whether a regime is good policy.
 
 - **Diversity, equity, and inclusion.** Politically charged in 2026.
-  A real operational topic — firm staffing, matter staffing,
+  A real operational topic: firm staffing, matter staffing,
   in-house pipeline. Write factually (what departments measure,
   what OCGs require, what reporting looks like), not aspirationally
   in either direction.
@@ -425,7 +462,7 @@ weight. Engage carefully or not at all.
 - **AI safety and bias.** Legal AI has documented hallucination and
   citation-fabrication failure modes. Treat as architectural
   problems (data grounding, retrieval design, human-in-the-loop
-  review) — not reasons to avoid AI or FUD against competitors.
+  review), not reasons to avoid AI or FUD against competitors.
   Name failure modes when it sharpens an argument; don't
   catastrophize.
 
@@ -440,4 +477,4 @@ weight. Engage carefully or not at all.
 
 ---
 
-*Locked 2026-05-07 — see git log for history.*
+*Locked 2026-05-07; see git log for history.*
