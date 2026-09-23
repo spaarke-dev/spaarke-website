@@ -637,7 +637,7 @@ section; the plan may merge two where one needs only a paragraph.
   body. A series-navigation block at the end of the article lists
   article 2 ([How to Build the Legal Operations Intelligence Platform](/why-spaarke/building-the-legal-operations-intelligence-platform),
   2026-07-14), article 3 ([The Legal Operations Intelligence Ontology](/why-spaarke/legal-operations-ontology),
-  2026-07-21), article 4 ([A Business Intelligence Approach to Legal Operations](/why-spaarke/business-intelligence-for-legal-operations),
+  2026-07-21), article 4 ([From Spend Analytics to Legal Operations Intelligence](/why-spaarke/from-spend-analytics-to-legal-operations-intelligence),
   2026-09-01), article 5 ([The Newfound Importance of Knowledge Management](/why-spaarke/the-newfound-importance-of-knowledge-management),
   2026-09-15), and the standalone companion
   ([The State of Legal Operations (Fall 2026)](/why-spaarke/state-of-legal-operations-fall-2026),
@@ -822,7 +822,7 @@ frontmatter):
   reference.
 - Articles 2 to 5 (`building-the-legal-operations-intelligence-platform`,
   2026-07-14; `legal-operations-ontology`, 2026-07-21;
-  `business-intelligence-for-legal-operations`, 2026-09-01;
+  `from-spend-analytics-to-legal-operations-intelligence`, 2026-09-01;
   `the-newfound-importance-of-knowledge-management`, 2026-09-15) and
   the standalone companion (`state-of-legal-operations-fall-2026`,
   2026-10-20) carry later display dates and are reached only through

@@ -1,5 +1,5 @@
 ---
-slug: business-intelligence-for-legal-operations
+slug: from-spend-analytics-to-legal-operations-intelligence
 type: blog-post
 publish_date: 2026-09-01            # display date; article 4 of 5 in the Legal Operations Intelligence series. A Tuesday already, so it did not move when the other series dates moved on 2026-09-22. The real publish date goes in posted.
 channels: [website, linkedin]
@@ -13,7 +13,7 @@ github_issue: 80   # https://github.com/spaarke-dev/spaarke-website/issues/80 (c
 triggered_by: idea.md rev. 4 (2026-09-21; display date, contact line, and series campaign confirmed 2026-09-22); writer's brief feedback applied 2026-09-22
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
-title: "A Business Intelligence Approach to Legal Operations"
+title: "From Spend Analytics to Legal Operations Intelligence"
 description: "Legal departments already measure spend. Rising expectations now require governed measures of service, risk, and value, on demand and as inputs to automation."
 summary: "Most legal departments already report spend by law firm and matter type. The questions now reaching legal concern service, risk, and value, and the answers feed automated processes as well as people. Legal decision making requires exact outputs that a probabilistic system cannot supply, so business intelligence is a capability co-equal with AI within the platform. This piece sets out what the department's business intelligence has to become."
 date: 2026-09-01                    # display date
@@ -24,7 +24,7 @@ tags:
   function: [operations, executive, finance, it]
   topic: [reporting, legal-spend, workflow, matter-management, ai-copilot]
   theme: [legal-operations-intelligence, platform, ai-strategy]
-heroImage: "/articles/business-intelligence-for-legal-operations/hero.svg"
+heroImage: "/articles/from-spend-analytics-to-legal-operations-intelligence/hero.svg"
 heroImagePosition: "center"
 draft: true
 keyTakeaways:
@@ -1502,7 +1502,7 @@ particles, no circuit-board diagonals.
 
 **Aspect ratio**: 16:9 (the default, which matches `ArticleHeader.tsx`).
 
-**Output path**: `public/articles/business-intelligence-for-legal-operations/hero.svg` (1600×900 viewBox).
+**Output path**: `public/articles/from-spend-analytics-to-legal-operations-intelligence/hero.svg` (1600×900 viewBox).
 
 **Alt text**: A column of seven identical thin planes stacked in
 isometric perspective on a deep navy field, one plane lit brighter than

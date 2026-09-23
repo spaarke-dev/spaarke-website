@@ -29,7 +29,7 @@ by the writer on 2026-09-21:
 | 1 | `managing-legal-operations` | The New Mandate for Legal Operations | 2026-06-16 | The function: what it takes to manage legal operations effectively as the legal department, the legal function, and the outside counsel relationship all change |
 | 2 | `building-the-legal-operations-intelligence-platform` | The Legal Operations Intelligence Platform | 2026-07-14 | The platform: what an intelligence platform is and how a department builds one across process, people, and technology, with technology as the tangible instantiation |
 | 3 | `legal-operations-ontology` | The Legal Operations Intelligence Ontology | 2026-07-21 | The foundation: the entity and action model that makes information actionable |
-| 4 | `business-intelligence-for-legal-operations` | A Business Intelligence Approach to Legal Operations | 2026-09-01 | The deterministic dimension: BI as a core component of the legal operations intelligence platform |
+| 4 | `from-spend-analytics-to-legal-operations-intelligence` | From Spend Analytics to Legal Operations Intelligence | 2026-09-01 | The deterministic dimension: BI as a core component of the legal operations intelligence platform |
 | 5 | `the-newfound-importance-of-knowledge-management` | The Newfound Importance of Knowledge Management | 2026-09-15 | The source material: knowledge management as the context that AI needs to be accurate and useful |
 
 Links to the series go in the body where they carry the argument,
@@ -644,7 +644,7 @@ and where it anchors in the argument:
 - Article 3 (`legal-operations-ontology`): multi-tool is the steady
   state, and a shared entity and action model is what makes the tools
   mean the same thing. Anchors: sections 3 and 8.
-- Article 4 (`business-intelligence-for-legal-operations`): the
+- Article 4 (`from-spend-analytics-to-legal-operations-intelligence`): the
   "traditional" challenges are BI problems. Anchor: section 7.
 - Article 5 (`the-newfound-importance-of-knowledge-management`): why
   AI results depend on curated knowledge, the context that AI needs.

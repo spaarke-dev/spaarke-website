@@ -114,8 +114,8 @@ const THESIS_FORMULA_ANCHORS = 3; // opening, the heading that proves it, the cl
 const KEY_TAKEAWAYS_MAX = 6;
 const KEY_TAKEAWAYS_WITH_STATISTIC_MAX = 1;
 const CLOSE_IMPERATIVES_MIN = 2;
-// A close may instead name one first step declaratively (style guide, section 3, beat 3).
-const CLOSE_FIRST_STEP = /(?:the )?(?:practical )?first (?:step|move)\b|starts? by\b|begins with\b|where to start\b|the strongest candidates are\b|the (?:lasting|first|real|important) (?:decisions?|questions?|choices?) (?:are|is)\b|the decisions? that matters?\b|who defines\b/i;
+  "^(?:\\*\\*)?(?:Then |First |Next |Begin by )?(?:Understand|Define|Make|Designate|Put|Start|Agree|Decide|Name|Record|Write|Govern|Settle|Choose|Pick|Map|Identify|Assign|Document|Review|Confirm|Begin|Establish|Set|List|Check|Ask|Treat|Keep|Build|Add|Run)\\b"
+const CLOSE_FIRST_STEP = /(?:the )?(?:practical )?first (?:step|move)\b|starts? by\b|begins with\b|where to start\b|the strongest candidates are\b|the (?:lasting|first|real|important) (?:decisions?|questions?|choices?) (?:are|is)\b|the decisions? that matters?\b|who defines\b|the practical (?:instruction|step|move)|the instruction for/i;
 
 // A heading that reports a movement instead of rendering a verdict
 // (style guide section 4). The plain "is or are plus a gerund" test the
@@ -543,7 +543,10 @@ for (const file of files) {
       // changes (style guide section 3).
       const title = (/^title:\s*"?([^"\n]+?)"?\s*$/m.exec(frontmatter) || [])[1];
       if (title) {
-        const words = title.toLowerCase().replace(/[^a-z0-9\s']/g, " ").split(/\s+/).filter(Boolean);
+        let titleForKey = title;
+        const fromTo = /^\s*from\s+.+?\s+to\s+(.+)$/i.exec(title);
+        if (fromTo) titleForKey = fromTo[1];
+        const words = titleForKey.toLowerCase().replace(/[^a-z0-9\s']/g, " ").split(/\s+/).filter(Boolean);
         let i = 0;
         while (i < words.length && TITLE_STOPWORDS.has(words[i])) i++;
         const phrase = [];

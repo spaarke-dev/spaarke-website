@@ -188,7 +188,7 @@ campaign retro and for future similar pieces.>
   added fact was checked against `brief.md` and the campaign file,
   and the other four series workspaces (`managing-legal-operations`,
   `legal-operations-ontology`,
-  `business-intelligence-for-legal-operations`, and
+  `from-spend-analytics-to-legal-operations-intelligence`, and
   `the-newfound-importance-of-knowledge-management`) carry the same
   expansion, so restoring the template text here would leave this
   piece the odd one out.

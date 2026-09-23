@@ -19,7 +19,7 @@ open as [PR #77](https://github.com/spaarke-dev/spaarke-website/pull/77).
 | 1 | `managing-legal-operations` | 2026-06-16 | draft, writer rewrote it | 78 |
 | 2 | `building-the-legal-operations-intelligence-platform` | 2026-07-14 | draft | 82 |
 | 3 | `legal-operations-ontology` | 2026-07-21 | draft | 79 |
-| 4 | `business-intelligence-for-legal-operations` | 2026-09-01 | draft | 80 |
+| 4 | `from-spend-analytics-to-legal-operations-intelligence` | 2026-09-01 | draft | 80 |
 | 5 | `the-newfound-importance-of-knowledge-management` | 2026-09-15 | draft | 81 |
 
 Standalone: `state-of-legal-operations-fall-2026` (2026-10-20) is at the

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="hero-title hero-desc">
-  <title id="hero-title">A Business Intelligence Approach to Legal Operations</title>
-  <desc id="hero-desc">Seven identical thin planes stacked in an even column on a deep navy field, the fourth lit brighter, with two fine lines leaving its right edge and ending in a small open circle and a small electric blue square, suggesting one governed measure read by a person and by an automated process.</desc>
+  <title id="hero-title">From Spend Analytics to Legal Operations Intelligence</title>
+  <desc id="hero-desc">Seven identical thin planes stacked in an even column on a deep navy field, the fourth lit brighter, with two fine lines leaving its right edge and ending in a small open circle and a small electric blue square, suggesting one governed metric read by a person and by an automated process.</desc>
 
   <defs>
     <radialGradient id="bg" cx="50%" cy="55%" r="82%">

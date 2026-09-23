@@ -1,4 +1,4 @@
-# Tasks: business-intelligence-for-legal-operations
+# Tasks: from-spend-analytics-to-legal-operations-intelligence
 
 > The workflow gates. Each step has an explicit done-when. Do not
 > skip a step, and do not mark a step complete before its done-when
@@ -66,7 +66,7 @@
 - [ ] Tags drawn from canonical taxonomy (no inventions)
 - [ ] All cross-link slugs verified to exist
 - [ ] **Required: voice lint.** From the repository root, run
-      `npm run voice:lint -- content-platform/articles/business-intelligence-for-legal-operations/draft.mdx`.
+      `npm run voice:lint -- content-platform/articles/from-spend-analytics-to-legal-operations-intelligence/draft.mdx`.
       The run reports 0 errors, and every warning has been read and
       either fixed or accepted for a stated reason (record the reason
       in the decisions log at the foot of this file). The lint covers
@@ -91,14 +91,14 @@
 ## 5. Hero (gate: image present at expected path)
 
 - [ ] Hero produced per `voice/visual-identity.md`:
-      - Default: SVG at `public/articles/business-intelligence-for-legal-operations/hero.svg` (1600×900 viewBox)
+      - Default: SVG at `public/articles/from-spend-analytics-to-legal-operations-intelligence/hero.svg` (1600×900 viewBox)
       - Or paste-ready prompt for Midjourney/DALL-E/Firefly if photographic
 - [ ] Alt text written (a real description of the image, with no em dash)
 - [ ] LinkedIn header generated via `node scripts/generate-linkedin-headers.mjs`
 
 ## 6. Ship (gate: live + tracked)
 
-- [ ] `draft.mdx` moved to `content/blog/2026-09-01-business-intelligence-for-legal-operations.mdx`
+- [ ] `draft.mdx` moved to `content/blog/2026-09-01-from-spend-analytics-to-legal-operations-intelligence.mdx`
 - [ ] `draft: false` in frontmatter
 - [ ] `calendar.md` row updated to `published`
 - [ ] GitHub Project's *Pipeline status* moved to `Published`
@@ -236,7 +236,7 @@ the brief requires; and "conducted in November 2025" became
 carries a release date and no field dates.
 
 Lint: `node scripts/voice-lint.mjs
-content-platform/articles/business-intelligence-for-legal-operations/draft.mdx`
+content-platform/articles/from-spend-analytics-to-legal-operations-intelligence/draft.mdx`
 reports 0 errors and 0 warnings, 68 paragraphs, 0 one-sentence
 paragraphs, mean sentence 24.5 words, median paragraph 94 words. One
 `**TBD — confirm**` marker remains, on the frontmatter `posted` field,

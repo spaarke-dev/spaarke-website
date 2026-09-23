@@ -20,7 +20,7 @@ const SLUGS = [
   "managing-legal-operations",
   "building-the-legal-operations-intelligence-platform",
   "legal-operations-ontology",
-  "business-intelligence-for-legal-operations",
+  "from-spend-analytics-to-legal-operations-intelligence",
   "the-newfound-importance-of-knowledge-management",
 ];
 

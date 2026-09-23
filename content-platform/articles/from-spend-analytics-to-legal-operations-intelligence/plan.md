@@ -1,4 +1,4 @@
-# Plan: business-intelligence-for-legal-operations
+# Plan: from-spend-analytics-to-legal-operations-intelligence
 
 > The structural outline. It works section by section: the heading,
 > the key claim, and the named evidence. The plan is the gate before
@@ -844,7 +844,7 @@ paste-ready raster prompt, style preset, and generator notes are in
   accent).
 - **Format:** SVG (SVG-via-Claude, the default), 16:9, 1600×900
   viewBox, at
-  `public/articles/business-intelligence-for-legal-operations/hero.svg`.
+  `public/articles/from-spend-analytics-to-legal-operations-intelligence/hero.svg`.
   Produced in the polish step after the draft is approved. No text, no
   people, no logos, no charts, no simulated dashboards.
 - **Alt text draft:** A column of seven identical thin planes stacked

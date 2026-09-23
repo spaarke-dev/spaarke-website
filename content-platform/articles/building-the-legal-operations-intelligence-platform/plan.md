@@ -784,7 +784,7 @@ article, it carries no "Conclusion" heading, and it does not pitch.
   argument.
   1. The series-navigation block, which reaches article 3
      (`legal-operations-ontology`, 2026-07-21), article 4
-     (`business-intelligence-for-legal-operations`, 2026-09-01),
+     (`from-spend-analytics-to-legal-operations-intelligence`, 2026-09-01),
      article 5 (`the-newfound-importance-of-knowledge-management`,
      2026-09-15), and the standalone companion
      (`state-of-legal-operations-fall-2026`, 2026-10-20), each added as

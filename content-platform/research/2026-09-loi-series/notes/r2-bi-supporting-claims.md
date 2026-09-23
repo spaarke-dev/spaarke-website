@@ -1,4 +1,4 @@
-# R2 fact-check and extension: "A Business Intelligence Approach to Legal Operations"
+# R2 fact-check and extension: "From Spend Analytics to Legal Operations Intelligence"
 
 Checked 2026-09-21 for the article whose display date is now 2026-09-01. Sources dated on or before 2026-09-01 are usable.
 

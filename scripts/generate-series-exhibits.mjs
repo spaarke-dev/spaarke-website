@@ -318,15 +318,15 @@ const out = {};
 /* ============================================ article 4, exhibit 1 */
 {
   const w = 1240, h = 620;
-  out["business-intelligence-for-legal-operations/exhibit-1.svg"] = svg({
+  out["from-spend-analytics-to-legal-operations-intelligence/exhibit-1.svg"] = svg({
     w, h,
-    title: "The governed measure loop",
-    desc: "Records feed a governed measure, the measure feeds a person who decides and an automated process that routes, the resulting action is recorded as an outcome, and the outcome returns as the next period's input.",
+    title: "The governed metric loop",
+    desc: "Records feed a governed metric, the metric feeds a person who decides and an automated process that routes, the resulting action is recorded as an outcome, and the outcome returns as the next period's input.",
     body: [
-      caption(w, "A governed measure feeds a person and an automated process,"),
+      caption(w, "A governed metric feeds a person and an automated process,"),
       `    <text x="${w / 2}" y="70" text-anchor="middle" font-size="21" fill="${C.text}" font-weight="600">and the recorded outcome returns as the next period's input.</text>`,
       box(64, 268, 230, 96, ["Records", "matters, invoices, requests"], { size: 18 }),
-      box(360, 268, 230, 96, ["Governed measure", "defined once, computed the same way"], { size: 18, focal: true }),
+      box(360, 268, 230, 96, ["Governed metric", "defined once, computed the same way"], { size: 18, focal: true }),
       arrow(298, 316, 352, 316),
       box(678, 150, 250, 86, ["A person reads it", "and decides"], { size: 18 }),
       box(678, 392, 250, 86, ["An automated process", "triggers, routes, escalates"], { size: 18 }),
@@ -337,7 +337,7 @@ const out = {};
       path("M 928 435 C 968 435, 1080 396, 1082 372", true),
       path("M 1088 364 C 1088 540, 180 556, 178 372", false, true),
       label(620, 540, "The recorded outcome is the next period's input.", { anchor: "middle", size: 16, italic: true }),
-      label(620, 578, "When a measure triggers an action, its definition and its currency matter more than when it fills a chart.", { anchor: "middle", size: 15, italic: true }),
+      label(620, 578, "When a metric triggers an action, its definition and its currency matter more than when it fills a chart.", { anchor: "middle", size: 15, italic: true }),
     ].join("\n"),
   });
 }

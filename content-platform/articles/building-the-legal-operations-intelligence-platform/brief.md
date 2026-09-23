@@ -820,7 +820,7 @@ Internal (link from the draft):
   withdrawn with the settled positioning.
 - `/platform`: optional related reading. Never a call to action.
 - Article 3 (`legal-operations-ontology`, 2026-07-21), article 4
-  (`business-intelligence-for-legal-operations`, 2026-09-01), article 5
+  (`from-spend-analytics-to-legal-operations-intelligence`, 2026-09-01), article 5
   (`the-newfound-importance-of-knowledge-management`, 2026-09-15), and
   the standalone companion (`state-of-legal-operations-fall-2026`,
   2026-10-20) carry later display dates and are reached only through
