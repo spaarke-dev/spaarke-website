@@ -84,13 +84,13 @@ export function generateBlogPostMetadata(
 
   return {
     title: post.title,
-    description: post.summary ?? post.description,
+    description: post.description ?? post.summary,
     alternates: {
       canonical: url,
     },
     openGraph: {
       title: post.title,
-      description: post.summary ?? post.description,
+      description: post.description ?? post.summary,
       url,
       siteName: SITE_NAME,
       type: "article",
@@ -110,7 +110,7 @@ export function generateBlogPostMetadata(
     twitter: {
       card: "summary_large_image",
       title: post.title,
-      description: post.summary ?? post.description,
+      description: post.description ?? post.summary,
       images: [ogImage],
     },
     other: {
@@ -183,7 +183,7 @@ export function generateBlogJsonLd(
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
-    description: post.summary ?? post.description,
+    description: post.description ?? post.summary,
     ...(post.summary ? { abstract: post.summary } : {}),
     datePublished: post.date,
     ...(post.posted ? { dateModified: post.posted } : {}),
