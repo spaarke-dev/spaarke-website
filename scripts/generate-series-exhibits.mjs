@@ -136,17 +136,26 @@ const out = {};
 
 /* ============================================ article 1, exhibit 2 */
 {
-  const w = 1240, h = 450;
+  const w = 1240, h = 520;
   const mid = 620, line = 250;
   const pro = [["Spend trend"], ["Capacity gap"], ["Recurring risk"]];
   const re = [["Subpoena"], ["Budget overrun"], ["Sudden departure"]];
+  // The six signals the article names, shown as one band serving both sides,
+  // because the text's point is that the same information does both jobs.
+  const signals = [
+    "Business impact", "Risk level", "Cost",
+    "Timing", "Required skills", "Resource availability",
+  ];
+  const sw = 190, sgap = 6, sy = line + 122;
+  const stotal = signals.length * sw + (signals.length - 1) * sgap;
+  const sx0 = (w - stotal) / 2;
   out["managing-legal-operations/exhibit-2.svg"] = svg({
     w, h,
     title: "The readiness timeline",
-    desc: "A single timeline running from early signal to event to response, with proactive readiness placed before the event and reactive readiness after it, and the information the department needs named beneath each.",
+    desc: "A timeline with proactive readiness before the event and reactive readiness after it, and beneath both a single band naming the six signals that serve each: business impact, risk level, cost, timing, required skills, and resource availability.",
     body: [
-      caption(w, "Proactive readiness sits before the event and reactive readiness after it,"),
-      `    <text x="${w / 2}" y="70" text-anchor="middle" font-size="21" fill="${C.text}" font-weight="600">and both depend on information the department already holds.</text>`,
+      caption(w, "The same six signals serve proactive readiness before an event"),
+      `    <text x="${w / 2}" y="70" text-anchor="middle" font-size="21" fill="${C.text}" font-weight="600">and reactive readiness after it.</text>`,
       `    <line x1="70" y1="${line}" x2="1170" y2="${line}" stroke="${C.thread}" stroke-width="2" opacity="0.55"/>`,
       `    <polygon points="${mid},${line - 30} ${mid + 26},${line} ${mid},${line + 30} ${mid - 26},${line}" fill="${C.hot}"/>`,
       // One label row: each word centred over what it names, the event over the
@@ -158,12 +167,14 @@ const out = {};
       ...re.map((t, i) => box(700 + i * 168, line - 96, 152, 56, t, { size: 17 })),
       ...pro.map((_, i) => `    <line x1="${156 + i * 168}" y1="${line - 40}" x2="${156 + i * 168}" y2="${line - 10}" stroke="${C.thread}" stroke-width="1.6" opacity="0.8"/>`),
       ...re.map((_, i) => `    <line x1="${776 + i * 168}" y1="${line - 40}" x2="${776 + i * 168}" y2="${line - 10}" stroke="${C.thread}" stroke-width="1.6" opacity="0.8"/>`),
-      `    <rect x="80" y="${line + 62}" width="464" height="86" rx="9" fill="${C.box}" stroke="${C.boxEdge}" stroke-width="1.8"/>`,
-      label(312, line + 96, "The department can see it coming", { anchor: "middle", fill: C.text, weight: 500, size: 18 }),
-      label(312, line + 124, "demand, spend, capacity, recurring risk", { anchor: "middle", size: 16 }),
-      `    <rect x="700" y="${line + 62}" width="464" height="86" rx="9" fill="${C.box}" stroke="${C.boxEdge}" stroke-width="1.8"/>`,
-      label(932, line + 96, "The department answers from what it holds", { anchor: "middle", fill: C.text, weight: 500, size: 18 }),
-      label(932, line + 124, "records that exist in usable form, or do not", { anchor: "middle", size: 16 }),
+      // Both sides draw on one band of signals, drawn once and shared.
+      `    <path d="M 324 ${line + 34} L 324 ${line + 62} L ${mid} ${line + 62} L 944 ${line + 62} L 944 ${line + 34}" fill="none" stroke="${C.thread}" stroke-width="1.6" opacity="0.7"/>`,
+      // The bracket alone carries the connection; a vertical arrow here struck
+      // through the label that explains it.
+      label(mid, line + 98, "Both are read from the same six signals", { anchor: "middle", fill: C.text, weight: 600, size: 19 }),
+      ...signals.map((s, i) =>
+        box(sx0 + i * (sw + sgap), sy, sw, 62, [s], { size: 16, focal: false })
+      ),
     ].join("\n"),
   });
 }
