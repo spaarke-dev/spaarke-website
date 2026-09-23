@@ -32,66 +32,66 @@ carries the model and guardrail rules for the gates that remain.
 
 ---
 
-## The open thread: capturing the writer's voice in the guides
+## The voice thread, closed on 2026-09-23
 
-**This is the live piece of work.** The writer rewrote article 1 in Word
-and returned it. The rewrite was shorter (4,935 words against 6,691),
-restructured (9 sections against 10), and different in voice and
-positioning from what the pipeline produced. Both versions are kept for
-comparison:
+The writer rewrote article 1 in Word and returned it. A five-dimension
+analysis diffed it against the pipeline draft, and the findings are now
+applied across the voice constitution in commits `d7bd01a`, `d5e156b`,
+`e18cbd1` and `46d842c`.
 
-- `scratchpad/voice/before.mdx` is the pipeline draft, also at git
-  `e72f68f:content-platform/articles/managing-legal-operations/draft.mdx`
-- `scratchpad/voice/after.mdx` is the writer's rewrite, which is now the
-  committed `draft.mdx`
+The diagnosis. The pipeline draft satisfied all 27 prohibitions in
+`style-guide.md`, returned 0 errors and 0 warnings, and was
+statistically indistinguishable from the rewrite on every measure the
+linter printed. It still had no speaker in it. The guides define the
+voice almost entirely by subtraction, so they can certify a draft
+written by nobody, to nobody, about a field.
 
-The scratchpad is session-local and will be gone. Recover both from git:
-the before version from `e72f68f`, the after version from `4b9b95d`.
+Six rules actively forbade what the writer publishes and are now
+narrowed to the fault rather than reversed: rule 11 (the bibliographic
+"we", which he uses five times), rule 26 and the bold lead-in entry (18
+instances against the pipeline's 1), rule 24 (intensifiers), rule 25
+(the synthesis paragraph opening his close), and rules 14 and 18. Two
+new files ship: `voice/stance.md` for posture and
+`voice/examples/house-exemplar.md`, which names his article as the model
+and annotates the eight traits with real before-and-after pairs.
 
-Two causes were confirmed by hand before any analysis ran:
+The method, which is what matters for the next rewrite:
 
-1. **The guide was wrong.** `voice/style-guide.md` line 115 and rule 26
-   retire bold lead-in bullets and forbid them from carrying an
-   argument. The writer's rewrite uses ten of them, and they do carry
-   the argument. That prohibition was written in this session while
-   rebuilding the voice docs after the "sounds like AI" complaint; the
-   audit found bold bullets among the tells, and the fix banned the
-   pattern rather than its lazy use. **The guide needs correcting, not
-   the writer.**
-2. **The guide was right and unused.** Line 40 already permits the
-   analytical "we", and `examples/consulting-register.md` section 4.11
-   puts it at 3.3 uses per 1,000 words in the McKinsey sample. The
-   rewrite runs 2.4 per 1,000; the pipeline draft ran 0.15. No model
-   passage shows the move the writer actually uses, "In our earlier
-   article, [X], we discussed ...", which ties a piece to the published
-   library.
-
-A five-dimension analysis was running when the session ended: workflow
-`wl3yms1ak`, run id `wf_9fc1414b-8f0`. It compares the two versions on
-positioning, register, structure, evidence, and vocabulary, diagnoses
-which guide line produced the wrong output, and synthesises file-by-file
-edits. **Its result was not seen, so nothing from it has been applied.**
-Recover it from the journal at
-`.claude/projects/c--code-files-spaarke-website/<session>/subagents/workflows/wf_9fc1414b-8f0/journal.jsonl`,
-or re-run the script at
-`.claude/projects/.../workflows/scripts/voice-delta-analysis-wf_9fc1414b-8f0.js`.
-If neither survives, the analysis is cheap to repeat from the two files.
-
-**The method that matters, whatever the analysis says:**
-
-- A rewrite is a controlled experiment, because the brief, the evidence,
-  and the argument are held constant and only the voice moves. Keep both
+- A rewrite is a controlled experiment. The brief, the evidence and the
+  argument are held constant and only the voice moves. Keep both
   versions and diff them.
-- Guidance only works inside the load order in the per-piece
-  `CLAUDE.md`. A correct rule in an unread file changes nothing.
-- Before and after pairs beat abstract rules. `ai-tells.md` works
-  because it shows the sentence and its replacement.
-- Countable things belong in `scripts/voice-lint.mjs` as statistics, the
-  way passive share already is: first-person density, bold-bullet count,
-  words per section.
-- Run the diff after every rewrite, before the next article drafts.
+- Guidance only works inside the load order. A correct rule in an unread
+  file changes nothing.
+- A permission granted in one file and not the others is not a
+  permission. `ai-tells.md` and `avoid-this.md` load again as the
+  removal sweep, so a relaxation that lands only in the style guide gets
+  stripped on the next pass. That failure was found by verification, not
+  by review.
+- Run the decisive test after any guide change: read the approved
+  article and ask what the revised guides would still flag. It found 26
+  collisions after the first pass and 16 after the second.
+- "Where the rewrite and the guide disagree, the guide is wrong" is a
+  heuristic, not a rule. Applying it to every hit would undo the
+  September 2026 correction. Fix the structural and repeated cases;
+  report single occurrences for the writer.
 
----
+Still open, all small and all the writer's call:
+
+1. Is "critically important" permitted, and what distinguishes it from
+   `crucial`? Until he rules, the word stays banned and `style-guide.md`
+   section 3 quotes his sentence with the phrase removed.
+2. Is three bold lead-in lists per long-form article the right ceiling?
+   It is derived from his output, not stated by him, and it is the brake
+   that makes the reversal safe.
+3. Does the bibliographic "we" extend to LinkedIn posts, white papers
+   and tweets? Those type files were out of scope.
+4. Six single-occurrence collisions that may be slips rather than guide
+   errors: Mary O'Carroll cited with no institution, "Kevin Clem's"
+   repeated where the surname alone is house form, the close compressing
+   three of the six signal names, "streamlined", and "actually".
+5. The four new `brief.md` sections are not yet in either skill's
+   validation list. Adding them to the blocking validation would fail
+   every brief already on disk.
 
 ## What is done
 
@@ -112,7 +112,7 @@ If neither survives, the analysis is cheap to repeat from the two files.
 
 ## What is outstanding
 
-- **Apply the voice findings to the guides.** The open thread above.
+- **The voice guides are corrected** (see above). Articles 2 to 5 have not been re-read against them.
 - **Articles 2 to 5 have not been reviewed by the writer.** Only article
   1 has been through a rewrite. Expect the same voice corrections to
   apply to the other four, which argues for fixing the guides first and
