@@ -78,6 +78,11 @@ const WORDS = [
 ];
 
 const PHRASES = [
+  // From the writer's author calibration, September 2026.
+  { re: /\bGeneral Counsel\b(?!\s+[A-Z])/g, msg: "\"general counsel\" is lowercase in our own prose" },
+  { re: /\bwe hear\b/gi, msg: "\"we hear\": state the trend directly" },
+  { re: /\bthis (?:final|last) article\b/gi, msg: "finale framing: name the series instead" },
+  { re: /\bWhat [a-z][^.?!\n]{5,60} (?:is|does|adds|matters) is\b/g, msg: "cleft sentence: state the subject directly" },
   // The verb takes an object; the noun does not. "what leverage existed" is the
   // field's own word and stays (style guide, section 5, rule 27).
   { re: /\bleverage (?:the|our|its|their|a|an|this|existing|these)\b/gi, msg: "word to avoid: \"leverage\" as a verb" },

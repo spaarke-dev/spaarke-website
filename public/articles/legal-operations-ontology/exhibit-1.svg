@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 700" role="img" aria-labelledby="ex-title ex-desc" font-family="system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
   <title id="ex-title">The entity and action model</title>
-  <desc id="ex-desc">A spine of matter, project, and invoice at the centre, with the operational entities of a legal department arranged around them and four example relationships labelled, including the engagement relationship that binds the department's matter to the firm's matter.</desc>
+  <desc id="ex-desc">A spine of matter, project, and invoice at the centre, with the operational entities of a legal department arranged around them and the relationships the article names drawn between them, including the engagement relationship that binds the department's matter to the firm's matter.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="#A8C2FF"/>
@@ -11,13 +11,13 @@
     </marker>
   </defs>
   <rect x="1" y="1" width="1238" height="698" rx="14" fill="#13132B" stroke="#2A2A52" stroke-width="2"/>
-    <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">The relationships among a department's records are the asset,</text>
-    <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">and most departments hold the records without them.</text>
+    <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">Much of the model's value lies in the relationships among</text>
+    <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E8ECFF" font-weight="600">a department's records, which no system holds today.</text>
     <line x1="150" y1="150" x2="400" y2="250" stroke="#A8C2FF" stroke-width="1.5" opacity="0.5"/>
     <line x1="150" y1="330" x2="400" y2="250" stroke="#A8C2FF" stroke-width="1.5" opacity="0.5"/>
     <line x1="150" y1="510" x2="400" y2="250" stroke="#A8C2FF" stroke-width="1.5" opacity="0.5"/>
     <line x1="700" y1="140" x2="400" y2="250" stroke="#A8C2FF" stroke-width="1.5" opacity="0.5"/>
-    <line x1="940" y1="140" x2="640" y2="340" stroke="#A8C2FF" stroke-width="1.5" opacity="0.5"/>
+    <line x1="940" y1="140" x2="940" y2="300" stroke="#A8C2FF" stroke-width="1.5" opacity="0.5"/>
     <line x1="400" y1="600" x2="400" y2="430" stroke="#A8C2FF" stroke-width="1.5" opacity="0.5"/>
     <line x1="660" y1="570" x2="400" y2="430" stroke="#A8C2FF" stroke-width="1.5" opacity="0.5"/>
     <line x1="900" y1="500" x2="940" y2="300" stroke="#A8C2FF" stroke-width="1.5" opacity="0.5"/>

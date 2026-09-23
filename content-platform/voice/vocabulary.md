@@ -52,6 +52,11 @@ First draft. Team revises in T11.
 
 ---
 
+| metrics (also KPIs, indicators, data points) | measures (as the noun for what a department reports) | the writer's calibration, 2026-09-23; "measure" survives as the verb and inside a vendor's own quoted vocabulary, as in Power BI's semantic model |
+| general counsel (lowercase) | General Counsel | lowercase in our own prose; "chief legal officer" only when quoting a source that uses it |
+| stakeholders who rely on legal's information | readers of legal's numbers | names the relationship rather than the artefact |
+| (the specific change, named) | things / around (as in "changing around the function") / reaches legal operations as / takes a direct part in | vague connectives that stand in for the claim |
+
 ## 2. Terms to avoid
 
 The first 35 rows are the original do-not-say list. The rows from `delve` onward were added on 2026-09-21 from the research on AI-written prose, which is summarized in `examples/ai-tells.md` (section 5) and recorded in `content-platform/research/2026-09-loi-series/notes/ai-writing-tells.md`. Readers treat these words as signs of machine-written text, especially when several appear in one paragraph. Rule 27 of `style-guide.md` points to this table.

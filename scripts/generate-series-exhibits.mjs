@@ -288,16 +288,16 @@ const out = {};
   // Explicit edges, so every line means something a legal reader would accept.
   const EDGES = [
     ["Request", "Matter"], ["Communication", "Matter"], ["Document", "Matter"],
-    ["Party", "Matter"], ["Policy", "Project"], ["Budget", "Invoice"],
+    ["Party", "Matter"], ["Policy", "Obligation"], ["Budget", "Invoice"],
     ["Timekeeper", "Invoice"], ["Clause", "Obligation"], ["Obligation", "Matter"],
   ];
   out["legal-operations-ontology/exhibit-1.svg"] = svg({
     w, h,
     title: "The entity and action model",
-    desc: "A spine of matter, project, and invoice at the centre, with the operational entities of a legal department arranged around them and four example relationships labelled, including the engagement relationship that binds the department's matter to the firm's matter.",
+    desc: "A spine of matter, project, and invoice at the centre, with the operational entities of a legal department arranged around them and the relationships the article names drawn between them, including the engagement relationship that binds the department's matter to the firm's matter.",
     body: [
-      caption(w, "The relationships among a department's records are the asset,"),
-      `    <text x="${w / 2}" y="70" text-anchor="middle" font-size="21" fill="${C.text}" font-weight="600">and most departments hold the records without them.</text>`,
+      caption(w, "Much of the model's value lies in the relationships among"),
+      `    <text x="${w / 2}" y="70" text-anchor="middle" font-size="21" fill="${C.text}" font-weight="600">a department's records, which no system holds today.</text>`,
       ...EDGES.map(([a, b]) => edge(byName[a], byName[b])),
       edge(spine[0], spine[1]), edge(spine[1], spine[2]), edge(spine[2], spine[0]),
       edge(spine[0], firmMatter, true),
@@ -348,14 +348,14 @@ const out = {};
   out["knowledge-management-legal-operations-intelligence/exhibit-2.svg"] = svg({
     w, h,
     title: "The curation loop",
-    desc: "Nine sources of knowledge feed curation, curation feeds the four uses that make a model specific to a department, those uses produce AI output, an expert corrects the output, and the correction returns to the sources so the corpus improves with use.",
+    desc: "Nine sources of knowledge feed curation, curation feeds the four mechanisms that make a model specific to a department, those mechanisms produce AI output, an expert corrects the output, and the correction returns to the sources so the corpus improves with use.",
     body: [
       caption(w, "Expert corrections of AI output return to the sources of knowledge,"),
       `    <text x="${w / 2}" y="70" text-anchor="middle" font-size="21" fill="${C.text}" font-weight="600">so the corpus improves with use.</text>`,
       box(56, 204, 236, 140, ["Sources of knowledge", "precedents, playbooks, matter", "history, email, transcripts,", "negotiation and billing records"], { size: 17 }),
       box(352, 204, 236, 140, ["Curation", "owner, standards, review,", "retirement, permissions"], { size: 17, focal: true }),
       arrow(296, 274, 344, 274),
-      box(648, 204, 236, 140, ["Four uses", "ground, instruct,", "exemplify, evaluate"], { size: 17 }),
+      box(648, 204, 236, 140, ["Four mechanisms", "grounding, instruction,", "examples, evaluation"], { size: 17 }),
       arrow(592, 274, 640, 274),
       box(944, 204, 240, 140, ["AI output", "an answer the department", "can defend, or cannot"], { size: 17 }),
       arrow(888, 274, 936, 274),

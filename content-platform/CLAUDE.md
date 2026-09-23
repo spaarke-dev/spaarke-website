@@ -49,6 +49,7 @@ context and govern every piece.
   before and an after for each, and it ends with the pre-review
   checklist.
 - `voice/examples/house-exemplar.md`: the house positive model. It
+- `voice/examples/author-calibration.md`: the writer's own before and after tables from his September 2026 rewrite of the series. Sentence-level calibration; if a line you are about to write resembles a "before", it will be rejected.
   names the one published article the writer has approved as house
   voice and annotates the eight traits that carry it. The rules are
   stated as removals, and a draft can satisfy every one of them and

@@ -172,3 +172,44 @@ read commentary from a deterministic path.
 process: what was cut, why, and what was added. Record here the
 reason for any voice-lint warning that was accepted. Useful for the
 campaign retro and for future similar pieces.>
+
+---
+
+## Long-form review workflow
+
+The sequence the writer used to take all five articles of the Legal Operations
+Intelligence series from pipeline draft to final. Use it for long-form work.
+
+1. **Assess** the draft against `voice/examples/author-calibration.md` and
+   `voice/examples/house-exemplar.md`: premise, consistency with the series,
+   structure, voice, length. Propose an outline and a target length.
+2. **Agree the opening paragraph first** for a new article or a major reframe.
+3. **Full redraft** on the agreed outline, preserving exhibits and link targets.
+4. **Section-by-section review with the writer.** Where he supplies text, keep
+   it and fix only typos.
+5. **Voice audit**, delivered as a numbered list in three groups: A repetition,
+   B AI-speak, C consistency. Give each item its current text and a suggested
+   cut or plain rewrite, and mark judgment calls as *optional*. **Change nothing
+   until the writer chooses.**
+6. **Deliver** as `.docx` and `.md`: front matter with title, series, number,
+   display date, description and summary; review notes removed; exhibit captions
+   as italic lines.
+7. **Pre-delivery checks.** Quotes verbatim against the source. Every figure
+   traceable. Description at 160 characters or fewer. Captions matching the
+   exhibit images. Word count updated. Open items listed.
+
+### Pre-delivery checklist
+
+- [ ] Opening states the thesis and gives an experienced reader a reason to continue
+- [ ] No aphoristic closers, "not X but Y", colon reveals, cleft sentences, or dramatic short sentences
+- [ ] No "we hear", no "this final article", no research-memo caveats
+- [ ] No framework revision dates, versions, or counts
+- [ ] No statistic repeated from an earlier article without a back-reference
+- [ ] AI framed as nascent and part of the platform, with no ROI criticism
+- [ ] The legal and business framing is collaborative: visibility and insight, not proof
+- [ ] Series concepts used consistently: four capabilities, six signals, the ontology, intellectual capital
+- [ ] Illustrative examples marked with "Consider, for example"
+- [ ] No Spaarke promotion in the body
+- [ ] "general counsel" lowercase, "metrics" not "measures"
+- [ ] Every quote verified verbatim against its source
+- [ ] `npm run voice:lint` at zero errors, and every warning either fixed or explained

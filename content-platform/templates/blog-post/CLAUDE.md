@@ -26,6 +26,7 @@ through the voice constitution. The non-negotiable load order is:
    constructions that readers identify as machine-written, each with
    a before and an after)
 5. `../../voice/examples/house-exemplar.md` (the house positive
+- `voice/examples/author-calibration.md`: the writer's own before and after tables from his September 2026 rewrite of the series. Sentence-level calibration; if a line you are about to write resembles a "before", it will be rejected.
    model: the one published article the writer has approved as house
    voice, with the eight traits that carry it annotated. The rules
    are stated as removals, and a draft can satisfy every one of them
