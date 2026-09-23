@@ -469,6 +469,14 @@ Article 1 closes on five bare imperatives, annotated at 4.14. Article 2 names on
 
 What both forms share is that the reader leaves knowing where to start. The rule in `style-guide.md`, section 3, beat 3, was written from article 1 alone and said "built from bare imperatives". Article 2 contradicted it, so the rule now carries both forms. This is the second article to correct a rule derived from a single piece, and the lesson generalises: a rule taken from one output is a hypothesis until a second output agrees with it.
 
+### 4a.3 A third close: naming the decisions that last
+
+Article 3, the ontology piece, closes in a third way again. It neither issues imperatives nor names a first step; it names the decisions that outlast the tools.
+
+> For a legal operations leader, the lasting decisions are who defines "matter", "budget", and "obligation" for every tool the department uses, where the department keeps the record of its own decisions, and how it protects that knowledge as AI tools multiply.
+
+Three articles, three grammars, one requirement: the reader leaves knowing what to do or decide. Treat beat 3 as that requirement and let the piece choose its form. The linter accepts all three and will need widening again rather than the articles being bent to it.
+
 ### 4a.2 An imperative heading, where the section is the move
 
 Article 1's headings render a verdict or name a thing the reader can act on. Article 2 adds a third form, an imperative, where the section is the move itself.

@@ -83,8 +83,8 @@ const PHRASES = [
   { re: /\bhere(?:'s| is) the (?:thing|catch|kicker|reality|truth)\b/gi, msg: "signposting" },
   { re: /\b(?:let's|let us) (?:dive|dig|explore|unpack|take a look)\b/gi, msg: "signposting" },
   { re: /\bthe (?:result|upshot|catch|takeaway|bottom line|answer|reality|truth)\s*[?:]/gi, msg: "colon or question reveal" },
-  { re: /\bnot (?:just|only|merely|simply)\b[^.?!\n]{0,120}\b(?:but|it is|it's|they are)\b/gi, msg: "\"not just X but Y\" construction: state the point directly" },
-  { re: /\b(?:is|are|was|were|isn't|aren't) not? ?(?:about |a |an |the )?[^.?!\n]{1,70}[.;]\s+(?:it|they|this|that) (?:is|are|was|were)\b/gi, msg: "negation-then-correction (\"It is not X. It is Y.\"): state what it is" },
+  { re: /\bnot (?:just|merely)\b[^.?!\n]{0,120}\b(?:but|it is|it's|they are)\b/gi, msg: "\"not just X but Y\" construction: state the point directly" },
+  { re: /\b(?:is|are|was|were|isn't|aren't) not (?!simply|only|just|merely)(?:about |a |an |the )?[^.?!\n]{1,70}[.;]\s+(?:it|they|this|that) (?:is|are|was|were)\b/gi, msg: "negation-then-correction (\"It is not X. It is Y.\"): state what it is" },
   { re: /\bhere(?:'s| is) (?:why|how|what)\b/gi, msg: "signposting" },
   { re: /\bnot because\b[^.?!\n]{1,90}[.,;]\s*(?:but )?because\b/gi, msg: "\"not because X, but because Y\": give the reason directly" },
   { re: /\b(?:stands|serves) as a (?:testament|reminder)\b/gi, msg: "inflated significance" },
@@ -115,7 +115,7 @@ const KEY_TAKEAWAYS_MAX = 6;
 const KEY_TAKEAWAYS_WITH_STATISTIC_MAX = 1;
 const CLOSE_IMPERATIVES_MIN = 2;
 // A close may instead name one first step declaratively (style guide, section 3, beat 3).
-const CLOSE_FIRST_STEP = /(?:the )?(?:practical )?first (?:step|move)\b|starts? by\b|begins with\b|where to start\b|the strongest candidates are\b/i;
+const CLOSE_FIRST_STEP = /(?:the )?(?:practical )?first (?:step|move)\b|starts? by\b|begins with\b|where to start\b|the strongest candidates are\b|the (?:lasting|first|real|important) (?:decisions?|questions?|choices?) (?:are|is)\b|the decisions? that matters?\b|who defines\b/i;
 
 // A heading that reports a movement instead of rendering a verdict
 // (style guide section 4). The plain "is or are plus a gerund" test the
@@ -549,7 +549,10 @@ for (const file of files) {
         const phrase = [];
         while (i < words.length && !TITLE_STOPWORDS.has(words[i])) phrase.push(words[i++]);
         const key = phrase.join(" ");
-        if (key && !squash(closeText).toLowerCase().includes(key)) {
+        const head = phrase[phrase.length - 1] || "";
+        const closeLower = squash(closeText).toLowerCase();
+        const discharged = (key && closeLower.includes(key)) || (head.length > 4 && closeLower.includes(head));
+        if (key && !discharged) {
           push("warn", closeSection.at, `the close does not discharge the title ("${key}"): say what it is and what it changes`);
         }
       }
