@@ -88,14 +88,20 @@ creation and is never "voiced up later."
 ```
 READ in this order:
   1. content-platform/voice/style-guide.md
-  2. content-platform/voice/brand-positioning.md
-  3. content-platform/voice/audience-personas.md
-  4. content-platform/voice/taxonomy.md   (canonical tag values)
-  5. content-platform/voice/vocabulary.md (do/don't language)
-  6. content-platform/voice/examples/consulting-register.md (the
+  2. content-platform/voice/stance.md (the posture; governs on
+     posture)
+  3. content-platform/voice/brand-positioning.md
+  4. content-platform/voice/audience-personas.md
+  5. content-platform/voice/taxonomy.md   (canonical tag values)
+  6. content-platform/voice/vocabulary.md (do/don't language)
+  7. content-platform/voice/domain-knowledge.md, section 3 (the
+     field's terms)
+  8. content-platform/voice/examples/consulting-register.md (the
      positive model for the register)
-  7. content-platform/voice/examples/ai-tells.md (constructions the
+  9. content-platform/voice/examples/ai-tells.md (constructions the
      brief must not model or ask for)
+  10. content-platform/voice/examples/house-exemplar.md (the house
+     positive model)
 ```
 
 If any of these don't exist, halt and tell the user, because the
@@ -159,6 +165,16 @@ EXTRACT (best-effort) from idea.md:
 1. TOPIC: what is this about, in one sentence?
 2. ANGLE: what's the specific argument the reader should walk
    away believing? (The take, as distinct from the topic.)
+2a. PRIME MOVER: if the idea names more than one cause, which one is
+    driving the others? Words such as "the more important driver", "the
+    largest", or "the primary" are a ranking. Record it in the brief as
+    subordination ("Driven by X, A and B are changing"), never as an
+    ordered list of coequal drivers.
+2b. CONCESSION: what fault in the reader's own function does this
+    argument depend on?
+2c. FROM PRACTICE: which claims does the writer hold from practice,
+    without a source?
+2d. FIRST MOVES: what does the reader do on Monday?
 3. WHY NOW: market trigger, calendar moment, gap in library
 4. AUDIENCE: primary persona (one of the personas in
    audience-personas.md)
@@ -218,6 +234,24 @@ GAP TYPES -> QUESTION PATTERNS:
    Question: "Hero direction: should this be the standard SVG
              treatment (geometric/abstract per visual-identity.md)
              or something else?"
+
+7. UNRANKED CAUSES
+   Gap: the idea lists several drivers with no order of force
+   Question: "The idea names <n> drivers. Which one is causing the
+             others? The article will name that one in the thesis
+             and make the rest subordinate to it, and it will not
+             carry a section that lists them as equals."
+
+8. MISSING CONCESSION
+   Gap: the argument proposes a remedy without naming the fault
+   Question: "What does this argument require us to admit about
+             <the reader's function>? Without the admission the
+             remedy has no motive."
+
+9. NO EXIT
+   Gap: the idea has stakes but no first move
+   Question: "What are the first three things a <persona> does
+             after reading this? The close carries them."
 
 PRESENT questions grouped by impact:
 

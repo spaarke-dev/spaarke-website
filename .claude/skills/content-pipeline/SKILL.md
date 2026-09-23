@@ -21,8 +21,8 @@ Each step is gated by human confirmation.
 - Generates plan.md (the structural outline: section + claim +
   evidence per section, opening + close beats, sources to verify,
   hero direction) using the matching `templates/<type>/plan.md`
-- Generates tasks.md from `templates/<type>/tasks.md` (the 5- or
-  6-gate workflow checklist)
+- Generates tasks.md from `templates/<type>/tasks.md` (the 5- to
+  7-gate workflow checklist)
 - Generates per-piece CLAUDE.md from `templates/<type>/CLAUDE.md`
   (the session contract for this piece)
 - Creates the GitHub Issue with the right title, body, labels,
@@ -104,23 +104,35 @@ do-not-include list.
 ```
 READ in this order:
   1. content-platform/voice/style-guide.md
-  2. content-platform/voice/brand-positioning.md
-  3. content-platform/voice/audience-personas.md  (just the
+  2. content-platform/voice/stance.md (the posture; governs on
+     posture)
+  3. content-platform/voice/brand-positioning.md
+  4. content-platform/voice/audience-personas.md  (just the
      persona named in brief.md frontmatter)
-  4. content-platform/content-types/<type>.md
-  5. content-platform/voice/examples/consulting-register.md (the
+  5. content-platform/voice/vocabulary.md (do/don't language)
+  6. content-platform/voice/domain-knowledge.md, section 3 (the
+     field's terms)
+  7. content-platform/content-types/<type>.md
+  8. content-platform/voice/examples/consulting-register.md (the
      positive model; section 6 has the model openings and close)
-  6. content-platform/voice/examples/ai-tells.md (constructions the
+  9. content-platform/voice/examples/ai-tells.md (constructions the
      plan must not ask for)
-  7. content-platform/voice/examples/good-articles.md (subject
+  10. content-platform/voice/examples/house-exemplar.md (the house
+     positive model)
+  11. content-platform/voice/examples/good-articles.md (subject
      matter only; it predates the September 2026 revision, so do
      not pattern-match its constructions)
+
+Items 5 and 6 are not conditional. The plan is where section
+headings and concept names are first fixed, so the terminology
+files are read every time.
 
 IF the brief touches Spaarke architecture:
   -> READ content-platform/voice/product-knowledge.md
 
 IF the brief cites domain stats:
-  -> READ content-platform/voice/domain-knowledge.md
+  -> READ the rest of content-platform/voice/domain-knowledge.md
+     (sections 1, 2, and 4 to 7)
 
 IF a campaign is assigned:
   -> READ content-platform/campaigns/<campaign-slug>.md (for the

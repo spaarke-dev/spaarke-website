@@ -26,6 +26,15 @@ tight enough, and the work returns to brief.md.
 
 > <Spine here>
 
+## Thesis formula
+
+The exact phrase that states the piece's positioning claim. It is
+repeated in nearly the same words at three anchors: the opening
+thesis, the heading of the section that proves it, and the close.
+Do not paraphrase it to avoid repetition.
+
+> <Thesis formula here>
+
 ## Sections
 
 Each H2 heading states the point of its section in sentence case,
@@ -38,18 +47,21 @@ should be able to follow the argument.
 - **Exhibit:** <exhibit number and the finding that its title states, if any; cited in the text as "(Exhibit 1)">
 - **Cross-link:** <internal article or page, if any>
 - **Voice notes:** <register adjustments specific to this section, if any>
+- **Word budget:** <target words for this section, set by the writer. No section runs more than twice the budget of the median section of the piece. A section that overruns is usually holding an inventory that belongs distributed into the argument.>
 
 ### Section 2: <H2 heading that states the point>
 - **Claim:**
 - **Evidence:**
 - **Exhibit:**
 - **Cross-link:**
+- **Word budget:**
 
 ### Section 3: <H2 heading that states the point>
 - **Claim:**
 - **Evidence:**
 - **Exhibit:**
 - **Cross-link:**
+- **Word budget:**
 
 (Add sections as the argument requires. A long-form article has as
 many H2 sections as the argument needs, and H3 subheadings are
@@ -58,26 +70,31 @@ runs three to five H2 sections.)
 
 ## Opening
 
-The opening gives a situation that the reader accepts, then the
-complication, and then the answer, which is the thesis. The thesis
-arrives within the first 250 words of a long-form article and within
-the first 150 words of a short post, and in either format no later
-than the third paragraph. Sketch each paragraph as a beat of one or
-two sentences. A short post may combine the complication and the
-frame in one paragraph.
+The opening states the claim first. The situation, complication,
+answer sequence is the alternative, reserved for a piece that has to
+overturn a position the reader currently holds. The thesis arrives
+within the first 250 words of a long-form article and within the
+first 150 words of a short post, and in either format no later than
+the third paragraph.
 
-- **¶1, hook:** <the situation, opened with a specific observation, a named scene, or a sourced number>
-- **¶2, complication:** <what has changed, or what is going wrong>
-- **¶3, frame:** <the thesis, which answers the complication, in one sentence that the reader could repeat, with the counted framework if the piece has one>
+- **¶1, claim:** <the change, as one declarative sentence, then the single named force causing it. No statistic in the first sentence.>
+- **¶2, stakes:** <at most two secondary shifts, enumerated inline as First... Second..., closing on the one recurring decision the article is about, stated by listing its actual options>
+- **¶3, credential:** <the evidence that the article's subject is equipped to act, plus one cross-link in the form "In our earlier article, [Title], we ...">
+- **¶4, or the last sentence of ¶3, frame:** <one sentence naming what the article sets out to show, phrased as the article's own action: "This article sets out how...". Never a numbered inventory of causes.>
 
 ## Close
 
-The close ends on consequence. The final paragraph states what
-follows from the argument for the reader: a decision to make, a risk
-that grows, or a question that remains open. It does not summarize
-the article, and it does not pitch. Sketch it as one or two beats.
+The close runs in four beats, under a heading that reuses the key
+term from the title. It does not re-argue the piece in fresh words,
+and it does not pitch. One short synthesis paragraph is permitted at
+the head of the close, and it is the only synthesis paragraph the
+piece carries (voice/style-guide.md section 3).
 
-- **¶ close:** <the consequence for the reader>
+- **¶ close, beat 1:** <one short synthesis paragraph naming the changes the article described, and nothing else>
+- **¶ close, beat 2:** <the thesis, in the words the opening used, followed by the sentence that discharges the title>
+- **¶ close, beat 3:** <the first moves for the reader's role, as imperatives; about five>
+- **¶ close, beat 4:** <the forward pointer: the next piece, or the question the evidence leaves open>
+- **Heading for the close:** <reuses the key term from the title>
 - **After the close:** <related-reading links as a plain list, if any; the closing contact line, if the brief calls for one (see voice/bylines.md section 6)>
 
 ## Sources to verify

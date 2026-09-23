@@ -40,6 +40,30 @@ specific argument the reader should be able to repeat? For a
 long-form article, write the thesis as the single sentence that
 will appear in the opening. Two to four sentences.>
 
+# Prime mover
+<The one force driving the others, named in the thesis sentence, with
+every other force in the piece grammatically subordinate to it. If the
+idea lists drivers, rank them here. A numbered list of coequal drivers
+is not an outline. See voice/stance.md rule 3.>
+
+# The concession
+<The fault in the reader's own function that this argument depends on,
+written as a direct predicate with that function as the subject ("legal
+can become an impediment to the business"). The draft states it early,
+in the reader's own terms, and pairs it with the remedy. If the argument
+works without a concession, write "none" and say why. See
+voice/stance.md rule 4.>
+
+# What we assert from practice
+<Claims the writer holds from practice that carry no citation, quoted in
+the writer's own words. These are permitted under style-guide.md section
+5, rule 12, and they are the only unsourced claims the draft may make.
+Anything not recorded here still needs a source.>
+
+# Where the reader starts
+<The first moves the reader makes after reading, as imperatives. The
+close carries them, after the sentence that discharges the title.>
+
 # Why now
 <Why this article makes sense to publish in this window. A market
 trigger, a calendar moment, a debate to weigh in on, or a gap in our

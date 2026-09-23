@@ -56,7 +56,7 @@
 - [ ] Frontmatter validated against `src/lib/blog.ts` shape
 - [ ] `description` field is a real SEO meta description (~155 chars)
 - [ ] `summary` is 2 to 3 sentences, about 150 to 280 characters
-- [ ] `keyTakeaways` are 3 to 5 bullets of 18 to 35 words each
+- [ ] `keyTakeaways` are 3 to 6 bullets of 18 to 35 words each
 - [ ] Tags drawn from canonical taxonomy (no inventions)
 - [ ] All cross-link slugs verified to exist
 - [ ] **Required: voice lint.** From the repository root, run
@@ -77,6 +77,15 @@
       marketing language and do-not-say items. Where one of its
       "Better" examples conflicts with the style guide, the style
       guide governs.
+- [ ] **Required: the stance lens.** This is the fourth review lens,
+      after voice, fidelity, and evidence. Read the draft against
+      `voice/stance.md` and the eight traits in
+      `voice/examples/house-exemplar.md` section 2. The judgement
+      calls it catches are the ones no lint rule reaches: who holds
+      which authority, whether the piece names a prime mover or
+      inventories causes, whether the concession the argument depends
+      on is present, whether a caveat defends the writer rather than
+      informing the reader, and whether the close recommends.
 - [ ] No em dash, spaced en dash, double hyphen, or spaced hyphen
       anywhere in the piece, and ranges are written with "to"
 - [ ] Closing contact line present if the brief calls for one, with
