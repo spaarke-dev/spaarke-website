@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="hero-title hero-desc">
   <title id="hero-title">How to Build the Legal Operations Intelligence Platform</title>
-  <desc id="hero-desc">Three stacked isometric planes on a deep navy field, lit from the top plane, with a single electric blue line threading down through all three and returning up the right side as a closed loop, suggesting a decision that is recorded and comes back as evidence.</desc>
+  <desc id="hero-desc">Three stacked isometric planes on a deep violet field, lit from the top plane, with a single pale violet line threading down through all three and returning up the right side as a closed loop, suggesting a decision that is recorded and comes back as evidence.</desc>
 
   <defs>
     <radialGradient id="bg" cx="50%" cy="55%" r="82%">
-      <stop offset="0%" stop-color="#443B81"/>
-      <stop offset="52%" stop-color="#2C285C"/>
-      <stop offset="100%" stop-color="#161630"/>
+      <stop offset="0%" stop-color="#3B2183"/>
+      <stop offset="52%" stop-color="#22114E"/>
+      <stop offset="100%" stop-color="#0F0724"/>
     </radialGradient>
     <radialGradient id="halo" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.3"/>
-      <stop offset="55%" stop-color="#7B5BFF" stop-opacity="0.1"/>
-      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#B993FF" stop-opacity="0.3"/>
+      <stop offset="55%" stop-color="#B993FF" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#B993FF" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="plane" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#3D3B72"/>
-      <stop offset="100%" stop-color="#26244E"/>
+      <stop offset="0%" stop-color="#5A3BBC"/>
+      <stop offset="100%" stop-color="#301E6B"/>
     </linearGradient>
     <linearGradient id="planeMid" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#332E62"/>
-      <stop offset="100%" stop-color="#26244E"/>
+      <stop offset="0%" stop-color="#4A2F9E"/>
+      <stop offset="100%" stop-color="#301E6B"/>
     </linearGradient>
     <linearGradient id="planeFocal" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#4D4890"/>
-      <stop offset="100%" stop-color="#332E62"/>
+      <stop offset="0%" stop-color="#7250E0"/>
+      <stop offset="100%" stop-color="#4A2F9E"/>
     </linearGradient>
     <linearGradient id="planeFlat" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#4D4890"/>
-      <stop offset="100%" stop-color="#3D3B72"/>
+      <stop offset="0%" stop-color="#7250E0"/>
+      <stop offset="100%" stop-color="#5A3BBC"/>
     </linearGradient>
   </defs>
 
   <rect width="1600" height="900" fill="url(#bg)"/>
   <circle cx="610" cy="318" r="285" fill="url(#halo)"/>
-    <polygon points="355,318 610,226 865,318 610,410" fill="url(#planeFocal)" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round" opacity="0.96"/>
-    <polygon points="355,470 610,378 865,470 610,562" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
-    <polygon points="355,622 610,530 865,622 610,714" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
-    <path d="M 258 186 L 610 318 L 610 470 L 610 622 L 865 622 L 865 318 L 610 318" fill="none" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round" opacity="0.9"/>
-    <circle cx="610" cy="318" r="7" fill="#A8C2FF" opacity="0.9"/>
-    <circle cx="610" cy="470" r="7" fill="#A8C2FF" opacity="0.9"/>
-    <circle cx="610" cy="622" r="7" fill="#A8C2FF" opacity="0.9"/>
-    <circle cx="865" cy="470" r="7" fill="#A8C2FF" opacity="0.9"/>
+    <polygon points="355,318 610,226 865,318 610,410" fill="url(#planeFocal)" stroke="#B993FF" stroke-width="2.4" stroke-linejoin="round" opacity="0.96"/>
+    <polygon points="355,470 610,378 865,470 610,562" fill="url(#plane)" stroke="#9468FA" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
+    <polygon points="355,622 610,530 865,622 610,714" fill="url(#plane)" stroke="#9468FA" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
+    <path d="M 258 186 L 610 318 L 610 470 L 610 622 L 865 622 L 865 318 L 610 318" fill="none" stroke="#B993FF" stroke-width="2.4" stroke-linejoin="round" opacity="0.9"/>
+    <circle cx="610" cy="318" r="7" fill="#DCCBFF" opacity="0.9"/>
+    <circle cx="610" cy="470" r="7" fill="#DCCBFF" opacity="0.9"/>
+    <circle cx="610" cy="622" r="7" fill="#DCCBFF" opacity="0.9"/>
+    <circle cx="865" cy="470" r="7" fill="#DCCBFF" opacity="0.9"/>
 </svg>
