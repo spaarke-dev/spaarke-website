@@ -5,14 +5,14 @@
 
   <defs>
     <radialGradient id="bg" cx="50%" cy="55%" r="82%">
-      <stop offset="0%" stop-color="#34325E"/>
-      <stop offset="52%" stop-color="#23224A"/>
+      <stop offset="0%" stop-color="#393D81"/>
+      <stop offset="52%" stop-color="#27295C"/>
       <stop offset="100%" stop-color="#161630"/>
     </radialGradient>
     <radialGradient id="halo" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.30"/>
-      <stop offset="55%" stop-color="#7B5BFF" stop-opacity="0.10"/>
-      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#4C63FF" stop-opacity="0.3"/>
+      <stop offset="55%" stop-color="#4C63FF" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#4C63FF" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="plane" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#3D3B72"/>

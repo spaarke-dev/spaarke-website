@@ -5,14 +5,14 @@
 
   <defs>
     <radialGradient id="bg" cx="50%" cy="55%" r="82%">
-      <stop offset="0%" stop-color="#34325E"/>
-      <stop offset="52%" stop-color="#23224A"/>
+      <stop offset="0%" stop-color="#67555C"/>
+      <stop offset="52%" stop-color="#3E354C"/>
       <stop offset="100%" stop-color="#161630"/>
     </radialGradient>
     <radialGradient id="halo" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.30"/>
-      <stop offset="55%" stop-color="#7B5BFF" stop-opacity="0.10"/>
-      <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#CB9959" stop-opacity="0.24"/>
+      <stop offset="55%" stop-color="#CB9959" stop-opacity="0.09"/>
+      <stop offset="100%" stop-color="#CB9959" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="plane" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#3D3B72"/>
@@ -48,7 +48,7 @@
     <line x1="566" y1="372" x2="462" y2="552" stroke="#A8C2FF" stroke-width="2" opacity="0.85"/>
     <line x1="462" y1="552" x2="694" y2="534" stroke="#A8C2FF" stroke-width="2" opacity="0.85"/>
     <line x1="694" y1="534" x2="566" y2="372" stroke="#A8C2FF" stroke-width="2" opacity="0.85"/>
-    <line x1="694" y1="534" x2="1298" y2="452" stroke="#000BFF" stroke-width="3.2" opacity="0.95"/>
+    <line x1="694" y1="534" x2="1298" y2="452" stroke="#CB9959" stroke-width="3.2" opacity="0.95"/>
     <circle cx="330" cy="300" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
     <circle cx="352" cy="470" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
     <circle cx="300" cy="636" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
@@ -58,7 +58,7 @@
     <circle cx="668" cy="258" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
     <circle cx="888" cy="566" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
     <circle cx="482" cy="214" r="22" fill="#3D3B72" stroke="#4060DC" stroke-width="1.8"/>
-    <circle cx="1320" cy="450" r="26" fill="#3D3B72" stroke="#000BFF" stroke-width="2.6"/>
+    <circle cx="1320" cy="450" r="26" fill="#3D3B72" stroke="#CB9959" stroke-width="2.6"/>
     <polygon points="598.91,353 598.91,391 566,410 533.09,391 533.09,353 566,334" fill="#4D4890" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round"/>
     <polygon points="494.91,533 494.91,571 462,590 429.09,571 429.09,533 462,514" fill="#4D4890" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round"/>
     <polygon points="726.91,515 726.91,553 694,572 661.09,553 661.09,515 694,496" fill="#4D4890" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round"/>

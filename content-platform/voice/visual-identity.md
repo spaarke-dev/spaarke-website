@@ -121,6 +121,46 @@ the shapes invisible. Use the mid-tones below for shapes.
   small accent shapes inside an otherwise navy/blue composition
   (see `loi-maturity-model`).
 
+### One accent per article, across a series
+
+A series published together is seen together, as a grid of thumbnails on
+the index. Five heroes built from the same palette read as one dark navy
+block, which is what the writer reported of the Legal Operations
+Intelligence series on 2026-09-23.
+
+Give each article in a series one accent, and apply it in two places:
+
+- The `halo` radial gradient, which is the largest area of colour and the
+  only thing that registers at thumbnail size.
+- The single hot element, the endpoint marker or the focal fill.
+
+Leave the rest alone. The plane fills, the `#4060DC` edges and the
+`#A8C2FF` threads carry the shapes, and holding them constant is what
+keeps the set reading as one family rather than five unrelated images.
+
+Tint the canvas as well, but only its lit centre. Blend the centre stop
+toward the accent by roughly a fifth, the 52% stop by half that, and leave
+the outer stop at `#161630` so every hero still sits on the same ground.
+Without this the accent alone is too small to shift the impression.
+
+The accents used for that series, all from the lists above:
+
+| Article | Accent | Why |
+|---|---|---|
+| The New Mandate for Legal Operations | `#4C63FF` | brand blue, the series opener |
+| How to Build the Platform | `#7B5BFF` | soft purple |
+| The Ontology | `#CB9959` | copper and gold, which this file reserves for the foundational, category-defining piece |
+| From Spend Analytics | `#D9803A` | warm orange |
+| Knowledge Management | `#FF4DCB` | magenta, held at 18% and never used as fill |
+
+Two cautions learned in that pass. A gold and an orange land close enough
+to read as the same hero at thumbnail size, so separate them by tinting one
+canvas harder than the other rather than by changing the accent. And check
+the result as a contact sheet at the size the index actually renders, near
+150px square, because at full size five heroes look varied when the
+thumbnails do not.
+
+
 ### Default hero composition recipe
 
 A starter recipe that hits the contrast rule on the first attempt.

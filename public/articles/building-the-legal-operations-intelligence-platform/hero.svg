@@ -5,13 +5,13 @@
 
   <defs>
     <radialGradient id="bg" cx="50%" cy="55%" r="82%">
-      <stop offset="0%" stop-color="#34325E"/>
-      <stop offset="52%" stop-color="#23224A"/>
+      <stop offset="0%" stop-color="#443B81"/>
+      <stop offset="52%" stop-color="#2C285C"/>
       <stop offset="100%" stop-color="#161630"/>
     </radialGradient>
     <radialGradient id="halo" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.30"/>
-      <stop offset="55%" stop-color="#7B5BFF" stop-opacity="0.10"/>
+      <stop offset="0%" stop-color="#7B5BFF" stop-opacity="0.3"/>
+      <stop offset="55%" stop-color="#7B5BFF" stop-opacity="0.1"/>
       <stop offset="100%" stop-color="#7B5BFF" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="plane" x1="0" y1="0" x2="0" y2="1">
@@ -37,7 +37,7 @@
     <polygon points="355,318 610,226 865,318 610,410" fill="url(#planeFocal)" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round" opacity="0.96"/>
     <polygon points="355,470 610,378 865,470 610,562" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
     <polygon points="355,622 610,530 865,622 610,714" fill="url(#plane)" stroke="#4060DC" stroke-width="1.8" stroke-linejoin="round" opacity="0.96"/>
-    <path d="M 258 186 L 610 318 L 610 470 L 610 622 L 865 622 L 865 318 L 610 318" fill="none" stroke="#000BFF" stroke-width="2.4" stroke-linejoin="round" opacity="0.9"/>
+    <path d="M 258 186 L 610 318 L 610 470 L 610 622 L 865 622 L 865 318 L 610 318" fill="none" stroke="#7B5BFF" stroke-width="2.4" stroke-linejoin="round" opacity="0.9"/>
     <circle cx="610" cy="318" r="7" fill="#A8C2FF" opacity="0.9"/>
     <circle cx="610" cy="470" r="7" fill="#A8C2FF" opacity="0.9"/>
     <circle cx="610" cy="622" r="7" fill="#A8C2FF" opacity="0.9"/>
