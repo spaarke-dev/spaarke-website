@@ -20,7 +20,7 @@ The brief picks one of three variants:
 
 - **Standalone post**: 150 to 400 words that make a single thought sharply. The post carries no outbound link, because the post *is* the piece. This variant has the highest engagement on average. It may use one image; if it does, hero treatment follows `voice/visual-identity.md`.
 - **Carousel**: 5 to 10 slides, with one idea per slide. The cover slide is the hook, and the last slide carries the CTA. Each body slide has one to three sentences plus a visual. Carousels have a higher reshare rate and a higher production cost. Imagery follows `voice/visual-identity.md` across the whole set. The cover slide needs the strongest hook image, because it doubles as the carousel thumbnail and is the single asset most readers see.
-- **Article syndication**: a teaser of 200 to 250 words that links to a blog post or white paper. The teaser is a separate hook that earns the click, and it does not summarize the piece. The link goes in the post body and never in a comment. The image is usually the source piece's hero, reused as it is.
+- **Article syndication**: a teaser of 200 to 250 words that links to a blog post or white paper. The teaser is a separate hook that earns the click, and it does not walk the reader through the piece section by section. It does have to name the subject. Where the source piece exists to establish a term, the teaser uses that term in the first line and defines it, because a teaser that works around the word is teasing a different article. Naming what the piece covers, in one closing sentence, is not a summary and is the honest way to set up the click. The link goes in the post body and never in a comment. The image is usually the source piece's hero, reused as it is.
 
 A single brief can produce more than one variant. A blog post, for example, often generates both a syndication and a standalone practitioner post from the same source.
 
@@ -104,6 +104,7 @@ The most common pitfall is **writing LinkedIn posts in blog voice.** A 600-word 
 
 - **Buried hook.** The post opens with "I've been thinking a lot about legal ops lately…" and the claim does not arrive until paragraph three. Rewrite from paragraph three forward.
 - **Bait-and-switch syndication.** The teaser promises a sharp argument, and the blog link delivers a generic overview. The teaser must be honest about what is at the other end.
+- **Syndication that never names the subject.** A teaser built from the source piece's closing claim can read well and still omit the term the piece was written to teach. The company-page post for `legal-operations-ontology` was drafted this way on 2026-09-23 and did not contain the word "ontology". Check the teaser against the source piece's first key takeaway, not its conclusion.
 - **Organizational voice where a personal voice belongs.** "We at Spaarke believe…" almost always underperforms "I've watched three legal departments try this and…"
 - **Short-form AI tells.** The pressure to be brief invites em dashes, stacked fragments, and a closing pair of clipped sentences. Sweep every post against the pre-review checklist in `voice/examples/ai-tells.md` before it ships.
 

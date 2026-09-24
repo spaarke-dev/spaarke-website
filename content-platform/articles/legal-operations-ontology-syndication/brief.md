@@ -34,8 +34,11 @@ whichever AI model the department happens to be running. The layer everyone
 is shopping for is the layer that changes most often and costs least to
 change. A department that invests only there is renting.
 
-The post earns the click by naming the asymmetry between the two layers. It
-does not summarise the article.
+The post teaches the term. The article's first takeaway is that ontology is
+a term legal operations leaders need to add to their vocabulary, so the post
+says the word, says what an ontology is, and says what it holds that the
+systems of record do not. A teaser that omits the term is teasing a
+different article.
 
 # Why now
 
@@ -45,10 +48,13 @@ is the one that defines the foundation the other four rest on.
 
 # Must include
 
-- The hook as drafted in the frontmatter, unchanged.
-- The asymmetry: the model layer changes yearly and is cheap to change; the
-  definitions of matter, budget and obligation change slowly and are
-  expensive to get wrong.
+- The word "ontology", in the first line, and a plain definition of it.
+- The concrete gap: no single system connects the invoice line to the budget
+  it consumed, the approving email to the matter it changed, or the clause to
+  the obligation it creates, and none of them records what was decided or who
+  approved it. The named systems of record carry this, not an abstraction.
+- That the ontology is the department's intellectual capital and belongs to
+  the department, set against the fact that AI models will change.
 - That the piece is article 3 of a five-part series, named as such, with the
   series framed as a developed position rather than a single article.
 - The link to the article.
@@ -62,7 +68,9 @@ is the one that defines the foundation the other four rest on.
 - Em dashes, and the constructions in `voice/examples/ai-tells.md`,
   particularly the aphoristic closer and the tidy parallel pair. The hook is
   a deliberate two-line contrast and is the one permitted instance.
-- A summary of the article. The teaser is its own hook.
+- A section-by-section summary. Naming what the article covers in one
+  closing sentence is not a summary and is the honest way to set up the
+  click.
 - Any statistic. The article carries the evidence; the post carries the
   claim. This avoids repeating a figure across channels, per
   `voice/style-guide.md`, section 3.
