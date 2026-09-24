@@ -87,6 +87,18 @@ stated alongside it.
 
 # Unresolved
 
-- **TBD — confirm**: whether the writer has a specific engagement in mind for
-  the two-systems-disagree moment. A named scene would strengthen the post,
-  and the brief does not invent one.
+None. The writer has no referenceable engagement for the two-reports-disagree
+moment, so the post states the mechanism generically and claims nothing it
+cannot stand behind.
+
+Write it as the shape of the problem rather than as a case: two systems report
+a different count for the same thing, and the reconciliation finds that each
+was counting a different definition. No company, no numbers, no implied
+client. Under `voice/examples/consulting-register.md`, section 4.9, a
+constructed illustration opens with "Consider" and runs in the present tense,
+and it carries no before-and-after figure, because the figure would be
+invented. That is the form to use if the post needs a scene at all.
+
+The claim that definitions accumulate rather than being decided is the
+writer's own, held from practice, and rule 12 permits it because the post
+states the mechanism alongside it.
