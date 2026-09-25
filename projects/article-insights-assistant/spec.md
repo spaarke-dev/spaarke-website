@@ -126,7 +126,8 @@ grounding is a requirement rather than a nicety.
 
 ### Non-Functional Requirements
 
-- **NFR-01 Cost.** Sized to a 100 to 500 USD per month inference ceiling.
+- **NFR-01 Cost.** Sized to a 500 USD per month inference ceiling, set by
+  the owner on 2026-09-25.
   Prompt caching is mandatory. Per-turn cost must be measured against
   Foundry's published rates before launch, not assumed.
 - **NFR-02 Rate limiting.** Per-IP limits reusing `src/lib/rate-limit.ts`
@@ -243,7 +244,9 @@ expensive mistake this decision avoids.
 - App settings for the endpoint, deployment name and model
 - Azure Table Storage table for the conversation log
 - Azure cost alert configured per NFR-03
-- Privacy policy updated per NFR-07
+- Privacy policy updated per NFR-07. Done 2026-09-25: Part 1 gained an
+  "Article assistant" section covering capture, 90-day retention, Foundry
+  processing, and the not-legal-advice statement
 
 ### External Dependencies
 
@@ -257,7 +260,7 @@ expensive mistake this decision avoids.
 |-------|----------|--------|--------|
 | Gating | Who can use the assistant? | Open to everyone, rate-limited | No auth or email capture. Rate limiting and spend alerting become load-bearing (NFR-02, NFR-03) |
 | Mobile | Right rail does not exist on mobile | Bottom sheet via floating button | FR-12. Adds a second surface to r1 rather than deferring |
-| Cost | Monthly inference ceiling | 100 to 500 USD | NFR-01. Sonnet as default, Opus available for hard questions, caching mandatory |
+| Cost | Monthly inference ceiling | 500 USD | NFR-01. Sonnet as default, Opus available for hard questions, caching mandatory |
 | R1 scope | Which articles | All 21 | Template-level change; maximizes usage data. Backend already sees the full corpus |
 | Model path | Reuse the BFF AI layer? | Resolved by inspection, not asked | KD-03. BFF authorizes per user per document; does not transfer to a public endpoint |
 | Retention | How long to keep conversations? | 90 days | FR-07 schema and the privacy policy wording are now fixed |
@@ -281,8 +284,6 @@ expensive mistake this decision avoids.
 
 ## Unresolved Questions
 
-- [ ] Update the privacy policy to cover 90-day conversation capture.
-      Blocks: launch, not implementation
 - [ ] Verify Foundry per-token rates including cache reads for
       `claude-sonnet-5`. Blocks: NFR-01 sizing and the NFR-02 numbers
 - [ ] Create the website-specific Foundry project and deploy the model.
