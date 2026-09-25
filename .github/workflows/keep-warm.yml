@@ -1,0 +1,49 @@
+# Keep the Azure Static Web Apps managed function warm.
+#
+# SWA freezes the SSR/API function when idle. The first request after a quiet
+# spell pays the cold start, and on 2026-09-25 that left the contact form
+# hanging with no success and no error: a visitor filled it in, pressed send,
+# and got no signal either way. The client now times out and says so, and this
+# keeps the cold start from happening in front of a real visitor.
+#
+# GitHub's scheduler is best effort and can run late, which is fine here.
+
+name: Keep warm
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: keep-warm
+  cancel-in-progress: true
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the API and a rendered page
+        run: |
+          set -u
+          fail=0
+          # GET on the contact route is a declared 405. It costs nothing and
+          # still boots the function, which is the whole point.
+          for target in \
+            "https://spaarke.com/api/contact|405" \
+            "https://spaarke.com/contact|200" \
+            "https://spaarke.com/|200"
+          do
+            url="${target%|*}"; want="${target#*|}"
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 45 "$url" || echo "000")
+            if [ "$code" = "$want" ]; then
+              echo "ok   $code  $url"
+            else
+              echo "WARN $code (wanted $want)  $url"
+              fail=1
+            fi
+          done
+          exit $fail

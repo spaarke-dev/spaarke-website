@@ -56,6 +56,13 @@ function validateLocally(fields: {
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
+// Both awaits in the submit path used to run unbounded. A hung promise is
+// caught by nothing, so the form sat on "Sending…" with no success and no
+// error, and a visitor reasonably read the silence as success. Azure Static
+// Web Apps cold starts are the usual cause. Bound both.
+const RECAPTCHA_TIMEOUT_MS = 15000;
+const SUBMIT_TIMEOUT_MS = 25000;
+
 const labelClass =
   "font-mono block text-[11px] font-medium uppercase tracking-[0.18em] text-fg-low";
 const inputBase =
@@ -105,7 +112,15 @@ export default function ContactForm({
     try {
       if (recaptchaRef.current) {
         recaptchaRef.current.reset();
-        const token = await recaptchaRef.current.executeAsync();
+        const token = await Promise.race([
+          recaptchaRef.current.executeAsync(),
+          new Promise<never>((_, reject) => {
+            setTimeout(
+              () => reject(new Error("RECAPTCHA_TIMEOUT")),
+              RECAPTCHA_TIMEOUT_MS,
+            );
+          }),
+        ]);
         captchaToken = token ?? "";
       }
     } catch (err) {
@@ -122,6 +137,7 @@ export default function ContactForm({
 
       const res = await fetch("/api/contact", {
         method: "POST",
+        signal: AbortSignal.timeout(SUBMIT_TIMEOUT_MS),
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),
@@ -171,9 +187,14 @@ export default function ContactForm({
       track("Contact Submit", attribution);
       setStatus("success");
     } catch (err) {
+      const timedOut =
+        err instanceof DOMException &&
+        (err.name === "TimeoutError" || err.name === "AbortError");
       setStatus("error");
       setErrorMessage(
-        "Couldn't reach our server. Check your connection and try again.",
+        timedOut
+          ? "Your message was not sent. Our server took too long to respond. Please try again, or email us directly at contactus@spaarke.com."
+          : "Couldn't reach our server. Check your connection and try again.",
       );
       recaptchaRef.current?.reset();
       console.error("[contact] Network error during submit:", err);
@@ -204,6 +225,16 @@ export default function ContactForm({
       {status === "error" && errorMessage && (
         <div className="mb-6">
           <InlineAlert variant="error" message={errorMessage} />
+        </div>
+      )}
+
+      {status === "submitting" && (
+        <div
+          className="text-fg-mid mb-6 text-sm"
+          role="status"
+          aria-live="polite"
+        >
+          Sending your message. Please stay on this page until it confirms.
         </div>
       )}
 
