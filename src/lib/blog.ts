@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import GithubSlugger from "github-slugger";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -100,18 +101,20 @@ export function readingTimeMinutes(content: string): number {
 }
 
 /** Convert a heading text into a URL-safe slug (matches rehype-slug output). */
-function slugifyHeading(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
-}
+
 
 export type TocItem = { id: string; text: string; depth: 2 | 3 };
 
 /** Extract H2 + H3 headings from MDX source for table of contents rendering. */
 export function extractToc(content: string): TocItem[] {
+  // Must match rehype-slug, which is what generates the ids on the rendered
+  // page (see src/app/why-spaarke/[slug]/page.tsx). A hand-rolled slugifier
+  // drifted from it on headings containing an em dash or an ampersand, where
+  // github-slugger leaves a double hyphen. That silently broke 7 table of
+  // contents links across 3 published articles: the anchors rendered, the
+  // links rendered, and clicking them did nothing. Use the same slugger the
+  // renderer uses, including its de-duplication of repeated headings.
+  const slugger = new GithubSlugger();
   const items: TocItem[] = [];
   const lines = content.split("\n");
   let inFence = false;
@@ -127,7 +130,7 @@ export function extractToc(content: string): TocItem[] {
     if (!m) continue;
     const depth = m[1].length === 2 ? 2 : 3;
     const text = m[2].replace(/[*_`]/g, "");
-    items.push({ id: slugifyHeading(text), text, depth: depth as 2 | 3 });
+    items.push({ id: slugger.slug(text), text, depth: depth as 2 | 3 });
   }
 
   return items;
