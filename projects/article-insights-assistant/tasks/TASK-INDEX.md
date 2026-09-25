@@ -1,0 +1,63 @@
+# Task index: Article Insights Assistant
+
+> Registry and status. Update the status column as tasks complete.
+> Generated 2026-09-25.
+
+## Status
+
+| ID | Task | Phase | Depends on | Est. | Status |
+|---|---|---|---|---|---|
+| 001 | [Record the Foundry deployment](001-record-foundry-deployment.md) | 0 | none | 2h | not-started |
+| 002 | [Measure what a real turn costs](002-measure-real-cost.md) | 0 | 001 | 2h | not-started |
+| 010 | [Build-time corpus manifest](010-corpus-manifest.md) | 1 | none | 3h | not-started |
+| 011 | [System prompt and labeled provenance](011-system-prompt.md) | 1 | 010 | 4h | not-started |
+| 012 | [Evaluation runner and cases](012-evaluation-set.md) | 1 | 011 | 4h | not-started |
+| 013 | [Per-article suggested questions](013-suggested-questions.md) | 1 | 010 | 2h | not-started |
+| 020 | [Streaming endpoint](020-streaming-endpoint.md) | 2 | 002, 011 | 4h | not-started |
+| 021 | [Abuse and spend defences](021-abuse-and-spend-defences.md) | 2 | 020 | 4h | not-started |
+| 022 | [Conversation capture](022-conversation-capture.md) | 2 | 020 | 2h | not-started |
+| 030 | [Right-rail console](030-rail-console.md) | 3 | 020, 013 | 4h | not-started |
+| 031 | [Mobile bottom sheet](031-mobile-sheet.md) | 3 | 030 | 3h | not-started |
+| 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | not-started |
+| 090 | [Project wrap-up](090-project-wrap-up.md) | 4 | 040 | 3h | not-started |
+
+**13 tasks, roughly 40 hours.**
+
+## Phases
+
+| Phase | Tasks | What it proves |
+|---|---|---|
+| 0 Foundation and cost truth | 001, 002 | A real call works and the arithmetic holds |
+| 1 Corpus, prompt, evaluation | 010 to 013 | Answers are good, measurably |
+| 2 The endpoint | 020 to 022 | It streams, it is safe, it records |
+| 3 The interface | 030, 031 | Both surfaces, accessible |
+| 4 Instrument and launch | 040, 090 | The effect can be judged |
+
+## What can run in parallel
+
+Task 010 has no dependencies and can start alongside 001. Task 013 needs
+only 010. Tasks 021 and 022 both depend on 020 and are independent of each
+other.
+
+The critical path is 001, 002, 020, 030, 031, 040, 090. Task 011 sits
+beside it and blocks 020, so the prompt work should not wait for the cost
+measurement to finish.
+
+## Gates that stop the line
+
+**After 002.** If the measured per-turn cost puts the 500 USD ceiling out
+of reach, the design changes before anything is built on it. Raise options
+rather than absorbing the overrun.
+
+**After 012.** If the evaluation suite does not pass, the interface does
+not get built. A console that looks finished invites shipping regardless of
+answer quality, which is why the order is deliberate.
+
+**Inside 020.** If Azure Static Web Apps buffers rather than streams, the
+interface design changes. Prove streaming before building on it.
+
+## Blocked now
+
+Task 001 needs the Foundry resource name, deployment name, and the choice
+between Entra ID and an API key. The owner was creating the project on
+2026-09-25.
