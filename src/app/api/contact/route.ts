@@ -5,7 +5,7 @@ import { getIpHash } from "@/lib/ip-hash";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { saveContactSubmission } from "@/lib/storage";
 import { sendContactNotification } from "@/lib/email";
-import { trackEvent, trackException } from "@/lib/logger";
+import { trackEvent, trackException, flushTelemetry } from "@/lib/logger";
 import type { Attribution } from "@/lib/attribution";
 
 async function verifyCaptcha(token: string): Promise<boolean> {
@@ -87,23 +87,55 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Persist to Azure Table Storage first
-    await saveContactSubmission(data, ipHash, attribution);
+    // Capture the submission two ways, and do not let either failure discard
+    // the other. The table is the durable record; the email is what actually
+    // reaches a person. Previously the table write was awaited bare, so a
+    // storage blip threw before the email was ever attempted and the visitor
+    // got a 500 with their message lost in both places.
+    let stored = false;
+    let emailed = false;
 
-    // Send email notification (awaited so serverless doesn't terminate early)
-    await sendContactNotification(data).catch((err) => {
+    try {
+      await saveContactSubmission(data, ipHash, attribution);
+      stored = true;
+    } catch (err) {
+      console.error("[contact] Storage write failed:", err);
+      trackException(
+        err instanceof Error ? err : new Error(String(err)),
+        { step: "storage", reason: data.reason ?? "none" },
+      );
+    }
+
+    // Awaited so the serverless function does not terminate early.
+    try {
+      await sendContactNotification(data);
+      emailed = true;
+    } catch (err) {
       console.error("[contact] Email notification failed:", err);
       trackException(
         err instanceof Error ? err : new Error(String(err)),
         { step: "email", reason: data.reason ?? "none" },
       );
-    });
+    }
+
+    // Only a total loss is an error the visitor needs to see and retry.
+    if (!stored && !emailed) {
+      trackEvent("contact.lost", { reason: data.reason ?? "none" });
+      await flushTelemetry();
+      return NextResponse.json(
+        { ok: false, error: "INTERNAL_ERROR" },
+        { status: 500 },
+      );
+    }
 
     trackEvent("contact.success", {
+      stored: String(stored),
+      emailed: String(emailed),
       reason: data.reason ?? "none",
       entry_referrer: attribution?.entry_referrer ?? "",
       ai_source: attribution?.ai_source ?? "",
     });
+    await flushTelemetry();
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("[contact] Unexpected error:", err);
@@ -111,6 +143,7 @@ export async function POST(request: NextRequest) {
       err instanceof Error ? err : new Error(String(err)),
       { step: "handler" },
     );
+    await flushTelemetry();
     return NextResponse.json(
       { ok: false, error: "INTERNAL_ERROR" },
       { status: 500 },
