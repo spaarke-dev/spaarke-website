@@ -7,9 +7,9 @@
 
 | ID | Task | Phase | Depends on | Est. | Status |
 |---|---|---|---|---|---|
-| 001 | [Record the Foundry deployment](001-record-foundry-deployment.md) | 0 | none | 2h | not-started |
+| 001 | [Record the Foundry deployment](001-record-foundry-deployment.md) | 0 | none | 2h | **complete** |
 | 002 | [Measure what a real turn costs](002-measure-real-cost.md) | 0 | 001 | 2h | not-started |
-| 010 | [Build-time corpus manifest](010-corpus-manifest.md) | 1 | none | 3h | not-started |
+| 010 | [Build-time corpus manifest](010-corpus-manifest.md) | 1 | none | 3h | **complete** |
 | 011 | [System prompt and labeled provenance](011-system-prompt.md) | 1 | 010 | 4h | not-started |
 | 012 | [Evaluation runner and cases](012-evaluation-set.md) | 1 | 011 | 4h | not-started |
 | 013 | [Per-article suggested questions](013-suggested-questions.md) | 1 | 010 | 2h | not-started |
@@ -56,8 +56,19 @@ answer quality, which is why the order is deliberate.
 **Inside 020.** If Azure Static Web Apps buffers rather than streams, the
 interface design changes. Prove streaming before building on it.
 
-## Blocked now
+## Notes from work so far
 
-Task 001 needs the Foundry resource name, deployment name, and the choice
-between Entra ID and an API key. The owner was creating the project on
-2026-09-25.
+**The corpus is 24 articles, not 21.** The spec's figure was an estimate.
+The manifest reports about 108,000 tokens, still well inside the 150,000
+ceiling and the 200,000 context window.
+
+**Sonnet 5 uses the tokenizer introduced with Claude 4.7**, which produces
+roughly 30% more tokens for the same text than earlier models. The build
+estimate accounts for it. Task 002 measures the real figure, and that
+measurement governs the cost model rather than any estimate.
+
+**Anchor fidelity is verified, and it found a live bug.** Checking the
+manifest's anchors against the rendered pages exposed that `extractToc` had
+drifted from `rehype-slug`, leaving 7 dead table of contents links across 3
+published articles. Fixed separately in PR #89. All 32 sampled manifest
+anchors now resolve against production.
