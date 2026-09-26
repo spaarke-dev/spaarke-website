@@ -1,7 +1,7 @@
 # Task 011: System prompt and labeled provenance
 
 **Phase:** 1 (Corpus, prompt, and evaluation)
-**Status:** not-started
+**Status:** complete
 **Estimated:** 4 hours
 **Dependencies:** 010
 **Tags:** typescript, content
@@ -53,12 +53,18 @@ source visible.
 
 ## Acceptance Criteria
 
-- [ ] Corpus sits in a cached block, with cache reads confirmed on turn two
-- [ ] Corpus claims carry structured citations, not prose references
-- [ ] General-knowledge answers say so in plain language, with no clanging
-      disclaimer
-- [ ] Article context biases the answer without limiting what is visible
-- [ ] Stance positions match the articles rather than contradicting them
+- [x] Corpus sits in a cached block, with cache reads confirmed on turn two.
+      Measured 152,357 tokens written then read on every later turn
+- [x] Corpus claims carry structured citations, not prose references. Every
+      heading prints a copyable `[[cite:slug#anchor]]` and every citation is
+      verified against the manifest before it reaches the client
+- [x] General-knowledge answers say so in plain language, with no clanging
+      disclaimer. Live case 2 returned 2,000 characters of substance under a
+      `general` label
+- [x] Article context biases the answer without limiting what is visible. Live
+      case 1 started from the reader's article and cited three
+- [x] Stance positions match the articles rather than contradicting them. Live
+      case 4 rejected the premise that legal operations decides
 
 ## Notes
 
@@ -72,3 +78,20 @@ cover this, though generally" is right. A boxed legal disclaimer on every
 paragraph is not.
 
 See spec FR-03, FR-06, FR-11, KD-04, KD-05.
+
+## Outcome
+
+Built `src/lib/insights/{types,prompt,citations}.ts` and
+`scripts/check-insights-prompt.ts`. Four live cases and twelve parser fixtures
+pass. `notes/prompt-design.md` records the format, the four decisions, the six
+findings the live runs produced, and the ten cases task 012 should carry.
+
+Two fixes outside the task's own files, both caused by the same gap: the corpus
+captured h2 and h3 only, so 46 sections of the functional specification had
+anchors on the page and no marker in the corpus, and the model invented an
+anchor rather than declining to cite. `scripts/build-corpus-manifest.mjs` now
+captures h1 to h6, and `src/lib/blog.ts` feeds every heading to the slugger so
+its de-duplication counter matches the rendered page.
+
+The build's ceiling estimate now counts what the endpoint actually sends. The
+corpus is at 95% of the 160,000 ceiling, not 86%.

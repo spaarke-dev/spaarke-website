@@ -10,7 +10,7 @@
 | 001 | [Record the Foundry deployment](001-record-foundry-deployment.md) | 0 | none | 2h | **complete** |
 | 002 | [Measure what a real turn costs](002-measure-real-cost.md) | 0 | 001 | 2h | **complete** |
 | 010 | [Build-time corpus manifest](010-corpus-manifest.md) | 1 | none | 3h | **complete** |
-| 011 | [System prompt and labeled provenance](011-system-prompt.md) | 1 | 010 | 4h | not-started |
+| 011 | [System prompt and labeled provenance](011-system-prompt.md) | 1 | 010 | 4h | **complete** |
 | 012 | [Evaluation runner and cases](012-evaluation-set.md) | 1 | 011 | 4h | not-started |
 | 013 | [Per-article suggested questions](013-suggested-questions.md) | 1 | 010 | 2h | not-started |
 | 020 | [Streaming endpoint](020-streaming-endpoint.md) | 2 | 002, 011 | 4h | not-started |
@@ -59,9 +59,11 @@ interface design changes. Prove streaming before building on it.
 
 ## Notes from work so far
 
-**The corpus is 24 articles, not 21.** The spec's figure was an estimate.
-The manifest reports about 108,000 tokens, still well inside the 150,000
-ceiling and the 200,000 context window.
+**The corpus is 24 articles, not 21.** The spec's figure was an estimate. The
+assembled prompt measures 152,357 tokens, 95% of the 160,000 ceiling, with room
+for roughly one more article. The build's estimate previously covered the prose
+and not the index, the article tags, the heading markers or the instruction
+block, which is why it reported 86%.
 
 **Sonnet 5 uses the tokenizer introduced with Claude 4.7**, which produces
 roughly 30% more tokens for the same text than earlier models. The build

@@ -63,6 +63,15 @@ function estimateTokens(text) {
  * citation links to an anchor that does not exist: it looks correct in the
  * answer and does nothing when clicked. Same slugger, same order, including
  * its de-duplication of repeated headings.
+ *
+ * Every depth from h1 to h6, for two reasons. The table of contents shows only
+ * h2 and h3, but rehype-slug anchors all of them, so a deeper heading is a
+ * legitimate citation target. Capping this at h3 left 46 sections of the
+ * functional specification uncitable, and on the first live run the assistant
+ * invented an anchor rather than declining to cite. The slugger also has to see
+ * every heading in document order, because its de-duplication counter is what
+ * decides whether a repeated title becomes "foo" or "foo-1", and feeding it a
+ * subset is how anchors drift from the rendered page.
  */
 function extractHeadings(content) {
   const slugger = new GithubSlugger();
@@ -76,7 +85,7 @@ function extractHeadings(content) {
     }
     if (inFence) continue;
 
-    const m = /^(#{2,3})\s+(.+?)\s*$/.exec(line);
+    const m = /^(#{1,6})\s+(.+?)\s*$/.exec(line);
     if (!m) continue;
     const text = m[2].replace(/[*_`]/g, "");
     headings.push({ depth: m[1].length, text, anchor: slugger.slug(text) });
@@ -124,20 +133,36 @@ const manifest = {
 const serialized = JSON.stringify(manifest, null, 2);
 
 // Estimate what the endpoint actually sends, not just the prose. The system
-// block carries a per-article index (title, slug, url, date, summary, heading
-// anchors) ahead of each body, and leaving it out understated the corpus by
-// about 9% against the measured figure.
+// block carries a corpus index, a tagged header per article, and a copyable
+// citation marker on every heading, all of which count against the context
+// window. Leaving them out understated the corpus by about 9%.
+//
+// src/lib/insights/prompt.ts composes the real thing and
+// `npx tsx scripts/check-insights-prompt.ts --offline` measures it. This
+// estimate exists so that `npm run build` can fail without a model call, and
+// the two have to be kept in step when the prompt format changes.
 const assembled = [
-  "# Spaarke published articles",
-  ...articles.map(
-    (a) =>
-      `## ${a.title}\nslug: ${a.slug}\nurl: ${a.url}\ndate: ${a.date}\n` +
-      `summary: ${a.summary ?? a.description ?? ""}\n` +
-      `headings: ${a.headings.map((h) => h.anchor).join(", ")}\n\n${a.body}`,
+  `<corpus articles="${articles.length}">`,
+  ...articles.map((a) => `- ${a.slug} | ${a.title} | ${a.date ?? "undated"}`),
+  ...articles.map((a) =>
+    [
+      `<article slug="${a.slug}" published="${a.date}">`,
+      `title: ${a.title}`,
+      `summary: ${a.summary ?? a.description ?? ""}`,
+      "key takeaways:",
+      ...a.keyTakeaways.map((t) => `- ${t}`),
+      ...a.headings.map((h) => `[[cite:${a.slug}#${h.anchor}]]`),
+      a.body,
+      "</article>",
+    ].join("\n"),
   ),
 ].join("\n\n");
 
-const tokens = estimateTokens(assembled);
+// The instruction block is static text, so a measured constant is honest here
+// where a guess would not be. 8,943 characters on 2026-09-26.
+const INSTRUCTION_TOKENS = 2_400;
+
+const tokens = estimateTokens(assembled) + INSTRUCTION_TOKENS;
 
 if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });
 writeFileSync(OUT_FILE, serialized);

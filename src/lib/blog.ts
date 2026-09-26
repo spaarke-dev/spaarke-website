@@ -114,6 +114,12 @@ export function extractToc(content: string): TocItem[] {
   // contents links across 3 published articles: the anchors rendered, the
   // links rendered, and clicking them did nothing. Use the same slugger the
   // renderer uses, including its de-duplication of repeated headings.
+  //
+  // The slugger sees every heading depth even though the table of contents
+  // lists only h2 and h3, because de-duplication is stateful: rehype-slug
+  // counts an h4 named "Overview" when deciding whether a later h2 of the same
+  // name becomes "overview" or "overview-1". Feeding it a subset is the same
+  // class of drift as the hand-rolled slugifier it replaced.
   const slugger = new GithubSlugger();
   const items: TocItem[] = [];
   const lines = content.split("\n");
@@ -126,11 +132,13 @@ export function extractToc(content: string): TocItem[] {
     }
     if (inFence) continue;
 
-    const m = /^(#{2,3})\s+(.+?)\s*$/.exec(line);
+    const m = /^(#{1,6})\s+(.+?)\s*$/.exec(line);
     if (!m) continue;
-    const depth = m[1].length === 2 ? 2 : 3;
     const text = m[2].replace(/[*_`]/g, "");
-    items.push({ id: slugger.slug(text), text, depth: depth as 2 | 3 });
+    const id = slugger.slug(text);
+    const depth = m[1].length;
+    if (depth !== 2 && depth !== 3) continue;
+    items.push({ id, text, depth });
   }
 
   return items;
