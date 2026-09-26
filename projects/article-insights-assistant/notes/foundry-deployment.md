@@ -51,17 +51,28 @@ Deployed 2026-09-26.
 | Deployment name | `spaarke-website-claude-sonnet-5` |
 | Model | `claude-sonnet-5` |
 | Version | 2, hosted on Azure |
-| SKU | `GlobalStandard` |
+| SKU | `DataZoneStandard`, US data zone |
 | Capacity | 100 |
 
 `spaarke-website-claude-sonnet-5` is what goes in the `model` parameter,
 not `claude-sonnet-5`. Passing the model id produces a 404 that reads like
 a missing deployment.
 
-**Open: GlobalStandard rather than US Data Zone.** Global routing may leave
-the United States. US data residency was part of the reason for choosing
-Foundry, and Data Zone costs a 1.1x multiplier on every pricing category,
-which at expected volume is a few dollars a month. See `cost-model.md`.
+Redeployed from `GlobalStandard` to `DataZoneStandard` on 2026-09-26.
+Because the resource sits in eastus2, inference stays within the US data
+zone. Costs a 1.1x multiplier on every pricing category, which
+`cost-model.md` accounts for. The deployment name did not change, so no app
+setting or environment variable needed updating.
+
+**Leave the Playground's Instructions, Knowledge and Memory empty.** They
+configure the portal Playground and the Agents service, not the Messages
+API this project calls, so anything set there would silently do nothing in
+production. Each also cuts against a decision already made: the system
+prompt belongs in `src/lib/insights/prompt.ts` where a change is a
+reviewable diff the evaluation suite can test, Knowledge is a retrieval
+store and retrieval is what KD-01 deliberately removed, and Memory
+persists context across sessions, which the privacy policy published on
+2026-09-25 says this feature does not do.
 
 ## Environment variables
 
