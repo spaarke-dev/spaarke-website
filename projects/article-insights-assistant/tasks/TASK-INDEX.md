@@ -11,7 +11,7 @@
 | 002 | [Measure what a real turn costs](002-measure-real-cost.md) | 0 | 001 | 2h | **complete** |
 | 010 | [Build-time corpus manifest](010-corpus-manifest.md) | 1 | none | 3h | **complete** |
 | 011 | [System prompt and labeled provenance](011-system-prompt.md) | 1 | 010 | 4h | **complete** |
-| 012 | [Evaluation runner and cases](012-evaluation-set.md) | 1 | 011 | 4h | not-started |
+| 012 | [Evaluation runner and cases](012-evaluation-set.md) | 1 | 011 | 4h | **complete** |
 | 013 | [Per-article suggested questions](013-suggested-questions.md) | 1 | 010 | 2h | **complete** |
 | 020 | [Streaming endpoint](020-streaming-endpoint.md) | 2 | 002, 011 | 4h | not-started |
 | 021 | [Abuse and spend defences](021-abuse-and-spend-defences.md) | 2 | 020 | 4h | not-started |
@@ -50,9 +50,13 @@ cold, against a 500 USD ceiling that buys about 15,600 warm turns a month.
 Caching confirmed working. The design is affordable and phase 2 can
 proceed.
 
-**After 012.** If the evaluation suite does not pass, the interface does
-not get built. A console that looks finished invites shipping regardless of
-answer quality, which is why the order is deliberate.
+**After 012. Met in part, 2026-09-26.** The suite runs and reports per case, and
+lands between 32 and 39 of 40 across runs, which is a rate rather than a verdict
+because the model is nondeterministic and the assertions are strict.
+Cross-article cases pass most of the time and citations resolve after mechanical
+repair. Mixed provenance labeling is not yet reliable. Three residual behaviours
+are recorded in `notes/evaluation.md`. The endpoint does not depend on closing
+them, so phase 2 can proceed, but they should be closed before launch.
 
 **Inside 020.** If Azure Static Web Apps buffers rather than streams, the
 interface design changes. Prove streaming before building on it.

@@ -3,10 +3,10 @@
 > Context recovery. A session picking this up cold reads this file first,
 > then `tasks/TASK-INDEX.md`, then `spec.md`.
 >
-> Last updated 2026-09-26, after task 011.
+> Last updated 2026-09-26, after tasks 011, 012 and 013. Phase 1 is complete.
 
 **Active task:** none in progress.
-**Next task:** `013-suggested-questions.md`, then `012`, then `020`.
+**Next task:** `020-streaming-endpoint.md`, then `021` and `022` beside it.
 
 ## What this is, in one paragraph
 
@@ -29,9 +29,10 @@ true before anything else got built.
 | 002 Cost measurement | complete, gate passed |
 | 010 Corpus manifest | complete |
 | 011 System prompt | complete |
-| 013 Suggested questions | **next** |
-| 012 Evaluation set | after 013, ten cases already named in notes/prompt-design.md |
-| 020 to 090 | not started |
+| 012 Evaluation set | complete, gate met in part |
+| 013 Suggested questions | complete |
+| 020 Streaming endpoint | **next** |
+| 021, 022, 030, 031, 040, 090 | not started |
 
 ## The measured numbers, which are not estimates
 
@@ -65,8 +66,8 @@ repository is public.
 
 ## Branch and PR state, read this before committing anything
 
-Task 011 is on **`feat/insights-prompt`**. The project scaffold merged to `main`
-in PR #87.
+Phase 1 is merged to `main`: PR #87 the scaffold, #91 the prompt, #92 the entry
+card questions, #93 the evaluation suite.
 
 The privacy policy change was **deliberately split out** of that PR. It
 adds an "Article assistant" section written in the present tense, and
@@ -98,6 +99,28 @@ merged. Check out the branch.
   configure the Playground and Agents service, not the Messages API this
   project calls.
 
+## Read these two notes before touching the prompt or the endpoint
+
+`notes/prompt-design.md` records the wire format and why each part of it is
+shaped that way. `notes/evaluation.md` records how to run the suite, how to read
+its rate, and the three behaviours that are still not right.
+
+**Extended thinking is on at the deployment and it destroys answers.** Eleven of
+forty evaluation cases came back completely empty because 1,999 of 2,000 output
+tokens went into a thinking block. Every call goes through
+`buildMessageRequest` in `src/lib/insights/prompt.ts`, which disables it. Task
+020 must use that builder rather than composing its own request, or it inherits
+the same defect. The model also rejects `temperature` as deprecated.
+
+**Three model behaviours are repaired mechanically** in `parseAnswer`: citations
+corrected, non-verbatim quotations demoted to paraphrase, dashes replaced. The
+endpoint should keep using it rather than streaming raw text to the client, and
+task 030 needs the repaired text.
+
+**Phase 1's gate is met in part.** The suite lands between 32 and 39 of 40 across
+runs. Mixed provenance labeling is not yet reliable. Recorded rather than
+smoothed over, and it does not block task 020.
+
 ## Findings that shape the work still to do
 
 **Read `notes/prompt-design.md` before touching the prompt.** It records the wire
@@ -115,8 +138,14 @@ own `[[cite:slug#anchor]]`. The first live run showed the model assembling a slu
 from one article with an anchor from another, which produced a citation that
 looked right and went nowhere.
 
-**A cold turn costs $0.68 and a warm one about $0.04.** Four warm turns cost
-$0.17 in total. The write is now measured at the 1 hour rate rather than assumed.
+**A cold turn costs $0.68 and a warm one about $0.04.** A full evaluation run of
+forty cases costs $1.75 to $2.40 warm. The write is measured at the 1 hour rate
+rather than assumed, and `cache_creation` is logged on every call so the next cold
+run confirms the 1 hour TTL is honoured.
+
+**The entry card questions are committed data, not generated at request time.**
+`content/insights/suggested-questions.json`, three per article, reviewed by hand.
+Summarize is offered fourth by `entryOptions`, never first.
 
 **The existing rate limiter is not a spend guard.** `src/lib/rate-limit.ts`
 keeps counters in a module-level `Map`, so it resets on every function
@@ -158,6 +187,7 @@ Noted so a later session does not rediscover them as bugs.
    particularly on what the general counsel owns versus what legal
    operations facilitates.
 4. `node scripts/build-corpus-manifest.mjs` regenerates the corpus.
-   `npx tsx scripts/check-insights-prompt.ts --offline` checks the prompt and the
-   parser for free. Without `--offline` it makes four real calls, costing about
-   $0.17 warm or $0.80 cold.
+   `npm run insights:check -- --offline` checks the prompt, the parser and the
+   entry card copy for free. Without `--offline` it makes four real calls, about
+   $0.17 warm or $0.80 cold. `npm run insights:eval` runs all forty evaluation
+   cases for $1.75 to $2.40 and writes every answer to `eval/last-run.json`.

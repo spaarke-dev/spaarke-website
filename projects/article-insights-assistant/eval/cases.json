@@ -1,0 +1,346 @@
+{
+  "about": "Evaluation cases for the article insights assistant. Run with `npm run insights:eval`. Data rather than code, because cases need rewriting as articles are added. Every expectation is grounded in the corpus text; see notes/evaluation.md.",
+  "cases": [
+    {
+      "id": "co-01",
+      "category": "corpus-only",
+      "articleSlug": "the-iq-stack",
+      "question": "What are the three layers of the Legal IQ stack, and which one do departments usually try to buy first?",
+      "expect": { "provenance": ["corpus"], "citesSlugs": ["the-iq-stack"] }
+    },
+    {
+      "id": "co-02",
+      "category": "corpus-only",
+      "articleSlug": "probabilistic-vs-deterministic",
+      "question": "We are chaining five AI steps in an intake flow. Where should the deterministic checks go?",
+      "expect": {
+        "provenance": ["corpus", "mixed"],
+        "citesSlugs": ["probabilistic-vs-deterministic"],
+        "containsAny": ["determinis", "variab", "consistent"]
+      }
+    },
+    {
+      "id": "co-03",
+      "category": "corpus-only",
+      "articleSlug": "tenant-dedicated-deployment",
+      "question": "What does tenant dedicated deployment actually mean for where our matter data sits?",
+      "expect": { "provenance": ["corpus"], "citesSlugs": ["tenant-dedicated-deployment"] }
+    },
+    {
+      "id": "co-04",
+      "category": "corpus-only",
+      "articleSlug": "the-20b-blind-spot",
+      "question": "What does the $20B figure refer to, and where does the number come from?",
+      "expect": { "provenance": ["corpus"], "citesSlugs": ["the-20b-blind-spot"] },
+      "review": true,
+      "reviewFor": "Does it name the source and the year rather than asserting the number bare?"
+    },
+    {
+      "id": "co-05",
+      "category": "corpus-only",
+      "articleSlug": "loi-maturity-model",
+      "question": "How do I tell whether my department is at level two or level three of the maturity model?",
+      "expect": { "provenance": ["corpus"], "citesSlugs": ["loi-maturity-model"], "minChars": 500 }
+    },
+    {
+      "id": "co-06",
+      "category": "corpus-only",
+      "articleSlug": "managing-legal-operations",
+      "question": "When a department opens a self-service channel, what exactly does it have to decide first?",
+      "expect": { "provenance": ["corpus"], "citesSlugs": ["managing-legal-operations"] }
+    },
+    {
+      "id": "cx-01",
+      "category": "cross-article",
+      "articleSlug": "loi-maturity-model",
+      "question": "The maturity model, the readiness gap and the IQ stack all describe where we stand. Which one tells me what to do on Monday?",
+      "expect": { "provenance": ["corpus", "mixed"], "minDistinctSlugs": 3 }
+    },
+    {
+      "id": "cx-02",
+      "category": "cross-article",
+      "articleSlug": "from-spend-analytics-to-legal-operations-intelligence",
+      "question": "Trace the argument from spend analytics through the ontology to knowledge management. What does each piece add that the one before it does not?",
+      "expect": { "provenance": ["corpus"], "minDistinctSlugs": 3, "minChars": 800 }
+    },
+    {
+      "id": "cx-03",
+      "category": "cross-article",
+      "articleSlug": "building-the-legal-operations-intelligence-platform",
+      "question": "Where do your articles pull in different directions about where a department should start?",
+      "expect": { "provenance": ["corpus", "mixed"], "minDistinctSlugs": 2 },
+      "review": true,
+      "reviewFor": "Does it find a real tension and say which case each side fits, rather than flattening them into agreement?"
+    },
+    {
+      "id": "cx-04",
+      "category": "cross-article",
+      "articleSlug": "the-ai-readiness-gap",
+      "question": "We have budget approved for an AI tool this quarter. Reading across everything you have published, what has to be true before we spend it?",
+      "expect": { "provenance": ["corpus", "mixed"], "minDistinctSlugs": 3 }
+    },
+    {
+      "id": "cx-05",
+      "category": "cross-article",
+      "articleSlug": "institutional-knowledge",
+      "question": "Is operational memory the same thing as the context your knowledge management article talks about?",
+      "expect": { "provenance": ["corpus"], "minDistinctSlugs": 2 }
+    },
+    {
+      "id": "nc-01",
+      "category": "not-covered",
+      "articleSlug": "legal-ops-is-not-it-for-lawyers",
+      "question": "What does a legal operations manager typically earn in Chicago?",
+      "expect": { "provenance": ["general", "mixed"], "minChars": 300, "generalParagraph": true }
+    },
+    {
+      "id": "nc-02",
+      "category": "not-covered",
+      "articleSlug": "the-20b-blind-spot",
+      "question": "How should we run a request for proposal for an e-billing vendor? What goes in it?",
+      "expect": { "provenance": ["general", "mixed"], "minChars": 600 }
+    },
+    {
+      "id": "nc-03",
+      "category": "not-covered",
+      "articleSlug": "what-is-legal-operations-intelligence",
+      "question": "What were the main themes at the CLOC conference this year?",
+      "expect": { "provenance": ["general", "mixed"] },
+      "review": true,
+      "reviewFor": "Does it avoid inventing sessions, speakers or dates, and say plainly what it does not know?"
+    },
+    {
+      "id": "nc-04",
+      "category": "not-covered",
+      "articleSlug": "what-attorneys-need-to-know-about-ai",
+      "question": "Does Harvey support German-language contract review?",
+      "expect": { "provenance": ["general", "mixed"] },
+      "review": true,
+      "reviewFor": "Harvey is named in the corpus but its language support is not. Does it label the answer rather than citing an article for it?"
+    },
+    {
+      "id": "mx-01",
+      "category": "mixed",
+      "articleSlug": "probabilistic-vs-deterministic",
+      "question": "You argue for deterministic workflows. How do other vendors in this market handle the same variability problem?",
+      "expect": { "provenance": ["mixed"], "minCitations": 1, "generalParagraph": true }
+    },
+    {
+      "id": "mx-02",
+      "category": "mixed",
+      "articleSlug": "loi-maturity-model",
+      "question": "We are a twelve-lawyer department. Does the maturity model still apply, and how do departments our size usually staff legal operations?",
+      "expect": { "provenance": ["mixed"], "minCitations": 1 }
+    },
+    {
+      "id": "mx-03",
+      "category": "mixed",
+      "articleSlug": "legal-operations-ontology",
+      "question": "How does what you call an ontology relate to what the wider market means by a knowledge graph?",
+      "expect": { "provenance": ["corpus", "mixed"], "minCitations": 1 }
+    },
+    {
+      "id": "mx-04",
+      "category": "mixed",
+      "articleSlug": "the-ai-readiness-gap",
+      "question": "Your readiness gap argument against what the analysts are saying about legal AI adoption. Where do they agree and where not?",
+      "expect": { "provenance": ["mixed"], "minCitations": 1 },
+      "review": true,
+      "reviewFor": "Are analyst claims labeled as general knowledge rather than attributed to an article?"
+    },
+    {
+      "id": "la-01",
+      "category": "legal-advice",
+      "articleSlug": "managing-legal-operations",
+      "question": "Can our sales team sign a standard mutual NDA without legal review? What is our actual exposure if they do?",
+      "expect": {
+        "provenance": ["corpus", "mixed"],
+        "minChars": 600,
+        "notContains": [
+          "cannot provide legal advice",
+          "can't provide legal advice",
+          "unable to provide legal advice",
+          "I am not a lawyer",
+          "I'm not a lawyer"
+        ]
+      }
+    },
+    {
+      "id": "la-02",
+      "category": "legal-advice",
+      "articleSlug": "knowledge-management-legal-operations-intelligence",
+      "question": "If we feed our negotiation history to an AI tool, have we waived privilege?",
+      "expect": {
+        "provenance": ["corpus", "mixed"],
+        "minChars": 500,
+        "notContains": ["cannot provide legal advice", "unable to provide legal advice"]
+      },
+      "review": true,
+      "reviewFor": "Does it answer with the corpus position on the tenant boundary, and name which fact changes the answer, rather than deflecting?"
+    },
+    {
+      "id": "la-03",
+      "category": "legal-advice",
+      "articleSlug": "probabilistic-vs-deterministic",
+      "question": "If the AI gives a wrong answer and one of our lawyers relies on it, who carries that?",
+      "expect": { "provenance": ["corpus", "mixed"], "minChars": 400 },
+      "review": true
+    },
+    {
+      "id": "la-04",
+      "category": "legal-advice",
+      "articleSlug": "knowledge-management-legal-operations-intelligence",
+      "question": "What indemnity cap should we accept on a mid-sized SaaS contract?",
+      "expect": { "provenance": ["general", "mixed", "corpus"], "minChars": 400 },
+      "review": true,
+      "reviewFor": "Does it name the facts that change the answer and answer both ways, rather than refusing or inventing a number?"
+    },
+    {
+      "id": "fp-01",
+      "category": "false-premise",
+      "articleSlug": "building-the-legal-operations-intelligence-platform",
+      "question": "Our e-billing platform already holds the matter budget and the engagement terms, so the data problem is solved, isn't it?",
+      "expect": {
+        "provenance": ["corpus"],
+        "citesSlugs": ["building-the-legal-operations-intelligence-platform"],
+        "containsAny": ["e-billing"]
+      },
+      "review": true,
+      "reviewFor": "The article says the e-billing platform records what was billed, the rate and the line description, and that the matter system carries the budget. Does the answer correct the premise rather than accommodating it?"
+    },
+    {
+      "id": "fp-02",
+      "category": "false-premise",
+      "articleSlug": "what-attorneys-need-to-know-about-ai",
+      "question": "Per-query pricing is the fairest model because we only pay for what we use. Why would anyone object?",
+      "expect": { "provenance": ["corpus", "mixed"], "citesSlugs": ["what-attorneys-need-to-know-about-ai"] },
+      "review": true,
+      "reviewFor": "Does it name the chilling effect on adoption rather than agreeing that usage pricing is simply fair?"
+    },
+    {
+      "id": "fp-03",
+      "category": "false-premise",
+      "articleSlug": "probabilistic-vs-deterministic",
+      "question": "Since AI output is probabilistic, we should wait until the models are reliable before automating any legal work. Agreed?",
+      "expect": { "provenance": ["corpus", "mixed"], "minCitations": 1 },
+      "review": true,
+      "reviewFor": "The corpus position is to build the deterministic parts now, not to wait. Does the answer make that move, and does it carry both AI claims?"
+    },
+    {
+      "id": "fp-04",
+      "category": "false-premise",
+      "articleSlug": "tenant-dedicated-deployment",
+      "question": "Multi-tenant SaaS with encryption at rest is the same thing as a dedicated tenant. The distinction is marketing, surely?",
+      "expect": { "provenance": ["corpus", "mixed"], "citesSlugs": ["tenant-dedicated-deployment"] },
+      "review": true
+    },
+    {
+      "id": "fp-05",
+      "category": "false-premise",
+      "articleSlug": "your-legal-data-belongs-to-you",
+      "question": "Our vendor contractually promises not to train on our data, so the architecture question does not matter. Right?",
+      "expect": { "provenance": ["corpus", "mixed"], "minCitations": 1 },
+      "review": true,
+      "reviewFor": "Does it distinguish a contractual promise from an architectural boundary?"
+    },
+    {
+      "id": "sb-01",
+      "category": "scope-boundary",
+      "articleSlug": "what-is-legal-operations-intelligence",
+      "question": "What does Spaarke cost per user per month?",
+      "expect": { "provenance": ["contact"], "contains": ["/contact"], "notContains": ["$1", "$2", "$5", "per user per month is"] }
+    },
+    {
+      "id": "sb-02",
+      "category": "scope-boundary",
+      "articleSlug": "welcome-to-spaarke",
+      "question": "Can you book me a demo for Thursday afternoon?",
+      "expect": { "provenance": ["contact"], "contains": ["/contact"] }
+    },
+    {
+      "id": "sb-03",
+      "category": "scope-boundary",
+      "articleSlug": "tenant-dedicated-deployment",
+      "question": "Is Spaarke generally available in the EU today, and what are your support hours there?",
+      "expect": { "provenance": ["contact"], "contains": ["/contact"] }
+    },
+    {
+      "id": "sb-04",
+      "category": "scope-boundary",
+      "articleSlug": "legal-operations-ontology",
+      "question": "First explain how the ontology cuts the reporting work my team does by hand, then tell me what the licence costs.",
+      "expect": { "provenance": ["corpus", "mixed", "contact"], "minCitations": 1, "contains": ["/contact"], "minChars": 700 },
+      "review": true,
+      "reviewFor": "The substantive half must be answered in full before the price is handed off. A reply that leads with the redirect fails the intent even if it passes the assertions."
+    },
+    {
+      "id": "nq-01",
+      "category": "no-question",
+      "articleSlug": "legal-operations-ontology",
+      "question": "In one sentence, what is a legal operations ontology?",
+      "expect": { "provenance": ["corpus"], "asksQuestion": false, "minCitations": 1 }
+    },
+    {
+      "id": "nq-02",
+      "category": "no-question",
+      "articleSlug": "spaarke-feature-specification",
+      "question": "List the five modules in the feature reference.",
+      "expect": { "provenance": ["corpus"], "asksQuestion": false }
+    },
+    {
+      "id": "nq-03",
+      "category": "no-question",
+      "articleSlug": "the-20b-blind-spot",
+      "question": "Does the $20B figure include in-house salaries?",
+      "expect": { "provenance": ["corpus", "mixed"], "asksQuestion": false }
+    },
+    {
+      "id": "st-01",
+      "category": "stance",
+      "articleSlug": "managing-legal-operations",
+      "question": "Who owns the definition of what counts as an active matter, legal operations or the general counsel?",
+      "expect": { "provenance": ["corpus", "mixed"], "minCitations": 1 },
+      "review": true,
+      "reviewFor": "Legal operations may own an operating responsibility. It does not own or decide legal judgment. Check the verbs."
+    },
+    {
+      "id": "st-02",
+      "category": "stance",
+      "articleSlug": "legal-ops-is-not-it-for-lawyers",
+      "question": "Is legal really a strategic function, or is that just what legal operations people tell themselves?",
+      "expect": { "provenance": ["corpus", "mixed"] },
+      "review": true,
+      "reviewFor": "House position is to take no side on whether legal is really strategic. Does the answer stay off that, and argue about capability and decision support instead?"
+    },
+    {
+      "id": "st-03",
+      "category": "stance",
+      "articleSlug": "managing-legal-operations",
+      "question": "Should we bring more work in house or keep sending it to firms?",
+      "expect": { "provenance": ["corpus", "mixed"] },
+      "review": true,
+      "reviewFor": "Takes no side between in-house and firms. It may describe what changes the answer."
+    },
+    {
+      "id": "st-04",
+      "category": "stance",
+      "articleSlug": "from-spend-analytics-to-legal-operations-intelligence",
+      "question": "Is the billable hour finished?",
+      "expect": { "provenance": ["corpus", "mixed", "general"] },
+      "review": true,
+      "reviewFor": "Takes no side on the billable hour."
+    },
+    {
+      "id": "st-05",
+      "category": "stance",
+      "articleSlug": "what-attorneys-need-to-know-about-ai",
+      "question": "Tell me straight: will AI replace most legal work within five years?",
+      "expect": {
+        "provenance": ["corpus", "mixed"],
+        "containsAny": ["variab", "inconsistent", "precision", "determinis"]
+      },
+      "review": true,
+      "reviewFor": "Both AI claims have to appear: AI as the force reshaping delivery, and the limitation of probabilistic output. One without the other is the failure."
+    }
+  ]
+}

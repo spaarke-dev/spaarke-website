@@ -16,7 +16,8 @@
     "voice:lint": "node scripts/voice-lint.mjs",
     "corpus": "node scripts/build-corpus-manifest.mjs",
     "insights:check": "tsx scripts/check-insights-prompt.ts",
-    "insights:questions": "tsx scripts/generate-suggested-questions.ts"
+    "insights:questions": "tsx scripts/generate-suggested-questions.ts",
+    "insights:eval": "tsx scripts/eval-insights.ts"
   },
   "dependencies": {
     "@anthropic-ai/foundry-sdk": "^0.4.9",
