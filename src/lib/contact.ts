@@ -7,7 +7,21 @@ export interface ContactFormData {
   hp?: string;
 }
 
-const VALID_REASONS = ["Demo", "Partnership", "Support", "Other"] as const;
+/**
+ * The reasons a visitor may pick, and the only ones the server accepts.
+ *
+ * The form and the validator used to hold separate lists. They drifted until
+ * only "Partnership" overlapped, so three of the four options a visitor could
+ * choose were rejected on submit. Exported and imported by the form so there
+ * is one list and drift is not possible.
+ */
+export const VALID_REASONS = [
+  "See a working session",
+  "Join design community",
+  "Partnership",
+  "Press / media",
+  "Something else",
+] as const;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

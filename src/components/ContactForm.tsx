@@ -7,14 +7,10 @@ import { HoorayConfetti } from "@/components/HoorayConfetti";
 import InlineAlert from "@/components/InlineAlert";
 import { submissionProps } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
+import { VALID_REASONS } from "@/lib/contact";
 
-const REASON_OPTIONS = [
-  "",
-  "See a working session",
-  "Partnership",
-  "Press / media",
-  "Something else",
-] as const;
+// Single source of truth, shared with the server-side validator.
+const REASON_OPTIONS = ["", ...VALID_REASONS] as const;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -22,6 +18,7 @@ interface FieldErrors {
   name?: string;
   email?: string;
   message?: string;
+  reason?: string;
 }
 
 function validateLocally(fields: {
@@ -165,8 +162,21 @@ export default function ContactForm({
 
       if (!res.ok || !data.ok) {
         if (data.error === "VALIDATION_ERROR" && data.fields) {
-          setFieldErrors(data.fields as FieldErrors);
-          setStatus("idle");
+          const fields = data.fields as FieldErrors;
+          setFieldErrors(fields);
+          // A field error with nowhere to render is a submission that appears
+          // to do nothing at all: no success, no error, no explanation. Surface
+          // anything this form cannot show inline.
+          const RENDERED = ["name", "email", "message", "reason"];
+          const orphaned = Object.entries(data.fields).filter(
+            ([k]) => !RENDERED.includes(k),
+          );
+          if (orphaned.length > 0) {
+            setStatus("error");
+            setErrorMessage(orphaned.map(([, v]) => String(v)).join(" "));
+          } else {
+            setStatus("idle");
+          }
         } else if (data.error === "CAPTCHA_FAILED") {
           setStatus("error");
           setErrorMessage("CAPTCHA verification failed. Please try again.");
@@ -336,6 +346,11 @@ export default function ContactForm({
               />
             </svg>
           </div>
+          {fieldErrors.reason && (
+            <p className="text-error mt-1.5 text-sm" role="alert">
+              {fieldErrors.reason}
+            </p>
+          )}
         </div>
 
         {/* Message */}
