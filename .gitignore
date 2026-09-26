@@ -64,3 +64,6 @@ next-env.d.ts
 
 # Word exports for content review (scripts/export-drafts-to-docx.mjs)
 review/
+
+# generated at build time by scripts/build-corpus-manifest.mjs
+src/generated/

@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "node scripts/build-corpus-manifest.mjs --quiet && next dev",
+    "build": "node scripts/build-corpus-manifest.mjs --quiet && next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
@@ -13,9 +13,11 @@
     "linkedin:refresh": "tsx scripts/linkedin-refresh-token.ts",
     "linkedin:test-kv": "tsx scripts/linkedin-test-kv.ts",
     "linkedin:status": "tsx scripts/linkedin-status.ts",
-    "voice:lint": "node scripts/voice-lint.mjs"
+    "voice:lint": "node scripts/voice-lint.mjs",
+    "corpus": "node scripts/build-corpus-manifest.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/foundry-sdk": "^0.4.9",
     "@azure/data-tables": "^13.3.2",
     "@azure/identity": "^4.5.0",
     "@azure/keyvault-secrets": "^4.9.0",
