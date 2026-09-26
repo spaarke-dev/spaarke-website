@@ -26,19 +26,36 @@ const OUT_FILE = join(OUT_DIR, "corpus.json");
 const args = process.argv.slice(2);
 const quiet = args.includes("--quiet");
 const ceilingArg = args.indexOf("--ceiling");
-// 200K context window. 150K leaves room for the conversation and the answer,
-// and lands well before anything breaks.
-const CEILING = ceilingArg !== -1 ? Number(args[ceilingArg + 1]) : 150_000;
+// 200K context window. The corpus measured 137,341 real tokens on 2026-09-26
+// (task 002), so 160K leaves about 40K for the conversation and the answer and
+// roughly four more articles of headroom. WARN_AT announces the approach
+// rather than letting the build fail without notice one article later.
+const CEILING = ceilingArg !== -1 ? Number(args[ceilingArg + 1]) : 160_000;
+const WARN_AT = Math.round(CEILING * 0.9);
 
 /**
- * Sonnet 5 uses the tokenizer introduced with Claude 4.7, which produces
- * roughly 30% more tokens for the same text than earlier models. This is a
- * build-time estimate for the ceiling check only. Task 002 measures the real
- * count against the API, and that measurement governs the cost model.
+ * Build-time estimate for the ceiling check only. The API reports the real
+ * count and that governs the cost model.
+ *
+ * Calibrated directly against a measured 137,341 tokens for the assembled
+ * corpus on 2026-09-26 (task 002): 64,125 words, so 2.142 tokens per word, or
+ * about 3.2 characters per token. Sonnet 5 uses the tokenizer introduced with
+ * Claude 4.7, which produces roughly 30% more tokens than earlier models, so
+ * a ratio borrowed from older guidance will read low.
+ *
+ * Recalibrate by running scripts/measure-insights-cost.mjs and dividing the
+ * reported token count by the assembled word count. Guessing at this constant
+ * produced errors of 27% and then 13% before it was measured.
  */
+const TOKENS_PER_WORD = 2.142;
+
+/** Mean tokens per article at 24 articles and 137,341 measured, used only to
+ *  say how many more articles fit before the ceiling. */
+const AVG_ARTICLE_TOKENS = 5700;
+
 function estimateTokens(text) {
   const words = text.split(/\s+/).filter(Boolean).length;
-  return Math.round(words * 1.33 * 1.3);
+  return Math.round(words * TOKENS_PER_WORD);
 }
 
 /**
@@ -105,7 +122,22 @@ const manifest = {
 };
 
 const serialized = JSON.stringify(manifest, null, 2);
-const tokens = estimateTokens(articles.map((a) => a.body).join("\n"));
+
+// Estimate what the endpoint actually sends, not just the prose. The system
+// block carries a per-article index (title, slug, url, date, summary, heading
+// anchors) ahead of each body, and leaving it out understated the corpus by
+// about 9% against the measured figure.
+const assembled = [
+  "# Spaarke published articles",
+  ...articles.map(
+    (a) =>
+      `## ${a.title}\nslug: ${a.slug}\nurl: ${a.url}\ndate: ${a.date}\n` +
+      `summary: ${a.summary ?? a.description ?? ""}\n` +
+      `headings: ${a.headings.map((h) => h.anchor).join(", ")}\n\n${a.body}`,
+  ),
+].join("\n\n");
+
+const tokens = estimateTokens(assembled);
 
 if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });
 writeFileSync(OUT_FILE, serialized);
@@ -114,7 +146,21 @@ if (!quiet) {
   console.log(`corpus: ${articles.length} articles, ${skipped} draft(s) skipped`);
   console.log(`         ~${tokens.toLocaleString()} estimated tokens (ceiling ${CEILING.toLocaleString()})`);
   console.log(`         ${articles.reduce((n, a) => n + a.headings.length, 0)} headings`);
+  console.log(
+    `         ${Math.round((tokens / CEILING) * 100)}% of ceiling, room for about ` +
+      `${Math.max(0, Math.floor((CEILING - tokens) / AVG_ARTICLE_TOKENS))} more article(s)`,
+  );
   console.log(`         -> ${OUT_FILE} (${(serialized.length / 1024).toFixed(0)} kB)`);
+}
+
+if (tokens > WARN_AT && tokens <= CEILING) {
+  const pct = Math.round((tokens / CEILING) * 100);
+  const headroom = Math.max(0, Math.floor((CEILING - tokens) / AVG_ARTICLE_TOKENS));
+  console.warn(
+    `\nWARNING: corpus is ~${tokens.toLocaleString()} tokens, ${pct}% of the ${CEILING.toLocaleString()} ceiling.\n` +
+      `Roughly ${headroom} more article(s) before the build fails. Decide what happens then\n` +
+      `before it happens: a larger context window, a trimmed corpus, or retrieval.`,
+  );
 }
 
 if (tokens > CEILING) {

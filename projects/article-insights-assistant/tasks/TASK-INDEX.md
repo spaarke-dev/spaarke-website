@@ -8,7 +8,7 @@
 | ID | Task | Phase | Depends on | Est. | Status |
 |---|---|---|---|---|---|
 | 001 | [Record the Foundry deployment](001-record-foundry-deployment.md) | 0 | none | 2h | **complete** |
-| 002 | [Measure what a real turn costs](002-measure-real-cost.md) | 0 | 001 | 2h | not-started |
+| 002 | [Measure what a real turn costs](002-measure-real-cost.md) | 0 | 001 | 2h | **complete** |
 | 010 | [Build-time corpus manifest](010-corpus-manifest.md) | 1 | none | 3h | **complete** |
 | 011 | [System prompt and labeled provenance](011-system-prompt.md) | 1 | 010 | 4h | not-started |
 | 012 | [Evaluation runner and cases](012-evaluation-set.md) | 1 | 011 | 4h | not-started |
@@ -45,9 +45,10 @@ measurement to finish.
 
 ## Gates that stop the line
 
-**After 002.** If the measured per-turn cost puts the 500 USD ceiling out
-of reach, the design changes before anything is built on it. Raise options
-rather than absorbing the overrun.
+**After 002. Passed 2026-09-26.** Measured $0.032 a warm turn and $0.379
+cold, against a 500 USD ceiling that buys about 15,600 warm turns a month.
+Caching confirmed working. The design is affordable and phase 2 can
+proceed.
 
 **After 012.** If the evaluation suite does not pass, the interface does
 not get built. A console that looks finished invites shipping regardless of

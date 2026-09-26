@@ -1,117 +1,131 @@
 # Cost model
 
-> Task 002 working notes. Rates confirmed 2026-09-26. Rates change, so the
-> date matters more than the numbers.
+> Task 002, measured. Rates confirmed 2026-09-26 and live calls made the
+> same day against `spaarke-website-claude-sonnet-5`. Rates change, so the
+> date matters as much as the numbers.
 
 ## How Foundry bills Claude
 
 CCU, the Claude Consumption Unit, is a billing wrapper and nothing more.
 Anthropic rates the token usage in dollars at its standard published rates,
-applies any negotiated discount, converts at **$0.01 per CCU**, and reports
-the quantity to Azure Marketplace hourly. **100 CCU is $1.00 of usage.**
+applies any discount, converts at **$0.01 per CCU**, and reports the
+quantity to Azure Marketplace hourly. **100 CCU is $1.00 of usage.**
 
-So the CCU rate quoted in the portal says nothing about what a turn costs.
-The published token rates do.
+The CCU rate quoted in the portal therefore says nothing about what a turn
+costs. The published token rates do.
 
-## Data zone multiplier
+## Rates
 
-The deployment is `DataZoneStandard`, which keeps inference in the US and
-applies a **1.1x multiplier to every category**: input, output, cache reads
-and cache writes alike. The rates below are the published ones. Multiply by
-1.1 for what this deployment actually bills.
-
-## Claude Sonnet 5 rates
+Claude Sonnet 5, USD per million tokens.
 
 | Item | Rate |
 |---|---|
-| Base input | $2.00 / MTok |
-| Output | $10.00 / MTok |
-| Cache read, which also refreshes | $0.20 / MTok |
-| Cache write, 5 minute | $2.50 / MTok |
-| Cache write, 1 hour | $4.00 / MTok |
+| Base input | $2.00 |
+| Output | $10.00 |
+| Cache read, which also refreshes | $0.20 |
+| Cache write, 5 minute | $2.50 |
+| Cache write, 1 hour | $4.00 |
 
-## What a turn costs at a 100,000 token corpus
+The deployment is `DataZoneStandard`, which keeps inference in the US and
+applies a **1.1x multiplier to every category**. Every figure below already
+includes it.
 
-**Cache hit.** The case we want almost every time.
+## Measured, not estimated
 
-| Line | Calculation | Cost |
+Two live calls on 2026-09-26, via `scripts/measure-insights-cost.mjs`.
+
+| | Call 1 | Call 2 |
 |---|---|---|
-| Corpus, cache read | 100,000 x $0.20 / 1M | $0.0200 |
-| Question, ~50 tokens | 50 x $2 / 1M | $0.0001 |
-| Answer, ~800 tokens | 800 x $10 / 1M | $0.0080 |
-| **Total** | | **~$0.028**, or **~$0.031** at the 1.1x data zone rate |
+| Cache write tokens | 137,320 | 0 |
+| Cache read tokens | 0 | 137,320 |
+| Input | 21 | 23 |
+| Output | 112 | 161 |
+| Latency | 4.6s | 3.1s |
+| **Cost** | **$0.3789** | **$0.0320** |
 
-**Cache miss.** The corpus has to be written before it can be read.
+**Prompt caching works.** The second call read the cache rather than
+rewriting it, which is the thing that had to be true for this design to be
+affordable at all.
 
-| Cache duration | Write cost | Turn total | At 1.1x |
-|---|---|---|---|
-| 5 minute | $0.2500 | ~$0.278 | ~$0.306 |
-| 1 hour | $0.4000 | ~$0.428 | ~$0.471 |
+**The corpus is 137,341 tokens**, not the 107,808 the first build-time
+estimate gave. The estimate was 27% low. It is now calibrated directly
+against the measurement at 2.142 tokens per word, about 3.2 characters per
+token, and lands within 15 tokens.
 
-**The write is roughly ten times the turn.** That single fact decides the
-architecture of the cost model. Answer volume is almost free; cache misses
-are what cost money.
+Two reasons the early guess was wrong, both worth remembering. Sonnet 5
+uses the tokenizer introduced with Claude 4.7, which produces roughly 30%
+more tokens than earlier models, so a ratio borrowed from older guidance
+reads low. And the estimate has to cover the per-article index the endpoint
+sends, not only the prose.
 
-## The consequence, and it is not obvious
+## What a turn costs
 
-A marketing site gets sporadic traffic. Left alone, most conversations
-arrive with a cold cache and pay a write. At one write per conversation the
-$500 ceiling buys roughly 1,500 to 1,800 conversations a month, and the
-answers themselves are a rounding error against the writes.
-
-**Warm the cache deliberately.** A cache read refreshes the cache for
-another full duration. One read an hour against a 1-hour cache costs
-$0.020, so about **$14.40 a month** keeps the corpus permanently resident.
-Every real reader turn is then a $0.028 hit rather than a $0.428 miss.
-
-Break-even is about 36 conversations a month. Above that, warming wins, and
-a site promoting a five-part series on LinkedIn should clear that easily.
-
-This is the same shape as the keep-warm workflow added on 2026-09-25 for
-the Static Web Apps function, and it can run on the same schedule. Note
-that GitHub's scheduler is best effort and has been observed running 49
-minutes late, so a 1-hour cache warmed by a 10-minute cron is the right
-safety margin. A 5-minute cache cannot be held open this way.
-
-## Budget at 500 USD a month
-
-At the 1.1x data zone rate.
-
-| Approach | Per conversation, 3 turns | Conversations per month |
+| | Cost | What it is |
 |---|---|---|
-| Cold, 1h cache | $0.533 | ~935 |
-| Cold, 5m cache | $0.368 | ~1,355 |
-| **Warmed, 1h cache** | **$0.093** | **~5,200** (after ~$16 warming) |
+| Warm turn | **$0.032** | Cache hit, the normal case if warming runs |
+| Cold turn | **$0.379** | Cache miss, the corpus written before it is read |
 
-Warming is worth roughly a 4x increase in what the same budget buys.
+**The write is roughly twelve times the turn.** Answer volume is nearly
+free. Cache misses are the entire cost model.
 
-## Rate limits derived from this
+## Warming pays for itself many times over
 
-Assume warming, so about $0.031 a turn at the data zone rate.
+A marketing site gets sporadic traffic, so left alone most conversations
+arrive cold and pay a write. A cache read refreshes the cache for another
+full duration, so one read an hour holds the corpus resident for about
+**$23 a month** and makes every reader turn a $0.032 hit rather than a
+$0.379 miss.
 
-- The ceiling buys about 16,100 turns a month, roughly 535 a day.
-- Reserve half for headroom: target about 300 turns a day.
-- **Per IP: 10 an hour, 30 a day**, which the spec already proposed and
-  which these numbers support rather than contradict.
+Break-even is about 61 conversations a month, which a site promoting a
+five-part series on LinkedIn should clear easily.
+
+| Approach | 3-turn conversation | Conversations per month at $500 |
+|---|---|---|
+| Cold every time | $0.443 | ~1,130 |
+| **Warmed** | **$0.096** | **~4,970** after ~$23 of warming |
+
+Use the **1 hour** cache. It costs more to write but is the only duration a
+practical schedule can hold open, because GitHub's scheduler is best effort
+and has been seen running 49 minutes late, which a 5-minute cache cannot
+survive. This can run on the same cron as the keep-warm workflow added on
+2026-09-25.
+
+## Rate limits
+
+At $0.032 a warm turn the $500 ceiling buys about 15,600 turns a month, or
+roughly 520 a day. Reserving half for headroom gives a target near 260 a
+day.
+
+- **Per IP: 10 an hour, 30 a day.** The figures the spec proposed survive
+  the arithmetic rather than being contradicted by it.
 - **Global daily ceiling: 400 turns**, degrading the console with an
   explanation rather than spending past the budget.
 
-An unwarmed abuse case is the dangerous one. A scripted client that forces
-cache misses costs $0.43 a request rather than $0.028, so the global
-ceiling should count spend rather than turns if that is cheap to do.
+The dangerous case is an abuser who forces cache misses, at $0.379 a
+request rather than $0.032. A little over 1,300 such requests would exhaust
+the month in a day, so **the global ceiling should count spend rather than
+turns.** That is the difference between a bad day and a bad invoice.
 
-## Two decisions this raises
+## Latency
 
-**Data Zone versus Global. Settled 2026-09-26**, redeployed to
-`DataZoneStandard`. US residency was part of the reason for choosing
-Foundry and the 1.1x multiplier is a few dollars a month at this volume.
+3.1 seconds to a complete short answer on a warm cache, 4.6 on a cold one.
+Comfortably inside the 3-second time-to-first-token target in NFR-04 once
+responses stream, since streaming begins well before completion.
 
-**Cache duration.** Use the 1-hour cache with warming. The 5-minute cache
-is cheaper to write but cannot be held open by any practical schedule.
+## Corpus headroom
 
-## Still to measure
+137,356 estimated against a 160,000 ceiling, so **86% full, with room for
+about three more articles.** The ceiling leaves roughly 23,000 tokens for
+the conversation and the answer inside a 200,000 window.
 
-These are published rates applied to an estimated corpus size. Task 002
-still needs a real call to confirm the actual token count of the assembled
-manifest, that cache reads are being hit rather than silently rewritten,
-and the real output length of a typical answer.
+This wants deciding within a few articles rather than at the moment the
+build fails. The options are the same three as ever: a larger context
+window, a trimmed corpus, or the retrieval layer this design deliberately
+avoided.
+
+## One finding for the prompt work
+
+The sample answer contained an em dash. House voice bans them everywhere,
+per `voice/style-guide.md`. The assistant's output is Spaarke-voiced prose
+in front of readers, so task 011's system prompt has to carry the ban
+explicitly and task 012 needs a case that fails on one.

@@ -17,6 +17,7 @@
     "corpus": "node scripts/build-corpus-manifest.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/foundry-sdk": "^0.4.9",
     "@azure/data-tables": "^13.3.2",
     "@azure/identity": "^4.5.0",
     "@azure/keyvault-secrets": "^4.9.0",
