@@ -3,10 +3,10 @@
 > Context recovery. A session picking this up cold reads this file first,
 > then `tasks/TASK-INDEX.md`, then `spec.md`.
 >
-> Last updated 2026-09-26, end of the first working session.
+> Last updated 2026-09-26, after task 011.
 
 **Active task:** none in progress.
-**Next task:** `011-system-prompt.md`, then `013`, then `012`.
+**Next task:** `013-suggested-questions.md`, then `012`, then `020`.
 
 ## What this is, in one paragraph
 
@@ -28,9 +28,9 @@ true before anything else got built.
 | 001 Foundry deployment | complete |
 | 002 Cost measurement | complete, gate passed |
 | 010 Corpus manifest | complete |
-| 011 System prompt | **next** |
-| 013 Suggested questions | after 010, can run beside 011 |
-| 012 Evaluation set | after 011 |
+| 011 System prompt | complete |
+| 013 Suggested questions | **next** |
+| 012 Evaluation set | after 013, ten cases already named in notes/prompt-design.md |
 | 020 to 090 | not started |
 
 ## The measured numbers, which are not estimates
@@ -39,7 +39,8 @@ Two live calls on 2026-09-26 against `spaarke-website-claude-sonnet-5`:
 
 - Warm turn (cache hit) **$0.032**, 3.1s
 - Cold turn (cache write) **$0.379**, 4.6s
-- Corpus **137,341 tokens**, 24 articles
+- Corpus **137,341 tokens** of prose, 24 articles. The assembled prompt measures
+  **152,357 tokens**, 95% of the 160,000 ceiling
 - Prompt caching confirmed working
 
 The write is about twelve times the turn, so cache misses are the entire
@@ -52,9 +53,11 @@ time on them until the project is further along.**
 
 - **Cost work**, including the hourly cache warming that would cut per-turn
   cost from $0.379 to $0.032. Designed, costed, not built.
-- **Context window headroom.** The corpus is at 86% of the 160,000 ceiling
-  with room for roughly three more articles. The build prints headroom on
-  every run and fails hard when it is gone.
+- **Context window headroom.** The assembled prompt measures 152,357 tokens,
+  **95%** of the 160,000 ceiling, with room for roughly one more article. Task
+  011 found the earlier 86% was the prose alone, and the build now counts the
+  index, the article tags, the heading markers and the instructions. The build
+  warns on every run and fails hard when the headroom is gone.
 
 Also deferred: rotating the Foundry API key. The owner judged the resource
 not client-confidential. It was pasted into a chat transcript and this
@@ -62,7 +65,8 @@ repository is public.
 
 ## Branch and PR state, read this before committing anything
 
-Work is on **`docs/article-insights-assistant`**, PR **#87**.
+Task 011 is on **`feat/insights-prompt`**. The project scaffold merged to `main`
+in PR #87.
 
 The privacy policy change was **deliberately split out** of that PR. It
 adds an "Article assistant" section written in the present tense, and
@@ -96,10 +100,23 @@ merged. Check out the branch.
 
 ## Findings that shape the work still to do
 
-**The system prompt must ban em dashes.** The sample answer in task 002
-contained one. House voice bans them everywhere and the assistant writes
-Spaarke-voiced prose in front of readers. Task 012 needs a case that fails
-on one.
+**Read `notes/prompt-design.md` before touching the prompt.** It records the wire
+format, the four decisions behind it, six findings from live runs, and the ten
+cases task 012 should carry. Every one of them came from a real answer rather
+than from reasoning about the prompt.
+
+**The system prompt bans em dashes and a check enforces it.** The sample answer
+in task 002 contained one. `scripts/check-insights-prompt.ts` now fails on a dash
+in the instructions or in any live answer, using the same lookarounds as
+`scripts/voice-lint.mjs`.
+
+**Citations are copied, not composed.** Every heading in the corpus prints its
+own `[[cite:slug#anchor]]`. The first live run showed the model assembling a slug
+from one article with an anchor from another, which produced a citation that
+looked right and went nowhere.
+
+**A cold turn costs $0.68 and a warm one about $0.04.** Four warm turns cost
+$0.17 in total. The write is now measured at the 1 hour rate rather than assumed.
 
 **The existing rate limiter is not a spend guard.** `src/lib/rate-limit.ts`
 keeps counters in a module-level `Map`, so it resets on every function
@@ -141,5 +158,6 @@ Noted so a later session does not rediscover them as bugs.
    particularly on what the general counsel owns versus what legal
    operations facilitates.
 4. `node scripts/build-corpus-manifest.mjs` regenerates the corpus.
-   `node scripts/measure-insights-cost.mjs` makes two real calls and costs
-   a few cents.
+   `npx tsx scripts/check-insights-prompt.ts --offline` checks the prompt and the
+   parser for free. Without `--offline` it makes four real calls, costing about
+   $0.17 warm or $0.80 cold.
