@@ -16,8 +16,8 @@
 | 020 | [Streaming endpoint](020-streaming-endpoint.md) | 2 | 002, 011 | 4h | **complete** |
 | 021 | [Abuse and spend defences](021-abuse-and-spend-defences.md) | 2 | 020 | 4h | **complete** |
 | 022 | [Conversation capture](022-conversation-capture.md) | 2 | 020 | 2h | **complete** |
-| 023 | [Partial answer polling](023-partial-answer-polling.md) | 2 | 020 | 4h | not-started |
-| 030 | [Right-rail console](030-rail-console.md) | 3 | 020, 013 | 4h | not-started |
+| 023 | [Partial answer polling](023-partial-answer-polling.md) | 2 | 020 | 4h | **complete** |
+| 030 | [Right-rail console](030-rail-console.md) | 3 | 013, 023 | 4h | not-started |
 | 031 | [Mobile bottom sheet](031-mobile-sheet.md) | 3 | 030 | 3h | not-started |
 | 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | not-started |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | 4 | 040 | 3h | not-started |
@@ -70,6 +70,12 @@ sentence, so polling and real streaming look identical to a reader; the audience
 sits behind corporate networks that break long-lived connections; and polling
 keeps the buffered POST as a fallback, so a blocked poller costs progressive
 rendering rather than the answer. Task 030 depends on 023.
+
+**Built on 2026-09-26.** First sentence in 2.4 to 3.3s measured against a local
+production build with real storage and the real model, with thirteen of thirteen
+sentences delivered by polling. The remaining number is the deployed-site one,
+which needs `INSIGHTS_ENABLED=true` in app settings and is prerequisite 2 for
+task 030.
 
 ## Notes from work so far
 
