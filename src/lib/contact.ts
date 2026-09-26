@@ -17,6 +17,7 @@ export interface ContactFormData {
  */
 export const VALID_REASONS = [
   "See a working session",
+  "Join design community",
   "Partnership",
   "Press / media",
   "Something else",
