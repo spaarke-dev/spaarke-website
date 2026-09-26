@@ -370,31 +370,49 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * A streaming probe that calls no model and costs nothing.
+ * Probes that call no model and cost nothing.
  *
- * Azure Static Web Apps may buffer a streamed response, and if it does the whole
- * interface design changes. That has to be provable on the real platform rather
- * than in development, so this emits six chunks half a second apart. If they
- * arrive together, the platform is buffering.
+ * `probe=stream` emits six chunks half a second apart. It settled the question
+ * task 020 was told to answer before anything was built on top of it, and the
+ * answer was no: **Azure Static Web Apps buffers the response.** Against the
+ * deployed site all six chunks arrive together, about two seconds after the last
+ * was written, and the response carries `Content-Length` rather than
+ * `Transfer-Encoding: chunked`, which means the platform collected the whole body
+ * before sending any of it. `X-Accel-Buffering: no` is passed through and ignored.
+ *
+ * The same build served by `next start` locally streams correctly and reports
+ * chunked encoding, so this is the platform rather than Next.
+ *
+ * `probe=slow` streams for a minute, to find where the platform gives up. That
+ * matters more now rather than less: if a reader waits for the whole answer, the
+ * platform's own limit is the real deadline and not the ones configured above.
  *
  *   curl -N https://spaarke.com/api/article-insights?probe=stream
+ *   curl -N https://spaarke.com/api/article-insights?probe=slow
  */
 export async function GET(request: NextRequest) {
-  if (request.nextUrl.searchParams.get("probe") !== "stream") {
+  const probe = request.nextUrl.searchParams.get("probe");
+  if (probe !== "stream" && probe !== "slow") {
     return NextResponse.json(
       { error: "Method not allowed" },
       { status: 405, headers: { Allow: "POST" } },
     );
   }
 
+  const chunks = probe === "slow" ? 12 : 6;
+  const gapMs = probe === "slow" ? 5_000 : 500;
+
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      for (let i = 1; i <= 6; i += 1) {
+      const started = Date.now();
+      for (let i = 1; i <= chunks; i += 1) {
         controller.enqueue(
-          encoder.encode(`${JSON.stringify({ chunk: i, at: new Date().toISOString() })}\n`),
+          encoder.encode(
+            `${JSON.stringify({ chunk: i, elapsedMs: Date.now() - started, at: new Date().toISOString() })}\n`,
+          ),
         );
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, gapMs));
       }
       controller.close();
     },
