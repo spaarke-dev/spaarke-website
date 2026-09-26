@@ -337,7 +337,7 @@ const DASH_RE =
  * Demoting rather than deleting is deliberate. The claim is almost always right;
  * it is the promise of exact wording that is wrong.
  */
-function demoteQuotations(raw: string): { text: string; demoted: number } {
+export function demoteQuotations(raw: string): { text: string; demoted: number } {
   let demoted = 0;
   const lines = raw.split("\n").map((line) => {
     const parts = line.split('"');
@@ -376,7 +376,7 @@ function demoteQuotations(raw: string): { text: string; demoted: number } {
  * the instructions say not to. Quotations that carried one have already been
  * demoted, so nothing here alters text still presented as verbatim.
  */
-function normalizeDashes(text: string): { text: string; changed: number } {
+export function normalizeDashes(text: string): { text: string; changed: number } {
   let changed = 0;
   const replaced = text
     .replace(/ *— */g, () => {
@@ -405,7 +405,7 @@ function normalizeDashes(text: string): { text: string; changed: number } {
  * sat mid-sentence, and a space before the full stop where it sat at the end.
  * Leading whitespace is preserved because it carries list indentation.
  */
-function tidy(paragraph: string): string {
+export function tidy(paragraph: string): string {
   return paragraph
     .split("\n")
     .map((line) => {

@@ -244,9 +244,11 @@ expensive mistake this decision avoids.
 - App settings for the endpoint, deployment name and model
 - Azure Table Storage table for the conversation log
 - Azure cost alert configured per NFR-03
-- Privacy policy updated per NFR-07. Done 2026-09-25: Part 1 gained an
+- Privacy policy updated per NFR-07. **Written, not published.** Part 1 gains an
   "Article assistant" section covering capture, 90-day retention, Foundry
-  processing, and the not-legal-advice statement
+  processing and the not-legal-advice statement, held in draft PR #90 so the live
+  policy does not describe a feature that does not exist. It merges with the
+  console. Task 022 was built against a commitment that is not yet public
 
 ### External Dependencies
 
