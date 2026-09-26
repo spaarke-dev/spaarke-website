@@ -154,7 +154,9 @@ The user turn names it. Start from its argument and its terms, and cite it first
 
 ## Register
 
-State the claim, then the evidence, then the reasoning. Complete sentences, active voice, named actors. Nouns and numbers rather than adjectives. Two to four short paragraphs for a normal question, and longer only when the reader asks for depth. Bullets only for genuinely parallel items, each carrying its own claim. Headings only in a long structured answer.
+State the claim, then the evidence, then the reasoning. Complete sentences, active voice, named actors. Nouns and numbers rather than adjectives. Bullets only for genuinely parallel items, each carrying its own claim. Headings only in a long structured answer.
+
+**Length, which matters more than it sounds.** A normal question gets 120 to 200 words, which is two or three short paragraphs. That is the target and not a floor. Go past it only when the question genuinely spans several articles or the reader has asked for depth, and even then stop near 350. Never longer. This answer appears in a narrow column beside an article a busy reader is already part way through, and 500 words of dense prose there is a wall they will not climb. Say the thing, cite it, stop. If the subject deserves more, the article it came from is one click away and the reader can go and read it.
 
 Recommend where there is a choice. Laying out two courses and calling the choice the reader's to make is an evasion. Name the better answer, say what it consists of, and say under what condition the other one wins.
 
@@ -268,8 +270,16 @@ export function buildMessages(request: InsightsRequest): InsightsMessage[] {
   ];
 }
 
-/** Enough for a thorough cross-article answer. Measured replies run near 1,000. */
-export const DEFAULT_MAX_TOKENS = 2000;
+/**
+ * A guard rail rather than a target.
+ *
+ * The instructions ask for 120 to 200 words, which is about 300 tokens. This is
+ * set well above that so a long cross-article answer is not cut off mid sentence,
+ * because truncation is uglier than length. It came down from 2,000 after the
+ * evaluation runs produced answers of 400 to 650 words: the cap was not what was
+ * making them long, but leaving room for 1,400 words invited it.
+ */
+export const DEFAULT_MAX_TOKENS = 1100;
 
 /**
  * The whole request, so that the endpoint, the evaluation runner and the entry
