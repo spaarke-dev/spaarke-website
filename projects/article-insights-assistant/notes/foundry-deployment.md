@@ -44,22 +44,24 @@ a new key.
 
 ## Model deployment
 
-**None yet.** Confirmed 2026-09-25:
+Deployed 2026-09-26.
 
-```
-az cognitiveservices account deployment list \
-  --name website-article-agent-resource \
-  --resource-group rg-website-article-agent --query "length(@)"
-0
-```
+| | |
+|---|---|
+| Deployment name | `spaarke-website-claude-sonnet-5` |
+| Model | `claude-sonnet-5` |
+| Version | 2, hosted on Azure |
+| SKU | `GlobalStandard` |
+| Capacity | 100 |
 
-Task 001 cannot complete and everything downstream is blocked until a
-Claude model is deployed to this resource.
+`spaarke-website-claude-sonnet-5` is what goes in the `model` parameter,
+not `claude-sonnet-5`. Passing the model id produces a 404 that reads like
+a missing deployment.
 
-Once deployed, record here: deployment name, model id as deployed, model
-version (expect 2, hosted on Azure), and region scope. The **deployment
-name**, not the model id, is what goes in the `model` parameter at call
-time. That mismatch is a common source of 404s.
+**Open: GlobalStandard rather than US Data Zone.** Global routing may leave
+the United States. US data residency was part of the reason for choosing
+Foundry, and Data Zone costs a 1.1x multiplier on every pricing category,
+which at expected volume is a few dollars a month. See `cost-model.md`.
 
 ## Environment variables
 
@@ -69,15 +71,18 @@ Same names locally and in Azure Static Web Apps app settings.
 |---|---|
 | `FOUNDRY_BASE_URL` | the `/anthropic` URL above |
 | `FOUNDRY_API_KEY` | secret, never in the repo |
-| `FOUNDRY_DEPLOYMENT` | pending the deployment |
+| `FOUNDRY_DEPLOYMENT` | `spaarke-website-claude-sonnet-5` |
 
 ## SDK
 
 `@anthropic-ai/foundry-sdk`. Note this is not `@anthropic-ai/sdk`.
 
+Set in Azure Static Web Apps app settings and in `.env.local` on
+2026-09-26.
+
 ## Open items
 
-- Deploy a Claude model and record the deployment name.
+- Decide GlobalStandard versus US Data Zone, per above.
 - **Rotate the API key.** It was pasted into a chat transcript on
   2026-09-25 and this repository is public. Rotate once the path is
   confirmed working, then update `.env.local` and the SWA app setting.
