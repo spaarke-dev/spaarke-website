@@ -21,6 +21,7 @@ import {
   verifyQuote,
 } from "@/lib/insights/citations";
 import { allArticles } from "@/lib/corpus";
+import { entryOptions, validateQuestion } from "@/lib/insights/questions";
 import type { Provenance } from "@/lib/insights/types";
 
 /** The build's ceiling, from scripts/build-corpus-manifest.mjs. */
@@ -111,6 +112,45 @@ function parserChecks() {
 
   const { safe, held } = holdPartialMarker("text with a split [[cite:slug#anc");
   check(safe === "text with a split " && held === "[[cite:slug#anc", "a marker split across chunks is held back");
+}
+
+/**
+ * The entry card copy. These are reader-facing sentences committed as data, so
+ * they get checked like copy rather than trusted because a model produced them.
+ */
+function questionChecks() {
+  console.log("\nentry card checks");
+
+  const articles = allArticles();
+  const missing = articles.filter((a) => a.suggestedQuestions.length !== 3);
+  check(
+    missing.length === 0,
+    "every article has three questions",
+    missing.length ? missing.map((a) => a.slug).join(", ") : `${articles.length} articles`,
+  );
+
+  const problems = articles.flatMap((a) =>
+    a.suggestedQuestions.flatMap((q) => validateQuestion(q).map((p) => `${a.slug}: ${p}`)),
+  );
+  check(problems.length === 0, "every question passes the copy rules", problems.slice(0, 3).join(" | "));
+
+  // A template with the title swapped in is the failure mode task 013 names, and
+  // an exact repeat across articles is the visible form of it.
+  const all = articles.flatMap((a) => a.suggestedQuestions);
+  const duplicates = all.filter((q, i) => all.indexOf(q) !== i);
+  check(duplicates.length === 0, "no question is repeated across articles", duplicates.join(" | "));
+
+  const options = entryOptions(articles[0].slug);
+  check(options[0].kind === "question", "summarize is never the first option", options[0].kind);
+  check(
+    options.at(-1)?.kind === "summarize" && options.length === 4,
+    "summarize is offered last, after the three",
+    `${options.length} options`,
+  );
+  check(
+    entryOptions("no-such-article").length === 1,
+    "an article without questions still offers summarize rather than nothing",
+  );
 }
 
 function staticChecks() {
@@ -372,6 +412,7 @@ async function liveChecks() {
 }
 
 parserChecks();
+questionChecks();
 staticChecks();
 
 if (offline) {

@@ -60,6 +60,11 @@ Not the other way round.
 
 ## Notes
 
+**Do not import `@/lib/corpus` from a client component.** It pulls
+`src/generated/corpus.json`, about 500 kB, into the browser bundle. The article
+page is a server component, so read the three questions there with
+`entryOptions(slug)` from `src/lib/insights/questions.ts` and pass them as props.
+
 The visual treatment for general-knowledge passages is easy to overdo. It
 should read as a note about where the answer came from, not as a warning
 that the answer is suspect.

@@ -12,7 +12,7 @@
 | 010 | [Build-time corpus manifest](010-corpus-manifest.md) | 1 | none | 3h | **complete** |
 | 011 | [System prompt and labeled provenance](011-system-prompt.md) | 1 | 010 | 4h | **complete** |
 | 012 | [Evaluation runner and cases](012-evaluation-set.md) | 1 | 011 | 4h | not-started |
-| 013 | [Per-article suggested questions](013-suggested-questions.md) | 1 | 010 | 2h | not-started |
+| 013 | [Per-article suggested questions](013-suggested-questions.md) | 1 | 010 | 2h | **complete** |
 | 020 | [Streaming endpoint](020-streaming-endpoint.md) | 2 | 002, 011 | 4h | not-started |
 | 021 | [Abuse and spend defences](021-abuse-and-spend-defences.md) | 2 | 020 | 4h | not-started |
 | 022 | [Conversation capture](022-conversation-capture.md) | 2 | 020 | 2h | not-started |
