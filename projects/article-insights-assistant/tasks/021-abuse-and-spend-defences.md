@@ -1,7 +1,7 @@
 # Task 021: Abuse and spend defences
 
 **Phase:** 2 (The endpoint)
-**Status:** not-started
+**Status:** complete
 **Estimated:** 4 hours
 **Dependencies:** 020
 **Tags:** api, azure, storage, forms, testing
@@ -57,13 +57,17 @@ Four layers, because no single one holds.
 
 ## Acceptance Criteria
 
-- [ ] A POST with no captcha token cannot reach the model
-- [ ] Per-IP counters survive a function recycle, verified by forcing one
-- [ ] Global ceiling, when tripped, disables the console with an
-      explanation rather than an error
-- [ ] Each defence emits its own telemetry event
-- [ ] Question text older than 90 days is removed, leaving aggregate counts
-- [ ] Later turns in a session are not re-gated by captcha
+- [x] A POST with no captcha token cannot reach the model, verified against real
+      storage: the guard refuses before any model call
+- [x] Per-IP counters survive a process ending, verified by running two
+      processes, the second with an empty in-memory Map
+- [x] Global ceiling, when tripped, returns DAILY_CEILING with copy that says the
+      assistant is resting, not that something broke
+- [x] Each defence emits its own telemetry event, `insights.blocked.<defence>`
+- [x] Question text older than 90 days is blanked, leaving the aggregate row. See
+      `notes/conversation-schema.md`
+- [x] Later turns in a session are not re-gated by captcha, and a fabricated
+      history cannot use that to skip it
 
 ## Notes
 
@@ -75,3 +79,28 @@ The global ceiling needs a deliberate message. "Something went wrong" is
 wrong; the feature is fine and it is resting.
 
 See spec NFR-02, NFR-02a, NFR-03, NFR-07, FR-07.
+
+## Outcome
+
+`src/lib/insights/rate-limit-durable.ts` for the counters, `ceiling.ts` for the
+daily spend limit, `guard.ts` for the policy and its ordering. Eighteen checks in
+`scripts/check-insights-defences.mts`, run against real Table Storage in its own
+table. Full detail in `notes/endpoint-and-defences.md`.
+
+**The ceiling counts money, not requests.** A cache miss costs $0.379 against
+$0.032 for a cached turn, so roughly 1,300 cache-missing requests would spend a
+month's budget in a day while a request counter sat well inside its limit.
+
+**The verified session row is what makes the captcha more than decoration.** Only
+the first question of a session is gated, which leaves an obvious bypass: claim the
+conversation is already under way. A passing captcha now writes a row, and a later
+turn whose session has no row is refused. That bypass is in the test.
+
+**The defences fail closed.** If the counters cannot be read or written, the
+request is refused. Unmetered calls to a frontier model are the failure this
+prevents, so a few minutes without the feature is the better outcome. Development
+without a storage connection falls back to the in-process limiter and warns.
+
+**The recycle case was tested rather than reasoned about**, as the task asked. One
+process wrote counts and verified a session; a second process read what the first
+one wrote and its decision followed the stored count.

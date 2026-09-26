@@ -1,7 +1,7 @@
 # Task 020: Streaming endpoint
 
 **Phase:** 2 (The endpoint)
-**Status:** not-started
+**Status:** complete
 **Estimated:** 4 hours
 **Dependencies:** 002, 011
 **Tags:** api, azure-functions, serverless, typescript
@@ -50,13 +50,20 @@ to hang. Do not repeat it.
 
 ## Acceptance Criteria
 
-- [ ] A question returns a streamed answer
-- [ ] Citations arrive as structured events, not prose to be parsed
-- [ ] Cache reads confirmed on the second turn, not rewrites
-- [ ] A forced upstream hang produces a visible error within the timeout
-- [ ] Upstream 429 is distinguishable from a failure
-- [ ] Token counts recorded per request
-- [ ] No key or token reaches the browser
+- [x] A question returns a streamed answer. Driven end to end: 745 output tokens,
+      six resolved citations across two articles
+- [x] Citations arrive as structured events with heading and href resolved from
+      the manifest, not prose to be parsed
+- [x] Cache reads confirmed, `cacheRead: 154015` with no cache write
+- [x] A forced upstream hang produces a visible error within the timeout. Forcing
+      the first-token deadline to 50ms returned a TIMEOUT event
+- [~] Upstream 429 is distinguishable from a failure. Coded and read by
+      inspection; there is no way to make Foundry return 429 on demand, so this
+      one is unverified and said so in `notes/endpoint-and-defences.md`
+- [x] Token counts recorded per request, in the `done` event and in telemetry,
+      with a `cacheMiss` flag because a miss is twelve times the cost
+- [x] No key or token reaches the browser. The key is read in a server module and
+      the client receives only events
 
 ## Notes
 
@@ -68,3 +75,26 @@ Read `src/app/api/contact/route.ts` for the house patterns on validation,
 telemetry flushing, and independent failure handling.
 
 See spec FR-02, FR-08, NFR-04, NFR-06.
+
+## Outcome
+
+`src/app/api/article-insights/route.ts`, with `client.ts` for the Foundry client
+and `stream.ts` for the event assembly. Full detail in
+`notes/endpoint-and-defences.md`.
+
+**The endpoint ships switched off**, behind `INSIGHTS_ENABLED`. Nothing calls it
+yet, and a public route that spends money should come on with the interface that
+uses it. Task 030 turns it on.
+
+**The stream flushes by sentence rather than by token**, which is the design
+decision worth remembering. Two of the three mechanical repairs need a whole
+sentence: a quotation can only be checked once the citation that follows it has
+arrived. Streaming token by token would show a false verbatim claim and then
+correct it.
+
+**Streaming through Azure Static Web Apps is still unproven.** It works through
+Next locally. Whether the platform buffers has to be checked on the deployed site,
+so the route carries a probe that emits six chunks half a second apart, needs no
+flag and costs nothing:
+`curl -N https://spaarke.com/api/article-insights?probe=stream`. Check it before
+task 030, because if the platform buffers, the interface design changes.

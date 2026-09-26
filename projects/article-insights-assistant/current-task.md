@@ -3,10 +3,10 @@
 > Context recovery. A session picking this up cold reads this file first,
 > then `tasks/TASK-INDEX.md`, then `spec.md`.
 >
-> Last updated 2026-09-26, after tasks 011, 012 and 013. Phase 1 is complete.
+> Last updated 2026-09-26, after tasks 020 and 021. Phase 2 is under way.
 
-**Active task:** none in progress.
-**Next task:** `020-streaming-endpoint.md`, then `021` and `022` beside it.
+**Active task:** `022-conversation-capture.md`.
+**Next task:** `030-rail-console.md`, then `031`.
 
 ## What this is, in one paragraph
 
@@ -31,8 +31,11 @@ true before anything else got built.
 | 011 System prompt | complete |
 | 012 Evaluation set | complete, gate met in part |
 | 013 Suggested questions | complete |
-| 020 Streaming endpoint | **next** |
-| 021, 022, 030, 031, 040, 090 | not started |
+| 020 Streaming endpoint | complete, switched off behind INSIGHTS_ENABLED |
+| 021 Abuse and spend defences | complete, verified against real Table Storage |
+| 022 Conversation capture | in progress |
+| 030 Rail console | **next** |
+| 031, 040, 090 | not started |
 
 ## The measured numbers, which are not estimates
 
@@ -99,11 +102,25 @@ merged. Check out the branch.
   configure the Playground and Agents service, not the Messages API this
   project calls.
 
-## Read these two notes before touching the prompt or the endpoint
+## Two things to do before task 030
+
+**Prove that Azure Static Web Apps does not buffer the stream.** It works through
+Next locally. If the platform buffers, the interface design changes. The probe
+needs no flag, costs nothing and runs against the deployed site:
+`curl -N https://spaarke.com/api/article-insights?probe=stream`. Six timestamps
+half a second apart means it streams; six together means it does not.
+
+**Switch the endpoint on.** `INSIGHTS_ENABLED=true` in Azure Static Web Apps app
+settings. It ships off because nothing calls it yet, not because it is unsafe: the
+defences are in place and verified.
+
+## Read these notes before touching the prompt or the endpoint
 
 `notes/prompt-design.md` records the wire format and why each part of it is
 shaped that way. `notes/evaluation.md` records how to run the suite, how to read
 its rate, and the three behaviours that are still not right.
+`notes/endpoint-and-defences.md` records what the route does, what it refuses,
+what was verified against real infrastructure and what was not.
 
 **Extended thinking is on at the deployment and it destroys answers.** Eleven of
 forty evaluation cases came back completely empty because 1,999 of 2,000 output

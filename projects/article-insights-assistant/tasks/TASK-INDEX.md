@@ -13,8 +13,8 @@
 | 011 | [System prompt and labeled provenance](011-system-prompt.md) | 1 | 010 | 4h | **complete** |
 | 012 | [Evaluation runner and cases](012-evaluation-set.md) | 1 | 011 | 4h | **complete** |
 | 013 | [Per-article suggested questions](013-suggested-questions.md) | 1 | 010 | 2h | **complete** |
-| 020 | [Streaming endpoint](020-streaming-endpoint.md) | 2 | 002, 011 | 4h | not-started |
-| 021 | [Abuse and spend defences](021-abuse-and-spend-defences.md) | 2 | 020 | 4h | not-started |
+| 020 | [Streaming endpoint](020-streaming-endpoint.md) | 2 | 002, 011 | 4h | **complete** |
+| 021 | [Abuse and spend defences](021-abuse-and-spend-defences.md) | 2 | 020 | 4h | **complete** |
 | 022 | [Conversation capture](022-conversation-capture.md) | 2 | 020 | 2h | not-started |
 | 030 | [Right-rail console](030-rail-console.md) | 3 | 020, 013 | 4h | not-started |
 | 031 | [Mobile bottom sheet](031-mobile-sheet.md) | 3 | 030 | 3h | not-started |
@@ -58,8 +58,12 @@ repair. Mixed provenance labeling is not yet reliable. Three residual behaviours
 are recorded in `notes/evaluation.md`. The endpoint does not depend on closing
 them, so phase 2 can proceed, but they should be closed before launch.
 
-**Inside 020.** If Azure Static Web Apps buffers rather than streams, the
-interface design changes. Prove streaming before building on it.
+**Inside 020. Open.** Streaming works through Next locally, proven with six
+chunks half a second apart. Whether Azure Static Web Apps buffers is still
+unproven, and if it does the interface design changes. The route carries a probe
+that needs no flag and costs nothing:
+`curl -N https://spaarke.com/api/article-insights?probe=stream`. Run it against
+the deployed site before task 030.
 
 ## Notes from work so far
 
