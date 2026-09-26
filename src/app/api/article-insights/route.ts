@@ -11,6 +11,12 @@ import { countersAvailable } from "@/lib/insights/rate-limit-durable";
 import { recordSpend } from "@/lib/insights/ceiling";
 import { recordTurn } from "@/lib/insights/capture";
 import {
+  discardPartial,
+  partialAvailable,
+  PartialWriter,
+  validRequestId,
+} from "@/lib/insights/partial";
+import {
   AnswerAssembler,
   encodeEvent,
   ERROR_COPY,
@@ -18,6 +24,7 @@ import {
   type InsightsEvent,
 } from "@/lib/insights/stream";
 import type { InsightsTurn } from "@/lib/insights/types";
+import { randomBytes } from "crypto";
 
 /**
  * The article insights assistant endpoint.
@@ -34,6 +41,14 @@ import type { InsightsTurn } from "@/lib/insights/types";
  * concluded their message had sent. This call is slower and likelier to hang, so
  * there is a deadline on the first token and a deadline on the whole stream, and
  * every failure has copy that names what happened.
+ *
+ * The platform buffers this stream, which was proven rather than assumed, so the
+ * reader gets the whole answer at once about eleven seconds in. Every event is
+ * therefore also appended to Table Storage as it is produced, and the client polls
+ * `/api/article-insights/partial` to read them while this request is still open.
+ * That path fails open: if it cannot be written the reader still gets the complete
+ * answer from this response, which is why nothing here refuses a request because a
+ * partial write failed.
  *
  * **The endpoint is off unless INSIGHTS_ENABLED is set.** The defences of task 021
  * are in place, so the switch is no longer about exposure; it is that no
@@ -69,6 +84,7 @@ type InsightsRequestBody = {
   history?: unknown;
   sessionId?: unknown;
   captchaToken?: unknown;
+  requestId?: unknown;
 };
 
 type ValidRequest = {
@@ -76,6 +92,12 @@ type ValidRequest = {
   articleSlug: string | null;
   history: InsightsTurn[];
   sessionId: string;
+  /**
+   * Supplied by the client so it can poll for partial sentences before this
+   * request resolves. A poller that waits for the response to tell it the id
+   * cannot start until there is nothing left to poll for.
+   */
+  requestId: string | null;
 };
 
 function validate(body: InsightsRequestBody): { ok: true; value: ValidRequest } | { ok: false; why: string } {
@@ -112,7 +134,16 @@ function validate(body: InsightsRequestBody): { ok: true; value: ValidRequest } 
       : "";
   if (!sessionId) return { ok: false, why: "missing session id" };
 
-  return { ok: true, value: { question, articleSlug, history, sessionId } };
+  // Optional, because the answer does not depend on it. Rejected when present and
+  // malformed, so a client bug surfaces here rather than as an answer that never
+  // renders progressively and nobody can explain.
+  let requestId: string | null = null;
+  if (body.requestId !== undefined && body.requestId !== null && body.requestId !== "") {
+    requestId = validRequestId(body.requestId);
+    if (!requestId) return { ok: false, why: "bad request id" };
+  }
+
+  return { ok: true, value: { question, articleSlug, history, sessionId, requestId } };
 }
 
 function errorResponse(code: InsightsErrorCode, status: number, extra?: Record<string, string>) {
@@ -148,6 +179,11 @@ export async function POST(request: NextRequest) {
     return errorResponse("VALIDATION_ERROR", 400);
   }
   const { question, articleSlug, history, sessionId } = validation.value;
+  // Generated when the client did not supply one, so the id is always in the
+  // response header and a turn can be correlated in the logs either way. A
+  // server-generated id cannot be polled for, which is the point of the client
+  // supplying one.
+  const requestId = validation.value.requestId ?? randomBytes(16).toString("base64url");
 
   const ipHash = await getIpHash();
 
@@ -198,10 +234,20 @@ export async function POST(request: NextRequest) {
   const assembler = new AnswerAssembler();
   const started = Date.now();
 
+  // Written only when there is somewhere to write it. A site without a storage
+  // connection renders the answer in one piece, which is the behaviour before this
+  // existed rather than a broken one.
+  const partial = partialAvailable() ? new PartialWriter(requestId, sessionId) : null;
+
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       const encoder = new TextEncoder();
-      const send = (event: InsightsEvent) => controller.enqueue(encoder.encode(encodeEvent(event)));
+      // Both paths get every event, in the same shape, so the client parses one
+      // format whichever one reaches it first.
+      const send = (event: InsightsEvent) => {
+        controller.enqueue(encoder.encode(encodeEvent(event)));
+        partial?.push([event]);
+      };
 
       // One controller for both deadlines. Whichever fires first aborts the
       // upstream call, which is what turns a hang into a visible error.
@@ -351,6 +397,27 @@ export async function POST(request: NextRequest) {
         errorCode: failed,
       });
 
+      // The partial rows have done their job by now: the reader has been shown the
+      // prose as it arrived, and the complete answer is in this response. Keeping
+      // them would make a second copy of the conversation with a longer life than
+      // the 90 days that were actually designed, so they go.
+      //
+      // Awaited for the same reason as the flush, and never allowed to throw,
+      // because housekeeping must not be the thing that loses an answer.
+      if (partial) {
+        const wrote = await partial.settled();
+        if (wrote.error) {
+          trackEvent("insights.partial_failed", { detail: wrote.error, wrote: String(wrote.written) });
+        }
+        if (wrote.written > 0) {
+          await discardPartial(requestId).catch((err) => {
+            trackException(err instanceof Error ? err : new Error(String(err)), {
+              step: "partial-discard",
+            });
+          });
+        }
+      }
+
       // Telemetry is batched and the function can be frozen the moment this
       // resolves, so the flush is awaited before the stream closes.
       await flushTelemetry();
@@ -365,6 +432,10 @@ export async function POST(request: NextRequest) {
       // Asks intermediaries not to buffer. Whether Azure Static Web Apps honours
       // it is what the probe below is for.
       "X-Accel-Buffering": "no",
+      // Which id this turn was written under. Arrives too late to poll with, and
+      // that is why the client supplies its own; this is for correlating a turn
+      // in the logs with what the reader saw.
+      "X-Insights-Request-Id": requestId,
     },
   });
 }

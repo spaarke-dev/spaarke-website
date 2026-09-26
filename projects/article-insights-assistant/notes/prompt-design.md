@@ -107,10 +107,23 @@ The check script now fails on an empty answer and prints the stop reason and
 block types, so the next occurrence is diagnosable rather than mysterious. Task
 020 needs to treat an empty reply as an error rather than streaming nothing.
 
+**Length has to be aimed below the target, because the model overshoots a stated
+band by five to twenty five percent.** Asking for 120 to 200 words produced a
+median of 205 across forty answers. Asking for 100 to 160 produced a median of 197
+and a maximum of 233. The instruction also has to name a shape and not only a
+count: "two short paragraphs" does work that a word range does not.
+
+**Shortening the answers made the model over-quote.** Demotions went from one to
+four in the run after the band came down, because compression squeezes a sentence
+and keeps the quotation marks around it. The quotation rule and the length rule now
+reference each other, and the four failing cases cleared. Two rules that interact
+have to say so; neither was wrong on its own.
+
 ## Measured numbers
 
 | Measure | Value |
 |---|---|
+| Normal answer | **185 words mean, 197 median, 233 maximum** across 40 cases |
 | Cached prefix | **152,357 tokens**, 95% of the 160,000 ceiling |
 | Cold turn, cache write at 1 hour | $0.68 |
 | Warm turn | $0.036 to $0.056, four turns for $0.17 |

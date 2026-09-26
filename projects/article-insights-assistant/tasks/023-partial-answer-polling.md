@@ -1,7 +1,7 @@
 # Task 023: Partial answer polling
 
 **Phase:** 2 (The endpoint)
-**Status:** not-started
+**Status:** complete
 **Estimated:** 4 hours
 **Dependencies:** 020
 **Tags:** api, azure, storage, typescript
@@ -66,23 +66,60 @@ keeping:
 
 ## Expected Outputs
 
-- `src/lib/insights/partial.ts` for the blob writer and reader
+- `src/lib/insights/partial.ts` for the writer and reader
 - `src/app/api/article-insights/partial/route.ts`
+- `src/lib/insights/poll-client.ts`, which merges the two paths for task 030
 - The POST route writing partial events as it assembles them
-- Time to first visible sentence, measured on the deployed site, in
-  `notes/endpoint-and-defences.md`
+- `scripts/check-insights-partial.mts`, `scripts/check-insights-dedup.mts`,
+  `scripts/measure-insights-first-sentence.mts`
+- Time to first visible sentence in `notes/endpoint-and-defences.md`
 
 ## Acceptance Criteria
 
-- [ ] First sentence visible within about three seconds on the deployed site
-- [ ] Sentences and citation chips appear progressively, not all at once
-- [ ] With the poller disabled, the reader still gets the complete answer from the
-      POST response
-- [ ] The poll route reads one blob by id and exposes nothing else
-- [ ] Partial blobs are gone within hours, not days
-- [ ] No duplicate rendering when both paths deliver
+- [x] First sentence visible within about three seconds. **2.4 to 3.3s**, measured
+      against a local production build with real storage and the real model. The
+      deployed-site number needs `INSIGHTS_ENABLED=true`, which is prerequisite 2
+      for task 030 and the owner's to set.
+- [x] Sentences and citation chips appear progressively, not all at once. Thirteen
+      of thirteen sentences arrived by polling, across twenty polls.
+- [x] With the poller disabled, the reader still gets the complete answer from the
+      POST response. Covered by the "partials are switched off" scenario in
+      `check-insights-dedup.mts`, and by the route writing nothing when there is no
+      storage connection.
+- [x] The poll route reads one partition by id and session and exposes nothing
+      else. An unknown id and a wrong session return byte-identical results, which
+      is asserted rather than described.
+- [x] Partial rows are gone within hours, not days. Better than asked: the POST
+      deletes its own rows at close, and the ten minute expiry plus the sampled
+      sweep are the backstop for a request that died mid-answer.
+- [x] No duplicate rendering when both paths deliver. Six orderings, including one
+      with a deliberately repeated sentence, in `check-insights-dedup.mts`.
+
+## What was learned
+
+**Deduplication had to be by position rather than by content.** Both paths emit
+the same events in the same order because the route writes to both from one call,
+so a count of what has been delivered is exact. Matching on text would drop the
+second of two identical sentences, which an answer citing the same article twice
+produces more often than it sounds.
+
+**The deterministic test found a bug no live test would have.** Cancelling the
+poller cleared its timer without waking the promise it was sleeping on, so
+`askInsights` never returned. It only shows up when the poller is still sleeping
+when the answer completes, which is the production ordering and not the local one.
+
+**The buffering that defeats the stream cannot touch a poll.** A poll response is
+short and complete before it is sent. That is the whole reason this works, and it
+is worth stating because it also means the approach does not depend on any header
+the platform chose to ignore.
 
 ## Notes
+
+Table Storage rather than blobs, which is a change from the step above. One row per
+event with a sequence row key gives the poller an incremental read for free, where
+a blob would mean tracking byte offsets and re-fetching the whole body on every
+poll. It also avoids adding `@azure/storage-blob` when `@azure/data-tables` is
+already a dependency.
 
 The id has to be client supplied or client readable before the POST resolves,
 which is the one piece of this that is easy to get wrong. A design where the

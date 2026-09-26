@@ -34,7 +34,7 @@ assertions are strict, so the same suite against the same prompt lands between
 32 and 39 of 40. Read a single run as a sample. Before and after a prompt change,
 run it twice and compare the categories rather than the total.
 
-Across the eight runs, with the prompt as it now stands:
+Across the eleven runs to date:
 
 | Run | Passed | What changed before it |
 |---|---|---|
@@ -44,6 +44,9 @@ Across the eight runs, with the prompt as it now stands:
 | 4 | 35/40 | mechanical repairs, boundary narrowed, numbers rule fixed |
 | 5 | 39/40 | leak detection, whole-article citations |
 | 6 to 8 | 32, 32, 34 | article-level citations, provenance decision procedure |
+| 9 | 36/40 | answer length capped at 120 to 200 words, 19 character ceilings |
+| 10 | 33/40 | length tightened to 100 to 160 words, which is where it lands |
+| 11 | 33/40 | quotation rule tied to the length rule |
 
 Nineteen cases are marked for human judgement. A structural pass there is
 necessary and not sufficient: the runner cannot tell whether a false premise was
@@ -108,9 +111,12 @@ in places.
 Three behaviours survive. None of them is a blocker for building the endpoint,
 and all three are worth another pass at the prompt before launch.
 
-**Misquotation, three to six per run.** The assistant tightens a sentence and
+**Misquotation, one to four per run.** The assistant tightens a sentence and
 leaves the quotation marks on. Repaired before the reader, and the underlying
-attribution may still be loose.
+attribution may still be loose. **Shortening the answers made this worse before it
+made it better**, which is the interaction worth remembering: compression is
+exactly the act that produces a squeezed sentence with its quotation marks intact.
+The two rules now reference each other.
 
 **Provenance drift on mixed answers.** A reply that draws on both the articles
 and outside knowledge is sometimes labeled corpus, and a mixed reply does not
@@ -121,6 +127,12 @@ this is tractable.
 **Occasional thin citation.** A cross-article answer sometimes cites one article
 where it drew on three. The instruction to cite each article is in, and it is not
 reliable yet.
+
+**Length is now measured rather than hoped for.** Nineteen cases assert a character
+ceiling, and the suite reports the distribution. Answers run a mean of 185 words
+and a median near 197, against 400 to 650 before. The lesson is in
+`notes/prompt-design.md`: the model overshoots a stated band by five to twenty five
+percent, so the instruction has to aim below the target.
 
 **The phase 1 gate is therefore met in part.** The suite runs and reports per
 case, cross-article cases pass most of the time, citations resolve to real
