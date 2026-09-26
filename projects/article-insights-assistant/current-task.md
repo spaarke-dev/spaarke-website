@@ -104,11 +104,14 @@ merged. Check out the branch.
 
 ## Two things to do before task 030
 
-**Prove that Azure Static Web Apps does not buffer the stream.** It works through
-Next locally. If the platform buffers, the interface design changes. The probe
-needs no flag, costs nothing and runs against the deployed site:
-`curl -N https://spaarke.com/api/article-insights?probe=stream`. Six timestamps
-half a second apart means it streams; six together means it does not.
+**Decide what to do about streaming, because Azure Static Web Apps buffers.**
+Proven against the deployed site: every chunk arrives at the end, and the response
+carries `Content-Length` rather than chunked encoding. The same build streams
+under `next start`, so it is the platform. The reader waits for the whole answer,
+3.6 to 22.5 seconds measured. Three options with their costs are in
+`notes/endpoint-and-defences.md`, the recommendation is to write partial answers to
+storage and poll for them, and the choice is the owner's. **Task 030 renders
+differently depending on it.**
 
 **Switch the endpoint on.** `INSIGHTS_ENABLED=true` in Azure Static Web Apps app
 settings. It ships off because nothing calls it yet, not because it is unsafe: the

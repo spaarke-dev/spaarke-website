@@ -58,12 +58,14 @@ repair. Mixed provenance labeling is not yet reliable. Three residual behaviours
 are recorded in `notes/evaluation.md`. The endpoint does not depend on closing
 them, so phase 2 can proceed, but they should be closed before launch.
 
-**Inside 020. Open.** Streaming works through Next locally, proven with six
-chunks half a second apart. Whether Azure Static Web Apps buffers is still
-unproven, and if it does the interface design changes. The route carries a probe
-that needs no flag and costs nothing:
-`curl -N https://spaarke.com/api/article-insights?probe=stream`. Run it against
-the deployed site before task 030.
+**Inside 020. Answered, and the answer is no.** Azure Static Web Apps buffers the
+response: every chunk arrives at the end and the response carries
+`Content-Length` rather than chunked encoding. The same build streams correctly
+under `next start`, so it is the platform. The reader therefore waits for the whole
+answer, 3.6 to 22.5 seconds measured, and NFR-04 cannot be met as built. Three
+options with their costs are in `notes/endpoint-and-defences.md`, and the choice
+is the owner's because it trades money and operational surface against experience.
+**Task 030 cannot be finished until it is made.**
 
 ## Notes from work so far
 

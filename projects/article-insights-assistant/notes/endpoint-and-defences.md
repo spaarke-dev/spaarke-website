@@ -134,17 +134,64 @@ failure and gives it its own message, and there is no way to make Foundry return
 429 on demand without spending real money on a burst that might not trigger it.
 Read by inspection only.
 
-**Streaming through Azure Static Web Apps.** Streaming works through Next
-locally, proven with a probe that emits six chunks half a second apart. Whether
-the platform buffers has to be checked on the deployed site, and the probe needs
-no flag and costs nothing:
+**Nothing else.** The streaming question below has since been settled.
 
-```
-curl -N https://spaarke.com/api/article-insights?probe=stream
-```
+## Azure Static Web Apps buffers the stream
 
-If those six timestamps arrive together, the platform is buffering and the
-interface design changes. Check this before task 030.
+This was the gate the plan set inside task 020, and the answer is no.
+
+| Where | When the chunks arrive | Encoding |
+|---|---|---|
+| `next dev` | 500ms apart, as written | chunked |
+| `next start`, the production build | 500ms apart, as written | `Transfer-Encoding: chunked` |
+| **spaarke.com** | **all together, about two seconds after the last was written** | **`Content-Length: 264`** |
+
+A `Content-Length` means the platform collected the whole body before sending any
+of it. `X-Accel-Buffering: no` is passed through and ignored. The same curl
+command produced all three results, and the production build streams correctly
+when Next serves it, so this is the platform rather than Next or the client.
+
+A second probe streamed for a minute. All twelve chunks arrived at the end, and
+the request completed with a 200 after 60.6 seconds, so the platform tolerates a
+long response. It simply does not deliver any of it early.
+
+### What that costs
+
+Time to first token stops existing. The reader waits for the whole answer, which
+measured 3.6 to 22.5 seconds across the evaluation runs, with a median around 11.
+NFR-04 asks for under 3 seconds to first token and cannot be met on this platform
+as built.
+
+### The options, with what each one costs
+
+**A. Ship without streaming.** No new infrastructure. The console shows a working
+state and then the whole answer at once. Lower `max_tokens` to shorten the tail,
+and design the waiting state properly rather than showing a spinner. NFR-04 gets
+rewritten to a time-to-answer target. The risk is that an eleven second silence
+reads as broken, and the bar set for this feature was that it feel like Claude or
+ChatGPT.
+
+**B. Move the endpoint to an Azure Function App** on a plan that supports HTTP
+streaming, reached through a Static Web Apps linked backend. Keeps the designed
+experience exactly. Costs a new Azure resource, a second deployment path, the
+Foundry key duplicated into its settings, and CORS or linked-backend
+configuration. Roughly a day of work, and a permanent increase in the number of
+things that can be misconfigured.
+
+**C. Write partial answers to storage and poll for them.** The POST holds the
+function alive and streams as it does now, and as each sentence is assembled it is
+also written to a blob keyed by a request id. The client fires a parallel poller
+that reads the partial answer every few hundred milliseconds and appends it. To a
+reader this is indistinguishable from streaming. It needs no new infrastructure,
+and about fifteen small writes and twenty reads an answer is a fraction of a cent.
+The cost is complexity in two places rather than one, and a second route.
+
+**Recommended: C**, with A as the fast, reversible path if the progressive feel
+turns out not to matter. B is the clean answer and the most expensive one.
+
+This decision belongs to the owner, because it trades money and operational
+surface against reader experience. Task 030 cannot be finished without it: the
+console renders differently in each case.
 
 ## Telemetry
 
