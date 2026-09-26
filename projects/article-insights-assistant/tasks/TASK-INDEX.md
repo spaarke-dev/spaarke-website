@@ -15,7 +15,7 @@
 | 013 | [Per-article suggested questions](013-suggested-questions.md) | 1 | 010 | 2h | **complete** |
 | 020 | [Streaming endpoint](020-streaming-endpoint.md) | 2 | 002, 011 | 4h | **complete** |
 | 021 | [Abuse and spend defences](021-abuse-and-spend-defences.md) | 2 | 020 | 4h | **complete** |
-| 022 | [Conversation capture](022-conversation-capture.md) | 2 | 020 | 2h | not-started |
+| 022 | [Conversation capture](022-conversation-capture.md) | 2 | 020 | 2h | **complete** |
 | 030 | [Right-rail console](030-rail-console.md) | 3 | 020, 013 | 4h | not-started |
 | 031 | [Mobile bottom sheet](031-mobile-sheet.md) | 3 | 030 | 3h | not-started |
 | 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | not-started |

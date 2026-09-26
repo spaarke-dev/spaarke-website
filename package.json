@@ -17,7 +17,8 @@
     "corpus": "node scripts/build-corpus-manifest.mjs",
     "insights:check": "tsx scripts/check-insights-prompt.ts",
     "insights:questions": "tsx scripts/generate-suggested-questions.ts",
-    "insights:eval": "tsx scripts/eval-insights.ts"
+    "insights:eval": "tsx scripts/eval-insights.ts",
+    "insights:gap": "tsx scripts/content-gap-report.ts"
   },
   "dependencies": {
     "@anthropic-ai/foundry-sdk": "^0.4.9",

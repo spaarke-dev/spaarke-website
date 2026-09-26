@@ -3,9 +3,9 @@
 > Context recovery. A session picking this up cold reads this file first,
 > then `tasks/TASK-INDEX.md`, then `spec.md`.
 >
-> Last updated 2026-09-26, after tasks 020 and 021. Phase 2 is under way.
+> Last updated 2026-09-26, after tasks 020, 021 and 022. Phase 2 is complete.
 
-**Active task:** `022-conversation-capture.md`.
+**Active task:** none in progress.
 **Next task:** `030-rail-console.md`, then `031`.
 
 ## What this is, in one paragraph
@@ -33,7 +33,7 @@ true before anything else got built.
 | 013 Suggested questions | complete |
 | 020 Streaming endpoint | complete, switched off behind INSIGHTS_ENABLED |
 | 021 Abuse and spend defences | complete, verified against real Table Storage |
-| 022 Conversation capture | in progress |
+| 022 Conversation capture | complete |
 | 030 Rail console | **next** |
 | 031, 040, 090 | not started |
 
@@ -113,6 +113,11 @@ half a second apart means it streams; six together means it does not.
 **Switch the endpoint on.** `INSIGHTS_ENABLED=true` in Azure Static Web Apps app
 settings. It ships off because nothing calls it yet, not because it is unsafe: the
 defences are in place and verified.
+
+**Merge PR #90, the privacy policy.** The live policy does not mention the
+assistant, and task 022 records reader questions for 90 days. The wording is
+written and held in draft on purpose, so the policy does not describe a feature
+nobody can use. It has to go live with the console, and not after it.
 
 ## Read these notes before touching the prompt or the endpoint
 

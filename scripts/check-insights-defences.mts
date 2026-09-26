@@ -183,7 +183,7 @@ async function main() {
     queryOptions: { filter: odata`RowKey eq ${`selftest-stale-${utcDay()}`}` },
   });
   let staleStillThere = false;
-  for await (const _row of remaining) staleStillThere = true;
+  for await (const row of remaining) staleStillThere = Boolean(row);
   check(!staleStillThere, "the stale row is gone");
 
   // The guard as the route calls it, which is where the ordering and the captcha

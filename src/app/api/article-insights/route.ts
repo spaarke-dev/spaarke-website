@@ -9,6 +9,7 @@ import { buildMessageRequest } from "@/lib/insights/prompt";
 import { guardRequest } from "@/lib/insights/guard";
 import { countersAvailable } from "@/lib/insights/rate-limit-durable";
 import { recordSpend } from "@/lib/insights/ceiling";
+import { recordTurn } from "@/lib/insights/capture";
 import {
   AnswerAssembler,
   encodeEvent,
@@ -330,6 +331,25 @@ export async function POST(request: NextRequest) {
           trackException(err instanceof Error ? err : new Error(String(err)), { step: "spend" });
         }
       }
+
+      // What the reader asked, and whether the articles could answer it. The
+      // provenance is the column that matters: a question answered from general
+      // knowledge is a subject the library does not cover, which makes this log
+      // the brief for the next article. See notes/conversation-schema.md.
+      //
+      // Awaited for the same reason as the flush, and it never throws, because a
+      // capture failure must not cost the reader their answer.
+      await recordTurn({
+        question,
+        articleSlug,
+        provenance: answer.provenance,
+        citedSlugs: answer.citedSlugs,
+        continued: history.length > 0,
+        askedBack: Boolean(answer.askedQuestion),
+        sessionId,
+        answerChars: answer.text.length,
+        errorCode: failed,
+      });
 
       // Telemetry is batched and the function can be frozen the moment this
       // resolves, so the flush is awaited before the stream closes.
