@@ -3,25 +3,22 @@
 > Context recovery. A session picking this up cold reads this file first,
 > then `tasks/TASK-INDEX.md`, then `spec.md`.
 >
-> Last updated 2026-09-26, after tasks 020, 021 and 022. Phase 2 is complete.
+> Last updated 2026-09-26, end of the second working session. Phases 0, 1 and 2
+> are done apart from task 023, which the owner has just approved.
 
 **Active task:** none in progress.
-**Next task:** `030-rail-console.md`, then `031`.
+**Next task:** `023-partial-answer-polling.md`, then `030-rail-console.md`.
 
 ## What this is, in one paragraph
 
-An AI console in the article rail that lets a reader interrogate the piece
-and the library around it. The whole 24-article corpus sits in a cached
-model context, so it reasons across articles with no retrieval layer, and
-every claim is labeled with where it came from. It is not a website chat
-bot. It is also a demonstration of Spaarke's own product thesis, which is
-why visible citation is a requirement rather than a nicety.
+An AI console in the article rail that lets a reader interrogate the piece and the
+library around it. The whole 24-article corpus sits in a cached model context, so
+it reasons across articles with no retrieval layer, and every claim is labeled with
+where it came from. It is not a website chat bot. It is also a demonstration of
+Spaarke's own product thesis, which is why visible citation is a requirement
+rather than a nicety.
 
 ## Where things stand
-
-**Phase 0 is complete and its gate passed.** Tasks 001, 002 and 010 are
-done. The design is proven affordable, which was the thing that had to be
-true before anything else got built.
 
 | Task | State |
 |---|---|
@@ -31,188 +28,148 @@ true before anything else got built.
 | 011 System prompt | complete |
 | 012 Evaluation set | complete, gate met in part |
 | 013 Suggested questions | complete |
-| 020 Streaming endpoint | complete, switched off behind INSIGHTS_ENABLED |
+| 020 Streaming endpoint | complete, switched off behind `INSIGHTS_ENABLED` |
 | 021 Abuse and spend defences | complete, verified against real Table Storage |
 | 022 Conversation capture | complete |
-| 030 Rail console | **next** |
-| 031, 040, 090 | not started |
+| 023 Partial answer polling | **next**, approved by the owner on 2026-09-26 |
+| 030, 031, 040, 090 | not started |
+
+Merged to `main`: PR #87 the scaffold, #91 the prompt, #92 the entry card
+questions, #93 the evaluation suite, #94 the endpoint and its defences, #95 and
+#96 the streaming finding.
+
+## The three decisions taken at the end of this session
+
+**Azure Static Web Apps buffers the stream, so answers will be polled for.** The
+platform collects the whole response before sending any of it, proven against the
+deployed site. The owner chose to write partial answers to storage and poll for
+them, which is task 023. It was chosen as the best experience available rather
+than the cheapest: the assembler already flushes by sentence, so polling looks
+identical to real streaming; the audience sits behind corporate networks that
+break long-lived connections; and the buffered POST remains a fallback, so a
+blocked poller costs progressive rendering rather than the answer. Full reasoning
+in `notes/endpoint-and-defences.md`.
+
+**Answers are too long, and the target is now 120 to 200 words.** Measured answers
+ran 400 to 650, which is a wall in a narrow column beside an article the reader is
+already part way through. The instructions now carry the numbers,
+`DEFAULT_MAX_TOKENS` came down from 2,000 to 1,100 as a guard rail, and nineteen
+evaluation cases assert a character ceiling. **This is unverified against live
+answers.** Run `npm run insights:eval` early in the next session, because it is the
+thing most likely to need another turn of prompt work.
+
+**The privacy policy has to merge with the console.** PR #90 is a deliberate
+draft. The live policy does not mention the assistant, and task 022 records reader
+questions for 90 days, so the code currently keeps a promise that has not been
+published. That is the safe order, and #90 goes live with task 030 rather than
+after it. The spec claimed this had already shipped, and that claim is corrected.
+
+## Before the console ships
+
+1. **Task 023**, so a reader sees an answer arrive rather than waiting eleven
+   seconds for a wall of text.
+2. **`INSIGHTS_ENABLED=true`** in Azure Static Web Apps app settings. The endpoint
+   ships off because nothing calls it, not because it is unsafe.
+3. **Merge PR #90.**
+4. **An Azure cost alert** on the Foundry resource, below the monthly ceiling.
+   Still the owner's to do, and NFR-03 asks for it.
 
 ## The measured numbers, which are not estimates
 
-Two live calls on 2026-09-26 against `spaarke-website-claude-sonnet-5`:
+Live calls on 2026-09-26 against `spaarke-website-claude-sonnet-5`:
 
-- Warm turn (cache hit) **$0.032**, 3.1s
-- Cold turn (cache write) **$0.379**, 4.6s
-- Corpus **137,341 tokens** of prose, 24 articles. The assembled prompt measures
-  **152,357 tokens**, 95% of the 160,000 ceiling
-- Prompt caching confirmed working
+- Warm turn, cache hit: **$0.032 to $0.046**
+- Cold turn, cache write at the 1 hour rate: **$0.68**
+- Assembled prompt: **152,357 tokens**, 95% of the 160,000 ceiling
+- A full 40-case evaluation run: **$1.75 to $2.40**
+- Answer time: 3.6 to 22.5 seconds, median about 11, with no streaming through the
+  platform
 
-The write is about twelve times the turn, so cache misses are the entire
-cost model. Full detail in `notes/cost-model.md`.
+The cache write is roughly fifteen times a cached turn, so cache misses are the
+whole cost model. Detail in `notes/cost-model.md`.
 
-## Deferred by the owner on 2026-09-26
+## Read these notes before touching anything
 
-Both of these are real and neither blocks the build. **Do not spend session
-time on them until the project is further along.**
+| Note | What it holds |
+|---|---|
+| `notes/prompt-design.md` | The wire format, the four decisions behind it, six findings from live runs |
+| `notes/evaluation.md` | How to run the suite, how to read its rate, the three behaviours still wrong |
+| `notes/endpoint-and-defences.md` | What the route does, what it refuses, the streaming finding and the decision |
+| `notes/conversation-schema.md` | The capture schema, the retention mechanism, the gap report |
+| `notes/cost-model.md` | Rates, the CCU wrapper, the cache warming that is designed and not built |
 
-- **Cost work**, including the hourly cache warming that would cut per-turn
-  cost from $0.379 to $0.032. Designed, costed, not built.
-- **Context window headroom.** The assembled prompt measures 152,357 tokens,
-  **95%** of the 160,000 ceiling, with room for roughly one more article. Task
-  011 found the earlier 86% was the prose alone, and the build now counts the
-  index, the article tags, the heading markers and the instructions. The build
-  warns on every run and fails hard when the headroom is gone.
+## Commands
 
-Also deferred: rotating the Foundry API key. The owner judged the resource
-not client-confidential. It was pasted into a chat transcript and this
-repository is public.
+```
+npm run insights:check -- --offline   prompt, parser and entry card copy, free
+npm run insights:check                the same plus four live calls, $0.17 warm
+npm run insights:eval                 40 evaluation cases, $1.75 to $2.40
+npm run insights:gap                  what readers asked that the articles did not answer
+npm run corpus                        regenerate the corpus manifest
+```
 
-## Branch and PR state, read this before committing anything
-
-Phase 1 is merged to `main`: PR #87 the scaffold, #91 the prompt, #92 the entry
-card questions, #93 the evaluation suite.
-
-The privacy policy change was **deliberately split out** of that PR. It
-adds an "Article assistant" section written in the present tense, and
-merging it before the feature ships would have the live policy describe
-something that does not exist. The patch is preserved on its own branch,
-unmerged, to land with the feature. Do not fold it back in early.
-
-If `projects/article-insights-assistant/` is missing, PR #87 has not
-merged. Check out the branch.
-
-## Decisions already made, do not relitigate
-
-- **No retrieval layer.** Whole corpus in cached context. Spec KD-01. If a
-  vector store starts to look necessary, that is the headroom decision
-  above, not a missing utility.
-- **Claude in Microsoft Foundry**, `spaarke-website-claude-sonnet-5`,
-  `DataZoneStandard` so inference stays in the US. Website-specific
-  resource so marketing traffic cannot consume product quota.
-- **The Spaarke BFF cannot be reused.** Its `Services/Ai` layer authorizes
-  per user against per-document access, which does not transfer to a public
-  endpoint with no user and no documents. Spec KD-03.
-- **Open to everyone**, rate limited, no email gate.
-- **Mobile is a bottom sheet** behind a floating button.
-- **$500 a month** inference ceiling.
-- **All 24 articles** in release one.
-- **90-day retention** for question text, aggregates after.
-- **A disclaimer, not a legal-advice refusal path.**
-- **Playground Instructions, Knowledge and Memory stay empty.** They
-  configure the Playground and Agents service, not the Messages API this
-  project calls.
-
-## Two things to do before task 030
-
-**Decide what to do about streaming, because Azure Static Web Apps buffers.**
-Proven against the deployed site: every chunk arrives at the end, and the response
-carries `Content-Length` rather than chunked encoding. The same build streams
-under `next start`, so it is the platform. The reader waits for the whole answer,
-3.6 to 22.5 seconds measured. Three options with their costs are in
-`notes/endpoint-and-defences.md`, the recommendation is to write partial answers to
-storage and poll for them, and the choice is the owner's. **Task 030 renders
-differently depending on it.**
-
-**Switch the endpoint on.** `INSIGHTS_ENABLED=true` in Azure Static Web Apps app
-settings. It ships off because nothing calls it yet, not because it is unsafe: the
-defences are in place and verified.
-
-**Merge PR #90, the privacy policy.** The live policy does not mention the
-assistant, and task 022 records reader questions for 90 days. The wording is
-written and held in draft on purpose, so the policy does not describe a feature
-nobody can use. It has to go live with the console, and not after it.
-
-## Read these notes before touching the prompt or the endpoint
-
-`notes/prompt-design.md` records the wire format and why each part of it is
-shaped that way. `notes/evaluation.md` records how to run the suite, how to read
-its rate, and the three behaviours that are still not right.
-`notes/endpoint-and-defences.md` records what the route does, what it refuses,
-what was verified against real infrastructure and what was not.
-
-**Extended thinking is on at the deployment and it destroys answers.** Eleven of
-forty evaluation cases came back completely empty because 1,999 of 2,000 output
-tokens went into a thinking block. Every call goes through
-`buildMessageRequest` in `src/lib/insights/prompt.ts`, which disables it. Task
-020 must use that builder rather than composing its own request, or it inherits
-the same defect. The model also rejects `temperature` as deprecated.
-
-**Three model behaviours are repaired mechanically** in `parseAnswer`: citations
-corrected, non-verbatim quotations demoted to paraphrase, dashes replaced. The
-endpoint should keep using it rather than streaming raw text to the client, and
-task 030 needs the repaired text.
-
-**Phase 1's gate is met in part.** The suite lands between 32 and 39 of 40 across
-runs. Mixed provenance labeling is not yet reliable. Recorded rather than
-smoothed over, and it does not block task 020.
+The defences self-test needs the storage connection string in the environment.
+Pass it from the app settings rather than writing it into a file, and see the
+header of `scripts/check-insights-defences.mts` for the one-liner.
 
 ## Findings that shape the work still to do
 
-**Read `notes/prompt-design.md` before touching the prompt.** It records the wire
-format, the four decisions behind it, six findings from live runs, and the ten
-cases task 012 should carry. Every one of them came from a real answer rather
-than from reasoning about the prompt.
+**Extended thinking is on at the deployment and it destroys answers.** Eleven of
+forty evaluation cases came back completely empty because 1,999 of 2,000 output
+tokens went into a thinking block. Every call goes through `buildMessageRequest`,
+which disables it. Anything new that calls the model uses that builder rather than
+composing its own request. The model also rejects `temperature` as deprecated.
 
-**The system prompt bans em dashes and a check enforces it.** The sample answer
-in task 002 contained one. `scripts/check-insights-prompt.ts` now fails on a dash
-in the instructions or in any live answer, using the same lookarounds as
-`scripts/voice-lint.mjs`.
+**Three model behaviours are repaired mechanically** in `parseAnswer` and in the
+stream assembler: citations corrected, non-verbatim quotations demoted to
+paraphrase, dashes replaced. The counts are reported, because they are the rate at
+which the instructions are not landing. Never bypass them by rendering raw model
+text.
 
-**Citations are copied, not composed.** Every heading in the corpus prints its
-own `[[cite:slug#anchor]]`. The first live run showed the model assembling a slug
-from one article with an anchor from another, which produced a citation that
-looked right and went nowhere.
+**Mixed provenance labeling is not yet reliable.** A reply drawing on both the
+articles and outside knowledge is sometimes labeled corpus, and does not always
+carry the paragraph marker the client needs. Phase 1's gate is met in part, which
+is recorded rather than smoothed over.
 
-**A cold turn costs $0.68 and a warm one about $0.04.** A full evaluation run of
-forty cases costs $1.75 to $2.40 warm. The write is measured at the 1 hour rate
-rather than assumed, and `cache_creation` is logged on every call so the next cold
-run confirms the 1 hour TTL is honoured.
+**Citations are copied, not composed.** Every heading in the corpus prints its own
+citation marker. The first live run showed the model assembling a slug from one
+article with an anchor from another, which produced a citation that looked right
+and went nowhere.
 
-**The entry card questions are committed data, not generated at request time.**
-`content/insights/suggested-questions.json`, three per article, reviewed by hand.
-Summarize is offered fourth by `entryOptions`, never first.
+**Do not import `@/lib/corpus` from a client component.** It pulls a 500 kB JSON
+manifest into the browser bundle. The article page is a server component, so read
+the three entry card questions there with `entryOptions(slug)` and pass them as
+props.
 
-**The existing rate limiter is not a spend guard.** `src/lib/rate-limit.ts`
-keeps counters in a module-level `Map`, so it resets on every function
-recycle and is not shared across instances. Task 021 needs a durable
-counter.
+**The defences fail closed.** If the counters cannot be read or written the
+request is refused. Development without a storage connection falls back to the
+in-process limiter and warns loudly.
 
-**The global ceiling should count spend, not turns.** An abuser forcing
-cache misses costs $0.379 a request, so about 1,300 requests would exhaust
-a month in a day.
+## Deferred by the owner, still open
 
-**Anchor fidelity has to be verified against rendered pages**, never
-against the generator's own output. Checking it found seven dead table of
-contents links on production, fixed separately.
+- **Cache warming**, which would cut a cold turn from $0.68 to $0.046. Designed,
+  costed, not built. Break-even around 61 conversations a month.
+- **Context window headroom.** The assembled prompt is at 95% of the 160,000
+  ceiling, with room for about one more article. The build warns on every run and
+  fails hard when the headroom is gone.
+- **Rotating the Foundry API key.** The owner judged the resource not client
+  confidential.
+- **Rotating the storage account key, the SendGrid key and the reCAPTCHA secret.**
+  On 2026-09-26 an `az staticwebapp appsettings list` printed every production
+  secret into a session transcript. Nothing reached the repository, which was
+  verified by scanning git history and the working tree. The storage key is the
+  one worth rotating first, because that account holds real contact form
+  submissions.
 
-**Estimating tokens went wrong twice** before being measured, by 27% then
-13%. `TOKENS_PER_WORD` in the manifest script is now calibrated against a
-real measurement. Recalibrate the same way rather than guessing.
+## Two content items for the owner
 
-## Unrelated live fixes shipped during this session
+**Two published titles contain em dashes**, the platform feature reference and the
+article on legal AI not being deterministic. The assistant reproduces a title
+whenever it cites the article, so the mark will appear in front of readers until
+the titles change. Several article headings carry them too, and those become
+citation chip labels.
 
-Noted so a later session does not rediscover them as bugs.
-
-- **Contact form**: three of four reason options were silently rejected
-  because the form and the validator held separate lists. PR #88.
-- **Contact form**: two awaits with no timeout left the form hanging with
-  no success and no error on a cold start. PR #86.
-- **Telemetry**: App Insights was batching and losing nearly everything,
-  11 requests logged in 30 days. Now flushes. This is what made the contact
-  diagnosis possible.
-- **Table of contents**: seven dead anchor links across three articles.
-  PR #89.
-
-## How to resume
-
-1. Read `tasks/TASK-INDEX.md` for status and the gates that stop the line.
-2. Open `tasks/011-system-prompt.md`.
-3. Read `content-platform/voice/stance.md` before writing any prompt text.
-   Without it the assistant will contradict the articles it is quoting,
-   particularly on what the general counsel owns versus what legal
-   operations facilitates.
-4. `node scripts/build-corpus-manifest.mjs` regenerates the corpus.
-   `npm run insights:check -- --offline` checks the prompt, the parser and the
-   entry card copy for free. Without `--offline` it makes four real calls, about
-   $0.17 warm or $0.80 cold. `npm run insights:eval` runs all forty evaluation
-   cases for $1.75 to $2.40 and writes every answer to `eval/last-run.json`.
+**The entry card questions name ChatGPT and Copilot** in the reader's voice, both
+of which the articles name themselves. The prompt forbids claims about a named
+competitor beyond what an article states, so the question invites an answer the
+instructions already constrain. Worth reading one of those answers before launch.

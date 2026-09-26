@@ -186,12 +186,33 @@ reader this is indistinguishable from streaming. It needs no new infrastructure,
 and about fifteen small writes and twenty reads an answer is a fraction of a cent.
 The cost is complexity in two places rather than one, and a second route.
 
-**Recommended: C**, with A as the fast, reversible path if the progressive feel
-turns out not to matter. B is the clean answer and the most expensive one.
+### Decided: C, on 2026-09-26
 
-This decision belongs to the owner, because it trades money and operational
-surface against reader experience. Task 030 cannot be finished without it: the
-console renders differently in each case.
+The owner chose C, and it is worth recording that it was chosen as the best
+experience rather than the cheapest one.
+
+The assembler already flushes by sentence, because a quotation can only be checked
+once the citation following it arrives. So B and C produce the same visual
+granularity and differ by a few hundred milliseconds a sentence, which no reader
+can perceive. The audience is in-house legal at large companies, on corporate
+networks that buffer or kill long-lived connections, which is the behaviour Azure
+has just demonstrated, so a design depending on chunked encoding reaching the
+browser would fail for some of them and fail as a hang. And C keeps the buffered
+POST as a fallback: a blocked poller costs progressive rendering, not the answer.
+
+The work is task 023, which task 030 then depends on.
+
+### Answer length came down at the same time
+
+Measured answers ran 400 to 650 words, which is a wall in a narrow column beside an
+article the reader is already part way through. The instructions now ask for **120
+to 200 words** for a normal question, up to about 350 where the question genuinely
+spans several articles, and `DEFAULT_MAX_TOKENS` came down from 2,000 to 1,100 as a
+guard rail rather than a target. Nineteen evaluation cases now assert a character
+ceiling, so length is a measured property rather than a hope.
+
+This is unverified against live answers. The next full evaluation run is what tells
+us whether the model obeys it.
 
 ## Telemetry
 

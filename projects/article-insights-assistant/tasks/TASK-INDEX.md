@@ -16,12 +16,13 @@
 | 020 | [Streaming endpoint](020-streaming-endpoint.md) | 2 | 002, 011 | 4h | **complete** |
 | 021 | [Abuse and spend defences](021-abuse-and-spend-defences.md) | 2 | 020 | 4h | **complete** |
 | 022 | [Conversation capture](022-conversation-capture.md) | 2 | 020 | 2h | **complete** |
+| 023 | [Partial answer polling](023-partial-answer-polling.md) | 2 | 020 | 4h | not-started |
 | 030 | [Right-rail console](030-rail-console.md) | 3 | 020, 013 | 4h | not-started |
 | 031 | [Mobile bottom sheet](031-mobile-sheet.md) | 3 | 030 | 3h | not-started |
 | 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | not-started |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | 4 | 040 | 3h | not-started |
 
-**13 tasks, roughly 40 hours.**
+**14 tasks, roughly 44 hours.**
 
 ## Phases
 
@@ -29,7 +30,7 @@
 |---|---|---|
 | 0 Foundation and cost truth | 001, 002 | A real call works and the arithmetic holds |
 | 1 Corpus, prompt, evaluation | 010 to 013 | Answers are good, measurably |
-| 2 The endpoint | 020 to 022 | It streams, it is safe, it records |
+| 2 The endpoint | 020 to 023 | It answers progressively, it is safe, it records |
 | 3 The interface | 030, 031 | Both surfaces, accessible |
 | 4 Instrument and launch | 040, 090 | The effect can be judged |
 
@@ -61,11 +62,14 @@ them, so phase 2 can proceed, but they should be closed before launch.
 **Inside 020. Answered, and the answer is no.** Azure Static Web Apps buffers the
 response: every chunk arrives at the end and the response carries
 `Content-Length` rather than chunked encoding. The same build streams correctly
-under `next start`, so it is the platform. The reader therefore waits for the whole
-answer, 3.6 to 22.5 seconds measured, and NFR-04 cannot be met as built. Three
-options with their costs are in `notes/endpoint-and-defences.md`, and the choice
-is the owner's because it trades money and operational surface against experience.
-**Task 030 cannot be finished until it is made.**
+under `next start`, so it is the platform.
+
+**Resolved by the owner on 2026-09-26: task 023, partial answers written to
+storage and polled for.** Not as a compromise. The assembler already flushes by
+sentence, so polling and real streaming look identical to a reader; the audience
+sits behind corporate networks that break long-lived connections; and polling
+keeps the buffered POST as a fallback, so a blocked poller costs progressive
+rendering rather than the answer. Task 030 depends on 023.
 
 ## Notes from work so far
 

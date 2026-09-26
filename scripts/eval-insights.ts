@@ -52,6 +52,7 @@ type Expect = {
   containsAny?: string[];
   notContains?: string[];
   minChars?: number;
+  maxChars?: number;
 };
 
 type Case = {
@@ -211,6 +212,10 @@ function assertExpectations(parsed: ParsedAnswer, raw: string, testCase: Case, f
   }
   if (e.minChars && text.length < e.minChars) {
     failures.push(`${text.length} characters, expected at least ${e.minChars}`);
+  }
+  // Length is a property a reader feels, so it is asserted rather than hoped for.
+  if (e.maxChars && text.length > e.maxChars) {
+    failures.push(`${text.length} characters, expected at most ${e.maxChars}`);
   }
 }
 
