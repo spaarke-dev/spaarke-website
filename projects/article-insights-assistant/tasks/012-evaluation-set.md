@@ -1,7 +1,7 @@
 # Task 012: Evaluation runner and cases
 
 **Phase:** 1 (Corpus, prompt, and evaluation)
-**Status:** not-started
+**Status:** complete
 **Estimated:** 4 hours
 **Dependencies:** 011
 **Tags:** testing, typescript
@@ -52,18 +52,23 @@ invites shipping regardless of answer quality.
 
 ## Expected Outputs
 
-- `scripts/eval-insights.mjs` runner
+- `scripts/eval-insights.ts` runner, TypeScript rather than `.mjs` so that it
+  imports the real prompt composer. A runner that builds its own prompt tests
+  nothing
 - `projects/article-insights-assistant/eval/cases.json`
 - `notes/evaluation.md` on how to run and read it
 
 ## Acceptance Criteria
 
-- [ ] 30 to 50 cases across all nine categories
-- [ ] Runner reports pass or fail per case, showing the failing output
-- [ ] Structural assertions cover citation presence, slug, anchor and
-      provenance label
-- [ ] Every anchor asserted against the rendered article, not the manifest
-- [ ] Run cost reported
+- [x] 40 cases across all nine categories
+- [x] Runner reports pass or fail per case, showing the failing output, and
+      writes every answer to `eval/last-run.json`
+- [x] Structural assertions cover citation presence, slug, anchor, provenance
+      label, quotation grounding, dashes, prose questions and system prompt
+      leakage
+- [x] Every anchor asserted against the rendered page on spaarke.com, fetched
+      once per article per run
+- [x] Run cost reported per case and for the run
 
 ## Notes
 
@@ -75,3 +80,28 @@ badly. A good one uses vocabulary a competitor actually uses and that
 Spaarke's articles explicitly push back on.
 
 See spec FR-09, FR-03, FR-10, FR-11.
+
+## Outcome
+
+Forty cases, eight full runs, about 18 USD, and six prompt changes caused by what
+the runs showed. `notes/evaluation.md` records how to run it, how to read the
+rate, and the five findings.
+
+The largest was that extended thinking was on at the deployment. Eleven of the
+first forty answers came back completely empty because 1,999 of 2,000 output
+tokens went into a thinking block. Every call now goes through one request
+builder, so the endpoint cannot inherit the same defect.
+
+Three model behaviours are now repaired mechanically rather than argued with:
+citations corrected, non-verbatim quotations demoted to paraphrase, dashes
+replaced. The counts print on every run, because they are the rate at which the
+instructions are not landing.
+
+**The pass rate is a rate, not a verdict.** The same suite against the same
+prompt lands between 32 and 39 of 40. Read one run as a sample.
+
+**Phase 1's gate is met in part.** Cross-article cases pass most of the time,
+citations resolve after repair, and provenance is right on corpus-only and
+general questions. Mixed labeling is not yet reliable, and that is recorded
+rather than smoothed over. Whether it is enough to start phase 2 is the owner's
+call; task 020 does not depend on it.

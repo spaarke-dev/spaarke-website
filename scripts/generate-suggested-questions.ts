@@ -17,7 +17,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import AnthropicFoundry from "@anthropic-ai/foundry-sdk";
-import { buildSystemBlocks } from "@/lib/insights/prompt";
+import { buildMessageRequest } from "@/lib/insights/prompt";
 import { allArticles, type CorpusArticle } from "@/lib/corpus";
 import { QUESTIONS_FILE, validateQuestion } from "@/lib/insights/questions";
 
@@ -100,12 +100,13 @@ async function generate(article: CorpusArticle): Promise<string[]> {
     .map((a) => a.title)
     .slice(0, 23);
 
-  const res = await client.messages.create({
-    model: FOUNDRY_DEPLOYMENT!,
-    max_tokens: 500,
-    system: buildSystemBlocks() as never,
-    messages: [{ role: "user", content: TASK(article, others) }],
-  });
+  const res = await client.messages.create(
+    buildMessageRequest({
+      model: FOUNDRY_DEPLOYMENT!,
+      maxTokens: 700,
+      request: { question: TASK(article, others), articleSlug: article.slug, history: [] },
+    }) as never,
+  );
 
   const raw = ((res.content ?? []) as { text?: string }[]).map((c) => c.text ?? "").join("").trim();
   const json = raw.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");

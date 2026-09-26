@@ -13,11 +13,18 @@
 
 import { readFileSync } from "node:fs";
 import AnthropicFoundry from "@anthropic-ai/foundry-sdk";
-import { buildSystemBlocks, buildUserTurn, INSTRUCTIONS } from "@/lib/insights/prompt";
 import {
+  buildMessageRequest,
+  buildSystemBlocks,
+  buildUserTurn,
+  INSTRUCTIONS,
+} from "@/lib/insights/prompt";
+import {
+  detectInstructionLeak,
   extractQuotations,
   holdPartialMarker,
   parseAnswer,
+  verifyQuotations,
   verifyQuote,
 } from "@/lib/insights/citations";
 import { allArticles } from "@/lib/corpus";
@@ -112,6 +119,61 @@ function parserChecks() {
 
   const { safe, held } = holdPartialMarker("text with a split [[cite:slug#anc");
   check(safe === "text with a split " && held === "[[cite:slug#anc", "a marker split across chunks is held back");
+
+  // The three mechanical repairs. Each one exists because the evaluation run
+  // caught the model doing it, and each is counted rather than hidden.
+  const misquoted = parseAnswer(
+    '[[provenance:corpus]]\n\nThe article says legal operations builds "the processes, tools, and information these decisions require" [[cite:managing-legal-operations#legal-operations-is-the-function-that-makes-the-change-work]].',
+  );
+  check(
+    misquoted.repairs.quotationsDemoted === 1 && !misquoted.text.includes('"the processes'),
+    "a quotation that is not verbatim loses its quotation marks and keeps its citation",
+    JSON.stringify(misquoted.repairs),
+  );
+
+  const dashed = parseAnswer("[[provenance:general]]\n\nThe memory layer matters — it is where context lives.");
+  check(
+    dashed.repairs.dashesNormalized === 1 && !/—/.test(dashed.text),
+    "an em dash in the answer is replaced before a reader sees it",
+    JSON.stringify(dashed.text.slice(0, 60)),
+  );
+
+  const wrongArticle = parseAnswer(
+    "[[provenance:corpus]]\n\nStart from the decision [[cite:building-the-legal-operations-intelligence-platform#design-the-legal-operating-model-around-the-decisions-it-supports]].",
+  );
+  check(
+    wrongArticle.citations[0]?.verdict === "verified" &&
+      wrongArticle.citations[0]?.citation?.slug === "legal-operations-ontology" &&
+      wrongArticle.repairs.citationsCorrected === 1,
+    "a citation whose anchor belongs to another article is repaired to point there",
+    `${wrongArticle.citations[0]?.citation?.slug} corrected ${wrongArticle.repairs.citationsCorrected}`,
+  );
+
+  // The leak detector, and the false positive it had: the instructions quote the
+  // articles in places, so an overlap that is also in the corpus is a citation.
+  const leaked = detectInstructionLeak(
+    "The rule here is that you should not take sides between in-house departments and law firms, on the billable hour.",
+    INSTRUCTIONS,
+  );
+  check(leaked.length === 1, "a sentence from the instructions in the answer is detected", JSON.stringify(leaked));
+  const notALeak = detectInstructionLeak(
+    "The better fit is a standard non-disclosure agreement template, a guided intake form, and a defined approval path.",
+    INSTRUCTIONS,
+  );
+  check(
+    notALeak.length === 0,
+    "wording the instructions share with an article is not reported as a leak",
+    JSON.stringify(notALeak),
+  );
+
+  const punctuated = parseAnswer(
+    "[[provenance:corpus]]\n\nBusiness intelligence is more than spend [[cite:from-spend-analytics-to-legal-operations-intelligence#today's-business-intelligence-is-about-more-than-spend-analytics]].",
+  );
+  check(
+    punctuated.citations[0]?.verdict === "verified" && punctuated.repairs.citationsCorrected === 1,
+    "an anchor that differs only in punctuation resolves",
+    punctuated.citations[0]?.citation?.anchor ?? punctuated.citations[0]?.verdict,
+  );
 }
 
 /**
@@ -194,12 +256,21 @@ function staticChecks() {
   // Every heading has to carry a copyable marker. A heading without one is a
   // section the assistant cannot cite, and the first live run showed it will
   // invent an anchor rather than decline.
-  const markers = (blocksA[0].text.match(/\[\[cite:[^\]]+\]\]/g) ?? []).length;
-  const headings = allArticles().reduce((n, a) => n + a.headings.length, 0);
+  const articles = allArticles();
+  const sectionMarkers = (blocksA[0].text.match(/\[\[cite:[^\]]+#[^\]]+\]\]/g) ?? []).length;
+  const headings = articles.reduce((n, a) => n + a.headings.length, 0);
   check(
-    markers === headings,
+    sectionMarkers === headings,
     "every heading carries its citation marker",
-    `${markers} markers, ${headings} headings`,
+    `${sectionMarkers} markers, ${headings} headings`,
+  );
+  // Without a legal way to cite a whole article, the model slugified an article
+  // title into an anchor that does not exist.
+  const wholeArticleMarkers = (blocksA[0].text.match(/\[\[cite:[^\]#]+\]\]/g) ?? []).length;
+  check(
+    wholeArticleMarkers === articles.length,
+    "every article can be cited as a whole",
+    `${wholeArticleMarkers} of ${articles.length}`,
   );
 
   console.log(
@@ -280,13 +351,12 @@ async function liveChecks() {
 
   for (const [i, testCase] of CASES.entries()) {
     const started = Date.now();
-    const res = await client.messages.create({
-      model: FOUNDRY_DEPLOYMENT,
-      // A cross-article answer runs long. 1,200 truncated one mid-sentence.
-      max_tokens: 2000,
-      system: buildSystemBlocks() as never,
-      messages: [{ role: "user", content: buildUserTurn(testCase) }],
-    });
+    const res = await client.messages.create(
+      buildMessageRequest({
+        model: FOUNDRY_DEPLOYMENT,
+        request: { question: testCase.question, articleSlug: testCase.articleSlug, history: [] },
+      }) as never,
+    );
     const ms = Date.now() - started;
 
     const u = (res.usage ?? {}) as Record<string, number>;
@@ -364,10 +434,15 @@ async function liveChecks() {
     check(emDash === null, "the answer carries no em dash", emDash ? JSON.stringify(emDash[0]) : "");
 
     const slugs = parsed.citations.map((c) => c.ref.slug);
-    const ungrounded = extractQuotations(parsed.text).filter(
-      (q) => slugs.length > 0 && slugs.every((s) => verifyQuote(s, q) === "not-found"),
+    const badQuotes = verifyQuotations(raw).filter(
+      (q) => q.verdict !== "verified" && q.verdict !== "verified-approximate",
     );
-    check(ungrounded.length === 0, "every quotation is in a cited article", ungrounded.join(" | "));
+    check(
+      badQuotes.length === 0,
+      "every quotation is attributed and in the article it cites",
+      badQuotes.map((q) => `${q.verdict}: ${q.quote.slice(0, 50)}`).join(" | "),
+    );
+    check(res.stop_reason !== "max_tokens", "the reply was not cut off", String(res.stop_reason));
 
     if (testCase.wantCitedSlugs) {
       const cited = new Set(slugs);
