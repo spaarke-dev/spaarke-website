@@ -31,6 +31,13 @@ export type CorpusArticle = {
   campaign: string | null;
   url: string;
   headings: CorpusHeading[];
+  /**
+   * The three entry card questions, generated once and committed as reviewed
+   * copy in content/insights/suggested-questions.json. Empty when an article has
+   * not been through the generator, which is a degraded console rather than a
+   * broken one. See src/lib/insights/questions.ts.
+   */
+  suggestedQuestions: string[];
   body: string;
 };
 

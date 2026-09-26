@@ -1,0 +1,122 @@
+{
+  "Spaarke-Functional-Specification-2026": [
+    "We have no legal ops function today. Which module should we stand up first?",
+    "This reads like a feature list. What actually connects these modules underneath the interface?",
+    "How does this spec map to the five modules described in the feature reference article?"
+  ],
+  "what-is-legal-operations-intelligence": [
+    "We already have an ELM. Isn't that basically Legal Operations Intelligence already?",
+    "Isn't LOI just rebranding legal analytics and knowledge management under a new name?",
+    "You describe a Legal IQ stack elsewhere. Which layer does the category definition actually live in?"
+  ],
+  "the-iq-stack": [
+    "Our spend data sits in four disconnected systems. Which layer of the stack do we build first?",
+    "Our data team would call this a warehouse with extra steps. What does memory add?",
+    "How does the Memory layer here relate to the operational memory in Institutional Knowledge Is Walking Out the Door?"
+  ],
+  "loi-maturity-model": [
+    "We score Developing on CLOC Core 12 but still lose context every time someone leaves. What gives?",
+    "Isn't intelligence depth just a rebrand of what CLOC and ACC already measure?",
+    "Where does the ontology work in the platform article sit on this maturity model?"
+  ],
+  "why-we-built-on-microsoft": [
+    "We already run on Microsoft 365. Does that mean we've de-risked our next legal AI purchase?",
+    "What happens to this argument if we decide to move off Microsoft in three years?",
+    "How does Tenant Dedicated Deployment actually stop our data leaving the boundary?"
+  ],
+  "your-legal-data-belongs-to-you": [
+    "Our outside counsel uses its own AI tool. How do we keep our matter data from forking?",
+    "Every vendor says we own our data. What in the architecture makes that more than a promise?",
+    "Does tenant dedicated deployment make this ownership argument structural, or is it still a policy commitment?"
+  ],
+  "tenant-dedicated-deployment": [
+    "Our IT team already trusts multi-tenant SaaS. Why take on tenant-hosted infrastructure instead?",
+    "Isn't Tenant Dedicated Deployment just marketing language for a private single-tenant instance?",
+    "How does Tenant Dedicated Deployment change the AI architecture decisions in What Attorneys Need to Know?"
+  ],
+  "what-attorneys-need-to-know-about-ai": [
+    "Our outside counsel and our in-house team use different AI tools. Is that a real problem?",
+    "Isn't per-query pricing just normal usage-based SaaS pricing? Why treat it as a red flag?",
+    "How does Foundry IQ actually ground AI in our own matter history instead of generic answers?"
+  ],
+  "ai-without-giving-away-the-keys": [
+    "Our lawyers already use ChatGPT for quick drafts. How risky is that shadow AI habit really?",
+    "We already pay for Copilot. Why would we add anything else to do the same job?",
+    "How does this tenant-boundary AI argument connect to the privilege risk in Your Legal Data Belongs to You?"
+  ],
+  "the-ai-readiness-gap": [
+    "We have four systems and no unified data. Should we buy an AI tool now or wait?",
+    "Every vendor tells us to fix our data first, then sells us inference anyway. Which is it?",
+    "How does the LOI Maturity Model help me diagnose whether we're actually Level 2 or Level 3?"
+  ],
+  "the-20b-blind-spot": [
+    "Our spend data is in four systems. Where do we even start unifying it?",
+    "Isn't budget-versus-actual reporting already the benchmarking my CFO actually wants?",
+    "How does the LOI maturity model explain why our dashboards don't answer these questions?"
+  ],
+  "institutional-knowledge": [
+    "Our senior litigator retires in six months. How do we capture her judgment before she leaves?",
+    "We run exit interviews and keep a precedent folder. What does operational memory add to that?",
+    "Your knowledge management article talks about context. Is that the same thing as operational memory?"
+  ],
+  "breaking-the-silo": [
+    "Our finance and business teams pull legal data manually today. Where do we start breaking that silo?",
+    "Isn't legal withholding data from finance mostly about privilege, not architecture we happen to lack?",
+    "How does the Legal IQ stack's Memory layer actually make cross-functional visibility possible?"
+  ],
+  "legal-ops-is-not-it-for-lawyers": [
+    "Our legal ops team of three still just processes invoices. How do we become strategic instead?",
+    "My general counsel sees legal ops as administrative support. What changes their mind about that?",
+    "How does the Legal IQ stack actually turn our legal ops team into the strategic function you describe?"
+  ],
+  "spaarke-for-your-it-team": [
+    "Our IT team already federates a third-party IdP to Entra ID. Does that still work with Spaarke?",
+    "If everything inherits our M365 posture, what's actually left for our security team to review?",
+    "How does the Spaarke workflow engine relate to Power Automate described in the platform functional spec?"
+  ],
+  "spaarke-feature-specification": [
+    "We already run e-billing and a CLM. Where does Spaarke actually add value on top?",
+    "We already have a document management system. What does SharePoint Embedded storage add?",
+    "How does the Agent Framework layer connect to the human-controlled principle in the Welcome article?"
+  ],
+  "welcome-to-spaarke": [
+    "Our department already bought AI drafting tools. Does that mean we already have an operating model?",
+    "Isn't 'AI-directed, human-controlled' just a hedge every vendor uses to sound safe?",
+    "How does this tenant-inside approach compare to what Tenant Dedicated Deployment describes in detail?"
+  ],
+  "probabilistic-vs-deterministic": [
+    "We're building an intake agent with five chained AI steps. Where should we put deterministic checks?",
+    "Our vendors say their guardrails handle variability. Why is that not enough for legal work?",
+    "How does this probabilistic property connect to the Data, Memory, Inference layers in the Legal IQ stack?"
+  ],
+  "the-ux-that-legal-iq-requires": [
+    "We already added an AI chat panel to our matter system. Is that not enough?",
+    "Isn't chat the natural interface for AI? Why push users into more surfaces?",
+    "How does this Assistant, Workspace, Context model relate to the Data, Memory, Inference stack?"
+  ],
+  "managing-legal-operations": [
+    "We have no legal ops function. Where should we start opening up self-service to the business?",
+    "Isn't calling legal an impediment just an excuse to cut lawyers out of the process?",
+    "How does the front door in Exhibit 1 connect to the ontology article's decision-first approach?"
+  ],
+  "building-the-legal-operations-intelligence-platform": [
+    "We have 200 open matters and no clear process owner. Which decision should we model first?",
+    "Isn't starting with one decision just slower than buying a platform that covers everything at once?",
+    "How does this build order connect to the ontology article you mention at the end?"
+  ],
+  "legal-operations-ontology": [
+    "We have a matter system, e-billing, and a CLM. Do we still need to build an ontology?",
+    "Isn't this just a knowledge graph or data model with extra legal branding on it?",
+    "Does the curated context in the knowledge management article need the ontology first, or can these run in parallel?"
+  ],
+  "from-spend-analytics-to-legal-operations-intelligence": [
+    "We have four dashboards and no agreed definition of a matter. Where do we start?",
+    "Isn't reporting on cost, service, and risk just more dashboards under a new name?",
+    "How does this connect to the ontology article? Are metrics and entities the same modeling work?"
+  ],
+  "knowledge-management-legal-operations-intelligence": [
+    "We have no dedicated KM role. Should legal operations own this by default?",
+    "Isn't feeding AI on our negotiation history just a privilege waiver waiting to happen?",
+    "How does this knowledge feed into the ontology from your Legal Operations Intelligence Ontology article?"
+  ]
+}

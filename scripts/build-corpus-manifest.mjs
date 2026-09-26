@@ -93,6 +93,15 @@ function extractHeadings(content) {
   return headings;
 }
 
+// Entry card questions, generated once by scripts/generate-suggested-questions.ts
+// and committed as reviewed copy. Missing questions are a warning rather than a
+// build failure: the console can open without chips, and a nicety must not stop
+// an article from publishing.
+const QUESTIONS_FILE = "content/insights/suggested-questions.json";
+const suggested = existsSync(QUESTIONS_FILE)
+  ? JSON.parse(readFileSync(QUESTIONS_FILE, "utf8"))
+  : {};
+
 const articles = [];
 let skipped = 0;
 
@@ -120,9 +129,12 @@ for (const file of readdirSync(BLOG_DIR).filter((f) => f.endsWith(".mdx")).sort(
     campaign: data.campaign ?? null,
     url: `/why-spaarke/${slug}`,
     headings: extractHeadings(content),
+    suggestedQuestions: Array.isArray(suggested[slug]) ? suggested[slug] : [],
     body: content.trim(),
   });
 }
+
+const withoutQuestions = articles.filter((a) => a.suggestedQuestions.length !== 3);
 
 const manifest = {
   generatedFrom: BLOG_DIR,
@@ -176,6 +188,15 @@ if (!quiet) {
       `${Math.max(0, Math.floor((CEILING - tokens) / AVG_ARTICLE_TOKENS))} more article(s)`,
   );
   console.log(`         -> ${OUT_FILE} (${(serialized.length / 1024).toFixed(0)} kB)`);
+}
+
+if (withoutQuestions.length > 0) {
+  console.warn(
+    `\nNOTE: ${withoutQuestions.length} article(s) have no entry card questions:\n` +
+      withoutQuestions.map((a) => `  ${a.slug}`).join("\n") +
+      `\nRun: npx tsx scripts/generate-suggested-questions.ts\n` +
+      `The console opens without chips until then, which is degraded rather than broken.`,
+  );
 }
 
 if (tokens > WARN_AT && tokens <= CEILING) {

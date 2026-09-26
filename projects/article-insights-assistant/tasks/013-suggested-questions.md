@@ -1,7 +1,7 @@
 # Task 013: Per-article suggested questions
 
 **Phase:** 1 (Corpus, prompt, and evaluation)
-**Status:** not-started
+**Status:** complete
 **Estimated:** 2 hours
 **Dependencies:** 010
 **Tags:** content, typescript, mdx
@@ -45,11 +45,16 @@ fourth.
 
 ## Acceptance Criteria
 
-- [ ] Three questions per article across all 21
-- [ ] Questions differ per article rather than following a template
-- [ ] Summarize present and never first
-- [ ] No model call before the reader asks something
-- [ ] Hand reviewed for voice
+- [x] Three questions per article across all 24, checked on every run of
+      `npm run insights:check -- --offline`
+- [x] Questions differ per article rather than following a template. Fifteen of
+      seventy-two were rewritten in review, ten of them to break one repeated
+      objection shape
+- [x] Summarize present and never first. Ordering is enforced in
+      `entryOptions`, not left to the component, and a check asserts it
+- [x] No model call before the reader asks something. Generated once, committed
+      as data, read from the corpus manifest
+- [x] Hand reviewed for voice, recorded in `notes/suggested-questions-review.md`
 
 ## Notes
 
@@ -58,3 +63,22 @@ at build time and commit the output as data rather than shipping weak copy
 to every reader.
 
 See spec FR-04, FR-05.
+
+## Outcome
+
+Generated in 24 warm calls for about $0.80, reviewed line by line, and committed
+to `content/insights/suggested-questions.json`.
+
+The review found one false premise, which is the finding worth carrying: a
+question asked about report cards in an article that has none. A question with a
+false premise invites an answer that either corrects the reader or plays along,
+and neither is good. Every technical term and cross-reference the seventy-two
+questions assert is now verified against the corpus text.
+
+A missing questions file is a warning rather than a build failure. The console
+opens with summarize alone, which is degraded and not broken, and an article
+should not be blocked from publishing by a model call.
+
+`src/lib/insights/questions.ts` holds the ordering and the copy rules, so
+summarize being fourth is a property of the code rather than a convention the
+component has to remember.

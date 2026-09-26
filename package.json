@@ -14,7 +14,9 @@
     "linkedin:test-kv": "tsx scripts/linkedin-test-kv.ts",
     "linkedin:status": "tsx scripts/linkedin-status.ts",
     "voice:lint": "node scripts/voice-lint.mjs",
-    "corpus": "node scripts/build-corpus-manifest.mjs"
+    "corpus": "node scripts/build-corpus-manifest.mjs",
+    "insights:check": "tsx scripts/check-insights-prompt.ts",
+    "insights:questions": "tsx scripts/generate-suggested-questions.ts"
   },
   "dependencies": {
     "@anthropic-ai/foundry-sdk": "^0.4.9",
