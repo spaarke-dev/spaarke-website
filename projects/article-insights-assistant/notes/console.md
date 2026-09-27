@@ -125,6 +125,35 @@ long press and a copied link all still work.
 Without that one press closes both, and the reader never sees the conversation they
 were sent back to.
 
+**It is a reading column, not a window.** The first version filled the whole space
+left of the console, which on a wide screen is prose at about a hundred and forty
+characters a line. It is now 740px, centred in whatever space is left.
+
+**The scroll is measured against the scroller, not read off `offsetTop`.** That
+property is relative to the nearest positioned ancestor, which here is the card
+rather than the scrolling div, so the first version landed a header's height out
+and the cited heading was never quite at the top. It looked like an article that
+had opened roughly near the right place, which is worse than one that had not
+tried.
+
+## Every surface carries its own tone
+
+The surfaces are fixed-position, but a fixed element still inherits its colour
+tokens from its DOM ancestors. On an article the provider sits inside
+`<Slab tone="light">` and everything was light by accident. On the library page the
+slab is rendered *inside* the section the provider wraps, so the console fell
+outside it and came out **dark against a light page**.
+
+They now carry `data-tone="light"` themselves. The console is a reading surface for
+articles and articles are light, so a surface should look the same wherever it is
+mounted rather than taking its appearance from the accident of where it was
+inserted.
+
+The same class of mistake made the library entry button look like it used a
+different font. It did not: it used `text-fg-mid` where the filter controls beside
+it use `text-fg`, and a muted colour at that size reads as a different typeface.
+The check now compares it to the filters on every token that matters.
+
 ## The sheet traps focus and the panel does not
 
 This looks like an inconsistency and is not. Beside an article the console is one
@@ -221,7 +250,7 @@ npm run insights:console -- --base http://localhost:3000    plus what is in the 
 npm run insights:console -- --base ... --live                plus one real turn and its links
 ```
 
-Seventy checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
+Eighty-two checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
 articles came back labeled corpus in three paragraphs with **four citation chips,
 every one of which resolves to an id on the rendered page**; a question the library
 does not cover came back labeled general, cited nothing, and carried marked

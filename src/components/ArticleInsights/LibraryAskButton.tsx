@@ -23,7 +23,10 @@ export function LibraryAskButton() {
       ref={(el) => registerTrigger("panel", el)}
       onClick={() => openConsole("panel")}
       aria-expanded={open && openOn === "panel"}
-      className="border-line bg-surface text-fg-mid hover:border-line-strong hover:text-fg focus-visible:ring-spaarke-blue flex items-center gap-2 rounded-md border px-3 py-2.5 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2"
+      // Matched to FilterSelect beside it: same border, same surface, same
+      // padding, same size, and the same `text-fg` rather than a muted one. The
+      // muted colour was the whole of what made it look like a different font.
+      className="border-line bg-surface text-fg hover:border-line-strong focus-visible:ring-spaarke-blue flex items-center gap-2 rounded-md border px-3 py-2.5 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2"
     >
       <svg
         className="text-spaarke-blue h-4 w-4 flex-shrink-0"
