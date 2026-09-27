@@ -18,7 +18,7 @@ export default function Privacy() {
         />
 
         <div className="text-fg-mid mt-12 max-w-2xl space-y-6 text-base leading-relaxed">
-          <p className="text-fg-low text-sm">Last updated: 2026-05-07</p>
+          <p className="text-fg-low text-sm">Last updated: 2026-09-25</p>
 
           <p>
             This policy covers two related but distinct contexts: (1) the
@@ -219,6 +219,38 @@ export default function Privacy() {
             it requested via Application Insights. This tells us how the site
             is being indexed for AI citations. No personal data is captured —
             just the bot identifier and the public path it visited.
+          </p>
+
+          <h3 className="text-fg font-display text-lg font-medium">
+            Article assistant
+          </h3>
+          <p>
+            Some articles offer an AI assistant that answers questions about
+            the article and the rest of our published library. It is available
+            without signing in and we do not ask who you are in order to use
+            it.
+          </p>
+          <p>
+            What you type is sent to Anthropic&rsquo;s Claude models running in
+            Microsoft Foundry on Azure infrastructure in a United States data
+            region, inside our own tenant. Your questions are not used to train
+            foundation models.
+          </p>
+          <p>
+            We keep the questions asked, the article they were asked about, and
+            whether the answer came from our own articles or from the
+            model&rsquo;s general knowledge. We do this to find out which
+            subjects our writing does not yet cover, so we know what to write
+            next. Question text is retained for 90 days, after which we keep
+            only aggregated counts. We do not link questions to your name or
+            email, and we do not use them to build a profile of you or to
+            target advertising.
+          </p>
+          <p>
+            Please do not type confidential information, client details, or
+            anything covered by privilege into the assistant. It is a way to
+            explore published articles, not a secure channel, and its answers
+            are general information rather than legal advice.
           </p>
 
           {/* ============================================================ */}
