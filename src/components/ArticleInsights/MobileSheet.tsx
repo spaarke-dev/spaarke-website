@@ -72,7 +72,7 @@ export function MobileSheet() {
   if (!showing) return null;
 
   return (
-    <div className="lg:hidden">
+    <div className="lg:hidden" data-tone="light">
       <div
         className="fixed inset-0 z-40 bg-black/40"
         // A tap outside closes it. Not a button, because it is not a control a

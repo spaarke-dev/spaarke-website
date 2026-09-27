@@ -63,6 +63,10 @@ export function InsightsPanel() {
     <aside
       aria-label="Article assistant"
       inert={!showing}
+      // The console is a reading surface for articles, and articles are light.
+      // Without this it inherits from wherever it is mounted, which on the library
+      // page is outside the light slab, so it came out dark against a light page.
+      data-tone="light"
       className={`border-line bg-bg fixed right-0 z-40 flex-col border-l shadow-[-8px_0_32px_rgba(0,0,0,0.08)] ${
         showing ? "hidden lg:flex" : "hidden"
       }`}

@@ -269,6 +269,34 @@ console.log("\nthe surfaces share a console rather than forking it");
     "escape closes the reader before the console",
     "one press must not close both",
   );
+
+  // Every surface is fixed-position but still inherits its colour tokens from
+  // whatever it is mounted inside. On the library page that is outside the light
+  // slab, so the console came out dark against a light page. Carrying the tone
+  // makes a surface look the same wherever it is mounted.
+  const sheet2 = read("MobileSheet.tsx");
+  check(panel.includes('data-tone="light"'), "the panel carries its own light tone");
+  check(sheet2.includes('data-tone="light"'), "so does the sheet");
+  check(reader.includes('data-tone="light"'), "and so does the reader");
+
+  // Prose at the full width of a wide screen is about a hundred and forty
+  // characters a line, which is not a reading surface.
+  check(!reader.includes("absolute inset-4"), "the reader is a column rather than a window");
+  check(/w-\[min\(\d+px/.test(reader), "with a bounded width");
+
+  // `offsetTop` is relative to the nearest positioned ancestor, which is the card
+  // rather than the scroller, so it landed a header's height out.
+  check(
+    reader.includes("getBoundingClientRect") && !reader.includes("target.offsetTop"),
+    "and lands on the cited heading, measured against the scroller",
+  );
+
+  // The entry point sits in a row of filter controls, and looking almost like
+  // them reads as a mistake rather than as a distinction.
+  const libraryButton = read("LibraryAskButton.tsx");
+  for (const token of ["border-line", "bg-surface", "text-fg ", "text-sm", "px-3", "py-2.5"]) {
+    check(libraryButton.includes(token), `the library entry matches the filters on ${token.trim()}`);
+  }
 }
 
 // ------------------------------------------------------------------- copy

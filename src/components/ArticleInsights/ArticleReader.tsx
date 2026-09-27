@@ -86,7 +86,14 @@ export function ArticleReader() {
 
     const target = container.querySelector<HTMLElement>(`#${CSS.escape(reader.anchor)}`);
     if (!target) return;
-    container.scrollTop = target.offsetTop - 12;
+
+    // Measured against the scrolling element rather than read off `offsetTop`.
+    // `offsetTop` is relative to the nearest positioned ancestor, which here is
+    // the card and not the scroller, so it landed a header's height out and the
+    // cited heading was never quite at the top.
+    const top =
+      target.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
+    container.scrollTop = Math.max(top - 16, 0);
 
     target.style.transition = "background-color 900ms ease";
     target.style.backgroundColor = "rgba(0, 11, 255, 0.10)";
@@ -113,6 +120,10 @@ export function ArticleReader() {
   return (
     <div
       className="fixed bottom-0 left-0 z-30 hidden lg:block"
+      // Light, like the articles it shows. Without this it inherits from wherever
+      // it happens to be mounted, which on the library page meant a dark article
+      // on a light page.
+      data-tone="light"
       style={{ top: SURFACE_TOP, right: rightEdge }}
     >
       <div
@@ -125,7 +136,10 @@ export function ArticleReader() {
         // Not modal, for the same reason the console is not: the conversation
         // beside this has to stay usable while the reader reads.
         aria-label={`${reader.title}, the cited section`}
-        className="border-line bg-bg absolute inset-4 flex flex-col overflow-hidden rounded-lg border shadow-2xl"
+        // A reading column, not a window. The first version filled the whole
+        // space left of the console, which on a wide screen is prose at about a
+        // hundred and forty characters a line and unreadable.
+        className="border-line bg-bg absolute inset-y-6 left-1/2 flex w-[min(740px,calc(100%-3rem))] -translate-x-1/2 flex-col overflow-hidden rounded-lg border shadow-2xl"
       >
         <header className="border-line flex shrink-0 items-start justify-between gap-4 border-b px-5 py-3">
           <div className="min-w-0">
@@ -178,7 +192,7 @@ export function ArticleReader() {
           )}
           {html !== null && (
             <div
-              className="prose prose-neutral prose-base max-w-none prose-headings:font-display prose-headings:font-medium prose-headings:tracking-tight"
+              className="prose prose-neutral prose-sm max-w-none prose-headings:font-display prose-headings:font-medium prose-headings:tracking-tight"
               // First-party content, from this site's own content files, taken out
               // of the page that already serves it publicly.
               dangerouslySetInnerHTML={{ __html: html }}
