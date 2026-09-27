@@ -42,7 +42,9 @@ rather than a nicety.
 Merged to `main`: PR #87 the scaffold, #91 the prompt, #92 the entry card
 questions, #93 the evaluation suite, #94 the endpoint and its defences, #95 and
 #96 the streaming finding, #97 the checkpoint, #98 partial answer polling, #99 the
-console, #100 the rail as an entry point, #101 the mobile sheet.
+console, #100 the rail as an entry point, #101 the mobile sheet, #102 the
+instrumentation, #103 the library surface and the pinned question, #104 the
+citation reader, #105 to #109 the owner's review rounds.
 
 ## Where the two open questions landed
 
@@ -102,12 +104,11 @@ baseline. Full reasoning in `notes/measurement.md`.
 
 ## Before the console ships
 
-1. **Look at the console, on a desktop and on a phone.** Nobody has opened it on
-   either. There is no browser automation in this repo, so what is proven is the
-   markup, the logic and the links, not the appearance or the feel. On desktop it
-   wants a 1440px screen and a 1280px one, where the panel's shift calculation does
-   the most work. On a phone it wants the keyboard open, which is the detail this
-   kind of sheet usually gets wrong.
+1. **Open it on a phone.** The desktop console has now had five rounds of review.
+   **Nobody has opened the mobile sheet at all.** There is no browser automation in
+   this repo, so what is proven there is the markup and the logic, not the feel.
+   The detail this kind of sheet usually gets wrong is the on-screen keyboard, and
+   the fix for it is in place and unobserved.
 2. **`INSIGHTS_ENABLED=true`** in Azure Static Web Apps app settings, **after the
    baseline has accumulated.** Until it is set the console does not render at all
    and the endpoint refuses, which is how the feature stays off. Setting it is also what unblocks the one measurement task
@@ -149,6 +150,9 @@ whole cost model. Detail in `notes/cost-model.md`.
 | `notes/cost-model.md` | Rates, the CCU wrapper, the cache warming that is designed and not built |
 | `notes/console.md` | The console's shape, the three bugs a live turn found, the three surfaces |
 | `notes/measurement.md` | Every event and where it lands, the queries, and the four failure thresholds |
+
+The console note is the one to read before changing anything a reader sees. Most of
+what is in it was learned by getting it wrong first.
 
 ## Commands
 
@@ -196,6 +200,14 @@ is recorded rather than smoothed over.
 citation marker. The first live run showed the model assembling a slug from one
 article with an anchor from another, which produced a citation that looked right
 and went nowhere.
+
+**The console went through five rounds of the owner's review on 2026-09-27, and
+the shape it ended in is the shape to keep.** The entry questions rotate from six
+per article, the two kinds of citation look different because they do different
+things, the reader opens the whole article, and every surface carries its own light
+tone. Each of those replaced something that looked reasonable and read wrong, and
+`notes/console.md` records why in each case. `npm run insights:console` holds
+ninety-nine of those decisions in place.
 
 **A citation opens the article beside the conversation, not instead of it.**
 Navigating away cost the reader whatever they were asking, which made following a
