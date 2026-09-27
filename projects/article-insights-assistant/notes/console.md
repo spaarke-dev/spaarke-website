@@ -172,6 +172,45 @@ and the cited heading was never quite at the top. It looked like an article that
 had opened roughly near the right place, which is worse than one that had not
 tried.
 
+## The entry questions rotate
+
+Six are generated per article, not three, and the console shows three drawn fresh
+each page load. Always offering the same three made the card read as a fixed menu,
+and a reader who wanted none of them had nothing to come back to. The library's own
+six are written rather than generated, for the same reason.
+
+The first render is deliberately not random, because it has to match what the
+server sent. The panel is hidden at that point, so the swap happens before anyone
+can see it.
+
+Summarize is still last. That is FR-04, and it is the point of the ordering: it is
+the fallback, not the invitation.
+
+`scripts/generate-suggested-questions.ts` asks for two questions of each shape and
+refuses a response that is not six. The manifest build warns below six rather than
+below three, since three fills a card but leaves the rotation nothing to rotate.
+
+## Every surface measures the header rather than guessing it
+
+`SURFACE_TOP` was a hardcoded 100, which is about right for the site header and was
+not right on every viewport. When the header came out taller it covered the top of
+the panel, and the top of the panel is the row holding the close button, so there
+was **no visible way to shut the console**. A guess that is usually right is worse
+than a measurement, because the failure only shows up on somebody else's screen.
+`useSurfaceTop` measures `[data-site-header]` and re-measures when it changes.
+
+## The entry points are meant to be seen
+
+The library's entry sits **last** in the filter row and is dark and raised, where
+the filters are quiet outlines. Matched to them it disappeared into a row of
+dropdowns, which is the wrong place for the one control there that does something
+the reader has not seen before. It keeps their height and padding, so the row still
+lines up, and nothing else.
+
+The article rail's entry is a **surface** rather than another hairline rule. Below a
+table of contents and a share row, both quiet lists of links, one more section
+divided by a rule read as a third quiet list.
+
 ## Every surface carries its own tone
 
 The surfaces are fixed-position, but a fixed element still inherits its colour
@@ -294,7 +333,7 @@ npm run insights:console -- --base http://localhost:3000    plus what is in the 
 npm run insights:console -- --base ... --live                plus one real turn and its links
 ```
 
-Ninety-one checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
+Ninety-seven checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
 articles came back labeled corpus in three paragraphs with **four citation chips,
 every one of which resolves to an id on the rendered page**; a question the library
 does not cover came back labeled general, cited nothing, and carried marked

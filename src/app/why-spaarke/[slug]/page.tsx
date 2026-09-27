@@ -177,8 +177,12 @@ export default async function WhySpaarkeArticle({ params }: Props) {
                 {toc.length < 3 && (
                   <ArticleShare url={articleUrl} title={post.title} />
                 )}
+                {/* A surface rather than another hairline. Below a table of
+                    contents and a share row, both of which are quiet lists of
+                    links, one more section divided by a rule read as a third
+                    quiet list. */}
                 {insightsEnabled && (
-                  <div className="border-line border-t pt-6">
+                  <div className="border-line bg-surface rounded-lg border p-4 shadow-sm">
                     <RailEntry />
                   </div>
                 )}

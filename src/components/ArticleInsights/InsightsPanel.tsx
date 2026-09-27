@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { CloseIcon, PANEL_WIDTH, SURFACE_TOP } from "./chrome";
+import { CloseIcon, PANEL_WIDTH, useSurfaceTop } from "./chrome";
 import { ConsoleBody } from "./ConsoleBody";
 import { useInsights } from "./InsightsProvider";
 
@@ -39,6 +39,7 @@ export function InsightsPanel() {
     reader,
   } = useInsights();
   const composer = useRef<HTMLTextAreaElement | null>(null);
+  const surfaceTop = useSurfaceTop();
   const showing = open && openOn === "panel";
 
   // On open rather than on mount, because the panel is in the page from the start
@@ -70,7 +71,7 @@ export function InsightsPanel() {
       className={`border-line bg-bg fixed right-0 z-40 flex-col border-l shadow-[-8px_0_32px_rgba(0,0,0,0.08)] ${
         showing ? "hidden lg:flex" : "hidden"
       }`}
-      style={{ top: SURFACE_TOP, bottom: 0, width: PANEL_WIDTH }}
+      style={{ top: surfaceTop, bottom: 0, width: PANEL_WIDTH }}
     >
       <header className="border-line flex shrink-0 items-start justify-between gap-3 border-b px-4 py-3">
         <div className="min-w-0">

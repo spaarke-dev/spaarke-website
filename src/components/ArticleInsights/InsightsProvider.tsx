@@ -55,6 +55,37 @@ import {
 /** Google is fast or Google is broken, and either way it cannot hang the console. */
 const CAPTCHA_TIMEOUT_MS = 10_000;
 
+/** How many of an article's questions the entry card shows at once. */
+const VISIBLE_QUESTIONS = 3;
+
+/**
+ * Which questions to offer.
+ *
+ * Six are generated per article and three are shown, drawn fresh each time the
+ * page loads. Always offering the same three made the entry card read as a fixed
+ * menu, and a reader who wanted none of them had nothing to come back to.
+ *
+ * The first render is deliberately not random. It has to match what the server
+ * sent or React will complain, and the panel is hidden at that point anyway, so
+ * the swap happens before anyone can see it.
+ */
+function pickQuestions(all: EntryOption[], shuffled: boolean): EntryOption[] {
+  const questions = all.filter((o) => o.kind === "question");
+  const rest = all.filter((o) => o.kind !== "question");
+
+  let chosen = questions;
+  if (shuffled) {
+    chosen = [...questions];
+    for (let i = chosen.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [chosen[i], chosen[j]] = [chosen[j], chosen[i]];
+    }
+  }
+  // Summarize stays last, which FR-04 asks for and which is the whole point of
+  // the ordering: it is the fallback, not the invitation.
+  return [...chosen.slice(0, VISIBLE_QUESTIONS), ...rest];
+}
+
 /** Which surface a reader opened. The other one stays hidden and inert. */
 export type OpenOn = "panel" | "sheet";
 
@@ -126,6 +157,11 @@ export function InsightsProvider({
   const [open, setOpen] = useState(false);
   const [openOn, setOpenOn] = useState<OpenOn>("panel");
   const [reader, setReader] = useState<ReaderTarget | null>(null);
+
+  // Chosen once per page load and then held, so the card does not reshuffle
+  // itself under a reader who was part way through reading it.
+  const [shown, setShown] = useState<EntryOption[]>(() => pickQuestions(options, false));
+  useEffect(() => setShown(pickQuestions(options, true)), [options]);
 
   // A mirror of the state, because a turn needs the history as it stood before it
   // and reading that out of a functional update would be a side effect in a
@@ -327,7 +363,7 @@ export function InsightsProvider({
       slug,
       articleTitle,
       eyebrow: slug === null ? "Ask the library" : "Ask about this piece",
-      options,
+      options: shown,
       turns,
       busy,
       open,
@@ -355,8 +391,8 @@ export function InsightsProvider({
       openConsole,
       openOn,
       openReader,
-      options,
       reader,
+      shown,
       registerTrigger,
       retry,
       slug,

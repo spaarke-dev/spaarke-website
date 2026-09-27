@@ -185,7 +185,7 @@ console.log("\nthe question and its answer are one unit");
 console.log("\nthe library surface");
 {
   const options = libraryOptions();
-  check(options.length >= 3, "the library offers at least three questions", `${options.length}`);
+  check(options.length >= 6, "the library has six questions, so three can rotate", `${options.length}`);
   const bad = options.flatMap((o) => validateQuestion(o.text).map((p) => `${o.text}: ${p}`));
   check(bad.length === 0, "held to the same bar as the generated ones", bad.join(" | "));
   check(
@@ -322,12 +322,42 @@ console.log("\nthe surfaces share a console rather than forking it");
     "and lands on the cited heading, measured against the scroller",
   );
 
-  // The entry point sits in a row of filter controls, and looking almost like
-  // them reads as a mistake rather than as a distinction.
+  // The entry point sits in a row of filter controls. Matched to them it
+  // disappeared into the row, which is the wrong place for the one control here
+  // that does something the reader has not seen before.
   const libraryButton = read("LibraryAskButton.tsx");
-  for (const token of ["border-line", "bg-surface", "text-fg ", "text-sm", "px-3", "py-2.5"]) {
-    check(libraryButton.includes(token), `the library entry matches the filters on ${token.trim()}`);
+  check(libraryButton.includes("bg-fg text-bg"), "the library entry is dark against a light row");
+  check(libraryButton.includes("shadow-md"), "and raised off it");
+  for (const token of ["px-3", "py-2.5", "text-sm"]) {
+    check(libraryButton.includes(token), `while still lining up with the filters on ${token}`);
   }
+
+  const librarySection = read("../sections/WhySpaarkeLibrary.tsx");
+  check(
+    librarySection.indexOf("<LibraryAskButton />") > librarySection.lastIndexOf("label=\"Audience\""),
+    "and sits last in the row rather than first",
+  );
+
+  // Always the same three read as a fixed menu. Six are generated and three are
+  // drawn each load, with the first render deliberately not random so it matches
+  // what the server sent.
+  const provider = read("InsightsProvider.tsx");
+  check(provider.includes("pickQuestions"), "the entry questions rotate");
+  check(
+    provider.includes("pickQuestions(options, false)"),
+    "with a first render that is not random, so hydration matches",
+  );
+  check(
+    provider.includes("...chosen.slice(0, VISIBLE_QUESTIONS), ...rest"),
+    "and summarize still last, which is what FR-04 asks for",
+  );
+
+  // A hardcoded offset put the panel's close button under the site header on a
+  // viewport where that header came out taller.
+  const chrome = read("chrome.tsx");
+  check(chrome.includes("useSurfaceTop"), "the surfaces measure the site header");
+  check(chrome.includes("ResizeObserver"), "and re-measure when it changes");
+  check(!panel.includes("top: 100"), "rather than assuming a height");
 }
 
 // ------------------------------------------------------------------- copy
@@ -557,12 +587,17 @@ if (base) {
   check(html.includes("Content Type") && html.includes("Topic"), "the filters are untouched");
   check(html.includes("Ask the library"), "the panel heading says library rather than piece");
 
-  for (const option of libraryOptions()) {
-    check(
-      html.includes(option.text.slice(0, 40)),
-      `entry question in the first paint: ${option.text.slice(0, 44)}`,
-    );
-  }
+  // Counted as rendered buttons rather than as strings in the page. All six
+  // travel in the payload, because the client needs them to rotate; only three
+  // are rendered, and that is the thing worth asserting.
+  const rendered = [...html.matchAll(/<button[^>]*>([^<]{12,200})<\/button>/g)]
+    .map((m) => m[1].trim())
+    .filter((text) => libraryOptions().some((o) => o.text === text));
+  check(
+    rendered.length === 3,
+    "three of the library's six questions are rendered",
+    `${rendered.length}`,
+  );
 }
 
 console.log(failures === 0 ? "\nall checks passed." : `\n${failures} check(s) failed.`);

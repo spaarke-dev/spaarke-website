@@ -47,22 +47,30 @@ const client = new AnthropicFoundry({
  * Three shapes, one per question. Each one only works if the article exists,
  * which is the test that separates an extending question from a summary prompt.
  */
-const TASK = (article: CorpusArticle, others: string[]) => `Write three questions a reader might put to the assistant after reading this article.
+/**
+ * Six rather than three, so the console can show a different three each time.
+ * Always offering the same three made the entry card look like a fixed menu, and
+ * a reader who did not want any of them had nothing to come back to.
+ */
+const QUESTIONS_PER_ARTICLE = 6;
+
+const TASK = (article: CorpusArticle, others: string[]) => `Write six questions a reader might put to the assistant after reading this article.
 
 <article-slug>${article.slug}</article-slug>
 <article-title>${article.title}</article-title>
 
-One question of each shape, in this order:
+Two questions of each shape, in this order, so the pair differ from each other rather than restating one question twice:
 
 1. **The decision.** A question about a choice the reader actually faces, which this article takes a position on. Name the circumstance: a department of a given size, one with no legal operations function, one whose spend data sits in four systems, one that has bought a tool and not adopted it.
 2. **The objection.** A question that pushes back on the article's argument, or asks how it holds up against the way vendors or analysts frame the same thing. A reader who disagrees is the reader worth answering.
-3. **The rest of the library.** A question that reaches into another published article by name or by subject, so the answer has to cross pieces. These are the other articles available: ${others.join(", ")}.
+3. **The rest of the library.** A question that reaches into another published article by name or by subject, so the answer has to cross pieces. These are the other articles available: ${others.join(", ")}. The two of this shape should reach into different articles.
 
-Rules for all three:
+Rules for all six:
 
 - Written in the reader's own voice, as they would type it. First person where that is natural.
 - Between 8 and 20 words. A question that runs longer than one line will be cut off in the rail.
 - Specific to this article. If the question would work with another article's title swapped in, it is wrong.
+- Distinct from the other five. Two questions that a reader would answer the same way are one question.
 - No em dash, no en dash, no double hyphen. Ranges take "to".
 - Do not ask for a summary, an overview, an explanation of the basics, or "the key takeaways". The entry card offers a summary separately, and these three exist to send the reader further in.
 - No consultant filler. Not "unpack", not "deep dive", not "leverage", not "at a high level".
@@ -70,7 +78,7 @@ Rules for all three:
 
 Return only JSON, with no prose around it and no code fence:
 
-{"questions": ["...", "...", "..."]}`;
+{"questions": ["...", "...", "...", "...", "...", "..."]}`;
 
 type QuestionFile = Record<string, string[]>;
 
@@ -84,7 +92,7 @@ const titles = new Map(articles.map((a) => [a.slug, a.title]));
 const targets = articles.filter((a) => {
   if (only) return a.slug === only;
   if (all) return true;
-  return !existing[a.slug] || existing[a.slug].length !== 3;
+  return !existing[a.slug] || existing[a.slug].length !== QUESTIONS_PER_ARTICLE;
 });
 
 if (targets.length === 0) {
@@ -103,7 +111,7 @@ async function generate(article: CorpusArticle): Promise<string[]> {
   const res = await client.messages.create(
     buildMessageRequest({
       model: FOUNDRY_DEPLOYMENT!,
-      maxTokens: 700,
+      maxTokens: 1_200,
       request: { question: TASK(article, others), articleSlug: article.slug, history: [] },
     }) as never,
   );
@@ -111,8 +119,10 @@ async function generate(article: CorpusArticle): Promise<string[]> {
   const raw = ((res.content ?? []) as { text?: string }[]).map((c) => c.text ?? "").join("").trim();
   const json = raw.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");
   const parsed = JSON.parse(json) as { questions?: unknown };
-  if (!Array.isArray(parsed.questions) || parsed.questions.length !== 3) {
-    throw new Error(`expected three questions, got ${JSON.stringify(parsed).slice(0, 200)}`);
+  if (!Array.isArray(parsed.questions) || parsed.questions.length !== QUESTIONS_PER_ARTICLE) {
+    throw new Error(
+      `expected ${QUESTIONS_PER_ARTICLE} questions, got ${JSON.stringify(parsed).slice(0, 200)}`,
+    );
   }
   return parsed.questions.map((q) => String(q).trim());
 }

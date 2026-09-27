@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 /**
  * The bits every surface needs, kept out of any of them.
  *
@@ -11,8 +15,32 @@
 /** The desktop panel's width. `shiftArticle` and the reader both measure against it. */
 export const PANEL_WIDTH = 420;
 
-/** Clears the sticky site header, which is about 100px tall. */
-export const SURFACE_TOP = 100;
+/**
+ * How far down the surfaces start, measured rather than assumed.
+ *
+ * It used to be a hardcoded 100, which is about right for the site header and was
+ * not right on every viewport. When the header came out taller it covered the top
+ * of the panel, which is the row holding the close button, so there was no visible
+ * way to shut the console. A guess that is usually right is worse than a
+ * measurement, because the failure only shows up on somebody else's screen.
+ */
+const FALLBACK_TOP = 100;
+
+export function useSurfaceTop(): number {
+  const [top, setTop] = useState(FALLBACK_TOP);
+
+  useEffect(() => {
+    const header = document.querySelector<HTMLElement>("[data-site-header]");
+    if (!header) return;
+    const measure = () => setTop(Math.round(header.getBoundingClientRect().height));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
+
+  return top;
+}
 
 export function CloseIcon() {
   return (
