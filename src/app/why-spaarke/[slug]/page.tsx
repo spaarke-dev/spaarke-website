@@ -10,6 +10,8 @@ import { ArticleShare } from "@/components/article/ArticleShare";
 import { ArticleRelated } from "@/components/article/ArticleRelated";
 import { ArticleProgressBar } from "@/components/article/ArticleProgressBar";
 import { ArticleReadTracker } from "@/components/analytics/ArticleReadTracker";
+import { ArticleInsights } from "@/components/ArticleInsights";
+import { entryOptions } from "@/lib/insights/questions";
 import {
   getAllPosts,
   getPostBySlug,
@@ -82,13 +84,26 @@ export default async function WhySpaarkeArticle({ params }: Props) {
   const articleUrl = `${siteUrl}/why-spaarke/${slug}`;
   const allTags = flattenTags(post.tags);
 
+  // The entry card questions are read here rather than in the console, because
+  // `entryOptions` reaches the corpus manifest and that is 500 kB of JSON with no
+  // business in a page bundle. This page is a server component, so they travel as
+  // props. The console is off unless INSIGHTS_ENABLED is set, which is what keeps
+  // a paid endpoint from being reachable before the owner turns it on.
+  const insightsEnabled = process.env.INSIGHTS_ENABLED === "true";
+  const insightsOptions = insightsEnabled ? entryOptions(slug) : [];
+
   return (
     <>
       <ArticleProgressBar />
       <ArticleReadTracker slug={slug} />
       <Slab tone="light">
         <Shell>
-          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-16">
+          {/* The id is how the console shifts the article out from under its
+              panel. See shiftArticle in components/ArticleInsights. */}
+          <div
+            id="article-grid"
+            className="mx-auto grid max-w-6xl grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-16"
+          >
             {/* Center: article */}
             <article
               className="mx-auto w-full max-w-[720px]"
@@ -144,7 +159,11 @@ export default async function WhySpaarkeArticle({ params }: Props) {
                 Hidden < lg; on smaller screens the share row appears at the
                 bottom of the article instead. */}
             <aside className="hidden lg:block">
-              <div className="sticky top-28 space-y-8">
+              {/* Scrollable, because the rail now carries the table of contents,
+                  the share row and the assistant entry card, which together run
+                  past the fold on a laptop-height viewport. A sticky column taller
+                  than the screen simply cuts its own bottom off. */}
+              <div className="sticky top-28 max-h-[calc(100vh-8rem)] space-y-8 overflow-y-auto pb-2">
                 <ArticleTOC items={toc} />
                 {toc.length >= 3 && (
                   <div className="border-line border-t pt-6">
@@ -153,6 +172,16 @@ export default async function WhySpaarkeArticle({ params }: Props) {
                 )}
                 {toc.length < 3 && (
                   <ArticleShare url={articleUrl} title={post.title} />
+                )}
+                {insightsEnabled && (
+                  <div className="border-line border-t pt-6">
+                    <ArticleInsights
+                      slug={slug}
+                      articleTitle={post.title}
+                      options={insightsOptions}
+                      recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
+                    />
+                  </div>
                 )}
               </div>
             </aside>

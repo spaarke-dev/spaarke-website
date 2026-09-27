@@ -4,10 +4,11 @@
 > then `tasks/TASK-INDEX.md`, then `spec.md`.
 >
 > Last updated 2026-09-26, end of the third working session. **Phases 0, 1 and 2
-> are complete.** Everything that remains is the interface and what it needs.
+> are complete, and so is the desktop console.** What remains is the mobile
+> surface, the instrumentation, and the four things the owner has to do.
 
 **Active task:** none in progress.
-**Next task:** `030-rail-console.md`.
+**Next task:** `031-mobile-sheet.md`, then `040-instrumentation.md`.
 
 ## What this is, in one paragraph
 
@@ -32,12 +33,14 @@ rather than a nicety.
 | 021 Abuse and spend defences | complete, verified against real Table Storage |
 | 022 Conversation capture | complete |
 | 023 Partial answer polling | complete, verified against real Table Storage |
-| 030 Rail console | **next** |
-| 031, 040, 090 | not started |
+| 030 Rail console | complete, desktop only, unlooked-at |
+| 031 Mobile sheet | **next** |
+| 040, 090 | not started |
 
 Merged to `main`: PR #87 the scaffold, #91 the prompt, #92 the entry card
 questions, #93 the evaluation suite, #94 the endpoint and its defences, #95 and
-#96 the streaming finding, #97 the checkpoint, #98 partial answer polling.
+#96 the streaming finding, #97 the checkpoint, #98 partial answer polling, #99 the
+console.
 
 ## Where the two open questions landed
 
@@ -70,6 +73,16 @@ one to four, because compression squeezes a sentence and keeps the quotation mar
 The quotation rule and the length rule now reference each other and the four
 failing cases cleared.
 
+**The rail is 220px, so the answers open in a panel.** The owner chose this on
+2026-09-26, after the measured answer length made the original plan unworkable: 185
+words in a 220px column is about 38 lines of three or four words. The entry card
+stays in the rail with its three questions and the disclaimer, and asking opens a
+420px panel beside the article. The article is shifted rather than covered, with
+padding rather than a transform, because a transformed ancestor would break the
+sticky table of contents inside it. **Task 031's mobile sheet is the third
+container around the same console**, so do not fork the transcript, the composer or
+the disclaimer. Detail in `notes/console.md`.
+
 **The privacy policy has to merge with the console.** PR #90 is a deliberate
 draft. The live policy does not mention the assistant, and task 022 records reader
 questions for 90 days, so the code currently keeps a promise that has not been
@@ -78,15 +91,21 @@ after it. The spec claimed this had already shipped, and that claim is corrected
 
 ## Before the console ships
 
-1. **`INSIGHTS_ENABLED=true`** in Azure Static Web Apps app settings. The endpoint
-   ships off because nothing calls it, not because it is unsafe. This is also what
-   unblocks the one measurement task 023 could not take, so take it at the same
-   time with `npx tsx scripts/measure-insights-first-sentence.mts --base
-   https://spaarke.com`.
-2. **Merge PR #90**, the privacy policy.
-3. **An Azure cost alert** on the Foundry resource, below the monthly ceiling.
+1. **Look at the console.** Nobody has. There is no browser automation in this
+   repo, so what is proven is the markup, the logic and the links, not the
+   appearance. It wants a person on a 1440px screen and on a 1280px one, where the
+   panel's shift calculation does the most work.
+2. **`INSIGHTS_ENABLED=true`** in Azure Static Web Apps app settings. Until it is
+   set the console does not render at all and the endpoint refuses, which is how
+   the feature stays off. Setting it is also what unblocks the one measurement task
+   023 could not take, so take it at the same time with `npx tsx
+   scripts/measure-insights-first-sentence.mts --base https://spaarke.com`.
+   `RECAPTCHA_SITE_KEY` has to be there too, or the first question of every session
+   is refused.
+3. **Merge PR #90**, the privacy policy.
+4. **An Azure cost alert** on the Foundry resource, below the monthly ceiling.
    Still the owner's to do, and NFR-03 asks for it.
-4. **Rotate the storage account key, the SendGrid key and the reCAPTCHA secret.**
+5. **Rotate the storage account key, the SendGrid key and the reCAPTCHA secret.**
    The owner scheduled this for after the full build, so it belongs here rather
    than in the deferred list. See the detail at the end of this file.
 
@@ -113,6 +132,7 @@ whole cost model. Detail in `notes/cost-model.md`.
 | `notes/endpoint-and-defences.md` | What the route does, what it refuses, the streaming finding and the decision |
 | `notes/conversation-schema.md` | The capture schema, the retention mechanism, the gap report |
 | `notes/cost-model.md` | Rates, the CCU wrapper, the cache warming that is designed and not built |
+| `notes/console.md` | The console's shape, the three bugs a live turn found, what task 031 inherits |
 
 ## Commands
 
@@ -122,6 +142,8 @@ npm run insights:check                the same plus four live calls, $0.17 warm
 npm run insights:eval                 40 evaluation cases, $1.75 to $2.40
 npm run insights:gap                  what readers asked that the articles did not answer
 npm run insights:partial              31 checks on the partial answer store, real storage, free
+npm run insights:console              38 checks on the console, free
+npm run insights:console -- --base http://localhost:3000 --live   plus one real turn and its links
 npm run corpus                        regenerate the corpus manifest
 
 npx tsx scripts/check-insights-dedup.mts               6 merge orderings, no model, no storage, free
@@ -198,7 +220,7 @@ production secret into a session transcript. Nothing reached the repository, whi
 was verified by scanning git history and the working tree. The storage key is the
 one worth rotating first, because that account holds real contact form
 submissions. **The owner scheduled this for after the full build**, on 2026-09-26,
-so it is item 4 of the list above rather than an open question. Rotating
+so it is item 5 of the list above rather than an open question. Rotating
 mid-build would break the defences self-test and the app settings at the same
 time, which is the argument for waiting. Two things have to be true when it
 happens: the storage key rotates before the console is announced, and

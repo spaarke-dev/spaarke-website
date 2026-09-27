@@ -19,7 +19,8 @@
     "insights:questions": "tsx scripts/generate-suggested-questions.ts",
     "insights:eval": "tsx scripts/eval-insights.ts",
     "insights:gap": "tsx scripts/content-gap-report.ts",
-    "insights:partial": "tsx scripts/check-insights-partial.mts"
+    "insights:partial": "tsx scripts/check-insights-partial.mts",
+    "insights:console": "tsx scripts/check-insights-console.mts"
   },
   "dependencies": {
     "@anthropic-ai/foundry-sdk": "^0.4.9",

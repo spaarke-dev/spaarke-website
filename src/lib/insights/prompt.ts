@@ -273,7 +273,7 @@ export function buildMessages(request: InsightsRequest): InsightsMessage[] {
 /**
  * A guard rail rather than a target.
  *
- * The instructions ask for 120 to 200 words, which is about 300 tokens. This is
+ * The instructions ask for 100 to 160 words, which is about 250 tokens. This is
  * set well above that so a long cross-article answer is not cut off mid sentence,
  * because truncation is uglier than length. It came down from 2,000 after the
  * evaluation runs produced answers of 400 to 650 words: the cap was not what was
