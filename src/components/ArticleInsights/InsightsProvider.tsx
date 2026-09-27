@@ -15,6 +15,7 @@ import { track } from "@/lib/analytics";
 import { markAssistantUsed } from "@/lib/insights/engagement";
 import { askInsights, newRequestId } from "@/lib/insights/poll-client";
 import type { EntryOption } from "@/lib/insights/questions";
+import { ArticleReader } from "./ArticleReader";
 import { FloatingButton } from "./FloatingButton";
 import { InsightsPanel, shiftArticle } from "./InsightsPanel";
 import { MobileSheet } from "./MobileSheet";
@@ -57,6 +58,21 @@ const CAPTCHA_TIMEOUT_MS = 10_000;
 /** Which surface a reader opened. The other one stays hidden and inert. */
 export type OpenOn = "panel" | "sheet";
 
+/**
+ * A cited passage being read beside the conversation.
+ *
+ * Everything here comes from the citation itself, which came from the build-time
+ * manifest rather than from the model, so the reader's heading is the heading the
+ * article actually has.
+ */
+export type ReaderTarget = {
+  slug: string;
+  title: string;
+  heading: string;
+  anchor?: string;
+  href: string;
+};
+
 /** Where a question came from, which is the interesting half of FR-04. */
 export type QuestionSource = "suggested" | "typed";
 
@@ -79,6 +95,10 @@ type InsightsValue = {
   answerAsk: (id: string) => void;
   /** So a surface can hand focus back to whatever opened it. */
   registerTrigger: (on: OpenOn, el: HTMLElement | null) => void;
+  /** The cited article open beside the console, or null. */
+  reader: ReaderTarget | null;
+  openReader: (target: ReaderTarget) => void;
+  closeReader: () => void;
 };
 
 const InsightsContext = createContext<InsightsValue | null>(null);
@@ -105,6 +125,7 @@ export function InsightsProvider({
   const [turns, setTurns] = useState<Turn[]>([]);
   const [open, setOpen] = useState(false);
   const [openOn, setOpenOn] = useState<OpenOn>("panel");
+  const [reader, setReader] = useState<ReaderTarget | null>(null);
 
   // A mirror of the state, because a turn needs the history as it stood before it
   // and reading that out of a functional update would be a side effect in a
@@ -146,8 +167,16 @@ export function InsightsProvider({
 
   const close = useCallback(() => {
     setOpen(false);
+    setReader(null);
     triggers.current[openOn]?.focus();
   }, [openOn]);
+
+  const openReader = useCallback((target: ReaderTarget) => {
+    setReader(target);
+    markAssistantUsed();
+  }, []);
+
+  const closeReader = useCallback(() => setReader(null), []);
 
   const updateAssistant = useCallback(
     (id: string, fn: (turn: AssistantTurn) => AssistantTurn) => {
@@ -310,6 +339,9 @@ export function InsightsProvider({
       dismissAsk,
       answerAsk,
       registerTrigger,
+      reader,
+      openReader,
+      closeReader,
     }),
     [
       answerAsk,
@@ -317,11 +349,14 @@ export function InsightsProvider({
       ask,
       busy,
       close,
+      closeReader,
       dismissAsk,
       open,
       openConsole,
       openOn,
+      openReader,
       options,
+      reader,
       registerTrigger,
       retry,
       slug,
@@ -333,6 +368,7 @@ export function InsightsProvider({
     <InsightsContext.Provider value={value}>
       {children}
       <InsightsPanel />
+      <ArticleReader />
       <FloatingButton />
       <MobileSheet />
       {recaptchaSiteKey && (

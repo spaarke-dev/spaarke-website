@@ -242,6 +242,33 @@ console.log("\nthe surfaces share a console rather than forking it");
   check(panel.includes("lg:flex"), "and the panel is shown only where it does");
   check(button.includes("fixed bottom-") && button.includes("right-"), "the button is fixed bottom right");
   check(button.includes("safe-area-inset-bottom"), "and clear of the home indicator");
+
+  // Following a citation used to navigate away, which cost the reader the
+  // conversation they were in the middle of.
+  const reader = read("ArticleReader.tsx");
+  const chip = read("CitationChip.tsx");
+
+  check(chip.includes("openReader("), "a citation opens the article beside the console");
+  check(chip.includes("href={citation.href}"), "and the chip is still a real link");
+  check(
+    chip.includes("event.metaKey") && chip.includes("event.ctrlKey"),
+    "so a modified click still opens a tab",
+  );
+  check(chip.includes("READER_MIN_WIDTH"), "the reader is desktop only");
+  check(chip.includes("if (sameArticle) return;"), "and a citation into this page just scrolls it");
+
+  check(
+    reader.includes("data-article-body"),
+    "the reader lifts the body out of the rendered page",
+    "rather than running a second markdown pipeline that could drift",
+  );
+  check(reader.includes("DOMParser"), "parsed inert, so nothing in the fetched page runs");
+  check(!reader.includes("aria-modal"), "and it is not a modal, so the conversation stays usable");
+  check(
+    panel.includes("reader === null"),
+    "escape closes the reader before the console",
+    "one press must not close both",
+  );
 }
 
 // ------------------------------------------------------------------- copy
@@ -430,14 +457,23 @@ if (base) {
         check(false, `chip page loads: ${path}`);
         continue;
       }
+
+      // The reader lifts `[data-article-body]` out of this page, so an anchor that
+      // exists on the page but outside that element would scroll to nothing.
+      // Position is the cheap way to tell the two apart without a DOM.
+      const bodyStart = body.indexOf("data-article-body");
+      check(bodyStart !== -1, `article body hook present: ${path}`);
+
       if (!anchor) {
         check(true, `chip lands: ${path}`, "whole article");
         continue;
       }
+      const at = body.indexOf(`id="${anchor}"`);
+      check(at !== -1, `chip lands: ${path}#${anchor}`, at === -1 ? "not on the rendered page" : "");
       check(
-        body.includes(`id="${anchor}"`),
-        `chip lands: ${path}#${anchor}`,
-        body.includes(`id="${anchor}"`) ? "" : "the anchor is not on the rendered page",
+        at > bodyStart,
+        `and inside the article body: #${anchor}`,
+        at > bodyStart ? "" : "the reader would scroll to nothing",
       );
     }
   }

@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { ConsoleBody } from "./ConsoleBody";
+import { CloseIcon } from "./chrome";
 import { useInsights } from "./InsightsProvider";
-import { CloseIcon } from "./InsightsPanel";
 
 /**
  * The console on a phone, as a sheet over the article.

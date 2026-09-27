@@ -1,13 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { CloseIcon, PANEL_WIDTH, SURFACE_TOP } from "./chrome";
 import { ConsoleBody } from "./ConsoleBody";
 import { useInsights } from "./InsightsProvider";
-
-/** Matches the width the shift calculation assumes. Change both together. */
-export const PANEL_WIDTH = 420;
-/** Clears the sticky site header, which is about 100px tall. */
-const PANEL_TOP = 100;
 
 /**
  * The desktop reading surface.
@@ -40,6 +36,7 @@ export function InsightsPanel() {
     dismissAsk,
     answerAsk,
     retry,
+    reader,
   } = useInsights();
   const composer = useRef<HTMLTextAreaElement | null>(null);
   const showing = open && openOn === "panel";
@@ -53,11 +50,14 @@ export function InsightsPanel() {
   useEffect(() => {
     if (!showing) return;
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") close();
+      // The reader is on top of the console, so escape closes that first.
+      // Without this one press would close both, and the reader would never see
+      // the conversation they were sent back to.
+      if (e.key === "Escape" && reader === null) close();
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [close, showing]);
+  }, [close, reader, showing]);
 
   return (
     <aside
@@ -66,7 +66,7 @@ export function InsightsPanel() {
       className={`border-line bg-bg fixed right-0 z-40 flex-col border-l shadow-[-8px_0_32px_rgba(0,0,0,0.08)] ${
         showing ? "hidden lg:flex" : "hidden"
       }`}
-      style={{ top: PANEL_TOP, bottom: 0, width: PANEL_WIDTH }}
+      style={{ top: SURFACE_TOP, bottom: 0, width: PANEL_WIDTH }}
     >
       <header className="border-line flex shrink-0 items-start justify-between gap-3 border-b px-4 py-3">
         <div className="min-w-0">
@@ -98,21 +98,6 @@ export function InsightsPanel() {
         composerRef={composer}
       />
     </aside>
-  );
-}
-
-export function CloseIcon() {
-  return (
-    <svg
-      className="h-4 w-4"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      aria-hidden="true"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-    </svg>
   );
 }
 

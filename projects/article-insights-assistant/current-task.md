@@ -197,6 +197,13 @@ citation marker. The first live run showed the model assembling a slug from one
 article with an anchor from another, which produced a citation that looked right
 and went nowhere.
 
+**A citation opens the article beside the conversation, not instead of it.**
+Navigating away cost the reader whatever they were asking, which made following a
+citation a punishment for trusting the answer. The reader lifts the article out of
+its own rendered page rather than re-rendering the markdown, so it cannot drift
+from what the page looks like. Desktop only; on a phone the chip is still a plain
+link.
+
 **The console is on the library page too**, at `/why-spaarke`, where it takes the
 place of the keyword search box in the filter bar. That was release two in the
 spec and the owner moved it in on 2026-09-27; the spec is corrected. `slug` is
