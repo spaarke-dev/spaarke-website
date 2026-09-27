@@ -13,10 +13,22 @@ requirement changed.
 The owner chose, on 2026-09-26, to keep the entry card in the rail and open the
 answers in a panel beside the article. Two consequences worth keeping:
 
-**One console, three containers.** The rail card, the desktop panel, and task
-031's mobile sheet. Everything below `InsightsPanel` is container-agnostic, so the
-sheet is a different frame around the same transcript, composer and disclaimer. Do
-not fork them.
+**The rail is an entry point, not a surface.** It holds the heading, one line of
+positioning, and a link that opens the panel. It carried the four entry questions
+at first, and the owner rejected that on sight: the cards pushed the column past
+the fold and put a scrollbar beside a table of contents that had never had one. The
+questions moved into the panel, where there is room to read what they return.
+
+**One console, two containers, soon three.** The desktop panel and task 031's
+mobile sheet. Everything below `InsightsPanel` is container-agnostic, so the sheet
+is a different frame around the same entry card, transcript, composer and
+disclaimer. Do not fork them.
+
+**The panel is always mounted and hidden when closed.** So its first rendered state
+carries the entry questions and the disclaimer, and both are in the page's first
+paint rather than appearing on open, which is what FR-04 and FR-10 ask for. `inert`
+is what makes that safe: a closed panel is out of the tab order and out of the
+accessibility tree instead of leaving a hidden text field in both.
 
 **The article moves, it is not covered.** `shiftArticle` measures how far the panel
 intrudes on the grid and adds that much right padding to it. Padding rather than a
@@ -40,8 +52,8 @@ is labeled so it can be found.
 | File | What it is |
 |---|---|
 | `transcript.ts` | The view model and its reducer. No JSX, so it is tested directly |
-| `ArticleInsights.tsx` | State, the rail card, the captcha, the one place a turn is run |
-| `InsightsPanel.tsx` | The reading surface, and `shiftArticle` |
+| `ArticleInsights.tsx` | State, the rail entry point, the captcha, the one place a turn is run |
+| `InsightsPanel.tsx` | The reading surface, the entry card, and `shiftArticle` |
 | `AnswerBody.tsx` | Provenance line, prose, the general-knowledge treatment, chips, the question back |
 | `Composer.tsx` | The question box. Enter sends, Shift then Enter breaks |
 | `CitationChip.tsx` | One citation, as something clickable |
@@ -123,3 +135,12 @@ having heard it.
 
 **Anything below 1024px.** The rail does not exist there and neither does the
 console. That is task 031.
+
+## The rail's height
+
+The sticky column is `max-h-[calc(100vh-8rem)] overflow-y-auto`, added because it
+now carries three things and a sticky column taller than the screen cuts its own
+bottom off. With the entry questions moved into the panel the rail is about 80px
+rather than 280px, so on a normal article nothing overflows and no scrollbar
+appears. It remains a safety net for an article with a very long table of contents,
+which is the case that would otherwise hide the assistant entirely.
