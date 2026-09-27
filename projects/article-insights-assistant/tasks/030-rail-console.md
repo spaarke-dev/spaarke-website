@@ -1,9 +1,9 @@
 # Task 030: Right-rail console
 
 **Phase:** 3 (The interface)
-**Status:** not-started
+**Status:** complete
 **Estimated:** 4 hours
-**Dependencies:** 020, 013
+**Dependencies:** 013, 023
 **Tags:** react, nextjs, tailwind, accessibility
 
 ## Goal
@@ -15,6 +15,13 @@ streams answers with working citations.
 
 The rail region below the share controls is currently empty, so this needs
 no layout surgery.
+
+**That turned out to be half right.** The rail is 220px, which at 14px type is
+about 30 characters a line, so a 185-word answer is roughly 38 lines of three or
+four words. The task and the spec were both written before the answer length was
+measured. The owner chose, on 2026-09-26, to keep the entry card in the rail and
+open the answers in a panel beside the article, which is one console in two
+containers and makes task 031's sheet the third. Detail in `notes/console.md`.
 
 The entry card is the part that decides whether the feature serves the
 articles or competes with them. Three extending questions, then summarize.
@@ -44,19 +51,49 @@ Not the other way round.
 
 ## Expected Outputs
 
-- `src/components/ArticleInsights/` console, entry card, citation chip,
-  message list
+- `src/components/ArticleInsights/` entry card, panel, transcript reducer,
+  answer body, composer, citation chip, disclaimer
 - `src/app/why-spaarke/[slug]/page.tsx` with the rail slot filled
+- `scripts/check-insights-console.mts`, thirty-eight checks
+- `notes/console.md`
 
 ## Acceptance Criteria
 
-- [ ] Console renders in the rail on article pages
-- [ ] Three extending questions shown, summarize never first
-- [ ] Answers stream rather than appearing at the end
-- [ ] Every citation chip navigates to a real anchor on the article
-- [ ] Disclaimer present in the first rendered state
-- [ ] Each failure state has its own copy
-- [ ] Keyboard operable with focus managed
+- [x] Console renders in the rail on article pages. Asserted against the rendered
+      HTML rather than described.
+- [x] Three extending questions shown, summarize never first. Four options render,
+      summarize is last, asserted.
+- [x] Answers arrive progressively rather than at the end. Task 023 carries this;
+      the console consumes it through `askInsights`, and a live turn delivered
+      three paragraphs and four chips.
+- [x] Every citation chip navigates to a real anchor on the article. Each href is
+      fetched and its anchor looked for in the rendered page rather than in the
+      manifest that produced it. Four for four.
+- [x] Disclaimer present in the first rendered state. In the rail card and the
+      panel both, asserted in the first paint.
+- [x] Each failure state has its own copy. Eleven codes, all with copy, none
+      generic, and the four that cannot be retried offer no retry.
+- [x] Keyboard operable with focus managed. Escape closes, focus moves to the
+      composer on open and back to the rail trigger on close, every control is a
+      real button. **Not screen-reader tested**, which is recorded in
+      `notes/console.md` rather than claimed.
+
+## What was learned
+
+**Paragraphs never split, and only a live turn showed it.** The first version split
+a run on two newlines, because that is what the model writes between paragraphs. It
+is not what arrives: the stream assembler breaks a unit at every newline and then
+drops the whitespace-only unit, so a paragraph boundary reaches the client as one
+newline. A real answer came back as a single 227-word block.
+
+**Citations are required of a corpus answer and wrong for a general one.** The
+acceptance check asserted every answer carries citations and failed on a question
+about the EU AI Act. The articles do not cover it, so there is nothing to link, and
+a chip there would be the defect rather than the fix.
+
+**A counter mutated during render is a bug the linter catches before React does.**
+Marking only the first general-knowledge paragraph was done with a flag inside a
+`map`. It is a `findIndex` now.
 
 ## Notes
 
@@ -73,4 +110,9 @@ Check the citation anchors against the rendered page rather than the
 manifest. A chip pointing at a nonexistent anchor looks correct and does
 nothing.
 
-See spec FR-03, FR-04, FR-05, FR-06, FR-10, NFR-05.
+The panel is deliberately not a modal. No `aria-modal`, no focus trap, no
+backdrop, because the point of a console beside an article is to use it while
+reading and a trap would make the article unreachable to exactly the readers who
+most need it reachable.
+
+See spec FR-03, FR-04, FR-05, FR-06, FR-10, NFR-05, and `notes/console.md`.
