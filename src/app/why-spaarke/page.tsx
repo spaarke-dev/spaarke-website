@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { WhySpaarkeHero, WhySpaarkeLibrary } from "@/components/sections";
-import { InsightsProvider, LibraryAskButton } from "@/components/ArticleInsights";
+import { InsightsProvider } from "@/components/ArticleInsights";
 import { getAllPosts, getAllTags, getFeaturedPosts } from "@/lib/blog";
 import { libraryOptions } from "@/lib/insights/questions";
 
@@ -50,7 +50,7 @@ export default function WhySpaarke() {
     <WhySpaarkeLibrary
       posts={allPosts}
       tagsByCategory={tagsByCategory}
-      ask={insightsEnabled ? <LibraryAskButton /> : undefined}
+      assistant={insightsEnabled}
     />
   );
 
