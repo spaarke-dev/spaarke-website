@@ -255,10 +255,28 @@ console.log("\nthe surfaces share a console rather than forking it");
     "so a modified click still opens a tab",
   );
   check(chip.includes("READER_MIN_WIDTH"), "the reader is desktop only");
+  // The two kinds of citation do two different things, so they cannot look the
+  // same. One scrolls the page the reader is on; the other opens an article they
+  // have not seen and, until this was split, did not even name.
+  const answer = read("AnswerBody.tsx");
+  check(chip.includes("function InPageChip"), "a citation into this page is its own kind of chip");
+  check(chip.includes("function OtherArticleChip"), "and a citation elsewhere is another");
   check(
-    chip.includes("if (sameArticle) {") && chip.indexOf("if (sameArticle) {") < chip.indexOf("openReader({"),
-    "and a citation into this page never reaches the reader",
+    !chip.slice(chip.indexOf("function InPageChip")).split("function OtherArticleChip")[0].includes("openReader("),
+    "the in-page chip cannot reach the reader",
   );
+  check(
+    chip.includes("citation.title") &&
+      chip.indexOf("citation.title") < chip.indexOf("citation.heading.length > 0 && ("),
+    "the other-article chip leads with the article's title",
+    "which is the thing the reader cannot guess",
+  );
+  check(chip.includes("OpensIcon"), "and carries a mark saying it opens something");
+  check(
+    answer.includes("In this article") && answer.includes("From other articles"),
+    "the two kinds are labelled when both are present",
+  );
+  check(answer.includes("bothKinds"), "and unlabelled when there is nothing to tell apart");
 
   check(
     reader.includes("data-article-full"),
