@@ -92,6 +92,26 @@ wastes the surface. They are held to the same validator as the generated ones.
 There is no summarize option, since summarizing twenty-four articles produces the
 page the reader is already on.
 
+## Two kinds of citation, because they do two different things
+
+A chip into the article on screen scrolls the page. A chip into another article
+opens it. Rendering both as the same grey pill left the reader unable to predict
+either, and the cross-article one showed only its heading, so it did not even say
+which piece it came from.
+
+| | Looks like | Does |
+|---|---|---|
+| In this article | A pill with the heading and an arrow down | Scrolls the page and marks the heading |
+| From another article | A card leading with the **article title**, the heading beneath it, and a mark saying it opens | Opens the reader |
+
+The title leads on the cross-article card because which article it is is the thing
+the reader cannot guess. The mark is not an external-link icon: that would promise
+a new tab and a departure, and this does neither.
+
+The group labels appear only when both kinds are present. On the library page every
+citation is to another article, so a heading saying so would be telling the reader
+what they can already see.
+
 ## A citation opens the article beside the conversation
 
 Asked for by the owner on 2026-09-27, and the reason is sharp: following a
@@ -274,7 +294,7 @@ npm run insights:console -- --base http://localhost:3000    plus what is in the 
 npm run insights:console -- --base ... --live                plus one real turn and its links
 ```
 
-Eighty-five checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
+Ninety-one checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
 articles came back labeled corpus in three paragraphs with **four citation chips,
 every one of which resolves to an id on the rendered page**; a question the library
 does not cover came back labeled general, cited nothing, and carried marked

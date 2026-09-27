@@ -1,4 +1,7 @@
-import { CitationChip } from "./CitationChip";
+"use client";
+
+import { CitationChip, isInPageCitation } from "./CitationChip";
+import { useInsights } from "./InsightsProvider";
 import {
   paragraphIsGeneral,
   PROVENANCE_LABEL,
@@ -27,7 +30,18 @@ export function AnswerBody({
   onAnswerAsk: () => void;
   onRetry: () => void;
 }) {
+  const { slug } = useInsights();
   const label = turn.provenance ? PROVENANCE_LABEL[turn.provenance] : null;
+
+  // Grouped, because the two kinds of citation do two different things. One
+  // scrolls the page the reader is on; the other opens an article they have not
+  // seen. A single undifferentiated row of pills made both unpredictable.
+  const inPage = turn.citations.filter((c) => isInPageCitation(c, slug));
+  const elsewhere = turn.citations.filter((c) => !isInPageCitation(c, slug));
+  // Labels earn their space only when there is something to tell apart. On the
+  // library page every citation is to another article, so a heading saying so
+  // would be telling the reader what they can see.
+  const bothKinds = inPage.length > 0 && elsewhere.length > 0;
   // Computed rather than accumulated in the map, because the label belongs to the
   // first general paragraph and a counter mutated during render is a bug waiting
   // for a re-render to expose it.
@@ -89,11 +103,40 @@ export function AnswerBody({
           <p className="text-fg-low font-mono text-[10px] font-medium uppercase tracking-[0.16em]">
             Where this comes from
           </p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {turn.citations.map((citation) => (
-              <CitationChip key={`${citation.slug}#${citation.anchor ?? ""}`} citation={citation} />
-            ))}
-          </div>
+
+          {inPage.length > 0 && (
+            <div className="mt-2">
+              {bothKinds && (
+                <p className="text-fg-low mb-1.5 text-[11px]">In this article</p>
+              )}
+              <div className="flex flex-wrap gap-1.5">
+                {inPage.map((citation) => (
+                  <CitationChip
+                    key={`${citation.slug}#${citation.anchor ?? ""}`}
+                    citation={citation}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {elsewhere.length > 0 && (
+            <div className={inPage.length > 0 ? "mt-3" : "mt-2"}>
+              {bothKinds && (
+                <p className="text-fg-low mb-1.5 text-[11px]">
+                  {elsewhere.length === 1 ? "From another article" : "From other articles"}
+                </p>
+              )}
+              <div className="flex flex-col gap-1.5">
+                {elsewhere.map((citation) => (
+                  <CitationChip
+                    key={`${citation.slug}#${citation.anchor ?? ""}`}
+                    citation={citation}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
