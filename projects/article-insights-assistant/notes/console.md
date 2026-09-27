@@ -19,10 +19,19 @@ at first, and the owner rejected that on sight: the cards pushed the column past
 the fold and put a scrollbar beside a table of contents that had never had one. The
 questions moved into the panel, where there is room to read what they return.
 
-**One console, two containers, soon three.** The desktop panel and task 031's
-mobile sheet. Everything below `InsightsPanel` is container-agnostic, so the sheet
-is a different frame around the same entry card, transcript, composer and
-disclaimer. Do not fork them.
+**One console, two frames.** `ConsoleBody` holds the entry card, the transcript,
+the composer and the disclaimer. The desktop panel and the mobile sheet are frames
+around it, and `check-insights-console.mts` fails if either stops rendering it.
+That check is source-level, which is usually a weak kind of test and is the right
+kind here: the failure it guards against is not a wrong value at runtime, it is
+somebody answering a mobile bug by copying the panel.
+
+**State lives in a provider, not in a component, and the reason is a CSS rule.**
+The rail sits inside `<aside className="hidden lg:block">`, and a `display: none`
+ancestor hides a fixed child too, so the mobile button could not live where the
+rest of the console lived. Two components would have meant two conversations and
+two captcha widgets. `InsightsProvider` wraps the article grid; the rail entry, the
+panel and the sheet all read one state.
 
 **The panel is always mounted and hidden when closed.** So its first rendered state
 carries the entry questions and the disclaimer, and both are in the page's first
@@ -38,6 +47,21 @@ Because the article has `max-w-[720px] mx-auto` inside the grid's first column, 
 padding re-centers it leftward without the prose re-wrapping, until the column
 drops below 720px.
 
+## The sheet traps focus and the panel does not
+
+This looks like an inconsistency and is not. Beside an article the console is one
+of two things on screen and the reader moves between them. Over an article it is
+the only thing on screen, nothing behind it is usable, and letting Tab wander into
+a covered page is the bug.
+
+## The keyboard, which is the detail that gets missed
+
+The sheet is `max-h-[85dvh]`, and the check fails if anyone changes it to `vh`. A
+sheet sized in `vh` keeps its height when the on-screen keyboard opens, so the
+composer ends up underneath it and the reader types blind. The dynamic viewport
+unit shrinks with the keyboard, so the composer stays pinned to the bottom of a
+sheet that is now shorter.
+
 ## The panel is deliberately not a modal
 
 No `aria-modal`, no focus trap, no backdrop. The point of a console beside an
@@ -52,8 +76,12 @@ is labeled so it can be found.
 | File | What it is |
 |---|---|
 | `transcript.ts` | The view model and its reducer. No JSX, so it is tested directly |
-| `ArticleInsights.tsx` | State, the rail entry point, the captcha, the one place a turn is run |
-| `InsightsPanel.tsx` | The reading surface, the entry card, and `shiftArticle` |
+| `InsightsProvider.tsx` | State, the captcha, the one place a turn is run |
+| `RailEntry.tsx` | The desktop entry point, in the rail |
+| `ConsoleBody.tsx` | The console itself, with no opinion about what holds it |
+| `InsightsPanel.tsx` | The desktop frame, and `shiftArticle` |
+| `MobileSheet.tsx` | The phone frame, which does trap focus |
+| `FloatingButton.tsx` | The mobile entry point |
 | `AnswerBody.tsx` | Provenance line, prose, the general-knowledge treatment, chips, the question back |
 | `Composer.tsx` | The question box. Enter sends, Shift then Enter breaks |
 | `CitationChip.tsx` | One citation, as something clickable |
@@ -112,7 +140,7 @@ npm run insights:console -- --base http://localhost:3000    plus what is in the 
 npm run insights:console -- --base ... --live                plus one real turn and its links
 ```
 
-Thirty-eight checks. Confirmed in the live runs on 2026-09-26: an answer from the
+Fifty-two checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
 articles came back labeled corpus in three paragraphs with **four citation chips,
 every one of which resolves to an id on the rendered page**; a question the library
 does not cover came back labeled general, cited nothing, and carried marked
@@ -133,8 +161,10 @@ atomic, so a reader should hear each sentence as it lands rather than the whole
 answer re-read on every flush. That is the correct markup and it is not the same as
 having heard it.
 
-**Anything below 1024px.** The rail does not exist there and neither does the
-console. That is task 031.
+**Anything on a phone.** Nobody has opened this on one. The keyboard behaviour,
+the thumb reach, the scroll restore and the focus trap are implemented and argued
+rather than observed, which for a surface whose whole reason to exist is mobile
+traffic from LinkedIn is the gap worth closing first.
 
 ## The rail's height
 

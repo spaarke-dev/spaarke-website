@@ -1,11 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { EntryOption } from "@/lib/insights/questions";
-import { AnswerBody } from "./AnswerBody";
-import { Composer } from "./Composer";
-import { Disclaimer } from "./Disclaimer";
-import type { Turn } from "./transcript";
+import { ConsoleBody } from "./ConsoleBody";
+import { useInsights } from "./InsightsProvider";
 
 /** Matches the width the shift calculation assumes. Change both together. */
 export const PANEL_WIDTH = 420;
@@ -13,18 +10,15 @@ export const PANEL_WIDTH = 420;
 const PANEL_TOP = 100;
 
 /**
- * The reading surface.
+ * The desktop reading surface.
  *
  * **Not a modal.** The point of a console beside an article is to use it while
  * reading, so the article stays live, scrollable and reachable by Tab. That rules
  * out `aria-modal`, a focus trap and a backdrop, all of which would make the
  * article unreachable to exactly the readers who most need it reachable. Escape
  * closes, focus moves in on open and returns to the trigger on close, and the
- * region is labeled so it can be found.
- *
- * The article is shifted rather than covered. See `shiftArticle`, which changes
- * padding rather than applying a transform, because a transformed ancestor would
- * break the sticky table of contents inside it.
+ * region is labeled so it can be found. The mobile sheet does trap focus, because
+ * there the console covers the article and there is nothing behind it to reach.
  *
  * **It is always mounted and hidden when closed.** So its first rendered state
  * carries the entry questions and the disclaimer, which is what FR-04 and FR-10
@@ -32,46 +26,38 @@ const PANEL_TOP = 100;
  * `inert` is what makes that safe: a closed panel is out of the tab order and out
  * of the accessibility tree, instead of leaving a hidden text field in both.
  */
-export function InsightsPanel({
-  open,
-  articleTitle,
-  options,
-  turns,
-  busy,
-  onAsk,
-  onClose,
-  onDismissAsk,
-  onAnswerAsk,
-  onRetry,
-}: {
-  open: boolean;
-  articleTitle: string;
-  options: EntryOption[];
-  turns: Turn[];
-  busy: boolean;
-  onAsk: (question: string) => void;
-  onClose: () => void;
-  onDismissAsk: (id: string) => void;
-  onAnswerAsk: (id: string) => void;
-  onRetry: () => void;
-}) {
+export function InsightsPanel() {
+  const {
+    open,
+    openOn,
+    articleTitle,
+    options,
+    turns,
+    busy,
+    ask,
+    close,
+    dismissAsk,
+    answerAsk,
+    retry,
+  } = useInsights();
   const scroller = useRef<HTMLDivElement | null>(null);
   const composer = useRef<HTMLTextAreaElement | null>(null);
+  const showing = open && openOn === "panel";
 
-  // On open rather than on mount, because the panel is in the page from the
-  // start and stealing focus on page load would be a bug rather than a courtesy.
+  // On open rather than on mount, because the panel is in the page from the start
+  // and stealing focus on page load would be a bug rather than a courtesy.
   useEffect(() => {
-    if (open) composer.current?.focus();
-  }, [open]);
+    if (showing) composer.current?.focus();
+  }, [showing]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!showing) return;
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") close();
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose, open]);
+  }, [close, showing]);
 
   // Follow the answer as it arrives, but only while the reader is already at the
   // bottom. Yanking the view back while somebody is reading an earlier answer is
@@ -86,13 +72,13 @@ export function InsightsPanel({
   return (
     <aside
       aria-label="Article assistant"
-      inert={!open}
+      inert={!showing}
       className={`border-line bg-bg fixed right-0 z-40 flex-col border-l shadow-[-8px_0_32px_rgba(0,0,0,0.08)] ${
-        open ? "hidden lg:flex" : "hidden"
+        showing ? "hidden lg:flex" : "hidden"
       }`}
       style={{ top: PANEL_TOP, bottom: 0, width: PANEL_WIDTH }}
     >
-      <header className="border-line flex items-start justify-between gap-3 border-b px-4 py-3">
+      <header className="border-line flex shrink-0 items-start justify-between gap-3 border-b px-4 py-3">
         <div className="min-w-0">
           <p className="text-fg-low font-mono text-[10px] font-medium uppercase tracking-[0.16em]">
             Ask about this piece
@@ -103,75 +89,41 @@ export function InsightsPanel({
         </div>
         <button
           type="button"
-          onClick={onClose}
+          onClick={close}
           className="text-fg-low hover:text-fg focus-visible:ring-spaarke-blue -mr-1 -mt-1 shrink-0 rounded p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2"
           aria-label="Close the assistant"
         >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
+          <CloseIcon />
         </button>
       </header>
 
-      <div ref={scroller} className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
-        {/* The entry card. FR-04: three article-specific questions, then
-            summarize. It is the panel's first state rather than the rail's,
-            because this is where there is room to read what they return. */}
-        {turns.length === 0 && options.length > 0 && (
-          <div>
-            <p className="text-fg-mid text-[13px] leading-snug">
-              Start with one of these, or ask your own.
-            </p>
-            <ul className="mt-3 space-y-2">
-              {options.map((option) => (
-                <li key={option.text}>
-                  <button
-                    type="button"
-                    onClick={() => onAsk(option.text)}
-                    disabled={busy}
-                    className={`focus-visible:ring-spaarke-blue block w-full rounded-md border px-3 py-2.5 text-left text-[13px] leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:opacity-50 ${
-                      option.kind === "summarize"
-                        ? "border-line text-fg-mid hover:border-line-strong hover:text-fg"
-                        : "border-line text-fg hover:border-line-strong hover:bg-surface"
-                    }`}
-                  >
-                    {option.text}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <div className="space-y-6">
-          {turns.map((turn) =>
-            turn.role === "reader" ? (
-              <p key={turn.id} className="text-fg border-line border-l-2 pl-3 text-[14px] font-medium leading-snug">
-                {turn.text}
-              </p>
-            ) : (
-              <AnswerBody
-                key={turn.id}
-                turn={turn}
-                onDismissAsk={() => onDismissAsk(turn.id)}
-                onAnswerAsk={() => onAnswerAsk(turn.id)}
-                onRetry={onRetry}
-              />
-            ),
-          )}
-        </div>
-      </div>
-
-      <div className="border-line border-t px-4 py-3">
-        <Composer
-          ref={composer}
-          onSubmit={onAsk}
-          busy={busy}
-          placeholder="Ask a follow-up"
-          footer={<Disclaimer className="mt-2" />}
-        />
-      </div>
+      <ConsoleBody
+        options={options}
+        turns={turns}
+        busy={busy}
+        onAsk={ask}
+        onDismissAsk={dismissAsk}
+        onAnswerAsk={answerAsk}
+        onRetry={retry}
+        composerRef={composer}
+        scrollerRef={scroller}
+      />
     </aside>
+  );
+}
+
+export function CloseIcon() {
+  return (
+    <svg
+      className="h-4 w-4"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      aria-hidden="true"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+    </svg>
   );
 }
 

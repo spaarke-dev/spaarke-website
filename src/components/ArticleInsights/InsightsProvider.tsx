@@ -1,10 +1,21 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { askInsights, newRequestId } from "@/lib/insights/poll-client";
 import type { EntryOption } from "@/lib/insights/questions";
+import { FloatingButton } from "./FloatingButton";
 import { InsightsPanel, shiftArticle } from "./InsightsPanel";
+import { MobileSheet } from "./MobileSheet";
 import {
   applyEvent,
   failTurn,
@@ -15,21 +26,16 @@ import {
 } from "./transcript";
 
 /**
- * The article assistant: an entry card in the rail, and a reading panel.
+ * The article assistant: one conversation, three places it can appear.
  *
- * The rail is 220px, which is unreadable for a 185-word answer, so the rail holds
- * a link and the console itself is the panel. The entry questions live in the
- * panel too: four cards in the rail pushed the column past the fold and put a
- * scrollbar beside a table of contents that did not have one before.
+ * The rail entry point, the desktop panel and the mobile sheet all read the same
+ * state from here. **That is why this is a provider rather than a component.** The
+ * rail lives inside the article's `<aside>`, which is `hidden lg:block`, and a
+ * `display: none` ancestor hides a fixed child too, so the mobile button cannot
+ * live there. Two separate components would mean two conversations, two captcha
+ * widgets and, before long, two implementations that disagree.
  *
- * The panel is always mounted and hidden when closed, rather than mounted on
- * open. Its first rendered state is therefore the entry questions and the
- * disclaimer, which is what FR-04 and FR-10 ask for, and `inert` keeps a closed
- * panel out of the tab order rather than leaving a hidden text field in it.
- *
- * **State lives here and nowhere else.** The panel and the card are both given
- * their data, because a conversation that survived being closed and reopened but
- * not being scrolled past would be a strange thing to explain.
+ * **State lives here and nowhere else.** The surfaces are given their data.
  *
  * **The conversation is not persisted.** It lasts as long as the page does. That
  * is a privacy decision as much as a simplicity one: task 022 keeps the question
@@ -40,19 +46,50 @@ import {
 /** Google is fast or Google is broken, and either way it cannot hang the console. */
 const CAPTCHA_TIMEOUT_MS = 10_000;
 
-export function ArticleInsights({
+/** Which surface a reader opened. The other one stays hidden and inert. */
+export type OpenOn = "panel" | "sheet";
+
+type InsightsValue = {
+  articleTitle: string;
+  options: EntryOption[];
+  turns: Turn[];
+  busy: boolean;
+  open: boolean;
+  openOn: OpenOn;
+  openConsole: (on: OpenOn) => void;
+  close: () => void;
+  ask: (question: string) => void;
+  retry: () => void;
+  dismissAsk: (id: string) => void;
+  answerAsk: (id: string) => void;
+  /** So a surface can hand focus back to whatever opened it. */
+  registerTrigger: (on: OpenOn, el: HTMLElement | null) => void;
+};
+
+const InsightsContext = createContext<InsightsValue | null>(null);
+
+export function useInsights(): InsightsValue {
+  const value = useContext(InsightsContext);
+  if (!value) throw new Error("useInsights must be used inside InsightsProvider");
+  return value;
+}
+
+export function InsightsProvider({
   slug,
   articleTitle,
   options,
   recaptchaSiteKey,
+  children,
 }: {
   slug: string;
   articleTitle: string;
   options: EntryOption[];
   recaptchaSiteKey: string;
+  children: ReactNode;
 }) {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [open, setOpen] = useState(false);
+  const [openOn, setOpenOn] = useState<OpenOn>("panel");
 
   // A mirror of the state, because a turn needs the history as it stood before it
   // and reading that out of a functional update would be a side effect in a
@@ -65,25 +102,32 @@ export function ArticleInsights({
 
   const sessionRef = useRef<string | null>(null);
   const captchaRef = useRef<ReCAPTCHA>(null);
-  const railTrigger = useRef<HTMLButtonElement | null>(null);
+  const triggers = useRef<Record<OpenOn, HTMLElement | null>>({ panel: null, sheet: null });
   const seq = useRef(0);
 
   const busy = turns.some(
     (t) => t.role === "assistant" && (t.status === "waiting" || t.status === "streaming"),
   );
 
-  useEffect(() => shiftArticle(open), [open]);
+  useEffect(() => shiftArticle(open && openOn === "panel"), [open, openOn]);
+
+  const registerTrigger = useCallback((on: OpenOn, el: HTMLElement | null) => {
+    triggers.current[on] = el;
+  }, []);
+
+  const openConsole = useCallback((on: OpenOn) => {
+    setOpenOn(on);
+    setOpen(true);
+  }, []);
 
   const close = useCallback(() => {
     setOpen(false);
-    railTrigger.current?.focus();
-  }, []);
+    triggers.current[openOn]?.focus();
+  }, [openOn]);
 
   const updateAssistant = useCallback(
     (id: string, fn: (turn: AssistantTurn) => AssistantTurn) => {
-      commit(
-        turnsRef.current.map((t) => (t.role === "assistant" && t.id === id ? fn(t) : t)),
-      );
+      commit(turnsRef.current.map((t) => (t.role === "assistant" && t.id === id ? fn(t) : t)));
     },
     [commit],
   );
@@ -161,7 +205,6 @@ export function ArticleInsights({
   const ask = useCallback(
     (question: string) => {
       if (busy) return;
-      setOpen(true);
       void runTurn(question, turnsRef.current);
     },
     [busy, runTurn],
@@ -186,73 +229,61 @@ export function ArticleInsights({
     (id: string) => {
       updateAssistant(id, (t) => ({ ...t, askDismissed: true }));
       // The reader types the answer, so the only job here is to put the cursor
-      // where they can.
-      document.getElementById("insights-question")?.focus();
+      // where they can. Both surfaces label their field the same way, and only one
+      // of them is ever on screen.
+      const fields = document.querySelectorAll<HTMLTextAreaElement>("textarea[data-insights-question]");
+      for (const field of fields) {
+        if (field.offsetParent !== null) {
+          field.focus();
+          return;
+        }
+      }
     },
     [updateAssistant],
   );
 
+  const value = useMemo<InsightsValue>(
+    () => ({
+      articleTitle,
+      options,
+      turns,
+      busy,
+      open,
+      openOn,
+      openConsole,
+      close,
+      ask,
+      retry,
+      dismissAsk,
+      answerAsk,
+      registerTrigger,
+    }),
+    [
+      answerAsk,
+      articleTitle,
+      ask,
+      busy,
+      close,
+      dismissAsk,
+      open,
+      openConsole,
+      openOn,
+      options,
+      registerTrigger,
+      retry,
+      turns,
+    ],
+  );
+
   return (
-    <>
-      {/* The rail is an entry point, not a surface. It was four question cards and
-          a paragraph, which pushed the column past the fold and put a scrollbar
-          beside a table of contents that did not have one before. The questions
-          belong where there is room to read the answers. */}
-      <section aria-labelledby="insights-rail-heading">
-        <h2
-          id="insights-rail-heading"
-          className="text-fg-low font-mono text-[11px] font-medium uppercase tracking-[0.18em]"
-        >
-          Ask about this piece
-        </h2>
-
-        <p className="text-fg-mid mt-3 text-[13px] leading-snug">
-          Put a question to the whole library, not just this page.
-        </p>
-
-        <button
-          type="button"
-          ref={railTrigger}
-          onClick={() => setOpen(true)}
-          aria-expanded={open}
-          className="text-spaarke-blue hover:text-cta-blue focus-visible:ring-spaarke-blue group mt-3 inline-flex items-center gap-2 rounded text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2"
-        >
-          <svg
-            className="h-4 w-4 shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.6}
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8 10h8M8 14h5M21 12a8 8 0 0 1-8 8H7l-4 3v-5.6A8 8 0 0 1 13 4a8 8 0 0 1 8 8Z"
-            />
-          </svg>
-          <span className="underline underline-offset-2">
-            {turns.length > 0 ? "Open the conversation" : "Open the assistant"}
-          </span>
-        </button>
-      </section>
-
-      <InsightsPanel
-        open={open}
-        articleTitle={articleTitle}
-        options={options}
-        turns={turns}
-        busy={busy}
-        onAsk={ask}
-        onClose={close}
-        onDismissAsk={dismissAsk}
-        onAnswerAsk={answerAsk}
-        onRetry={retry}
-      />
-
+    <InsightsContext.Provider value={value}>
+      {children}
+      <InsightsPanel />
+      <FloatingButton />
+      <MobileSheet />
       {recaptchaSiteKey && (
         <ReCAPTCHA ref={captchaRef} sitekey={recaptchaSiteKey} size="invisible" />
       )}
-    </>
+    </InsightsContext.Provider>
   );
 }

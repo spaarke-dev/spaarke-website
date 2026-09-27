@@ -1,7 +1,7 @@
 # Task 031: Mobile bottom sheet
 
 **Phase:** 3 (The interface)
-**Status:** not-started
+**Status:** complete
 **Estimated:** 3 hours
 **Dependencies:** 030
 **Tags:** react, tailwind, responsive, accessibility
@@ -39,18 +39,54 @@ a long way to scroll back to an entry point that sits at the top.
 ## Expected Outputs
 
 - `src/components/ArticleInsights/MobileSheet.tsx`
-- Floating button component
-- Responsive wiring on the article route
+- `src/components/ArticleInsights/FloatingButton.tsx`
+- `src/components/ArticleInsights/ConsoleBody.tsx`, the console both surfaces share
+- `src/components/ArticleInsights/InsightsProvider.tsx`, one conversation for all
+  three surfaces
+- `src/components/ArticleInsights/RailEntry.tsx`
+
+## The restructure this needed
+
+**The rail lives inside `<aside className="hidden lg:block">`, and a
+`display: none` ancestor hides a fixed child too.** So the floating button could
+not live where the rest of the console lived. Two separate components would have
+meant two conversations, two captcha widgets, and eventually two implementations
+that disagree, which is the thing this task explicitly forbids.
+
+The fix is a provider around the article grid. The rail entry point, the desktop
+panel and the mobile sheet all read one state. `ConsoleBody` holds the entry card,
+the transcript, the composer and the disclaimer, and the two surfaces are frames
+around it.
 
 ## Acceptance Criteria
 
-- [ ] Button visible and reachable one-handed at 375px
-- [ ] Sheet opens the same console, not a reduced variant
-- [ ] Article stays mounted; scroll position survives close
-- [ ] Input remains visible with the keyboard open
-- [ ] Focus trapped while open and restored on close
-- [ ] Escape and backdrop tap both close
-- [ ] Disclaimer visible in the sheet
+- [x] Button visible and reachable one-handed at 375px. Fixed bottom right, clear
+      of the home indicator, in the first paint rather than after an interaction.
+      **Its reachability at 375px is a claim about a thumb and has not been tested
+      on a device.**
+- [x] Sheet opens the same console, not a reduced variant. Asserted at the source
+      level, which is the right kind of check here: the failure guarded against is
+      somebody answering a mobile bug by copying the panel.
+- [x] Article stays mounted; scroll position survives close. The sheet is an
+      overlay and the body gets `overflow: hidden`, which holds the scroll position
+      rather than resetting it the way a fixed body would.
+- [x] Input remains visible with the keyboard open. `max-h-[85dvh]`, and the check
+      fails if anyone changes it to `vh`. The dynamic viewport unit shrinks with
+      the keyboard; `vh` does not, which is exactly how the composer ends up
+      underneath it.
+- [x] Focus trapped while open and restored on close. Tab cycles inside the sheet,
+      and the provider hands focus back to whichever trigger opened it.
+- [x] Escape and backdrop tap both close.
+- [x] Disclaimer visible in the sheet. It is in `ConsoleBody`, so both surfaces
+      carry it and neither can lose it separately.
+
+## Why the sheet traps focus and the panel does not
+
+This looks like an inconsistency and is not. Beside an article the console is one
+of two things on screen and the reader moves between them, so a trap would make the
+article unreachable to exactly the readers who most need it reachable. Over an
+article it is the only thing on screen, nothing behind it is usable, and letting
+Tab wander into a covered page is the bug.
 
 ## Notes
 
@@ -61,4 +97,10 @@ types blind.
 Do not fork the console for mobile. Two implementations diverge, and the
 mobile one always falls behind.
 
-See spec FR-12, FR-10, NFR-05.
+**Not verified, and it is the part that matters most here.** Nobody has opened
+this on a phone. There is no browser automation and no device in this loop, so the
+keyboard behaviour, the thumb reach, the scroll restore and the focus trap are all
+implemented and argued rather than observed. The desktop console is in the same
+position. Both want a person before launch.
+
+See spec FR-12, FR-10, NFR-05, and `notes/console.md`.

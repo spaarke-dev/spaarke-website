@@ -144,6 +144,50 @@ console.log("\napplying events to a turn");
   check(died.error?.retryable === true, "an upstream error offers a retry");
 }
 
+// ---------------------------------------------------- one console, three frames
+console.log("\nthe surfaces share a console rather than forking it");
+{
+  // Source-level assertions, which are usually a weak kind of test and are the
+  // right kind here. The failure this guards against is not a wrong value at
+  // runtime, it is somebody answering a mobile bug by copying the panel. Task 031
+  // says it in as many words: two implementations diverge, and the mobile one
+  // always falls behind.
+  const { readFileSync } = await import("node:fs");
+  const read = (f: string) => readFileSync(`src/components/ArticleInsights/${f}`, "utf8");
+  const panel = read("InsightsPanel.tsx");
+  const sheet = read("MobileSheet.tsx");
+  const body = read("ConsoleBody.tsx");
+  const button = read("FloatingButton.tsx");
+
+  check(panel.includes("<ConsoleBody"), "the desktop panel renders the shared console");
+  check(sheet.includes("<ConsoleBody"), "the mobile sheet renders the same one");
+  check(body.includes("<Disclaimer"), "the disclaimer is in the shared console, so both carry it");
+  check(body.includes("options.map"), "and so is the entry card");
+
+  // A sheet sized in `vh` keeps its height when the on-screen keyboard opens, so
+  // the composer ends up underneath it and the reader types blind. This is the
+  // detail the task says gets missed.
+  check(sheet.includes("dvh"), "the sheet is sized in dvh, so the keyboard shrinks it");
+  check(!/max-h-\[\d+vh\]/.test(sheet), "and not in vh, which the keyboard does not affect");
+
+  // The sheet traps focus and the panel does not, and that difference is
+  // deliberate rather than an oversight in one of them.
+  check(sheet.includes('aria-modal="true"'), "the sheet is a modal dialog");
+  check(sheet.includes('e.key !== "Tab"') || sheet.includes('"Tab"'), "and traps Tab inside itself");
+  // The attribute, not the word: the panel's comment explains at length why it is
+  // not a modal, and matching that would pass for the wrong reason.
+  check(!panel.includes("aria-modal="), "the panel is not a modal, so the article stays reachable");
+
+  check(sheet.includes('e.key === "Escape"'), "escape closes the sheet");
+  check(sheet.includes("onClick={close}"), "and so does a tap on the backdrop");
+  check(sheet.includes('document.body.style.overflow = "hidden"'), "the article cannot scroll behind it");
+
+  check(button.includes("lg:hidden"), "the floating button is hidden where the rail exists");
+  check(panel.includes("lg:flex"), "and the panel is shown only where it does");
+  check(button.includes("fixed bottom-") && button.includes("right-"), "the button is fixed bottom right");
+  check(button.includes("safe-area-inset-bottom"), "and clear of the home indicator");
+}
+
 // ------------------------------------------------------------------- copy
 console.log("\nevery failure has copy, and the right offer");
 {
@@ -249,6 +293,13 @@ if (base) {
   // manifest's own field name is what to look for here. The build-time grep over
   // .next/static/chunks is the other half of this check.
   check(!html.includes("suggestedQuestions"), "the corpus manifest did not travel with the page");
+
+  // FR-12. The mobile entry point has to be in the page rather than appearing
+  // after some interaction, since it is the only way in below the rail breakpoint.
+  check(
+    html.includes("Ask about this") && html.includes("aria-haspopup=\"dialog\""),
+    "the mobile entry point is in the first paint",
+  );
 
   // ------------------------------------------------------- a real turn, and its links
   if (argv.includes("--live")) {
