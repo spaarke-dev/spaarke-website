@@ -4,11 +4,11 @@
 > then `tasks/TASK-INDEX.md`, then `spec.md`.
 >
 > Last updated 2026-09-26, end of the third working session. **Phases 0, 1 and 2
-> are complete, and so is the desktop console.** What remains is the mobile
-> surface, the instrumentation, and the four things the owner has to do.
+> are complete, and so is phase 3.** What remains is the instrumentation, the
+> wrap-up, and the five things the owner has to do.
 
 **Active task:** none in progress.
-**Next task:** `031-mobile-sheet.md`, then `040-instrumentation.md`.
+**Next task:** `040-instrumentation.md`, then `090-project-wrap-up.md`.
 
 ## What this is, in one paragraph
 
@@ -33,14 +33,15 @@ rather than a nicety.
 | 021 Abuse and spend defences | complete, verified against real Table Storage |
 | 022 Conversation capture | complete |
 | 023 Partial answer polling | complete, verified against real Table Storage |
-| 030 Rail console | complete, desktop only, unlooked-at |
-| 031 Mobile sheet | **next** |
-| 040, 090 | not started |
+| 030 Rail console | complete, unlooked-at |
+| 031 Mobile sheet | complete, never opened on a phone |
+| 040 Instrumentation | **next** |
+| 090 | not started |
 
 Merged to `main`: PR #87 the scaffold, #91 the prompt, #92 the entry card
 questions, #93 the evaluation suite, #94 the endpoint and its defences, #95 and
 #96 the streaming finding, #97 the checkpoint, #98 partial answer polling, #99 the
-console.
+console, #100 the rail as an entry point, #101 the mobile sheet.
 
 ## Where the two open questions landed
 
@@ -91,10 +92,12 @@ after it. The spec claimed this had already shipped, and that claim is corrected
 
 ## Before the console ships
 
-1. **Look at the console.** Nobody has. There is no browser automation in this
-   repo, so what is proven is the markup, the logic and the links, not the
-   appearance. It wants a person on a 1440px screen and on a 1280px one, where the
-   panel's shift calculation does the most work.
+1. **Look at the console, on a desktop and on a phone.** Nobody has opened it on
+   either. There is no browser automation in this repo, so what is proven is the
+   markup, the logic and the links, not the appearance or the feel. On desktop it
+   wants a 1440px screen and a 1280px one, where the panel's shift calculation does
+   the most work. On a phone it wants the keyboard open, which is the detail this
+   kind of sheet usually gets wrong.
 2. **`INSIGHTS_ENABLED=true`** in Azure Static Web Apps app settings. Until it is
    set the console does not render at all and the endpoint refuses, which is how
    the feature stays off. Setting it is also what unblocks the one measurement task
@@ -181,7 +184,15 @@ citation marker. The first live run showed the model assembling a slug from one
 article with an anchor from another, which produced a citation that looked right
 and went nowhere.
 
-**Task 030 calls `askInsights` from `poll-client.ts` and nothing lower.** That
+**There is one console and three places it appears.** `ConsoleBody` is the
+console; the desktop panel and the mobile sheet are frames around it, and
+`InsightsProvider` holds the single conversation all of them read. The provider
+exists because the rail sits inside a `hidden lg:block` aside and a `display: none`
+ancestor hides a fixed child too, so the mobile button could not live there. Do not
+answer a mobile bug by copying the panel; a check fails if you do.
+
+**Task 040 and anything after it call `askInsights` from `poll-client.ts` and
+nothing lower.** That
 function owns the request id, the POST, the poller, and the merge of the two, and
 it delivers each event once through one `onEvent` callback. A component that posts
 to the route itself gets a buffered answer with no progressive rendering, which is

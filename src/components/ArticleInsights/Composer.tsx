@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useId, useRef, useState } from "react";
 
 /** Mirrors the endpoint's limit, so an over-long question is refused here rather than there. */
 export const MAX_QUESTION_CHARS = 1_000;
@@ -24,6 +24,10 @@ export const Composer = forwardRef<
 >(function Composer({ onSubmit, busy, placeholder, footer }, ref) {
   const [value, setValue] = useState("");
   const inner = useRef<HTMLTextAreaElement | null>(null);
+  // Generated, because the panel and the sheet are both in the page and a fixed id
+  // would put two of it in the document, which breaks the label on whichever one a
+  // reader is actually looking at.
+  const fieldId = useId();
 
   useEffect(() => {
     const el = inner.current;
@@ -44,11 +48,13 @@ export const Composer = forwardRef<
   return (
     <div>
       <div className="border-line focus-within:border-line-strong bg-bg rounded-md border transition-colors">
-        <label htmlFor="insights-question" className="sr-only">
+        <label htmlFor={fieldId} className="sr-only">
           Ask about this article
         </label>
         <textarea
-          id="insights-question"
+          id={fieldId}
+          // How `answerAsk` finds whichever field is on screen.
+          data-insights-question=""
           ref={(node) => {
             inner.current = node;
             if (typeof ref === "function") ref(node);
@@ -64,14 +70,14 @@ export const Composer = forwardRef<
             }
           }}
           placeholder={placeholder ?? "Ask about this article"}
-          aria-describedby={tooLong ? "insights-question-error" : undefined}
+          aria-describedby={tooLong ? `${fieldId}-error` : undefined}
           aria-invalid={tooLong || undefined}
           className="text-fg placeholder:text-fg-low block w-full resize-none bg-transparent px-3 py-2.5 text-[14px] leading-snug focus:outline-none"
         />
         <div className="flex items-center justify-between gap-2 px-3 pb-2">
           <span className="text-fg-low text-[11px]">
             {tooLong ? (
-              <span id="insights-question-error" className="text-fg-mid">
+              <span id={`${fieldId}-error`} className="text-fg-mid">
                 That is longer than the box takes. Trim it to {MAX_QUESTION_CHARS} characters.
               </span>
             ) : (
