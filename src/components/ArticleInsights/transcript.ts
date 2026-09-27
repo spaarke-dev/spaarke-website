@@ -187,6 +187,36 @@ export function historyFor(turns: Turn[]): Array<{ role: "user" | "assistant"; c
   return history;
 }
 
+/**
+ * One question and the answer to it, which is the unit the reader actually looks
+ * at.
+ *
+ * The transcript is a flat list because that is what the stream produces, but the
+ * console pins the current question to the top of the pane and lets the answer
+ * fill downward, so the thing that has to be measured and scrolled to is the pair
+ * rather than either half. An assistant turn with no question before it should not
+ * happen, and is given its own group rather than dropped if it does.
+ */
+export type Exchange = {
+  id: string;
+  reader: ReaderTurn | null;
+  assistant: AssistantTurn | null;
+};
+
+export function groupExchanges(turns: Turn[]): Exchange[] {
+  const out: Exchange[] = [];
+  for (const turn of turns) {
+    if (turn.role === "reader") {
+      out.push({ id: turn.id, reader: turn, assistant: null });
+      continue;
+    }
+    const last = out[out.length - 1];
+    if (last && last.assistant === null) last.assistant = turn;
+    else out.push({ id: turn.id, reader: null, assistant: turn });
+  }
+  return out;
+}
+
 /** Copy for the provenance line, which is the visible half of the product thesis. */
 export const PROVENANCE_LABEL: Record<Provenance, string | null> = {
   corpus: "From the articles",

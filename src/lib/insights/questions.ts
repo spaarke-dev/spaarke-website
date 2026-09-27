@@ -37,6 +37,36 @@ export function entryOptions(slug: string): EntryOption[] {
   ];
 }
 
+/**
+ * What the console offers on the library page, where there is no article to
+ * extend.
+ *
+ * Written rather than generated, and deliberately cross-corpus: the library
+ * surface exists because a question can reach all twenty-four pieces at once, so
+ * an entry question that only one article answers wastes the surface. They are
+ * held to the same bar as the generated ones, which `check-insights-prompt`
+ * asserts rather than trusting.
+ *
+ * There is no summarize option here. Summarizing twenty-four articles produces
+ * the table of contents the page already is.
+ */
+export function libraryOptions(): EntryOption[] {
+  return [
+    {
+      kind: "question",
+      text: "What is legal operations intelligence, and how is it different from spend analytics?",
+    },
+    {
+      kind: "question",
+      text: "Where should a department start if its matter data sits in four systems?",
+    },
+    {
+      kind: "question",
+      text: "What do these articles argue that a general counsel would disagree with?",
+    },
+  ];
+}
+
 const MIN_WORDS = 6;
 const MAX_WORDS = 24;
 

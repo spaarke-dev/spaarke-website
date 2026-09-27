@@ -197,6 +197,20 @@ citation marker. The first live run showed the model assembling a slug from one
 article with an anchor from another, which produced a citation that looked right
 and went nowhere.
 
+**The console is on the library page too**, at `/why-spaarke`, where it takes the
+place of the keyword search box in the filter bar. That was release two in the
+spec and the owner moved it in on 2026-09-27; the spec is corrected. `slug` is
+null there, which the endpoint already accepted, and a live library turn cited
+three different articles. The search box still renders whenever the assistant is
+switched off, so nothing is lost by turning it off.
+
+**The current question pins to the top of the pane and the answer fills below it**,
+which is the Copilot pattern and the owner's ask. Do not restore the
+follow-the-last-line scroll: it makes the reader chase text down the screen. The
+minimum height on the last exchange is what makes the pin possible and is measured
+from the pane rather than guessed, because the mobile sheet shrinks when the
+keyboard opens.
+
 **There is one console and three places it appears.** `ConsoleBody` is the
 console; the desktop panel and the mobile sheet are frames around it, and
 `InsightsProvider` holds the single conversation all of them read. The provider
