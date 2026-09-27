@@ -19,7 +19,7 @@
 | 023 | [Partial answer polling](023-partial-answer-polling.md) | 2 | 020 | 4h | **complete** |
 | 030 | [Right-rail console](030-rail-console.md) | 3 | 013, 023 | 4h | **complete** |
 | 031 | [Mobile bottom sheet](031-mobile-sheet.md) | 3 | 030 | 3h | **complete** |
-| 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | not-started |
+| 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | instrumented, baseline pending |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | 4 | 040 | 3h | not-started |
 
 **14 tasks, roughly 44 hours.**

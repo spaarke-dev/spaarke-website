@@ -8,7 +8,7 @@ import { foundryClient, foundryConfig, isUpstreamRateLimit } from "@/lib/insight
 import { buildMessageRequest } from "@/lib/insights/prompt";
 import { guardRequest } from "@/lib/insights/guard";
 import { countersAvailable } from "@/lib/insights/rate-limit-durable";
-import { recordSpend } from "@/lib/insights/ceiling";
+import { recordSpend, turnCostUsd } from "@/lib/insights/ceiling";
 import { recordTurn } from "@/lib/insights/capture";
 import {
   discardPartial,
@@ -359,6 +359,11 @@ export async function POST(request: NextRequest) {
           // A cache write on a turn that should have read is the expensive
           // failure, so it is queryable rather than buried in a number.
           cacheMiss: String(usage.cacheWrite > 0),
+          // What this turn actually cost, in dollars, computed from the rates in
+          // notes/cost-model.md. NFR-01 asks for spend to be observable rather
+          // than estimated, and a token count is not that: nobody sums tokens by
+          // rate class in a dashboard at the moment they need the number.
+          costUsd: turnCostUsd(usage).toFixed(4),
           repairs: `${answer.repairs.citationsCorrected}/${answer.repairs.quotationsDemoted}/${answer.repairs.dashesNormalized}`,
           firstTokenMs: String(firstTokenAt ? firstTokenAt - started : -1),
           totalMs: String(Date.now() - started),

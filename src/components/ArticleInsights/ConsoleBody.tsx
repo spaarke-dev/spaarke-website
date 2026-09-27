@@ -29,7 +29,7 @@ export function ConsoleBody({
   options: EntryOption[];
   turns: Turn[];
   busy: boolean;
-  onAsk: (question: string) => void;
+  onAsk: (question: string, source?: "suggested" | "typed") => void;
   onDismissAsk: (id: string) => void;
   onAnswerAsk: (id: string) => void;
   onRetry: () => void;
@@ -58,7 +58,7 @@ export function ConsoleBody({
                 <li key={option.text}>
                   <button
                     type="button"
-                    onClick={() => onAsk(option.text)}
+                    onClick={() => onAsk(option.text, "suggested")}
                     disabled={busy}
                     className={`focus-visible:ring-spaarke-blue block w-full rounded-md border px-3 py-2.5 text-left text-[13px] leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:opacity-50 ${
                       option.kind === "summarize"
@@ -99,7 +99,7 @@ export function ConsoleBody({
       <div className="border-line shrink-0 border-t px-4 py-3">
         <Composer
           ref={composerRef}
-          onSubmit={onAsk}
+          onSubmit={(question) => onAsk(question, "typed")}
           busy={busy}
           placeholder={turns.length === 0 ? "Ask about this article" : "Ask a follow-up"}
           footer={<Disclaimer className="mt-2" />}
