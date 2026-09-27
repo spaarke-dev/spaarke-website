@@ -92,6 +92,39 @@ wastes the surface. They are held to the same validator as the generated ones.
 There is no summarize option, since summarizing twenty-four articles produces the
 page the reader is already on.
 
+## A citation opens the article beside the conversation
+
+Asked for by the owner on 2026-09-27, and the reason is sharp: following a
+citation navigated away, which cost the reader whatever they were in the middle of
+asking. On the library page it cost them the whole session. That made following a
+citation a punishment for trusting the answer, in a feature whose entire claim is
+that its answers can be checked.
+
+`ArticleReader` opens the cited article next to the console, scrolled to the cited
+section with that heading briefly marked, with the page still behind it. Escape
+closes it, and the console beside it stays live.
+
+**The article is lifted out of its own rendered page rather than re-rendered.** The
+first attempt was a route that compiled the markdown again. Next refuses
+`react-dom/server` in the App Router, and a plain remark pipeline would have needed
+two more dependencies to handle the raw HTML some articles contain, and would then
+have been free to drift from what the page actually looks like. Fetching the page
+and taking `[data-article-body]` out of it cannot drift, because it is the same
+markup with the same heading ids the citation anchors were built against. The parse
+happens in an inert document, so nothing in the fetched page runs, and the content
+injected is the same bytes the public page already serves.
+
+**Three cases, and only one opens the reader.** Below the rail breakpoint the chip
+stays an ordinary link, because a reader, a console and an article on a phone is
+three things in a space that holds one. A citation into the article already on
+screen scrolls that page rather than opening a copy of it over itself. Everything
+else opens the reader. The `href` is real in every case, so a modified click, a
+long press and a copied link all still work.
+
+**Escape closes the reader before the console**, which the panel checks explicitly.
+Without that one press closes both, and the reader never sees the conversation they
+were sent back to.
+
 ## The sheet traps focus and the panel does not
 
 This looks like an inconsistency and is not. Beside an article the console is one
@@ -124,6 +157,8 @@ is labeled so it can be found.
 | `InsightsProvider.tsx` | State, the captcha, the one place a turn is run |
 | `RailEntry.tsx` | The desktop entry point on an article, in the rail |
 | `LibraryAskButton.tsx` | The desktop entry point on the library, in the filter bar |
+| `ArticleReader.tsx` | The cited article, opened beside the console |
+| `chrome.tsx` | The close icon and the surface measurements, shared so the imports do not form a cycle |
 | `ConsoleBody.tsx` | The console itself, with no opinion about what holds it |
 | `InsightsPanel.tsx` | The desktop frame, and `shiftArticle` |
 | `MobileSheet.tsx` | The phone frame, which does trap focus |
@@ -186,7 +221,7 @@ npm run insights:console -- --base http://localhost:3000    plus what is in the 
 npm run insights:console -- --base ... --live                plus one real turn and its links
 ```
 
-Sixty-one checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
+Seventy checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
 articles came back labeled corpus in three paragraphs with **four citation chips,
 every one of which resolves to an id on the rendered page**; a question the library
 does not cover came back labeled general, cited nothing, and carried marked
@@ -206,6 +241,11 @@ markup, the logic and the links, not the appearance. This wants a person on a
 atomic, so a reader should hear each sentence as it lands rather than the whole
 answer re-read on every flush. That is the correct markup and it is not the same as
 having heard it.
+
+**The reader modal.** The extraction is checked, and a live run confirms every
+cited anchor exists **inside** the article body rather than merely somewhere on
+the page, which is the failure that would scroll the reader to nothing. What is not
+checked is what it looks like or how it feels to open one.
 
 **Anything on a phone.** Nobody has opened this on one. The keyboard behaviour,
 the thumb reach, the scroll restore and the focus trap are implemented and argued

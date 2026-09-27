@@ -112,7 +112,15 @@ export default async function WhySpaarkeArticle({ params }: Props) {
 
               <ArticleHeader post={post} readingTimeMin={readingTime} />
 
-              <div className="prose prose-neutral prose-base md:prose-lg max-w-none prose-headings:font-display prose-headings:font-medium prose-headings:tracking-tight prose-h2:scroll-mt-[132px] prose-h3:scroll-mt-[132px]">
+              {/* The hook the console's reader uses to lift this article's body
+                  out of the rendered page. Reusing the page rather than
+                  re-rendering the markdown means the reader cannot drift from
+                  what the article actually looks like, and needs no second
+                  pipeline to handle the raw HTML some articles contain. */}
+              <div
+                data-article-body
+                className="prose prose-neutral prose-base md:prose-lg max-w-none prose-headings:font-display prose-headings:font-medium prose-headings:tracking-tight prose-h2:scroll-mt-[132px] prose-h3:scroll-mt-[132px]"
+              >
                 {mdxContent}
               </div>
 
