@@ -134,7 +134,11 @@ for (const file of readdirSync(BLOG_DIR).filter((f) => f.endsWith(".mdx")).sort(
   });
 }
 
-const withoutQuestions = articles.filter((a) => a.suggestedQuestions.length !== 3);
+// Six are generated per article and the console shows a rotating three, so an
+// article with fewer than three cannot fill a card. Fewer than six means the
+// rotation has nothing to rotate, which is worth saying but is not a fault.
+const QUESTIONS_EXPECTED = 6;
+const withoutQuestions = articles.filter((a) => a.suggestedQuestions.length < QUESTIONS_EXPECTED);
 
 const manifest = {
   generatedFrom: BLOG_DIR,

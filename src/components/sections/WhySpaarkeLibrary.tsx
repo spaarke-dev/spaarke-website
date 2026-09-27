@@ -118,10 +118,14 @@ export function WhySpaarkeLibrary({ posts, tagsByCategory, assistant }: Props) {
             corpus and comes back citing the piece that answers it. The filters
             stay either way, because narrowing by topic is a different job from
             asking a question. */}
-        <div className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          {assistant ? (
-            <LibraryAskButton />
-          ) : (
+        <div
+          className={`mt-12 grid grid-cols-1 gap-3 ${
+            assistant
+              ? "md:grid-cols-[1fr_1fr_1fr_1.4fr]"
+              : "md:grid-cols-[1.4fr_1fr_1fr_1fr]"
+          }`}
+        >
+          {assistant || (
             <label className="border-line bg-surface flex items-center gap-2 rounded-md border px-3 py-2.5">
               <svg
                 className="text-fg-low h-4 w-4 flex-shrink-0"
@@ -162,6 +166,11 @@ export function WhySpaarkeLibrary({ posts, tagsByCategory, assistant }: Props) {
             options={audienceOptions}
             onChange={(v) => update("audience", v)}
           />
+
+          {/* Last, and the wide column. The filters are the familiar thing; this
+              is the one control here that does something the reader has not seen
+              before, and matched to them it disappeared into the row. */}
+          {assistant && <LibraryAskButton />}
         </div>
 
         <div className="text-fg-mid mt-3 text-sm">

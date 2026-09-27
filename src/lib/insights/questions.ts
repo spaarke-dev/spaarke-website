@@ -47,6 +47,10 @@ export function entryOptions(slug: string): EntryOption[] {
  * held to the same bar as the generated ones, which `check-insights-prompt`
  * asserts rather than trusting.
  *
+ * Six of them, like the generated ones, because the console shows three and draws
+ * them fresh each load. Three would have made the library card the one place that
+ * never changed.
+ *
  * There is no summarize option here. Summarizing twenty-four articles produces
  * the table of contents the page already is.
  */
@@ -63,6 +67,18 @@ export function libraryOptions(): EntryOption[] {
     {
       kind: "question",
       text: "What do these articles argue that a general counsel would disagree with?",
+    },
+    {
+      kind: "question",
+      text: "We have no legal operations function yet. What do these articles say to do first?",
+    },
+    {
+      kind: "question",
+      text: "Which of these articles disagree with each other, and on what?",
+    },
+    {
+      kind: "question",
+      text: "What does Spaarke think AI cannot be trusted to do in a legal department?",
     },
   ];
 }

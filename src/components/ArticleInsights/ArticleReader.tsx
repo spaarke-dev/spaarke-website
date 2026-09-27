@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CloseIcon, PANEL_WIDTH, SURFACE_TOP } from "./chrome";
+import { CloseIcon, PANEL_WIDTH, useSurfaceTop } from "./chrome";
 import { useInsights } from "./InsightsProvider";
 import { markHeading } from "./pin";
 
@@ -40,6 +40,7 @@ export function ArticleReader() {
   const [failed, setFailed] = useState(false);
   const body = useRef<HTMLDivElement | null>(null);
   const cache = useRef(new Map<string, string>());
+  const surfaceTop = useSurfaceTop();
 
   const slug = reader?.slug ?? null;
 
@@ -124,7 +125,7 @@ export function ArticleReader() {
       // it happens to be mounted, which on the library page meant a dark article
       // on a light page.
       data-tone="light"
-      style={{ top: SURFACE_TOP, right: rightEdge }}
+      style={{ top: surfaceTop, right: rightEdge }}
     >
       <div
         className="absolute inset-0 bg-black/30"

@@ -24,7 +24,12 @@ export default function SiteHeader() {
   const pathname = usePathname() ?? "/";
 
   return (
-    <header className="bg-bg border-line sticky top-0 z-50 border-b backdrop-blur-sm">
+    // The hook the assistant's surfaces measure, so they sit under this rather
+    // than under a guess about how tall it is. See chrome.tsx.
+    <header
+      data-site-header
+      className="bg-bg border-line sticky top-0 z-50 border-b backdrop-blur-sm"
+    >
       <nav className="px-[var(--spacing-shell-x)] flex items-center justify-between gap-6 py-[21px] md:py-[26px]">
         {/* Left group: logo + page nav */}
         <div className="flex items-center gap-8 md:gap-10">
