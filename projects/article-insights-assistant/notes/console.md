@@ -47,6 +47,51 @@ Because the article has `max-w-[720px] mx-auto` inside the grid's first column, 
 padding re-centers it leftward without the prose re-wrapping, until the column
 drops below 720px.
 
+## The question goes to the top, the answer fills downward
+
+Asked for by the owner on 2026-09-27, and the reason is worth keeping. Following
+the last line as it streams makes the reader chase text down the screen and keeps
+the sentence they are reading in motion. Instead the current exchange is scrolled
+to the top of the pane once, when the question is asked, and nothing moves after
+that.
+
+That needs somewhere to scroll to, which is what the minimum height on the last
+exchange is for: without it a short answer cannot reach the top, because there is
+nothing underneath it to scroll past. The height is measured from the pane with a
+`ResizeObserver` rather than guessed in viewport units, because the mobile sheet
+shrinks when the keyboard opens and a stale measurement there would leave the
+question unreachable.
+
+The scroll effect is keyed on the **number** of exchanges, deliberately. Keying it
+on the turns would re-run on every sentence, which is the behaviour it replaces.
+
+## The library surface
+
+Added on 2026-09-27, moved in from release two. The console appears on
+`/why-spaarke` with `slug` null, which the endpoint already accepted: the whole
+corpus is in the model's context either way, so a library question reaches all
+twenty-four articles rather than fewer. The only difference is that nothing is
+foregrounded, and the panel heading says "Ask the library" rather than "Ask about
+this piece".
+
+**It takes the place of the keyword search box** in the filter bar, which is the
+owner's call and a defensible one. Search matches titles and excerpts; a question
+reaches the argument and comes back citing the piece that makes it. A live
+library-context turn cited three different articles, which is the thing search
+cannot do. The filters stay, because narrowing by topic is a different job from
+asking a question.
+
+The search box is still in `WhySpaarkeLibrary` and renders whenever the assistant
+prop is absent, so switching the console off restores search rather than leaving a
+gap in the bar. That is also why the entry point is passed in as a prop: the
+section should not have to know whether the assistant exists.
+
+The library's three entry questions are written rather than generated, and are
+deliberately cross-corpus, because an entry question only one article answers
+wastes the surface. They are held to the same validator as the generated ones.
+There is no summarize option, since summarizing twenty-four articles produces the
+page the reader is already on.
+
 ## The sheet traps focus and the panel does not
 
 This looks like an inconsistency and is not. Beside an article the console is one
@@ -77,7 +122,8 @@ is labeled so it can be found.
 |---|---|
 | `transcript.ts` | The view model and its reducer. No JSX, so it is tested directly |
 | `InsightsProvider.tsx` | State, the captcha, the one place a turn is run |
-| `RailEntry.tsx` | The desktop entry point, in the rail |
+| `RailEntry.tsx` | The desktop entry point on an article, in the rail |
+| `LibraryAskButton.tsx` | The desktop entry point on the library, in the filter bar |
 | `ConsoleBody.tsx` | The console itself, with no opinion about what holds it |
 | `InsightsPanel.tsx` | The desktop frame, and `shiftArticle` |
 | `MobileSheet.tsx` | The phone frame, which does trap focus |
@@ -140,7 +186,7 @@ npm run insights:console -- --base http://localhost:3000    plus what is in the 
 npm run insights:console -- --base ... --live                plus one real turn and its links
 ```
 
-Fifty-two checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
+Sixty-one checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
 articles came back labeled corpus in three paragraphs with **four citation chips,
 every one of which resolves to an id on the rendered page**; a question the library
 does not cover came back labeled general, cited nothing, and carried marked

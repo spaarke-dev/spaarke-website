@@ -28,7 +28,13 @@ import {
 } from "./transcript";
 
 /**
- * The article assistant: one conversation, three places it can appear.
+ * The assistant: one conversation, wherever it appears.
+ *
+ * Two contexts. On an article, `slug` names the piece the reader is on and the
+ * answer can extend it. On the library page `slug` is null, which the endpoint
+ * already accepts: the corpus is in context either way, so a library question
+ * reaches all twenty-four articles rather than fewer. The only difference is that
+ * nothing is foregrounded.
  *
  * The rail entry point, the desktop panel and the mobile sheet all read the same
  * state from here. **That is why this is a provider rather than a component.** The
@@ -55,8 +61,11 @@ export type OpenOn = "panel" | "sheet";
 export type QuestionSource = "suggested" | "typed";
 
 type InsightsValue = {
-  slug: string;
+  /** Null on the library page, where there is no article to extend. */
+  slug: string | null;
   articleTitle: string;
+  /** "Ask about this piece" on an article, something else on the library. */
+  eyebrow: string;
   options: EntryOption[];
   turns: Turn[];
   busy: boolean;
@@ -87,7 +96,7 @@ export function InsightsProvider({
   recaptchaSiteKey,
   children,
 }: {
-  slug: string;
+  slug: string | null;
   articleTitle: string;
   options: EntryOption[];
   recaptchaSiteKey: string;
@@ -130,7 +139,7 @@ export function InsightsProvider({
       // comparison asks whether that choice costs the article, so the flag has to
       // be set by the choice and not by what follows it.
       markAssistantUsed();
-      track("Assistant Opened", { article_slug: slug, surface: on });
+      track("Assistant Opened", { article_slug: slug ?? "library", surface: on });
     },
     [slug],
   );
@@ -214,7 +223,7 @@ export function InsightsProvider({
 
       if (outcome.status === "error") {
         updateAssistant(id, (t) => failTurn(t, outcome.code, outcome.message));
-        track("Assistant Error", { article_slug: slug, code: outcome.code });
+        track("Assistant Error", { article_slug: slug ?? "library", code: outcome.code });
         return;
       }
 
@@ -222,7 +231,7 @@ export function InsightsProvider({
       // on one article is a subject the library does not cover, which makes this
       // the brief for the next piece as much as a health check.
       track("Assistant Answer", {
-        article_slug: slug,
+        article_slug: slug ?? "library",
         provenance,
         citations,
         asked_back: askedBack,
@@ -243,7 +252,7 @@ export function InsightsProvider({
       if (busy) return;
       markAssistantUsed();
       track("Assistant Question", {
-        article_slug: slug,
+        article_slug: slug ?? "library",
         source,
         turn: turnsRef.current.filter((t) => t.role === "reader").length + 1,
       });
@@ -288,6 +297,7 @@ export function InsightsProvider({
     () => ({
       slug,
       articleTitle,
+      eyebrow: slug === null ? "Ask the library" : "Ask about this piece",
       options,
       turns,
       busy,

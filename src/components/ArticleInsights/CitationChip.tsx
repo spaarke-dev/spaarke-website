@@ -32,7 +32,7 @@ export function CitationChip({ citation }: { citation: Citation }) {
       href={citation.href}
       onClick={() =>
         track("Assistant Citation", {
-          article_slug: slug,
+          article_slug: slug ?? "library",
           to_slug: citation.slug,
           same_article: citation.slug === slug,
           whole_article: !citation.anchor,

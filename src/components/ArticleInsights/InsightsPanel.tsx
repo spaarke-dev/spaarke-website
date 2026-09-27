@@ -31,6 +31,7 @@ export function InsightsPanel() {
     open,
     openOn,
     articleTitle,
+    eyebrow,
     options,
     turns,
     busy,
@@ -40,7 +41,6 @@ export function InsightsPanel() {
     answerAsk,
     retry,
   } = useInsights();
-  const scroller = useRef<HTMLDivElement | null>(null);
   const composer = useRef<HTMLTextAreaElement | null>(null);
   const showing = open && openOn === "panel";
 
@@ -59,16 +59,6 @@ export function InsightsPanel() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [close, showing]);
 
-  // Follow the answer as it arrives, but only while the reader is already at the
-  // bottom. Yanking the view back while somebody is reading an earlier answer is
-  // the standard way this goes wrong.
-  useEffect(() => {
-    const el = scroller.current;
-    if (!el) return;
-    const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 120;
-    if (nearBottom) el.scrollTop = el.scrollHeight;
-  }, [turns]);
-
   return (
     <aside
       aria-label="Article assistant"
@@ -81,7 +71,7 @@ export function InsightsPanel() {
       <header className="border-line flex shrink-0 items-start justify-between gap-3 border-b px-4 py-3">
         <div className="min-w-0">
           <p className="text-fg-low font-mono text-[10px] font-medium uppercase tracking-[0.16em]">
-            Ask about this piece
+            {eyebrow}
           </p>
           <p className="text-fg-mid mt-1 truncate text-[13px]" title={articleTitle}>
             {articleTitle}
@@ -106,7 +96,6 @@ export function InsightsPanel() {
         onAnswerAsk={answerAsk}
         onRetry={retry}
         composerRef={composer}
-        scrollerRef={scroller}
       />
     </aside>
   );

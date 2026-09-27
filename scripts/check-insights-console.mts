@@ -25,12 +25,14 @@ const {
   appendRun,
   applyEvent,
   failTurn,
+  groupExchanges,
   historyFor,
   newAssistantTurn,
   paragraphIsGeneral,
   PROVENANCE_LABEL,
   turnText,
 } = await import("@/components/ArticleInsights/transcript");
+const { libraryOptions, validateQuestion } = await import("@/lib/insights/questions");
 
 const argv = process.argv.slice(2);
 const baseFlag = argv.indexOf("--base");
@@ -142,6 +144,60 @@ console.log("\napplying events to a turn");
   check(died.status === "failed", "a failure marks the turn failed");
   check(died.paragraphs.length === 1, "and keeps the prose that already arrived");
   check(died.error?.retryable === true, "an upstream error offers a retry");
+}
+
+// ------------------------------------------------- questions and their answers
+console.log("\nthe question and its answer are one unit");
+{
+  // The console pins the current question to the top of the pane and lets the
+  // answer fill below it, so the thing that gets measured and scrolled to is the
+  // pair. A mis-grouping here puts the wrong question above an answer, which is
+  // worse than any scrolling bug.
+  const answered = (id: string) =>
+    applyEvent(newAssistantTurn(id), { type: "text", text: "An answer. ", general: false });
+
+  const grouped = groupExchanges([
+    { role: "reader", id: "q1", text: "First" },
+    answered("a1"),
+    { role: "reader", id: "q2", text: "Second" },
+    answered("a2"),
+  ]);
+  check(grouped.length === 2, "two questions make two exchanges", `got ${grouped.length}`);
+  check(
+    grouped[0].reader?.text === "First" && grouped[0].assistant?.id === "a1",
+    "each answer stays with the question that asked it",
+  );
+
+  // The state between asking and the first sentence arriving, which is two to
+  // three seconds and is what the reader looks at most often.
+  const pending = groupExchanges([
+    { role: "reader", id: "q1", text: "First" },
+    answered("a1"),
+    { role: "reader", id: "q2", text: "Second" },
+  ]);
+  check(pending.length === 2, "a question with no answer yet is still an exchange");
+  check(pending[1].assistant === null, "with nothing in its answer half");
+
+  check(groupExchanges([]).length === 0, "an empty transcript has no exchanges");
+}
+
+// ------------------------------------------------------------ the library entry
+console.log("\nthe library surface");
+{
+  const options = libraryOptions();
+  check(options.length >= 3, "the library offers at least three questions", `${options.length}`);
+  const bad = options.flatMap((o) => validateQuestion(o.text).map((p) => `${o.text}: ${p}`));
+  check(bad.length === 0, "held to the same bar as the generated ones", bad.join(" | "));
+  check(
+    options.every((o) => o.kind === "question"),
+    "and no summarize option, which for the whole library is the page itself",
+  );
+  // The surface exists because a question can reach every article at once, so an
+  // entry question only one article answers would waste it.
+  check(
+    options.some((o) => /articles|department|legal operations/i.test(o.text)),
+    "the questions reach across the corpus rather than into one piece",
+  );
 }
 
 // ---------------------------------------------------- one console, three frames
@@ -384,6 +440,33 @@ if (base) {
         body.includes(`id="${anchor}"`) ? "" : "the anchor is not on the rendered page",
       );
     }
+  }
+}
+
+// ------------------------------------------------------------- the library page
+if (base) {
+  console.log("\nthe library page");
+  const res = await fetch(`${base}/why-spaarke`);
+  check(res.ok, "the library renders", `${res.status}`);
+  const html = await res.text();
+
+  check(html.includes("Ask these articles a question"), "the assistant is in the filter bar");
+  // The owner's call: keyword search over twenty-four articles matches titles and
+  // excerpts, and a question reaches the whole corpus and cites the piece that
+  // answers it. The search box is still in the component and renders when the
+  // assistant is switched off, so this is a swap rather than a deletion.
+  check(
+    !html.includes('placeholder="Search all resources"'),
+    "and has taken the search box's place rather than sitting beside it",
+  );
+  check(html.includes("Content Type") && html.includes("Topic"), "the filters are untouched");
+  check(html.includes("Ask the library"), "the panel heading says library rather than piece");
+
+  for (const option of libraryOptions()) {
+    check(
+      html.includes(option.text.slice(0, 40)),
+      `entry question in the first paint: ${option.text.slice(0, 44)}`,
+    );
   }
 }
 

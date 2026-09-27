@@ -20,6 +20,15 @@ grounding is a requirement rather than a nicety.
 
 ### In Scope
 
+**Moved in on 2026-09-27, by the owner.** The library-wide console surface was
+release two. It is now in release one: the console appears on `/why-spaarke` with
+its own cross-corpus entry questions, and it takes the place of the keyword search
+box in the filter bar. The corpus is in the model's context either way, so the
+library surface costs a page wiring rather than a retrieval layer, and keyword
+search over twenty-four articles matches titles where a question reaches the
+argument and cites the piece that makes it. The search box is still in the
+component and renders when the assistant is switched off.
+
 - Right-rail console on all 21 article pages, and a mobile bottom sheet
 - Whole-corpus context: every published article in a cached system prompt
 - Cross-article reasoning and citation from release one
@@ -37,7 +46,6 @@ grounding is a requirement rather than a nicety.
 - Any use of the Spaarke BFF chat path (see Key Decisions)
 - Pricing, support, sales, or demo-booking answers
 - Email capture or any gate on use
-- Library-wide console surface, which is release two
 - Structured multiple-choice question UI, which is release two
 - Authenticated or personalized sessions
 

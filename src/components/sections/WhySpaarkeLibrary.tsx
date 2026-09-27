@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Heading, Shell, Slab } from "@/components/primitives";
 import PostCard from "@/components/PostCard";
 import type { BlogPostMeta, TagCategories } from "@/lib/blog";
@@ -10,6 +10,15 @@ const PAGE_SIZE = 6;
 type Props = {
   posts: BlogPostMeta[];
   tagsByCategory: TagCategories;
+  /**
+   * The assistant's entry point, which takes the first slot of the filter bar
+   * where the search box used to be. Passed in rather than imported, because this
+   * component would otherwise have to know whether the assistant is switched on.
+   *
+   * When it is absent the search box renders instead, so turning the assistant off
+   * restores search rather than leaving a gap in the bar.
+   */
+  ask?: ReactNode;
 };
 
 type FilterKey = "contentType" | "topic" | "audience";
@@ -41,7 +50,7 @@ function formatTag(tag: string): string {
     .join(" ");
 }
 
-export function WhySpaarkeLibrary({ posts, tagsByCategory }: Props) {
+export function WhySpaarkeLibrary({ posts, tagsByCategory, ask }: Props) {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Record<FilterKey, string>>({
     contentType: "",
@@ -98,29 +107,35 @@ export function WhySpaarkeLibrary({ posts, tagsByCategory }: Props) {
           </Heading>
         </div>
 
-        {/* Filter bar */}
+        {/* Filter bar. The first slot is the assistant where it is switched on and
+            the search box where it is not. Keyword search matches titles and
+            excerpts across twenty-four articles; a question reaches the whole
+            corpus and comes back citing the piece that answers it. The filters
+            stay either way, because narrowing by topic is a different job from
+            asking a question. */}
         <div className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          {/* Search */}
-          <label className="border-line bg-surface flex items-center gap-2 rounded-md border px-3 py-2.5">
-            <svg
-              className="text-fg-low h-4 w-4 flex-shrink-0"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
-            </svg>
-            <input
-              type="search"
-              placeholder="Search all resources"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="text-fg placeholder:text-fg-low w-full bg-transparent text-sm outline-none"
-            />
-          </label>
+          {ask ?? (
+            <label className="border-line bg-surface flex items-center gap-2 rounded-md border px-3 py-2.5">
+              <svg
+                className="text-fg-low h-4 w-4 flex-shrink-0"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+              </svg>
+              <input
+                type="search"
+                placeholder="Search all resources"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="text-fg placeholder:text-fg-low w-full bg-transparent text-sm outline-none"
+              />
+            </label>
+          )}
 
           <FilterSelect
             label="Content Type"

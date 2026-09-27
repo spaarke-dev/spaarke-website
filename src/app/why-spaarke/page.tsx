@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { WhySpaarkeHero, WhySpaarkeLibrary } from "@/components/sections";
+import { InsightsProvider, LibraryAskButton } from "@/components/ArticleInsights";
 import { getAllPosts, getAllTags, getFeaturedPosts } from "@/lib/blog";
+import { libraryOptions } from "@/lib/insights/questions";
 
 const siteUrl = process.env.SITE_URL ?? "https://www.spaarke.com";
 
@@ -35,10 +37,38 @@ export default function WhySpaarke() {
   const allPosts = getAllPosts();
   const tagsByCategory = getAllTags();
 
+  // The library surface. `slug` is null because there is no article to extend:
+  // the whole corpus is in the model's context either way, so a question here
+  // reaches all of it rather than less of it.
+  //
+  // The console is off unless INSIGHTS_ENABLED is set, and when it is off the
+  // filter bar renders its search box instead of the assistant, so nothing is
+  // missing rather than something being broken.
+  const insightsEnabled = process.env.INSIGHTS_ENABLED === "true";
+
+  const library = (
+    <WhySpaarkeLibrary
+      posts={allPosts}
+      tagsByCategory={tagsByCategory}
+      ask={insightsEnabled ? <LibraryAskButton /> : undefined}
+    />
+  );
+
   return (
     <>
       <WhySpaarkeHero posts={featured} />
-      <WhySpaarkeLibrary posts={allPosts} tagsByCategory={tagsByCategory} />
+      {insightsEnabled ? (
+        <InsightsProvider
+          slug={null}
+          articleTitle={`${allPosts.length} published articles`}
+          options={libraryOptions()}
+          recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
+        >
+          {library}
+        </InsightsProvider>
+      ) : (
+        library
+      )}
     </>
   );
 }

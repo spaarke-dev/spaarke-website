@@ -24,12 +24,11 @@ import { CloseIcon } from "./InsightsPanel";
  * paragraph they were on rather than to the top.
  */
 export function MobileSheet() {
-  const { open, openOn, articleTitle, options, turns, busy, ask, close, dismissAsk, answerAsk, retry } =
+  const { open, openOn, articleTitle, eyebrow, options, turns, busy, ask, close, dismissAsk, answerAsk, retry } =
     useInsights();
   const showing = open && openOn === "sheet";
 
   const sheet = useRef<HTMLDivElement | null>(null);
-  const scroller = useRef<HTMLDivElement | null>(null);
   const composer = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
@@ -70,13 +69,6 @@ export function MobileSheet() {
     };
   }, [close, showing]);
 
-  useEffect(() => {
-    const el = scroller.current;
-    if (!el) return;
-    const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 120;
-    if (nearBottom) el.scrollTop = el.scrollHeight;
-  }, [turns]);
-
   if (!showing) return null;
 
   return (
@@ -100,7 +92,7 @@ export function MobileSheet() {
         <header className="border-line flex shrink-0 items-start justify-between gap-3 border-b px-4 pb-3 pt-3">
           <div className="min-w-0">
             <p className="text-fg-low font-mono text-[10px] font-medium uppercase tracking-[0.16em]">
-              Ask about this piece
+              {eyebrow}
             </p>
             <p className="text-fg-mid mt-1 truncate text-[13px]">{articleTitle}</p>
           </div>
@@ -123,7 +115,6 @@ export function MobileSheet() {
           onAnswerAsk={answerAsk}
           onRetry={retry}
           composerRef={composer}
-          scrollerRef={scroller}
         />
       </div>
     </div>
