@@ -22,6 +22,14 @@ jobs:
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
+        # The article pages are statically generated, so whether the assistant
+        # renders is decided here rather than at request time. The matching app
+        # setting of the same name gates the endpoint at runtime, and the two do
+        # different jobs: clear this one and the console disappears on the next
+        # build; clear the app setting and every question is refused immediately,
+        # which is the switch to reach for if spend runs away.
+        env:
+          INSIGHTS_ENABLED: "true"
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AMBITIOUS_BAY_0FB5BB10F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
