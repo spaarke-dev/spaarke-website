@@ -104,6 +104,12 @@ that its answers can be checked.
 section with that heading briefly marked, with the page still behind it. Escape
 closes it, and the console beside it stays live.
 
+**It shows the whole article, not an extract.** Hero, heading, body, everything,
+at the article's own `max-w-[720px]` reading width because that markup comes
+across intact. There is no link out of it any more: a reader who has to click
+through to see the rest has been shown a preview rather than sent to the citation,
+and the link was the admission that the modal was an intermediate step.
+
 **The article is lifted out of its own rendered page rather than re-rendered.** The
 first attempt was a route that compiled the markdown again. Next refuses
 `react-dom/server` in the App Router, and a plain remark pipeline would have needed
@@ -116,10 +122,20 @@ injected is the same bytes the public page already serves.
 
 **Three cases, and only one opens the reader.** Below the rail breakpoint the chip
 stays an ordinary link, because a reader, a console and an article on a phone is
-three things in a space that holds one. A citation into the article already on
-screen scrolls that page rather than opening a copy of it over itself. Everything
-else opens the reader. The `href` is real in every case, so a modified click, a
-long press and a copied link all still work.
+three things in a space that holds one. **A citation into the article already on
+screen scrolls that page to the heading and marks it**, which is what the console
+did before the reader existed and what the owner asked to have back; opening a copy
+of the page you are on over the top of it would be absurd. Everything else opens the
+reader. The `href` is real in every case, so a modified click, a long press and a
+copied link all still work.
+
+That in-page scroll is done in `pin.ts` rather than left to the browser, so the
+heading is marked and the address bar does not collect a fragment nobody asked
+for. It uses `scrollIntoView` rather than arithmetic, because the article's
+headings already carry `scroll-mt-[132px]` to clear the sticky header and
+`scroll-margin-top` is exactly what that honours. Computing the offset again would
+be a second opinion about the header's height, and the two would disagree the
+first time it changed.
 
 **Escape closes the reader before the console**, which the panel checks explicitly.
 Without that one press closes both, and the reader never sees the conversation they
@@ -148,6 +164,13 @@ They now carry `data-tone="light"` themselves. The console is a reading surface 
 articles and articles are light, so a surface should look the same wherever it is
 mounted rather than taking its appearance from the accident of where it was
 inserted.
+
+**The library entry point is rendered by the section, not passed into it.** Passing
+the element made React attribute it to the page that created it and warn about a
+missing key, because an element built in one component and rendered among another's
+static siblings is not covered by the compiler's static-children optimisation. The
+section takes a flag now and renders `LibraryAskButton` itself, which is also how
+`RailEntry` already works on the article page.
 
 The same class of mistake made the library entry button look like it used a
 different font. It did not: it used `text-fg-mid` where the filter controls beside
@@ -188,6 +211,7 @@ is labeled so it can be found.
 | `LibraryAskButton.tsx` | The desktop entry point on the library, in the filter bar |
 | `ArticleReader.tsx` | The cited article, opened beside the console |
 | `chrome.tsx` | The close icon and the surface measurements, shared so the imports do not form a cycle |
+| `pin.ts` | Scrolling to a cited heading and marking it, in the page and in the reader |
 | `ConsoleBody.tsx` | The console itself, with no opinion about what holds it |
 | `InsightsPanel.tsx` | The desktop frame, and `shiftArticle` |
 | `MobileSheet.tsx` | The phone frame, which does trap focus |
@@ -250,7 +274,7 @@ npm run insights:console -- --base http://localhost:3000    plus what is in the 
 npm run insights:console -- --base ... --live                plus one real turn and its links
 ```
 
-Eighty-two checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
+Eighty-five checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
 articles came back labeled corpus in three paragraphs with **four citation chips,
 every one of which resolves to an id on the rendered page**; a question the library
 does not cover came back labeled general, cited nothing, and carried marked

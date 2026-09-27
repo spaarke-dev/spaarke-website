@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { LibraryAskButton } from "@/components/ArticleInsights";
 import { Heading, Shell, Slab } from "@/components/primitives";
 import PostCard from "@/components/PostCard";
 import type { BlogPostMeta, TagCategories } from "@/lib/blog";
@@ -11,14 +12,18 @@ type Props = {
   posts: BlogPostMeta[];
   tagsByCategory: TagCategories;
   /**
-   * The assistant's entry point, which takes the first slot of the filter bar
-   * where the search box used to be. Passed in rather than imported, because this
-   * component would otherwise have to know whether the assistant is switched on.
+   * Whether the assistant takes the first slot of the filter bar, where the
+   * search box used to be. When it does not, the search box renders instead, so
+   * turning the assistant off restores search rather than leaving a gap.
    *
-   * When it is absent the search box renders instead, so turning the assistant off
-   * restores search rather than leaving a gap in the bar.
+   * A flag rather than the element itself. Passing the element made React attribute
+   * it to the page that created it and warn about a missing key, because an element
+   * built in one component and rendered among another's static siblings is not
+   * covered by the compiler's static-children optimisation. This also matches how
+   * `RailEntry` already works on the article page: the component reads the context
+   * itself, and only renders where a provider exists.
    */
-  ask?: ReactNode;
+  assistant?: boolean;
 };
 
 type FilterKey = "contentType" | "topic" | "audience";
@@ -50,7 +55,7 @@ function formatTag(tag: string): string {
     .join(" ");
 }
 
-export function WhySpaarkeLibrary({ posts, tagsByCategory, ask }: Props) {
+export function WhySpaarkeLibrary({ posts, tagsByCategory, assistant }: Props) {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Record<FilterKey, string>>({
     contentType: "",
@@ -114,7 +119,9 @@ export function WhySpaarkeLibrary({ posts, tagsByCategory, ask }: Props) {
             stay either way, because narrowing by topic is a different job from
             asking a question. */}
         <div className="mt-12 grid grid-cols-1 gap-3 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-          {ask ?? (
+          {assistant ? (
+            <LibraryAskButton />
+          ) : (
             <label className="border-line bg-surface flex items-center gap-2 rounded-md border px-3 py-2.5">
               <svg
                 className="text-fg-low h-4 w-4 flex-shrink-0"

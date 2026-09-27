@@ -100,7 +100,14 @@ export default async function WhySpaarkeArticle({ params }: Props) {
             className="mx-auto grid max-w-6xl grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-16"
           >
             {/* Center: article */}
+            {/* The hook the console's reader lifts this article out of. The whole
+                article rather than its body, so a cited passage opens complete,
+                with its hero and its heading, and nothing has to navigate away to
+                see the rest. Reusing the page rather than re-rendering the
+                markdown means the reader cannot drift from what the article
+                actually looks like. */}
             <article
+              data-article-full
               className="mx-auto w-full max-w-[720px]"
               itemScope
               itemType="https://schema.org/Article"
@@ -112,13 +119,7 @@ export default async function WhySpaarkeArticle({ params }: Props) {
 
               <ArticleHeader post={post} readingTimeMin={readingTime} />
 
-              {/* The hook the console's reader uses to lift this article's body
-                  out of the rendered page. Reusing the page rather than
-                  re-rendering the markdown means the reader cannot drift from
-                  what the article actually looks like, and needs no second
-                  pipeline to handle the raw HTML some articles contain. */}
               <div
-                data-article-body
                 className="prose prose-neutral prose-base md:prose-lg max-w-none prose-headings:font-display prose-headings:font-medium prose-headings:tracking-tight prose-h2:scroll-mt-[132px] prose-h3:scroll-mt-[132px]"
               >
                 {mdxContent}

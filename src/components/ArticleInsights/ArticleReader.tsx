@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { track } from "@/lib/analytics";
 import { CloseIcon, PANEL_WIDTH, SURFACE_TOP } from "./chrome";
 import { useInsights } from "./InsightsProvider";
+import { markHeading } from "./pin";
 
 /**
  * The cited passage, read beside the conversation rather than instead of it.
@@ -12,6 +12,11 @@ import { useInsights } from "./InsightsProvider";
  * were in the middle of asking. On the library page that is the whole session. So
  * a chip opens the article here, scrolled to the section that was cited, with the
  * console still open on the right and the page still behind.
+ *
+ * **The whole article, not an extract.** Hero, heading, body, everything. A reader
+ * who has to click through to see the rest of the piece has been shown a preview
+ * rather than sent to the citation, which is why there is no link out of here any
+ * more: there is nothing left for it to lead to.
  *
  * **The article is lifted out of its own rendered page, not re-rendered.** A
  * second markdown pipeline would need its own handling for the raw HTML some
@@ -59,8 +64,8 @@ export function ArticleReader() {
         // Inert: no scripts run, no images load, nothing from the fetched document
         // touches this one until it is injected deliberately.
         const parsed = new DOMParser().parseFromString(page, "text/html");
-        const article = parsed.querySelector("[data-article-body]");
-        if (!article) throw new Error("no article body");
+        const article = parsed.querySelector("[data-article-full]");
+        if (!article) throw new Error("no article");
         if (cancelled) return;
         cache.current.set(slug, article.innerHTML);
         setHtml(article.innerHTML);
@@ -95,12 +100,7 @@ export function ArticleReader() {
       target.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop;
     container.scrollTop = Math.max(top - 16, 0);
 
-    target.style.transition = "background-color 900ms ease";
-    target.style.backgroundColor = "rgba(0, 11, 255, 0.10)";
-    const timer = setTimeout(() => {
-      target.style.backgroundColor = "transparent";
-    }, 1_400);
-    return () => clearTimeout(timer);
+    return markHeading(target);
   }, [html, reader]);
 
   useEffect(() => {
@@ -136,10 +136,10 @@ export function ArticleReader() {
         // Not modal, for the same reason the console is not: the conversation
         // beside this has to stay usable while the reader reads.
         aria-label={`${reader.title}, the cited section`}
-        // A reading column, not a window. The first version filled the whole
-        // space left of the console, which on a wide screen is prose at about a
-        // hundred and forty characters a line and unreadable.
-        className="border-line bg-bg absolute inset-y-6 left-1/2 flex w-[min(740px,calc(100%-3rem))] -translate-x-1/2 flex-col overflow-hidden rounded-lg border shadow-2xl"
+        // Wide enough for the article to sit at its own reading width. The page
+        // gives it `max-w-[720px] mx-auto`, and that markup comes across intact,
+        // so this only has to leave room for it and its margins.
+        className="border-line bg-bg absolute inset-y-6 left-1/2 flex w-[min(880px,calc(100%-3rem))] -translate-x-1/2 flex-col overflow-hidden rounded-lg border shadow-2xl"
       >
         <header className="border-line flex shrink-0 items-start justify-between gap-4 border-b px-5 py-3">
           <div className="min-w-0">
@@ -152,20 +152,6 @@ export function ArticleReader() {
             )}
           </div>
           <div className="flex shrink-0 items-center gap-3">
-            <a
-              href={reader.href}
-              className="text-spaarke-blue hover:text-cta-blue focus-visible:ring-spaarke-blue rounded text-[13px] font-medium underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2"
-              onClick={() =>
-                track("Assistant Citation", {
-                  article_slug: "reader",
-                  to_slug: reader.slug,
-                  same_article: false,
-                  whole_article: true,
-                })
-              }
-            >
-              Open the full article
-            </a>
             <button
               type="button"
               onClick={closeReader}
@@ -177,7 +163,13 @@ export function ArticleReader() {
           </div>
         </header>
 
-        <div ref={body} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-5">
+        {/* The scrollbar is hidden rather than styled, at the owner's request. The
+            content still scrolls by wheel, trackpad, keyboard and touch; what goes
+            is the bar, which in a card this size read as clutter. */}
+        <div
+          ref={body}
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-8 py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           {html === null && !failed && (
             <p className="text-fg-low text-[14px]">Opening the article</p>
           )}
@@ -192,7 +184,10 @@ export function ArticleReader() {
           )}
           {html !== null && (
             <div
-              className="prose prose-neutral prose-sm max-w-none prose-headings:font-display prose-headings:font-medium prose-headings:tracking-tight"
+              // No `prose` wrapper. The article brings its own, because what is
+              // injected is the page's markup rather than bare markdown, and
+              // wrapping it again would apply the typography twice.
+              //
               // First-party content, from this site's own content files, taken out
               // of the page that already serves it publicly.
               dangerouslySetInnerHTML={{ __html: html }}

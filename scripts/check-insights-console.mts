@@ -255,12 +255,25 @@ console.log("\nthe surfaces share a console rather than forking it");
     "so a modified click still opens a tab",
   );
   check(chip.includes("READER_MIN_WIDTH"), "the reader is desktop only");
-  check(chip.includes("if (sameArticle) return;"), "and a citation into this page just scrolls it");
+  check(
+    chip.includes("if (sameArticle) {") && chip.indexOf("if (sameArticle) {") < chip.indexOf("openReader({"),
+    "and a citation into this page never reaches the reader",
+  );
 
   check(
-    reader.includes("data-article-body"),
-    "the reader lifts the body out of the rendered page",
+    reader.includes("data-article-full"),
+    "the reader lifts the whole article out of the rendered page",
     "rather than running a second markdown pipeline that could drift",
+  );
+  check(
+    !reader.includes("Open the full article"),
+    "and offers no link out, because the whole article is already here",
+  );
+  check(reader.includes("scrollbar-width:none"), "with the scrollbar hidden");
+  check(
+    chip.includes("pinInPage"),
+    "a citation into the article on screen scrolls the page and marks the heading",
+    "rather than opening a copy of the page over itself",
   );
   check(reader.includes("DOMParser"), "parsed inert, so nothing in the fetched page runs");
   check(!reader.includes("aria-modal"), "and it is not a modal, so the conversation stays usable");
@@ -489,8 +502,8 @@ if (base) {
       // The reader lifts `[data-article-body]` out of this page, so an anchor that
       // exists on the page but outside that element would scroll to nothing.
       // Position is the cheap way to tell the two apart without a DOM.
-      const bodyStart = body.indexOf("data-article-body");
-      check(bodyStart !== -1, `article body hook present: ${path}`);
+      const bodyStart = body.indexOf("data-article-full");
+      check(bodyStart !== -1, `article hook present: ${path}`);
 
       if (!anchor) {
         check(true, `chip lands: ${path}`, "whole article");
