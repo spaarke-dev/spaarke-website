@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import type { EntryOption } from "@/lib/insights/questions";
 import { AnswerBody } from "./AnswerBody";
 import { Composer } from "./Composer";
 import { Disclaimer } from "./Disclaimer";
@@ -24,9 +25,17 @@ const PANEL_TOP = 100;
  * The article is shifted rather than covered. See `shiftArticle`, which changes
  * padding rather than applying a transform, because a transformed ancestor would
  * break the sticky table of contents inside it.
+ *
+ * **It is always mounted and hidden when closed.** So its first rendered state
+ * carries the entry questions and the disclaimer, which is what FR-04 and FR-10
+ * ask for, and both are in the page's first paint rather than appearing on open.
+ * `inert` is what makes that safe: a closed panel is out of the tab order and out
+ * of the accessibility tree, instead of leaving a hidden text field in both.
  */
 export function InsightsPanel({
+  open,
   articleTitle,
+  options,
   turns,
   busy,
   onAsk,
@@ -35,7 +44,9 @@ export function InsightsPanel({
   onAnswerAsk,
   onRetry,
 }: {
+  open: boolean;
   articleTitle: string;
+  options: EntryOption[];
   turns: Turn[];
   busy: boolean;
   onAsk: (question: string) => void;
@@ -47,17 +58,20 @@ export function InsightsPanel({
   const scroller = useRef<HTMLDivElement | null>(null);
   const composer = useRef<HTMLTextAreaElement | null>(null);
 
+  // On open rather than on mount, because the panel is in the page from the
+  // start and stealing focus on page load would be a bug rather than a courtesy.
   useEffect(() => {
-    composer.current?.focus();
-  }, []);
+    if (open) composer.current?.focus();
+  }, [open]);
 
   useEffect(() => {
+    if (!open) return;
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose]);
+  }, [onClose, open]);
 
   // Follow the answer as it arrives, but only while the reader is already at the
   // bottom. Yanking the view back while somebody is reading an earlier answer is
@@ -72,7 +86,10 @@ export function InsightsPanel({
   return (
     <aside
       aria-label="Article assistant"
-      className="border-line bg-bg fixed right-0 z-40 hidden flex-col border-l shadow-[-8px_0_32px_rgba(0,0,0,0.08)] lg:flex"
+      inert={!open}
+      className={`border-line bg-bg fixed right-0 z-40 flex-col border-l shadow-[-8px_0_32px_rgba(0,0,0,0.08)] ${
+        open ? "hidden lg:flex" : "hidden"
+      }`}
       style={{ top: PANEL_TOP, bottom: 0, width: PANEL_WIDTH }}
     >
       <header className="border-line flex items-start justify-between gap-3 border-b px-4 py-3">
@@ -97,6 +114,35 @@ export function InsightsPanel({
       </header>
 
       <div ref={scroller} className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+        {/* The entry card. FR-04: three article-specific questions, then
+            summarize. It is the panel's first state rather than the rail's,
+            because this is where there is room to read what they return. */}
+        {turns.length === 0 && options.length > 0 && (
+          <div>
+            <p className="text-fg-mid text-[13px] leading-snug">
+              Start with one of these, or ask your own.
+            </p>
+            <ul className="mt-3 space-y-2">
+              {options.map((option) => (
+                <li key={option.text}>
+                  <button
+                    type="button"
+                    onClick={() => onAsk(option.text)}
+                    disabled={busy}
+                    className={`focus-visible:ring-spaarke-blue block w-full rounded-md border px-3 py-2.5 text-left text-[13px] leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:opacity-50 ${
+                      option.kind === "summarize"
+                        ? "border-line text-fg-mid hover:border-line-strong hover:text-fg"
+                        : "border-line text-fg hover:border-line-strong hover:bg-surface"
+                    }`}
+                  >
+                    {option.text}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <div className="space-y-6">
           {turns.map((turn) =>
             turn.role === "reader" ? (

@@ -59,10 +59,14 @@ Not the other way round.
 
 ## Acceptance Criteria
 
-- [x] Console renders in the rail on article pages. Asserted against the rendered
-      HTML rather than described.
+- [x] Console renders in the rail on article pages. The rail carries the heading,
+      one line and a link; the console itself is the panel. Asserted against the
+      rendered HTML rather than described.
 - [x] Three extending questions shown, summarize never first. Four options render,
-      summarize is last, asserted.
+      summarize is last, asserted. They are in the panel rather than the rail: the
+      owner saw the rail version and rejected it, because four cards pushed the
+      column past the fold and put a scrollbar beside the table of contents. The
+      panel is always mounted, so they are still in the page's first paint.
 - [x] Answers arrive progressively rather than at the end. Task 023 carries this;
       the console consumes it through `askInsights`, and a live turn delivered
       three paragraphs and four chips.

@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { askInsights, newRequestId } from "@/lib/insights/poll-client";
 import type { EntryOption } from "@/lib/insights/questions";
-import { Disclaimer } from "./Disclaimer";
 import { InsightsPanel, shiftArticle } from "./InsightsPanel";
 import {
   applyEvent,
@@ -18,10 +17,15 @@ import {
 /**
  * The article assistant: an entry card in the rail, and a reading panel.
  *
- * The rail is 220px, which is fine for three questions and unreadable for a
- * 185-word answer, so the card stays in the rail and the answers open in a panel
- * beside the article. One console, two containers; task 031's mobile sheet is the
- * third and reuses everything below `InsightsPanel`.
+ * The rail is 220px, which is unreadable for a 185-word answer, so the rail holds
+ * a link and the console itself is the panel. The entry questions live in the
+ * panel too: four cards in the rail pushed the column past the fold and put a
+ * scrollbar beside a table of contents that did not have one before.
+ *
+ * The panel is always mounted and hidden when closed, rather than mounted on
+ * open. Its first rendered state is therefore the entry questions and the
+ * disclaimer, which is what FR-04 and FR-10 ask for, and `inert` keeps a closed
+ * panel out of the tab order rather than leaving a hidden text field in it.
  *
  * **State lives here and nowhere else.** The panel and the card are both given
  * their data, because a conversation that survived being closed and reopened but
@@ -190,6 +194,10 @@ export function ArticleInsights({
 
   return (
     <>
+      {/* The rail is an entry point, not a surface. It was four question cards and
+          a paragraph, which pushed the column past the fold and put a scrollbar
+          beside a table of contents that did not have one before. The questions
+          belong where there is room to read the answers. */}
       <section aria-labelledby="insights-rail-heading">
         <h2
           id="insights-rail-heading"
@@ -202,56 +210,45 @@ export function ArticleInsights({
           Put a question to the whole library, not just this page.
         </p>
 
-        {options.length > 0 && (
-          <ul className="mt-3 space-y-1.5">
-            {options.map((option) => (
-              <li key={option.text}>
-                <button
-                  type="button"
-                  onClick={() => ask(option.text)}
-                  disabled={busy}
-                  className={`focus-visible:ring-spaarke-blue block w-full rounded-md border px-2.5 py-2 text-left text-[13px] leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:opacity-50 ${
-                    option.kind === "summarize"
-                      ? "border-line text-fg-mid hover:border-line-strong hover:text-fg"
-                      : "border-line text-fg hover:border-line-strong hover:bg-surface"
-                  }`}
-                >
-                  {option.text}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-
         <button
           type="button"
           ref={railTrigger}
-          onClick={() => {
-            setOpen(true);
-            // The panel focuses its own field on mount, so opening and typing is
-            // one action rather than two.
-          }}
-          className="text-spaarke-blue focus-visible:ring-spaarke-blue mt-3 rounded text-[13px] font-medium underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2"
+          onClick={() => setOpen(true)}
           aria-expanded={open}
+          className="text-spaarke-blue hover:text-cta-blue focus-visible:ring-spaarke-blue group mt-3 inline-flex items-center gap-2 rounded text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2"
         >
-          {turns.length > 0 ? "Open the conversation" : "Ask something else"}
+          <svg
+            className="h-4 w-4 shrink-0"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.6}
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8 10h8M8 14h5M21 12a8 8 0 0 1-8 8H7l-4 3v-5.6A8 8 0 0 1 13 4a8 8 0 0 1 8 8Z"
+            />
+          </svg>
+          <span className="underline underline-offset-2">
+            {turns.length > 0 ? "Open the conversation" : "Open the assistant"}
+          </span>
         </button>
-
-        <Disclaimer className="mt-4" />
       </section>
 
-      {open && (
-        <InsightsPanel
-          articleTitle={articleTitle}
-          turns={turns}
-          busy={busy}
-          onAsk={ask}
-          onClose={close}
-          onDismissAsk={dismissAsk}
-          onAnswerAsk={answerAsk}
-          onRetry={retry}
-        />
-      )}
+      <InsightsPanel
+        open={open}
+        articleTitle={articleTitle}
+        options={options}
+        turns={turns}
+        busy={busy}
+        onAsk={ask}
+        onClose={close}
+        onDismissAsk={dismissAsk}
+        onAnswerAsk={answerAsk}
+        onRetry={retry}
+      />
 
       {recaptchaSiteKey && (
         <ReCAPTCHA ref={captchaRef} sitekey={recaptchaSiteKey} size="invisible" />
