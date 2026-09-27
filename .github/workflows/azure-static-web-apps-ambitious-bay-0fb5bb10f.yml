@@ -9,6 +9,15 @@ on:
     branches:
       - main
 
+# Two deploys in flight at once do not queue at the Azure end, they cancel each
+# other: merging two pull requests a minute apart on 2026-09-27 produced
+# "Deployment Failure Reason: Deployment Canceled" and left main built but not
+# published. Queue them here instead, and do not cancel the one already running,
+# because the one already running may be the one that matters.
+concurrency:
+  group: swa-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
