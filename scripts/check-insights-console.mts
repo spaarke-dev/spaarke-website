@@ -356,8 +356,13 @@ console.log("\nthe surfaces share a console rather than forking it");
   // viewport where that header came out taller.
   const chrome = read("chrome.tsx");
   check(chrome.includes("useSurfaceTop"), "the surfaces measure the site header");
-  check(chrome.includes("ResizeObserver"), "and re-measure when it changes");
   check(!panel.includes("top: 100"), "rather than assuming a height");
+  // The campaign bar above the header pushes it down, so the header's height is
+  // not where it ends. That bar also scrolls away and can be dismissed, and only
+  // one of those three is a resize.
+  check(chrome.includes("getBoundingClientRect().bottom"), "by its bottom edge, not its height");
+  check(chrome.includes('addEventListener("scroll"'), "re-measured as the bar scrolls away");
+  check(chrome.includes("observer.observe(document.body)"), "and when it is dismissed");
 }
 
 // ------------------------------------------------------------------- copy

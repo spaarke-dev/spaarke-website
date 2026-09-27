@@ -18,11 +18,20 @@ export const PANEL_WIDTH = 420;
 /**
  * How far down the surfaces start, measured rather than assumed.
  *
- * It used to be a hardcoded 100, which is about right for the site header and was
- * not right on every viewport. When the header came out taller it covered the top
- * of the panel, which is the row holding the close button, so there was no visible
- * way to shut the console. A guess that is usually right is worse than a
- * measurement, because the failure only shows up on somebody else's screen.
+ * It began as a hardcoded 100, which is about right for the site header and was
+ * not right in practice. Then it measured the header's height, which was still
+ * wrong for the reason that actually mattered: **the campaign bar above the header
+ * pushes it down.** With the bar showing, the header's bottom edge is the bar plus
+ * the header, so the panel started under it and the row it hid is the one holding
+ * the close button. Dismiss the bar and the close button appeared, which is how
+ * the owner found it.
+ *
+ * So this follows the header's bottom edge rather than its size. That edge moves:
+ * the bar scrolls away and the sticky header rises to the top of the window, and
+ * the bar can be dismissed outright, which changes nothing about the header's own
+ * dimensions. Hence a scroll listener and an observer on the body as well as on
+ * the header, because those are three different ways for the same number to
+ * change and only one of them is a resize.
  */
 const FALLBACK_TOP = 100;
 
@@ -32,11 +41,32 @@ export function useSurfaceTop(): number {
   useEffect(() => {
     const header = document.querySelector<HTMLElement>("[data-site-header]");
     if (!header) return;
-    const measure = () => setTop(Math.round(header.getBoundingClientRect().height));
+
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const next = Math.max(0, Math.round(header.getBoundingClientRect().bottom));
+      // Only when it actually moved. This runs on scroll, and a re-render a frame
+      // is not what anyone wants from a number that changes twice a session.
+      setTop((current) => (current === next ? current : next));
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+
     measure();
-    const observer = new ResizeObserver(measure);
+    window.addEventListener("scroll", schedule, { passive: true });
+    const observer = new ResizeObserver(schedule);
     observer.observe(header);
-    return () => observer.disconnect();
+    // Dismissing the campaign bar moves the header without resizing it, and the
+    // page gets shorter when it goes.
+    observer.observe(document.body);
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      observer.disconnect();
+    };
   }, []);
 
   return top;

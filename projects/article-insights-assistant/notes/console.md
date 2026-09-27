@@ -192,12 +192,22 @@ below three, since three fills a card but leaves the rotation nothing to rotate.
 
 ## Every surface measures the header rather than guessing it
 
-`SURFACE_TOP` was a hardcoded 100, which is about right for the site header and was
-not right on every viewport. When the header came out taller it covered the top of
-the panel, and the top of the panel is the row holding the close button, so there
-was **no visible way to shut the console**. A guess that is usually right is worse
-than a measurement, because the failure only shows up on somebody else's screen.
-`useSurfaceTop` measures `[data-site-header]` and re-measures when it changes.
+It began as a hardcoded 100, which is about right for the site header and was not
+right in practice. Measuring the header's height was still wrong, for the reason
+that actually mattered: **the campaign bar above the header pushes it down.** With
+the bar showing, the header's bottom edge is the bar plus the header, so the panel
+started underneath it and the row it hid is the one holding the close button.
+Dismissing the bar made the close button appear, which is how the owner found it.
+
+`useSurfaceTop` follows the header's **bottom edge** rather than its size. That edge
+moves three ways and only one of them is a resize: the bar scrolls away and the
+sticky header rises, the bar can be dismissed outright, or the header itself
+changes. Hence a scroll listener and an observer on the body as well as on the
+header.
+
+The general lesson is worth more than the fix. Two versions of this were wrong
+because they measured a proxy for the thing that mattered. The question was never
+how tall the header is; it was where the header ends.
 
 ## The entry points are meant to be seen
 
@@ -333,7 +343,7 @@ npm run insights:console -- --base http://localhost:3000    plus what is in the 
 npm run insights:console -- --base ... --live                plus one real turn and its links
 ```
 
-Ninety-seven checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
+Ninety-nine checks with no server, more with one. Confirmed in the live runs on 2026-09-26: an answer from the
 articles came back labeled corpus in three paragraphs with **four citation chips,
 every one of which resolves to an id on the rendered page**; a question the library
 does not cover came back labeled general, cited nothing, and carried marked
