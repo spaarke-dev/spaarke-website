@@ -8,7 +8,8 @@
 > wrap-up, and the five things the owner has to do.
 
 **Active task:** none in progress.
-**Next task:** `040-instrumentation.md`, then `090-project-wrap-up.md`.
+**Next task:** `090-project-wrap-up.md`. Task 040 is built but cannot finish until
+the baseline has accumulated, which is a wait rather than work.
 
 ## What this is, in one paragraph
 
@@ -35,8 +36,8 @@ rather than a nicety.
 | 023 Partial answer polling | complete, verified against real Table Storage |
 | 030 Rail console | complete, unlooked-at |
 | 031 Mobile sheet | complete, never opened on a phone |
-| 040 Instrumentation | **next** |
-| 090 | not started |
+| 040 Instrumentation | instrumented, baseline pending, needs two weeks of quiet |
+| 090 Wrap-up | **next** |
 
 Merged to `main`: PR #87 the scaffold, #91 the prompt, #92 the entry card
 questions, #93 the evaluation suite, #94 the endpoint and its defences, #95 and
@@ -90,6 +91,15 @@ questions for 90 days, so the code currently keeps a promise that has not been
 published. That is the safe order, and #90 goes live with task 030 rather than
 after it. The spec claimed this had already shipped, and that claim is corrected.
 
+## The launch order, which matters
+
+**Merge everything, then leave `INSIGHTS_ENABLED` unset for two weeks.** The
+engagement baseline is a new event with no history, so it can only be collected
+while the console is off. Turning the console on the same day removes the only
+chance to know whether it helped the articles or replaced them. At least 150
+article visits and at least two weeks, so one LinkedIn post does not become the
+baseline. Full reasoning in `notes/measurement.md`.
+
 ## Before the console ships
 
 1. **Look at the console, on a desktop and on a phone.** Nobody has opened it on
@@ -98,16 +108,18 @@ after it. The spec claimed this had already shipped, and that claim is corrected
    wants a 1440px screen and a 1280px one, where the panel's shift calculation does
    the most work. On a phone it wants the keyboard open, which is the detail this
    kind of sheet usually gets wrong.
-2. **`INSIGHTS_ENABLED=true`** in Azure Static Web Apps app settings. Until it is
-   set the console does not render at all and the endpoint refuses, which is how
-   the feature stays off. Setting it is also what unblocks the one measurement task
+2. **`INSIGHTS_ENABLED=true`** in Azure Static Web Apps app settings, **after the
+   baseline has accumulated.** Until it is set the console does not render at all
+   and the endpoint refuses, which is how the feature stays off. Setting it is also what unblocks the one measurement task
    023 could not take, so take it at the same time with `npx tsx
    scripts/measure-insights-first-sentence.mts --base https://spaarke.com`.
    `RECAPTCHA_SITE_KEY` has to be there too, or the first question of every session
    is refused.
 3. **Merge PR #90**, the privacy policy.
-4. **An Azure cost alert** on the Foundry resource, below the monthly ceiling.
-   Still the owner's to do, and NFR-03 asks for it.
+4. **An Azure cost alert** on the Foundry resource. Confirmed on 2026-09-27 that
+   none exists. The command is written out in `notes/measurement.md` at $150
+   rather than $500, so it arrives while there is still room to act. It is the
+   owner's because a budget notification needs an email address.
 5. **Rotate the storage account key, the SendGrid key and the reCAPTCHA secret.**
    The owner scheduled this for after the full build, so it belongs here rather
    than in the deferred list. See the detail at the end of this file.
@@ -135,7 +147,8 @@ whole cost model. Detail in `notes/cost-model.md`.
 | `notes/endpoint-and-defences.md` | What the route does, what it refuses, the streaming finding and the decision |
 | `notes/conversation-schema.md` | The capture schema, the retention mechanism, the gap report |
 | `notes/cost-model.md` | Rates, the CCU wrapper, the cache warming that is designed and not built |
-| `notes/console.md` | The console's shape, the three bugs a live turn found, what task 031 inherits |
+| `notes/console.md` | The console's shape, the three bugs a live turn found, the three surfaces |
+| `notes/measurement.md` | Every event and where it lands, the queries, and the four failure thresholds |
 
 ## Commands
 
@@ -209,6 +222,14 @@ one: the answer on screen is real and may be missing its final sentence.
 manifest into the browser bundle. The article page is a server component, so read
 the three entry card questions there with `entryOptions(slug)` and pass them as
 props.
+
+**Application Insights had nothing in it for ninety days, and that was traffic
+rather than a fault.** Checked on 2026-09-27: zero rows in every table. A
+side-effect-free event fired in production then arrived within a minute, so the
+flush fix of 2026-09-25 works. `requests` and `pageViews` stay empty by design,
+because automatic collection does not hook into App Router handlers on Static Web
+Apps and there is no browser SDK; page views live in Plausible. Anyone reading an
+empty `requests` table as an outage will waste a day.
 
 **The defences fail closed.** If the counters cannot be read or written the
 request is refused. Development without a storage connection falls back to the

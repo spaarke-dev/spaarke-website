@@ -11,6 +11,8 @@ import {
   type ReactNode,
 } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import { track } from "@/lib/analytics";
+import { markAssistantUsed } from "@/lib/insights/engagement";
 import { askInsights, newRequestId } from "@/lib/insights/poll-client";
 import type { EntryOption } from "@/lib/insights/questions";
 import { FloatingButton } from "./FloatingButton";
@@ -49,7 +51,11 @@ const CAPTCHA_TIMEOUT_MS = 10_000;
 /** Which surface a reader opened. The other one stays hidden and inert. */
 export type OpenOn = "panel" | "sheet";
 
+/** Where a question came from, which is the interesting half of FR-04. */
+export type QuestionSource = "suggested" | "typed";
+
 type InsightsValue = {
+  slug: string;
   articleTitle: string;
   options: EntryOption[];
   turns: Turn[];
@@ -58,7 +64,7 @@ type InsightsValue = {
   openOn: OpenOn;
   openConsole: (on: OpenOn) => void;
   close: () => void;
-  ask: (question: string) => void;
+  ask: (question: string, source?: QuestionSource) => void;
   retry: () => void;
   dismissAsk: (id: string) => void;
   answerAsk: (id: string) => void;
@@ -115,10 +121,19 @@ export function InsightsProvider({
     triggers.current[on] = el;
   }, []);
 
-  const openConsole = useCallback((on: OpenOn) => {
-    setOpenOn(on);
-    setOpen(true);
-  }, []);
+  const openConsole = useCallback(
+    (on: OpenOn) => {
+      setOpenOn(on);
+      setOpen(true);
+      // Marked here rather than on the first question, because opening the console
+      // is already a reader choosing it over the article. The engagement
+      // comparison asks whether that choice costs the article, so the flag has to
+      // be set by the choice and not by what follows it.
+      markAssistantUsed();
+      track("Assistant Opened", { article_slug: slug, surface: on });
+    },
+    [slug],
+  );
 
   const close = useCallback(() => {
     setOpen(false);
@@ -179,19 +194,40 @@ export function InsightsProvider({
         }
       }
 
+      let provenance = "none";
+      let citations = 0;
+      let askedBack = false;
+
       const outcome = await askInsights({
         question,
         articleSlug: slug,
         history,
         sessionId: sessionRef.current,
         captchaToken,
-        onEvent: (event) => updateAssistant(id, (t) => applyEvent(t, event)),
+        onEvent: (event) => {
+          if (event.type === "provenance") provenance = event.value;
+          if (event.type === "citation") citations += 1;
+          if (event.type === "question") askedBack = true;
+          updateAssistant(id, (t) => applyEvent(t, event));
+        },
       });
 
       if (outcome.status === "error") {
         updateAssistant(id, (t) => failTurn(t, outcome.code, outcome.message));
+        track("Assistant Error", { article_slug: slug, code: outcome.code });
         return;
       }
+
+      // Provenance is the property worth having. A run of answers labeled general
+      // on one article is a subject the library does not cover, which makes this
+      // the brief for the next piece as much as a health check.
+      track("Assistant Answer", {
+        article_slug: slug,
+        provenance,
+        citations,
+        asked_back: askedBack,
+        closed_early: outcome.status === "answered-without-close",
+      });
 
       // Prose reached the reader and the POST never landed, which is a proxy
       // killing the connection. The answer on screen is real, so it is kept and
@@ -203,11 +239,17 @@ export function InsightsProvider({
   );
 
   const ask = useCallback(
-    (question: string) => {
+    (question: string, source: QuestionSource = "typed") => {
       if (busy) return;
+      markAssistantUsed();
+      track("Assistant Question", {
+        article_slug: slug,
+        source,
+        turn: turnsRef.current.filter((t) => t.role === "reader").length + 1,
+      });
       void runTurn(question, turnsRef.current);
     },
-    [busy, runTurn],
+    [busy, runTurn, slug],
   );
 
   const retry = useCallback(() => {
@@ -244,6 +286,7 @@ export function InsightsProvider({
 
   const value = useMemo<InsightsValue>(
     () => ({
+      slug,
       articleTitle,
       options,
       turns,
@@ -271,6 +314,7 @@ export function InsightsProvider({
       options,
       registerTrigger,
       retry,
+      slug,
       turns,
     ],
   );
