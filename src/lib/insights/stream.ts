@@ -61,7 +61,11 @@ export const ERROR_COPY: Record<InsightsErrorCode, string> = {
   DISABLED: "The article assistant is not switched on yet.",
   VALIDATION_ERROR: "That question could not be read. Try rewording it.",
   RATE_LIMITED: "That is a lot of questions in a short time. Give it a minute and ask again.",
-  CAPTCHA_REQUIRED: "Confirm you are not a robot to start the conversation.",
+  // Shown when the robot check did not produce a token, which is never something
+  // the reader can fix by confirming anything: the check is invisible and runs on
+  // submit. Telling them to confirm was an instruction with no button attached.
+  CAPTCHA_REQUIRED:
+    "The check that keeps robots out could not run, so the assistant cannot start. Reloading the page usually works. Ad blockers and strict privacy settings can stop it.",
   CAPTCHA_FAILED: "That check did not pass. Reload the page and try again.",
   DAILY_CEILING:
     "The assistant has reached its daily limit and is resting until tomorrow. The article itself is all still here, and you are welcome to get in touch.",

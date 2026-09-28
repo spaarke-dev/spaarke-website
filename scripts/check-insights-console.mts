@@ -386,6 +386,18 @@ console.log("\nevery failure has copy, and the right offer");
   const generic = codes.filter((c) => /error occurred|something went wrong/i.test(ERROR_COPY[c]));
   check(generic.length === 0, "and none of it is a generic failure message", generic.join(", "));
 
+  // The robot check is invisible and runs on submit, so a reader has nothing to
+  // confirm. Copy that asks them to is an instruction with no button attached,
+  // which is what the live site showed on its first day.
+  check(
+    !/confirm you are not a robot/i.test(ERROR_COPY.CAPTCHA_REQUIRED),
+    "and none of it asks the reader to do something they cannot do",
+  );
+  check(
+    /reload/i.test(ERROR_COPY.CAPTCHA_REQUIRED),
+    "a failed robot check says what to try instead",
+  );
+
   // Retrying a spend ceiling or a rate limit is useless, and retrying a failed
   // captcha needs a reload rather than a button.
   const noRetry: InsightsErrorCode[] = ["RATE_LIMITED", "DAILY_CEILING", "CAPTCHA_FAILED", "DISABLED"];

@@ -39,6 +39,16 @@ jobs:
         # which is the switch to reach for if spend runs away.
         env:
           INSIGHTS_ENABLED: "true"
+          # The pages that render a captcha are statically generated, so the site
+          # key has to be here and not only in the app settings. Without it the
+          # widget never renders, the token is always empty, and the assistant
+          # refuses every first question with a message telling the reader to
+          # confirm something there is no way to confirm.
+          #
+          # A reCAPTCHA site key is public by design, since it appears in the page
+          # it protects. It lives in a repository secret anyway, because this
+          # repository is public and there is no reason to put it in a file.
+          RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AMBITIOUS_BAY_0FB5BB10F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
