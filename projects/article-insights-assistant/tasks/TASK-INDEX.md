@@ -19,10 +19,15 @@
 | 023 | [Partial answer polling](023-partial-answer-polling.md) | 2 | 020 | 4h | **complete** |
 | 030 | [Right-rail console](030-rail-console.md) | 3 | 013, 023 | 4h | **complete** |
 | 031 | [Mobile bottom sheet](031-mobile-sheet.md) | 3 | 030 | 3h | **complete** |
-| 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | instrumented, baseline pending |
+| 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | instrumented, live events confirmed |
+| 050 | [Cache warming](050-cache-warming.md) | 4 | 040 | 3h | not-started |
+| 051 | [Tiered corpus](051-tiered-corpus.md) | 4 | 010, 040 | 4h | not-started |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | 4 | 040 | 3h | not-started |
 
-**14 tasks, roughly 44 hours.**
+**16 tasks, roughly 51 hours.** 050 and 051 were added on 2026-09-28, after the
+feature went live: cache warming because the measured cold turn is $0.69 against
+$0.04 warm, and the tiered corpus because the context window has room for two more
+articles and the owner asked to settle it now rather than rediscover it later.
 
 ## Phases
 

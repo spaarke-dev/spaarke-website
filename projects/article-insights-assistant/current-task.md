@@ -1,310 +1,283 @@
 # Current task: Article Insights Assistant
 
-> Context recovery. A session picking this up cold reads this file first,
-> then `tasks/TASK-INDEX.md`, then `spec.md`.
+> Context recovery. A session picking this up cold reads this file first, then
+> `notes/console.md`, then `tasks/TASK-INDEX.md`, then `spec.md`.
 >
-> Last updated 2026-09-26, end of the third working session. **Phases 0, 1 and 2
-> are complete, and so is phase 3.** What remains is the instrumentation, the
-> wrap-up, and the five things the owner has to do.
+> Last updated 2026-09-28. **The assistant is live in production.**
 
 **Active task:** none in progress.
-**Next task:** `090-project-wrap-up.md`. Task 040 is built but cannot finish until
-the baseline has accumulated, which is a wait rather than work.
+**Next task:** `090-project-wrap-up.md`, then tasks 050 and 051 scoped below.
 
-## What this is, in one paragraph
+## It is live
 
-An AI console in the article rail that lets a reader interrogate the piece and the
-library around it. The whole 24-article corpus sits in a cached model context, so
-it reasons across articles with no retrieval layer, and every claim is labeled with
-where it came from. It is not a website chat bot. It is also a demonstration of
-Spaarke's own product thesis, which is why visible citation is a requirement
-rather than a nicety.
+Switched on 2026-09-27. The console renders on all 24 article pages and on the
+library page at `/why-spaarke`, the endpoint answers, the captcha gate works, the
+privacy policy covering the 90 day question record is published, and the cost alert
+exists.
 
-## Where things stand
+**The first two production turns, from `insights.answer`:**
 
-| Task | State |
+| Turn | Cost | Cache | Provenance | Citations | Time |
+|---|---|---|---|---|---|
+| First | **$0.6855** | miss | corpus | 2 | 9.7s |
+| Second | **$0.0397** | hit | mixed | 2 | 7.7s |
+
+Those match what task 002 measured in the lab, so the cost model holds in
+production. The owner confirmed the phone surface reads well.
+
+## What switching it on took, and what it taught
+
+**Two flags, not one, and they do different jobs.** The pages are statically
+generated, so whether the console renders is decided at build time, and
+`INSIGHTS_ENABLED` had to go into the GitHub workflow as well as Azure app
+settings. The app setting still gates the endpoint at runtime and **is the kill
+switch**: clear it and every question is refused immediately, where clearing the
+build flag takes a full build.
+
+**The same bug one layer down.** `RECAPTCHA_SITE_KEY` was in app settings only, so
+the widget never rendered on the statically generated pages, the token was always
+empty, and the guard refused every first question with a message telling the reader
+to confirm something there was no way to confirm. The key now comes from a
+repository secret at build time.
+
+That also **restored the contact form's captcha**, broken the same way on every
+deploy. It was invisible because the contact route treats a missing token as a
+pass, so only the honeypot was stopping anything. `/contact` is a dynamic route,
+which is why it read the app setting fine and the console could not.
+
+**Deploys cancel each other.** Merging two pull requests a minute apart produced
+`Deployment Failure Reason: Deployment Canceled` and left `main` built but not
+published. A `concurrency` group now queues them, with `cancel-in-progress: false`.
+
+**The lesson under all three:** an Azure app setting is a runtime value. Anything a
+statically generated page needs must be in the build environment. Verify against
+the rendered page, not the setting.
+
+## Answers to the owner's questions, 2026-09-28
+
+### 1. Rotating the keys, in order
+
+Three secrets were printed into a session transcript on 2026-09-26. Nothing reached
+the repository, verified against git history and the working tree. Rotate in this
+order, because the first one can take the site down if done carelessly.
+
+**Storage account key, first and carefully.** That account holds real contact form
+submissions, the conversation record, the spend counters and the partial answers.
+
+1. List the keys and work out which is in use:
+   `az storage account keys list -n <account> -g <rg> --query "[].keyName" -o tsv`
+2. Regenerate **the one not in use**:
+   `az storage account keys renew -n <account> -g <rg> --key key2`
+3. Set the new connection string:
+   `az staticwebapp appsettings set --name swa-spaarke-website --setting-names STORAGE_ACCOUNT_CONNECTION="<new>"`
+   That command adds and updates rather than replacing, which was verified on
+   2026-09-27: 20 keys before, 21 after, none lost.
+4. **Confirm the console still answers.** The counters fail closed, so a stale key
+   takes the assistant down rather than leaving it unguarded.
+   `npm run insights:partial` and `npx tsx scripts/check-insights-defences.mts`
+   both exercise real storage with the new string.
+5. Only once that is confirmed, regenerate the other key.
+
+**SendGrid key.** New key in the SendGrid dashboard with the same send permission,
+set `SENDGRID_API_KEY`, send one test through the contact form, then delete the
+old key.
+
+**reCAPTCHA secret.** In the Google reCAPTCHA admin console only the **secret**
+needs rotating; the site key is public by design and appears in the page. Set
+`RECAPTCHA_SECRET_KEY`. The insights guard refuses when the secret is absent, so an
+empty value stops the assistant rather than opening it.
+
+**Foundry API key.** Optional, since the owner judged the resource not client
+confidential. If rotated, set `FOUNDRY_API_KEY`.
+
+After any of these, check `customEvents | where name startswith "insights.blocked."`
+for a spike in `counters_error`, which is what a wrong storage key looks like.
+
+### 2. The cost alert, created 2026-09-28
+
+A monthly budget of **$150** on `rg-website-article-agent`, the Foundry resource
+group, notifying `contactus@spaarke.com` at **50% actual, 80% actual, and 100%
+forecast**.
+
+$150 rather than the $500 ceiling, so it arrives while there is room to act, and
+deliberately the same number as failure threshold 3 in `notes/measurement.md`.
+Created with `az rest` against the Consumption API, because this CLI version's
+`az consumption budget create` cannot attach notifications and a budget that does
+not notify is decoration.
+
+### 3. Cache warming: build it, and the estimate was low
+
+The owner estimated $57.96 a month, which is about 2.8 cold misses a day. **At a
+twelve hour window with an hour of cache life the worst case is twelve misses a
+day: $8.28 a day, about $250 a month.** The real number is measurable now:
+
+```
+customEvents
+| where name == "insights.answer"
+| summarize misses = countif(tostring(customDimensions.cacheMiss) == "True"),
+            turns = count(), spend = sum(todouble(customDimensions.costUsd))
+  by bin(timestamp, 1d)
+```
+
+Warming costs a cached read each time, roughly **$0.045**, because a cache hit
+refreshes the time to live. Thirteen calls across a twelve hour window is about
+**$0.59 a day, $18 a month**, and it removes every miss inside that window. It wins
+above roughly one miss a day, so on this traffic it wins comfortably.
+
+**It cannot be an open endpoint.** A warming call costs real money, so it needs a
+shared secret between the workflow and the app settings. Note that `keep-warm.yml`
+already exists and keeps the **Azure function** warm; the model's prompt cache is a
+different thing and is not touched by it. Scoped as task 050.
+
+### 4. Context headroom: build the lever now, pull it later
+
+The corpus is **146,884 estimated tokens against a 160,000 ceiling**, which exists
+because the deployment has a **200K** window and the remainder is for the
+conversation and the answer. Room for about two more articles.
+
+The efficient fix is not to wait. Give each article a **tier** in the manifest:
+
+- **Tier 1**, the default, is what every article is today: the full body with a
+  citation marker on every heading.
+- **Tier 2** is title, summary, key takeaways, and headings with their markers, and
+  no body. About **350 tokens against 4,910**, so demoting one article frees
+  roughly **4,560**.
+
+Ship it with every article in tier 1, so nothing changes on the day. When the
+ceiling approaches, demoting an article is a one line change. **Demoting the eight
+least cited frees about 36,000 tokens, room for seven more articles**, and the
+telemetry already says which eight: `insights.answer` records `citedSlugs` on every
+turn, so an article nothing cites in a month is the candidate.
+
+A tier 2 article stays findable and citable as a whole, because its summary,
+takeaways and headings remain in context. What it loses is verbatim quotation. That
+keeps the whole-corpus reasoning the spec is built on, which retrieval would not.
+Scoped as task 051.
+
+The alternative is the 1M window if the Foundry deployment exposes it, which could
+not be confirmed from the CLI. It would take the corpus from two more articles to
+about 150, at premium pricing above the 200K threshold and with cache writes
+scaling accordingly. Build the warming first if going that way.
+
+### 5. Reading what visitors asked
+
+Three places, because the events go to two stores for two reasons.
+
+**What readers asked, and what the library could not answer.** The conversation
+record, 90 days of question text and then counts only:
+
+```
+npm run insights:gap
+```
+
+It needs `STORAGE_ACCOUNT_CONNECTION` in the environment. This is the one that
+feeds the content pipeline: a question answered from general knowledge is a subject
+the articles do not cover, which makes it a brief for the next piece.
+
+**Cost, provenance, defences and repairs.** Application Insights, queries in
+`notes/measurement.md`:
+
+```
+az monitor app-insights query --app 65cb39e6-e925-4507-8b5e-ff7d3474c04c \
+  --analytics-query "customEvents | where timestamp > ago(7d) | where name startswith 'insights.' | summarize n=count() by name"
+```
+
+**What readers did with it.** Plausible, on the dashboard: `Assistant Opened`,
+`Assistant Question`, `Assistant Answer`, `Assistant Citation`, `Assistant Error`,
+and `Article Engagement` with its `assistant` property. That last one carries the
+comparison the whole feature is being judged on.
+
+### 6. Publishing a new article
+
+Indexing is **already automatic**. `npm run build` runs the corpus manifest build
+first, so a new MDX file in `content/blog/` is in the model's context on the next
+deploy, with its headings, anchors and citation markers.
+
+Two things are not automatic:
+
+1. **Entry card questions.** `npm run insights:questions` generates six for any
+   article that lacks them and leaves the rest alone, so it is safe to run at any
+   time. About $0.04 an article. Without it the console opens with no chips, which
+   is degraded rather than broken.
+2. **The ceiling.** The build warns as the corpus grows and **fails** when the
+   headroom is gone. Read the warning.
+
+Anchors come from the same slugger the rendered page uses, so headings should be H2
+or H3 with text distinct enough to produce distinct anchors.
+
+This belongs in the publish checklist rather than in a new tool. Written up as
+`notes/publishing-a-new-article.md`.
+
+## What is left
+
+| | |
 |---|---|
-| 001 Foundry deployment | complete |
-| 002 Cost measurement | complete, gate passed |
-| 010 Corpus manifest | complete |
-| 011 System prompt | complete |
-| 012 Evaluation set | complete, gate met in part |
-| 013 Suggested questions | complete |
-| 020 Streaming endpoint | complete, switched off behind `INSIGHTS_ENABLED` |
-| 021 Abuse and spend defences | complete, verified against real Table Storage |
-| 022 Conversation capture | complete |
-| 023 Partial answer polling | complete, verified against real Table Storage |
-| 030 Rail console | complete, unlooked-at |
-| 031 Mobile sheet | complete, never opened on a phone |
-| 040 Instrumentation | instrumented, baseline pending, needs two weeks of quiet |
-| 090 Wrap-up | **next** |
+| **090** Project wrap-up | **next.** Unblocked now the feature is live |
+| **050** Cache warming | new, scoped above |
+| **051** Tiered corpus | new, scoped above |
+| Read the thresholds | late October, `notes/measurement.md` |
+| Run the gap report | a fortnight in, feeds the content pipeline |
 
-Merged to `main`: PR #87 the scaffold, #91 the prompt, #92 the entry card
-questions, #93 the evaluation suite, #94 the endpoint and its defences, #95 and
-#96 the streaming finding, #97 the checkpoint, #98 partial answer polling, #99 the
-console, #100 the rail as an entry point, #101 the mobile sheet, #102 the
-instrumentation, #103 the library surface and the pinned question, #104 the
-citation reader, #105 to #109 the owner's review rounds.
+**The engagement baseline is one day, not two weeks**, because the console went on
+sooner. The before and after comparison is weak as a result. The primary one is
+unaffected: `Article Engagement` carries `assistant: true` or `false` within the
+live period, and the four failure thresholds are written against that.
 
-## Where the two open questions landed
-
-**Azure Static Web Apps buffers the stream, so answers are polled for, and that is
-now built.** The platform collects the whole response before sending any of it,
-proven against the deployed site. Task 023 writes each event to Table Storage as it
-is assembled and adds a poll route the client reads while the POST is still open.
-It was chosen as the best experience available rather than the cheapest: the
-assembler already flushes by sentence, so polling looks identical to real
-streaming; the audience sits behind corporate networks that break long-lived
-connections; and the buffered POST remains a fallback, so a blocked poller costs
-progressive rendering rather than the answer.
-
-Measured first sentence: **2.4 to 3.3 seconds**, against a local production build
-with real storage and the real model, with thirteen of thirteen sentences delivered
-progressively. The deployed-site number needs `INSIGHTS_ENABLED=true` and is listed
-below. Design and the two things that are easy to get wrong are in
-`notes/endpoint-and-defences.md`.
-
-**Answers are now the length the owner asked for, and the numbers are measured.**
-They ran 400 to 650 words, which is a wall in a narrow column beside an article the
-reader is already part way through. They now run a **mean of 185 words, a median of
-197 and a maximum of 233** across forty live answers, with nothing above 280.
-
-Getting there took two turns of prompt work and both are worth knowing. The model
-**overshoots a stated band by five to twenty five percent**, so asking for 120 to
-200 produced a median of 205 and the instruction had to aim at 100 to 160 to land
-inside 200. And shortening the answers made it **over-quote**: demotions went from
-one to four, because compression squeezes a sentence and keeps the quotation marks.
-The quotation rule and the length rule now reference each other and the four
-failing cases cleared.
-
-**The rail is 220px, so the answers open in a panel.** The owner chose this on
-2026-09-26, after the measured answer length made the original plan unworkable: 185
-words in a 220px column is about 38 lines of three or four words. The entry card
-stays in the rail with its three questions and the disclaimer, and asking opens a
-420px panel beside the article. The article is shifted rather than covered, with
-padding rather than a transform, because a transformed ancestor would break the
-sticky table of contents inside it. **Task 031's mobile sheet is the third
-container around the same console**, so do not fork the transcript, the composer or
-the disclaimer. Detail in `notes/console.md`.
-
-**The privacy policy has to merge with the console.** PR #90 is a deliberate
-draft. The live policy does not mention the assistant, and task 022 records reader
-questions for 90 days, so the code currently keeps a promise that has not been
-published. That is the safe order, and #90 goes live with task 030 rather than
-after it. The spec claimed this had already shipped, and that claim is corrected.
-
-## The launch order, which matters
-
-**Merge everything, then leave `INSIGHTS_ENABLED` unset for two weeks.** The
-engagement baseline is a new event with no history, so it can only be collected
-while the console is off. Turning the console on the same day removes the only
-chance to know whether it helped the articles or replaced them. At least 150
-article visits and at least two weeks, so one LinkedIn post does not become the
-baseline. Full reasoning in `notes/measurement.md`.
-
-## Before the console ships
-
-1. **Open it on a phone.** The desktop console has now had five rounds of review.
-   **Nobody has opened the mobile sheet at all.** There is no browser automation in
-   this repo, so what is proven there is the markup and the logic, not the feel.
-   The detail this kind of sheet usually gets wrong is the on-screen keyboard, and
-   the fix for it is in place and unobserved.
-2. **`INSIGHTS_ENABLED=true`** in Azure Static Web Apps app settings, **after the
-   baseline has accumulated.** Until it is set the console does not render at all
-   and the endpoint refuses, which is how the feature stays off. Setting it is also what unblocks the one measurement task
-   023 could not take, so take it at the same time with `npx tsx
-   scripts/measure-insights-first-sentence.mts --base https://spaarke.com`.
-   `RECAPTCHA_SITE_KEY` has to be there too, or the first question of every session
-   is refused.
-3. **Merge PR #90**, the privacy policy.
-4. **An Azure cost alert** on the Foundry resource. Confirmed on 2026-09-27 that
-   none exists. The command is written out in `notes/measurement.md` at $150
-   rather than $500, so it arrives while there is still room to act. It is the
-   owner's because a budget notification needs an email address.
-5. **Rotate the storage account key, the SendGrid key and the reCAPTCHA secret.**
-   The owner scheduled this for after the full build, so it belongs here rather
-   than in the deferred list. See the detail at the end of this file.
-
-## The measured numbers, which are not estimates
-
-Live calls on 2026-09-26 against `spaarke-website-claude-sonnet-5`:
-
-- Warm turn, cache hit: **$0.032 to $0.046**
-- Cold turn, cache write at the 1 hour rate: **$0.68**
-- Assembled prompt: **152,357 tokens**, 95% of the 160,000 ceiling
-- A full 40-case evaluation run: **$1.75 to $2.40**
-- Answer time: 3.6 to 22.5 seconds, median about 11, with no streaming through the
-  platform
-
-The cache write is roughly fifteen times a cached turn, so cache misses are the
-whole cost model. Detail in `notes/cost-model.md`.
-
-## Read these notes before touching anything
+## Read these before touching anything
 
 | Note | What it holds |
 |---|---|
-| `notes/prompt-design.md` | The wire format, the four decisions behind it, six findings from live runs |
-| `notes/evaluation.md` | How to run the suite, how to read its rate, the three behaviours still wrong |
-| `notes/endpoint-and-defences.md` | What the route does, what it refuses, the streaming finding and the decision |
-| `notes/conversation-schema.md` | The capture schema, the retention mechanism, the gap report |
-| `notes/cost-model.md` | Rates, the CCU wrapper, the cache warming that is designed and not built |
-| `notes/console.md` | The console's shape, the three bugs a live turn found, the three surfaces |
-| `notes/measurement.md` | Every event and where it lands, the queries, and the four failure thresholds |
-
-The console note is the one to read before changing anything a reader sees. Most of
-what is in it was learned by getting it wrong first.
+| `notes/console.md` | The console's shape and every decision behind it. **Read this first.** Most of it was learned by getting it wrong |
+| `notes/measurement.md` | Every event, where it lands, the queries, the four failure thresholds written before the data |
+| `notes/endpoint-and-defences.md` | What the route does, what it refuses, the streaming finding, partial answers |
+| `notes/prompt-design.md` | The wire format, findings from live runs, why answers are the length they are |
+| `notes/evaluation.md` | How to run the suite, how to read its rate, what is still wrong |
+| `notes/cost-model.md` | Rates, the CCU wrapper, the cache warming maths |
+| `notes/conversation-schema.md` | The capture schema and the retention mechanism |
 
 ## Commands
 
 ```
-npm run insights:check -- --offline   prompt, parser and entry card copy, free
-npm run insights:check                the same plus four live calls, $0.17 warm
-npm run insights:eval                 40 evaluation cases, $1.75 to $2.40
+npm run insights:console              99 checks on the console, free
+npm run insights:console -- --base http://localhost:3000 --live   plus a real turn
+npm run insights:check -- --offline   prompt and parser, free
+npm run insights:eval                 40 evaluation cases, about $1.60
 npm run insights:gap                  what readers asked that the articles did not answer
-npm run insights:partial              31 checks on the partial answer store, real storage, free
-npm run insights:console              38 checks on the console, free
-npm run insights:console -- --base http://localhost:3000 --live   plus one real turn and its links
+npm run insights:partial              31 checks on the partial answer store, real storage
+npm run insights:questions            six entry questions for any article missing them
 npm run corpus                        regenerate the corpus manifest
-
-npx tsx scripts/check-insights-dedup.mts               6 merge orderings, no model, no storage, free
-npx tsx scripts/check-insights-defences.mts            18 checks on the counters, real storage
-npx tsx scripts/measure-insights-first-sentence.mts    time to first sentence, one warm turn
+npx tsx scripts/check-insights-dedup.mts      6 merge orderings, free
+npx tsx scripts/check-insights-defences.mts   18 checks on the counters, real storage
 ```
 
-The three self-tests that touch storage need the connection string in the
-environment. Pass it from the app settings rather than writing it into a file, and
-see the header of `scripts/check-insights-defences.mts` for the one-liner. Both
-self-tests write only to their own tables, `InsightsCountersSelfTest` and
-`InsightsPartialsSelfTest`, so live rows are never touched.
+The three that touch storage need the connection string in the environment. Pass it
+from the app settings rather than writing it into a file, and see the header of
+`scripts/check-insights-defences.mts` for the one liner.
 
-## Findings that shape the work still to do
+## Findings that still shape the work
 
 **Extended thinking is on at the deployment and it destroys answers.** Eleven of
-forty evaluation cases came back completely empty because 1,999 of 2,000 output
-tokens went into a thinking block. Every call goes through `buildMessageRequest`,
-which disables it. Anything new that calls the model uses that builder rather than
-composing its own request. The model also rejects `temperature` as deprecated.
+forty evaluation cases came back empty. Everything goes through
+`buildMessageRequest`, which disables it. Anything new that calls the model uses
+that builder rather than composing its own request. The model also rejects
+`temperature` as deprecated.
 
-**Three model behaviours are repaired mechanically** in `parseAnswer` and in the
-stream assembler: citations corrected, non-verbatim quotations demoted to
-paraphrase, dashes replaced. The counts are reported, because they are the rate at
-which the instructions are not landing. Never bypass them by rendering raw model
-text.
+**Three model behaviours are repaired mechanically** and counted: citations
+corrected, non-verbatim quotations demoted, dashes replaced. Never bypass them by
+rendering raw model text.
 
-**Mixed provenance labeling is not yet reliable.** A reply drawing on both the
-articles and outside knowledge is sometimes labeled corpus, and does not always
-carry the paragraph marker the client needs. Phase 1's gate is met in part, which
-is recorded rather than smoothed over.
+**Mixed provenance labeling is still not reliable**, and it is the largest failure
+class in the evaluation suite. Phase 1's gate is met in part, which is recorded
+rather than smoothed over.
 
-**Citations are copied, not composed.** Every heading in the corpus prints its own
-citation marker. The first live run showed the model assembling a slug from one
-article with an anchor from another, which produced a citation that looked right
-and went nowhere.
+**The model overshoots a stated word band by five to twenty five percent.** Answers
+run a mean of 185 words against an instruction asking for 100 to 160. Shortening
+them made it over-quote, so the quotation rule and the length rule now reference
+each other.
 
-**The console went through five rounds of the owner's review on 2026-09-27, and
-the shape it ended in is the shape to keep.** The entry questions rotate from six
-per article, the two kinds of citation look different because they do different
-things, the reader opens the whole article, and every surface carries its own light
-tone. Each of those replaced something that looked reasonable and read wrong, and
-`notes/console.md` records why in each case. `npm run insights:console` holds
-ninety-nine of those decisions in place.
+**The defences fail closed.** If the counters cannot be read or written the request
+is refused. That is correct, and it is also how a wrong storage key takes the
+assistant down, which is why the rotation order above matters.
 
-**A citation opens the article beside the conversation, not instead of it.**
-Navigating away cost the reader whatever they were asking, which made following a
-citation a punishment for trusting the answer. The reader lifts the article out of
-its own rendered page rather than re-rendering the markdown, so it cannot drift
-from what the page looks like. Desktop only; on a phone the chip is still a plain
-link.
-
-**The console is on the library page too**, at `/why-spaarke`, where it takes the
-place of the keyword search box in the filter bar. That was release two in the
-spec and the owner moved it in on 2026-09-27; the spec is corrected. `slug` is
-null there, which the endpoint already accepted, and a live library turn cited
-three different articles. The search box still renders whenever the assistant is
-switched off, so nothing is lost by turning it off.
-
-**The current question pins to the top of the pane and the answer fills below it**,
-which is the Copilot pattern and the owner's ask. Do not restore the
-follow-the-last-line scroll: it makes the reader chase text down the screen. The
-minimum height on the last exchange is what makes the pin possible and is measured
-from the pane rather than guessed, because the mobile sheet shrinks when the
-keyboard opens.
-
-**There is one console and three places it appears.** `ConsoleBody` is the
-console; the desktop panel and the mobile sheet are frames around it, and
-`InsightsProvider` holds the single conversation all of them read. The provider
-exists because the rail sits inside a `hidden lg:block` aside and a `display: none`
-ancestor hides a fixed child too, so the mobile button could not live there. Do not
-answer a mobile bug by copying the panel; a check fails if you do.
-
-**Task 040 and anything after it call `askInsights` from `poll-client.ts` and
-nothing lower.** That
-function owns the request id, the POST, the poller, and the merge of the two, and
-it delivers each event once through one `onEvent` callback. A component that posts
-to the route itself gets a buffered answer with no progressive rendering, which is
-the whole thing task 023 exists to prevent. Everything in that file is an
-`import type`, deliberately, because `stream.ts` and `citations.ts` reach the
-500 kB corpus manifest.
-
-**`askInsights` has three outcomes and the middle one matters.** `answered`,
-`error`, and `answered-without-close`, which is prose that reached the reader
-before the POST died. The last one is not an error and must not be rendered as
-one: the answer on screen is real and may be missing its final sentence.
-
-**Do not import `@/lib/corpus` from a client component.** It pulls a 500 kB JSON
-manifest into the browser bundle. The article page is a server component, so read
-the three entry card questions there with `entryOptions(slug)` and pass them as
-props.
-
-**Application Insights had nothing in it for ninety days, and that was traffic
-rather than a fault.** Checked on 2026-09-27: zero rows in every table. A
-side-effect-free event fired in production then arrived within a minute, so the
-flush fix of 2026-09-25 works. `requests` and `pageViews` stay empty by design,
-because automatic collection does not hook into App Router handlers on Static Web
-Apps and there is no browser SDK; page views live in Plausible. Anyone reading an
-empty `requests` table as an outage will waste a day.
-
-**The defences fail closed.** If the counters cannot be read or written the
-request is refused. Development without a storage connection falls back to the
-in-process limiter and warns loudly.
-
-## Deferred by the owner, still open
-
-- **Cache warming**, which would cut a cold turn from $0.68 to $0.046. Designed,
-  costed, not built. Break-even around 61 conversations a month.
-- **Context window headroom.** The assembled prompt is at 95% of the 160,000
-  ceiling, with room for about one more article. The build warns on every run and
-  fails hard when the headroom is gone.
-- **Rotating the Foundry API key.** The owner judged the resource not client
-  confidential.
-## The key rotation, which is a release step rather than a deferral
-
-**Rotate the storage account key, the SendGrid key and the reCAPTCHA secret after
-the full build.** On 2026-09-26 an `az staticwebapp appsettings list` printed every
-production secret into a session transcript. Nothing reached the repository, which
-was verified by scanning git history and the working tree. The storage key is the
-one worth rotating first, because that account holds real contact form
-submissions. **The owner scheduled this for after the full build**, on 2026-09-26,
-so it is item 5 of the list above rather than an open question. Rotating
-mid-build would break the defences self-test and the app settings at the same
-time, which is the argument for waiting. Two things have to be true when it
-happens: the storage key rotates before the console is announced, and
-`STORAGE_ACCOUNT_CONNECTION` is updated in the app settings in the same change,
-because the counters fail closed and a stale key takes the assistant down rather
-than leaving it unguarded. Three tables now depend on it: the counters, the
-conversation record, and the partial answers.
-
-## Content items, one settled and one open
-
-**The em dashes in the two article titles are accepted.** The owner decided on
-2026-09-26 that the platform feature reference and the article on legal AI not
-being deterministic keep their titles. The assistant will reproduce the mark
-whenever it cites either piece, and that is a known and accepted exception rather
-than a bug in the dash repair. Do not add a normalization pass over titles or
-headings to hide it: `normalizeDashes` covers prose the model writes, and a title
-is the owner's text being quoted accurately.
-
-**The entry card questions name ChatGPT and Copilot** in the reader's voice, both
-of which the articles name themselves. The prompt forbids claims about a named
-competitor beyond what an article states, so the question invites an answer the
-instructions already constrain. Worth reading one of those answers before launch.
+**Do not import `@/lib/corpus` from a client component.** It pulls a 500 kB
+manifest into the browser bundle.
