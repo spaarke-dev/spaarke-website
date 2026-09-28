@@ -6,7 +6,15 @@
 > Last updated 2026-09-28. **The assistant is live in production.**
 
 **Active task:** none in progress.
-**Next task:** `090-project-wrap-up.md`, then tasks 050 and 051 scoped below.
+**Next task:** `050-cache-warming.md`, then `051-tiered-corpus.md`.
+
+**Task 090 is complete** (2026-09-28). The result is in
+`notes/launch-verification.md`: 9 of 11 success criteria met, 1 partly met, 1
+not assessable for another fortnight. `notes/lessons-learned.md` holds what the
+build taught.
+
+**Both Azure keys were rotated on 2026-09-28.** SendGrid and reCAPTCHA were
+judged not to need it by the owner.
 
 ## It is live
 
@@ -55,42 +63,52 @@ the rendered page, not the setting.
 
 ## Answers to the owner's questions, 2026-09-28
 
-### 1. Rotating the keys, in order
+### 1. Rotating the keys. Done 2026-09-28
 
-Three secrets were printed into a session transcript on 2026-09-26. Nothing reached
-the repository, verified against git history and the working tree. Rotate in this
-order, because the first one can take the site down if done carelessly.
+Three secrets were printed into a session transcript on 2026-09-26. Nothing
+reached the repository, verified against git history and the working tree.
 
-**Storage account key, first and carefully.** That account holds real contact form
-submissions, the conversation record, the spend counters and the partial answers.
+**Both Azure keys are rotated.** The storage account and the Foundry resource
+each had the exposed key regenerated, after the application was moved onto the
+other key and confirmed working. The exposed values are dead. `.env.local` was
+updated to match, and every value was handled inside a single shell invocation
+so none of it passed through a transcript. Which key was live was determined by
+comparing truncated SHA-256 fingerprints, never by printing the values.
 
-1. List the keys and work out which is in use:
-   `az storage account keys list -n <account> -g <rg> --query "[].keyName" -o tsv`
-2. Regenerate **the one not in use**:
-   `az storage account keys renew -n <account> -g <rg> --key key2`
-3. Set the new connection string:
-   `az staticwebapp appsettings set --name swa-spaarke-website --setting-names STORAGE_ACCOUNT_CONNECTION="<new>"`
-   That command adds and updates rather than replacing, which was verified on
-   2026-09-27: 20 keys before, 21 after, none lost.
-4. **Confirm the console still answers.** The counters fail closed, so a stale key
-   takes the assistant down rather than leaving it unguarded.
-   `npm run insights:partial` and `npx tsx scripts/check-insights-defences.mts`
-   both exercise real storage with the new string.
-5. Only once that is confirmed, regenerate the other key.
+**SendGrid and reCAPTCHA were not rotated**, by the owner's decision. Both are
+third-party consoles with no CLI path, and the owner judged them not to need it.
 
-**SendGrid key.** New key in the SendGrid dashboard with the same send permission,
-set `SENDGRID_API_KEY`, send one test through the contact form, then delete the
-old key.
+**It caused a three-minute production outage**, from roughly 13:33 to 13:35 UTC.
+Telemetry confirms no real visitor hit it: the only genuine turn that day was at
+12:46, and the nine events inside the window were all verification traffic.
 
-**reCAPTCHA secret.** In the Google reCAPTCHA admin console only the **secret**
-needs rotating; the site key is public by design and appears in the page. Set
-`RECAPTCHA_SECRET_KEY`. The insights guard refuses when the secret is absent, so an
-empty value stops the assistant rather than opening it.
+**Two findings worth carrying into any future rotation.** They are the reason
+the outage happened, and they are written up more fully in
+`notes/lessons-learned.md`.
 
-**Foundry API key.** Optional, since the owner judged the resource not client
-confidential. If rotated, set `FOUNDRY_API_KEY`.
+1. **A regenerated storage key is not immediately usable.** The new key took
+   roughly **four to five minutes** to authenticate against the data plane.
+   Repointing straight after regenerating pointed production at a key that did
+   not yet work. Poll the new key until it authenticates first.
+2. **Never invalidate the old credential in the same breath as repointing.** The
+   Foundry rotation set the new app setting and killed the old key seconds
+   apart, and the running app was still holding the old one. The storage
+   rotation was clean precisely because minutes of verification sat in between.
 
-After any of these, check `customEvents | where name startswith "insights.blocked."`
+The order that works:
+
+1. Confirm which key is live, by fingerprint rather than by printing it.
+2. Regenerate the key that is **not** in use.
+3. Poll until the new key authenticates.
+4. Repoint the app setting.
+5. **Prove the running application picked it up, with a real request.** This is
+   the step it is tempting to skip and it is the whole point.
+6. Only then regenerate the exposed key.
+
+The defences fail closed, so a stale storage key takes the assistant down rather
+than leaving it unmetered. That is correct, and it is why the order matters.
+
+After any rotation, check `customEvents | where name startswith "insights.blocked."`
 for a spike in `counters_error`, which is what a wrong storage key looks like.
 
 ### 2. The cost alert, created 2026-09-28
@@ -212,9 +230,10 @@ This belongs in the publish checklist rather than in a new tool. Written up as
 
 | | |
 |---|---|
-| **090** Project wrap-up | **next.** Unblocked now the feature is live |
-| **050** Cache warming | new, scoped above |
+| **090** Project wrap-up | **complete** 2026-09-28. See `notes/launch-verification.md` |
+| **050** Cache warming | **next.** Scoped above. Measure before building |
 | **051** Tiered corpus | new, scoped above |
+| Read the engagement comparison | **2026-10-12**, `notes/measurement.md`. Nothing to compare before then |
 | Read the thresholds | late October, `notes/measurement.md` |
 | Run the gap report | a fortnight in, feeds the content pipeline |
 

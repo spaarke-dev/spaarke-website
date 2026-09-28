@@ -1,7 +1,7 @@
 # Task 090: Project wrap-up
 
 **Phase:** 4 (Instrument and launch)
-**Status:** not-started
+**Status:** complete (2026-09-28)
 **Estimated:** 3 hours
 **Dependencies:** 040
 **Tags:** testing, accessibility, performance, deploy
@@ -40,14 +40,14 @@ all 21 articles, and what was learned written down.
 
 ## Acceptance Criteria
 
-- [ ] All 11 spec success criteria checked, with failures recorded honestly
+- [x] All 11 spec success criteria checked, with failures recorded honestly
       rather than omitted
-- [ ] Evaluation suite run and pass rate recorded
-- [ ] Lighthouse scores not materially degraded against the pre-console
+- [x] Evaluation suite run and pass rate recorded
+- [~] Lighthouse scores not materially degraded against the pre-console
       baseline
-- [ ] Both viewports verified by hand
-- [ ] Console live on all 21 articles
-- [ ] First content-gap report produced
+- [x] Both viewports verified by hand
+- [x] Console live on all 21 articles
+- [x] First content-gap report produced
 
 ## Notes
 
@@ -59,3 +59,24 @@ Criteria that failed belong in the verification note. A wrap-up that
 records only what passed is not a record.
 
 See spec Success Criteria.
+
+
+## Result
+
+Done 2026-09-28. Recorded in `notes/launch-verification.md` and
+`notes/lessons-learned.md`.
+
+**9 of 11 success criteria met, 1 partly met, 1 not yet assessable.**
+
+- Criterion 4, general-knowledge labeling, is **partly met**. The evaluation run
+  scored 37 of 40 and all three failures are the model over-claiming corpus
+  grounding. Shipped known.
+- Criterion 10, the engagement comparison, **cannot be assessed yet**. The
+  console has been live one day. **Look again on 2026-10-12.**
+- The Lighthouse criterion is marked `~` rather than met or failed, because
+  **no pre-console baseline was ever captured**, so the comparison it asks for
+  cannot be made. Absolute desktop scores are recorded instead: Performance 98,
+  Accessibility 96, SEO 100, Best Practices 78 against a target of 95. The Best
+  Practices gap is the reCAPTCHA cookie the bot defence requires.
+- The console is live on **24** articles, not the 21 the criterion names. The
+  corpus grew after the spec was written.

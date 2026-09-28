@@ -22,7 +22,7 @@
 | 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | instrumented, live events confirmed |
 | 050 | [Cache warming](050-cache-warming.md) | 4 | 040 | 3h | not-started |
 | 051 | [Tiered corpus](051-tiered-corpus.md) | 4 | 010, 040 | 4h | not-started |
-| 090 | [Project wrap-up](090-project-wrap-up.md) | 4 | 040 | 3h | not-started |
+| 090 | [Project wrap-up](090-project-wrap-up.md) | 4 | 040 | 3h | **complete** |
 
 **16 tasks, roughly 51 hours.** 050 and 051 were added on 2026-09-28, after the
 feature went live: cache warming because the measured cold turn is $0.69 against

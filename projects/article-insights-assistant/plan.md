@@ -116,13 +116,15 @@ the assistant reduces engagement, only measurement will show it.
 
 ## Milestones
 
-| Milestone | Phase | Means |
-|---|---|---|
-| M1 Cost proven | 0 | A real call, measured, inside the ceiling |
-| M2 Quality proven | 1 | Evaluation suite passing |
-| M3 Endpoint safe | 2 | Bot and spend defences demonstrated |
-| M4 Surfaces complete | 3 | Both viewports, accessible |
-| M5 Measurable | 4 | Events arriving, baseline captured |
+| Milestone | Phase | Means | Status |
+|---|---|---|---|
+| M1 Cost proven | 0 | A real call, measured, inside the ceiling | **met.** $0.6888 cold, $0.0358 warm, in production |
+| M2 Quality proven | 1 | Evaluation suite passing | **met in part.** 37 of 40. All three failures are provenance labeling |
+| M3 Endpoint safe | 2 | Bot and spend defences demonstrated | **met.** Refused against production with no token, and with a forged history |
+| M4 Surfaces complete | 3 | Both viewports, accessible | **met.** 24 of 24 articles and the library page. No console accessibility failures |
+| M5 Measurable | 4 | Events arriving, baseline captured | **met in part.** Events arriving. The engagement baseline is one day, not two weeks |
+
+Recorded against the live system in `notes/launch-verification.md`.
 
 ## Dependencies between phases
 
