@@ -180,3 +180,79 @@ export async function sendEarlyReleaseNotification(data: {
     return { sent: false, error: message };
   }
 }
+
+/**
+ * Tells a human that an evaluation request arrived but did not reach the
+ * platform, so somebody re-enters it rather than a lead sitting unread in a
+ * table nobody opens.
+ *
+ * This fires only when the BFF could not be reached or failed. A refusal on the
+ * BFF's own terms, a duplicate email for instance, is a working system saying
+ * no and needs no alert.
+ *
+ * The lead's details are in the body on purpose. The point of this mail is that
+ * the work can be done from the mail itself when storage is also unavailable.
+ */
+export async function sendDemoRequestFallbackNotification(data: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  organization: string;
+  jobTitle?: string;
+  phone?: string;
+  useCase: string;
+  notes?: string;
+  reason: string;
+  rowKey: string | null;
+}): Promise<{ sent: true } | { sent: false; error: string }> {
+  if (!ensureInit()) {
+    return { sent: false, error: "SendGrid not configured." };
+  }
+
+  const to = process.env.CONTACT_EMAIL_TO;
+  const from = process.env.SENDGRID_FROM_EMAIL;
+
+  if (!to || !from) {
+    console.warn(
+      "[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set - skipping.",
+    );
+    return { sent: false, error: "Email recipients not configured." };
+  }
+
+  const timestamp = new Date().toISOString();
+  const stored = data.rowKey
+    ? `Saved in Table Storage, DemoRequests, row ${data.rowKey}, status orphaned.`
+    : "NOT SAVED. Table Storage was unavailable too, so this mail is the only copy.";
+
+  const text = [
+    `An evaluation access request did not reach the platform at ${timestamp}.`,
+    "",
+    `Reason: ${data.reason}`,
+    stored,
+    "",
+    "The visitor was shown a success message, because we hold their request.",
+    "Re-enter it in the platform, or wait for the backend and forward it then.",
+    "",
+    `Name:         ${data.firstName} ${data.lastName}`,
+    `Email:        ${data.email}`,
+    `Organization: ${data.organization}`,
+    `Job title:    ${data.jobTitle || "-"}`,
+    `Phone:        ${data.phone || "-"}`,
+    `Use case:     ${data.useCase}`,
+    `Notes:        ${data.notes || "-"}`,
+  ].join("\n");
+
+  try {
+    await sgMail.send({
+      to,
+      from,
+      subject: `[Spaarke] ACTION NEEDED: evaluation request not forwarded - ${data.firstName} ${data.lastName}`,
+      text,
+    });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send demo request fallback notice:", message);
+    return { sent: false, error: message };
+  }
+}
