@@ -20,7 +20,8 @@
     "insights:eval": "tsx scripts/eval-insights.ts",
     "insights:gap": "tsx scripts/content-gap-report.ts",
     "insights:partial": "tsx scripts/check-insights-partial.mts",
-    "insights:console": "tsx scripts/check-insights-console.mts"
+    "insights:console": "tsx scripts/check-insights-console.mts",
+    "demo-request:check": "tsx scripts/check-demo-request-capture.mts"
   },
   "dependencies": {
     "@anthropic-ai/foundry-sdk": "^0.4.9",

@@ -99,19 +99,42 @@ website /api/registration/demo-request
 │       workEmail   → email
 │       consent     → consentAccepted
 │       captchaToken → recaptchaToken
-├── 5. POST to ${BFF_API_URL}/api/registration/demo-request
-└── 6. Return BFF response status to the form, with attribution data
+├── 5. Write a receipt to our own Table Storage, status "pending"
+├── 6. POST to ${BFF_API_URL}/api/registration/demo-request
+├── 7. Mark the receipt forwarded / rejected / orphaned
+└── 8. Return the BFF response to the form, with attribution data
        persisted in App Insights for our own analytics.
 ```
 
 The website is intentionally a thin layer. We do *not* do any of the
 following ourselves:
 
-- Persist demo-request records (only the BFF does).
 - Block disposable email domains (BFF does it).
 - Detect duplicates (BFF does it).
 - Issue tracking IDs (BFF does it).
-- Send admin notifications or applicant emails (BFF does it).
+- Send applicant acknowledgement emails (BFF does it).
+
+### Step 5, the receipt — added 2026-09-28
+
+**The BFF is still the system of record.** The `DemoRequests` table is not a
+second one and must not become one. It is a receipt, so that a backend outage
+costs a reconciliation step rather than a customer.
+
+It exists because on 2026-09-28 `BFF_API_URL` pointed at
+`spe-api-dev-67e2xz.azurewebsites.net`, an App Service that had been deleted.
+Every submission threw on DNS, fell through to a bare 500, and the visitor was
+told to come back later. Their details reached nothing at all. Seven fields
+typed in and then discarded.
+
+The write happens **before** the forward, never after. A row written after a
+network call that did not return is a row that was never written.
+
+| Status | Means |
+|---|---|
+| `pending` | Written, forward not yet resolved. A row left here needs a look. |
+| `forwarded` | The BFF accepted it. Dataverse is the record now. |
+| `rejected` | The BFF refused it on its own terms, e.g. a duplicate email. |
+| `orphaned` | **The reconciliation queue.** The BFF could not be reached or failed. |
 
 The website does add what only it can know — first-touch
 attribution + analytics — but those are tracked separately in our
@@ -126,12 +149,48 @@ own systems (Plausible + App Insights), not pushed to the BFF.
 | `400 Bad Request` (disposable email) | Generic `error` field | "Please use a business email" |
 | `409 Conflict` (duplicate) | Pass through 409 | "Looks like that email is already on our list" *(added 2026-05-07)* |
 | `429 Rate Limited` | Pass through 429 | "Too many submissions. Please try again later." |
-| `500 Internal Server Error` | `502 UPSTREAM_ERROR` | "Our servers had a brief hiccup" |
-| Network failure / BFF unreachable | Caught by website's try/catch | "Couldn't reach our server" |
+| `5xx` | **Captured**, receipt marked `orphaned`, admin alerted | Success screen |
+| Unreachable, refused, or timed out (15s) | **Captured**, receipt marked `orphaned`, admin alerted | Success screen |
+| Unreachable **and** storage down **and** mail down | `500 INTERNAL_ERROR` | "Our servers had a brief hiccup" |
 
-The website upgrades upstream 5xx to a 502 in our own response so
-the form's status-code branching can distinguish "BFF down" from
-"website internal error."
+**A 4xx and a 5xx are opposite cases and are handled as such.** A 4xx is the
+backend working and saying no, so the visitor hears it. A 5xx or an unreachable
+backend is our fault, so the visitor is told it worked, because we are holding
+their request.
+
+**Why a success screen on our own failure.** Asking someone to try again means
+asking them to retype seven fields into the same broken path, and duplicates the
+lead if the backend recovers in between. We have their request; from their side
+it is submitted. The one case that still shows an error is when the lead reached
+nothing at all: no BFF, no storage, no mail. Then a success message would be a
+lie, so it returns 500.
+
+The acknowledgement email comes from the BFF, so a captured-but-not-forwarded
+request does not generate one until a human forwards it.
+
+### Reconciling orphaned requests
+
+An orphan raises an email to `CONTACT_EMAIL_TO` immediately, subject
+`[Spaarke] ACTION NEEDED: evaluation request not forwarded`. The lead's details
+are in the body deliberately, so the work can be done from the mail itself even
+if storage was also unavailable.
+
+To list any that were missed:
+
+```
+az storage entity query --table-name DemoRequests --account-name stspaarkewebsite \
+  --account-key "<key>" --filter "PartitionKey eq 'demo-request' and status eq 'orphaned'"
+```
+
+Re-enter each in the platform, then set its `status` to `forwarded` so it stops
+showing up. Rows stuck at `pending` mean the process died mid-forward and are
+worth the same look.
+
+Verify the capture path against real storage with:
+
+```
+STORAGE_ACCOUNT_CONNECTION="..." npm run demo-request:check
+```
 
 ---
 
