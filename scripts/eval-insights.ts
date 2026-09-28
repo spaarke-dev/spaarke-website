@@ -147,6 +147,18 @@ async function assertAnchors(parsed: ParsedAnswer, failures: string[], warnings:
   }
 }
 
+/**
+ * How a citation is named in the report.
+ *
+ * A citation to a whole article has no anchor, so appending one produced
+ * "slug#undefined" in the run file and read as a broken anchor to anyone
+ * checking the output later. It never was: the product builds a whole-article
+ * citation with no fragment at all.
+ */
+function citationRef(ref: { slug: string; anchor?: string }): string {
+  return ref.anchor ? `${ref.slug}#${ref.anchor}` : ref.slug;
+}
+
 function assertExpectations(parsed: ParsedAnswer, raw: string, testCase: Case, failures: string[]) {
   const e = testCase.expect ?? {};
   const text = parsed.text;
@@ -159,7 +171,7 @@ function assertExpectations(parsed: ParsedAnswer, raw: string, testCase: Case, f
   const dash = DASH_RE.exec(text);
   if (dash) failures.push(`dash in the answer: ${JSON.stringify(dash[0])}`);
   for (const c of parsed.citations) {
-    if (c.verdict !== "verified") failures.push(`citation ${c.ref.slug}#${c.ref.anchor} is ${c.verdict}`);
+    if (c.verdict !== "verified") failures.push(`citation ${citationRef(c.ref)} is ${c.verdict}`);
   }
   // Only attributed quotations are assertions about an article, and only those
   // can be wrong in the way that matters. A quoted phrase with no citation after
@@ -262,7 +274,7 @@ async function run(testCase: Case): Promise<Result> {
     failures,
     warnings,
     provenance: parsed.provenance,
-    citations: parsed.citations.map((c) => `${c.ref.slug}#${c.ref.anchor}`),
+    citations: parsed.citations.map((c) => citationRef(c.ref)),
     askedQuestion: parsed.askedQuestion,
     chars: parsed.text.length,
     cost,

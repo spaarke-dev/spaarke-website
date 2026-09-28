@@ -1,10 +1,10 @@
 # Article Insights Assistant
 
-**Status:** In Progress
+**Status:** Complete. Live in production since 2026-09-27
 **Created:** 2026-09-25
 
 An AI console in the article rail that lets a reader interrogate the piece
-and the library around it. The whole 21-article corpus sits in a cached
+and the library around it. The whole 24-article corpus sits in a cached
 model context, so it reasons across articles with no retrieval layer, and
 every claim is labeled with where it came from.
 

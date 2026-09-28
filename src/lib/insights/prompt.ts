@@ -63,7 +63,32 @@ function bodyWithCitationMarkers(article: CorpusArticle): string {
     .join("\n");
 }
 
-function articleBlock(article: CorpusArticle): string {
+/**
+ * A tier 2 article: its headings, with their citation markers, and no body.
+ *
+ * The same markdown shape the body would have had, so the model reads it the
+ * same way and copies markers from the same place. What changes is that there
+ * is nothing under each heading.
+ *
+ * **It has to say so.** A model shown an outline with no explanation treats the
+ * headings as material it has read and quotes sentences that are not there. The
+ * line below is the difference between an article it summarises honestly and one
+ * it fabricates from a table of contents.
+ */
+function outlineWithCitationMarkers(article: CorpusArticle): string {
+  return [
+    "This article is held as an outline. You have its headings and what they",
+    "cover, and not its text. Cite it and describe what it covers, but do not",
+    "quote it: you cannot see its sentences.",
+    "",
+    ...article.headings.map(
+      (h) => `${"#".repeat(h.depth)} ${h.text} ${MARKERS.citation(article.slug, h.anchor)}`,
+    ),
+  ].join("\n");
+}
+
+/** Exported for `scripts/check-insights-console.mts`, which asserts both tiers. */
+export function articleBlock(article: CorpusArticle): string {
   const head = [
     `<article slug="${article.slug}" published="${article.date ?? "unknown"}">`,
     `title: ${article.title}`,
@@ -76,7 +101,13 @@ function articleBlock(article: CorpusArticle): string {
     .filter(Boolean)
     .join("\n");
 
-  return `${head}\n\n${bodyWithCitationMarkers(article)}\n</article>`;
+  // Tier 1 is every article today, and this branch has to leave its output
+  // byte identical: the cached prefix is the cost model, and one character of
+  // drift rewrites the corpus for every reader at twelve times the price.
+  const content =
+    article.tier === 2 ? outlineWithCitationMarkers(article) : bodyWithCitationMarkers(article);
+
+  return `${head}\n\n${content}\n</article>`;
 }
 
 /**

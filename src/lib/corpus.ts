@@ -38,6 +38,23 @@ export type CorpusArticle = {
    * broken one. See src/lib/insights/questions.ts.
    */
   suggestedQuestions: string[];
+  /**
+   * How much of this article the assistant holds.
+   *
+   * 1 is the default and today's behaviour: the whole body, with a citation
+   * marker on every heading. 2 holds the header, summary, takeaways and heading
+   * markers only, which is about 350 tokens against roughly 4,900.
+   *
+   * A tier 2 article is still in the index, still citable as a whole and by
+   * section, and still reasoned about. What it loses is verbatim quotation. The
+   * point is that the corpus degrades one article at a time instead of the
+   * design collapsing into retrieval the day the ceiling is hit.
+   *
+   * Set in content/insights/corpus-tiers.json, not in article frontmatter: it is
+   * an operational decision about the context budget rather than a fact about
+   * the writing.
+   */
+  tier: 1 | 2;
   body: string;
 };
 
