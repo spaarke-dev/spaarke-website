@@ -1,7 +1,7 @@
 # Task 051: Tiered corpus
 
 **Phase:** 4 (Instrument and launch)
-**Status:** not-started
+**Status:** complete (2026-09-28)
 **Estimated:** 4 hours
 **Dependencies:** 010, 040
 **Tags:** typescript, content, cost
@@ -68,12 +68,12 @@ and it degrades one article at a time rather than all of them at once.
 
 ## Acceptance Criteria
 
-- [ ] With everything in tier 1, the assembled prompt is byte identical to today's
-- [ ] A demoted article still appears in the index and is still citable as a whole
-- [ ] Its headings still carry citation markers that resolve
-- [ ] The build reports the headroom a demotion would buy
-- [ ] The quality cost of a demotion is measured against the evaluation set
-- [ ] Which article to demote is answerable from `citedSlugs` telemetry
+- [x] With everything in tier 1, the assembled prompt is byte identical to today's
+- [x] A demoted article still appears in the index and is still citable as a whole
+- [x] Its headings still carry citation markers that resolve
+- [x] The build reports the headroom a demotion would buy
+- [x] The quality cost of a demotion is measured against the evaluation set
+- [x] Which article to demote is answerable from `citedSlugs` telemetry
 
 ## Notes
 
@@ -85,3 +85,38 @@ assistant, not a fact about the writing, and the writer should not have to think
 about it.
 
 See the context headroom section of `current-task.md`.
+
+
+## Result, 2026-09-28
+
+Built, measured, and shipped with every article still in tier 1.
+
+**The lever is `content/insights/corpus-tiers.json`.** Adding a slug under
+`tier2` demotes that article. A slug that is not a published article fails the
+build rather than warning, because a typo there would demote nothing while
+looking like it had worked, and would be discovered as a ceiling error several
+articles later.
+
+**Byte identity is proved, not asserted.** The assembled corpus block hashes to
+`7bf6dbf1...d92f45` at 476,877 characters both before and after the change, so no
+reader's cached prefix moved.
+
+**The build now reports the lever.** Current output says how many articles are
+held as outlines and what demoting eight would free: **24,751 to 77,331 tokens**,
+four to thirteen more articles, depending which eight. The ceiling warning and
+the ceiling error both now name the config and point at `citedSlugs` for deciding
+which articles to pick.
+
+**The quality cost is measured**, not assumed, in `notes/cost-model.md` under
+"What a demoted article costs an answer". Demoting `the-20b-blind-spot` and
+re-running case `co-04`: still passes, still cited, answer a third shorter, and
+it told the reader it was holding an outline and could not quote. Anchors from
+the demoted article still resolved against the rendered page, which is the
+evaluation runner's own check rather than a claim.
+
+**Eleven checks added** to `npm run insights:console`, including one asserting
+that every published article ships at tier 1, so a stray demotion cannot reach
+readers unnoticed.
+
+**One operational note:** changing any tier changes the cached prefix, so the
+next turn after a demotion is a cache write at about $0.69. Demote in one batch.

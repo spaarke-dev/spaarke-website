@@ -6,7 +6,7 @@
 > Last updated 2026-09-28. **The assistant is live in production.**
 
 **Active task:** none in progress.
-**Next task:** `050-cache-warming.md`, then `051-tiered-corpus.md`.
+**Next task:** none. Every task in the index is complete or deliberately deferred.
 
 **Task 090 is complete** (2026-09-28). The result is in
 `notes/launch-verification.md`: 9 of 11 success criteria met, 1 partly met, 1
@@ -147,35 +147,44 @@ shared secret between the workflow and the app settings. Note that `keep-warm.ym
 already exists and keeps the **Azure function** warm; the model's prompt cache is a
 different thing and is not touched by it. Scoped as task 050.
 
-### 4. Context headroom: build the lever now, pull it later
+### 4. Context headroom: the lever is built. Done 2026-09-28
 
 The corpus is **146,884 estimated tokens against a 160,000 ceiling**, which exists
 because the deployment has a **200K** window and the remainder is for the
 conversation and the answer. Room for about two more articles.
 
-The efficient fix is not to wait. Give each article a **tier** in the manifest:
+**Task 051 is complete.** Each article now has a **tier**:
 
-- **Tier 1**, the default, is what every article is today: the full body with a
+- **Tier 1**, the default and what every article is today: the full body with a
   citation marker on every heading.
-- **Tier 2** is title, summary, key takeaways, and headings with their markers, and
-  no body. About **350 tokens against 4,910**, so demoting one article frees
-  roughly **4,560**.
+- **Tier 2**: title, summary, key takeaways and headings with their markers, and
+  no body. It stays in the index, stays citable as a whole and by section, and
+  loses only verbatim quotation.
 
-Ship it with every article in tier 1, so nothing changes on the day. When the
-ceiling approaches, demoting an article is a one line change. **Demoting the eight
-least cited frees about 36,000 tokens, room for seven more articles**, and the
-telemetry already says which eight: `insights.answer` records `citedSlugs` on every
-turn, so an article nothing cites in a month is the candidate.
+**The lever is `content/insights/corpus-tiers.json`.** Adding a slug under
+`tier2` demotes that article. Nothing is demoted today, so nothing changed for
+any reader: the assembled corpus block is byte identical, hash for hash, to what
+it was before the change.
 
-A tier 2 article stays findable and citable as a whole, because its summary,
-takeaways and headings remain in context. What it loses is verbatim quotation. That
-keeps the whole-corpus reasoning the spec is built on, which retrieval would not.
-Scoped as task 051.
+**The build now says what the lever is worth.** Demoting eight frees **24,751 to
+77,331 tokens**, four to thirteen more articles, depending which eight. The
+ceiling warning and the ceiling error both name the config and point at
+`citedSlugs` on `insights.answer` for deciding which: an article nothing has
+cited in a month is the candidate.
 
-The alternative is the 1M window if the Foundry deployment exposes it, which could
-not be confirmed from the CLI. It would take the corpus from two more articles to
-about 150, at premium pricing above the 200K threshold and with cache writes
-scaling accordingly. Build the warming first if going that way.
+**What a demotion costs an answer is measured**, not assumed, in
+`notes/cost-model.md`. Demoting one article and re-running a case that needed its
+body: the answer still passed, still cited it, recovered the fact from a
+different article, and **told the reader it was holding an outline and could not
+quote**. It lost a third of its length and the specifics that came from the body.
+Thinner and more deferential, not wrong.
+
+Changing any tier changes the cached prefix, so the turn after a demotion is a
+cache write at about $0.69. Demote in one batch rather than one a day.
+
+The alternative is still the 1M window if the Foundry deployment exposes it,
+which could not be confirmed from the CLI. It would take the corpus from two more
+articles to about 150, at premium pricing above the 200K threshold.
 
 ### 5. Reading what visitors asked
 
@@ -231,8 +240,8 @@ This belongs in the publish checklist rather than in a new tool. Written up as
 | | |
 |---|---|
 | **090** Project wrap-up | **complete** 2026-09-28. See `notes/launch-verification.md` |
-| **050** Cache warming | **next.** Scoped above. Measure before building |
-| **051** Tiered corpus | new, scoped above |
+| **050** Cache warming | **deferred.** Measured: 0 misses a day. Build when traffic passes two turns a day on separate hours |
+| **051** Tiered corpus | **complete** 2026-09-28. Lever built, nothing demoted |
 | Read the engagement comparison | **2026-10-12**, `notes/measurement.md`. Nothing to compare before then |
 | Read the thresholds | late October, `notes/measurement.md` |
 | Run the gap report | a fortnight in, feeds the content pipeline |

@@ -617,5 +617,77 @@ if (base) {
   );
 }
 
+// ------------------------------------------------------------- corpus tiers
+console.log("\nwhat an article looks like at each tier");
+{
+  const { articleBlock } = await import("@/lib/insights/prompt");
+  const { allArticles } = await import("@/lib/corpus");
+
+  // The lever exists so that demoting an article later is a one-line change.
+  // It is not meant to be pulled yet, and a stray entry in the config would
+  // quietly cost readers the body of an article, so it is asserted rather than
+  // assumed.
+  const demoted = allArticles().filter((a) => a.tier !== 1);
+  check(
+    demoted.length === 0,
+    "every published article ships at tier 1",
+    demoted.length > 0 ? demoted.map((a) => a.slug).join(", ") : "",
+  );
+
+  const sample = {
+    ...allArticles()[0],
+    slug: "a-slug",
+    title: "A title",
+    summary: "A summary.",
+    keyTakeaways: ["A takeaway."],
+    headings: [
+      { depth: 2, text: "First section", anchor: "first-section" },
+      { depth: 3, text: "Second section", anchor: "second-section" },
+    ],
+    body: "## First section\n\nBody of the first.\n\n### Second section\n\nBody of the second.",
+  };
+
+  const full = articleBlock({ ...sample, tier: 1 });
+  const outline = articleBlock({ ...sample, tier: 2 });
+
+  check(full.includes("Body of the first."), "tier 1 carries the article's text");
+  check(!outline.includes("Body of the first."), "tier 2 does not");
+
+  // A tier 2 article that loses its markers stops being citable by section,
+  // which is the one thing this design promises it keeps.
+  for (const h of sample.headings) {
+    check(
+      outline.includes(`[[cite:a-slug#${h.anchor}]]`),
+      `tier 2 keeps the marker for ${h.anchor}`,
+    );
+  }
+  check(
+    outline.includes("[[cite:a-slug]]"),
+    "and the whole-article marker, so it is still citable as a piece",
+  );
+  check(outline.includes("summary: A summary."), "tier 2 keeps the summary");
+  check(outline.includes("- A takeaway."), "and the key takeaways");
+
+  // Without this the model reads a table of contents as material it has read
+  // and quotes sentences that are not there.
+  check(
+    outline.includes("held as an outline") && outline.includes("do not"),
+    "tier 2 says it is an outline and must not be quoted",
+  );
+
+  // Measured on a real article, not the sample above. The sample's body is
+  // shorter than the outline notice, so it would prove the opposite of the
+  // point: the saving comes from dropping thousands of words, and only a real
+  // article has thousands of words to drop.
+  const real = allArticles().reduce((a, b) => (a.body.length > b.body.length ? a : b));
+  const realFull = articleBlock({ ...real, tier: 1 }).length;
+  const realOutline = articleBlock({ ...real, tier: 2 }).length;
+  check(
+    realOutline < realFull / 10,
+    `tier 2 of ${real.slug} is an order of magnitude smaller`,
+    `${realOutline} against ${realFull}`,
+  );
+}
+
 console.log(failures === 0 ? "\nall checks passed." : `\n${failures} check(s) failed.`);
 if (failures > 0) process.exit(1);

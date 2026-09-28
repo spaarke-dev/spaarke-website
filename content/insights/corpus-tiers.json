@@ -1,0 +1,4 @@
+{
+  "note": "Which articles the assistant holds in full, and which it holds as an outline. Tier 1 is the default and needs no entry here: the whole body, with a citation marker on every heading. Listing a slug under tier2 demotes it to title, summary, key takeaways and headings, which is about 350 tokens against roughly 4,900. It stays in the index, stays citable as a whole and by section, and loses only verbatim quotation. This is an operational decision about the assistant's context budget, not a fact about the writing, which is why it lives here and not in article frontmatter. Decide which articles to demote from the citedSlugs dimension on insights.answer: an article nothing has cited in a month is the candidate. See projects/article-insights-assistant/tasks/051-tiered-corpus.md.",
+  "tier2": []
+}

@@ -102,6 +102,21 @@ const suggested = existsSync(QUESTIONS_FILE)
   ? JSON.parse(readFileSync(QUESTIONS_FILE, "utf8"))
   : {};
 
+// Which articles the assistant holds in full and which it holds as an outline.
+// Tier 1 is the default and the file is expected to be empty: the lever exists so
+// that demoting an article later is a one-line change rather than a redesign at
+// the moment the ceiling is hit. See tasks/051-tiered-corpus.md.
+//
+// A slug listed here that does not exist is a build failure rather than a
+// warning. A typo would silently fail to demote anything, which is the one
+// outcome this file must not have: it would be discovered as a ceiling error
+// three articles later with no clue that the lever had been pulled at all.
+const TIERS_FILE = "content/insights/corpus-tiers.json";
+const tierConfig = existsSync(TIERS_FILE)
+  ? JSON.parse(readFileSync(TIERS_FILE, "utf8"))
+  : { tier2: [] };
+const tier2 = new Set(Array.isArray(tierConfig.tier2) ? tierConfig.tier2 : []);
+
 const articles = [];
 let skipped = 0;
 
@@ -130,8 +145,20 @@ for (const file of readdirSync(BLOG_DIR).filter((f) => f.endsWith(".mdx")).sort(
     url: `/why-spaarke/${slug}`,
     headings: extractHeadings(content),
     suggestedQuestions: Array.isArray(suggested[slug]) ? suggested[slug] : [],
+    tier: tier2.has(slug) ? 2 : 1,
     body: content.trim(),
   });
+}
+
+const knownSlugs = new Set(articles.map((a) => a.slug));
+const unknownTier2 = [...tier2].filter((slug) => !knownSlugs.has(slug));
+if (unknownTier2.length > 0) {
+  console.error(
+    `\nERROR: ${TIERS_FILE} lists ${unknownTier2.length} slug(s) that are not published articles:\n` +
+      unknownTier2.map((s) => `  ${s}`).join("\n") +
+      `\nA typo here demotes nothing and looks like it worked. Fix the slug or remove it.`,
+  );
+  process.exit(1);
 }
 
 // Six are generated per article and the console shows a rotating three, so an
@@ -157,21 +184,34 @@ const serialized = JSON.stringify(manifest, null, 2);
 // `npx tsx scripts/check-insights-prompt.ts --offline` measures it. This
 // estimate exists so that `npm run build` can fail without a model call, and
 // the two have to be kept in step when the prompt format changes.
-const assembled = [
+/**
+ * One article as the prompt will carry it, at the tier given.
+ *
+ * Tier 2 drops the body and keeps everything that makes the article findable
+ * and citable: its header, summary, takeaways and every heading marker. The
+ * shape has to track src/lib/insights/prompt.ts, which composes the real thing.
+ */
+function articleEstimate(a, tier) {
+  const head = [
+    `<article slug="${a.slug}" published="${a.date}">`,
+    `title: ${a.title}`,
+    `summary: ${a.summary ?? a.description ?? ""}`,
+    "key takeaways:",
+    ...a.keyTakeaways.map((t) => `- ${t}`),
+    ...a.headings.map((h) => `[[cite:${a.slug}#${h.anchor}]]`),
+  ];
+  if (tier === 2) return [...head, "</article>"].join("\n");
+  return [...head, a.body, "</article>"].join("\n");
+}
+
+const corpusIndex = [
   `<corpus articles="${articles.length}">`,
   ...articles.map((a) => `- ${a.slug} | ${a.title} | ${a.date ?? "undated"}`),
-  ...articles.map((a) =>
-    [
-      `<article slug="${a.slug}" published="${a.date}">`,
-      `title: ${a.title}`,
-      `summary: ${a.summary ?? a.description ?? ""}`,
-      "key takeaways:",
-      ...a.keyTakeaways.map((t) => `- ${t}`),
-      ...a.headings.map((h) => `[[cite:${a.slug}#${h.anchor}]]`),
-      a.body,
-      "</article>",
-    ].join("\n"),
-  ),
+];
+
+const assembled = [
+  ...corpusIndex,
+  ...articles.map((a) => articleEstimate(a, a.tier)),
 ].join("\n\n");
 
 // The instruction block is static text, so a measured constant is honest here
@@ -179,6 +219,29 @@ const assembled = [
 const INSTRUCTION_TOKENS = 2_400;
 
 const tokens = estimateTokens(assembled) + INSTRUCTION_TOKENS;
+
+// What the tier lever is worth, reported before it is needed rather than
+// discovered when the build fails. Which articles to demote is a telemetry
+// question, not a build-time one: `insights.answer` records `citedSlugs`, and an
+// article nothing has cited in a month is the candidate. What the build can
+// answer is how much a demotion buys, so it answers that.
+const savings = articles
+  .filter((a) => a.tier === 1)
+  .map((a) => ({
+    slug: a.slug,
+    saves: estimateTokens(articleEstimate(a, 1)) - estimateTokens(articleEstimate(a, 2)),
+  }))
+  .sort((x, y) => y.saves - x.saves);
+
+const demoted = articles.filter((a) => a.tier === 2).length;
+
+/** Tokens freed by demoting the n cheapest and the n dearest, which brackets any real choice of n. */
+function demotionRange(n) {
+  const k = Math.min(n, savings.length);
+  const dearest = savings.slice(0, k).reduce((t, a) => t + a.saves, 0);
+  const cheapest = savings.slice(-k).reduce((t, a) => t + a.saves, 0);
+  return { k, cheapest, dearest };
+}
 
 if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });
 writeFileSync(OUT_FILE, serialized);
@@ -190,6 +253,14 @@ if (!quiet) {
   console.log(
     `         ${Math.round((tokens / CEILING) * 100)}% of ceiling, room for about ` +
       `${Math.max(0, Math.floor((CEILING - tokens) / AVG_ARTICLE_TOKENS))} more article(s)`,
+  );
+  const r = demotionRange(8);
+  console.log(
+    `         ${demoted} article(s) held as an outline, ${articles.length - demoted} in full`,
+  );
+  console.log(
+    `         demoting 8 would free ${r.cheapest.toLocaleString()} to ${r.dearest.toLocaleString()} tokens, ` +
+      `about ${Math.floor(r.cheapest / AVG_ARTICLE_TOKENS)} to ${Math.floor(r.dearest / AVG_ARTICLE_TOKENS)} more article(s)`,
   );
   console.log(`         -> ${OUT_FILE} (${(serialized.length / 1024).toFixed(0)} kB)`);
 }
@@ -206,19 +277,27 @@ if (withoutQuestions.length > 0) {
 if (tokens > WARN_AT && tokens <= CEILING) {
   const pct = Math.round((tokens / CEILING) * 100);
   const headroom = Math.max(0, Math.floor((CEILING - tokens) / AVG_ARTICLE_TOKENS));
+  const r = demotionRange(8);
   console.warn(
     `\nWARNING: corpus is ~${tokens.toLocaleString()} tokens, ${pct}% of the ${CEILING.toLocaleString()} ceiling.\n` +
-      `Roughly ${headroom} more article(s) before the build fails. Decide what happens then\n` +
-      `before it happens: a larger context window, a trimmed corpus, or retrieval.`,
+      `Roughly ${headroom} more article(s) before the build fails.\n` +
+      `\nThe lever is ${TIERS_FILE}. Listing a slug under "tier2" holds that article as\n` +
+      `an outline instead of in full: it stays in the index and stays citable, and loses\n` +
+      `only verbatim quotation. Demoting ${r.k} frees ${r.cheapest.toLocaleString()} to ${r.dearest.toLocaleString()} tokens.\n` +
+      `Pick which from citedSlugs on insights.answer: an article nothing cites is the one.`,
   );
 }
 
 if (tokens > CEILING) {
+  const r = demotionRange(8);
   console.error(
     `\nERROR: corpus is ~${tokens.toLocaleString()} tokens, over the ${CEILING.toLocaleString()} ceiling.\n` +
-      `The assistant holds the whole corpus in context (spec KD-01). Past this point\n` +
-      `that decision needs revisiting: a larger context window, a trimmed corpus, or\n` +
-      `the retrieval layer this design deliberately avoided.`,
+      `\nThe cheapest fix is ${TIERS_FILE}. Listing a slug under "tier2" holds that\n` +
+      `article as an outline: it stays in the index, stays citable as a whole and by\n` +
+      `section, and loses only verbatim quotation. Demoting ${r.k} frees ${r.cheapest.toLocaleString()} to\n` +
+      `${r.dearest.toLocaleString()} tokens. Pick which from citedSlugs on insights.answer.\n` +
+      `\nIf that is not enough, the decision in spec KD-01 needs revisiting: a larger\n` +
+      `context window, or the retrieval layer this design deliberately avoided.`,
   );
   process.exit(1);
 }

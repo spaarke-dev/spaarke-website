@@ -61,3 +61,21 @@ npm run insights:gap
 Reports what readers asked that the articles did not answer. A question answered
 from general knowledge is a subject the library does not cover, which makes this
 the brief for the next piece rather than a defect report.
+
+
+## When the ceiling warning appears
+
+The build warns above 90% of the token ceiling and fails above it. The warning
+now names the fix: `content/insights/corpus-tiers.json`. Adding a slug under
+`tier2` holds that article as an outline rather than in full, which frees roughly
+4,000 tokens and costs the assistant the ability to quote it. It stays in the
+index and stays citable.
+
+Pick which articles from telemetry rather than by feel. `insights.answer` records
+`citedSlugs` on every turn, so an article nothing has cited in a month is the
+candidate. Demote in one batch: each change to the tiers invalidates the prompt
+cache, so the next turn afterwards costs about $0.69 instead of $0.04.
+
+What a demotion costs an answer is measured in
+`projects/article-insights-assistant/notes/cost-model.md`. Read it before
+demoting an article readers ask about in detail.

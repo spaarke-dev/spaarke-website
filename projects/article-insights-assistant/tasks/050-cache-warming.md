@@ -1,7 +1,7 @@
 # Task 050: Cache warming
 
 **Phase:** 4 (Instrument and launch)
-**Status:** not-started
+**Status:** step 1 done, build deliberately deferred. Waiting on traffic, not on work
 **Estimated:** 3 hours
 **Dependencies:** 040
 **Tags:** azure, api, ci-cd, cost
@@ -54,7 +54,7 @@ prompt cache is a different thing and that workflow does not touch it.
 
 ## Acceptance Criteria
 
-- [ ] The measured miss rate is recorded before anything is built
+- [x] The measured miss rate is recorded before anything is built
 - [ ] A reader arriving mid-window gets a cache hit
 - [ ] The warming path refuses without the shared secret, and the refusal is free
 - [ ] Warming spend is counted and sits under the daily ceiling
@@ -67,3 +67,27 @@ Do not warm by asking a real question. `maxTokens: 1` on a trivial prompt reads 
 cache and refreshes it, which is the whole job.
 
 See `notes/cost-model.md`, and the cache warming section of `current-task.md`.
+
+
+## Step 1 result, 2026-09-28: do not build yet
+
+The gate in step 1 says stop if the miss rate is under one a day. It is zero.
+
+Over the 30 days to 2026-09-28 there is **one** `insights.answer` event in
+Application Insights, and launch verification generated it. Real reader turns:
+**zero**. Measured miss rate: **0.00 a day**.
+
+**The rate is zero because traffic is zero, not because the cache is warm.** Every
+real turn so far has been a cold miss, so the per-turn miss rate is 100%. What is
+missing is turns, and warming an empty window buys nothing.
+
+At one turn a day, misses cost about $21 a month and warming costs about $18. That
+is not a saving, it is a swap that adds a scheduled job, a shared secret and a
+second spend path to keep correct.
+
+**The trigger is traffic, not a date.** Re-run the query in `notes/cost-model.md`
+when the assistant is taking **more than two turns a day on separate hours**, and
+build then. The design in the steps above stands and needs no rework.
+
+Recorded in `notes/cost-model.md` under "Cache warming: measured 2026-09-28, and
+not built".
