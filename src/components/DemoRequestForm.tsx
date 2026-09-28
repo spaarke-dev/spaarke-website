@@ -38,11 +38,27 @@ function SelectChevron() {
   );
 }
 
+/**
+ * What the reader sees, and what the platform is sent.
+ *
+ * These have to be two different strings. The BFF parses this field into a
+ * choice with `ParseUseCase`, which lower-cases and matches against
+ * "documentmanagement", "aianalysis", "financialintelligence" and "general".
+ * It does not strip spaces, so every label below failed to parse and
+ * `sprk_usecase` was written empty on every registration request ever created,
+ * silently, because an unparseable value maps to null rather than to an error.
+ *
+ * "General Evaluation" was doubly wrong: the choice is called `General`, so no
+ * amount of space handling would have matched it.
+ *
+ * Change a label freely. Change a value only against the `UseCaseOption` enum
+ * in the platform's RegistrationDataverseService.
+ */
 const USE_CASE_OPTIONS = [
-  "Document Management",
-  "AI Analysis",
-  "Financial Intelligence",
-  "General Evaluation",
+  { label: "Document Management", value: "DocumentManagement" },
+  { label: "AI Analysis", value: "AiAnalysis" },
+  { label: "Financial Intelligence", value: "FinancialIntelligence" },
+  { label: "General Evaluation", value: "General" },
 ] as const;
 
 const REFERRAL_OPTIONS = [
@@ -423,8 +439,8 @@ export default function DemoRequestForm({
             >
               <option value="">Select a use case</option>
               {USE_CASE_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
                 </option>
               ))}
             </select>

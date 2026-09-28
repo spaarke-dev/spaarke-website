@@ -9,11 +9,25 @@ import { sendDemoRequestFallbackNotification } from "@/lib/email";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ * The values the platform can actually parse, not the labels the reader picks.
+ *
+ * These were the labels until 2026-09-28, which meant this guard confirmed we
+ * were sending exactly the strings the BFF cannot read. Its `ParseUseCase`
+ * lower-cases and matches "documentmanagement", "aianalysis",
+ * "financialintelligence" and "general", with no handling for spaces, so an
+ * unparseable value became null and `sprk_usecase` was written empty on every
+ * registration request ever created. No error, on either side.
+ *
+ * Keep in step with `UseCaseOption` in the platform's
+ * RegistrationDataverseService, and with the option values in
+ * src/components/DemoRequestForm.tsx.
+ */
 const VALID_USE_CASES = [
-  "Document Management",
-  "AI Analysis",
-  "Financial Intelligence",
-  "General Evaluation",
+  "DocumentManagement",
+  "AiAnalysis",
+  "FinancialIntelligence",
+  "General",
 ];
 
 const VALID_REFERRAL_SOURCES = [
