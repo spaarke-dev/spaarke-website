@@ -163,6 +163,23 @@ html::-webkit-scrollbar {
   color-scheme: dark;
 }
 
+/* The option list itself, because `color-scheme` alone does not carry it.
+   Our selects are `appearance-none` with `bg-transparent`, and Chrome paints
+   the popup from the control's own background-color rather than from the
+   colour scheme. Transparent resolves to white, while the options inherit the
+   slab's near-white text, which is the unreadable white-on-white list reported
+   on /access-request.
+
+   Literal values rather than var(--v2-bg) / var(--v2-fg) on purpose, matching
+   the autofill rule above: a dark slab nested inside a light one inherits the
+   light slab's token values, and the popup would follow the wrong one. These
+   colours belong to the control, not to whatever it is sitting inside. */
+[data-tone="dark"] select option,
+[data-tone="dark"] select optgroup {
+  background-color: #0a0a0a;
+  color: #f5f5f5;
+}
+
 /* Hooray-confetti — lightweight pure-CSS particle burst behind the
    contact-form success message. Each particle reads its target offset
    from --tx / --ty inline custom properties (set per-particle in JSX),
