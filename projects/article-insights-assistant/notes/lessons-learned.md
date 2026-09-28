@@ -43,6 +43,44 @@ group with `cancel-in-progress: false` queues them instead.
 the latest run picked up the close-PR job and then the scheduled keep-warm job,
 and a failed deploy got reported as green twice on the strength of it.
 
+**And then read the job, not the run.** A pull request produces two runs from the
+same workflow: the build, and the close. The close run is green with the build
+job **skipped**, so a green run says nothing about whether anything built. Take
+the conclusion of the job you care about.
+
+**Preview environments are a quota, and a full one fails every pull request with
+a message that reads like a build error.** Azure Static Web Apps caps staging
+environments, and when the cap is reached the deploy is refused with:
+
+> This Static Web App already has the maximum number of staging environments.
+
+The build succeeded. Nothing was wrong with the code. On this repo the quota was
+full from **2026-09-27 to 2026-09-28**, so every preview from PR 104 onward
+silently failed, and nobody noticed for two days because nobody uses the preview
+URLs.
+
+Diagnosis and cure, both one line:
+
+```
+az staticwebapp environment list --name swa-spaarke-website -g rg-spaarke-website -o table
+az staticwebapp environment delete --name swa-spaarke-website -g rg-spaarke-website --environment-name <n> --yes
+```
+
+The environment name is the pull request number. Check the pull request is closed
+before deleting it.
+
+**The cleanup job is not broken, and the concurrency group is why.** Both the
+build and the close run share `github.ref` for a pull request, so the group
+serializes them and the close waits for the build to finish creating the
+environment before deleting it. Without that group the close overtakes the build,
+finds nothing to delete, succeeds, and leaves an orphan behind once the build
+lands. Every orphan found on 2026-09-28 predated that fix.
+
+One gap remains, so this is worth re-checking rather than trusting: GitHub keeps
+only **one** pending run per concurrency group, so a burst of pushes followed
+quickly by a merge can cancel the queued close run and orphan one environment.
+It drips rather than floods.
+
 ## Rotating credentials on a live system
 
 Both Azure keys were rotated on 2026-09-28. It caused a three-minute production
