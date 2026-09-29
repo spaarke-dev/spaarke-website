@@ -114,7 +114,7 @@ following ourselves:
 - Issue tracking IDs (BFF does it).
 - Send applicant acknowledgement emails (BFF does it).
 
-### Step 5, the receipt — added 2026-09-28
+### Step 5, the receipt, added 2026-09-28
 
 **The BFF is still the system of record.** The `DemoRequests` table is not a
 second one and must not become one. It is a receipt, so that a backend outage
@@ -476,7 +476,43 @@ Documented in
 
 ## 9. Operational / monitoring considerations
 
-Where to look when something goes wrong:
+### Alerts, added 2026-09-28
+
+There were none until this date, which is why a dead backend went unnoticed and
+was found only because the owner submitted the form himself. Three rules now run
+every 15 minutes against the website's Log Analytics workspace and email
+`contactus@spaarke.com` through the `ag-spaarke-website` action group.
+
+| Alert | Fires when | Means |
+|---|---|---|
+| `website-form-failing` | a `demo-request` request returns 5xx | Submissions are being lost right now. This is the one that would have caught 2026-09-28. |
+| `website-lead-not-forwarded` | `demo_request.fallback_captured` | A lead is held in `DemoRequests` and needs re-entering. The reconciliation queue is not empty. |
+| `website-assistant-counters-unavailable` | `insights.blocked.counters_*` | The assistant's storage is unreachable so it refuses every question. Usually a bad or rotated connection string. |
+
+**The form rule was validated against the real incident**, not just created: its
+query returns the three 500s from 15:17 on 2026-09-28.
+
+They are **log search rules scoped to the workspace**, so the queries use
+`AppRequests` and `AppEvents`, not `requests` and `customEvents`. See the warning
+in `projects/article-insights-assistant/notes/measurement.md` about the classic
+Application Insights query API returning incomplete results for this resource.
+
+### Reconciling held leads
+
+```
+STORAGE_ACCOUNT_CONNECTION="..." npm run demo-request:orphans
+```
+
+Lists anything `orphaned` or `pending` with the lead's details, so it can be
+re-entered in the platform. `pending` counts too: it means the process died
+between writing the lead and recording what became of it, so nobody knows whether
+the platform got it. After re-entering one:
+
+```
+npm run demo-request:orphans -- --forwarded <rowKey>
+```
+
+### Where to look when something goes wrong
 
 | Symptom | Where to look |
 |---|---|

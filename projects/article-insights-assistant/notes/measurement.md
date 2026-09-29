@@ -59,18 +59,27 @@ Task 040 said to assume nothing, because this site once logged 11 requests in 30
 days while serving live traffic: the SDK batched, and Static Web Apps froze the
 function before the batch went out.
 
-**Checked on 2026-09-27, and the finding is in two parts.**
+**Checked on 2026-09-27, and that check was half wrong. Corrected 2026-09-28.**
 
-Application Insights held **zero rows in every table across 90 days**:
-`customEvents`, `requests`, `pageViews`, `traces`, `exceptions`. The connection
-string in the app settings was confirmed to point at `appi-spaarke-website` rather
-than at some other resource.
+It reported **zero rows in every table across 90 days** and concluded the pipeline
+was silent. The zero was an artifact: the reading came from
+`az monitor app-insights query`, which returns incomplete results for this
+workspace-backed resource. Asked of the workspace, **23 events and 818 requests
+from 2026-09-25 and 09-26 were already there** when the check said nothing was.
 
-Then a side-effect-free event was fired in production, by posting to the contact
-route with the honeypot field filled, which records `contact.honeypot` and sends
-no email. **It arrived.** So the flush fix of 2026-09-25 works, and the ninety days
-of silence was absent traffic rather than a broken pipeline. That one row is in
-production telemetry and is a probe rather than a bot.
+What survives the correction is the part that was proved rather than queried. A
+side-effect-free event was fired in production, by posting to the contact route
+with the honeypot field filled, which records `contact.honeypot` and sends no
+email. **It arrived.** The flush fix of 2026-09-25 works.
+
+And the ninety days of silence before it was real: the workspace holds nothing at
+all before `2026-09-25T16:14`, which is when the fix landed. So the pipeline was
+genuinely broken until then and has been healthy since. The right conclusion,
+reached partly from a bad reading.
+
+**The lesson is the method, not the number.** Firing a probe and watching it
+arrive was sound. Trusting an empty query result was not, and an empty result is
+the one answer that looks the same whether it is true or the tool is lying.
 
 `requests` and `pageViews` staying empty is expected rather than broken. Automatic
 request collection does not hook into Next.js App Router handlers on Static Web
@@ -81,13 +90,41 @@ live in Plausible.
 server event type actually arrived:
 
 ```
-az monitor app-insights query --app 65cb39e6-e925-4507-8b5e-ff7d3474c04c \
-  --analytics-query "customEvents | where timestamp > ago(7d) | where name startswith 'insights.' | summarize n=count() by name | order by n desc"
+MSYS_NO_PATHCONV=1 az monitor log-analytics query -w 9385d051-edd2-44f7-baca-3249117f7603 \
+  --analytics-query "AppEvents | where TimeGenerated > ago(7d) | where Name startswith 'insights.' | summarize n=count() by Name | order by n desc"
 ```
 
 Reader events are confirmed on the Plausible dashboard, where a new event name
 appears under Goals once it has fired. There is no API key in this repo, so that
 check is the owner's and takes about a minute.
+
+## Ask the workspace, not the classic API
+
+**`az monitor app-insights query` returns incomplete results for this resource,
+silently.** On 2026-09-28 it returned a turn once and then stopped returning it,
+and reported the `requests` table as holding only the last half hour. None of it
+was true: every event was in the workspace the whole time. Two hours went into
+investigating data loss that had not happened.
+
+This resource is workspace-backed, so query the workspace:
+
+```
+az monitor log-analytics query -w 9385d051-edd2-44f7-baca-3249117f7603 \
+  --analytics-query "AppEvents | where TimeGenerated > ago(7d) | where Name startswith 'insights.' | summarize n=count() by Name | order by n desc"
+```
+
+Two differences that matter, because both fail quietly rather than loudly:
+
+- The table is **`AppEvents`**, not `customEvents`, and the columns are
+  `TimeGenerated`, `Name` and `Properties`, not `timestamp`, `name` and
+  `customDimensions`.
+- **Booleans arrive lower-cased.** `Properties.cacheMiss` is `"true"`, so a test
+  against `"True"` matches nothing and reports zero misses forever. That is
+  exactly what happened: task 050 was deferred on a measured miss rate of zero
+  that was really three in a day. Compare with `tolower(...)`.
+
+On Windows, prefix `az` with `MSYS_NO_PATHCONV=1` under Git Bash or the workspace
+GUID is mangled into a path.
 
 ## The queries worth having
 
@@ -95,25 +132,29 @@ check is the owner's and takes about a minute.
 than estimated.
 
 ```
-customEvents
-| where name == "insights.answer"
-| extend cost = todouble(customDimensions.costUsd),
-         cacheMiss = tostring(customDimensions.cacheMiss)
+AppEvents
+| where Name == "insights.answer"
+| extend cost = todouble(Properties.costUsd),
+         miss = tolower(tostring(Properties.cacheMiss)) == "true"
 | summarize turns = count(), spend = sum(cost), worst = max(cost),
-            misses = countif(cacheMiss == "True")
-  by bin(timestamp, 1d)
-| order by timestamp desc
+            misses = countif(miss)
+  by bin(TimeGenerated, 1d)
+| order by TimeGenerated desc
 ```
 
 `misses` is the line to watch. A cache miss is roughly fifteen times a cached turn,
 so a day with many of them is a cost problem rather than a traffic one.
 
+**Sanity check it.** If `misses` is zero while `spend` is more than about a dollar,
+the comparison is wrong rather than the day being cheap. Three misses at roughly
+$0.69 each is what two dollars looks like.
+
 **What readers ask that the articles do not answer.**
 
 ```
-customEvents
-| where name == "insights.answer"
-| summarize n = count() by provenance = tostring(customDimensions.provenance)
+AppEvents
+| where Name == "insights.answer"
+| summarize n = count() by provenance = tostring(Properties.provenance)
 ```
 
 A rising `general` share is the brief for the next article, not a defect.
@@ -121,13 +162,33 @@ A rising `general` share is the brief for the next article, not a defect.
 **Which defence is firing.**
 
 ```
-customEvents
-| where name startswith "insights.blocked."
-| summarize n = count() by name, bin(timestamp, 1d)
+AppEvents
+| where Name startswith "insights.blocked."
+| summarize n = count() by Name, bin(TimeGenerated, 1d)
 ```
 
 `ip_hour` and `session` firing is the system working. `counters_error` firing is
 the system refusing everybody because storage is unreachable, and that is a page.
+
+## Alerts, added 2026-09-28
+
+Thresholds nobody is paged about are a reading exercise. One rule now runs every
+15 minutes and emails `contactus@spaarke.com` via `ag-spaarke-website`:
+
+| Alert | Fires when | Means |
+|---|---|---|
+| `website-assistant-counters-unavailable` | `insights.blocked.counters_error` or `counters_unavailable` | Storage is unreachable, the defences fail closed, and the assistant is refusing every reader. This is the page. |
+
+Two sibling rules cover the evaluation form, documented in
+`docs/demo-request-flow.md`.
+
+Deliberately not alerted: `insights.error` and the rate-limit defences.
+`ip_hour` and `session` firing is the system working, and a single upstream
+error is noise. The counters being unreachable is different, because it takes
+the whole feature down silently.
+
+The rules are log search rules scoped to the workspace, so they query
+`AppEvents`, not `customEvents`.
 
 ## What would count as this feature failing
 

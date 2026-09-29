@@ -20,7 +20,7 @@
 | 030 | [Right-rail console](030-rail-console.md) | 3 | 013, 023 | 4h | **complete** |
 | 031 | [Mobile bottom sheet](031-mobile-sheet.md) | 3 | 030 | 3h | **complete** |
 | 040 | [Instrumentation and baseline](040-instrumentation.md) | 4 | 030, 031 | 3h | instrumented, live events confirmed |
-| 050 | [Cache warming](050-cache-warming.md) | 4 | 040 | 3h | **deferred.** Measured, miss rate 0/day. Waiting on traffic |
+| 050 | [Cache warming](050-cache-warming.md) | 4 | 040 | 3h | **measured, build pending.** 3 misses/day (first reading of 0 was a faulty query). Build after a week of real traffic |
 | 051 | [Tiered corpus](051-tiered-corpus.md) | 4 | 010, 040 | 4h | **complete** |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | 4 | 040 | 3h | **complete** |
 
