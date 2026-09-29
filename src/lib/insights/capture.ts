@@ -96,6 +96,19 @@ export type CapturedTurn = {
   sessionId: string;
   answerChars: number;
   errorCode: string | null;
+  /**
+   * What the turn cost, and whether it paid a cache write.
+   *
+   * Duplicated from the `insights.answer` telemetry event on purpose. On
+   * 2026-09-28 the daily spend could only be read out of Application Insights,
+   * and the classic query API returned incomplete results for hours without
+   * saying so. Spend is the number the ceiling is written against, so it belongs
+   * somewhere this site can read on its own.
+   *
+   * Zero when the turn failed before the model answered.
+   */
+  costUsd: number;
+  cacheMiss: boolean;
 };
 
 /** Never throws. A capture failure must not cost the reader their answer. */
@@ -123,6 +136,8 @@ export async function recordTurn(turn: CapturedTurn): Promise<void> {
       sessionId: turn.sessionId,
       answerChars: turn.answerChars,
       errorCode: turn.errorCode ?? "",
+      costUsd: turn.costUsd,
+      cacheMiss: turn.cacheMiss,
       createdAt: now.toISOString(),
       // Written false rather than left off, so the purge can find unpurged rows
       // by filter instead of reading every property of every old row back.
