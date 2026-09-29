@@ -30,7 +30,14 @@ function tokenMatches(provided: string, expected: string): boolean {
 }
 
 export async function GET(request: NextRequest) {
-  const expected = process.env.REPORT_TRIGGER_TOKEN;
+  // Trimmed, because a token that picks up a stray carriage return is invisible
+  // and fails in a way that does not look like an auth problem. The first token
+  // generated for this was produced in Git Bash on Windows, kept a trailing
+  // \r, and every request carrying it was rejected with a bodyless 400 by the
+  // platform before reaching this code. It would have failed silently every
+  // morning. An app setting with whitespace around it is a typo, not a
+  // different secret.
+  const expected = process.env.REPORT_TRIGGER_TOKEN?.trim();
 
   // No token configured means no scheduled reporting, and an open endpoint that
   // reads the conversation record would be worse than no report at all.
@@ -42,7 +49,7 @@ export async function GET(request: NextRequest) {
   }
 
   const header = request.headers.get("authorization") ?? "";
-  const provided = header.startsWith("Bearer ") ? header.slice(7) : "";
+  const provided = (header.startsWith("Bearer ") ? header.slice(7) : "").trim();
   if (!provided || !tokenMatches(provided, expected)) {
     // Deliberately says nothing about why, and costs nothing to refuse.
     return NextResponse.json({ ok: false, error: "UNAUTHORIZED" }, { status: 401 });
