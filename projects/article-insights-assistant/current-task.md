@@ -108,7 +108,7 @@ The order that works:
 The defences fail closed, so a stale storage key takes the assistant down rather
 than leaving it unmetered. That is correct, and it is why the order matters.
 
-After any rotation, check `customEvents | where name startswith "insights.blocked."`
+After any rotation, check `AppEvents | where Name startswith "insights.blocked."`
 for a spike in `counters_error`, which is what a wrong storage key looks like.
 
 ### 2. The cost alert, created 2026-09-28
@@ -130,12 +130,19 @@ twelve hour window with an hour of cache life the worst case is twelve misses a
 day: $8.28 a day, about $250 a month.** The real number is measurable now:
 
 ```
-customEvents
-| where name == "insights.answer"
-| summarize misses = countif(tostring(customDimensions.cacheMiss) == "True"),
-            turns = count(), spend = sum(todouble(customDimensions.costUsd))
-  by bin(timestamp, 1d)
+AppEvents
+| where Name == "insights.answer"
+| extend miss = tolower(tostring(Properties.cacheMiss)) == "true"
+| summarize misses = countif(miss), turns = count(),
+            spend = round(sum(todouble(Properties.costUsd)), 4)
+  by bin(TimeGenerated, 1d)
 ```
+
+Run it with `az monitor log-analytics query -w 9385d051-edd2-44f7-baca-3249117f7603`.
+**Not** `az monitor app-insights query`, which returns incomplete results against
+this resource, silently. That plus a `"True"` comparison against a lower-cased
+`"true"` is how this was first measured as zero misses when it was three. See
+`notes/measurement.md`.
 
 Warming costs a cached read each time, roughly **$0.045**, because a cache hit
 refreshes the time to live. Thirteen calls across a twelve hour window is about
@@ -205,8 +212,8 @@ the articles do not cover, which makes it a brief for the next piece.
 `notes/measurement.md`:
 
 ```
-az monitor app-insights query --app 65cb39e6-e925-4507-8b5e-ff7d3474c04c \
-  --analytics-query "customEvents | where timestamp > ago(7d) | where name startswith 'insights.' | summarize n=count() by name"
+MSYS_NO_PATHCONV=1 az monitor log-analytics query -w 9385d051-edd2-44f7-baca-3249117f7603 \
+  --analytics-query "AppEvents | where TimeGenerated > ago(7d) | where Name startswith 'insights.' | summarize n=count() by Name"
 ```
 
 **What readers did with it.** Plausible, on the dashboard: `Assistant Opened`,
@@ -240,7 +247,7 @@ This belongs in the publish checklist rather than in a new tool. Written up as
 | | |
 |---|---|
 | **090** Project wrap-up | **complete** 2026-09-28. See `notes/launch-verification.md` |
-| **050** Cache warming | **deferred.** Measured: 0 misses a day. Build when traffic passes two turns a day on separate hours |
+| **050** Cache warming | **measured, build pending.** 3 misses a day, not the 0 first reported. Build after a week of real traffic |
 | **051** Tiered corpus | **complete** 2026-09-28. Lever built, nothing demoted |
 | Read the engagement comparison | **2026-10-12**, `notes/measurement.md`. Nothing to compare before then |
 | Read the thresholds | late October, `notes/measurement.md` |
