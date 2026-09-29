@@ -256,3 +256,42 @@ export async function sendDemoRequestFallbackNotification(data: {
     return { sent: false, error: message };
   }
 }
+
+/**
+ * The morning digest.
+ *
+ * The subject carries the headline so the mail can be triaged without opening
+ * it, including the case where nothing happened. A quiet day is a real result
+ * for a feature that is a bet on engagement, and a subject line that hides it
+ * behind "Daily report" makes a week of silence easy to miss.
+ */
+export async function sendDailyReport(data: {
+  text: string;
+  date: string;
+  quiet: boolean;
+}): Promise<{ sent: true } | { sent: false; error: string }> {
+  if (!ensureInit()) {
+    return { sent: false, error: "SendGrid not configured." };
+  }
+
+  const to = process.env.CONTACT_EMAIL_TO;
+  const from = process.env.SENDGRID_FROM_EMAIL;
+
+  if (!to || !from) {
+    console.warn("[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set - skipping.");
+    return { sent: false, error: "Email recipients not configured." };
+  }
+
+  const subject = data.quiet
+    ? `[Spaarke] ${data.date}: quiet. No questions, no leads.`
+    : `[Spaarke] ${data.date}: daily report`;
+
+  try {
+    await sgMail.send({ to, from, subject, text: data.text });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send the daily report:", message);
+    return { sent: false, error: message };
+  }
+}

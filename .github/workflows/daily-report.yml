@@ -1,0 +1,77 @@
+# The morning digest.
+#
+# Three alert rules fire when something breaks. None of them says the assistant
+# went a week without a question, and for a feature that is a bet on engagement
+# that silence is the outcome worth knowing about. This is the other half.
+#
+# The work happens in the site's own route, not here. Everything the report needs
+# is already an app setting on the Static Web App: the storage connection, the
+# SendGrid key, the recipient, the Clarity token. Running it from CI would mean
+# copying four secrets into a public repository. This workflow holds one shared
+# secret and asks the site to do it, which is the same shape task 050 specifies
+# for cache warming.
+#
+# GitHub's scheduler is best effort and can run late. That is fine for a digest.
+
+name: Daily report
+
+on:
+  schedule:
+    # 12:00 UTC, which is breakfast on the US east coast for most of the year.
+    # GitHub cron has no timezone, so this drifts by an hour with daylight saving.
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "Whole days to cover. Clarity allows at most 3."
+        required: false
+        default: "1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-report
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask the site to send the digest
+        env:
+          TOKEN: ${{ secrets.REPORT_TRIGGER_TOKEN }}
+          DAYS: ${{ github.event.inputs.days || '1' }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${TOKEN}" ]; then
+            echo "::error::REPORT_TRIGGER_TOKEN is not set in repository secrets."
+            exit 1
+          fi
+
+          # --max-time is generous: the route reads three tables and calls Clarity.
+          code=$(curl -sS -o response.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${TOKEN}" \
+            --max-time 120 \
+            "https://spaarke.com/api/reports/daily?days=${DAYS}")
+
+          echo "HTTP ${code}"
+          cat response.json || true
+          echo ""
+
+          if [ "${code}" != "200" ]; then
+            echo "::error::The digest was not sent. HTTP ${code}."
+            exit 1
+          fi
+
+          # A section that could not be read still sends the mail, but it should
+          # not pass silently here: a digest that quietly loses a section is how
+          # you stop trusting the digest.
+          if grep -q '"broken":\[""\]' response.json; then
+            :
+          elif grep -q '"broken":\[\]' response.json; then
+            :
+          else
+            echo "::warning::Some sections could not be read. See the response above."
+          fi

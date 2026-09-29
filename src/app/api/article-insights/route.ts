@@ -400,6 +400,11 @@ export async function POST(request: NextRequest) {
         sessionId,
         answerChars: answer.text.length,
         errorCode: failed,
+        // Same numbers as the telemetry event above, kept here as well so the
+        // daily report and the spend ceiling can be read from storage alone.
+        // A failed turn is recorded at zero rather than left out.
+        costUsd: failed ? 0 : Number(turnCostUsd(usage).toFixed(4)),
+        cacheMiss: !failed && usage.cacheWrite > 0,
       });
 
       // The partial rows have done their job by now: the reader has been shown the
