@@ -239,9 +239,15 @@ async function leadsSection(
 // Who visited, from Microsoft Clarity
 // ---------------------------------------------------------------------------
 
+/**
+ * Clarity returns numbers as numbers and the dimension as `Url`, which is null
+ * on its aggregate row. Typed from a real response on 2026-09-29 rather than
+ * from the documentation, which is how the first attempt got `URL` wrong and
+ * silently dropped every page.
+ */
 type ClarityMetric = {
   metricName?: string;
-  information?: Array<Record<string, string>>;
+  information?: Array<Record<string, string | number | null>>;
 };
 
 /**
@@ -288,36 +294,65 @@ async function claritySection(token: string | undefined, days: number): Promise<
 
     const lines: string[] = [];
     const traffic = metrics.find((m) => m.metricName === "Traffic");
-    const rows = traffic?.information ?? [];
 
-    const total = rows.reduce((n, r) => n + (Number(r.totalSessionCount) || 0), 0);
+    // The dimension key is `Url`, capital U and nothing else. Clarity also
+    // returns one row with `Url: null`, which is an aggregate rather than a
+    // page, so it is excluded from both the totals and the page list.
+    const rows = (traffic?.information ?? []).filter((r) => r.Url);
+
+    const sessions = rows.reduce((n, r) => n + (Number(r.totalSessionCount) || 0), 0);
     const bots = rows.reduce((n, r) => n + (Number(r.totalBotSessionCount) || 0), 0);
-    const users = rows.reduce((n, r) => n + (Number(r.distinctUserCount) || 0), 0);
-    lines.push(`${plural(total, "session")}, ${users} distinct visitors, ${bots} of them bots.`);
+    const humans = Math.max(sessions - bots, 0);
 
-    // Top pages, which is the "articles accessed" question. Clarity keys these
-    // by URL, so the article slug is the tail.
+    // Distinct users is deliberately a maximum and not a sum. The same person
+    // reading three articles appears in three rows, so adding them up invents
+    // visitors. The maximum is a floor, and it is labelled as one.
+    const users = rows.reduce((n, r) => Math.max(n, Number(r.distinctUserCount) || 0), 0);
+
+    // Said in one line rather than two, because "nobody read the site" next to
+    // "4 distinct visitors" reads as a contradiction and teaches you to
+    // distrust the report. Clarity's distinct user count includes bots, so it
+    // is only worth printing when there were humans to count.
+    if (sessions === 0) {
+      lines.push("No sessions at all.");
+    } else if (humans === 0) {
+      lines.push(`${plural(sessions, "session")}, every one a bot. Nobody read the site.`);
+    } else {
+      lines.push(
+        `${plural(humans, "human session")} out of ${sessions} total, ${bots} from bots. ` +
+          `At least ${plural(users, "distinct visitor")}, bots included.`,
+      );
+    }
+
+    // Most visited, which is the "articles accessed" question. Clarity gives
+    // whole URLs, so the article slug is the tail.
     const pages = rows
-      .filter((r) => r.URL)
-      .map((r) => ({ url: String(r.URL), n: Number(r.totalSessionCount) || 0 }))
+      .map((r) => ({
+        url: String(r.Url),
+        n: Number(r.totalSessionCount) || 0,
+        bots: Number(r.totalBotSessionCount) || 0,
+      }))
+      .filter((p) => p.n > 0)
       .sort((a, b) => b.n - a.n)
       .slice(0, 10);
 
     if (pages.length > 0) {
       lines.push("");
-      lines.push("Most visited:");
-      for (const p of pages) lines.push(`  ${String(p.n).padStart(4)}  ${p.url}`);
+      lines.push("Most visited, sessions and how many were bots:");
+      for (const p of pages) {
+        lines.push(`  ${String(p.n).padStart(4)}  (${p.bots} bot)  ${p.url}`);
+      }
     }
 
-    for (const name of ["ScrollDepth", "EngagementTime"]) {
-      const m = metrics.find((x) => x.metricName === name);
-      const first = m?.information?.[0];
-      if (!first) continue;
-      const pairs = Object.entries(first)
-        .filter(([k]) => k !== "URL")
-        .map(([k, v]) => `${k} ${v}`)
-        .join(", ");
-      if (pairs) lines.push(`${name}: ${pairs}`);
+    const scroll = metrics.find((x) => x.metricName === "ScrollDepth")?.information?.[0];
+    if (scroll?.averageScrollDepth !== undefined) {
+      lines.push("");
+      lines.push(`Average scroll depth: ${scroll.averageScrollDepth}%`);
+    }
+
+    const time = metrics.find((x) => x.metricName === "EngagementTime")?.information?.[0];
+    if (time?.activeTime !== undefined) {
+      lines.push(`Engagement: ${time.activeTime}s active of ${time.totalTime}s total`);
     }
 
     return { title: "Traffic", lines };

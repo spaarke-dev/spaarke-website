@@ -45,9 +45,9 @@ it. This is the same shape task 050 specifies for cache warming.
 | `REPORT_TRIGGER_TOKEN` | SWA app settings **and** GitHub secret | yes | Shared secret. Both sides must match or the route returns 401. |
 | `STORAGE_ACCOUNT_CONNECTION` | SWA app settings | already set | Questions, leads, contact form |
 | `SENDGRID_API_KEY`, `CONTACT_EMAIL_TO` | SWA app settings | already set | Sending |
-| `CLARITY_API_TOKEN` | SWA app settings | **not yet set** | Traffic. Without it the mail still goes, minus one section. |
+| `CLARITY_API_TOKEN` | SWA app settings | set 2026-09-29 | Traffic. Without it the mail still goes, minus one section. |
 
-### The Clarity token, which is not set yet
+### The Clarity token
 
 Generate it in Clarity under **Settings, Data Export**, then:
 
@@ -94,16 +94,39 @@ curl -H "Authorization: Bearer <token>" \
 
 Or send one now from the Actions tab: **Daily report → Run workflow**.
 
-## What is not verified
+## Verified against the real API, 2026-09-29
 
-**The Clarity section has never run against the real API.** It was written from
-the published shape of the Data Export response and cannot be exercised without
-a token, which is generated in the Clarity dashboard. It is built to fail into a
-`problem` on the section rather than take the mail down, so the worst case is a
-mail with a line saying Clarity could not be read and why.
+The first version of the Clarity parsing was written from the documented shape
+and **was wrong in three ways**, all of which would have failed quietly:
 
-**Check it the first time** with the `--dry` call above, rather than waiting for
-tomorrow's mail to tell you.
+- The dimension key is **`Url`**, not `URL`. Every page row was being dropped, so
+  "most visited" would have been permanently empty.
+- Clarity returns a row with **`Url: null`**, an aggregate rather than a page,
+  which was being counted into the totals.
+- `distinctUserCount` **must not be summed**. The same person reading three
+  articles appears in three rows, so adding them up invents visitors. It is
+  reported as a maximum, which is a floor, and labelled as one.
+
+**Nothing here should be trusted from documentation alone.** Call it and look:
+
+```
+tok=$(az staticwebapp appsettings list --name swa-spaarke-website \
+  -g rg-spaarke-website --query "properties.CLARITY_API_TOKEN" -o tsv)
+curl -sS -H "Authorization: Bearer $tok" \
+  "https://www.clarity.ms/export-data/api/v1/project-live-insights?numOfDays=1&dimension1=Url"
+```
+
+### What the response actually contains
+
+Nine metrics. `Traffic` carries `totalSessionCount`, `totalBotSessionCount`,
+`distinctUserCount` and `pagesPerSessionPercentage`. `ScrollDepth` carries
+`averageScrollDepth`. `EngagementTime` carries `totalTime` and `activeTime`. The
+rest are behaviour signals (dead clicks, rage clicks, script errors) that the
+report ignores.
+
+**Bot sessions are reported separately rather than subtracted quietly**, because
+on the first real run every session was a bot, and a report that hid that would
+have shown traffic where there was none.
 
 ## Design notes
 
