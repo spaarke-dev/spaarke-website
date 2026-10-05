@@ -22,13 +22,13 @@
 
 ## 2. Draft (gate: complete prose at the length the brief sets)
 
-- [ ] Opening drafted (per plan.md §Opening), with the thesis stated
+- [x] Opening drafted (per plan.md §Opening), with the thesis stated
       within the first 250 words of a long-form article or the first
       150 words of a short post, and no later than the third paragraph
-- [ ] Each section drafted in order
-- [ ] Close drafted (per plan.md §Close); it ends on consequence,
+- [x] Each section drafted in order
+- [x] Close drafted (per plan.md §Close); it ends on consequence,
       with no summary and no pitch
-- [ ] Length checked against `length_target` in brief.md:
+- [x] Length checked against `length_target` in brief.md:
       - `open` (long-form article): there is no cap. The check is that
         every section advances the argument and that nothing is padding.
       - A number above 1,800 (long-form article): the number is an
@@ -36,12 +36,11 @@
         reach the number.
       - A number from 1,000 to 1,800 (short post): the draft falls
         within that range, and about 1,400 words suits most short posts.
-- [ ] Internal cross-links inserted at the points named in plan.md
-- [ ] Exhibits, if any, cited in parentheses at the end of the
+- [x] Internal cross-links inserted at the points named in plan.md
+- [x] Exhibits, if any, cited in parentheses at the end of the
       sentence that states the finding, in the form "(Exhibit 1)"
-- [ ] No `**TBD — confirm**` markers (or, if any remain, they are
-      explicitly listed for the reviewer)
-- [ ] Draft written to `draft.mdx` in this article's workspace
+- [x] No `**TBD — confirm**` markers (none in the draft)
+- [x] Draft written to `draft.mdx` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
 
@@ -53,31 +52,31 @@
 
 ## 4. Polish (gate: pre-publish checklist clean)
 
-- [ ] Frontmatter validated against `src/lib/blog.ts` shape
-- [ ] `description` field is a real SEO meta description (~155 chars)
-- [ ] `summary` is 2 to 3 sentences, about 150 to 280 characters
-- [ ] `keyTakeaways` are 3 to 6 bullets of 18 to 35 words each
-- [ ] Tags drawn from canonical taxonomy (no inventions)
-- [ ] All cross-link slugs verified to exist
-- [ ] **Required: voice lint.** From the repository root, run
+- [x] Frontmatter validated against `src/lib/blog.ts` shape
+- [x] `description` field is a real SEO meta description (~155 chars)
+- [x] `summary` is 2 to 3 sentences, about 150 to 280 characters
+- [x] `keyTakeaways` are 3 to 6 bullets of 18 to 35 words each
+- [x] Tags drawn from canonical taxonomy (no inventions)
+- [x] All cross-link slugs verified to exist
+- [x] **Required: voice lint.** From the repository root, run
       `npm run voice:lint -- content-platform/articles/the-spaarke-method/draft.mdx`.
       The run reports 0 errors, and every warning has been read and
       either fixed or accepted for a stated reason (record the reason
       in the decisions log at the foot of this file). The lint covers
       the frontmatter as well as the body.
-- [ ] **Required: final-pass sweep against
+- [x] **Required: final-pass sweep against
       `voice/examples/ai-tells.md`**, using its pre-review checklist
       (section 8). The sweep covers the title, the headings, the alt
       text, and the `description`, `summary`, and `keyTakeaways`
       fields as well as the body. For every sentence that is flagged,
       supply the missing fact as well as removing the pattern.
-- [ ] **Final-pass sweep against `voice/style-guide.md` section 5**
+- [x] **Final-pass sweep against `voice/style-guide.md` section 5**
       (rules 1 to 27) and the quick checklist in section 7
-- [ ] **Final-pass sweep against `voice/examples/avoid-this.md`** for
+- [x] **Final-pass sweep against `voice/examples/avoid-this.md`** for
       marketing language and do-not-say items. Where one of its
       "Better" examples conflicts with the style guide, the style
       guide governs.
-- [ ] **Required: the stance lens.** This is the fourth review lens,
+- [x] **Required: the stance lens.** This is the fourth review lens,
       after voice, fidelity, and evidence. Read the draft against
       `voice/stance.md` and the eight traits in
       `voice/examples/house-exemplar.md` section 2. The judgement
@@ -86,27 +85,27 @@
       inventories causes, whether the concession the argument depends
       on is present, whether a caveat defends the writer rather than
       informing the reader, and whether the close recommends.
-- [ ] No em dash, spaced en dash, double hyphen, or spaced hyphen
+- [x] No em dash, spaced en dash, double hyphen, or spaced hyphen
       anywhere in the piece, and ranges are written with "to"
-- [ ] Closing contact line present if the brief calls for one, with
+- [x] Closing contact line present if the brief calls for one, with
       no TBD marker left in it (see `voice/bylines.md` section 6)
 
 ## 5. Hero (gate: image present at expected path)
 
-- [ ] Hero produced per `voice/visual-identity.md`:
+- [x] Hero produced per `voice/visual-identity.md`:
       - Default: SVG at `public/articles/<slug>/hero.svg` (1600×900 viewBox)
       - Or paste-ready prompt for Midjourney/DALL-E/Firefly if photographic
-- [ ] Alt text written (a real description of the image, with no em dash)
-- [ ] LinkedIn header generated via `node scripts/generate-linkedin-headers.mjs`
+- [x] Alt text written (a real description of the image, with no em dash)
+- [x] LinkedIn header generated via `node scripts/generate-linkedin-headers.mjs`
 
 ## 6. Ship (gate: live + tracked)
 
-- [ ] `draft.mdx` moved to `content/blog/<YYYY-MM-DD>-<slug>.mdx`
-- [ ] `draft: false` in frontmatter
-- [ ] `calendar.md` row updated to `published`
-- [ ] GitHub Project's *Pipeline status* moved to `Published`
-- [ ] GitHub Issue closed
-- [ ] Campaign file (if applicable) updated to reflect actual publish
+- [x] `draft.mdx` moved to `content/blog/<YYYY-MM-DD>-<slug>.mdx`
+- [x] `draft: false` in frontmatter
+- [x] `calendar.md` row updated to `published`
+- [x] GitHub Project's *Pipeline status* moved to `Published`
+- [x] GitHub Issue closed
+- [x] Campaign file (if applicable) updated to reflect actual publish
 
 ## 7. Syndicate to LinkedIn (gate: posted to each target)
 
@@ -226,3 +225,9 @@ Intelligence series from pipeline draft to final. Use it for long-form work.
 - **Follow-ups after publish:** align `voice/brand-positioning.md`, `voice/product-knowledge.md`, and the October report's idea.md with the one-ontology wording; create the two LinkedIn syndication workspaces; settle where the source essay lives.
 
 - **Outline gate passed 2026-10-05.** The writer signed off the outline, subject to three refinements that are now applied: "legal operations" as the inclusive term with no separate law firm section, forward deployment as a term of art for the legal engineers, and the distinction between a system of record (a database with a defined scope and structure) and the platform (the entire operation and business, multi-dimensional, from all sources). Pipeline status is Outline. Issue #119, milestone 6.
+
+- **Draft gate passed 2026-10-05** (`draft.mdx`, about 3,590 body words against the 4,000 target; no cap applies). Voice lint: 0 errors, 1 warning accepted: the section on the five phases runs about 1,016 words against a median of 475, because the five labelled phases are the counted framework the style guide places in the one section that proves the thesis, and the plan budgeted it at 1,000. Passive share is about 21% against a ceiling of about 15%; most of it sits in the definitional passages (what a system of record holds, how the ontology is supported), which the guide says read above the ceiling honestly. Back-references checked against articles 1 to 3: Harbor (article 1 and 2), Axiom 7% and Deloitte UK 84% (article 2), the stalled-build sentence (article 2), and "each system of record holds one dimension of the work" (article 3). The ILTA figures are the only new statistics and were read verbatim from the primary. Eight short scenes: five (one per phase) from the plan, plus counsel selection, a paralegal's triage knowledge, and a firm's knowledge reuse.
+
+- **Revision after the writer's review, 2026-10-05:** the thesis was reset to the data-versus-intelligence distinction ("Systems of record give legal operations data, and a legal operations intelligence platform gives it intelligence"), with the cost of lacking intelligence and the effect on AI made explicit; the compounding point was reworded; "The Spaarke Method" replaces "Spaarke's method"; and the AI capability is built, grown, and perfected by mastering the five phases. Plan formula and brief updated to match. Draft is back at the Revise gate.
+
+- **Published 2026-10-05.** The writer approved publication after the second review. Display date and real publish date are both 2026-10-05 (the 2026-10-06 slot was dropped because the site does not hold future-dated posts back). Hero and exhibit drawn in the new teal and coral family by `scripts/generate-method-series-assets.mjs`, rasterized and looked at (full size, crop, and 128px thumbnail), and the first coral halo, which rendered as a muddy flat disc, replaced with a radial gradient. `npm run build` passes and generates `/why-spaarke/the-spaarke-method`. Voice lint 0 errors; one warning accepted (the five-phases section). Palette documented in `voice/visual-identity.md`. Open after publish: LinkedIn syndication workspaces, the follow-up edit to `brand-positioning.md` and `product-knowledge.md`, and folding the palette into the recolour script.

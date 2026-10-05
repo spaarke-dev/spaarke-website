@@ -174,6 +174,20 @@ colours, and recolouring makes it wrong for a screen reader.
 full size five heroes look varied when the thumbnails do not. This has now
 caught the same defect twice.
 
+### Series hue family: teal and coral (The Spaarke Method)
+
+The writer approved a second family on 2026-10-05, after reporting that the first series was overly dark and purple. A series that follows the Legal Operations Intelligence series takes its hues from a teal-to-green family carried through the whole composition, with one coral accent on the focal element. The same series rules apply: carry the hue through the canvas, the fills, and the strokes, and separate the canvas from the geometry by value, so the canvas sits two or three steps darker than the fills.
+
+| Role | Colour |
+|---|---|
+| Canvas gradient | `#0F3B3A` centre, `#0A2A2C`, `#06181B` edge |
+| Node and plane fills | `#1E6F66`, `#2B8F7F`, `#3FB59A` |
+| Fine lines and edges | `#B5F2DC` |
+| Focal accent | `#FF7A59` (coral), with `#FF9A7E` as its lifted stop |
+| Glow | `#3FE0B5` at 20 to 28% |
+
+The overview article, *The Spaarke Method*, uses the family as drawn: a loop of five nodes, the first larger and coral. Later articles in the series keep the geometry and the line weights and move the hue (for example toward lime, cyan, or a deeper green), so the series reads as one family on the index. `scripts/generate-method-series-assets.mjs` draws the overview hero and exhibit. Folding the palette into `scripts/recolour-series-heroes.mjs` is open until a second article in the family needs it.
+
 ### Default hero composition recipe
 
 A starter recipe that hits the contrast rule on the first attempt.

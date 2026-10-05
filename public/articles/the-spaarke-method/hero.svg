@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">The Spaarke Method: Envision, Design, Build, Deploy, and Manage</title>
+  <desc id="hero-desc">A loop of five connected nodes in shades of teal on a deep teal field, the first node larger and coral, joined by a pale mint line that closes on itself, suggesting five phases that return to the first decision.</desc>
+
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="52%" r="82%">
+      <stop offset="0%" stop-color="#0F3B3A"/>
+      <stop offset="52%" stop-color="#0A2A2C"/>
+      <stop offset="100%" stop-color="#06181B"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3FE0B5" stop-opacity="0.28"/>
+      <stop offset="55%" stop-color="#3FE0B5" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#3FE0B5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tealNode" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3FB59A"/>
+      <stop offset="100%" stop-color="#1E6F66"/>
+    </linearGradient>
+    <radialGradient id="coralHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF7A59" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#FF7A59" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#FF7A59" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="coral" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF9A7E"/>
+      <stop offset="100%" stop-color="#FF7A59"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="800" cy="450" r="420" fill="url(#halo)"/>
+  <g>
+    <circle cx="330" cy="220" r="5" fill="#B5F2DC" opacity="0.7"/>
+    <circle cx="420" cy="700" r="3.5" fill="#B5F2DC" opacity="0.45"/>
+    <circle cx="1250" cy="180" r="3.5" fill="#B5F2DC" opacity="0.7"/>
+    <circle cx="1330" cy="640" r="5" fill="#B5F2DC" opacity="0.45"/>
+    <circle cx="1180" cy="760" r="3.5" fill="#B5F2DC" opacity="0.7"/>
+    <circle cx="260" cy="520" r="3.5" fill="#B5F2DC" opacity="0.45"/>
+    <circle cx="1410" cy="400" r="5" fill="#B5F2DC" opacity="0.7"/>
+    <circle cx="610" cy="120" r="3.5" fill="#B5F2DC" opacity="0.45"/>
+  </g>
+  <circle cx="800" cy="450" r="348" fill="none" stroke="#2B8F7F" stroke-width="1.4" opacity="0.5"/>
+  <circle cx="800" cy="450" r="192" fill="none" stroke="#2B8F7F" stroke-width="1.4" opacity="0.5"/>
+  <circle cx="800" cy="450" r="270" fill="none" stroke="#B5F2DC" stroke-width="2.4" opacity="0.85"/>
+  <g>
+    <circle cx="800" cy="180" r="96" fill="url(#coralHalo)"/>
+    <circle cx="800" cy="180" r="50" fill="url(#coral)" stroke="#FFD9CC" stroke-width="2.4"/>
+    <circle cx="800" cy="180" r="18" fill="#FFF1EB" opacity="0.9"/>
+    <circle cx="1056.8" cy="366.6" r="40" fill="url(#tealNode)" stroke="#B5F2DC" stroke-width="2"/>
+    <circle cx="1056.8" cy="366.6" r="13" fill="#B5F2DC" opacity="0.85"/>
+    <circle cx="958.7" cy="668.4" r="40" fill="url(#tealNode)" stroke="#B5F2DC" stroke-width="2"/>
+    <circle cx="958.7" cy="668.4" r="13" fill="#B5F2DC" opacity="0.85"/>
+    <circle cx="641.3" cy="668.4" r="40" fill="url(#tealNode)" stroke="#B5F2DC" stroke-width="2"/>
+    <circle cx="641.3" cy="668.4" r="13" fill="#B5F2DC" opacity="0.85"/>
+    <circle cx="543.2" cy="366.6" r="40" fill="url(#tealNode)" stroke="#B5F2DC" stroke-width="2"/>
+    <circle cx="543.2" cy="366.6" r="13" fill="#B5F2DC" opacity="0.85"/>
+  </g>
+</svg>
