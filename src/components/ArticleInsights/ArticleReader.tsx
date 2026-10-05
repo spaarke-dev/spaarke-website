@@ -35,7 +35,7 @@ import { markHeading } from "./pin";
  * long press still opens the article properly.
  */
 export function ArticleReader() {
-  const { reader, closeReader, open, openOn } = useInsights();
+  const { reader, closeReader, open, openOn, openReader } = useInsights();
   const [html, setHtml] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
   const body = useRef<HTMLDivElement | null>(null);
@@ -170,6 +170,27 @@ export function ArticleReader() {
         <div
           ref={body}
           className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-8 py-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          // A link to another article, inside the article being read, opens that
+          // article here in turn. The markup was lifted out of a rendered page and
+          // carries no React handlers, so the click is read off the data
+          // attributes the page put on the link (see ArticleLink).
+          onClick={(event) => {
+            const link = (event.target as HTMLElement).closest<HTMLAnchorElement>("a[data-reader-slug]");
+            if (!link) return;
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            if (event.button !== 0) return;
+            const slug = link.dataset.readerSlug;
+            const href = link.getAttribute("href");
+            if (!slug || !href) return;
+            event.preventDefault();
+            openReader({
+              slug,
+              title: link.dataset.readerTitle || link.textContent || slug,
+              heading: "",
+              anchor: link.dataset.readerAnchor || undefined,
+              href,
+            });
+          }}
         >
           {html === null && !failed && (
             <p className="text-fg-low text-[14px]">Opening the article</p>

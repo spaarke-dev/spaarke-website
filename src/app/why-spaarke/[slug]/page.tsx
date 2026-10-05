@@ -9,6 +9,7 @@ import { ArticleTOC } from "@/components/article/ArticleTOC";
 import { ArticleShare } from "@/components/article/ArticleShare";
 import { ArticleRelated } from "@/components/article/ArticleRelated";
 import { ArticleProgressBar } from "@/components/article/ArticleProgressBar";
+import { ArticleLink } from "@/components/article/ArticleLink";
 import { ArticleReadTracker } from "@/components/analytics/ArticleReadTracker";
 import { InsightsProvider, RailEntry } from "@/components/ArticleInsights";
 import { entryOptions } from "@/lib/insights/questions";
@@ -51,9 +52,16 @@ export default async function WhySpaarkeArticle({ params }: Props) {
     notFound();
   }
 
+  // Published titles by slug, so a link to another article can open it in the
+  // reader beside the page instead of navigating away (ArticleLink).
+  const titles = Object.fromEntries(getAllPosts().map((p) => [p.slug, p.title]));
+
   // Auto-generate IDs on rendered headings so the TOC anchor links work.
   const { content: mdxContent } = await compileMDX({
     source: post.content,
+    components: {
+      a: (props) => <ArticleLink {...props} titles={titles} currentSlug={slug} />,
+    },
     options: {
       parseFrontmatter: false,
       mdxOptions: {
