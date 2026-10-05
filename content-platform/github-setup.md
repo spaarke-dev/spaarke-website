@@ -57,6 +57,7 @@ One per campaign. Issue → Milestone is the campaign assignment.
 | 2 | 2026-06 Architecture and Trust | 2026-06-30 | `campaigns/2026-06-architecture-and-trust.md` |
 | 3 | 2026-07 AI Across the Lifecycle | 2026-07-31 | `campaigns/2026-07-ai-across-the-lifecycle.md` |
 | 4 | 2026-08 Operating Model and Spend | 2026-09-30 | `campaigns/2026-08-operating-model-and-spend.md` |
+| 6 | 2026-10 The Spaarke Method | none | `campaigns/2026-10-the-spaarke-method.md` |
 
 ### Labels
 
