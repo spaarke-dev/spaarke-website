@@ -134,6 +134,15 @@ type InsightsValue = {
 
 const InsightsContext = createContext<InsightsValue | null>(null);
 
+/**
+ * The same value, or null where there is no provider. For a surface that has to
+ * work with or without the assistant, such as a link in an article body: where the
+ * console is switched off the link is an ordinary link.
+ */
+export function useInsightsOptional(): InsightsValue | null {
+  return useContext(InsightsContext);
+}
+
 export function useInsights(): InsightsValue {
   const value = useContext(InsightsContext);
   if (!value) throw new Error("useInsights must be used inside InsightsProvider");
