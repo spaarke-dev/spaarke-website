@@ -1,9 +1,9 @@
 ---
 slug: the-spaarke-method
 type: blog-post
-publish_date: 2026-10-06            # proposed display date and real publish date (a Tuesday, within the writer's "today or tomorrow"); confirm the day
+publish_date: 2026-10-05            # proposed display date and real publish date (a Tuesday, within the writer's "today or tomorrow"); confirm the day
 channels: [website, linkedin]
-status: outline                     # brief | outline | draft | review | scheduled | published
+status: published                   # brief | outline | draft | review | scheduled | published
 priority: high                      # first article of a new series; the writer wants it released this week (2026-10-05)
 audience: legal-ops-director        # co-primary for this piece: firm-operations-leader (writer's notes, 2026-10-05: law departments and law firms equally); secondary: corporate-counsel
 length_target: 4000                 # long-form article; about 4,000 words plus or minus, a planning estimate and not a cap (content-types/blog-post.md section 2.1). Section budget goes in plan.md.
@@ -14,10 +14,10 @@ triggered_by: idea.md rev. 2 (2026-10-05), the writer's answers and review notes
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
 title: "The Spaarke Method: Envision, Design, Build, Deploy, and Manage"
-description: "How Spaarke works with legal operations, in law departments and law firms alike, to build a Legal Operations Intelligence platform and an AI capability."
-summary: "Legal operations builds its intelligence platform one decision at a time, through five phases that return to the first. This article sets out how Spaarke works with legal operations in each phase, in law departments and law firms alike, who does the work, what exists at the end of each, and how the same phases build the organization's own AI capability."
-date: 2026-10-06                    # display date, equal to the real publish date
-posted: 2026-10-06
+description: "How the Spaarke Method takes legal operations, in law departments and firms, from data to intelligence and from AI tools to an AI capability of its own."
+summary: "Systems of record give legal operations data, and a legal operations intelligence platform gives it intelligence. This article sets out the Spaarke Method, the five phases through which Spaarke builds that platform with legal operations in law departments and law firms alike, who does the work in each, and how mastering the phases builds, grows, and perfects the organization's own AI capability."
+date: 2026-10-05                    # display date, equal to the real publish date
+posted: 2026-10-05
 author: "Spaarke Team"
 tags:
   organization: [corporate-legal, law-firm]
@@ -28,11 +28,12 @@ heroImage: "/articles/the-spaarke-method/hero.svg"
 heroImagePosition: "center"
 draft: true
 keyTakeaways:
-  - "Legal operations builds its platform one decision at a time, and the second decision costs less than the first because the entities, connections, and governance built for the first are largely what the second needs."
-  - "A system of record is a database with a defined scope and structure. A legal operations intelligence platform defines the whole operation and the business around it, across every dimension and from every source."
+  - "Systems of record give legal operations data. A legal operations intelligence platform gives it intelligence: the context, authority, and governed action that turn a record into a decision."
+  - "Without intelligence, legal operations stays data-rich and insight-poor, and AI added to that data gives fragmented answers faster. Intelligence gives AI the context it needs to be accurate and safe."
+  - "The Spaarke Method builds the platform through five phases that form a loop, one decision at a time, and each decision leaves behind entities, connections, and governance that the next one reuses."
   - "Forward-deployed legal engineers work with experienced practitioners and the organization's own end users from the first day and in every phase, and turn how legal operations decides into the platform."
-  - "In Spaarke's method, technology, consulting, and managed services are integrated through one ontology that the organization owns, so what each learns about how legal operations decides is held in the model the others use."
-  - "The organization builds its own AI capability inside the same five phases: context and guardrails in design, an evaluation set in build, proposals a person confirms in deploy, and wider autonomy on evidence in manage."
+  - "The Spaarke Method joins technology, consulting, and managed services through one ontology that the organization owns, so what each learns about how legal operations decides is held in the model the others use."
+  - "An organization builds, grows, and perfects its AI capability by mastering the five phases: context and guardrails in design, an evaluation set in build, proposals a person confirms in deploy, and wider autonomy on evidence in manage."
 ---
 
 # Topic
@@ -51,11 +52,13 @@ The five earlier articles in the Legal Operations Intelligence series argued wha
 
 The central distinction, which the writer asked the piece to draw sharply: **a system of record is fundamentally a database with a specifically defined scope and structure, and a legal operations intelligence platform defines the entire operation and the business around it, multi-dimensional and from all sources.** A matter system, an e-billing platform, and a document repository each fix a scope and a structure in advance for one function, and each holds one dimension of the work (article 3 makes the point). The platform models how legal operations works as a whole and how it connects to the business: the entities across every system, the relationships among them, the policy and authority that govern each decision, and the actions that follow. It draws on every source, including the systems of record, the email and documents that no system structures, and the knowledge held by the people who do the work. That is a different kind of solution, and it is built differently. A database is specified from requirements about what people record, and a competent team can build it. The platform is built from knowledge about how people decide, which sits with experienced practitioners and with the organization's end users, so the work has to be done with them, from the beginning and across every phase of the method, by people who understand both the legal work and the model.
 
-The thesis formula, which the opening, the heading of the proving section, and the close repeat in the same words:
+The thesis formula, which the opening, the heading of the proving section, and the close repeat in the same words (revised after the writer's review of 2026-10-05, which found the earlier formula, "Legal operations builds its platform one decision at a time...", described a method and made no important point; the writer's distinction is the thesis):
 
-> Legal operations builds its platform one decision at a time, through five phases that form a loop: envision, design, build, deploy, and manage.
+> Systems of record give legal operations data, and a legal operations intelligence platform gives it intelligence
 
-The opening names the "legal operations intelligence platform" in full once, before the formula, so that "its platform" is unambiguous.
+The method follows as the article's answer, in a sentence that is not part of the formula: "The Spaarke Method is how legal operations builds that platform, one decision at a time, through five phases that form a loop." Why the distinction is critical (the writer: "this is the entire crux of why Spaarke is important"): data records what happened, and intelligence turns a record into a decision by bringing it, with its context, to the person with authority, acting through a governed process, and recording the outcome. A department without it stays data-rich and insight-poor, AI added to its data gives fragmented answers faster, and no single system of record can supply intelligence, because the limitation is inherent in the architecture of legal systems.
+
+Naming (same review): the article says "The Spaarke Method", never "Spaarke's method" or "in Spaarke's method". The AI capability is something the organization "builds, grows, and perfects by mastering the five phases".
 
 # Prime mover
 

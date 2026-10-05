@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 600" role="img" aria-labelledby="ex-title ex-desc" font-family="system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+  <title id="ex-title">Each phase ends with something the organization can inspect, and the last phase begins the next cycle</title>
+  <desc id="ex-desc">A loop of five phases: envision ends with a chosen first decision, a named owner, and a baseline; design with a written model of the decision and signed definitions; build with a working model tested on real data by its users; deploy with the decision made in live work and recorded; and manage with a measured result and the next decision, which begins the next cycle at envision. A band beneath all five phases reads that practitioners and end users take part in every phase, with forward-deployed legal engineers working alongside them from the first day.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#B5F2DC"/>
+    </marker>
+    <marker id="arrowHot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF7A59"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="1238" height="598" rx="14" fill="#0B2B2D" stroke="#1E6F66" stroke-width="2"/>
+  <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E6FBF4" font-weight="600">Each phase ends with something the organization can inspect,</text>
+  <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E6FBF4" font-weight="600">and the last phase begins the next cycle.</text>
+    <path d="M 1100 166 L 1100 124 L 140 124 L 140 160" fill="none" stroke="#FF7A59" stroke-width="2.4" marker-end="url(#arrowHot)"/>
+    <text x="620" y="112" text-anchor="middle" font-size="16" fill="#FF7A59" font-weight="600">The next decision begins the next cycle</text>
+    <rect x="40" y="170" width="200" height="90" rx="12" fill="#14504B" stroke="#FF7A59" stroke-width="2.6"/>
+    <text x="140" y="224" text-anchor="middle" font-size="26" font-weight="700" fill="#E6FBF4">Envision</text>
+    <text x="140" y="294" text-anchor="middle" font-size="14" fill="#9CD9C6">Ends with</text><text x="140" y="322" text-anchor="middle" font-size="17" fill="#E6FBF4">A chosen first decision,</text><text x="140" y="346" text-anchor="middle" font-size="17" fill="#E6FBF4">a named owner,</text><text x="140" y="370" text-anchor="middle" font-size="17" fill="#E6FBF4">and a baseline</text>
+    <line x1="244" y1="215" x2="274" y2="215" stroke="#B5F2DC" stroke-width="2.2" marker-end="url(#arrow)"/>
+    <rect x="280" y="170" width="200" height="90" rx="12" fill="#14504B" stroke="#3FB59A" stroke-width="1.8"/>
+    <text x="380" y="224" text-anchor="middle" font-size="26" font-weight="700" fill="#E6FBF4">Design</text>
+    <text x="380" y="294" text-anchor="middle" font-size="14" fill="#9CD9C6">Ends with</text><text x="380" y="322" text-anchor="middle" font-size="17" fill="#E6FBF4">A written model of the</text><text x="380" y="346" text-anchor="middle" font-size="17" fill="#E6FBF4">decision, with signed</text><text x="380" y="370" text-anchor="middle" font-size="17" fill="#E6FBF4">definitions</text>
+    <line x1="484" y1="215" x2="514" y2="215" stroke="#B5F2DC" stroke-width="2.2" marker-end="url(#arrow)"/>
+    <rect x="520" y="170" width="200" height="90" rx="12" fill="#14504B" stroke="#3FB59A" stroke-width="1.8"/>
+    <text x="620" y="224" text-anchor="middle" font-size="26" font-weight="700" fill="#E6FBF4">Build</text>
+    <text x="620" y="294" text-anchor="middle" font-size="14" fill="#9CD9C6">Ends with</text><text x="620" y="322" text-anchor="middle" font-size="17" fill="#E6FBF4">A working model,</text><text x="620" y="346" text-anchor="middle" font-size="17" fill="#E6FBF4">tested on real data</text><text x="620" y="370" text-anchor="middle" font-size="17" fill="#E6FBF4">by its users</text>
+    <line x1="724" y1="215" x2="754" y2="215" stroke="#B5F2DC" stroke-width="2.2" marker-end="url(#arrow)"/>
+    <rect x="760" y="170" width="200" height="90" rx="12" fill="#14504B" stroke="#3FB59A" stroke-width="1.8"/>
+    <text x="860" y="224" text-anchor="middle" font-size="26" font-weight="700" fill="#E6FBF4">Deploy</text>
+    <text x="860" y="294" text-anchor="middle" font-size="14" fill="#9CD9C6">Ends with</text><text x="860" y="322" text-anchor="middle" font-size="17" fill="#E6FBF4">The decision made in</text><text x="860" y="346" text-anchor="middle" font-size="17" fill="#E6FBF4">live work, and</text><text x="860" y="370" text-anchor="middle" font-size="17" fill="#E6FBF4">recorded</text>
+    <line x1="964" y1="215" x2="994" y2="215" stroke="#B5F2DC" stroke-width="2.2" marker-end="url(#arrow)"/>
+    <rect x="1000" y="170" width="200" height="90" rx="12" fill="#14504B" stroke="#3FB59A" stroke-width="1.8"/>
+    <text x="1100" y="224" text-anchor="middle" font-size="26" font-weight="700" fill="#E6FBF4">Manage</text>
+    <text x="1100" y="294" text-anchor="middle" font-size="14" fill="#9CD9C6">Ends with</text><text x="1100" y="322" text-anchor="middle" font-size="17" fill="#E6FBF4">A measured result,</text><text x="1100" y="346" text-anchor="middle" font-size="17" fill="#E6FBF4">and the next</text><text x="1100" y="370" text-anchor="middle" font-size="17" fill="#E6FBF4">decision</text>
+    
+  <rect x="40" y="440" width="1160" height="100" rx="12" fill="#0F3B3A" stroke="#3FB59A" stroke-width="1.6" stroke-dasharray="8 7"/>
+  <text x="620" y="484" text-anchor="middle" font-size="21" font-weight="600" fill="#E6FBF4">Practitioners and end users take part in every phase</text>
+  <text x="620" y="514" text-anchor="middle" font-size="17" fill="#9CD9C6">Forward-deployed legal engineers work alongside them from the first day</text>
+</svg>

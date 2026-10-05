@@ -3,8 +3,8 @@ slug: 2026-10-the-spaarke-method
 name: The Spaarke Method
 status: planned                    # planned | scheduled | active | complete | retro
 date_range:
-  start: 2026-10-06                # the first article's display and publish date, subject to the writer's confirmation
-  launch: 2026-10-06
+  start: 2026-10-05                # the first article's display and publish date, subject to the writer's confirmation
+  launch: 2026-10-05
   end: "**TBD — confirm**"         # the series has no fixed length; one detailed article per phase follows the overview
 owner: rs
 milestone: "2026-10 The Spaarke Method (GitHub milestone 6)"
@@ -39,7 +39,7 @@ Further articles are open and not yet defined. Candidates are legal engineers an
 
 | Date | Type | Slug | Status | Channel(s) | Notes |
 |---|---|---|---|---|---|
-| 2026-10-06 | blog-post | the-spaarke-method | outline | website, linkedin | overview; the display date is also the real publish date |
+| 2026-10-05 | blog-post | the-spaarke-method | published | website, linkedin | overview; the display date is also the real publish date |
 | **TBD — confirm** | linkedin-post | the-spaarke-method-syndication-company | planned | linkedin | company-page syndication; created after publish through the standalone-mode convention in tasks.md section 7 |
 | **TBD — confirm** | linkedin-post | the-spaarke-method-syndication-personal | planned | linkedin (rs) | founder syndication, first person |
 | **TBD — confirm** | blog-post | envision (working slug) | planned | website, linkedin | article 2 of the series |
@@ -48,7 +48,7 @@ Further articles are open and not yet defined. Candidates are legal engineers an
 
 | Date | Channel | Action |
 |---|---|---|
-| 2026-10-06 | website | Publish the overview article (human-driven) |
+| 2026-10-05 | website | Publish the overview article (human-driven; the writer approved publication on 2026-10-05) |
 | **TBD — confirm** | linkedin | Spaarke company-page post syndicating the overview |
 | **TBD — confirm** | linkedin (rs) | Founder post syndicating the overview |
 
