@@ -15,7 +15,7 @@
 | 021 | [Slide strip and download](021-slide-strip.md) | 2 | 001, 020 | 3h | **complete** |
 | 022 | [Application form](022-application-form.md) | 2 | 011, 020 | 3h | **complete** (success path checked on the preview in 031) |
 | 030 | [Redirects and contact reason](030-redirects-and-contact-reason.md) | 3 | 020 | 2h | **complete** |
-| 031 | [Pull request and preview verification](031-preview-verification.md) | 3 | 012, 021, 022, 030 | 2h | not-started |
+| 031 | [Pull request and preview verification](031-preview-verification.md) | 3 | 012, 021, 022, 030 | 2h | in progress: automated checks pass; one human test submission left |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | 3 | 031 | 2h | not-started |
 
 **10 tasks, roughly 23 hours.**

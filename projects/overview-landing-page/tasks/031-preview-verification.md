@@ -1,7 +1,7 @@
 # Task 031: Pull request and preview verification
 
 **Phase:** 3 (Connections and preview)
-**Status:** not-started
+**Status:** in-progress
 **Estimated:** 2 hours
 **Dependencies:** 012, 021, 022, 030
 **Tags:** deploy, swa, ci-cd, testing
