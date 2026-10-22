@@ -18,7 +18,7 @@ export default function Privacy() {
         />
 
         <div className="text-fg-mid mt-12 max-w-2xl space-y-6 text-base leading-relaxed">
-          <p className="text-fg-low text-sm">Last updated: 2026-09-25</p>
+          <p className="text-fg-low text-sm">Last updated: 2026-10-22</p>
 
           <p>
             This policy covers two related but distinct contexts: (1) the
@@ -188,15 +188,65 @@ export default function Privacy() {
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
-            Forms (contact, get access, take tour)
+            Forms on this site
           </h3>
           <p>
-            When you submit a form, we store what you typed (name, work email,
-            organization, message, and any other fields you complete) along
-            with the attribution snapshot above. Form data is stored in Azure
-            Table Storage in our tenant and is used solely to respond to your
-            inquiry and operate any early-access provisioning that follows. We
-            do not share form data with third parties for marketing purposes.
+            The forms on this site are the contact form, the evaluation access
+            request, the product tour sign-up, and the Design Partner Program
+            application. When you submit one, we store what you entered (for
+            example your name, work email, organization, role, and message)
+            with the attribution snapshot above and a one-way hash of your IP
+            address, which we use to limit repeated submissions. The data is
+            stored in Azure Table Storage in our tenant, and a copy is emailed
+            to our team through SendGrid so that someone can reply. An
+            evaluation access request is also passed to the Spaarke platform
+            to set up the evaluation you asked for.
+          </p>
+
+          <h3 className="text-fg font-display text-lg font-medium">
+            LinkedIn lead forms
+          </h3>
+          <p>
+            When you submit a lead form in a Spaarke ad on LinkedIn, LinkedIn
+            shares with us the information shown on that form: your name, email
+            address, job title, and company from your LinkedIn profile, and
+            your answers to any questions on the form. LinkedIn&rsquo;s own
+            handling of your data is governed by the{" "}
+            <a
+              href="https://www.linkedin.com/legal/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cta-blue underline"
+            >
+              LinkedIn Privacy Policy
+            </a>
+            . We use what we receive in the same way as a form on this site.
+          </p>
+
+          <h3 className="text-fg font-display text-lg font-medium">
+            How we use form data
+          </h3>
+          <p>
+            We use form data to respond to your request: to reply to you, to
+            set up an evaluation you asked for, or to consider your application
+            to the Design Partner Program. We do so because you asked us to,
+            and on the basis of our legitimate interest in responding to
+            business inquiries. We do not sell form data, share it for
+            cross-context behavioral advertising, or share it with third
+            parties for their own marketing. A form submission does not add you
+            to marketing email unless you ask us to, and any marketing email we
+            send includes a way to unsubscribe.
+          </p>
+
+          <h3 className="text-fg font-display text-lg font-medium">
+            How long we keep form data, and how we protect it
+          </h3>
+          <p>
+            We keep form data for as long as we need it to respond to you and
+            to manage any relationship that follows, and we delete it when you
+            ask us to. Form data travels over HTTPS and is encrypted at rest in
+            Azure Storage, and access to it is limited to the Spaarke team
+            members who respond to requests.
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
@@ -424,6 +474,19 @@ export default function Privacy() {
               .
             </li>
           </ul>
+          <p>
+            We will not treat you differently for exercising any of these
+            rights.
+          </p>
+
+          <h2 className="text-fg font-display text-2xl font-medium tracking-tight">
+            Children
+          </h2>
+          <p>
+            This website and the Spaarke platform are for business use and are
+            not directed to children under 16. We do not knowingly collect
+            personal data from them.
+          </p>
 
           <h2 className="text-fg font-display text-2xl font-medium tracking-tight">
             Changes to this policy
