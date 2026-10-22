@@ -46,10 +46,14 @@ export default function Privacy() {
             What we don&rsquo;t do
           </h3>
           <p>
-            We do not run third-party advertising trackers on this site, build
-            cross-site behavioral profiles, or sell visitor data. We do not
-            require a cookie banner because we don&rsquo;t set non-essential
-            tracking cookies.
+            We do not run advertising trackers on this site, build cross-site
+            behavioral profiles, or sell visitor data. We set no analytics or
+            advertising cookies, which is why the site has no cookie banner. The
+            only cookies are the ones described under{" "}
+            <a href="#cookies" className="text-cta-blue underline">
+              Cookies
+            </a>
+            , which the site needs to work.
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
@@ -93,9 +97,9 @@ export default function Privacy() {
                 <tr className="border-line border-b">
                   <td className="py-2 pr-4">Microsoft Clarity</td>
                   <td className="py-2 pr-4">
-                    Anonymous session playback, heatmaps (form fields masked)
+                    Heatmaps and anonymous page recordings (form fields masked)
                   </td>
-                  <td className="py-2 pr-4">First-party only</td>
+                  <td className="py-2 pr-4">No</td>
                   <td className="py-2">
                     <a
                       href="https://learn.microsoft.com/en-us/clarity/setup-and-installation/cookie-consent"
@@ -160,31 +164,55 @@ export default function Privacy() {
             Microsoft Clarity
           </h3>
           <p>
-            Clarity records anonymous session playbacks and produces heatmaps
-            so we can see where visitors get stuck or confused. Text typed
-            into form fields is automatically masked before recording, so we
-            never see the names, emails, or messages people type. Recordings
-            are tied to a first-party identifier only and are not used for
-            advertising.
+            Clarity shows us how visitors use each page, through heatmaps and
+            anonymous recordings of single page views, so we can see where
+            visitors get stuck or confused. We run it with cookies turned off,
+            so it does not connect one page view to the next or recognize a
+            returning visitor. Text typed into form fields is automatically
+            masked before recording, so we never see the names, emails, or
+            messages people type. Clarity data is not used for advertising.
           </p>
+
+          <h3
+            id="cookies"
+            className="text-fg font-display scroll-mt-32 text-lg font-medium"
+          >
+            Cookies
+          </h3>
+          <p>The site sets two kinds of cookie, both needed for it to work:</p>
+          <ul className="list-disc space-y-2 pl-6">
+            <li>
+              <strong className="text-fg font-medium">_GRECAPTCHA</strong>, set
+              by Google reCAPTCHA on pages with a form, to tell people from
+              automated abuse. It lasts up to six months.
+            </li>
+            <li>
+              <strong className="text-fg font-medium">ARRAffinity</strong> and{" "}
+              <strong className="text-fg font-medium">
+                ARRAffinitySameSite
+              </strong>
+              , set by Microsoft Azure, which hosts the site, to send your
+              requests to the same server. They expire when you close your
+              browser.
+            </li>
+          </ul>
 
           <h3 className="text-fg font-display text-lg font-medium">
             First-party attribution storage
           </h3>
           <p>
-            When you first arrive at the site, your browser stores a small
-            JSON snapshot under the localStorage key{" "}
+            When you first arrive at the site, your browser stores a small JSON
+            snapshot under the localStorage key{" "}
             <code className="bg-surface text-fg rounded px-1 py-0.5 text-xs">
               spk_attribution_v1
             </code>
             . It contains your entry referrer (e.g., &ldquo;google.com&rdquo;),
-            the first page you landed on, the timestamp of your first visit,
-            and any UTM parameters from the URL. It contains no personal
-            information and no device identifiers. It expires after 90 days
-            and is used only to attribute your own form submissions to their
-            original referrer when you submit a form on this site. You can
-            clear it any time using your browser&rsquo;s &ldquo;Clear site
-            data&rdquo; tool.
+            the first page you landed on, the timestamp of your first visit, and
+            any UTM parameters from the URL. It contains no personal information
+            and no device identifiers. It expires after 90 days and is used only
+            to attribute your own form submissions to their original referrer
+            when you submit a form on this site. You can clear it any time using
+            your browser&rsquo;s &ldquo;Clear site data&rdquo; tool.
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
@@ -194,13 +222,13 @@ export default function Privacy() {
             The forms on this site are the contact form, the evaluation access
             request, the product tour sign-up, and the Design Partner Program
             application. When you submit one, we store what you entered (for
-            example your name, work email, organization, role, and message)
-            with the attribution snapshot above and a one-way hash of your IP
+            example your name, work email, organization, role, and message) with
+            the attribution snapshot above and a one-way hash of your IP
             address, which we use to limit repeated submissions. The data is
             stored in Azure Table Storage in our tenant, and a copy is emailed
             to our team through SendGrid so that someone can reply. An
-            evaluation access request is also passed to the Spaarke platform
-            to set up the evaluation you asked for.
+            evaluation access request is also passed to the Spaarke platform to
+            set up the evaluation you asked for.
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
@@ -209,9 +237,9 @@ export default function Privacy() {
           <p>
             When you submit a lead form in a Spaarke ad on LinkedIn, LinkedIn
             shares with us the information shown on that form: your name, email
-            address, job title, and company from your LinkedIn profile, and
-            your answers to any questions on the form. LinkedIn&rsquo;s own
-            handling of your data is governed by the{" "}
+            address, job title, and company from your LinkedIn profile, and your
+            answers to any questions on the form. LinkedIn&rsquo;s own handling
+            of your data is governed by the{" "}
             <a
               href="https://www.linkedin.com/legal/privacy-policy"
               target="_blank"
@@ -227,13 +255,13 @@ export default function Privacy() {
             How we use form data
           </h3>
           <p>
-            We use form data to respond to your request: to reply to you, to
-            set up an evaluation you asked for, or to consider your application
-            to the Design Partner Program. We do so because you asked us to,
-            and on the basis of our legitimate interest in responding to
-            business inquiries. We do not sell form data, share it for
-            cross-context behavioral advertising, or share it with third
-            parties for their own marketing.
+            We use form data to respond to your request: to reply to you, to set
+            up an evaluation you asked for, or to consider your application to
+            the Design Partner Program. We do so because you asked us to, and on
+            the basis of our legitimate interest in responding to business
+            inquiries. We do not sell form data, share it for cross-context
+            behavioral advertising, or share it with third parties for their own
+            marketing.
           </p>
           <p>
             A form submission does not add you to marketing email on its own.
@@ -255,9 +283,9 @@ export default function Privacy() {
             How long we keep form data, and how we protect it
           </h3>
           <p>
-            We keep form data for as long as we need it to respond to you and
-            to manage any relationship that follows, and we delete it when you
-            ask us to. Form data travels over HTTPS and is encrypted at rest in
+            We keep form data for as long as we need it to respond to you and to
+            manage any relationship that follows, and we delete it when you ask
+            us to. Form data travels over HTTPS and is encrypted at rest in
             Azure Storage, and access to it is limited to the Spaarke team
             members who respond to requests.
           </p>
@@ -278,20 +306,19 @@ export default function Privacy() {
           </h3>
           <p>
             When AI crawlers (e.g., GPTBot, ClaudeBot, PerplexityBot,
-            Google-Extended) visit the site, we log the bot name and the path
-            it requested via Application Insights. This tells us how the site
-            is being indexed for AI citations. No personal data is captured —
-            just the bot identifier and the public path it visited.
+            Google-Extended) visit the site, we log the bot name and the path it
+            requested via Application Insights. This tells us how the site is
+            being indexed for AI citations. No personal data is captured — just
+            the bot identifier and the public path it visited.
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
             Article assistant
           </h3>
           <p>
-            Some articles offer an AI assistant that answers questions about
-            the article and the rest of our published library. It is available
-            without signing in and we do not ask who you are in order to use
-            it.
+            Some articles offer an AI assistant that answers questions about the
+            article and the rest of our published library. It is available
+            without signing in and we do not ask who you are in order to use it.
           </p>
           <p>
             What you type is sent to Anthropic&rsquo;s Claude models running in
@@ -306,8 +333,8 @@ export default function Privacy() {
             subjects our writing does not yet cover, so we know what to write
             next. Question text is retained for 90 days, after which we keep
             only aggregated counts. We do not link questions to your name or
-            email, and we do not use them to build a profile of you or to
-            target advertising.
+            email, and we do not use them to build a profile of you or to target
+            advertising.
           </p>
           <p>
             Please do not type confidential information, client details, or
@@ -370,18 +397,17 @@ export default function Privacy() {
             AI features
           </h3>
           <p>
-            Spaarke&rsquo;s AI features (Foundry IQ, Microsoft Agent
-            Framework agents, and approved enterprise model integrations,
-            surfaced through Microsoft Power Platform and Microsoft 365)
-            are grounded in your
+            Spaarke&rsquo;s AI features (Foundry IQ, Microsoft Agent Framework
+            agents, and approved enterprise model integrations, surfaced through
+            Microsoft Power Platform and Microsoft 365) are grounded in your
             Customer Data via retrieval rather than training. Prompts and
             grounding content sent to underlying model providers are processed
-            under enterprise data protection terms — including the Azure
-            OpenAI Service data handling commitments and Microsoft Copilot
-            enterprise data protection — that prohibit training on customer
-            inputs and limit retention to what is needed to return a response.
-            Where your plan supports it, you may select the model and
-            constrain processing to a region or tenant-bound endpoint.
+            under enterprise data protection terms — including the Azure OpenAI
+            Service data handling commitments and Microsoft Copilot enterprise
+            data protection — that prohibit training on customer inputs and
+            limit retention to what is needed to return a response. Where your
+            plan supports it, you may select the model and constrain processing
+            to a region or tenant-bound endpoint.
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
@@ -425,10 +451,10 @@ export default function Privacy() {
           <p>
             Customer Data persists for as long as you use the Service. After
             termination, your data remains in your Microsoft tenant under your
-            control; we deactivate Spaarke-managed access on request. Operational
-            telemetry (logs, metrics) generated by Spaarke is retained for up
-            to 90 days, and longer where required for security, audit, or
-            legal purposes.
+            control; we deactivate Spaarke-managed access on request.
+            Operational telemetry (logs, metrics) generated by Spaarke is
+            retained for up to 90 days, and longer where required for security,
+            audit, or legal purposes.
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
@@ -436,12 +462,12 @@ export default function Privacy() {
           </h3>
           <p>
             For website telemetry and form storage, data is processed in
-            Microsoft Azure regions in the United States. For platform
-            customer data, the storage region is governed by your Microsoft
-            tenant settings. Where data is transferred from the European
-            Economic Area, the United Kingdom, or Switzerland to a country
-            without an adequacy decision, transfers are made under Standard
-            Contractual Clauses or equivalent transfer mechanisms.
+            Microsoft Azure regions in the United States. For platform customer
+            data, the storage region is governed by your Microsoft tenant
+            settings. Where data is transferred from the European Economic Area,
+            the United Kingdom, or Switzerland to a country without an adequacy
+            decision, transfers are made under Standard Contractual Clauses or
+            equivalent transfer mechanisms.
           </p>
 
           {/* ============================================================ */}
@@ -455,17 +481,17 @@ export default function Privacy() {
             Depending on where you live, you may have the right to access,
             correct, delete, port, or object to processing of personal data we
             hold about you, and the right not to be subject to solely automated
-            decisions with significant effects. To exercise any of these
-            rights, or to ask any privacy question:
+            decisions with significant effects. To exercise any of these rights,
+            or to ask any privacy question:
           </p>
           <ul className="list-disc space-y-2 pl-6">
             <li>
-              Clear &ldquo;Cookies and other site data&rdquo; in your browser
-              to remove the{" "}
+              Clear &ldquo;Cookies and other site data&rdquo; in your browser to
+              remove the{" "}
               <code className="bg-surface text-fg rounded px-1 py-0.5 text-xs">
                 spk_attribution_v1
               </code>{" "}
-              snapshot and any Clarity identifiers.
+              snapshot and the cookies listed above.
             </li>
             <li>
               Use a tracking-protection extension or browser-level setting —
@@ -506,9 +532,9 @@ export default function Privacy() {
           </h2>
           <p>
             We may update this policy as the Service evolves. Material changes
-            will be announced via the website and, where you have an account,
-            by email or in-product notice. The &ldquo;Last updated&rdquo; date
-            at the top of the page reflects the latest revision.
+            will be announced via the website and, where you have an account, by
+            email or in-product notice. The &ldquo;Last updated&rdquo; date at
+            the top of the page reflects the latest revision.
           </p>
         </div>
       </Shell>
