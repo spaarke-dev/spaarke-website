@@ -1,7 +1,7 @@
 # Task 011: API route
 
 **Phase:** 1 (Server side)
-**Status:** not-started
+**Status:** completed
 **Estimated:** 3 hours
 **Dependencies:** 010
 **Tags:** api, forms, validation, typescript
@@ -24,7 +24,7 @@ error. This route must not repeat that.
    exceeded.
 3. Validate the body against the field rules in spec FR-06; 400 with
    per-field errors.
-4. Verify reCAPTCHA; 403 on failure. Copy `verifyCaptcha()` from the
+4. Verify reCAPTCHA; 400 `CAPTCHA_FAILED` on failure. Copy `verifyCaptcha()` from the
    early-release route and give its `fetch` an `AbortSignal.timeout`
    (the demo-request route uses one), treating a timeout as a failure.
 5. Call `saveDesignPartnerApplication()` and
@@ -43,7 +43,8 @@ error. This route must not repeat that.
 
 ## Acceptance Criteria
 
-- [ ] 200, 400, 403, and 429 each reachable in a local test
+- [~] 400, 429, and 500 (nothing configured) reached locally; 200 and
+      `CAPTCHA_FAILED` need the preview's settings (task 031)
 - [ ] No await without a timeout on a network call
 - [ ] Telemetry flushed before each return
 - [ ] No personal data in telemetry properties

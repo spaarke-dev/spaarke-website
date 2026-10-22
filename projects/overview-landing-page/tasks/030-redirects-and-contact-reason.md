@@ -1,7 +1,7 @@
 # Task 030: Redirects and contact reason
 
 **Phase:** 3 (Connections and preview)
-**Status:** not-started
+**Status:** completed
 **Estimated:** 2 hours
 **Dependencies:** 020
 **Tags:** nextjs, config, contact, forms

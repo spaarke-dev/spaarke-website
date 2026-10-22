@@ -57,11 +57,12 @@ reusing the site's existing form, spam, attribution, and notification code.
 
 ### Functional Requirements
 
-1. **FR-01 Page route.** `/design-partners` renders a statically generated
-   page in the dark tone with the brand glow, built from the v2 primitives
-   (`Slab`, `Shell`, `Eyebrow`, `Heading`, `Lede`, `Button`), matching
-   `/access-request`. Acceptance: the page builds as static, and its layout
-   matches `/access-request` at desktop and phone widths.
+1. **FR-01 Page route.** `/design-partners` renders in the dark tone with
+   the brand glow, built from the v2 primitives (`Slab`, `Shell`, `Eyebrow`,
+   `Heading`, `Lede`, `Button`), matching `/access-request`. It is dynamic,
+   as `/access-request` is, because the reCAPTCHA site key is read at request
+   time (changed 2026-10-22 during task 020). Acceptance: its layout matches
+   `/access-request` at desktop and phone widths.
 2. **FR-02 Hero.** Eyebrow "Spaarke Design Partner Program", headline "Legal
    runs on decisions. Help us make them intelligent.", the lede from
    design.md section 4, and two actions: "Apply to become a design partner"
@@ -106,7 +107,9 @@ reusing the site's existing form, spam, attribution, and notification code.
    `src/app/api/early-release/route.ts`: rate limit by IP hash, validate,
    verify reCAPTCHA, save the row, send the email, track the event with
    `trackEvent`. Returns 200 on success, 400 on validation failure, 429 when
-   rate limited, 403 on failed reCAPTCHA. Acceptance: each status is
+   rate limited, 400 with `CAPTCHA_FAILED` on failed reCAPTCHA (as every
+   existing form route does; changed from 403 on 2026-10-22), and 500 only
+   when both storage and email fail. Acceptance: each status is
    reachable in a local test.
 8. **FR-08 Storage.** `saveDesignPartnerApplication()` in
    `src/lib/storage.ts` follows `saveDemoRequestLead()`: creates

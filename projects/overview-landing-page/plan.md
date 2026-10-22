@@ -36,7 +36,7 @@ with nine pages and the title "Spaarke Overview".
 - A design partner section in the daily report
 
 **Gate.** A local request with valid data returns 200; invalid data returns
-400 with field errors; a missing captcha token returns 403; the rate limit
+400 with field errors; a failed captcha returns 400 `CAPTCHA_FAILED`; the rate limit
 returns 429. Storage and email log a skip, not a crash, when their settings
 are absent. Typecheck passes.
 

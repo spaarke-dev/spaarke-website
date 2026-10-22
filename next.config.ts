@@ -30,16 +30,22 @@ const nextConfig: NextConfig = {
         destination: "/why-spaarke/:slug*",
         permanent: true,
       },
+      // The overview carousel invites readers to "join our advisory group",
+      // which is the Design Partner Program.
+      {
+        source: "/advisory-group",
+        destination: "/design-partners",
+        permanent: true,
+      },
       // Print-campaign QR landing slots. Each /go/<code> is printed on
-      // physical media, so the path must never 404. Until a real landing
-      // page exists at the route, it temporarily redirects to the
-      // homepage. permanent: false is required — a cached 308 would keep
-      // sending visitors to the interim destination after the real page
-      // ships. To launch a page: delete its entry here and add the page
-      // at src/app/go/<code>/.
+      // physical media, so the path must never 404. Each slot temporarily
+      // redirects to the page that currently serves it. permanent: false is
+      // required — a cached 308 would keep sending visitors to an old
+      // destination after the slot moves. To give a slot its own page: delete
+      // its entry here and add the page at src/app/go/<code>/.
       {
         source: "/go/more-info-1",
-        destination: "/",
+        destination: "/design-partners",
         permanent: false,
       },
     ];

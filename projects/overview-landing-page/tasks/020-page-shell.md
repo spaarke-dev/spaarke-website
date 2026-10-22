@@ -1,7 +1,7 @@
 # Task 020: Page shell and copy
 
 **Phase:** 2 (The page)
-**Status:** not-started
+**Status:** completed
 **Estimated:** 3 hours
 **Dependencies:** 001
 **Tags:** nextjs, react, tailwind, seo, metadata, sitemap, content

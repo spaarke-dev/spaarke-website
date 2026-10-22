@@ -7,7 +7,8 @@ import { HoorayConfetti } from "@/components/HoorayConfetti";
 import InlineAlert from "@/components/InlineAlert";
 import { submissionProps } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
-import { VALID_REASONS } from "@/lib/contact";
+import Link from "next/link";
+import { DESIGN_PARTNER_REASON, VALID_REASONS } from "@/lib/contact";
 
 // Single source of truth, shared with the server-side validator.
 const REASON_OPTIONS = ["", ...VALID_REASONS] as const;
@@ -349,6 +350,17 @@ export default function ContactForm({
           {fieldErrors.reason && (
             <p className="text-error mt-1.5 text-sm" role="alert">
               {fieldErrors.reason}
+            </p>
+          )}
+          {/* The application asks for what a message here would not, so point
+              to it, while still accepting the message from anyone who prefers
+              this form. */}
+          {reason === DESIGN_PARTNER_REASON && (
+            <p className="text-fg-mid mt-2 text-sm">
+              <Link href="/design-partners#apply" className="text-cta-blue underline">
+                Apply on the design partner page
+              </Link>
+              , or send a message here.
             </p>
           )}
         </div>

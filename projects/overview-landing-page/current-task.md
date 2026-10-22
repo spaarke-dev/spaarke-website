@@ -1,32 +1,27 @@
 # Current task: Design Partner Page
 
 > Context recovery. A session picking this up cold reads this file first, then
-> `tasks/TASK-INDEX.md`, then `spec.md`.
+> `tasks/TASK-INDEX.md`, then `notes/implementation.md`, then `spec.md`.
 >
 > Last updated 2026-10-22.
 
 ## Quick Recovery
 | Field | Value |
 |-------|-------|
-| **Task** | 010 - Storage and notification functions |
-| **Step** | 0 of 6 |
+| **Task** | 031 - Pull request and preview verification |
+| **Step** | 0 of 10 |
 | **Status** | not-started |
-| **Next Action** | Begin task 010 |
+| **Next Action** | Mark PR #124 ready for review so the Static Web Apps preview builds, then run the preview checks in task 031 |
 
 ## Where the project stands
 
 - Branch `feat/design-partner-page` in the worktree
   `c:\code_files\spaarke-website-wt-design-partner-page`; draft PR #124.
-- Task 001 complete (2026-10-22): nine 1080 by 1350 slide PNGs (1.3 MB in
-  total), `spaarke-overview.pdf` (nine pages, title "Spaarke Overview"), and
-  `og.png` (1200 by 630: cover headline beside the decision card) in
-  `public/design-partners/`.
-
-## Decisions Made
-
-- PNG kept, not WebP: the slides total 1.3 MB, under the 2 MB limit.
-- The Open Graph image composes the cover's headline and decision card side
-  by side, because a straight crop of a 4:5 slide to 1.9:1 cuts the headline.
+- Tasks 001, 010, 011, 012, 020, 021, 022, 030 complete. Local results and
+  the decisions made while building are in `notes/implementation.md`.
+- What only the preview can prove: a real submission reaching the table and
+  contactus@spaarke.com, the captcha failure path, the daily report with a
+  row, and the Plausible events.
 
 ## Context a cold session needs
 
@@ -35,3 +30,5 @@
 - This repo is public. The carousel HTML lives in
   `C:\code_files\spaarke-research\linkedin-carousel\` and is never copied in.
 - Notifications go to contactus@spaarke.com through `CONTACT_EMAIL_TO`.
+- A fresh worktree needs `next-env.d.ts` and `node scripts/build-corpus-manifest.mjs`
+  before `npm run typecheck` passes; `npm run build` generates both.

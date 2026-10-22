@@ -1,7 +1,7 @@
 # Task 021: Slide strip and download
 
 **Phase:** 2 (The page)
-**Status:** not-started
+**Status:** completed
 **Estimated:** 3 hours
 **Dependencies:** 001, 020
 **Tags:** react, tailwind, responsive, accessibility, performance

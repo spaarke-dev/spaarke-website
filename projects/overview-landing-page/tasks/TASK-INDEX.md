@@ -8,13 +8,13 @@
 | ID | Task | Phase | Depends on | Est. | Status |
 |---|---|---|---|---|---|
 | 001 | [Render and copy the assets](001-render-and-copy-assets.md) | 0 | none | 2h | **complete** |
-| 010 | [Storage and notification functions](010-storage-and-email.md) | 1 | none | 2h | not-started |
-| 011 | [API route](011-api-route.md) | 1 | 010 | 3h | not-started |
-| 012 | [Daily report section](012-daily-report.md) | 1 | 010 | 1h | not-started |
-| 020 | [Page shell and copy](020-page-shell.md) | 2 | 001 | 3h | not-started |
-| 021 | [Slide strip and download](021-slide-strip.md) | 2 | 001, 020 | 3h | not-started |
-| 022 | [Application form](022-application-form.md) | 2 | 011, 020 | 3h | not-started |
-| 030 | [Redirects and contact reason](030-redirects-and-contact-reason.md) | 3 | 020 | 2h | not-started |
+| 010 | [Storage and notification functions](010-storage-and-email.md) | 1 | none | 2h | **complete** |
+| 011 | [API route](011-api-route.md) | 1 | 010 | 3h | **complete** |
+| 012 | [Daily report section](012-daily-report.md) | 1 | 010 | 1h | **complete** (checked on the preview in 031) |
+| 020 | [Page shell and copy](020-page-shell.md) | 2 | 001 | 3h | **complete** |
+| 021 | [Slide strip and download](021-slide-strip.md) | 2 | 001, 020 | 3h | **complete** |
+| 022 | [Application form](022-application-form.md) | 2 | 011, 020 | 3h | **complete** (success path checked on the preview in 031) |
+| 030 | [Redirects and contact reason](030-redirects-and-contact-reason.md) | 3 | 020 | 2h | **complete** |
 | 031 | [Pull request and preview verification](031-preview-verification.md) | 3 | 012, 021, 022, 030 | 2h | not-started |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | 3 | 031 | 2h | not-started |
 

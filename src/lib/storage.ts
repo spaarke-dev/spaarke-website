@@ -2,6 +2,7 @@ import { TableClient } from "@azure/data-tables";
 import { randomBytes } from "crypto";
 import type { ContactFormData } from "@/lib/contact";
 import type { Attribution } from "@/lib/attribution";
+import type { DesignPartnerApplication } from "@/lib/design-partners";
 
 const TABLE_NAME = "ContactSubmissions";
 const TOUR_FEEDBACK_TABLE = "TourFeedback";
@@ -301,5 +302,95 @@ export async function markDemoRequestOutcome(
     console.warn(
       `[storage] Could not mark demo request ${rowKey} as ${status}: ${code ?? "?"} ${message}`,
     );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Design partner applications
+// ---------------------------------------------------------------------------
+
+/**
+ * Applications to the Design Partner Program. With the notification email,
+ * this table is the record: applications go to no CRM or platform system.
+ */
+const DESIGN_PARTNER_TABLE = "DesignPartnerApplications";
+
+let designPartnerClient: TableClient | null = null;
+let designPartnerTableEnsured = false;
+
+function getDesignPartnerClient(): TableClient | null {
+  if (designPartnerClient) return designPartnerClient;
+
+  const connectionString = process.env.STORAGE_ACCOUNT_CONNECTION;
+  if (!connectionString) {
+    console.warn(
+      "[storage] STORAGE_ACCOUNT_CONNECTION not set - design partner applications will not be stored.",
+    );
+    return null;
+  }
+
+  designPartnerClient = TableClient.fromConnectionString(
+    connectionString,
+    DESIGN_PARTNER_TABLE,
+  );
+  return designPartnerClient;
+}
+
+/**
+ * Writes the application and returns its row key, or null when storage is
+ * unavailable or the write failed.
+ *
+ * Never throws, for the same reason as `saveDemoRequestLead`: the route still
+ * sends the email when this fails, and a throw here would lose that chance.
+ */
+export async function saveDesignPartnerApplication(
+  data: DesignPartnerApplication,
+  ipHash: string,
+  attribution?: Attribution | null,
+): Promise<string | null> {
+  const client = getDesignPartnerClient();
+  if (!client) return null;
+
+  if (!designPartnerTableEnsured) {
+    try {
+      await client.createTable();
+    } catch (err) {
+      const code = (err as { statusCode?: number }).statusCode;
+      if (code && code !== 409) {
+        console.warn("[storage] createTable(DesignPartnerApplications) failed:", err);
+      }
+    }
+    designPartnerTableEnsured = true;
+  }
+
+  const now = new Date();
+  const rowKey = `${now.getTime()}-${randomBytes(4).toString("hex")}`;
+
+  try {
+    await client.createEntity({
+      partitionKey: "design-partner",
+      rowKey,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      organization: data.organization,
+      role: data.role,
+      organizationType: data.organizationType,
+      startingDecision: data.startingDecision ?? "",
+      consentAccepted: data.consent,
+      ipHash,
+      createdAt: now.toISOString(),
+      entry_referrer: attribution?.entry_referrer ?? "",
+      entry_landing: attribution?.entry_landing ?? "",
+      first_visit_at: attribution?.first_visit_at ?? "",
+      ai_source: attribution?.ai_source ?? "",
+      utm_source: attribution?.utm_source ?? "",
+      utm_medium: attribution?.utm_medium ?? "",
+      utm_campaign: attribution?.utm_campaign ?? "",
+    });
+    return rowKey;
+  } catch (err) {
+    console.error("[storage] Failed to save design partner application:", err);
+    return null;
   }
 }

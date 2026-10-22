@@ -1,7 +1,7 @@
 # Task 022: Application form
 
 **Phase:** 2 (The page)
-**Status:** not-started
+**Status:** completed
 **Estimated:** 3 hours
 **Dependencies:** 011, 020
 **Tags:** react, forms, validation, accessibility
