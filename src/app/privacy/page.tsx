@@ -233,9 +233,22 @@ export default function Privacy() {
             and on the basis of our legitimate interest in responding to
             business inquiries. We do not sell form data, share it for
             cross-context behavioral advertising, or share it with third
-            parties for their own marketing. A form submission does not add you
-            to marketing email unless you ask us to, and any marketing email we
-            send includes a way to unsubscribe.
+            parties for their own marketing.
+          </p>
+          <p>
+            A form submission does not add you to marketing email on its own.
+            Some forms, including our LinkedIn lead forms, offer an optional box
+            to receive occasional updates from Spaarke. If you tick it, we will
+            send you email about Spaarke&rsquo;s products, events, and
+            publications. Every such email includes a link to unsubscribe, and
+            you can also opt out by writing to{" "}
+            <a
+              href="mailto:privacy@spaarke.com"
+              className="text-cta-blue underline"
+            >
+              privacy@spaarke.com
+            </a>
+            .
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
