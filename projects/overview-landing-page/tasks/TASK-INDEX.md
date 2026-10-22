@@ -7,7 +7,7 @@
 
 | ID | Task | Phase | Depends on | Est. | Status |
 |---|---|---|---|---|---|
-| 001 | [Render and copy the assets](001-render-and-copy-assets.md) | 0 | none | 2h | not-started |
+| 001 | [Render and copy the assets](001-render-and-copy-assets.md) | 0 | none | 2h | **complete** |
 | 010 | [Storage and notification functions](010-storage-and-email.md) | 1 | none | 2h | not-started |
 | 011 | [API route](011-api-route.md) | 1 | 010 | 3h | not-started |
 | 012 | [Daily report section](012-daily-report.md) | 1 | 010 | 1h | not-started |

@@ -1,7 +1,7 @@
 # Task 001: Render and copy the assets
 
 **Phase:** 0 (Assets)
-**Status:** not-started
+**Status:** completed
 **Estimated:** 2 hours
 **Dependencies:** none
 **Tags:** content, performance
@@ -44,10 +44,10 @@ public.
 
 ## Acceptance Criteria
 
-- [ ] Nine slide images at 1080 by 1350, under 2 MB in total
-- [ ] The PDF opens with nine pages and the title "Spaarke Overview"
-- [ ] The Open Graph image is 1200 by 630 and readable as a thumbnail
-- [ ] No carousel HTML in the repo
+- [x] Nine slide images at 1080 by 1350, under 2 MB in total
+- [x] The PDF opens with nine pages and the title "Spaarke Overview"
+- [x] The Open Graph image is 1200 by 630 and readable as a thumbnail
+- [x] No carousel HTML in the repo
 
 ## Notes
 
