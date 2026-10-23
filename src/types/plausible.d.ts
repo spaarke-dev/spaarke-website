@@ -19,6 +19,10 @@ export type PlausibleEventName =
   | "CTA Click — See Platform"
   | "Outbound Click — LinkedIn"
   | "AI Source Visit"
+  // The design partner page. "Overview Download" carries `location` (hero or
+  // strip) so the two download links can be compared.
+  | "Overview Download"
+  | "Design Partner Submit"
   // The article assistant. Task 040. The question these exist to answer is
   // whether the assistant deepens engagement with the articles or replaces it,
   // which is why "Article Engagement" carries an `assistant` property rather
