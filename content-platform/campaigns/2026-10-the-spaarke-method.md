@@ -42,6 +42,7 @@ Further articles are open and not yet defined. Candidates are legal engineers an
 | 2026-10-05 | blog-post | the-spaarke-method | published | website, linkedin | overview; the display date is also the real publish date |
 | **TBD — confirm** | linkedin-post | the-spaarke-method-syndication-company | planned | linkedin | company-page syndication; created after publish through the standalone-mode convention in tasks.md section 7 |
 | **TBD — confirm** | linkedin-post | the-spaarke-method-syndication-personal | planned | linkedin (rs) | founder syndication, first person |
+| 2026-10-22 | linkedin-post | spaarke-overview-carousel | approved | linkedin | company-page carousel introducing Spaarke, posted to the company page by hand; also runs as a gated Document Ad; Issue #123 |
 | **TBD — confirm** | blog-post | envision (working slug) | planned | website, linkedin | article 2 of the series |
 
 ## Distribution sequence

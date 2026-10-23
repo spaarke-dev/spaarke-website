@@ -7,6 +7,11 @@ kind of work the session is about and route to the right place.
 > state of the Legal Operations Intelligence series, what it is waiting
 > on, and the conventions that apply to it. Read it before picking that
 > work up. Delete it when the series closes.
+>
+> **Also in progress:** the Design Partner Page, the privacy policy rewrite,
+> and the LinkedIn Lead Gen Form and Document Ad. Their state is in
+> `projects/overview-landing-page/current-task.md` on branch
+> `feat/design-partner-page` (PR #124). Remove this note when PR #124 merges.
 
 ## Domain dispatcher
 
