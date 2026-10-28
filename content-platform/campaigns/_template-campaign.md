@@ -67,6 +67,24 @@ discrete action a human takes.
 | YYYY-MM-DD | linkedin (rs) | Syndicate <article slug> |
 | ... | ... | ... |
 
+## Paid support
+
+Decided when the campaign is planned, not after launch. Write "None" if the
+campaign runs organic only. The rules are in
+`advertising/linkedin-ads-procedure.md`; the program plan is
+`advertising/linkedin-ads-plan.md`. Budgets, audience lists, and account
+identifiers stay in the private archive.
+
+| Asset | Route | Format | Objective | Audience | Window | Status |
+|---|---|---|---|---|---|---|
+| <slug> | A / B / C / D / E | <format> | <objective> | <A1, A2, ...> | <start> to <end> | planned |
+
+Status: planned | brief | approved | active | complete.
+
+**Ad brief** (one per row once it moves past planned; procedure 7.2 step 2):
+asset, audience, route, format, objective, what counts as a result, window,
+success measure, and the LinkedIn campaign and ad set names.
+
 ## Success metrics
 
 Tracked at retro. Don't pre-commit to numbers — pre-commit to what

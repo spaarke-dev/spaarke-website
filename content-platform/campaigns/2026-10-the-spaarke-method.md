@@ -42,7 +42,7 @@ Further articles are open and not yet defined. Candidates are legal engineers an
 | 2026-10-05 | blog-post | the-spaarke-method | published | website, linkedin | overview; the display date is also the real publish date |
 | **TBD — confirm** | linkedin-post | the-spaarke-method-syndication-company | planned | linkedin | company-page syndication; created after publish through the standalone-mode convention in tasks.md section 7 |
 | **TBD — confirm** | linkedin-post | the-spaarke-method-syndication-personal | planned | linkedin (rs) | founder syndication, first person |
-| 2026-10-22 | linkedin-post | spaarke-overview-carousel | approved | linkedin | company-page carousel introducing Spaarke, posted to the company page by hand; also runs as a gated Document Ad; Issue #123 |
+| **TBD — confirm** | linkedin-post | spaarke-overview-carousel | approved | linkedin | company-page carousel introducing Spaarke, to be posted to the company page by hand; its paid version, a gated Document ad, belongs to `2026-11-design-partner-program`; Issue #123 |
 | **TBD — confirm** | blog-post | envision (working slug) | planned | website, linkedin | article 2 of the series |
 
 ## Distribution sequence
@@ -52,6 +52,23 @@ Further articles are open and not yet defined. Candidates are legal engineers an
 | 2026-10-05 | website | Publish the overview article (human-driven; the writer approved publication on 2026-10-05) |
 | **TBD — confirm** | linkedin | Spaarke company-page post syndicating the overview |
 | **TBD — confirm** | linkedin (rs) | Founder post syndicating the overview |
+| **TBD — confirm** | linkedin | Company-page post of the overview carousel (`spaarke-overview-carousel`) |
+
+## Paid support
+
+Rules: `advertising/linkedin-ads-procedure.md`. Plan:
+`advertising/linkedin-ads-plan.md`, section 4. Budgets and audience lists are
+in the private archive.
+
+| Asset | Route | Format | Objective | Audience | Window | Status |
+|---|---|---|---|---|---|---|
+| Founder syndication posts for the series (text or single image only) | C | Thought Leader Ad, with the founder's approval of each post | Engagement | A1, A2 | Two weeks after each post | planned |
+| `the-spaarke-method` and each phase article | A | Single image to the article | Website visits | A1, A2 | Two weeks after each publish | planned |
+
+The overview carousel's paid version, a gated Document ad, is run by the
+Design Partner Program campaign, because its leads are design partner
+prospects. LinkedIn campaigns for this file:
+`2026-10-the-spaarke-method / visits` and `2026-10-the-spaarke-method / reach`.
 
 ## Success metrics
 
