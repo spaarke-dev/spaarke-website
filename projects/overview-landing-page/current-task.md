@@ -4,7 +4,7 @@
 > file first, then `tasks/TASK-INDEX.md`, `notes/implementation.md`,
 > `notes/preview-verification.md`, and `spec.md`.
 >
-> Last updated 2026-10-22, when the work moved from the desktop to the laptop.
+> Last updated 2026-10-28, after PR #126 (the paid LinkedIn plan) merged.
 
 ## Quick Recovery
 
@@ -41,8 +41,9 @@
 
 | Branch | PR | State |
 |---|---|---|
-| `feat/design-partner-page` | [#124](https://github.com/spaarke-dev/spaarke-website/pull/124) (draft) | Pushed. The page, API, form, redirects, daily report, privacy policy rewrite, Clarity decision. Not merged: waits on the test submission |
-| `content/spaarke-overview-carousel` | see Issue #123 | The carousel workspace, calendar, and campaign rows. Merged to main on 2026-10-22 |
+| `feat/design-partner-page` | [#124](https://github.com/spaarke-dev/spaarke-website/pull/124) (draft) | Pushed. The page, API, form, redirects, daily report, privacy policy rewrite, Clarity decision. Not merged: waits on the test submission. On 2026-10-28 the `DesignPartnerApplications` table did not exist yet, so no application had been stored |
+| `content/spaarke-overview-carousel` | #125 | The carousel workspace, calendar, and campaign rows. Merged 2026-10-22 |
+| `docs/linkedin-advertising` | #126 | The paid LinkedIn procedure and plan, the Design Partner Program campaign file, Paid columns and sections. Merged 2026-10-28 |
 
 Preview: https://ambitious-bay-0fb5bb10f-124.1.azurestaticapps.net/design-partners
 
@@ -118,62 +119,22 @@ and an unsubscribe link (CAN-SPAM).
 - Privacy policy URL `https://www.spaarke.com/privacy`, with the custom
   privacy text "Spaarke uses the information you submit to respond to your
   request. We do not share it with third parties for marketing purposes."
-- **To check:** the confirmation link should be
-  `https://www.spaarke.com/design-partners?utm_source=linkedin&utm_medium=paid_social&utm_campaign=lead-form`
-  so it delivers the overview the image promises.
+- **To set:** the confirmation (thank-you) link is
+  `https://www.spaarke.com/design-partners?utm_source=linkedin&utm_medium=paid&utm_campaign=2026-11-design-partner-program&utm_content=lead-form`,
+  the UTM convention in `content-platform/advertising/linkedin-ads-procedure.md`
+  section 5.1.
 - Leads are downloaded from Campaign Manager; there is no CRM sync yet.
 
-### LinkedIn ad: gated Document Ad
+### LinkedIn ads: now on main
 
-Structure in Campaign Manager (LinkedIn recently renamed its levels:
-Campaign = the old campaign group; Ad set = the old campaign):
-
-- Campaign **"Spaarke Overview"** (Lead Generation objective). Rename to
-  `2026-Q4 Overview Lead Gen`.
-- Ad set **"Spaarke Overview Presentation"** (draft). Confirm its format is
-  Document; if not, create a new ad set.
-- Ad: not created yet. That is the next step in Campaign Manager.
-- Clean-up: delete "Spaarke Overview I" and "New Campaign" if they hold no
-  ad sets.
-
-Ad set settings agreed: United States; job function Legal with seniority
-Director, VP, CXO, Owner, Partner (or titles: General Counsel, Chief Legal
-Officer, Deputy and Associate GC, Legal Operations head, director, or
-manager); company size 501+; audience 50,000+; **Audience Expansion off;
-LinkedIn Audience Network off**; Maximum delivery bidding for two weeks, then
-a cost cap; daily budget and review date in the private `HANDOFF.md`. Law
-firms get their own ad set later, so cost per lead can be compared.
-
-Why the Audience Network stays off: the earlier Brand Awareness boost spent
-$500 for 883,255 impressions, 170 clicks (0.02% CTR) and a frequency near 9,
-which is the pattern of off-LinkedIn inventory.
-
-Ad fields:
-
-| Field | Value |
-|---|---|
-| Ad name | `Overview Doc - Decisions question` |
-| Introductory text | Your legal team makes thousands of decisions. What does it learn from them? These nine slides show how Spaarke brings your data, rules, and people into one model, so AI proposes and your team decides. |
-| Document | `content-platform/articles/spaarke-overview-carousel/spaarke-overview-carousel.pdf` (moves to `content-platform/published/linkedin-posts/` at the carousel's ship step) |
-| Document title | Spaarke overview: legal runs on decisions |
-| Lead gen form | the form above, gate on |
-| Preview pages | 4 (cover, problem, ontology, architecture; the invoice example is the first gated slide) |
-
-### LinkedIn advertising schedule (agreed in outline, not yet written up)
-
-- **Always on (about half the spend):** the gated overview Document Ad.
-  Refresh the intro text or cover every 4 to 6 weeks, or when frequency
-  passes about 4 or CTR falls.
-- **Thought leadership (about 30%):** sponsor each new article for two weeks
-  after it publishes, following `content-platform/calendar.md`; consider
-  Thought Leader Ads from the founder's profile.
-- **Retargeting (about 20%):** people who opened the document ad or the form
-  without submitting, or engaged with the articles; the ask is to apply to
-  the Design Partner Program. Uses LinkedIn engagement audiences, so no
-  Insight Tag (adding the tag would reopen the cookie decision above).
-- Rhythm: week 1 new article sponsored; week 3 review and shift budget;
-  creative refresh every 4 to 6 weeks; a new campaign each quarter.
-- Open offer: write this as a dated paid-media plan in the private archive.
+Since PR #126 merged on 2026-10-28, the paid program lives in
+`content-platform/advertising/` (procedure, plan, handoff) and in the campaign
+files. The gated overview Document ad has its full ad brief in
+`content-platform/campaigns/2026-11-design-partner-program.md` (Milestone 7,
+Issue #127). Decisions on 2026-10-28: no Insight Tag (leads measured in
+LinkedIn, engagement retargeting only); the Design Partner Program has its own
+campaign; nothing is live in LinkedIn yet. Budgets and targeting notes stay in
+`C:\code_files\spaarke-research\linkedin-carousel\lead-gen\HANDOFF.md`.
 
 ### Carousel (Issue #123)
 
