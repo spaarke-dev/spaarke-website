@@ -101,7 +101,7 @@ One objective applies to all ad sets in a campaign.
 | Consideration | Engagement | Engagement clicks | A Follow button is added to Sponsored Content by default; Follow clicks are charged on CPC ad sets, not CPM |
 | Consideration | Video views | Video views | |
 | Conversion | **Lead generation** | Qualified leads (recommended); leads if no Conversions API integration | The objective that uses Lead Gen Forms |
-| Conversion | Website conversions | Website conversions | Needs conversion tracking set up |
+| Conversion | Website conversions | Website conversions | Needs conversion tracking, which we do not run (5.1); not used |
 | Conversion | Job applicants | Landing page clicks | Recruiting; not used |
 | Conversion | Talent leads | Talent leads | Needs a LinkedIn Recruiter contract; not used |
 
@@ -115,7 +115,7 @@ An ad route is the path from a viewer to Spaarke.
 | **B. In-feed lead form** | A Lead Gen Form, prefilled from the viewer's profile | Gated assets, design partner interest | Lead generation |
 | **C. Engage in feed** | The post itself | Authority, social proof, warming an audience | Brand awareness, Engagement |
 | **D. Inbox** | LinkedIn messaging | A direct invitation to a defined list | Lead generation, Website visits |
-| **E. Retarget** | Site or lead form, for people who already interacted | Moving a warm audience to action | Website conversions, Lead generation |
+| **E. Retarget** | A lead form or the site, for people who already engaged with our ads or page | Moving a warm audience to action | Lead generation |
 
 Routes combine. The default Spaarke pattern is **C or A to warm, then E and B
 to convert.**
@@ -357,7 +357,7 @@ starting point only.
 |---|---|---|
 | **Company list** | Upload target accounts | Account-based ad sets |
 | **Contact list** | Upload emails | Existing relationships and prospects. Needs consent and a lawful basis. |
-| **Website retargeting** | Visitors to pages with the Insight Tag | Route E, segmented by page |
+| **Website retargeting** | Visitors to pages with the Insight Tag | Not used: the site has no Insight Tag (5.1) |
 | **Engagement retargeting** | People who interacted with our ads, forms, page, or events | Route E |
 | **Lookalike** | Profiles similar to a seed list | Later, once a seed list is large enough |
 
@@ -380,17 +380,23 @@ limited in the EEA and Switzerland.
 
 ### 5.1 Setup
 
-- **Insight Tag** on the site: retargeting, conversion tracking, and
-  demographics. The cookie notice and privacy policy must cover it first.
-- **Conversions API** as a second data source. LinkedIn recommends running
-  the tag and the API together and deduplicates events counted by both.
-  Create a conversion rule per data source. Setup path: Conversion tracking,
-  then Data sources, then Create source (Direct API or a partner). **[UI]**
-- **Enhanced conversion tracking** adds a first-party click ID (`li_fat_id`)
-  to landing page URLs, which supports click-through attribution.
-- **Conversions** are created in Campaign Manager under conversion tracking,
-  then attached to ad sets. LinkedIn suggests wide windows such as 30-day
-  click and 7-day view for website conversions.
+- **No Insight Tag.** The owner decided on 2026-10-28 not to install it. The
+  privacy policy says the site sets no analytics or advertising cookies and
+  needs no cookie banner, and the tag would make that untrue. What this
+  leaves:
+  - Lead generation ads count leads inside LinkedIn and need no tag, so the
+    gated Document ad and Lead Gen Forms are measured in full.
+  - Retargeting uses engagement audiences only (4.2).
+  - Website-visit ads are judged on clicks in Campaign Manager and on visits
+    and form submissions in Plausible, matched by the UTM template below.
+  Installing the tag later needs a consent decision and a privacy policy
+  rewrite first; record that in `projects/clarity-consent/design.md`.
+- **Conversions API, enhanced conversion tracking, and website
+  conversions** are not set up. They would let LinkedIn see site actions such
+  as a design partner application. The Conversions API sends events from our
+  server, and enhanced conversion tracking adds a click ID (`li_fat_id`) to
+  landing page URLs. Both send visitor data to LinkedIn, so they need the
+  same privacy review as the tag before use. **[UI]**
 - **UTM template** on every ad set:
   `utm_source=linkedin&utm_medium=paid&utm_campaign=<campaign slug>&utm_content=<ad slug>`.
 - Lead generation optimizes for qualified leads when a Conversions API
@@ -487,7 +493,8 @@ skipped. Budget approval is the owner's alone.
 - [ ] Lead Gen Form tested; privacy policy linked; thank-you page links to
       the asset
 - [ ] Gated Document ad: preview page count set; file is a PDF
-- [ ] Conversion attached to the ad set and the Insight Tag firing
+- [ ] Lead generation: the form is attached and leads are counted. Website
+      visits: the UTM template is set (no Insight Tag; see 5.1)
 - [ ] Thought Leader Ad: the author approved this exact post, and the post is
       an eligible type
 - [ ] Owner has approved the live ad
@@ -514,8 +521,8 @@ and next step, so the quality metric exists.
 
 - Contact list uploads need consent and a lawful basis. Do not upload a list
   we cannot defend.
-- The site's privacy notice and cookie handling cover the Insight Tag before
-  it is installed.
+- The Insight Tag stays off the site (5.1). Reopening that needs a consent
+  decision and a privacy policy rewrite before any code changes.
 - Do not target on sensitive categories.
 - Do not pay to promote a claim that has not cleared the content program's
   source and fact discipline.
