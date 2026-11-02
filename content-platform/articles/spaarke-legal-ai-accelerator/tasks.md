@@ -22,11 +22,11 @@
 
 ## 2. Draft (gate: complete prose at the length the brief sets)
 
-- [ ] Opening drafted (per plan.md §Opening), with the thesis stated
+- [x] Opening drafted (per plan.md §Opening), with the thesis stated
       within the first 250 words of a long-form article or the first
       150 words of a short post, and no later than the third paragraph
-- [ ] Each section drafted in order
-- [ ] Close drafted (per plan.md §Close); it ends on consequence,
+- [x] Each section drafted in order
+- [x] Close drafted (per plan.md §Close); it ends on consequence,
       with no summary and no pitch
 - [ ] Length checked against `length_target` in brief.md:
       - `open` (long-form article): there is no cap. The check is that
@@ -182,6 +182,14 @@ read commentary from a deterministic path.
   the Killer Legal AI Platform". Section 2 sets out the build layer by
   layer (Exhibit 1); section 5 ties each artifact to the systems of
   record and the decision support ontology (Exhibit 2). Outline approved.
+- 2026-11-02: first draft written (about 3,450 body words against a plan
+  of 4,200; the sections said what they needed in less). Lint warnings
+  accepted: "ecosystem" is the canonical tag `microsoft-ecosystem`; the
+  thesis formula appears four times because the close heading reuses the
+  title term and the close restates the thesis; the one-sentence
+  paragraph before the "What's included" list is a functional list
+  lead-in (`ai-tells.md`, section 3.1). Exhibits 1 and 2 and the hero
+  drawn as SVG. `voice/product-knowledge.md` section 3.6 added.
 
 ---
 

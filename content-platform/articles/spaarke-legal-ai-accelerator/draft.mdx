@@ -1,0 +1,157 @@
+---
+title: "Why Microsoft Is the Killer Legal AI Platform"
+description: "Microsoft is now the strongest platform for legal AI. The Spaarke Legal AI Accelerator puts it to work for legal teams in days, inside the tenant they govern."
+summary: "Microsoft now offers an enterprise AI platform that connects legal teams to their work across Microsoft 365, runs leading models, and lets them build their own skills, agents, and tools. This article sets out why that makes Microsoft the killer legal AI platform, how legal AI on Microsoft is built, and how the Spaarke Legal AI Accelerator for Microsoft Copilot puts the platform to work in days."
+date: "2026-11-03"
+posted: "2026-11-03"
+author: "Ralph Schroeder"
+tags:
+  organization: [corporate-legal, law-firm]
+  function: [operations, executive, attorney, it]
+  topic: [ai-copilot, contracts, workflow]
+  theme: [ai-strategy, microsoft-ecosystem, legal-operations-intelligence, data-sovereignty]
+heroImage: "/articles/spaarke-legal-ai-accelerator/hero.svg"
+heroImagePosition: "center"
+draft: true
+keyTakeaways:
+  - "Microsoft now provides an enterprise AI platform on which legal teams can build the legal AI they need, connected to their work across Microsoft 365 and governed like the rest of their data."
+  - "The platform runs Claude models and OpenAI's GPT models, with the frontier models Microsoft has announced for enterprise work to follow, so the choice of model stays with the organization."
+  - "Legal AI on Microsoft is built in layers: enterprise governance, Microsoft 365 and Power Platform, a legal platform of systems of record and a decision support ontology, and legal skills on top."
+  - "The Spaarke Legal AI Accelerator supplies core legal skills, practice packs, tools, and connectors, and forward-deployed legal engineers who help legal teams start or extend their AI programs in days."
+  - "Everything the accelerator builds belongs to the legal team and carries forward onto the Legal Operations Intelligence platform, where it gains the matter, the policy, and the decision record."
+---
+
+Microsoft has turned Copilot into a platform on which legal teams can build their own legal AI. The force behind the change is an enterprise AI platform that connects people to the data across the tools they work in, runs leading models from more than one provider, and lets an organization add the skills, agents, and tools its own work requires. In October, Microsoft showed what that means for legal work when it made legal skills generally available in Word and released a Legal for Cowork plugin, and legal teams can now build on the same foundation.
+
+Every legal team is under pressure to settle its AI strategy and to show results from it, and two developments sharpen the choice. First, the most capable AI models are now available inside Microsoft 365 as well as through separate applications, so the choice of model no longer decides where legal AI has to run. Second, legal AI built inside the organization's own environment can reach the matters, documents, and invoices the organization already holds, under the permissions it already sets. The decision in front of legal operations is where to build: in a separate application that runs in a vendor's environment, or on the platform the organization already runs and governs.
+
+Microsoft is now the killer legal AI platform, because it lets legal teams build the legal AI they need inside the environment they already govern. In our earlier article, [The Spaarke Method](/why-spaarke/the-spaarke-method), we described how forward-deployed legal engineers work alongside practitioners to build an organization's own AI capability. The Spaarke Legal AI Accelerator for Microsoft Copilot applies that work to Microsoft's platform: it supplies the core legal skills, the practice packs, the tools and connectors, and the legal engineers to put the platform to work in days. This article sets out why Microsoft's platform is the right place for legal AI, how legal AI on Microsoft is built, what the accelerator contains and how a legal team starts with it, and how everything it builds carries forward onto the Legal Operations Intelligence platform.
+
+## Microsoft is the killer legal AI platform
+
+Microsoft 365 Copilot is now extended through plugins. A plugin packages skills, which are instructions and companion files written in the open Agent Skills format, with connectors that reach other systems through the Model Context Protocol (MCP), and the same package works across Copilot Chat, Cowork, and the Office apps. Cowork, which Microsoft made generally available in June, takes on multi-step work across a user's files and applications. A user can add a plugin and share it with colleagues, and an administrator can deploy one across the organization **TBD — confirm** (sources 1 and 2).
+
+Microsoft's own legal skills show what the platform can do for legal work. Copilot for Legal, generally available since October 15, brings legal drafting and review skills into Word, where a lawyer reviews an agreement against the playbook the team attaches, and a Legal for Cowork plugin with about 20 skills, among them contract review, playbook creation, the extraction of obligations and deadlines, and case chronologies **TBD — confirm** (source 3). These skills are a starting point. A legal team can build its own skills, playbooks, agents, and tools on the same foundation, for its own practices and in its own terms. That capacity to build is what sets the platform apart, and four properties make it the right place for legal AI.
+
+- **Embedded and connected.** Copilot works in Word, Outlook, Teams, and the other applications where legal work is drafted, reviewed, and discussed, and it draws on the mail, files, meetings, and chats around that work, so a skill can read the context a lawyer would otherwise paste in by hand **TBD — confirm** (source 4).
+- **In the organization's tenant and under its control.** Copilot runs inside the organization's Microsoft 365 tenant, under its own identities, and it reads only what each user is already permitted to see **TBD — confirm** (source 5).
+- **Governed like the rest of the organization's data.** The sensitivity labels, retention policies, and audit controls the organization applies to its documents and mail apply to the legal AI that reads them, so legal AI does not need a governance program of its own **TBD — confirm** (source 5).
+- **A choice of models.** Cowork runs Claude models from Anthropic and GPT models from OpenAI today, and the platform is built for the models to come, including the frontier models Microsoft has announced for enterprise work, so a legal team can change models as the models change **TBD — confirm** (sources 6 and 7).
+
+The platform also changes who manages capacity. Lawyers who rely on individual AI subscriptions run into usage limits in the middle of their work. Legal AI built on the organization's Microsoft agreement is provisioned and managed by the organization, under spending policies it sets.
+
+The alternative is a separate legal AI application. It runs in the vendor's environment, under the vendor's governance, on the vendor's choice of model, and the legal team's documents travel to it. Several such applications now offer plugins for Microsoft 365 as well, which brings them closer to where lawyers work, and a separate application remains a reasonable choice for a legal team that does not run Microsoft 365. For an organization that does, we would build legal AI on Microsoft, because the organization keeps its data, its governance, and its choice of model, and everything the legal team builds stays its own. In our earlier article, [Why We Built on Microsoft](/why-spaarke/why-we-built-on-microsoft), we explained why we made the same choice for the Spaarke platform.
+
+## Legal AI on Microsoft is built in layers, from enterprise governance to legal skills
+
+Legal AI that a legal team can rely on is built in layers, and each layer inherits what the layers below it provide (Exhibit 1). Microsoft supplies the governance and the services at the base, a legal platform of systems of record and a decision support ontology sits in the middle, and legal skills, tools, and agents run on top. Copilot and Cowork reach across all of them.
+
+<figure>
+  <img src="/articles/spaarke-legal-ai-accelerator/exhibit-1.svg" alt="A stack of four layers. At the base, enterprise governance: Entra ID, conditional access, Purview, and the tenant boundary. Above it, Microsoft 365 and Power Platform: Outlook, Teams, Word, SharePoint, Power Apps, and Dataverse. Above that, the legal platform: systems of record for matter and case management, document management, and finance, with the decision support ontology across them. At the top, legal AI: skills, playbooks, agents, and tools. Copilot and Cowork reach across every layer, and the accelerator is highlighted on the top layer." />
+  <figcaption>Exhibit 1. Legal AI on Microsoft is built in layers, from enterprise governance to legal skills.</figcaption>
+</figure>
+
+**Enterprise governance.** Microsoft Entra ID controls who can sign in and what each person may reach, conditional access sets the conditions under which they may reach it, and Microsoft Purview applies data protection, retention, and audit. The tenant boundary contains all of it. Every layer above inherits these controls, which is why an IT team can approve legal AI on Microsoft with the policies it already maintains.
+
+**Microsoft 365 and Power Platform.** Outlook, Teams, Word, and the other Office applications are where legal work is drafted, negotiated, and discussed, and SharePoint is where much of it is stored. Power Apps and Dataverse are the services on which business applications are built inside the same tenant, under the same identities and the same governance.
+
+**The legal platform: systems of record.** Legal operations depends on three systems of record above all. Matter and case management holds each matter's parties, budget, deadlines, and assigned counsel. Document management holds the work product with its versions and permissions. Finance holds budgets, invoices and e-billing, and outside counsel spend. Spaarke provides system of record capabilities for each of these on Microsoft, and connects to the systems an organization already runs where they serve it well.
+
+**The legal platform: the decision support ontology.** The ontology is the model of what legal operations works on, such as matters, documents, invoices, obligations, and policies, and of the relationships among them. It is bound to the systems of record where the data sits, and it holds a record of the decisions taken on that data, by whom, and on what evidence. In our earlier article, [The Legal Operations Intelligence Ontology](/why-spaarke/legal-operations-ontology), we described how each system of record holds one dimension of the work and how the ontology connects them.
+
+**Legal AI.** Skills, playbooks, agents, and tools run in Copilot and Cowork and draw on every layer below. A skill that reviews an agreement reads the team's playbook from SharePoint, checks the matter it belongs to, and works within the permissions Entra ID grants the lawyer who runs it.
+
+Assembling this stack for legal work is the challenge legal teams face. They are asked to show results from AI faster than they can build the capability to deliver them. Someone has to decide which skills to build, which positions to encode, which knowledge to curate, which systems to connect, and how to test the results, and those decisions take legal and technical expertise that few legal teams have on staff. The accelerator starts at the top layer, on the governance and services Microsoft already provides, and the platform layers follow.
+
+## The Spaarke Legal AI Accelerator puts the platform to work in days
+
+The Spaarke Legal AI Accelerator for Microsoft Copilot is a rapid deployment of legal AI on Microsoft's platform. It combines pre-built legal skills, tools, and connectors with forward-deployed legal engineers, who bring the legal and technical expertise to configure them for a legal team's own practices, so that a team can start an AI program, or extend one already under way, in days. The accelerator for Microsoft Copilot is part of the Spaarke Legal AI Accelerator solutions, which are also available for Claude and ChatGPT.
+
+### Three layers of legal content
+
+The legal content in the accelerator comes in three layers, and Spaarke maintains the first two while the legal team owns the third.
+
+**The foundation.** The foundation is the set of core legal skills that every practice uses: reviewing a document against a playbook, building a playbook from the team's positions, preparing an issues list, extracting key terms into a table, comparing documents, building a chronology, writing a matter brief, and checking citations and sources. It also carries the governance that applies to every skill, including the human review guidance, and an evaluation set. Spaarke writes and maintains it.
+
+**Practice packs.** Practice packs carry the specialty skills for a practice, with expert tuning by Spaarke practitioners, for Commercial Agreements, Transactions, Real Estate, Litigation, and Intellectual Property, together with an invoice review pack for legal operations. A pack contains the practice's skills, playbook templates, checklists, and knowledge library structure, and the calculation tools the practice needs. Consider, for example, a real estate team that abstracts leases. Its pack holds the lease review and abstraction skills, a lease playbook template, and the tools that calculate rent escalations and notice dates. Spaarke writes and maintains the packs.
+
+**The team's own playbooks.** The third layer is the legal team's own positions: its preferred and fallback positions, its escalation rules and contacts, its house style, and its approved precedents. A guided setup interview captures them into files the team owns, and Spaarke's updates to the foundation and the packs never overwrite them. This layer is where the team's own expertise enters its legal AI, and most of the effort in a deployment goes into writing it down.
+
+### What's included
+
+The accelerator delivers the following components into the organization's own tenant.
+
+- **Legal skills.** The foundation and practice pack skills, packaged in the Agent Skills format and deployed as plugins to Cowork and Copilot Chat.
+- **Playbooks for Word.** Playbooks rendered as Word documents from the team's own positions, for use with Word's legal drafting and review skills.
+- **Knowledge library.** A SharePoint site structure for the team's precedents, clause library, and checklists, in the organization's own tenant.
+- **Agents.** Copilot agents for each practice, grounded on the knowledge library and shared with the team.
+- **Tools and MCP connectors.** Calculation tools for the work that must be exact, connected to Copilot through MCP, and the configuration of connectors to systems the organization already licenses, such as its document management system.
+- **Setup interview.** A guided skill that walks a practice lead through the team's positions, fallbacks, escalation, and house style and writes them to the team's own files.
+- **Evaluation set.** Questions and documents for each practice, extended with the team's own, so that results are tested on the team's work against how the team does it today.
+- **Governance and deployment.** Human review guidance in every skill, a summary for IT of what is installed and how data flows, an administrator deployment package, and an install that Purview can audit.
+- **Adoption.** Installation guides, training prompts, and a usage baseline from which the team can measure results.
+
+### Tools do the work that must be exact
+
+The accelerator includes tools as well as skills because some legal work cannot vary. AI is reshaping how legal work is done, and its outputs are probabilistic: the same question can return a different answer on a different run. Skills tell the AI how to do a piece of legal work, and much of that work, such as reading a clause or drafting a fallback, suits a model well. A notice deadline in a lease, a rent escalation, a patent term, or the arithmetic on an invoice has to return the same answer every time. The accelerator computes those with tools that calculate the same way on every run, and the AI calls the tool when the work needs one. In our earlier article, [Legal AI Is Not Deterministic](/why-spaarke/probabilistic-vs-deterministic), we explained why that matters for legal work that requires precision.
+
+## Legal teams can deploy the accelerator themselves or with forward-deployed legal engineers
+
+A legal team can start with the accelerator in two ways. A lawyer can add a practice pack in Cowork and share it with colleagues, and a practice team can add the knowledge library and the practice agent on a SharePoint site it already owns. Teams that take this route are working with the pack within hours, and they write their own playbooks with the setup interview.
+
+Teams can also work with Spaarke's forward-deployed legal engineers. A legal engineer is an attorney, a legal operations professional, or a specialty practitioner who understands how legal work is done, knows where AI adds value and where a calculation or a workflow will do better, and works inside the team's own operations rather than advising from outside. The engagement runs the Spaarke Method once, for one practice, in a week. The team chooses its first two or three tasks and records how long they take today. The legal engineers and the practice lead write the team's playbooks, curate its knowledge library, and configure and connect the skills and tools. The team then tests the results on its own documents against the baseline, and the legal engineers train the team and hand over the deployment. Organizations that install software centrally, including those that use Information Barriers, which block plugins that users add themselves, take this route with their IT team **TBD — confirm** (source 2).
+
+Either route can start an AI program or extend one. Most legal teams already have AI work under way, in prompts a lawyer has refined, in documents a team has collected, or in a pilot that proved a tool, and the accelerator builds on that work rather than replacing it.
+
+We recommend the engagement for a team's first practice. A self-deployed pack is useful on the first day, but the gain comes from the team's own playbooks and from evaluation on its own documents, and both go faster with a legal engineer in the room. Once the first practice is running, the team can add the next pack itself.
+
+## Everything the accelerator builds carries forward onto the Legal Operations Intelligence platform
+
+The accelerator is the first step on the path to legal operations intelligence, because what it builds belongs to the legal team and connects to the systems of record and the decision support ontology as those layers are put in place. In our earlier article, [From Reactive to Predictive](/why-spaarke/loi-maturity-model), we set out five levels of intelligence depth and observed that more tools at Level 2 keep a department at Level 2. The accelerator does not add a tool. It builds the team's positions, knowledge, and evaluations on the platform the organization already runs, in a form the team owns, and the legal platform layers in Exhibit 1 are where Levels 3 to 5 are built (Exhibit 2).
+
+<figure>
+  <img src="/articles/spaarke-legal-ai-accelerator/exhibit-2.svg" alt="A table with three columns: Copilot for the individual, the team's legal AI with the accelerator, and the legal platform. Five rows. The playbook moves from a document a lawyer attaches, to the team's positions with an owner, to a versioned policy cited on each decision. Critical dates and obligations move from an extraction in a session, to a governed extraction, to obligations with owners and lifecycles. The issues list moves from a document, to a structured list, to entries in the decision record. Invoice review moves from a file reviewed in a session, to a guideline review with exact arithmetic, to invoices posted against the matter and its budget. Matter context moves from the lawyer's own knowledge, to the knowledge library, to the matter record." />
+  <figcaption>Exhibit 2. Everything the accelerator builds carries forward onto the Legal Operations Intelligence platform.</figcaption>
+</figure>
+
+Each part of what the accelerator builds has a place on the platform.
+
+**Matter and case management.** A skill that today asks the lawyer which matter a document belongs to reads the matter record instead, with its parties, budget, deadlines, and assigned counsel, so the skill's work starts from what the department already knows about the matter.
+
+**Document management.** The knowledge library and the documents a skill reviews sit in the document system of record, with its versions, permissions, and retention, and the matter they belong to.
+
+**Finance, budgeting, and e-billing.** Invoice review moves from a file reviewed in a session to invoices posted against the matter and its budget, with the guideline review and the arithmetic recorded on each invoice and spend visible across firms.
+
+**The decision support ontology.** The team's playbooks become versioned policies that are cited on each decision. Critical dates and obligations extracted from agreements become obligations with owners and lifecycles. Issues lists and approvals become entries in a decision record that shows who decided, on what evidence, and under which version of the policy.
+
+The team keeps everything it learned to use. The skills it runs in Cowork and the playbooks it attaches in Word work the same way, and the platform adds the matter, the policy, the authority, and the record that let the legal team's decisions build on one another.
+
+## Putting the killer legal AI platform to work
+
+Microsoft has built an enterprise AI platform on which legal teams can build their own legal AI, connected to their work, governed like the rest of their data, and open to the models they choose. Legal AI on that platform is built in layers, from governance through the legal platform to legal skills. The Spaarke Legal AI Accelerator supplies the core legal skills, the practice packs, the tools, and the legal engineers to put the platform to work, and everything it builds carries forward onto the Legal Operations Intelligence platform.
+
+Microsoft is now the killer legal AI platform, because it lets legal teams build the legal AI they need inside the environment they already govern. What remains is to put it to work for the team's own practices, and that work can start this week.
+
+For legal operations leaders, practical starting points include the following. Choose one practice and two or three recurring tasks where the team wants results first. Write down the team's positions for those tasks, with fallbacks and escalation, so they can be built into the skills. Gather the AI work already under way in the team, so the first deployment builds on it. Confirm the Microsoft setup with IT: Copilot licences, the Cowork usage policy, and who approves connectors. And name the owner of each position once it is in the platform.
+
+The question the next year will answer is how far each legal team takes its own legal AI once the platform is in place, and the teams that write down their positions first will have the most to build on.
+
+**Sources**
+
+1. **TBD — confirm** Microsoft, plugin registry for Microsoft 365 Copilot (Tech Community, September 30, 2026)
+2. **TBD — confirm** Microsoft Learn, Cowork plugins and plugin development
+3. **TBD — confirm** Microsoft, Copilot for Legal general availability (Tech Community, October 15, 2026), and Microsoft Support, Get started with Copilot for Legal
+4. **TBD — confirm** Microsoft Learn, Work IQ in Cowork
+5. **TBD — confirm** Microsoft Learn, Data, privacy, and security for Microsoft 365 Copilot
+6. **TBD — confirm** Microsoft Learn, models available in Cowork
+7. **TBD — confirm** Microsoft, announcement of its frontier models for enterprise work
+
+**Related reading:**
+
+- [The Spaarke Method](/why-spaarke/the-spaarke-method)
+- [The Legal Operations Intelligence Ontology](/why-spaarke/legal-operations-ontology)
+- [Tenant-Dedicated Deployment](/why-spaarke/tenant-dedicated-deployment)
+
+---
+
+*To learn more about the Spaarke Legal AI Accelerator, book a meeting with Ralph Schroeder, Founder and CEO of Spaarke, at **TBD — confirm** (booking link), or contact him at [ralph.schroeder@spaarke.com](mailto:ralph.schroeder@spaarke.com).*
