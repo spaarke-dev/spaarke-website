@@ -190,6 +190,19 @@ read commentary from a deterministic path.
   paragraph before the "What's included" list is a functional list
   lead-in (`ai-tells.md`, section 3.1). Exhibits 1 and 2 and the hero
   drawn as SVG. `voice/product-knowledge.md` section 3.6 added.
+- 2026-11-02: Microsoft sources verified against primary pages and the
+  draft corrected to match them. Plugins carry skills, connectors, and
+  agents; Work IQ covers mail, calendar, files, chats, and sites (the
+  Work IQ overview, not the preview Business Applications page); tenant
+  wording follows Microsoft's ("within the Microsoft 365 service
+  boundary", "logically isolated within its tenant"); "audit" dropped for
+  want of a source. Microsoft has not announced a frontier model of its
+  own for Copilot or Cowork: the draft now says Microsoft announced a
+  family of in-house models trained on enterprise-grade data (Build 2026)
+  and does not call them frontier or say they run in Cowork. The
+  Information Barriers sentence was removed (not re-verified). Two
+  quotes (Cowork GA blog, Build 2026 post) came through a fetch summary
+  and should be spot-checked before publish.
 
 ---
 

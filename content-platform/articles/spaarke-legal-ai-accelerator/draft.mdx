@@ -15,7 +15,7 @@ heroImagePosition: "center"
 draft: true
 keyTakeaways:
   - "Microsoft now provides an enterprise AI platform on which legal teams can build the legal AI they need, connected to their work across Microsoft 365 and governed like the rest of their data."
-  - "The platform runs Claude models and OpenAI's GPT models, with the frontier models Microsoft has announced for enterprise work to follow, so the choice of model stays with the organization."
+  - "Cowork runs Claude models and OpenAI's GPT models among others, and Microsoft has announced in-house models of its own, so the choice of model stays with the organization."
   - "Legal AI on Microsoft is built in layers: enterprise governance, Microsoft 365 and Power Platform, a legal platform of systems of record and a decision support ontology, and legal skills on top."
   - "The Spaarke Legal AI Accelerator supplies core legal skills, practice packs, tools, and connectors, and forward-deployed legal engineers who help legal teams start or extend their AI programs in days."
   - "Everything the accelerator builds belongs to the legal team and carries forward onto the Legal Operations Intelligence platform, where it gains the matter, the policy, and the decision record."
@@ -29,18 +29,18 @@ Microsoft is now the killer legal AI platform, because it lets legal teams build
 
 ## Microsoft is the killer legal AI platform
 
-Microsoft 365 Copilot is now extended through plugins. A plugin packages skills, which are instructions and companion files written in the open Agent Skills format, with connectors that reach other systems through the Model Context Protocol (MCP), and the same package works across Copilot Chat, Cowork, and the Office apps. Cowork, which Microsoft made generally available in June, takes on multi-step work across a user's files and applications. A user can add a plugin and share it with colleagues, and an administrator can deploy one across the organization **TBD — confirm** (sources 1 and 2).
+Microsoft 365 Copilot is now extended through plugins. A plugin packages skills, which are instructions and companion files written in the open Agent Skills standard, with connectors to other systems and agents, and a publisher maintains one package for Copilot Chat, Cowork, Word, Excel, PowerPoint, and SharePoint rather than one for each. Cowork, which Microsoft made generally available on June 16, takes on multi-step work across a user's files and applications. A user can upload a plugin to Cowork and share it with named colleagues, Cowork converts plugins built for Claude automatically, and administrators review and govern plugins for the whole organization through a registry.
 
-Microsoft's own legal skills show what the platform can do for legal work. Copilot for Legal, generally available since October 15, brings legal drafting and review skills into Word, where a lawyer reviews an agreement against the playbook the team attaches, and a Legal for Cowork plugin with about 20 skills, among them contract review, playbook creation, the extraction of obligations and deadlines, and case chronologies **TBD — confirm** (source 3). These skills are a starting point. A legal team can build its own skills, playbooks, agents, and tools on the same foundation, for its own practices and in its own terms. That capacity to build is what sets the platform apart, and four properties make it the right place for legal AI.
+Microsoft's own legal skills show what the platform can do for legal work. On October 15 Microsoft made more than 20 legal skills generally available as Copilot for Legal. In Word, the legal skills are on by default for Microsoft 365 Copilot subscribers, and a lawyer can review a contract against the team's own playbook. The Legal for Cowork plugin carries 20 skills for understanding, summarizing, drafting, redlining, and reviewing legal documents. These skills are a starting point. A legal team can build its own skills, playbooks, agents, and tools on the same foundation, for its own practices and in its own terms. That capacity to build is what sets the platform apart, and four properties make it the right place for legal AI.
 
-- **Embedded and connected.** Copilot works in Word, Outlook, Teams, and the other applications where legal work is drafted, reviewed, and discussed, and it draws on the mail, files, meetings, and chats around that work, so a skill can read the context a lawyer would otherwise paste in by hand **TBD — confirm** (source 4).
-- **In the organization's tenant and under its control.** Copilot runs inside the organization's Microsoft 365 tenant, under its own identities, and it reads only what each user is already permitted to see **TBD — confirm** (source 5).
-- **Governed like the rest of the organization's data.** The sensitivity labels, retention policies, and audit controls the organization applies to its documents and mail apply to the legal AI that reads them, so legal AI does not need a governance program of its own **TBD — confirm** (source 5).
-- **A choice of models.** Cowork runs Claude models from Anthropic and GPT models from OpenAI today, and the platform is built for the models to come, including the frontier models Microsoft has announced for enterprise work, so a legal team can change models as the models change **TBD — confirm** (sources 6 and 7).
+- **Embedded and connected.** Copilot works in Word, Outlook, Teams, and the other applications where legal work is drafted, reviewed, and discussed. Through Work IQ it draws on the mail, calendar, files, chats, and sites around that work, so a skill can read the context a lawyer would otherwise paste in by hand.
+- **In the organization's tenant and under its control.** Copilot processes prompts and responses within the Microsoft 365 service boundary, keeps each organization's content logically isolated within its tenant, and surfaces only the data a user already has permission to view.
+- **Governed like the rest of the organization's data.** Copilot honors the usage rights that the organization's sensitivity labels apply, and the organization sets retention for Copilot in Microsoft Purview, so legal AI is governed by the controls already in place for the documents and mail it reads.
+- **A choice of models.** Cowork runs Claude models from Anthropic and GPT models from OpenAI, among others, and Microsoft has announced a family of in-house models of its own, trained on enterprise-grade data. The organization decides which models its people use, and Microsoft documents how each provider processes data, including the limits that apply within the EU Data Boundary.
 
-The platform also changes who manages capacity. Lawyers who rely on individual AI subscriptions run into usage limits in the middle of their work. Legal AI built on the organization's Microsoft agreement is provisioned and managed by the organization, under spending policies it sets.
+The platform also changes who manages capacity. Lawyers who rely on individual AI subscriptions run into usage limits in the middle of their work. Legal AI built on the organization's Microsoft agreement is provisioned and managed by the organization, and Cowork's usage-based billing lets the organization decide how much capacity its people have.
 
-The alternative is a separate legal AI application. It runs in the vendor's environment, under the vendor's governance, on the vendor's choice of model, and the legal team's documents travel to it. Several such applications now offer plugins for Microsoft 365 as well, which brings them closer to where lawyers work, and a separate application remains a reasonable choice for a legal team that does not run Microsoft 365. For an organization that does, we would build legal AI on Microsoft, because the organization keeps its data, its governance, and its choice of model, and everything the legal team builds stays its own. In our earlier article, [Why We Built on Microsoft](/why-spaarke/why-we-built-on-microsoft), we explained why we made the same choice for the Spaarke platform.
+The alternative is a separate legal AI application. It runs in the vendor's environment, under the vendor's governance, on the vendor's choice of model, and the legal team's documents travel to it. Several such applications now offer partner plugins for Microsoft's Copilot, which brings them closer to where lawyers work, and a separate application remains a reasonable choice for a legal team that does not run Microsoft 365. For an organization that does, we would build legal AI on Microsoft, because the organization keeps its data, its governance, and its choice of model, and everything the legal team builds stays its own. In our earlier article, [Why We Built on Microsoft](/why-spaarke/why-we-built-on-microsoft), we explained why we made the same choice for the Spaarke platform.
 
 ## Legal AI on Microsoft is built in layers, from enterprise governance to legal skills
 
@@ -51,7 +51,7 @@ Legal AI that a legal team can rely on is built in layers, and each layer inheri
   <figcaption>Exhibit 1. Legal AI on Microsoft is built in layers, from enterprise governance to legal skills.</figcaption>
 </figure>
 
-**Enterprise governance.** Microsoft Entra ID controls who can sign in and what each person may reach, conditional access sets the conditions under which they may reach it, and Microsoft Purview applies data protection, retention, and audit. The tenant boundary contains all of it. Every layer above inherits these controls, which is why an IT team can approve legal AI on Microsoft with the policies it already maintains.
+**Enterprise governance.** Microsoft Entra ID controls who can sign in and what each person may reach, conditional access sets the conditions under which they may reach it, and Microsoft Purview applies sensitivity labels and retention. The tenant boundary contains all of it. Every layer above inherits these controls, which is why an IT team can approve legal AI on Microsoft with the policies it already maintains.
 
 **Microsoft 365 and Power Platform.** Outlook, Teams, Word, and the other Office applications are where legal work is drafted, negotiated, and discussed, and SharePoint is where much of it is stored. Power Apps and Dataverse are the services on which business applications are built inside the same tenant, under the same identities and the same governance.
 
@@ -99,7 +99,7 @@ The accelerator includes tools as well as skills because some legal work cannot 
 
 A legal team can start with the accelerator in two ways. A lawyer can add a practice pack in Cowork and share it with colleagues, and a practice team can add the knowledge library and the practice agent on a SharePoint site it already owns. Teams that take this route are working with the pack within hours, and they write their own playbooks with the setup interview.
 
-Teams can also work with Spaarke's forward-deployed legal engineers. A legal engineer is an attorney, a legal operations professional, or a specialty practitioner who understands how legal work is done, knows where AI adds value and where a calculation or a workflow will do better, and works inside the team's own operations rather than advising from outside. The engagement runs the Spaarke Method once, for one practice, in a week. The team chooses its first two or three tasks and records how long they take today. The legal engineers and the practice lead write the team's playbooks, curate its knowledge library, and configure and connect the skills and tools. The team then tests the results on its own documents against the baseline, and the legal engineers train the team and hand over the deployment. Organizations that install software centrally, including those that use Information Barriers, which block plugins that users add themselves, take this route with their IT team **TBD — confirm** (source 2).
+Teams can also work with Spaarke's forward-deployed legal engineers. A legal engineer is an attorney, a legal operations professional, or a specialty practitioner who understands how legal work is done, knows where AI adds value and where a calculation or a workflow will do better, and works inside the team's own operations rather than advising from outside. The engagement runs the Spaarke Method once, for one practice, in a week. The team chooses its first two or three tasks and records how long they take today. The legal engineers and the practice lead write the team's playbooks, curate its knowledge library, and configure and connect the skills and tools. The team then tests the results on its own documents against the baseline, and the legal engineers train the team and hand over the deployment. Organizations that install software centrally take this route with their IT team, and the legal engineers prepare the administrator deployment package.
 
 Either route can start an AI program or extend one. Most legal teams already have AI work under way, in prompts a lawyer has refined, in documents a team has collected, or in a pilot that proved a tool, and the accelerator builds on that work rather than replacing it.
 
@@ -138,13 +138,19 @@ The question the next year will answer is how far each legal team takes its own 
 
 **Sources**
 
-1. **TBD — confirm** Microsoft, plugin registry for Microsoft 365 Copilot (Tech Community, September 30, 2026)
-2. **TBD — confirm** Microsoft Learn, Cowork plugins and plugin development
-3. **TBD — confirm** Microsoft, Copilot for Legal general availability (Tech Community, October 15, 2026), and Microsoft Support, Get started with Copilot for Legal
-4. **TBD — confirm** Microsoft Learn, Work IQ in Cowork
-5. **TBD — confirm** Microsoft Learn, Data, privacy, and security for Microsoft 365 Copilot
-6. **TBD — confirm** Microsoft Learn, models available in Cowork
-7. **TBD — confirm** Microsoft, announcement of its frontier models for enterprise work
+- [Microsoft, Introducing Microsoft Copilot for legal](https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/introducing-microsoft-copilot-for-legal/4564246) (October 15, 2026)
+- [Microsoft Support, Get started with Copilot for legal](https://support.microsoft.com/en-us/word/get-started-with-copilot-for-legal)
+- [Microsoft Learn, Manage Copilot for legal](https://learn.microsoft.com/en-us/microsoft-365/admin/manage/manage-copilot-for-legal?view=o365-worldwide)
+- [Microsoft Learn, Available plugins for Copilot Cowork](https://learn.microsoft.com/en-us/copilot/cowork/cowork-available-plugins)
+- [Microsoft, Introducing the plugin registry](https://techcommunity.microsoft.com/blog/microsoft-copilot-blog/introducing-the-plugin-registry---one-place-to-discover-and-govern-plugins-for-m/4559682) (September 30, 2026)
+- [Microsoft Learn, Build plugins for Copilot Cowork](https://learn.microsoft.com/en-us/copilot/cowork/cowork-plugin-development)
+- [Microsoft Learn, Use plugins with Copilot Cowork](https://learn.microsoft.com/en-us/copilot/cowork/cowork-plugins)
+- [Microsoft, Copilot Cowork is now generally available](https://www.microsoft.com/en-us/microsoft-365/blog/2026/06/16/copilot-cowork-is-now-generally-available/) (June 16, 2026)
+- [Microsoft Learn, Choose a model for Copilot Cowork](https://learn.microsoft.com/en-us/copilot/cowork/cowork-models)
+- [Microsoft, Microsoft Build 2026: Be yourself at work](https://blogs.microsoft.com/blog/2026/06/02/microsoft-build-2026-be-yourself-at-work/) (June 2, 2026)
+- [Microsoft Learn, Work IQ overview](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/)
+- [Microsoft Learn, Data, Privacy, and Security for Microsoft Copilot](https://learn.microsoft.com/en-us/microsoft-365/copilot/microsoft-365-copilot-privacy)
+- [Microsoft Learn, Manage Copilot Cowork for your organization](https://learn.microsoft.com/en-us/copilot/cowork/cowork-admin-governance)
 
 **Related reading:**
 
