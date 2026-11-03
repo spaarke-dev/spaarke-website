@@ -15,7 +15,7 @@ export const BRIEF_URL = "/accelerator/brief";
 export const CHECKLIST_URL = "/accelerator/readiness-checklist";
 export const BRIEF_PDF = "/accelerator/legal-ai-accelerator-brief.pdf";
 export const CHECKLIST_PDF = "/accelerator/legal-ai-on-microsoft-checklist.pdf";
-export const CONTACT_EMAIL = "ralph.schroeder@spaarke.com";
+export const CONTACT_EMAIL = "getstarted@spaarke.com";
 
 export type Item = { name: string; body: string };
 

@@ -147,7 +147,7 @@ At the end of the week, the team has:
 | Invoice review | A file reviewed in a session | A guideline review with exact arithmetic | Invoices posted against the matter and its budget |
 | Matter context | The lawyer's own knowledge | The knowledge library | The matter record |
 
-*Booking box:* **Book a 30-minute scoping session.** In 30 minutes we choose the practice and the first tasks, confirm the Microsoft setup with your IT lead, and plan the week. Then: spaarke.com/accelerator, ralph.schroeder@spaarke.com
+*Booking box:* **Book a 30-minute scoping session.** In 30 minutes we choose the practice and the first tasks, confirm the Microsoft setup with your IT lead, and plan the week. Then: spaarke.com/accelerator, getstarted@spaarke.com
 
 
 ---
@@ -230,7 +230,7 @@ Legal AI on Microsoft runs inside the organization's own tenant, under the ident
   - Question: Who owns each position, and who signs off when a playbook changes?
   - Why it matters: The team's positions will change as its practice does, and each change needs an owner.
 
-*Booking box:* **Book a 30-minute scoping session.** We review this checklist with your legal and IT leads and plan the week. Then: spaarke.com/accelerator, ralph.schroeder@spaarke.com
+*Booking box:* **Book a 30-minute scoping session.** We review this checklist with your legal and IT leads and plan the week. Then: spaarke.com/accelerator, getstarted@spaarke.com
 
 
 ---
