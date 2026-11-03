@@ -223,6 +223,11 @@ read commentary from a deterministic path.
   `projects/article-insights-assistant/notes/suggested-questions-review.md`).
   The `/accelerator` page captures requests through the contact form with the
   reason "Book an accelerator scoping session".
+- 2026-11-03: the writer confirmed that the product and competitor claims in the
+  article and the company post are Spaarke's assertions: Copilot for Legal replacing
+  or augmenting Claude for Legal (Anthropic's name), Harvey, and Legora, and the
+  Vault, Portal, and Tabular Review comparisons. Company post merged (#131) and
+  posted by the writer; founder post drafted for 2026-11-04.
 
 ---
 
