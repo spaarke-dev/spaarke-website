@@ -15,6 +15,7 @@
     "linkedin:status": "tsx scripts/linkedin-status.ts",
     "voice:lint": "node scripts/voice-lint.mjs",
     "corpus": "node scripts/build-corpus-manifest.mjs",
+    "accelerator:pdf": "tsx scripts/render-accelerator-pdfs.mts",
     "insights:check": "tsx scripts/check-insights-prompt.ts",
     "insights:questions": "tsx scripts/generate-suggested-questions.ts",
     "insights:eval": "tsx scripts/eval-insights.ts",
