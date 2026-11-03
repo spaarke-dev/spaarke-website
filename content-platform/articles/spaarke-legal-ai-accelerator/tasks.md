@@ -36,12 +36,12 @@
         reach the number.
       - A number from 1,000 to 1,800 (short post): the draft falls
         within that range, and about 1,400 words suits most short posts.
-- [ ] Internal cross-links inserted at the points named in plan.md
-- [ ] Exhibits, if any, cited in parentheses at the end of the
+- [x] Internal cross-links inserted at the points named in plan.md
+- [x] Exhibits, if any, cited in parentheses at the end of the
       sentence that states the finding, in the form "(Exhibit 1)"
-- [ ] No `**TBD — confirm**` markers (or, if any remain, they are
+- [x] No `**TBD — confirm**` markers (or, if any remain, they are
       explicitly listed for the reviewer)
-- [ ] Draft written to `draft.mdx` in this article's workspace
+- [x] Draft written to `draft.mdx` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
 
@@ -53,12 +53,12 @@
 
 ## 4. Polish (gate: pre-publish checklist clean)
 
-- [ ] Frontmatter validated against `src/lib/blog.ts` shape
-- [ ] `description` field is a real SEO meta description (~155 chars)
+- [x] Frontmatter validated against `src/lib/blog.ts` shape
+- [x] `description` field is a real SEO meta description (~155 chars)
 - [ ] `summary` is 2 to 3 sentences, about 150 to 280 characters
 - [ ] `keyTakeaways` are 3 to 6 bullets of 18 to 35 words each
-- [ ] Tags drawn from canonical taxonomy (no inventions)
-- [ ] All cross-link slugs verified to exist
+- [x] Tags drawn from canonical taxonomy (no inventions)
+- [x] All cross-link slugs verified to exist
 - [ ] **Required: voice lint.** From the repository root, run
       `npm run voice:lint -- content-platform/articles/spaarke-legal-ai-accelerator/draft.mdx`.
       The run reports 0 errors, and every warning has been read and
@@ -93,20 +93,20 @@
 
 ## 5. Hero (gate: image present at expected path)
 
-- [ ] Hero produced per `voice/visual-identity.md`:
+- [x] Hero produced per `voice/visual-identity.md`:
       - Default: SVG at `public/articles/<slug>/hero.svg` (1600×900 viewBox)
       - Or paste-ready prompt for Midjourney/DALL-E/Firefly if photographic
-- [ ] Alt text written (a real description of the image, with no em dash)
-- [ ] LinkedIn header generated via `node scripts/generate-linkedin-headers.mjs`
+- [x] Alt text written (a real description of the image, with no em dash)
+- [x] LinkedIn header generated via `node scripts/generate-linkedin-headers.mjs`
 
 ## 6. Ship (gate: live + tracked)
 
-- [ ] `draft.mdx` moved to `content/blog/<YYYY-MM-DD>-<slug>.mdx`
-- [ ] `draft: false` in frontmatter
-- [ ] `calendar.md` row updated to `published`
+- [x] `draft.mdx` moved to `content/blog/<YYYY-MM-DD>-<slug>.mdx`
+- [x] `draft: false` in frontmatter
+- [x] `calendar.md` row updated to `published`
 - [ ] GitHub Project's *Pipeline status* moved to `Published`
 - [ ] GitHub Issue closed
-- [ ] Campaign file (if applicable) updated to reflect actual publish
+- [x] Campaign file (if applicable) updated to reflect actual publish
 
 ## 7. Syndicate to LinkedIn (gate: posted to each target)
 
@@ -216,6 +216,13 @@ read commentary from a deterministic path.
   warning is accepted because the refrain is the writer's own; the other
   two warnings are accepted as before. The closing CTA links to a new
   `/accelerator` page with a scoping session request form.
+- 2026-11-02: published to `content/blog/2026-11-03-microsoft-is-now-the-platform-for-legal-ai.mdx`
+  (moved, not copied). LinkedIn header rendered from the hero. Entry card
+  questions generated and reviewed; the article pushed the insights corpus
+  over its ceiling, so the two specification documents are now tier 2 (see
+  `projects/article-insights-assistant/notes/suggested-questions-review.md`).
+  The `/accelerator` page captures requests through the contact form with the
+  reason "Book an accelerator scoping session".
 
 ---
 

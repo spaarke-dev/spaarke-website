@@ -45,10 +45,10 @@ Ignite (17 to 20 November 2026).
 
 | Date | Type | Slug | Status | Channel(s) | Notes |
 |---|---|---|---|---|---|
-| 2026-11-03 | blog-post | `spaarke-legal-ai-accelerator` | outline | website, linkedin | founder byline; URL `/why-spaarke/microsoft-is-now-the-platform-for-legal-ai` |
+| 2026-11-03 | blog-post | `spaarke-legal-ai-accelerator` | published | website, linkedin | founder byline; URL `/why-spaarke/microsoft-is-now-the-platform-for-legal-ai` |
 | 2026-11-03 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-personal` | planned | linkedin (founder) | founder post linking the article |
 | 2026-11-03 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-company` | planned | linkedin (company) | company page post |
-| 2026-11-03 | landing page | `/accelerator` | in progress | website | scoping session request form (contact form, reason "Book an accelerator scoping session") |
+| 2026-11-03 | landing page | `/accelerator` | published | website | scoping session request form (contact form, reason "Book an accelerator scoping session") |
 | **TBD — confirm** | linkedin-ad | accelerator ads | planned | linkedin (paid) | see Paid support |
 
 ## Distribution sequence

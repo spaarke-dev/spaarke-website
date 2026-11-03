@@ -86,3 +86,21 @@ ChatGPT and Copilot, both of which the articles themselves name. The assistant
 is told to make no claim about a named competitor beyond what an article states,
 so the question invites an answer the prompt already constrains. Worth reading
 one of those answers before launch.
+
+## 2026-11-02: microsoft-is-now-the-platform-for-legal-ai
+
+Six questions generated for the founder article on the Legal AI Accelerator
+and read before commit. One edit: "Spaarke for IT Team" became "the Spaarke for
+Your IT Team article", the published title. The Harvey question names a
+competitor in the reader's voice; the article names Harvey itself, so the
+question stays.
+
+The article took the corpus to about 166,000 estimated tokens, over the 160,000
+ceiling, which fails the build. The two product specification documents
+(`Spaarke-Functional-Specification-2026`, `spaarke-feature-specification`) are
+now tier 2, chosen by judgment rather than from `citedSlugs`, because the
+conversation table was not reachable from the workstation. That brings the
+corpus to about 152,000, 95% of the ceiling, with room for roughly one more
+article. Revisit the choice against `citedSlugs` before the next article.
+
+`the-spaarke-method` still has no questions.
