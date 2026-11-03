@@ -46,24 +46,27 @@ Ignite (17 to 20 November 2026).
 | Date | Type | Slug | Status | Channel(s) | Notes |
 |---|---|---|---|---|---|
 | 2026-11-03 | blog-post | `spaarke-legal-ai-accelerator` | published | website, linkedin | founder byline; URL `/why-spaarke/microsoft-is-now-the-platform-for-legal-ai` |
-| 2026-11-04 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-personal` | ready | linkedin (founder) | founder post linking the article |
+| 2026-11-03 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-personal` | ready | linkedin (founder) | founder post linking the article; posted the evening of 2026-11-03 and sponsored as a Thought Leader Ad |
 | 2026-11-03 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-company` | ready | linkedin (company) | company page post |
 | 2026-11-03 | landing page | `/accelerator` | published | website | scoping session request form (contact form, reason "Book an accelerator scoping session") |
-| 2026-11-10 to 2026-12-18 | linkedin-ad | accelerator ads | planned | linkedin (paid) | see Paid support |
-| 2026-11-14 | document | accelerator brief (PDF) | to produce | linkedin (paid), website | see Content to produce |
-| 2026-11-14 | document | readiness checklist (PDF) | to produce | linkedin (paid), website | see Content to produce |
+| 2026-11-04 to 2026-12-18 | linkedin-ad | accelerator ads | building | linkedin (paid) | see Paid support |
+| 2026-11-03 | document | accelerator brief (web page and PDF) | published | linkedin (paid), website | `/accelerator/brief`, `/accelerator/legal-ai-accelerator-brief.pdf` |
+| 2026-11-03 | document | readiness checklist (web page and PDF) | published | linkedin (paid), website | `/accelerator/readiness-checklist`, `/accelerator/legal-ai-on-microsoft-checklist.pdf` |
 
 ## Distribution sequence
 
+The owner compressed the schedule on 2026-11-03 so that paid support starts at
+once.
+
 | Date | Channel | Action |
 |---|---|---|
-| 2026-11-03 | website | Publish the article |
-| 2026-11-03 | linkedin | Founder post, then the company page post |
-| Week of 2026-11-09 | linkedin | Exhibit posts |
-| 2026-11-10 | linkedin (paid) | Warm stage: Thought Leader Ad on the founder post; exhibit ads to A3 and A4 |
-| 2026-11-16 | linkedin (paid) | Ignite week: Document ads with Lead Gen Forms (brief to A1 and A2, checklist to A4) |
-| 2026-11-23 | linkedin (paid) | Scoping session offer to W2, once it passes 300 |
-| 2026-12-01 | linkedin (paid) | Conversation ad test on W2 |
+| 2026-11-03 | website | Publish the article, the brief, and the checklist |
+| 2026-11-03 | linkedin | Company page post; the founder post in the evening |
+| 2026-11-03, evening | linkedin (paid) | Build the Thought Leader Ad on the founder post, the two Document ads with their Lead Gen Forms, and the W2 engagement audience; submit them for LinkedIn's review |
+| 2026-11-04 | linkedin (paid) | Warm and convert together: the Thought Leader Ad to A1 and A2, the brief to A1 and A2, the checklist to A4 |
+| Week of 2026-11-09 | linkedin | Exhibit posts (organic) |
+| 2026-11-17 to 2026-11-20 | linkedin | Microsoft Ignite: a founder post on the week's Copilot news, a candidate for a second Thought Leader Ad |
+| When W2 passes 300 | linkedin (paid) | Scoping session offer to W2 |
 | 2026-12-18 | linkedin (paid) | End date on every paid campaign; retro in early January |
 
 Every paid step starts only after the pre-launch checklist (procedure 7.3) and
@@ -94,20 +97,23 @@ people who engaged for the meeting.
    session. A Conversation ad from the founder is the second test on the same
    audience.
 
-Microsoft Ignite (17 to 20 November) is the moment the audience is reading
-about Copilot. The conversion stage starts in Ignite week, so the warm stage
-has to start the week before.
+The owner set the budget on 2026-11-03 (amount and split in the private
+archive) and asked for an immediate start. At that budget the warm and convert
+stages run together from 2026-11-04 rather than in sequence, so the Document
+ads are in market before Microsoft Ignite (17 to 20 November). The money goes
+to the founder post and the two documents; the exhibit ads and the
+Conversation ad are not funded.
 
 ### Paid assets
 
 | Asset | Route | Format | Objective | Audience | Window | Status |
 |---|---|---|---|---|---|---|
-| Founder post (`-syndication-personal`) | C | Thought Leader Ad | Engagement | A1, A2 | 2026-11-10 to 2026-11-30 | planned; needs the founder's approval of the post |
-| Exhibit 1 and Exhibit 2 | A | Single image to the article | Website visits | A3, A4 | 2026-11-10 to 2026-12-11 | planned; images to produce |
-| Accelerator brief (PDF, new) | B | Document ad, three preview pages, the rest gated | Lead generation | A1, A2 | 2026-11-16 to 2026-12-18 | to produce |
-| Readiness checklist (PDF, new) | B | Document ad, one preview page, the rest gated | Lead generation | A4, A3 | 2026-11-16 to 2026-12-18 | to produce |
-| Scoping session offer | E | Single image with a Lead Gen Form | Lead generation | W2 | 2026-11-23 to 2026-12-18 | planned; starts when W2 passes 300 |
-| Founder invitation | E | Conversation ad | Lead generation | W2 | 2026-12-01 to 2026-12-18 | second test on W2, after the single image |
+| Founder post (`-syndication-personal`) | C | Thought Leader Ad | Engagement | A1, A2 | 2026-11-04 to 2026-11-30 | approved by the owner 2026-11-03 |
+| Accelerator brief (PDF) | B | Document ad, three preview pages, the rest gated | Lead generation | A1, A2 | 2026-11-04 to 2026-12-18 | ready |
+| Readiness checklist (PDF) | B | Document ad, one preview page, the rest gated | Lead generation | A4 | 2026-11-04 to 2026-12-18 | ready |
+| Scoping session offer | E | Single image with a Lead Gen Form | Lead generation | W2 | when W2 passes 300, to 2026-12-18 | image to produce |
+| Exhibit 1 and Exhibit 2 | A | Single image to the article | Website visits | A3, A4 | not funded | organic posts only |
+| Founder invitation | D | Conversation ad | Lead generation | W2 | not funded | revisit if W2 leads are slow |
 | Practice pack demo (video, new) | C, E | Video | Video views | A1, then W2 | phase 2 | deferred until a demo is recorded |
 
 The windows end on 2026-12-18, before the holiday slowdown. The retro is
@@ -116,34 +122,30 @@ written in the first week of January.
 ### Build structure
 
 One LinkedIn campaign per objective, one ad set per audience, two to four ads
-per ad set (procedure section 3).
+per ad set (procedure section 3). At this budget there are two LinkedIn
+campaigns.
 
 | LinkedIn campaign | Objective | Ad sets | Ads |
 |---|---|---|---|
-| `2026-11-legal-ai-accelerator / reach` | Engagement | `A1-legalops / C / thoughtleader`, `A2-firmops / C / thoughtleader` | The founder post; later founder posts that earn organic engagement |
-| `2026-11-legal-ai-accelerator / visits` | Website visits | `A3-counsel / A / image`, `A4-it / A / image` | Exhibit 1 and Exhibit 2, two hook variants each |
-| `2026-11-legal-ai-accelerator / leadgen` | Lead generation | `A1-legalops / B / document`, `A2-firmops / B / document`, `A4-it / B / document`, `W2-engagers / E / image` | The brief to A1 and A2, the checklist to A4 (and A3 when the visits campaign ends), the scoping offer to W2 |
-| `2026-11-legal-ai-accelerator / leadgen-message` | Lead generation | `W2-engagers / D / conversation` | The founder invitation |
+| `2026-11-legal-ai-accelerator / reach` | Engagement | `A1-legalops / C / thoughtleader / 202611`, `A2-firmops / C / thoughtleader / 202611` | The founder post; later founder posts that earn organic engagement |
+| `2026-11-legal-ai-accelerator / leadgen` | Lead generation | `A1-legalops / B / document / 202611`, `A2-firmops / B / document / 202611`, `A4-it / B / document / 202611`, and later `W2-engagers / E / image / 202611` | The brief to A1 and A2, the checklist to A4, the scoping offer to W2 |
 
-Two rules keep the ad sets from bidding against each other. W2 is excluded
-from every cold ad set in the lead generation campaign. The Conversation ad
-is a separate campaign, because Conversation ads have their own format and
-budget and should be read on their own. A3 moves into the lead generation
-campaign only after its visits ad set ends.
+Once the W2 ad set starts, W2 is excluded from the cold ad sets in the lead
+generation campaign, so the two do not bid against each other.
 
 ### Audiences
 
 The definitions are in `advertising/linkedin-ads-plan.md` section 3, and the
 lists stay in the private archive. This campaign is the first to use A3 and
 A4, because the article's argument depends on the people who approve Copilot
-policy, licences, and connectors.
+policy, licenses, and connectors.
 
 | Audience | Why it is in this campaign |
 |---|---|
 | A1: legal operations leaders | The buyer of the accelerator, and the reader the article addresses |
 | A2: law firm operations leaders | Firms run Microsoft 365 and Information Barriers. Add knowledge management and innovation titles to A2 for this campaign |
 | A3: general counsel and senior counsel | Sponsors the practice and the first tasks |
-| A4: corporate IT | Approves Copilot licences, the Cowork usage policy, and connectors. The readiness checklist is written for them |
+| A4: corporate IT | Approves Copilot licenses, the Cowork usage policy, and connectors. The readiness checklist is written for them |
 | W2: ad and page engagers | Everyone who engaged with the founder post, the exhibits, or the documents. The audience for the direct offer |
 
 **Overlap with the Design Partner Program.** Its overview Document ad also
@@ -162,9 +164,9 @@ Every ad uses the UTM template in procedure section 5.1 with
 
 | Field | Value |
 |---|---|
-| Post | The founder post on Ralph Schroeder's profile, 2026-11-04. Text with a link, so it is an eligible type |
+| Post | The founder post on Ralph Schroeder's profile, posted the evening of 2026-11-03. Text with a link, so it is an eligible type |
 | Ad name | `founder-post / v1` |
-| Start rule | After three to five days of organic delivery, if the post earns engagement (plan section 7) |
+| Start rule | From the morning after posting (schedule compressed by the owner, 2026-11-03) |
 | Result | Engagement rate, and the growth of W2 |
 
 **Single image to the article**
@@ -196,8 +198,8 @@ Every ad uses the UTM template in procedure section 5.1 with
 |---|---|
 | Asset | `legal-ai-on-microsoft-checklist.pdf`, three pages (a one-page document cannot be gated) |
 | Preview | One page: the questions legal and IT settle together |
-| Document title | Legal AI on Microsoft 365: a readiness checklist for legal and IT |
-| Ad `checklist / v1-it` | Before legal AI goes live on Microsoft 365, legal and IT settle a short list: Copilot licences, the Cowork usage policy, who approves connectors, and how sensitivity labels and retention apply. The checklist covers each. |
+| Document title | Legal AI on Microsoft: a readiness checklist for legal and IT |
+| Ad `checklist / v1-it` | Before legal AI goes live on Microsoft, legal and IT settle a short list: Copilot licenses, the Cowork usage policy, who approves connectors, and how sensitivity labels and retention apply. The checklist covers each. |
 | Ad `checklist / v2-legal` | Your legal team wants to put Copilot to work on one practice. The checklist sets out, in three pages, what to settle with IT first. |
 | Lead Gen Form | `legal-ai-on-microsoft-checklist / form / v1` |
 
@@ -231,7 +233,7 @@ email, company, and job title. Each links the privacy policy at
 | Form | Headline (60) | Custom question | Thank-you |
 |---|---|---|---|
 | Brief | The Spaarke Legal AI Accelerator for Microsoft Copilot | Which practice would you start with? (NDAs and commercial contracts, real estate, M&A, employment, litigation, patents and trademarks, invoice review, not sure yet) | Link to the PDF, with a second line offering a scoping session at `/accelerator` |
-| Checklist | Legal AI on Microsoft 365: readiness checklist | none | Link to the PDF |
+| Checklist | Legal AI on Microsoft: readiness checklist | none | Link to the PDF |
 | Scoping | Book a 30-minute scoping session | Which practice would you start with? (same options) | "We will reply within two working days to find a time." Button to the article |
 
 The practice question is the qualification signal, and it tells the legal
@@ -268,23 +270,24 @@ be reported.
 
 ### Open decisions
 
-| # | Decision | Recommendation |
+| # | Decision | Outcome |
 |---|---|---|
-| 1 | Budget and its split across the four LinkedIn campaigns (private archive) | Most of it to the lead generation campaign; the warm stage only as long as W2 needs to pass 300 |
-| 2 | The founder's approval of the 2026-11-04 post as a Thought Leader Ad, and of the founder as Conversation ad sender | Approve both |
-| 3 | Overlap with the Design Partner Document ad on A1 | Accelerator has A1 until 2026-12-18; Design Partner runs to A2 or starts in January |
-| 4 | Whether the brief and checklist are also downloadable on `/accelerator` without a form | Gate them on LinkedIn only; offer them on the site after the paid window |
-| 5 | A short live session after Ignite (Event ad, route B) | Only if the scoping session demand is low by 2026-11-30 |
-| 6 | Who replies to leads and runs the scoping sessions | The founder for the window, with a legal engineer in the session |
+| 1 | Budget and its split | Set by the owner on 2026-11-03; amount and split in the private archive |
+| 2 | The founder post as a Thought Leader Ad | Approved 2026-11-03. The Conversation ad sender is not needed while the Conversation ad is unfunded |
+| 3 | Overlap with the Design Partner Document ad on A1 | Open. Recommendation: the accelerator holds A1 until 2026-12-18 |
+| 4 | Brief and checklist on the site without a form | Decided 2026-11-03: both are public web pages with PDF downloads, linked from `/accelerator` and the article. The Document ads still ask for the form |
+| 5 | A short live session after Ignite (Event ad) | Not funded |
+| 6 | Who replies to leads and runs the scoping sessions | Open. Recommendation: the founder, from getstarted@spaarke.com, within two working days, with a legal engineer in the session |
+| 7 | Target markets | Open. The first build targets the United States |
 
 ## Content to produce
 
 | Asset | Format | Used by | Effort | Needed by |
 |---|---|---|---|---|
-| Exhibit 1, Exhibit 2, and hero recut to 1200 by 627 | PNG from the existing SVGs | Single image ads | Small | 2026-11-09 |
-| Lead Gen Form text (three forms) | Text, in this file | All lead generation ads | Small, drafted above | 2026-11-13 |
-| Accelerator brief | Seven-page PDF, 1080 by 1350, built as a slide deck in the overview deck's design and exported to PDF | Document ad; scoping session follow-up; a leave-behind after the session | Medium | 2026-11-14 |
-| Readiness checklist | Three-page PDF in the same design | Document ad for A4 and A3; organic post | Medium | 2026-11-14 |
+| Hero recut to 1200 by 627 (the exhibit recuts are not needed while the exhibit ads are unfunded) | PNG from the existing SVG | The W2 scoping offer | Small | When W2 passes 300 |
+| Lead Gen Form text (three forms) | Text, in this file | All lead generation ads | Done | 2026-11-03 |
+| Accelerator brief | Web page and seven-page PDF, 1080 by 1350, from one copy source (`npm run accelerator:pdf`) | Document ad; the site; a leave-behind after the session | Done | 2026-11-03 |
+| Readiness checklist | Web page and three-page PDF from the same source | Document ad for A4; the site; organic post | Done | 2026-11-03 |
 | Exhibit posts | Two organic single image posts on the company page (already planned for the week of 2026-11-09) | W2 growth; candidates for sponsoring | Small | 2026-11-10 |
 | Two founder posts | Standalone posts: the team's playbooks as intellectual capital, and tools for the work that must be exact | Thought Leader Ads after organic delivery; W2 growth | Small | 2026-11-17 and 2026-11-24 |
 | Scoping session reply | A short reply template and a one-page session agenda | Lead follow-up (procedure 7.5) | Small | 2026-11-16 |
@@ -303,7 +306,7 @@ Accelerator brief, page by page:
 Readiness checklist, page by page:
 
 1. The questions legal and IT settle together (the preview page).
-2. For IT: licences, the Cowork usage policy, connector and plugin approval in the registry, sensitivity labels, retention in Purview, and the deployment route (self-deployed or IT-deployed, including Information Barriers).
+2. For IT: licenses, the Cowork usage policy, connector and plugin approval in the registry, sensitivity labels, retention in Purview, and the deployment route (self-deployed or IT-deployed, including Information Barriers).
 3. For legal: the first practice and two or three tasks, today's baseline, the team's positions and fallbacks, the AI work already under way, and who owns each position.
 
 ## Success metrics
