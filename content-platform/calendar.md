@@ -66,7 +66,7 @@ firm publish date yet.
 
 | Slug | Type | Publish | Status | Author | Campaign | LinkedIn (personal) | LinkedIn (company) | Notes | Paid |
 |---|---|---|---|---|---|---|---|---|---|
-| spaarke-legal-ai-accelerator | blog-post | 2026-11-03 | outline | ralph-schroeder | 2026-11-legal-ai-accelerator |  |  | Founder article "Why Microsoft Is the Killer Legal AI Platform", announcing the Spaarke Legal AI Accelerator for Microsoft Copilot: why Microsoft's platform is the right place for legal AI, the build layer by layer (Exhibit 1), the accelerator's structure and components, two ways to start, and how it carries forward onto the Legal Operations Intelligence platform (Exhibit 2). Fallback date 2026-11-04. First named byline on the site. Issue [#128](https://github.com/spaarke-dev/spaarke-website/issues/128). Outline signed off 2026-11-02. | planned: Thought Leader Ad and Exhibit 2 image ad |
+| spaarke-legal-ai-accelerator | blog-post | 2026-11-03 | outline | ralph-schroeder | 2026-11-legal-ai-accelerator |  |  | Founder article "Microsoft Is Now the Platform for Legal AI" (/why-spaarke/microsoft-is-now-the-platform-for-legal-ai), announcing the Spaarke Legal AI Accelerator for Microsoft Copilot: why Microsoft's platform is the right place for legal AI, the build layer by layer (Exhibit 1), the accelerator's structure and components, two ways to start, and how it carries forward onto the Legal Operations Intelligence platform (Exhibit 2). Fallback date 2026-11-04. First named byline on the site. Issue [#128](https://github.com/spaarke-dev/spaarke-website/issues/128). Outline signed off 2026-11-02. | planned: Thought Leader Ad and Exhibit 2 image ad |
 
 ## 2026-Q3
 

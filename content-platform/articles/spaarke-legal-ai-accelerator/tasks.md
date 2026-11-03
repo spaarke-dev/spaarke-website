@@ -203,6 +203,19 @@ read commentary from a deterministic path.
   Information Barriers sentence was removed (not re-verified). Two
   quotes (Cowork GA blog, Build 2026 post) came through a fetch summary
   and should be spot-checked before publish.
+- 2026-11-02: the writer supplied a full revision, "Microsoft Is Now the
+  Platform for Legal AI", which replaces the pipeline draft verbatim apart
+  from the two exhibits (now `<figure>` blocks) and the frontmatter. The
+  published slug follows the new title:
+  `/why-spaarke/microsoft-is-now-the-platform-for-legal-ai`, with assets
+  moved to `public/articles/microsoft-is-now-the-platform-for-legal-ai/`.
+  The workspace keeps its slug, which Issue #128, the calendar, and the
+  campaign file reference. The writer's text names Harvey, Legora, and
+  their products, which reverses the earlier rule against naming them; that
+  is the writer's decision. Voice lint: 0 errors. The thesis-formula
+  warning is accepted because the refrain is the writer's own; the other
+  two warnings are accepted as before. The closing CTA links to a new
+  `/accelerator` page with a scoping session request form.
 
 ---
 

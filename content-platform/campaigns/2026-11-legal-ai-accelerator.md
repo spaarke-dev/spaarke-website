@@ -8,7 +8,7 @@ date_range:
   end: "**TBD — confirm**"         # paid support runs with a lifetime budget and an end date (procedure 7.2)
 owner: rs
 milestone: "2026-11 Legal AI Accelerator (GitHub milestone 8)"
-theme: "Microsoft is the killer legal AI platform, and the Spaarke Legal AI Accelerator for Microsoft Copilot puts it to work for legal teams in days, building toward the Legal Operations Intelligence platform."
+theme: "Microsoft is now the platform for legal AI, and the Spaarke Legal AI Accelerator for Microsoft Copilot puts it to work for legal teams in days, building toward the Legal Operations Intelligence platform."
 audience: legal-ops-director       # secondary: legal-tech-cio, firm-operations-leader, corporate-counsel
 ---
 
@@ -33,22 +33,22 @@ Ignite (17 to 20 November 2026).
 
 ## Narrative arc
 
-1. **The founder article**, "Why Microsoft Is the Killer Legal AI Platform"
+1. **The founder article**, "Microsoft Is Now the Platform for Legal AI"
    (`articles/spaarke-legal-ai-accelerator/`). The argument, the build, the
    accelerator, and the maturity path.
 2. **The exhibits** as standalone LinkedIn images: the build (Exhibit 1) and
    the maturity path (Exhibit 2).
-3. **The meeting.** "Learn more: book a meeting", a Teams meeting booked
-   through a calendar link.
+3. **The scoping session.** The article closes on "book a scoping session",
+   which links to the `/accelerator` page and its request form.
 
 ## Assets
 
 | Date | Type | Slug | Status | Channel(s) | Notes |
 |---|---|---|---|---|---|
-| 2026-11-03 | blog-post | `spaarke-legal-ai-accelerator` | outline | website, linkedin | founder byline; URL `/why-spaarke/microsoft-killer-legal-ai-platform` |
+| 2026-11-03 | blog-post | `spaarke-legal-ai-accelerator` | outline | website, linkedin | founder byline; URL `/why-spaarke/microsoft-is-now-the-platform-for-legal-ai` |
 | 2026-11-03 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-personal` | planned | linkedin (founder) | founder post linking the article |
 | 2026-11-03 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-company` | planned | linkedin (company) | company page post |
-| **TBD — confirm** | booking page | n/a | planned | website, Teams | the "book a meeting" link; Microsoft Bookings recommended |
+| 2026-11-03 | landing page | `/accelerator` | in progress | website | scoping session request form (contact form, reason "Book an accelerator scoping session") |
 | **TBD — confirm** | linkedin-ad | accelerator ads | planned | linkedin (paid) | see Paid support |
 
 ## Distribution sequence

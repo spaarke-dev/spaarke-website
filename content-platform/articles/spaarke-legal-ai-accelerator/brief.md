@@ -12,7 +12,8 @@ byline: ralph-schroeder
 campaign: 2026-11-legal-ai-accelerator # new campaign; created by content-pipeline (milestone 8)
 
 # --- MDX frontmatter shape (per src/lib/blog.ts). Used when the draft is moved into content/blog/. ---
-title: "Why Microsoft Is the Killer Legal AI Platform"   # decided 2026-11-02
+title: "Microsoft Is Now the Platform for Legal AI"   # writer revision 2026-11-02; was "Why Microsoft Is the Killer Legal AI Platform"
+published_slug: microsoft-is-now-the-platform-for-legal-ai   # /why-spaarke/microsoft-is-now-the-platform-for-legal-ai
 description: "Microsoft is now the strongest platform for legal AI. The Spaarke Legal AI Accelerator puts it to work for legal teams in days, inside the tenant they govern."
 summary: "Microsoft now offers an enterprise AI platform that connects legal teams to their work across Microsoft 365, runs leading models, and lets them build their own skills, agents, and tools. The Spaarke Legal AI Accelerator for Microsoft Copilot supplies the pre-built components and the legal engineering expertise to put that platform to work in days."
 date: 2026-11-03
@@ -22,7 +23,7 @@ tags:
   function: [operations, executive, attorney, it]
   topic: [ai-copilot, contracts, workflow]
   theme: [ai-strategy, microsoft-ecosystem, legal-operations-intelligence, data-sovereignty]
-heroImage: /articles/spaarke-legal-ai-accelerator/hero.svg
+heroImage: /articles/microsoft-is-now-the-platform-for-legal-ai/hero.svg
 heroImagePosition: center
 draft: true
 keyTakeaways:
