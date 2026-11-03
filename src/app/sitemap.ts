@@ -9,6 +9,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/platform",
     "/why-spaarke",
     "/accelerator",
+    "/accelerator/brief",
+    "/accelerator/readiness-checklist",
     "/about",
     "/contact",
     "/access-request",
