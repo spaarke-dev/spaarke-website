@@ -1,6 +1,6 @@
 # Tone samples: short passages
 
-This file holds short passages that model single voice traits. They are drawn from sections of the published library (`content/blog/`) that `good-articles.md` does not use, and the "Use this when" line under each passage says when the trait is useful. The file is a secondary reference. The primary positive model is `consulting-register.md`, which should be read first, and the constructions to avoid are catalogued in `ai-tells.md`.
+This file holds short passages that model single voice traits. They are drawn from sections of the published library (`content/blog/`) that `good-articles.md` does not use, and the "Use this when" line under each passage says when the trait is useful. The file is a secondary reference. The primary positive model is `consulting-register.md`, which should be read first, and the constructions to avoid are cataloged in `ai-tells.md`.
 
 **The passages have been edited to the September 2026 standard and are no longer verbatim.** Earlier versions of this file quoted the published articles exactly, and several of the notes praised devices that the 2026-09-21 revision of `../style-guide.md` prohibits: verbless fragments, two-noun framings, negation followed by correction, bold lead-in bullets, and em dashes. Each passage that remains has been re-punctuated and lightly edited, and it still names its source article. A line headed "What was edited" records the changes. The published articles have not been changed, so a passage will not match the text on the site.
 

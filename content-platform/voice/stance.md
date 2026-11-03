@@ -222,7 +222,7 @@ the second is the draft it replaced.
 ## 8. Recommend where there is a choice
 
 A section that lays out two courses and calls the choice "a design
-decision the reader has to make" has analysed where it should have
+decision the reader has to make" has analyzed where it should have
 recommended (`ai-tells.md`, section 6.5). Name one as the better answer
 and say what it consists of: "The better answer is to agree in advance
 which activities the business can handle and on what terms, with legal

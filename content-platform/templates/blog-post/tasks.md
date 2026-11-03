@@ -80,7 +80,7 @@
 - [ ] **Required: the stance lens.** This is the fourth review lens,
       after voice, fidelity, and evidence. Read the draft against
       `voice/stance.md` and the eight traits in
-      `voice/examples/house-exemplar.md` section 2. The judgement
+      `voice/examples/house-exemplar.md` section 2. The judgment
       calls it catches are the ones no lint rule reaches: who holds
       which authority, whether the piece names a prime mover or
       inventories causes, whether the concession the argument depends

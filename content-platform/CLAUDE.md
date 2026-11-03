@@ -128,7 +128,7 @@ the full done-when checklist for each gate.
    the draft against `voice/stance.md` and the eight traits in
    `voice/examples/house-exemplar.md` section 2. Review runs on four
    lenses: voice, fidelity, evidence, and stance. The stance lens
-   exists because the judgement calls it catches, who holds which
+   exists because the judgment calls it catches, who holds which
    authority and whether the piece takes a position, fall outside the
    other three and outside the lint.
 5. **Hero**: SVG by default; photographic prompt for atmospheric
@@ -162,6 +162,10 @@ spaced hyphen.
   "to". The workflow marker in the previous bullet is the single
   permitted exception, and it is written exactly that way so that
   tools can find it.
+- Do not use British spelling. Write American English: "license",
+  "organization", "analyze", "judgment", "center", "program". A
+  quotation or a proper name keeps its own spelling (style guide,
+  section 4). The voice lint warns on British spellings.
 - Do not write the constructions that readers identify as
   AI-written (style guide, section 5, rules 14 to 27, with worked
   examples in `voice/examples/ai-tells.md`): negation followed by
