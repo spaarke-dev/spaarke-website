@@ -64,7 +64,7 @@ p{margin:0}
 .text p{font-size:25px;line-height:1.48;color:var(--mid)}
 .text p+p{margin-top:16px}
 .items{display:grid;gap:26px}
-.items.c2{grid-template-columns:1fr 1fr;gap:26px 40px}
+.items.c2{grid-template-columns:1fr 1fr;gap:20px 40px}
 .item{border-top:2px solid var(--line);padding-top:16px}
 .item b{display:block;font:600 25px/1.3 var(--display);color:var(--fg)}
 .item span{display:block;margin-top:6px;font-size:22px;line-height:1.42;color:var(--mid)}
@@ -116,6 +116,7 @@ p{margin:0}
 .ex1 .onto b{font-size:20px}.ex1 .onto span{font-size:17px}
 .ex1 .sor{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .ex1 .sor div{border-radius:10px;border:1.5px solid var(--line2);padding:10px 12px;font:600 18px/1.25 var(--display)}
+.ex1 .sornote{margin-top:8px;font:500 14px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--low)}
 .ex1 .sor small{display:block;font:500 12px var(--mono);letter-spacing:.1em;color:var(--low);margin-bottom:4px}
 /* Exhibit 2 */
 .ex2{display:grid;grid-template-columns:repeat(3,1fr);gap:0 14px;align-content:start}
@@ -137,7 +138,8 @@ function exhibit1(): string {
     if (!l.body)
       return `<div class="layer"><b>${esc(l.name)}</b>
         <div class="onto"><b>${esc(e.ontology.name)}</b><span>${esc(e.ontology.body)}</span></div>
-        <div class="sor">${e.systems.map((s) => `<div><small>SYSTEM OF RECORD</small>${nb(s)}</div>`).join("")}</div></div>`;
+        <div class="sor">${e.systems.map((s) => `<div><small>SYSTEM OF RECORD</small>${nb(s)}</div>`).join("")}</div>
+        <div class="sornote">Systems of record: ${esc(e.systemsNote)}</div></div>`;
     return `<div class="layer"><b>${esc(l.name)}</b><span>${esc(l.body)}</span></div>`;
   };
   return `<div><div class="ex1"><div class="reach"><div>${esc(e.reach[0])}<small>${esc(e.reach[1])}</small></div></div>

@@ -119,6 +119,7 @@ function BlockView({ block, pageIds }: { block: Block; pageIds: string[] }) {
           <img src={exhibit.svg} alt={exhibit.alt} className="w-full rounded-xl" />
           <figcaption className="text-fg-low mt-3 text-sm">
             Exhibit {block.exhibit}. {exhibit.title}
+            {"systemsNote" in exhibit && ` Systems of record: ${exhibit.systemsNote}.`}
           </figcaption>
         </figure>
       );

@@ -21,7 +21,7 @@ export type Item = { name: string; body: string };
 
 export const SESSION_STEPS = [
   "Choose the practice and the first two or three tasks.",
-  "Confirm the Microsoft setup with your IT lead: Copilot licences, the Cowork usage policy, and who approves connectors.",
+  "Confirm the Microsoft setup with your IT lead: Copilot licenses, the Cowork usage policy, and who approves connectors.",
   "Plan the week.",
 ];
 
@@ -106,6 +106,9 @@ export const EXHIBIT_1 = {
     body: "Matters, documents, invoices, obligations, and policies, with the record of each decision",
   },
   systems: ["Matter and case management", "Document management", "Finance, budgeting, and e-billing"],
+  // Not in the article's SVG; shown under the systems of record in the PDF and
+  // in the web caption, so readers don't take the row to mean replacement.
+  systemsNote: "Spaarke's, or the systems you already run",
   acceleratorLabel: "The accelerator starts here",
 };
 
@@ -185,7 +188,7 @@ export const BRIEF: AcceleratorDocument = {
         {
           kind: "text",
           paragraphs: [
-            "Microsoft 365 now carries legal skills in Word and Cowork, inside the tenant a legal team already governs. The accelerator brings core legal skills, practice packs, calculation tools, and forward-deployed legal engineers to put that platform to work for your team.",
+            "Microsoft Copilot now brings legal skills into Word and Cowork, inside the tenant a legal team already governs. The Spaarke Accelerator lets a team start quickly, with best practice already configured: core legal skills, practice packs, calculation tools, and forward-deployed legal engineers.",
           ],
         },
         {
@@ -209,7 +212,7 @@ export const BRIEF: AcceleratorDocument = {
         {
           kind: "text",
           paragraphs: [
-            "Most legal teams have tested AI in proofs of concept and pilots. Those projects showed where AI fits in legal work, but they run outside the core legal systems and under each vendor's own controls. Microsoft 365 now brings the models, the legal skills, and the governance into the environment legal teams already run.",
+            "Legal teams have proven where AI fits in their work and are ready for the next step. The early tools sit outside the core legal systems, or inside only one, and are governed by their vendors rather than by the organization. Microsoft Copilot brings the legal skills and the governance into the environment most legal teams already run.",
           ],
         },
         {
@@ -217,23 +220,17 @@ export const BRIEF: AcceleratorDocument = {
           columns: 1,
           items: [
             {
-              name: "The models",
-              body: "Copilot runs Anthropic's Claude, OpenAI's GPT models, and Microsoft's own models, and the organization chooses which to use as the models improve.",
+              name: "The legal skills",
+              body: "Copilot for Legal makes more than 20 legal skills generally available. In Word, a lawyer reviews a contract against the team's playbook. In Cowork, the Legal plugin reviews, summarizes, drafts, and redlines across many files, including a set of invoices.",
             },
             {
-              name: "The legal skills",
-              body: "On October 15, Microsoft made more than 20 legal skills generally available as Copilot for Legal. In Word a lawyer can review a contract against a playbook, and the Legal for Cowork plugin reviews, summarizes, drafts, and redlines across many files.",
+              name: "Tuned to the team",
+              body: "Each team tunes the platform to its own practice. Plugins package skills, tools, and MCP connectors to other systems. Playbooks capture the team's positions in Word documents the skills apply. Administrators govern all of it through a plugin registry.",
             },
             {
               name: "The tenant",
-              body: "Copilot works inside the Microsoft 365 service boundary and shows each user only what that user may already see. Entra ID, sensitivity labels, and retention in Microsoft Purview apply to legal AI as they apply to everything else.",
+              body: "Copilot works inside the Microsoft 365 service boundary and shows each user only what that user may already see. Entra ID, sensitivity labels, and retention in Microsoft Purview apply to legal AI as they apply to everything else, and the organization chooses among models from Anthropic, OpenAI, and Microsoft.",
             },
-          ],
-        },
-        {
-          kind: "text",
-          paragraphs: [
-            "Each team tunes the platform to its own practice. Plugins package skills, tools, and MCP connectors to other systems, playbooks turn a team's written procedures into skills, and administrators govern all of it through a plugin registry.",
           ],
         },
       ],
@@ -268,6 +265,7 @@ export const BRIEF: AcceleratorDocument = {
           kind: "text",
           paragraphs: [
             "Most of the effort in a deployment goes into the third layer, because that is where the team's own expertise enters its legal AI. Some work also has to come out the same way every time. A notice deadline, a rent escalation, a patent term, or the arithmetic on an invoice is computed by a calculation tool, and the AI calls the tool when the work needs one.",
+            "Because the playbooks are the team's own files in its own tenant, they stay with the team and carry forward to everything it builds next, including the Legal Operations Intelligence platform.",
           ],
         },
       ],
@@ -276,7 +274,15 @@ export const BRIEF: AcceleratorDocument = {
       id: "included",
       eyebrow: "What's included",
       title: "The accelerator delivers nine components into your own tenant.",
-      blocks: [{ kind: "items", columns: 2, items: INCLUDED }],
+      blocks: [
+        { kind: "items", columns: 2, items: INCLUDED },
+        {
+          kind: "text",
+          paragraphs: [
+            "A team can deploy the packs itself. With Spaarke's legal engineers, the first practice is live in one week.",
+          ],
+        },
+      ],
     },
     {
       id: "week",
@@ -335,22 +341,22 @@ export const BRIEF: AcceleratorDocument = {
 
 export const CHECKLIST: AcceleratorDocument = {
   slug: "readiness-checklist",
-  title: "Legal AI on Microsoft 365: a readiness checklist for legal and IT",
+  title: "Legal AI on Microsoft: a readiness checklist for legal and IT",
   shortTitle: "Readiness checklist",
   description:
-    "Three pages on what legal and IT settle before legal AI goes live on Microsoft 365: licences, the Cowork usage policy, plugin and connector approval, labels and retention, and the team's own positions.",
+    "Three pages on what legal and IT settle before legal AI goes live on Microsoft: licenses, the Cowork usage policy, plugin and connector approval, labels and retention, and the team's own positions.",
   pdf: CHECKLIST_PDF,
   webUrl: CHECKLIST_URL,
   pages: [
     {
       id: "together",
       eyebrow: "Readiness checklist for legal and IT",
-      title: "Legal AI on Microsoft 365: a readiness checklist for legal and IT.",
+      title: "Legal AI on Microsoft: a readiness checklist for legal and IT.",
       blocks: [
         {
           kind: "text",
           paragraphs: [
-            "Legal AI on Microsoft runs inside the organization's own tenant, under the identity, security, and retention controls IT already maintains. That makes the first deployment a joint decision: legal chooses the work and writes down its positions, and IT confirms the licences, policies, and approvals the work depends on. These are the questions the two settle together before the first practice goes live.",
+            "Legal AI on Microsoft runs inside the organization's own tenant, under the identity, security, and retention controls IT already maintains. That makes the first deployment a joint decision: legal chooses the work and writes down its positions, and IT confirms the licenses, policies, and approvals the work depends on. These are the questions the two settle together before the first practice goes live.",
           ],
         },
         {
@@ -363,8 +369,8 @@ export const CHECKLIST: AcceleratorDocument = {
               owner: "Legal",
             },
             {
-              name: "Licences",
-              question: "Who on the practice team holds a Microsoft 365 Copilot licence?",
+              name: "Licenses",
+              question: "Who on the practice team holds a Microsoft 365 Copilot license?",
               why: "",
               owner: "IT",
             },
@@ -399,14 +405,14 @@ export const CHECKLIST: AcceleratorDocument = {
     {
       id: "it",
       eyebrow: "For IT",
-      title: "IT confirms the licences, policies, and approvals the practice depends on.",
+      title: "IT confirms the licenses, policies, and approvals the practice depends on.",
       blocks: [
         {
           kind: "checks",
           items: [
             {
-              name: "Licences",
-              question: "Which members of the practice team hold a Microsoft 365 Copilot licence, and is Copilot for Legal available to them in Word?",
+              name: "Licenses",
+              question: "Which members of the practice team hold a Microsoft 365 Copilot license, and is Copilot for Legal available to them in Word?",
               why: "The legal skills in Word and the Legal for Cowork plugin are what the accelerator builds on.",
             },
             {
@@ -469,7 +475,7 @@ export const CHECKLIST: AcceleratorDocument = {
             {
               name: "AI work under way",
               question: "Which prompts, skills, and pilots have lawyers already built in other AI tools?",
-              why: "The first deployment builds on that work rather than starting again.",
+              why: "Skills built in other AI tools often share the Agent Skills format, so the first deployment builds on them rather than starting again.",
             },
             {
               name: "Owners",
