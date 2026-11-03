@@ -52,11 +52,11 @@ Sections 3 onward give the annotated before-and-after pairs, keyed to these trai
 
 The "before" side of every pair is the pipeline draft of this same article, at commit `e72f68f`, path `content-platform/articles/managing-legal-operations/draft.mdx`. The "after" side is the published article at `content/blog/2026-06-16-managing-legal-operations.mdx`, which is byte-identical to the current file at that same draft path. Nothing in either column was written for this file.
 
-What generalises is the trait, not the wording. The five practical starting points in the close, the five-channel routing list, the four gaps in the frameworks, and the wording of the claim about AI and precision are this article's own analytical material. They appear here to show a trait working, and they are not house wording. Lifting any of them into another piece produces a series that reads as a product catalogue, which is the failure `stance.md` and `domain-knowledge.md` are written to prevent.
+What generalizes is the trait, not the wording. The five practical starting points in the close, the five-channel routing list, the four gaps in the frameworks, and the wording of the claim about AI and precision are this article's own analytical material. They appear here to show a trait working, and they are not house wording. Lifting any of them into another piece produces a series that reads as a product catalog, which is the failure `stance.md` and `domain-knowledge.md` are written to prevent.
 
-The pairs also carry the rules the linter cannot reach. Eleven judgement calls decide whether a draft has the voice, and no regular expression settles any of them. Each maps to a numbered pair below.
+The pairs also carry the rules the linter cannot reach. Eleven judgment calls decide whether a draft has the voice, and no regular expression settles any of them. Each maps to a numbered pair below.
 
-| Judgement call | Pair |
+| Judgment call | Pair |
 |---|---|
 | 1. Whether a counted set is causes or decisions | 4.4 |
 | 2. Whether a heading renders a verdict or reports a movement | 4.5, 4.6 |
@@ -124,7 +124,7 @@ A number that opens a piece has to be the number that proves the thesis. A numbe
 
 ### 4.4 One named force, with the rest subordinate to it
 
-Trait 3. Judgement call 1. Rules: `stance.md`, rule 3; `consulting-register.md`, section 4.4.
+Trait 3. Judgment call 1. Rules: `stance.md`, rule 3; `consulting-register.md`, section 4.4.
 
 Before, the pipeline draft:
 
@@ -140,7 +140,7 @@ Count a framework only when its items are things the reader decides, tests, or p
 
 ### 4.5 A heading that reports a movement
 
-Trait 4. Judgement call 2. Rules: `style-guide.md`, section 4 (headings); `consulting-register.md`, section 4.5.
+Trait 4. Judgment call 2. Rules: `style-guide.md`, section 4 (headings); `consulting-register.md`, section 4.5.
 
 Before, the pipeline draft:
 
@@ -154,7 +154,7 @@ Both state a point. Only one renders a verdict. "Is settling on" describes what 
 
 ### 4.6 A heading that reports without a progressive verb
 
-Trait 4. Judgement call 2. Rules: `style-guide.md`, section 4 (headings) and section 5, rule 24.
+Trait 4. Judgment call 2. Rules: `style-guide.md`, section 4 (headings) and section 5, rule 24.
 
 Before, the pipeline draft:
 
@@ -192,7 +192,7 @@ The pipeline draft states its position three times in three sets of words, and t
 
 ### 4.8 The limitation as a subordinate clause
 
-Trait 6. Judgement call 5. Rules: `style-guide.md`, section 1 (Measured) and section 3 (evidence).
+Trait 6. Judgment call 5. Rules: `style-guide.md`, section 1 (Measured) and section 3 (evidence).
 
 Before, the pipeline draft:
 
@@ -206,7 +206,7 @@ The limitation is identical. The terminal position is not. The pipeline sentence
 
 ### 4.9 A caveat about what the research could not find
 
-Trait 6. Judgement call 5. Rules: `style-guide.md`, section 3 (evidence).
+Trait 6. Judgment call 5. Rules: `style-guide.md`, section 3 (evidence).
 
 Before, the pipeline draft:
 
@@ -220,7 +220,7 @@ The undisclosed sample and the missing adoption figure are facts about the state
 
 ### 4.10 A fact that needs a disclaimer is cut
 
-Judgement call 5. Rules: `style-guide.md`, section 5, rule 12 (the converse); `research-sources.md`.
+Judgment call 5. Rules: `style-guide.md`, section 5, rule 12 (the converse); `research-sources.md`.
 
 Before, the pipeline draft:
 
@@ -234,7 +234,7 @@ Compare the source that survived. The ACC and Everlaw survey is co-sponsored by 
 
 ### 4.11 The disclaimer on an illustration
 
-Judgement call 5. Rules: `consulting-register.md`, section 4.9; `ai-tells.md`, section 2.8.
+Judgment call 5. Rules: `consulting-register.md`, section 4.9; `ai-tells.md`, section 2.8.
 
 Before, the pipeline draft:
 
@@ -252,7 +252,7 @@ Note how the illustration ends. A constructed scene carries no before-and-after 
 
 ### 4.12 The concession as a direct predicate
 
-Trait 7. Judgement call 6. Rules: `stance.md`, rule 4; `style-guide.md`, section 1 (Direct about the reader's own function) and section 5, rule 15.
+Trait 7. Judgment call 6. Rules: `stance.md`, rule 4; `style-guide.md`, section 1 (Direct about the reader's own function) and section 5, rule 15.
 
 Before, the pipeline draft:
 
@@ -280,11 +280,11 @@ After, the published article:
 
 > The better answer is to agree in advance which activities the business can handle and on what terms, with legal still part of the decision.
 
-A section that lays out two courses and calls the choice a design decision the reader has to make has analysed where it should have recommended. Name one as the better answer and say what it consists of.
+A section that lays out two courses and calls the choice a design decision the reader has to make has analyzed where it should have recommended. Name one as the better answer and say what it consists of.
 
 ### 4.14 The close in imperatives
 
-Trait 8. Judgement call 8. Rules: `style-guide.md`, section 3 (closings) and section 5, rules 4 and 25.
+Trait 8. Judgment call 8. Rules: `style-guide.md`, section 3 (closings) and section 5, rules 4 and 25.
 
 Before, the pipeline draft:
 
@@ -298,11 +298,11 @@ After, the published article:
 
 The pipeline draft leaves a senior reader holding a risk and no first move. The published close runs in four beats under a heading that reuses the title's key term: the title is "The New Mandate for Legal Operations" and the closing heading is "The new mandate in practice". Beat one is a short synthesis paragraph naming the changes the article described. Beat two is the thesis in the opening's words, followed by the sentence that discharges the title. Beat three is the imperatives. Beat four hands off to the next piece in the series.
 
-The judgement call is whether each imperative is earned, and the test is whether a section argued for it. Each of these five has one: the front door, the guardrails, the sourcing decision, the knowledge sources, and the six signals. The five starting points are this article's, and they are not a house list.
+The judgment call is whether each imperative is earned, and the test is whether a section argued for it. Each of these five has one: the front door, the guardrails, the sourcing decision, the knowledge sources, and the six signals. The five starting points are this article's, and they are not a house list.
 
 ### 4.15 The verb that belongs to the department
 
-Judgement call 4. Rules: `stance.md`, section 2; `style-guide.md`, section 2 (active voice).
+Judgment call 4. Rules: `stance.md`, section 2; `style-guide.md`, section 2 (active voice).
 
 Before, the pipeline draft:
 
@@ -322,7 +322,7 @@ That gap is the check to run at the end of a rewrite. A verb handed to legal ope
 
 ### 4.16 The business's need stated as its own claim
 
-Judgement call 9. Rules: `stance.md`, rule 5 and section 2.
+Judgment call 9. Rules: `stance.md`, rule 5 and section 2.
 
 Before, the pipeline draft, in a key takeaway and a section heading:
 
@@ -342,7 +342,7 @@ The permission verbs are not banned. They survive one paragraph later, where the
 
 ### 4.17 The claim the writer holds from practice
 
-Judgement call 3. Rules: `style-guide.md`, section 5, rule 12; `stance.md`, rules 1 and 9.
+Judgment call 3. Rules: `style-guide.md`, section 5, rule 12; `stance.md`, rules 1 and 9.
 
 Before, the pipeline draft:
 
@@ -400,7 +400,7 @@ A last sentence that ends on a balanced contrast between two nouns puts a shape 
 
 ### 4.21 Ordinal prose that should have been a list
 
-Judgement call 7. Rules: `style-guide.md`, section 4 (lists, bold lead-in bullets) and section 5, rule 26.
+Judgment call 7. Rules: `style-guide.md`, section 4 (lists, bold lead-in bullets) and section 5, rule 26.
 
 Before, the pipeline draft, roughly 190 words across two paragraphs:
 
@@ -421,7 +421,7 @@ Note what the conversion also removed: the dated CLOC blog post, the Advanced-st
 
 ### 4.22 A handle is not a term
 
-Judgement call 10. Rules: `ai-tells.md`, section 5.6; `domain-knowledge.md`, section 3.
+Judgment call 10. Rules: `ai-tells.md`, section 5.6; `domain-knowledge.md`, section 3.
 
 Before, the pipeline draft:
 
@@ -437,7 +437,7 @@ The same test applies to the pipeline draft's "the four gaps" and "that routing 
 
 ### 4.23 A section given to a relationship
 
-Judgement call 11. Rules: `style-guide.md`, section 3 (paragraphs, sections, and the shape of a piece).
+Judgment call 11. Rules: `style-guide.md`, section 3 (paragraphs, sections, and the shape of a piece).
 
 Before, the pipeline draft, two consecutive H2 sections:
 
@@ -467,7 +467,7 @@ Article 1 closes on five bare imperatives, annotated at 4.14. Article 2 names on
 
 > The practical first step is to choose which decision to model first. The strongest candidates are the decisions the department makes most often and records least well, such as the invoice exception described above, matter intake, outside counsel selection, budget approval, and settlement authority.
 
-What both forms share is that the reader leaves knowing where to start. The rule in `style-guide.md`, section 3, beat 3, was written from article 1 alone and said "built from bare imperatives". Article 2 contradicted it, so the rule now carries both forms. This is the second article to correct a rule derived from a single piece, and the lesson generalises: a rule taken from one output is a hypothesis until a second output agrees with it.
+What both forms share is that the reader leaves knowing where to start. The rule in `style-guide.md`, section 3, beat 3, was written from article 1 alone and said "built from bare imperatives". Article 2 contradicted it, so the rule now carries both forms. This is the second article to correct a rule derived from a single piece, and the lesson generalizes: a rule taken from one output is a hypothesis until a second output agrees with it.
 
 ### 4a.3 A third close: naming the decisions that last
 
@@ -505,7 +505,7 @@ The check in `voice-lint.mjs` had to be widened for every one of articles 2 to 5
 
 Two questions are open with the writer. Until he rules on them, this file does not treat either as decided.
 
-Both sit here for the same reason. A construction the writer used deliberately and repeatedly is evidence that a rule needs revising, and section 4 carries that kind. A construction that appears once, and that the rewrite might simply have missed, is a question for him rather than a licence, and it stays here until he answers.
+Both sit here for the same reason. A construction the writer used deliberately and repeatedly is evidence that a rule needs revising, and section 4 carries that kind. A construction that appears once, and that the rewrite might simply have missed, is a question for him rather than a license, and it stays here until he answers.
 
 - **"Critically important."** The published opening uses the phrase once, in "an expanded and critically important mandate for legal operations". The writer ruled on 2026-09-23 that it is permitted when appropriate and reviewed at use. It is not a synonym for the words rule 27 still rules out (`crucial`, `pivotal`, `paramount`, `vital`), which assert importance with no referent; "critically important" sizes a named thing. Use it where the piece goes on to show why, and expect it to be questioned if it does not.
 - **The ceiling on bold lead-in bullets.** At most three such lists in a long-form article is derived from this article's output of three lists across nine sections. An earlier draft of the rule added "at most one per two sections", which this article's own spacing breaks, so the total is what governs. It is not a number the writer stated. It exists so that the reversal in 4.21 has a brake, since the pattern the September 2026 audit found in the old library could return within three articles without one. Confirm the ceiling or replace it before treating it as settled.

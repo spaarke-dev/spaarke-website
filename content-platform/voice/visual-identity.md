@@ -136,7 +136,7 @@ writer's verdict on 2026-09-24 was to be more aggressive.
 
 **Carry the hue through the whole composition.** The canvas gradient, the
 plane fills, the node fills and every stroke move to the article's hue. The
-geometry is what holds the series together; it does not need the colour to
+geometry is what holds the series together; it does not need the color to
 do that job as well. Five compositions in five hues still read as one family
 because the shapes, the line weights and the lighting are unchanged. Two
 rules keep this from going wrong.
@@ -168,7 +168,7 @@ The hues used for that series:
 Regenerate the LinkedIn headers afterwards, since
 `scripts/generate-linkedin-headers.mjs` derives them from the heroes and
 they go stale silently. Update each hero's `<desc>` too: it names the
-colours, and recolouring makes it wrong for a screen reader.
+colors, and recoloring makes it wrong for a screen reader.
 
 **Judge the result as a contact sheet at the size the index renders.** At
 full size five heroes look varied when the thumbnails do not. This has now
@@ -178,9 +178,9 @@ caught the same defect twice.
 
 The writer approved a second family on 2026-10-05, after reporting that the first series was overly dark and purple. A series that follows the Legal Operations Intelligence series takes its hues from a teal-to-green family carried through the whole composition, with one coral accent on the focal element. The same series rules apply: carry the hue through the canvas, the fills, and the strokes, and separate the canvas from the geometry by value, so the canvas sits two or three steps darker than the fills.
 
-| Role | Colour |
+| Role | Color |
 |---|---|
-| Canvas gradient | `#0F3B3A` centre, `#0A2A2C`, `#06181B` edge |
+| Canvas gradient | `#0F3B3A` center, `#0A2A2C`, `#06181B` edge |
 | Node and plane fills | `#1E6F66`, `#2B8F7F`, `#3FB59A` |
 | Fine lines and edges | `#B5F2DC` |
 | Focal accent | `#FF7A59` (coral), with `#FF9A7E` as its lifted stop |
