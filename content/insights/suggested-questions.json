@@ -190,5 +190,13 @@
     "Our AI answers can't be reproduced twice. Does better curation actually fix that?",
     "What's the first recurring deliverable we should govern before rolling this out further?",
     "Doesn't retrieval over curated content still hallucinate, so why does curation matter?"
+  ],
+  "microsoft-is-now-the-platform-for-legal-ai": [
+    "We already run Harvey for drafting, does moving to Copilot mean giving that up?",
+    "Isn't this just Spaarke favoring Microsoft because that's who you build on?",
+    "How does the accelerator's ontology work connect to the Legal Operations Intelligence ontology article?",
+    "If AI output is probabilistic, why trust Copilot for invoice guideline review at all?",
+    "Our IT team hasn't approved Cowork connectors yet, where do we start?",
+    "Does this change what the Spaarke for Your IT Team article says about deployment and governance?"
   ]
 }

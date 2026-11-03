@@ -69,15 +69,26 @@ const inputBorder = (hasError: boolean) =>
     ? "border-error focus:border-error"
     : "border-line-strong focus:border-cta-blue";
 
+/**
+ * `defaultReason` preselects the reason for pages that exist for one kind of
+ * request, such as /accelerator. The visitor can still change it, and the
+ * value is validated against the same VALID_REASONS list on the server.
+ */
 export default function ContactForm({
   recaptchaSiteKey,
+  defaultReason = "",
+  messagePlaceholder = "A few lines is plenty.",
+  submitLabel = "Send message",
 }: {
   recaptchaSiteKey: string;
+  defaultReason?: (typeof VALID_REASONS)[number] | "";
+  messagePlaceholder?: string;
+  submitLabel?: string;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
-  const [reason, setReason] = useState("");
+  const [reason, setReason] = useState<string>(defaultReason);
   const [message, setMessage] = useState("");
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -362,7 +373,7 @@ export default function ContactForm({
             id="contact-message"
             name="message"
             rows={4}
-            placeholder="A few lines is plenty."
+            placeholder={messagePlaceholder}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             aria-invalid={!!fieldErrors.message}
@@ -393,7 +404,7 @@ export default function ContactForm({
           disabled={status === "submitting"}
           arrow
         >
-          {status === "submitting" ? "Sending…" : "Send message"}
+          {status === "submitting" ? "Sending…" : submitLabel}
         </Button>
       </div>
 

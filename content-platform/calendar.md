@@ -62,6 +62,12 @@ firm publish date yet.
 | spaarke-overview-carousel | linkedin-post | **TBD — confirm** | approved | spaarke | 2026-10-the-spaarke-method |  |  | Company-page carousel (9 slides, 1080 by 1350 PDF titled "Spaarke Overview") introducing Spaarke: "Legal runs on decisions. Spaarke makes them intelligent.", an intelligence layer across the systems of record, invoice review as the worked example, and a close that combines Spaarke at a glance with the forward-deployed quick start and an advisory-group invitation. Approved as artifact version 4 on 2026-10-21. Adapted from the Spaarke Overview decks, which stay unchanged. Issue [#123](https://github.com/spaarke-dev/spaarke-website/issues/123). | Document ad in `2026-11-design-partner-program` (brief) |
 | state-of-legal-operations-fall-2026 | blog-post | 2026-10-20 | idea | spaarke | none |  |  | Standalone companion to the Legal Operations Intelligence series; it carries no article number and sits outside the five-piece sequence. It is a field report on where legal operations stands in Fall 2026, after RLLB 2026. The date shown is the display date (frontmatter `date`), and the real publish date in `posted` is the same day. No Issue yet; the brief comes next through `/idea-to-brief`. |  |
 
+## 2026-11
+
+| Slug | Type | Publish | Status | Author | Campaign | LinkedIn (personal) | LinkedIn (company) | Notes | Paid |
+|---|---|---|---|---|---|---|---|---|---|
+| spaarke-legal-ai-accelerator | blog-post | 2026-11-03 | published | ralph-schroeder | 2026-11-legal-ai-accelerator |  |  | Founder article "Microsoft Is Now the Platform for Legal AI" (/why-spaarke/microsoft-is-now-the-platform-for-legal-ai), announcing the Spaarke Legal AI Accelerator for Microsoft Copilot: why Microsoft's platform is the right place for legal AI, the build layer by layer (Exhibit 1), the accelerator's structure and components, two ways to start, and how it carries forward onto the Legal Operations Intelligence platform (Exhibit 2). Fallback date 2026-11-04. First named byline on the site. Issue [#128](https://github.com/spaarke-dev/spaarke-website/issues/128). Outline signed off 2026-11-02. | planned: Thought Leader Ad and Exhibit 2 image ad |
+
 ## 2026-Q3
 
 | Slug | Type | Publish | Status | Author | Campaign | LinkedIn (personal) | LinkedIn (company) | Notes | Paid |

@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/platform",
     "/why-spaarke",
+    "/accelerator",
     "/about",
     "/contact",
     "/access-request",
