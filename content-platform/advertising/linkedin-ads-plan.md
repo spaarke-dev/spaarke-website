@@ -62,7 +62,9 @@ in the private archive; this table records the definition rule only.
 | W2: ad and page engagers | any | Engagement audiences (document opens, video views, form opens) | Retargeting |
 
 A1 and A2 are the launch audiences. A3 and A4 follow only when a campaign
-aimed at them is live. There is no site-visitor audience (W1): it needs the
+aimed at them is live. The 2026-11 Legal AI Accelerator campaign is the first
+that is: its readiness checklist is written for corporate IT and general
+counsel. There is no site-visitor audience (W1): it needs the
 Insight Tag, which the owner decided on 2026-10-28 not to install (procedure
 section 5.1).
 
@@ -77,6 +79,7 @@ existing campaign file.
 | Founder syndication posts for the Method series (text or single-image posts only) | 2026-10 The Spaarke Method | C | Thought Leader Ad (with the founder's approval per post) | Engagement | A1, A2 | High |
 | Method article 1 and later phase articles | 2026-10 The Spaarke Method | A | Single image to the article | Website visits | A1, A2 | Medium |
 | Design partner program | 2026-11 Design Partner Program | A, B, D | Single image to `/design-partners`; Lead Gen Form; later Conversation ad to the named list | Lead generation | A5, A1, A2 | High |
+| Legal AI Accelerator: founder post, accelerator brief, readiness checklist, scoping session offer | 2026-11 Legal AI Accelerator | C, B, E | Thought Leader Ad; gated Document ads; single image with Lead Gen Form to W2 | Engagement, Lead generation | A1, A2, A4, W2 | **High; 2026-11-04 to 2026-12-18.** Ad briefs in the campaign file |
 | Legal Operations Intelligence series (five articles) | 2026-06 Legal Operations Intelligence | A | Single image per article, rotated | Website visits | A1 | Medium |
 | State of Legal Operations field report (white paper or report, October) | open | B | Document ad with Lead Gen Form | Lead generation | A1 | High when published |
 | Billing compliance intelligence white paper | 2026-06 Architecture and Trust (as scheduled) | B | Document ad with Lead Gen Form | Lead generation | A1, A3 | When published |
@@ -174,6 +177,8 @@ objective, one ad set per audience and route, two to four ads per ad set.
 | `2026-11-design-partner-program / leadgen` | Lead generation | `A1-legalops / B / document`, `A2-firmops / B / document`; later `A5-accounts / B / image` | Overview carousel PDF, gated, two to four hook variants; later a single image to the offer |
 | `2026-10-the-spaarke-method / visits` | Website visits | `A1-legalops / A / image`, `A2-firmops / A / image` | One image per phase article |
 | `2026-10-the-spaarke-method / reach` | Engagement | `A1-legalops / C / thoughtleader`, `A2-firmops / C / thoughtleader` | Approved founder posts |
+| `2026-11-legal-ai-accelerator / reach` | Engagement | `A1-legalops / C / thoughtleader / 202611`, `A2-firmops / C / thoughtleader / 202611` | The founder post of 2026-11-03 |
+| `2026-11-legal-ai-accelerator / leadgen` | Lead generation | `A1-legalops / B / document / 202611`, `A2-firmops / B / document / 202611`, `A4-it / B / document / 202611`, later `W2-engagers / E / image / 202611` | Accelerator brief, readiness checklist, scoping session offer. The visits and Conversation ad campaigns are not funded at the budget set on 2026-11-03 |
 
 The LinkedIn names are given as the procedure sets them. The audiences are
 defined in the private archive. The campaign already in Campaign Manager as
