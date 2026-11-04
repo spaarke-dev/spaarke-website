@@ -164,7 +164,7 @@ Every ad uses the UTM template in procedure section 5.1 with
 
 | Field | Value |
 |---|---|
-| Post | The founder post on Ralph Schroeder's profile, posted the evening of 2026-11-03. Text with a link, so it is an eligible type |
+| Post | The founder post on Ralph Schroeder's profile, posted the evening of 2026-11-03 as text with links and no image, an eligible type. Launched 2026-11-04 in one ad set for A1 and A2 together; split it if the first week shows a difference worth reading |
 | Ad name | `founder-post / v1` |
 | Start rule | From the morning after posting (schedule compressed by the owner, 2026-11-03) |
 | Result | Engagement rate, and the growth of W2 |
@@ -230,13 +230,13 @@ email, company, and job title. Each links the privacy policy at
 `https://www.spaarke.com/privacy` and carries a hidden field,
 `campaign = 2026-11-legal-ai-accelerator`.
 
-| Form | Headline (60) | Custom question | Thank-you |
-|---|---|---|---|
-| Brief | The Spaarke Legal AI Accelerator for Microsoft Copilot | Which practice would you start with? (NDAs and commercial contracts, real estate, M&A, employment, litigation, patents and trademarks, invoice review, not sure yet) | Link to the PDF, with a second line offering a scoping session at `/accelerator` |
-| Checklist | Legal AI on Microsoft: readiness checklist | none | Link to the PDF |
-| Scoping | Book a 30-minute scoping session | Which practice would you start with? (same options) | "We will reply within two working days to find a time." Button to the article |
+| Form | Headline (60) | Details | Custom question | Thank-you |
+|---|---|---|---|---|
+| Brief | The Spaarke Legal AI Accelerator | Seven pages on how legal AI on Microsoft is built, what the accelerator includes, and how one practice goes live on Copilot in a week. | Which practice would you start with? (Commercial contracts and NDAs; invoice review and outside counsel spend; litigation and disputes; real estate and leases; employment; not sure yet) | Link to the PDF, with a second line offering a scoping session at `/accelerator` |
+| Checklist | Legal AI on Microsoft: readiness checklist | Three pages on what legal and IT settle before legal AI goes live on Microsoft: licenses, Cowork policy, plugin approvals, labels, and retention. | none | Link to the PDF |
+| Scoping | Book a 30-minute scoping session | to write | Which practice would you start with? (same options) | "We will reply within two working days to find a time." Button to the article |
 
-The practice question is the qualification signal, and it tells the legal
+Each form carries a 1104 by 400 banner (LinkedIn asks for 552 by 200): the document's headline in teal and coral on a light background, centered because the form preview crops to the middle band. M&A and patents and trademarks were cut from the options to keep the list to six; those practices answer "not sure yet" and are caught in the scoping session. The practice question is the qualification signal, and it tells the legal
 engineer what to prepare for the session.
 
 ### Copy rules for this campaign
