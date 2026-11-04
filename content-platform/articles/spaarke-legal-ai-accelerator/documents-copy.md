@@ -1,6 +1,6 @@
 # Accelerator brief and readiness checklist: copy for review
 
-Copy as built in PR #134, revision 2. Revision 1 (the writer's review) was applied as written: Microsoft Copilot naming, no launch date, the models moved into "The tenant", US spelling, the new paragraphs on pages 4 and 5 of the brief, the note under the systems of record in Exhibit 1, "365" dropped from the checklist title, and the revised "AI work under way" line. The same date and spelling changes were made in the article.
+Copy as built, revision 3 (2026-11-03): the writer's positioning revisions (Standard Copilot as a capable generalist, Copilot for Legal as the specialist, and Microsoft as extensible enterprise software) on brief pages 2 and 3 and checklist page 2, matching the article. Revision 2 was PR #134. Revision 1 (the writer's review) was applied as written: Microsoft Copilot naming, no launch date, the models moved into "The tenant", US spelling, the new paragraphs on pages 4 and 5 of the brief, the note under the systems of record in Exhibit 1, "365" dropped from the checklist title, and the revised "AI work under way" line. The same date and spelling changes were made in the article.
 
 Edit this file directly: change the text, strike what should go, and add notes in `> **Note:** ...` lines. Revised copy goes back into `src/app/accelerator/documents.ts`, which builds both the web pages and the PDFs.
 
@@ -41,20 +41,20 @@ Microsoft Copilot now brings legal skills into Word and Cowork, inside the tenan
 7. What carries forward
 
 
-## Page 2 of 7 (platform), about 103px spare
+## Page 2 of 7 (platform), about 171px spare
 
 **Eyebrow:** The platform
 
 **Title:** Microsoft is now the platform for legal AI.
 
-Legal teams have proven where AI fits in their work and are ready for the next step. The early tools sit outside the core legal systems, or inside only one, and are governed by their vendors rather than by the organization. Microsoft Copilot brings the legal skills and the governance into the environment most legal teams already run.
+Legal teams have proven where AI fits in their work and are ready for the next step. The early tools sit outside the core legal systems and are governed by their vendors, not by the organization. Standard Copilot is a capable generalist, and legal work needs a specialist. Copilot for Legal provides one, inside the environment most legal teams already run.
 
-- **The legal skills.** Copilot for Legal makes more than 20 legal skills generally available. In Word, a lawyer reviews a contract against the team's playbook. In Cowork, the Legal plugin reviews, summarizes, drafts, and redlines across many files, including a set of invoices.
-- **Tuned to the team.** Each team tunes the platform to its own practice. Plugins package skills, tools, and MCP connectors to other systems. Playbooks capture the team's positions in Word documents the skills apply. Administrators govern all of it through a plugin registry.
+- **The legal skills.** More than 20 legal skills are generally available. In Word, a lawyer reviews a contract against the team's playbook. In Cowork, the Legal plugin reviews, summarizes, drafts, and redlines across many files, including a set of invoices.
+- **Tuned to the team.** Plugins package skills, tools, and MCP connectors to other systems. Playbooks capture the team's positions in Word documents the skills apply. Administrators govern all of it through a plugin registry.
 - **The tenant.** Copilot works inside the Microsoft 365 service boundary and shows each user only what that user may already see. Entra ID, sensitivity labels, and retention in Microsoft Purview apply to legal AI as they apply to everything else, and the organization chooses among models from Anthropic, OpenAI, and Microsoft.
 
 
-## Page 3 of 7 (build), about 41px spare
+## Page 3 of 7 (build), about 4px spare
 
 **Eyebrow:** How it is built
 
@@ -71,7 +71,7 @@ Each layer inherits what the layers below it provide. Microsoft supplies the gov
 - **Microsoft 365 and Power Platform:** Outlook, Teams, Word, SharePoint, Power Apps, and Dataverse
 - **Enterprise governance:** Entra ID, conditional access, Purview, and the tenant boundary
 
-The accelerator starts at the top layer, on the governance and services Microsoft already provides, and the platform layers follow.
+Because Microsoft is enterprise software, the organization can extend any layer with its own applications and integrations. The accelerator starts at the top layer, and the platform layers follow.
 
 
 ## Page 4 of 7 (layers), about 78px spare
@@ -179,7 +179,7 @@ Legal AI on Microsoft runs inside the organization's own tenant, under the ident
   - Question: Will the practice deploy itself, or will IT deploy centrally?
 
 
-## Page 2 of 3 (it), about 107px spare
+## Page 2 of 3 (it), about 82px spare
 
 **Eyebrow:** For IT
 
@@ -193,7 +193,7 @@ Legal AI on Microsoft runs inside the organization's own tenant, under the ident
   - Why it matters: Cowork runs the multi-file work, such as reviewing a set of agreements or invoices.
 - [ ] **Plugins and connectors**
   - Question: Who approves plugins in the plugin registry, and the connectors the practice needs, such as one to the document management system?
-  - Why it matters: The accelerator's skills and calculation tools arrive as plugins.
+  - Why it matters: The accelerator's skills and calculation tools arrive as plugins, and any further connectors or applications are built in the same tenant, under the same governance.
 - [ ] **Sensitivity labels**
   - Question: Which sensitivity labels apply to the practice's documents, and what do they allow Copilot to do?
   - Why it matters: Copilot honors the usage rights that labels apply, so labels decide which documents a skill can use.
@@ -250,6 +250,8 @@ Legal AI on Microsoft runs inside the organization's own tenant, under the ident
 Each card shows the document title, its description, a "Read the ..." button, and "Download the PDF (N pages)".
 
 # In the founder article
+
+- Revision 3: a new paragraph on Standard Copilot as a capable generalist and Copilot for Legal as the dedicated legal version; "Copilot for Legal is that dedicated version"; a seventh property, "It extends as far as the organization wants to take it"; the vendor roadmap sentence in the contrast paragraph; a rewritten first paragraph of the close; and matching changes to the summary and two key takeaways.
 
 - Revised: "Microsoft has now extended the platform into legal work. Copilot for Legal makes more than 20 legal skills generally available across Microsoft 365." (replaces the October 15 sentence; the source list keeps Microsoft's dated announcement)
 - "Copilot licences" is now "Copilot licenses" (two places)
