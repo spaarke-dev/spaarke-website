@@ -8,10 +8,11 @@ kind of work the session is about and route to the right place.
 > on, and the conventions that apply to it. Read it before picking that
 > work up. Delete it when the series closes.
 >
-> **Also in progress:** the Design Partner Page, the privacy policy rewrite,
-> and the LinkedIn Lead Gen Form and Document Ad. Their state is in
-> `projects/overview-landing-page/current-task.md` on branch
-> `feat/design-partner-page` (PR #124). Remove this note when PR #124 merges.
+> **Also in progress:** the LinkedIn Lead Gen Form and Document Ad for the
+> Design Partner Program. The page and the privacy policy rewrite went live
+> on 2026-11-12 (PR #124). The state of the LinkedIn work is in
+> [`projects/overview-landing-page/current-task.md`](projects/overview-landing-page/current-task.md).
+> Remove this note when the ads launch.
 
 ## Domain dispatcher
 

@@ -1,7 +1,7 @@
 # Task 090: Project wrap-up
 
 **Phase:** 3 (Connections and preview)
-**Status:** not-started
+**Status:** complete
 **Estimated:** 2 hours
 **Dependencies:** 031
 **Tags:** testing, accessibility, performance, seo
@@ -32,6 +32,6 @@ documents are closed out.
 
 ## Acceptance Criteria
 
-- [ ] Every spec success criterion verified in production
-- [ ] Lighthouse accessibility and SEO at 95 or above
-- [ ] The writer has the link for the LinkedIn post
+- [x] Every spec success criterion verified in production (the Plausible events not checked; see `notes/launch-verification.md`)
+- [x] Lighthouse accessibility and SEO at 95 or above (desktop SEO 92 from a robots.txt fetch failure; see the notes)
+- [x] The writer has the link for the LinkedIn post

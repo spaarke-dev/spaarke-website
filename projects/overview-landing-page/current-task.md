@@ -1,35 +1,33 @@
-# Current task: Design Partner Page, privacy policy, and LinkedIn ads
+# Current task: LinkedIn Lead Gen Form and ads for the Design Partner Program
 
 > Context recovery. A session picking this up cold, on any machine, reads this
-> file first, then `tasks/TASK-INDEX.md`, `notes/implementation.md`,
-> `notes/preview-verification.md`, and `spec.md`.
+> file first. The Design Partner Page project itself is complete: its record
+> is `tasks/TASK-INDEX.md`, `notes/launch-verification.md`, and
+> `notes/lessons-learned.md`.
 >
-> Last updated 2026-10-28, after PR #126 (the paid LinkedIn plan) merged.
+> Last updated 2026-11-12, after PR #124 merged and the page went live.
 
 ## Quick Recovery
 
 | Field | Value |
 |-------|-------|
-| **Task** | 031: Pull request and preview verification |
-| **Step** | 9 of 10: one real test submission on the preview |
-| **Status** | in progress; every automated check passes |
-| **Next Action** | The writer submits one test application on the preview (link below). Then confirm the row and the email, delete the test row, mark PR #124 ready, merge, and run task 090 |
+| **Task** | The LinkedIn Lead Gen Form and Document Ad (Issue #127), and the carousel ship step (Issue #123) |
+| **Status** | The page, `/privacy`, and both redirects are live, so nothing on the site blocks the ads any longer |
+| **Next Action** | The writer finishes the Lead Gen Form settings below and launches the ads in Campaign Manager. After the carousel is posted, run its ship step |
 
 ## Setting up on a new machine
 
 1. `git clone https://github.com/spaarke-dev/spaarke-website.git` (or
-   `git fetch origin --prune` in an existing clone).
-2. `git worktree add ../spaarke-website-wt-design-partner-page feat/design-partner-page`,
-   or simply `git checkout feat/design-partner-page`.
-3. `npm ci`. Before `npm run typecheck` passes in a fresh checkout, run
+   `git fetch origin --prune` in an existing clone), then work from `main`.
+2. `npm ci`. Before `npm run typecheck` passes in a fresh checkout, run
    `npm run build` once (it writes `next-env.d.ts`) or copy `next-env.d.ts`
    from another checkout, and run `node scripts/build-corpus-manifest.mjs --quiet`.
-4. Local API testing needs `.env.local` with STORAGE_ACCOUNT_CONNECTION,
+3. Local API testing needs `.env.local` with STORAGE_ACCOUNT_CONNECTION,
    SENDGRID_API_KEY, SENDGRID_FROM_EMAIL, CONTACT_EMAIL_TO,
    RECAPTCHA_SECRET_KEY, RECAPTCHA_SITE_KEY and NEXT_PUBLIC_CLARITY_PROJECT_ID.
    Copy it from the desktop by hand; it is not in git. Without it the API
    returns 500 by design (nothing stored, nothing sent).
-5. The private archive `C:\code_files\spaarke-research\` is not a git
+4. The private archive `C:\code_files\spaarke-research\` is not a git
    repository. Copy `C:\code_files\spaarke-research\linkedin-carousel\` to
    the laptop by hand: it holds the carousel source HTML, the Lead Gen Form
    images, and `lead-gen\HANDOFF.md` (ad budget and targeting notes that stay
@@ -41,40 +39,29 @@
 
 | Branch | PR | State |
 |---|---|---|
-| `feat/design-partner-page` | [#124](https://github.com/spaarke-dev/spaarke-website/pull/124) (draft) | Pushed. The page, API, form, redirects, daily report, privacy policy rewrite, Clarity decision. Not merged: waits on the test submission. On 2026-10-28 the `DesignPartnerApplications` table did not exist yet, so no application had been stored |
+| `feat/design-partner-page` | [#124](https://github.com/spaarke-dev/spaarke-website/pull/124) | The page, API, form, redirects, daily report, privacy policy rewrite, Clarity decision. Merged and live 2026-11-12 |
 | `content/spaarke-overview-carousel` | #125 | The carousel workspace, calendar, and campaign rows. Merged 2026-10-22 |
 | `docs/linkedin-advertising` | #126 | The paid LinkedIn procedure and plan, the Design Partner Program campaign file, Paid columns and sections. Merged 2026-10-28 |
 
-Preview: https://ambitious-bay-0fb5bb10f-124.1.azurestaticapps.net/design-partners
+### Design Partner Page (complete)
 
-### Design Partner Page (tasks 001 to 031)
-
-- Route `/design-partners`. `/advisory-group` redirects permanently;
-  `/go/more-info-1` (the printed postcards) redirects temporarily.
+- Live at https://www.spaarke.com/design-partners. `/advisory-group`
+  redirects permanently; `/go/more-info-1` (the printed postcards) redirects
+  temporarily. Both keep their query strings.
 - Applications go to the `DesignPartnerApplications` table (partition
   `design-partner`) and to contactus@spaarke.com with reply-to set to the
-  applicant. The daily report lists them.
-- Automated preview checks all pass (`notes/preview-verification.md`).
+  applicant. The daily report lists them. The test submission on 2026-11-12
+  worked end to end, and its row was deleted.
+- Left for the writer:
+  - Remove `ambitious-bay-0fb5bb10f-124.1.azurestaticapps.net` from the
+    reCAPTCHA key's domains. It was added for the test.
+  - Confirm the Plausible events "Design Partner Submit" and
+    "Overview Download" appear; this session could not check them.
+- Optional follow-up from the Lighthouse run: the site-wide button blue
+  `#5078DC` with white text is 4.14:1, short of the 4.5:1 contrast minimum.
+  Details in `notes/launch-verification.md`.
 
-**Remaining in task 031:**
-
-1. The writer submits a test application on the preview, using a real
-   mailbox they can see, organization "Spaarke test".
-2. Confirm: a row in `DesignPartnerApplications`; an email at
-   contactus@spaarke.com whose reply-to is the test address; the Plausible
-   events "Design Partner Submit" and "Overview Download" (if the PDF was
-   downloaded).
-3. Delete the test row (Azure portal, Storage browser, or `az storage entity delete`).
-4. `gh pr ready 124`, then `gh pr merge 124 --merge`, then confirm
-   https://www.spaarke.com/design-partners, `/go/more-info-1` and `/privacy`
-   in production.
-5. Mark 031 complete in `tasks/TASK-INDEX.md` and start 090 (wrap-up).
-
-**Why it has to merge before the LinkedIn ad launches:** the Lead Gen Form
-links to `/privacy` (the LinkedIn lead form section is only in this PR), and
-the form's confirmation link points to `/design-partners`.
-
-### Privacy policy (in PR #124)
+### Privacy policy (live 2026-11-12)
 
 Rewritten so it is accurate: all four forms, the IP hash, SendGrid, LinkedIn
 lead forms, how form data is used (no sale, no cross-context advertising),

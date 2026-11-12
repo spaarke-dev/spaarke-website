@@ -1,6 +1,6 @@
 # Design Partner Page
 
-**Status:** In progress
+**Status:** Complete (live 2026-11-12)
 **Created:** 2026-10-21
 
 A page at `/design-partners` that recruits legal operations leaders into the

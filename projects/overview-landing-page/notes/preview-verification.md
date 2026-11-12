@@ -17,12 +17,21 @@ commit b6635f5 on 2026-10-22.
 | Invalid token | 400 `CAPTCHA_FAILED` |
 | Empty body | 400 `VALIDATION_ERROR` with field errors |
 
-## Still to check
+## The human test submission, 2026-11-12
 
-- A real application through the browser: the confirmation, the row in
-  `DesignPartnerApplications`, and the mail at contactus@spaarke.com with
-  reply-to set to the applicant. It needs a person, because the invisible
-  reCAPTCHA must pass, and it writes to the production table and inbox.
-- The "Design Partner Submit" and "Overview Download" events in Plausible.
-- The next daily report lists the application.
-- Delete the test row afterwards.
+`main` was merged into the branch first (`996d142`, 25 commits), and the
+preview redeployed from it.
+
+- The first attempt failed in the browser with "We couldn't verify the
+  reCAPTCHA". The site key allowed only `spaarke.com`, so Google answered
+  "Invalid domain for site key" on the preview hostname. The writer added
+  the preview hostname to the key's domains.
+- The second attempt succeeded at 20:19 UTC. The row landed in
+  `DesignPartnerApplications` (partition `design-partner`), and the writer
+  confirmed the mail at contactus@spaarke.com with reply-to set to the
+  applicant.
+- The test row was deleted straight after; the table was left empty.
+- Not checked: the Plausible events (no access from this session) and the
+  daily report listing (the row was gone before the report ran).
+
+Production checks after the merge are in `launch-verification.md`.

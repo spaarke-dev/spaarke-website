@@ -1,7 +1,7 @@
 # Task 031: Pull request and preview verification
 
 **Phase:** 3 (Connections and preview)
-**Status:** in-progress
+**Status:** complete
 **Estimated:** 2 hours
 **Dependencies:** 012, 021, 022, 030
 **Tags:** deploy, swa, ci-cd, testing
@@ -37,6 +37,6 @@ Spec success criteria 1 to 8.
 
 ## Acceptance Criteria
 
-- [ ] Success criteria 1 to 8 in spec.md pass, or each failure is recorded
+- [x] Success criteria 1 to 8 in spec.md pass, or each failure is recorded
       with its cause
-- [ ] The test row is deleted from the table after the check
+- [x] The test row is deleted from the table after the check
