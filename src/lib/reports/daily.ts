@@ -62,6 +62,15 @@ type ContactRow = {
   createdAt?: string;
 };
 
+type DesignPartnerRow = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  organization?: string;
+  organizationType?: string;
+  createdAt?: string;
+};
+
 function table(connectionString: string, name: string): TableClient {
   return TableClient.fromConnectionString(connectionString, name);
 }
@@ -204,9 +213,26 @@ async function leadsSection(
       table(connectionString, "ContactSubmissions"),
       since,
     );
+    // The table is created by the first application, so until then it does not
+    // exist, and that is a quiet day rather than a failed section.
+    const partners = await rowsSince<DesignPartnerRow>(
+      table(connectionString, "DesignPartnerApplications"),
+      since,
+    ).catch((err: { statusCode?: number }) => {
+      if (err.statusCode === 404) return [];
+      throw err;
+    });
 
-    if (leads.length === 0 && contacts.length === 0) {
-      lines.push("No evaluation requests, no contact form submissions.");
+    if (leads.length === 0 && contacts.length === 0 && partners.length === 0) {
+      lines.push(
+        "No evaluation requests, no contact form submissions, no design partner applications.",
+      );
+    }
+
+    for (const p of partners) {
+      lines.push(
+        `  [design partner] ${p.firstName ?? ""} ${p.lastName ?? ""} <${p.email ?? ""}>, ${p.organization ?? ""} (${p.organizationType ?? ""})`,
+      );
     }
 
     for (const l of leads) {
