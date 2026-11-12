@@ -76,13 +76,13 @@ downloads, and both Plausible events fire.
 
 ## Milestones
 
-| Milestone | Phase | Done when |
-|---|---|---|
-| M1 Assets in place | 0 | Gate 0 passes |
-| M2 Applications are stored and sent | 1 | Gate 1 passes |
-| M3 Page complete locally | 2 | Gate 2 passes |
-| M4 Live on the preview | 3 | Gate 3 passes |
-| M5 Merged to production | 3 | PR merged, task 090 complete |
+| Milestone | Phase | Done when | Status |
+|---|---|---|---|
+| M1 Assets in place | 0 | Gate 0 passes | complete |
+| M2 Applications are stored and sent | 1 | Gate 1 passes | complete |
+| M3 Page complete locally | 2 | Gate 2 passes | complete |
+| M4 Live on the preview | 3 | Gate 3 passes | complete 2026-11-12 |
+| M5 Merged to production | 3 | PR merged, task 090 complete | complete 2026-11-12 |
 
 ## Dependencies between phases
 
