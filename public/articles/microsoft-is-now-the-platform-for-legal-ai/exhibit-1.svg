@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 700" role="img" aria-labelledby="ex-title ex-desc" font-family="system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+  <title id="ex-title">Legal AI on Microsoft is built in layers, from enterprise governance to legal skills</title>
+  <desc id="ex-desc">A stack of four layers. At the base, enterprise governance: Entra ID, conditional access, Purview, and the tenant boundary. Above it, Microsoft 365 and Power Platform: Outlook, Teams, Word, SharePoint, Power Apps, and Dataverse. Above that, the legal platform: systems of record for matter and case management, document management, and finance, budgeting, and e-billing, with the decision support ontology across them. At the top, legal AI: skills, playbooks, agents, and tools. A bar on the left shows Copilot and Cowork reaching across every layer, and the top layer is outlined in coral and marked as where the accelerator starts.</desc>
+  <rect x="1" y="1" width="1238" height="698" rx="14" fill="#0B2B2D" stroke="#1E6F66" stroke-width="2"/>
+  <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E6FBF4" font-weight="600">Legal AI on Microsoft is built in layers,</text>
+  <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E6FBF4" font-weight="600">from enterprise governance to legal skills.</text>
+
+  <!-- Copilot and Cowork bar -->
+  <rect x="40" y="100" width="92" height="560" rx="12" fill="#0F3B3A" stroke="#3FB59A" stroke-width="1.6" stroke-dasharray="8 7"/>
+  <text transform="translate(80 380) rotate(-90)" text-anchor="middle" font-size="19" font-weight="600" fill="#E6FBF4">Copilot and Cowork</text>
+  <text transform="translate(106 380) rotate(-90)" text-anchor="middle" font-size="15" fill="#9CD9C6">reach across every layer</text>
+
+  <!-- Legal AI -->
+  <rect x="152" y="100" width="1048" height="96" rx="12" fill="#14504B" stroke="#FF7A59" stroke-width="2.6"/>
+  <text x="180" y="140" font-size="24" font-weight="700" fill="#E6FBF4">Legal AI</text>
+  <text x="180" y="172" font-size="17" fill="#B5F2DC">Skills, playbooks, agents, and tools</text>
+  <rect x="900" y="124" width="276" height="48" rx="24" fill="#3A1F1A" stroke="#FF7A59" stroke-width="1.8"/>
+  <text x="1038" y="154" text-anchor="middle" font-size="16" font-weight="600" fill="#FF9A7E">The accelerator starts here</text>
+
+  <!-- Legal platform -->
+  <rect x="152" y="212" width="1048" height="238" rx="12" fill="#0F3B3A" stroke="#3FB59A" stroke-width="1.8"/>
+  <text x="180" y="244" font-size="20" font-weight="700" fill="#E6FBF4">The legal platform</text>
+  <rect x="176" y="258" width="1000" height="62" rx="10" fill="#1E6F66" stroke="#3FB59A" stroke-width="1.6"/>
+  <text x="676" y="284" text-anchor="middle" font-size="18" font-weight="600" fill="#E6FBF4">Decision support ontology</text>
+  <text x="676" y="308" text-anchor="middle" font-size="15" fill="#B5F2DC">Matters, documents, invoices, obligations, and policies, with the record of each decision</text>
+  <line x1="342" y1="320" x2="342" y2="336" stroke="#B5F2DC" stroke-width="2"/>
+  <line x1="676" y1="320" x2="676" y2="336" stroke="#B5F2DC" stroke-width="2"/>
+  <line x1="1010" y1="320" x2="1010" y2="336" stroke="#B5F2DC" stroke-width="2"/>
+  <rect x="176" y="336" width="320" height="96" rx="10" fill="#14504B" stroke="#3FB59A" stroke-width="1.6"/>
+  <text x="336" y="368" text-anchor="middle" font-size="13" fill="#9CD9C6">SYSTEM OF RECORD</text>
+  <text x="336" y="396" text-anchor="middle" font-size="18" font-weight="600" fill="#E6FBF4">Matter and case</text>
+  <text x="336" y="420" text-anchor="middle" font-size="18" font-weight="600" fill="#E6FBF4">management</text>
+  <rect x="516" y="336" width="320" height="96" rx="10" fill="#14504B" stroke="#3FB59A" stroke-width="1.6"/>
+  <text x="676" y="368" text-anchor="middle" font-size="13" fill="#9CD9C6">SYSTEM OF RECORD</text>
+  <text x="676" y="396" text-anchor="middle" font-size="18" font-weight="600" fill="#E6FBF4">Document</text>
+  <text x="676" y="420" text-anchor="middle" font-size="18" font-weight="600" fill="#E6FBF4">management</text>
+  <rect x="856" y="336" width="320" height="96" rx="10" fill="#14504B" stroke="#3FB59A" stroke-width="1.6"/>
+  <text x="1016" y="368" text-anchor="middle" font-size="13" fill="#9CD9C6">SYSTEM OF RECORD</text>
+  <text x="1016" y="396" text-anchor="middle" font-size="18" font-weight="600" fill="#E6FBF4">Finance, budgeting,</text>
+  <text x="1016" y="420" text-anchor="middle" font-size="18" font-weight="600" fill="#E6FBF4">and e-billing</text>
+
+  <!-- Microsoft 365 and Power Platform -->
+  <rect x="152" y="466" width="1048" height="88" rx="12" fill="#14504B" stroke="#3FB59A" stroke-width="1.8"/>
+  <text x="180" y="502" font-size="20" font-weight="700" fill="#E6FBF4">Microsoft 365 and Power Platform</text>
+  <text x="180" y="532" font-size="17" fill="#B5F2DC">Outlook, Teams, Word, SharePoint, Power Apps, and Dataverse</text>
+
+  <!-- Enterprise governance -->
+  <rect x="152" y="570" width="1048" height="90" rx="12" fill="#1E6F66" stroke="#3FB59A" stroke-width="1.8"/>
+  <text x="180" y="606" font-size="20" font-weight="700" fill="#E6FBF4">Enterprise governance</text>
+  <text x="180" y="636" font-size="17" fill="#E6FBF4">Entra ID, conditional access, Purview, and the tenant boundary</text>
+</svg>

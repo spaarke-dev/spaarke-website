@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 700" role="img" aria-labelledby="ex-title ex-desc" font-family="system-ui, -apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+  <title id="ex-title">Everything the accelerator builds carries forward onto the Legal Operations Intelligence platform</title>
+  <desc id="ex-desc">A table with three columns: Copilot for the individual, the team's legal AI with the accelerator, and the legal platform. Five rows. The playbook moves from a document a lawyer attaches, to the team's positions with an owner, to a versioned policy cited on each decision, in the decision support ontology. Critical dates and obligations move from an extraction in a session, to a governed extraction with exact date calculations, to obligations with owners and lifecycles, in the ontology. The issues list moves from a document, to a structured list, to entries in the decision record. Invoice review moves from a file reviewed in a session, to a guideline review with exact arithmetic, to invoices posted against the matter and its budget, in finance, budgeting, and e-billing. Matter context moves from the lawyer's own knowledge, to the knowledge library, to the matter record in matter and case management.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#B5F2DC"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="1238" height="698" rx="14" fill="#0B2B2D" stroke="#1E6F66" stroke-width="2"/>
+  <text x="620" y="44" text-anchor="middle" font-size="21" fill="#E6FBF4" font-weight="600">Everything the accelerator builds carries forward</text>
+  <text x="620" y="70" text-anchor="middle" font-size="21" fill="#E6FBF4" font-weight="600">onto the Legal Operations Intelligence platform.</text>
+
+  <!-- Column headers -->
+  <rect x="270" y="96" width="290" height="58" rx="10" fill="#0F3B3A" stroke="#3FB59A" stroke-width="1.6"/>
+  <text x="415" y="131" text-anchor="middle" font-size="17" font-weight="600" fill="#E6FBF4">Copilot for the individual</text>
+  <rect x="590" y="96" width="290" height="58" rx="10" fill="#14504B" stroke="#FF7A59" stroke-width="2.4"/>
+  <text x="735" y="122" text-anchor="middle" font-size="17" font-weight="600" fill="#E6FBF4">The team's legal AI</text>
+  <text x="735" y="144" text-anchor="middle" font-size="15" fill="#FF9A7E">with the accelerator</text>
+  <rect x="910" y="96" width="290" height="58" rx="10" fill="#1E6F66" stroke="#3FB59A" stroke-width="1.6"/>
+  <text x="1055" y="122" text-anchor="middle" font-size="17" font-weight="600" fill="#E6FBF4">The legal platform</text>
+  <text x="1055" y="144" text-anchor="middle" font-size="14" fill="#B5F2DC">systems of record and the ontology</text>
+
+  <!-- Row 1: playbook -->
+  <g transform="translate(0 170)">
+    <text x="40" y="44" font-size="18" font-weight="700" fill="#E6FBF4">The playbook</text>
+    <rect x="270" y="0" width="290" height="88" rx="10" fill="#0F3B3A"/>
+    <text x="415" y="40" text-anchor="middle" font-size="16" fill="#E6FBF4">A document a lawyer</text>
+    <text x="415" y="62" text-anchor="middle" font-size="16" fill="#E6FBF4">attaches</text>
+    <line x1="562" y1="44" x2="586" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="590" y="0" width="290" height="88" rx="10" fill="#14504B"/>
+    <text x="735" y="40" text-anchor="middle" font-size="16" fill="#E6FBF4">The team's positions,</text>
+    <text x="735" y="62" text-anchor="middle" font-size="16" fill="#E6FBF4">with an owner</text>
+    <line x1="882" y1="44" x2="906" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="910" y="0" width="290" height="88" rx="10" fill="#1E6F66"/>
+    <text x="1055" y="32" text-anchor="middle" font-size="16" fill="#E6FBF4">A versioned policy, cited</text>
+    <text x="1055" y="54" text-anchor="middle" font-size="16" fill="#E6FBF4">on each decision</text>
+    <text x="1055" y="76" text-anchor="middle" font-size="13" fill="#B5F2DC">Decision support ontology</text>
+  </g>
+
+  <!-- Row 2: critical dates and obligations -->
+  <g transform="translate(0 270)">
+    <text x="40" y="36" font-size="18" font-weight="700" fill="#E6FBF4">Critical dates and</text>
+    <text x="40" y="60" font-size="18" font-weight="700" fill="#E6FBF4">obligations</text>
+    <rect x="270" y="0" width="290" height="88" rx="10" fill="#0F3B3A"/>
+    <text x="415" y="40" text-anchor="middle" font-size="16" fill="#E6FBF4">Extracted in a</text>
+    <text x="415" y="62" text-anchor="middle" font-size="16" fill="#E6FBF4">session</text>
+    <line x1="562" y1="44" x2="586" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="590" y="0" width="290" height="88" rx="10" fill="#14504B"/>
+    <text x="735" y="40" text-anchor="middle" font-size="16" fill="#E6FBF4">A governed extraction, with</text>
+    <text x="735" y="62" text-anchor="middle" font-size="16" fill="#E6FBF4">exact date calculations</text>
+    <line x1="882" y1="44" x2="906" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="910" y="0" width="290" height="88" rx="10" fill="#1E6F66"/>
+    <text x="1055" y="32" text-anchor="middle" font-size="16" fill="#E6FBF4">Obligations with owners</text>
+    <text x="1055" y="54" text-anchor="middle" font-size="16" fill="#E6FBF4">and lifecycles</text>
+    <text x="1055" y="76" text-anchor="middle" font-size="13" fill="#B5F2DC">Decision support ontology</text>
+  </g>
+
+  <!-- Row 3: issues list -->
+  <g transform="translate(0 370)">
+    <text x="40" y="44" font-size="18" font-weight="700" fill="#E6FBF4">The issues list</text>
+    <rect x="270" y="0" width="290" height="88" rx="10" fill="#0F3B3A"/>
+    <text x="415" y="50" text-anchor="middle" font-size="16" fill="#E6FBF4">A document</text>
+    <line x1="562" y1="44" x2="586" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="590" y="0" width="290" height="88" rx="10" fill="#14504B"/>
+    <text x="735" y="50" text-anchor="middle" font-size="16" fill="#E6FBF4">A structured list</text>
+    <line x1="882" y1="44" x2="906" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="910" y="0" width="290" height="88" rx="10" fill="#1E6F66"/>
+    <text x="1055" y="32" text-anchor="middle" font-size="16" fill="#E6FBF4">Entries in the decision</text>
+    <text x="1055" y="54" text-anchor="middle" font-size="16" fill="#E6FBF4">record, with the approver</text>
+    <text x="1055" y="76" text-anchor="middle" font-size="13" fill="#B5F2DC">Decision support ontology</text>
+  </g>
+
+  <!-- Row 4: invoice review -->
+  <g transform="translate(0 470)">
+    <text x="40" y="44" font-size="18" font-weight="700" fill="#E6FBF4">Invoice review</text>
+    <rect x="270" y="0" width="290" height="88" rx="10" fill="#0F3B3A"/>
+    <text x="415" y="40" text-anchor="middle" font-size="16" fill="#E6FBF4">A file reviewed in a</text>
+    <text x="415" y="62" text-anchor="middle" font-size="16" fill="#E6FBF4">session</text>
+    <line x1="562" y1="44" x2="586" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="590" y="0" width="290" height="88" rx="10" fill="#14504B"/>
+    <text x="735" y="40" text-anchor="middle" font-size="16" fill="#E6FBF4">A guideline review with</text>
+    <text x="735" y="62" text-anchor="middle" font-size="16" fill="#E6FBF4">exact arithmetic</text>
+    <line x1="882" y1="44" x2="906" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="910" y="0" width="290" height="88" rx="10" fill="#1E6F66"/>
+    <text x="1055" y="32" text-anchor="middle" font-size="16" fill="#E6FBF4">Invoices posted against</text>
+    <text x="1055" y="54" text-anchor="middle" font-size="16" fill="#E6FBF4">the matter and its budget</text>
+    <text x="1055" y="76" text-anchor="middle" font-size="13" fill="#B5F2DC">Finance, budgeting, and e-billing</text>
+  </g>
+
+  <!-- Row 5: matter context -->
+  <g transform="translate(0 570)">
+    <text x="40" y="44" font-size="18" font-weight="700" fill="#E6FBF4">Matter context</text>
+    <rect x="270" y="0" width="290" height="88" rx="10" fill="#0F3B3A"/>
+    <text x="415" y="40" text-anchor="middle" font-size="16" fill="#E6FBF4">The lawyer's own</text>
+    <text x="415" y="62" text-anchor="middle" font-size="16" fill="#E6FBF4">knowledge</text>
+    <line x1="562" y1="44" x2="586" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="590" y="0" width="290" height="88" rx="10" fill="#14504B"/>
+    <text x="735" y="50" text-anchor="middle" font-size="16" fill="#E6FBF4">The knowledge library</text>
+    <line x1="882" y1="44" x2="906" y2="44" stroke="#B5F2DC" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="910" y="0" width="290" height="88" rx="10" fill="#1E6F66"/>
+    <text x="1055" y="42" text-anchor="middle" font-size="16" fill="#E6FBF4">The matter record</text>
+    <text x="1055" y="70" text-anchor="middle" font-size="13" fill="#B5F2DC">Matter and case management</text>
+  </g>
+</svg>

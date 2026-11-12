@@ -58,10 +58,12 @@ One per campaign. Issue → Milestone is the campaign assignment.
 | 3 | 2026-07 AI Across the Lifecycle | 2026-07-31 | `campaigns/2026-07-ai-across-the-lifecycle.md` |
 | 4 | 2026-08 Operating Model and Spend | 2026-09-30 | `campaigns/2026-08-operating-model-and-spend.md` |
 | 6 | 2026-10 The Spaarke Method | none | `campaigns/2026-10-the-spaarke-method.md` |
+| 7 | 2026-11 Design Partner Program | none | `campaigns/2026-11-design-partner-program.md` |
 
 ### Labels
 
 - `type:blog-post`, `type:linkedin-post`, `type:white-paper`, `type:tweet`
+- `type:paid-linkedin`: a paid LinkedIn campaign
 - `persona:corporate-counsel`, `persona:corporate-it`,
   `persona:legal-operations`, `persona:law-firm-leadership`
 
@@ -70,6 +72,14 @@ One per campaign. Issue → Milestone is the campaign assignment.
 One Issue per content piece. Title format:
 `<Prefix>: <slug>`, where Prefix is "Blog post", "LinkedIn post",
 "White paper", or "Tweet".
+
+One Issue per paid LinkedIn campaign, titled `Paid LinkedIn: <LinkedIn
+campaign name>` (for example `Paid LinkedIn: 2026-11-design-partner-program / leadgen`),
+labelled `type:paid-linkedin`, in the Milestone of the campaign file that owns
+it. It moves through the same *Pipeline status* field: Brief when the ad brief
+is written, Scheduled when the owner approves the build, Published when it is
+live, and closed at the end of its window after the retro. Budgets and audience
+lists never go in the Issue.
 
 Already-published articles (the 16 pre-launch pieces) are *not*
 Issues — they're done; their files are the record. If we want

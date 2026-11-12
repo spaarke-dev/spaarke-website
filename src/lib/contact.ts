@@ -19,6 +19,7 @@ export const DESIGN_PARTNER_REASON = "Join the design partner program";
 
 export const VALID_REASONS = [
   "See a working session",
+  "Book an accelerator scoping session",
   DESIGN_PARTNER_REASON,
   "Partnership",
   "Press / media",
