@@ -1,7 +1,15 @@
 import { ClientSecretCredential } from "@azure/identity";
 import type { GraphSettings } from "@/lib/meet/config";
 import type { Interval } from "@/lib/meet/slots";
-import { devMockEnabled, mockBusy, mockCancel, mockCreate, mockGet, mockMove } from "@/lib/meet/dev-mock";
+import {
+  devMockEnabled,
+  mockBusy,
+  mockCancel,
+  mockCreate,
+  mockGet,
+  mockMove,
+  mockSetAttendees,
+} from "@/lib/meet/dev-mock";
 
 /**
  * The few Microsoft Graph calls the booking flow makes, over fetch. The app
@@ -154,6 +162,15 @@ export async function getBusyIntervals(s: GraphSettings, range: Interval): Promi
 
 export type CreatedEvent = { id: string; joinUrl: string | null };
 
+export type Attendee = { email: string; name?: string };
+
+function attendeeList(attendees: Attendee[]) {
+  return attendees.map((a) => ({
+    emailAddress: a.name ? { address: a.email, name: a.name } : { address: a.email },
+    type: "required",
+  }));
+}
+
 export async function createMeetingEvent(
   s: GraphSettings,
   input: {
@@ -161,11 +178,12 @@ export async function createMeetingEvent(
     htmlBody: string;
     start: number;
     end: number;
-    attendee: { name: string; email: string };
+    /** The booker first, then any guests. */
+    attendees: Attendee[];
     transactionId: string;
   },
 ): Promise<CreatedEvent> {
-  if (devMockEnabled()) return mockCreate(input.start, input.end);
+  if (devMockEnabled()) return mockCreate(input.start, input.end, input.attendees.map((a) => a.email));
   const event = await graphFetch<{ id: string; onlineMeeting?: { joinUrl?: string } | null }>(
     s,
     `/users/${encodeURIComponent(s.host)}/events`,
@@ -176,12 +194,7 @@ export async function createMeetingEvent(
         body: { contentType: "HTML", content: input.htmlBody },
         start: utcDateTime(input.start),
         end: utcDateTime(input.end),
-        attendees: [
-          {
-            emailAddress: { address: input.attendee.email, name: input.attendee.name },
-            type: "required",
-          },
-        ],
+        attendees: attendeeList(input.attendees),
         isOnlineMeeting: true,
         onlineMeetingProvider: "teamsForBusiness",
         // New times go through the manage link, which keeps the slot locks
@@ -196,9 +209,9 @@ export async function createMeetingEvent(
   return { id: event.id, joinUrl: event.onlineMeeting?.joinUrl ?? null };
 }
 
-export type EventState = { start: number; end: number; isCancelled: boolean };
+export type EventState = { start: number; end: number; isCancelled: boolean; joinUrl: string | null };
 
-/** The event's current time, or null when it no longer exists. */
+/** The event's current time and Teams link, or null when it no longer exists. */
 export async function getMeetingEvent(s: GraphSettings, eventId: string): Promise<EventState | null> {
   if (devMockEnabled()) return mockGet(eventId);
   try {
@@ -206,12 +219,18 @@ export async function getMeetingEvent(s: GraphSettings, eventId: string): Promis
       start: { dateTime: string; timeZone: string };
       end: { dateTime: string; timeZone: string };
       isCancelled?: boolean;
+      onlineMeeting?: { joinUrl?: string } | null;
     }>(
       s,
-      `/users/${encodeURIComponent(s.host)}/events/${encodeURIComponent(eventId)}?$select=start,end,isCancelled`,
+      `/users/${encodeURIComponent(s.host)}/events/${encodeURIComponent(eventId)}?$select=start,end,isCancelled,onlineMeeting`,
       { method: "GET" },
     );
-    return { start: parseUtc(e.start), end: parseUtc(e.end), isCancelled: e.isCancelled === true };
+    return {
+      start: parseUtc(e.start),
+      end: parseUtc(e.end),
+      isCancelled: e.isCancelled === true,
+      joinUrl: e.onlineMeeting?.joinUrl ?? null,
+    };
   } catch (err) {
     if (err instanceof GraphError && err.status === 404) return null;
     throw err;
@@ -229,6 +248,18 @@ export async function moveMeetingEvent(
   await graphFetch<unknown>(s, `/users/${encodeURIComponent(s.host)}/events/${encodeURIComponent(eventId)}`, {
     method: "PATCH",
     body: { start: utcDateTime(start), end: utcDateTime(end) },
+  });
+}
+
+/**
+ * Replaces the attendee list (the booker plus guests). Exchange sends the
+ * invitation to anyone added and a cancellation to anyone removed.
+ */
+export async function setMeetingAttendees(s: GraphSettings, eventId: string, attendees: Attendee[]): Promise<void> {
+  if (devMockEnabled()) return mockSetAttendees(eventId, attendees.map((a) => a.email));
+  await graphFetch<unknown>(s, `/users/${encodeURIComponent(s.host)}/events/${encodeURIComponent(eventId)}`, {
+    method: "PATCH",
+    body: { attendees: attendeeList(attendees) },
   });
 }
 

@@ -32,6 +32,7 @@ export type PlausibleEventName =
   | "Meeting Rescheduled"
   | "Meeting Cancelled"
   | "Meeting Slot Taken"
+  | "Meeting Guests Updated"
   // The article assistant. Task 040. The question these exist to answer is
   // whether the assistant deepens engagement with the articles or replaces it,
   // which is why "Article Engagement" carries an `assistant` property rather

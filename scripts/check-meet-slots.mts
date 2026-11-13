@@ -176,4 +176,119 @@ check("an expired token is refused as expired", () => {
   assert.deepEqual(verifyManageToken(t, secret), { ok: false, reason: "expired" });
 });
 
+console.log("meet: reminders");
+
+const { dueReminder } = await import("@/lib/meet/reminder-rules");
+const H = 3_600_000;
+const meetingAt = iso("2026-11-20T15:00:00Z");
+const booking = {
+  status: "booked" as const,
+  start: at(meetingAt),
+  createdAt: at(meetingAt - 5 * 24 * H),
+  movedAt: undefined as string | undefined,
+  reminder24hFor: undefined as string | undefined,
+  reminder1hFor: undefined as string | undefined,
+};
+const kindAt = (b: typeof booking, now: number) => {
+  const d = dueReminder(b, now);
+  return d.send ? d.rule.kind : d.reason;
+};
+
+check("24-hour reminder is due from 24 hours before until 20", () => {
+  assert.equal(kindAt(booking, meetingAt - 24 * H - 60_000), "none_due");
+  assert.equal(kindAt(booking, meetingAt - 24 * H), "reminder24");
+  assert.equal(kindAt(booking, meetingAt - 21 * H), "reminder24");
+  assert.equal(kindAt(booking, meetingAt - 19 * H), "none_due");
+});
+
+check("1-hour reminder is due from 60 minutes before until 10", () => {
+  assert.equal(kindAt(booking, meetingAt - 61 * 60_000), "none_due");
+  assert.equal(kindAt(booking, meetingAt - 60 * 60_000), "reminder1");
+  assert.equal(kindAt(booking, meetingAt - 11 * 60_000), "reminder1");
+  assert.equal(kindAt(booking, meetingAt - 9 * 60_000), "none_due");
+});
+
+check("a reminder already sent for this start is not sent again", () => {
+  const sent = { ...booking, reminder24hFor: booking.start };
+  assert.equal(kindAt(sent, meetingAt - 23 * H), "already_sent");
+});
+
+check("a move re-arms the reminders for the new time", () => {
+  const moved = { ...booking, reminder24hFor: at(meetingAt - 2 * 24 * H), movedAt: at(meetingAt - 3 * 24 * H) };
+  assert.equal(kindAt(moved, meetingAt - 23 * H), "reminder24");
+});
+
+check("no 24-hour reminder for a meeting booked about 25 hours ahead", () => {
+  const late = { ...booking, createdAt: at(meetingAt - 25 * H) };
+  assert.equal(kindAt(late, meetingAt - 24 * H), "too_soon_after_booking");
+  assert.equal(kindAt(late, meetingAt - 60 * 60_000), "reminder1");
+});
+
+check("cancelled and pending bookings get no reminders", () => {
+  assert.equal(kindAt({ ...booking, status: "cancelled" } as never, meetingAt - 23 * H), "inactive");
+  assert.equal(kindAt({ ...booking, status: "pending" } as never, meetingAt - 23 * H), "inactive");
+});
+
+console.log("meet: guests");
+
+const { normalizeGuests } = await import("@/lib/meet/service");
+const host = "host@example.test";
+
+check("guests are trimmed, blanks and repeats dropped", () => {
+  assert.deepEqual(normalizeGuests([" a@x.com ", "", "A@x.com", "b@y.org"], "me@z.com", host), {
+    ok: true,
+    guests: ["a@x.com", "b@y.org"],
+  });
+  assert.deepEqual(normalizeGuests(undefined, "me@z.com", host), { ok: true, guests: [] });
+});
+
+check("bad addresses, the booker, the host, and a sixth guest are refused", () => {
+  assert.equal(normalizeGuests(["not-an-email"], "me@z.com", host).ok, false);
+  assert.equal(normalizeGuests(["a@x.com\nBcc: c@d.com"], "me@z.com", host).ok, false);
+  assert.equal(normalizeGuests(["ME@z.com"], "me@z.com", host).ok, false);
+  assert.equal(normalizeGuests([host], "me@z.com", host).ok, false);
+  assert.equal(normalizeGuests(["1@a.co", "2@a.co", "3@a.co", "4@a.co", "5@a.co", "6@a.co"], "me@z.com", host).ok, false);
+  assert.equal(normalizeGuests("a@x.com", "me@z.com", host).ok, false);
+});
+
+console.log("meet: emails");
+
+const { buildMeetingEmail } = await import("@/lib/meet/emails");
+const sample = {
+  start: meetingAt,
+  durationMinutes: 30,
+  timeZone: NY,
+  joinUrl: "https://teams.microsoft.com/l/meetup-join/x",
+  bookerName: "Jo <b>Doe</b>",
+  guests: ["a@x.com"],
+  manageUrl: "https://www.spaarke.com/meet/manage?t=abc",
+};
+
+check("booker emails carry the manage link; guest emails do not", () => {
+  for (const kind of ["confirmation", "reminder24", "reminder1", "moved"] as const) {
+    assert.ok(buildMeetingEmail(kind, "booker", sample).html.includes("manage?t=abc"), kind);
+    assert.ok(!buildMeetingEmail(kind, "guest", sample).html.includes("manage?t=abc"), kind);
+    assert.ok(!buildMeetingEmail(kind, "guest", sample).text.includes("manage?t=abc"), kind);
+  }
+});
+
+check("visitor text is escaped and subjects stay on one line", () => {
+  const e = buildMeetingEmail("reminder24", "guest", sample);
+  assert.ok(!e.html.includes("<b>Doe</b>"));
+  assert.ok(e.html.includes("&lt;b&gt;Doe&lt;/b&gt;"));
+  assert.ok(!/[\r\n]/.test(buildMeetingEmail("confirmation", "booker", sample).subject));
+});
+
+check("times show in the reader's zone with its name", () => {
+  const e = buildMeetingEmail("confirmation", "booker", sample);
+  assert.match(e.subject, /Fri, Nov 20 at 10:00 AM EST/);
+  assert.match(e.text, /10:00 AM to 10:30 AM EST/);
+});
+
+check("a cancelled email has no join link and offers a new time", () => {
+  const e = buildMeetingEmail("cancelled", "booker", sample);
+  assert.ok(!e.html.includes("meetup-join"));
+  assert.ok(e.html.includes('/meet"'));
+});
+
 console.log(`\n${passed} checks passed.`);
