@@ -18,7 +18,7 @@ export default function Privacy() {
         />
 
         <div className="text-fg-mid mt-12 max-w-2xl space-y-6 text-base leading-relaxed">
-          <p className="text-fg-low text-sm">Last updated: 2026-10-22</p>
+          <p className="text-fg-low text-sm">Last updated: 2026-11-13</p>
 
           <p>
             This policy covers two related but distinct contexts: (1) the
@@ -229,6 +229,19 @@ export default function Privacy() {
             to our team through SendGrid so that someone can reply. An
             evaluation access request is also passed to the Spaarke platform to
             set up the evaluation you asked for.
+          </p>
+
+          <h3 className="text-fg font-display text-lg font-medium">
+            Meeting bookings
+          </h3>
+          <p>
+            The booking page at /meet runs on Microsoft Bookings in our
+            Microsoft 365 tenant. When you book a meeting, Bookings stores what
+            you enter (your name, email address, and answers to any questions
+            on the booking form) with the appointment, adds the meeting to our
+            team&rsquo;s calendars, and sends you a calendar invitation with a
+            Microsoft Teams link. Bookings data stays in Microsoft 365; it is
+            not copied to Azure Table Storage or sent through SendGrid.
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
