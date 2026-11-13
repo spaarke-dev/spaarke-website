@@ -145,6 +145,24 @@ export default function Privacy() {
                     </a>
                   </td>
                 </tr>
+                <tr className="border-line border-b">
+                  <td className="py-2 pr-4">Twilio</td>
+                  <td className="py-2 pr-4">
+                    Your phone number and message, only if you text our booking
+                    number
+                  </td>
+                  <td className="py-2 pr-4">No</td>
+                  <td className="py-2">
+                    <a
+                      href="https://www.twilio.com/en-us/legal/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cta-blue underline"
+                    >
+                      Link
+                    </a>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -260,6 +278,38 @@ export default function Privacy() {
             Table Storage or send it through SendGrid.
           </p>
 
+          <h3
+            id="text-messages"
+            className="text-fg font-display scroll-mt-32 text-lg font-medium"
+          >
+            Text messages
+          </h3>
+          <p>
+            If you text MEET to our booking number (see{" "}
+            <a href="/sms" className="text-cta-blue underline">
+              Text MEET to book a meeting
+            </a>
+            ), our messaging provider, Twilio, receives your phone number and
+            your message and passes them to us so that we can reply with a link
+            to book a meeting. We send one reply to each text you send, and we
+            do not text you otherwise. We do not store your phone number in
+            readable form: we keep a one-way, keyed code derived from it, which
+            we use to honor STOP requests, to limit repeated replies, and to
+            connect a meeting you book through the link to your text. We do not
+            keep the text of your messages. Twilio keeps its own records of the
+            messages it carries, under the{" "}
+            <a
+              href="https://www.twilio.com/en-us/legal/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cta-blue underline"
+            >
+              Twilio Privacy Notice
+            </a>
+            . We do not use your phone number for marketing. Reply STOP at any
+            time to stop receiving replies.
+          </p>
+
           <h3 className="text-fg font-display text-lg font-medium">
             LinkedIn lead forms
           </h3>
@@ -290,7 +340,9 @@ export default function Privacy() {
             the basis of our legitimate interest in responding to business
             inquiries. We do not sell form data, share it for cross-context
             behavioral advertising, or share it with third parties for their own
-            marketing.
+            marketing. All the above categories exclude text messaging
+            originator opt-in data and consent; this information won&rsquo;t
+            be shared with any third parties.
           </p>
           <p>
             A form submission does not add you to marketing email on its own.
