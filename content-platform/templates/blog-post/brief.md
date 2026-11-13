@@ -40,19 +40,25 @@ specific argument the reader should be able to repeat? For a
 long-form article, write the thesis as the single sentence that
 will appear in the opening. Two to four sentences.>
 
-# Prime mover
-<The one force driving the others, named in the thesis sentence, with
-every other force in the piece grammatically subordinate to it. If the
-idea lists drivers, rank them here. A numbered list of coequal drivers
-is not an outline. See voice/stance.md rule 3.>
+# What has changed
+<The main cause behind the argument, named in plain words as a change
+with an actor ("2026 has been the year the frontier providers introduced
+legal solutions on their platforms"). It appears in the thesis
+sentence, and every other cause in the piece is grammatically
+subordinate to it. If the idea lists several drivers, rank them here; a
+numbered list of coequal drivers is not an outline. Do not call AI "the
+force", and do not anchor the piece on a single launch date. See
+voice/stance.md rule 3.>
 
-# The concession
-<The fault in the reader's own function that this argument depends on,
-written as a direct predicate with that function as the subject ("legal
-can become an impediment to the business"). The draft states it early,
-in the reader's own terms, and pairs it with the remedy. If the argument
-works without a concession, write "none" and say why. See
-voice/stance.md rule 4.>
+# The direction legal teams are taking
+<Where the reader's function is heading, and what it is building or
+changing to get there ("Legal teams are moving to capture their
+knowledge and intellectual capital in a form AI can use"). The piece
+leads with this direction. If the argument depends on a shortfall in
+the reader's function, record it here as well, as a direct predicate
+with that function as the subject, and note how the direction answers
+it; the shortfall supports the direction and is not the frame of the
+piece. See voice/stance.md rule 4.>
 
 # What we assert from practice
 <Claims the writer holds from practice that carry no citation, quoted in

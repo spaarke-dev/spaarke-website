@@ -37,7 +37,7 @@ The relaxations that followed were made on evidence and not on preference. Six r
 
 1. **A speaker on the page.** Spaarke is the actor of its own citations, five times in this article, in one form: "In our earlier article, [title], we discussed X." Four of the five say "earlier" and one says "previous", so a sweep rule written against the exact string will miss one of them. A reader can tell our body of work from the field's research.
 2. **A claim before a citation.** The first three sentences state the claim in our own voice; the first attributed statistic arrives in sentence four, as support for a claim the reader has already been given.
-3. **One named force, everything else subordinate to it.** AI is the prime mover in the description, the first key takeaway, the first two sentences and the close. Nothing in the piece is a numbered list of coequal causes.
+3. **One named cause, everything else subordinate to it.** AI is the main cause in the description, the first key takeaway, the first two sentences and the close. Nothing in the piece is a numbered list of coequal causes. (The article's own phrase "the defining force" predates the writer's ruling of 2026-11-12 against calling AI a force; `stance.md`, rule 3, now asks for the cause as a change with an actor.)
 4. **Verdict headings.** Every H2 says what something is, needs, depends on, or is having done to it.
 5. **A fixed positioning refrain.** One phrase, repeated almost verbatim at three anchors: the opening thesis, the heading of the section that proves it, and the close.
 6. **Limitations subordinated.** The caveat is a clause hinged on "but", and the sentence ends on what the evidence does support.
@@ -63,7 +63,7 @@ The pairs also carry the rules the linter cannot reach. Eleven judgement calls d
 | 3. Whether an unsourced claim is the writer's own read of the market or a claim that needed a source | 4.17 |
 | 4. Whether legal operations has been given a verb that belongs to the department | 4.15 |
 | 5. Whether a caveat defends the writer or informs the reader | 4.8, 4.9, 4.10, 4.11 |
-| 6. Whether the argument's concession is present and stated as a direct predicate | 4.12 |
+| 6. Whether the direction the reader's function is taking leads, and any shortfall behind it is stated as a direct predicate | 4.12 |
 | 7. Whether a bold label carries a claim or stands in for one | 4.21 |
 | 8. Whether the close's first moves are earned by the argument | 4.14 |
 | 9. Whether the business's need is stated as its own claim or as a permission dispensed | 4.16 |
@@ -122,7 +122,7 @@ The 82% is not cut. It moves to the third paragraph, where it credentials the su
 
 A number that opens a piece has to be the number that proves the thesis. A number establishing that the subject exists is one the reader nods at, and an article whose first act is a citation has no speaker in it. The first attributed figure in the published opening arrives in sentence four.
 
-### 4.4 One named force, with the rest subordinate to it
+### 4.4 One named cause, with the rest subordinate to it
 
 Trait 3. Judgement call 1. Rules: `stance.md`, rule 3; `consulting-register.md`, section 4.4.
 
@@ -250,7 +250,7 @@ The tense and the opening word carry the signal at every instance, so no blanket
 
 Note how the illustration ends. A constructed scene carries no before-and-after figure, because the figure would be invented. The pipeline draft closed its scene on a balanced contrast, "and the guardrails took longer to write than the tooling took to configure". The published article closes on which part of the work was hard: "Most of the effort goes into defining the guardrails; configuring the tools is comparatively quick."
 
-### 4.12 The concession as a direct predicate
+### 4.12 The shortfall as a direct predicate, in support of the direction
 
 Trait 7. Judgement call 6. Rules: `stance.md`, rule 4; `style-guide.md`, section 1 (Direct about the reader's own function) and section 5, rule 15.
 
@@ -265,6 +265,8 @@ After, the published article:
 "Bottleneck" describes a queue, implies that the fix is throughput, and leaves the fault unattributed. The concession the argument actually depends on is a direct predicate with the reader's own function as the subject, in short plain words, before the remedy.
 
 Nothing cites it, and nothing needs to. The mechanism in the second sentence is the defense. This is the claim type the brief records under "What we assert from practice", and hedging the verb to cover the absence of a citation would have destroyed it.
+
+Read this pair with the revised `stance.md`, rule 4 (writer ruling 2026-11-12). The shortfall here is the reason the article argues for a direction (opening the delivery model to the business), and the article leads with that direction; briefs now record the direction rather than a "concession", because pieces built around the concession came out as a list of negatives about the reader. The shortfall remains correct where the argument needs it, stated as below.
 
 The concession is placed three times, and each time in the department's own mouth where that was available: in the opening, "departments increasingly acknowledge that legal review can become an impediment to the business"; in the key takeaways, "Legal can become an impediment to the business"; and in the section above. Conceding it is what earns the right to argue for self-service and delegation to a legal operations reader.
 

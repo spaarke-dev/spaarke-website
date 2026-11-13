@@ -82,9 +82,9 @@
       `voice/stance.md` and the eight traits in
       `voice/examples/house-exemplar.md` section 2. The judgement
       calls it catches are the ones no lint rule reaches: who holds
-      which authority, whether the piece names a prime mover or
-      inventories causes, whether the concession the argument depends
-      on is present, whether a caveat defends the writer rather than
+      which authority, whether the piece names one main cause in plain
+      words or inventories causes, whether it leads with the direction
+      the reader's function is taking, whether a caveat defends the writer rather than
       informing the reader, and whether the close recommends.
 - [ ] No em dash, spaced en dash, double hyphen, or spaced hyphen
       anywhere in the piece, and ranges are written with "to"
