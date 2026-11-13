@@ -1,10 +1,10 @@
 ---
 slug: linkedin-ads-plan
-status: draft                      # draft | approved | active | retro
+status: active                     # draft | approved | active | retro
 owner: rs
 window:
-  start: "**TBD — confirm**"
-  end: "**TBD — confirm**"
+  start: "2026-11-04"              # the accelerator Thought Leader Ad, the first paid item live
+  end: "ongoing"                   # two standing tracks (section 5); each LinkedIn campaign has its own end date
 procedure: linkedin-ads-procedure.md
 ---
 
@@ -75,11 +75,11 @@ existing campaign file.
 
 | Asset | Campaign | Route | Format | Objective | Audience | Priority |
 |---|---|---|---|---|---|---|
-| Spaarke overview carousel (PDF) | 2026-11 Design Partner Program (the organic post stays in 2026-10 The Spaarke Method) | B | Document ad, first four slides shown, remainder gated by Lead Gen Form | Lead generation | A1, A2 | **First paid test; ready to build, not launched** |
+| Spaarke overview carousel (PDF) | 2026-11 Design Partner Program (the organic post stays in 2026-10 The Spaarke Method) | B | Document ad, first four slides shown, remainder gated by Lead Gen Form | Lead generation | A1, A2 | **Lead gen track from 2026-12-19, after the accelerator lead ads (section 5)** |
 | Founder syndication posts for the Method series (text or single-image posts only) | 2026-10 The Spaarke Method | C | Thought Leader Ad (with the founder's approval per post) | Engagement | A1, A2 | High |
 | Method article 1 and later phase articles | 2026-10 The Spaarke Method | A | Single image to the article | Website visits | A1, A2 | Medium |
 | Design partner program | 2026-11 Design Partner Program | A, B, D | Single image to `/design-partners`; Lead Gen Form; later Conversation ad to the named list | Lead generation | A5, A1, A2 | High |
-| Legal AI Accelerator: founder post, accelerator brief, readiness checklist, scoping session offer | 2026-11 Legal AI Accelerator | C, B, E | Thought Leader Ad; gated Document ads; single image with Lead Gen Form to W2 | Engagement, Lead generation | A1, A2, A4, W2 | **High; 2026-11-04 to 2026-12-18.** Ad briefs in the campaign file |
+| Legal AI Accelerator: founder post, accelerator brief, readiness checklist, scoping session offer | 2026-11 Legal AI Accelerator | C, B, E | Thought Leader Ad; gated Document ads; single image with Lead Gen Form to W2 | Engagement, Lead generation | A1, A2, A4, W2 | **Live.** Thought Leader Ad since 2026-11-04 (brand track, to 2026-11-30); Document ads next in the lead gen track, to 2026-12-18. Ad briefs in the campaign file |
 | Legal Operations Intelligence series (five articles) | 2026-06 Legal Operations Intelligence | A | Single image per article, rotated | Website visits | A1 | Medium |
 | State of Legal Operations field report (white paper or report, October) | open | B | Document ad with Lead Gen Form | Lead generation | A1 | High when published |
 | Billing compliance intelligence white paper | 2026-06 Architecture and Trust (as scheduled) | B | Document ad with Lead Gen Form | Lead generation | A1, A3 | When published |
@@ -97,14 +97,50 @@ founder's profile. And a lead form on a Thought Leader Ad is unconfirmed, so
 founder posts are for reach and engagement, and lead capture runs through
 Document ads and single image ads.
 
-## 5. Phases
+## 5. Two standing tracks
+
+The owner decided on 2026-11-04 that paid LinkedIn runs continuously, as two
+standing tracks to the same audiences. Recognition and readiness to buy happen
+on the buyer's schedule, so there is always an ad in market in each track and
+no gap between one campaign and the next.
+
+| Track | What it carries | Formats | Creative refresh |
+|---|---|---|---|
+| Brand | Thought leadership with no hard call to action: founder posts, articles, viewpoints, and insight into Spaarke's solutions | Thought Leader Ads; single image to an article | A new ad about every week, chosen from posts that earned organic engagement |
+| Lead gen | A direct offer with a call to action: gated documents, the scoping session, the design partner offer | Document ads with a Lead Gen Form; single image with a Lead Gen Form | New creative every few weeks |
+
+Every LinkedIn campaign keeps a lifetime budget and an end date (section 9 and
+procedure 2.6); the owner kept that rule on 2026-11-12. Continuity comes from
+the schedule instead. The next campaign in each track is built, checked, and
+approved before the current one ends, and it starts the day after. Within the
+lead gen track, one offer runs to an audience at a time, so a legal operations
+leader does not see two asks from Spaarke in the same weeks.
+
+### Launch order (agreed 2026-11-12)
+
+On 2026-11-12 the accelerator Thought Leader Ad was the only paid item live.
+The overview carousel had not been posted, and no Document ad had launched, so
+the lead gen track had nothing in market.
+
+| Track | Dates | LinkedIn campaign | Status on 2026-11-12 |
+|---|---|---|---|
+| Brand | 2026-11-04 to 2026-11-30 | `2026-11-legal-ai-accelerator / reach`: the founder post of 2026-11-03 | Live since 2026-11-04 |
+| Brand | From 2026-12-01 | The next founder post as a Thought Leader Ad (decision 12) | To build and approve by 2026-11-30 |
+| Lead gen | From the owner's approval to 2026-12-18 | `2026-11-legal-ai-accelerator / leadgen`: the accelerator brief to A1 and A2, the readiness checklist to A4, and the scoping offer to W2 once it passes 300 | Lead Gen Forms built 2026-11-04; ads not launched. First to launch |
+| Lead gen | From 2026-12-19 | `2026-11-design-partner-program / leadgen`: the overview Document ad to A1, with A2 added to compare | Ad brief ready; starts when the accelerator lead ads end (decision 11) |
+
+The overview carousel is posted organically to the company page (Issue #123)
+some days before 2026-12-19, so the organic post runs first and the Document
+ad follows it (section 8).
+
+## 6. Phases
 
 ### Phase 0: foundation (before any new spend)
 
 - [ ] Confirm ad account, company page link, billing, and roles in Campaign
       Manager (private archive)
-- [ ] PR #124 merged, so `/design-partners` and the revised privacy policy
-      are live (the Lead Gen Form links to both)
+- [x] PR #124 merged, so `/design-partners` and the revised privacy policy
+      are live (the Lead Gen Form links to both). Merged 2026-11-12.
 - [x] Insight Tag: not installed (owner decision, 2026-10-28; procedure 5.1).
       Leads are counted in LinkedIn; site actions are read in Plausible
 - [ ] Apply the UTM convention (procedure section 5.1) to the overview
@@ -117,11 +153,16 @@ Document ads and single image ads.
 - [x] Paid label `type:paid-linkedin` and the Issue convention in
       `github-setup.md` (2026-10-28)
 
-Gate: the owner confirms phase 0 is complete.
+Gate: the owner confirms phase 0 is complete. In practice phase 1 started on
+2026-11-04, ahead of this gate, when the owner compressed the accelerator
+schedule and launched its Thought Leader Ad. The open items above are closed
+as each next campaign is built, and each is checked in the pre-launch
+checklist (procedure 7.3).
 
 ### Phase 1: baseline (the first four to six weeks)
 
-- Read the running carousel Document Ad: delivery, completion, lead count,
+- Read the first Document ads as they run (the accelerator brief and
+  checklist, then the overview carousel): delivery, completion, lead count,
   cost per lead, and above all lead quality
 - Add the Thought Leader Ads for founder syndication posts on the Method
   series (eligible post types only, with the founder's approval of each)
@@ -162,10 +203,11 @@ phase 3 scope.
   default question in the campaign template
 - Retire formats that have not earned their cost
 
-Phase dates are **TBD — confirm** and depend on the October to November
-cadence in the campaign calendar.
+The phases describe what the program learns and adds. They do not pause the
+two tracks: section 5 keeps an ad in market in each track throughout. The
+dates of phases 2 to 4 are **TBD — confirm**.
 
-## 6. Build structure
+## 7. Build structure
 
 Each row of section 4 becomes campaigns, ad sets, and ads as the procedure
 sets out in section 3 of [`linkedin-ads-procedure.md`](linkedin-ads-procedure.md).
@@ -189,7 +231,7 @@ Document ad sits in the Design Partner Program campaign because its leads are
 design partner prospects; the organic carousel post stays an asset of The
 Spaarke Method.
 
-## 7. How this fits the campaign and content plan
+## 8. How this fits the campaign and content plan
 
 | Layer | Existing | What paid adds |
 |---|---|---|
@@ -197,7 +239,7 @@ Spaarke Method.
 | Calendar | `calendar.md`, one row per piece | An optional *Paid* column showing whether the piece has paid support, and its status |
 | Pipeline | GitHub Project, Issues, Milestones | One Issue per paid campaign, in the same Milestone as the campaign, with the paid label |
 | Piece | `articles/<slug>/` | Ad copy is drafted as part of the piece's `tasks.md` (a paid-support gate), and passes the same voice sweeps |
-| Pacing | Two organic LinkedIn posts per week is the sustainable rate | Paid does not change the organic cadence. It sets a separate cap on active paid campaigns at one time per audience (**TBD — confirm**) so audiences are not saturated. |
+| Pacing | Two organic LinkedIn posts per week is the sustainable rate | Paid does not change the organic cadence. Each audience sees at most one campaign per track at a time: one brand ad and one lead gen offer (section 5), so audiences are not saturated. |
 
 Sequencing rule: **organic first, then paid.** A piece publishes, runs
 organically for a few days, and paid support starts for pieces that earned
@@ -208,14 +250,14 @@ are the strongest candidates for sponsoring.
 Paid support is decided when the campaign is planned, not after launch, so the
 asset table and the paid table are written together.
 
-## 8. Budget and governance
+## 9. Budget and governance
 
 | Item | Where |
 |---|---|
 | Total program budget | Private archive; **TBD — confirm** |
 | Budget per campaign | Private archive; set in the ad brief and approved by the owner |
 | Test allocation | A fixed share of the program budget held back for tests and not committed to a campaign; **TBD — confirm** |
-| Spend cap | Lifetime budget with an end date on every campaign; no open-ended daily budgets |
+| Spend cap | Lifetime budget with an end date on every campaign; no open-ended daily budgets. The next campaign in each track is approved before the current one ends (section 5) |
 | Approvals | The owner approves the brief and budget, and approves each ad before launch |
 | Reporting | Weekly operator report; monthly review with the owner; retro in the campaign file at close |
 
@@ -224,22 +266,26 @@ per qualified lead exceeds an owner-approved ceiling for two consecutive
 weeks, or when frequency passes an owner-approved ceiling. Both ceilings are
 **TBD — confirm**.
 
-## 9. Open decisions
+## 10. Open decisions
 
 | # | Decision | Owner | Needed by |
 |---|---|---|---|
 | 1 | Total paid budget and test allocation | rs | Before phase 1 expands beyond the running ad |
 | 2 | Markets and locations to target | rs | Phase 0 |
 | 3 | ~~Does the Design Partner Program get its own campaign file and Milestone?~~ Decided 2026-10-28: yes. `campaigns/2026-11-design-partner-program.md`, Milestone 7 | rs | Done |
-| 4 | Lead handling: where leads are kept, who replies, and the response time | rs | Phase 0 |
+| 4 | Lead handling: where leads are kept, who replies, and the response time. The accelerator campaign file recommends the founder, from getstarted@spaarke.com, within two working days | rs | Before the accelerator Document ads launch |
 | 5 | Which founder or practitioner posts are approved for Thought Leader Ads | rs | Phase 1 |
 | 6 | Whether named-account lists can be uploaded (consent and lawful basis) | rs | Phase 3 |
 | 7 | Quality definition: what counts as a qualified lead | rs | Phase 1 |
 | 8 | Confirm in Campaign Manager the items marked **[UI]** in the procedure (current minimum budgets, menu labels after the October 2025 rename) | operator | Phase 0 |
 | 9 | ~~Insight Tag on the site?~~ Decided 2026-10-28: no. Engagement audiences only; see procedure 5.1 | rs | Done |
-| 10 | Whether the carousel's advisory group wording matches the site's Design Partner Program name in all paid copy (the site redirects `/advisory-group` to `/design-partners`) | rs | Phase 1 |
+| 10 | Whether the carousel's advisory group wording matches the site's Design Partner Program name in all paid copy (the site redirects `/advisory-group` to `/design-partners`) | rs | Before 2026-12-19 |
+| 11 | ~~Overlap of the Design Partner Document ad with the accelerator lead ads on A1?~~ Decided 2026-11-12: the accelerator holds A1 until 2026-12-18, and the Design Partner Document ad starts on 2026-12-19 | rs | Done |
+| 12 | Which founder post the brand track sponsors from 2026-12-01, when the accelerator founder post's Thought Leader Ad ends. Candidates: the two accelerator founder posts planned for the weeks of 2026-11-16 and 2026-11-23, the Microsoft Ignite post, or a post from the legal AI platforms series | rs | 2026-11-30 |
+| 13 | The Design Partner Document ad's end date, and the lead gen offer that follows it | rs | Before 2026-12-19 |
+| 14 | ~~A monthly flight rule in place of one lifetime budget per campaign?~~ Decided 2026-11-12: no. Each campaign keeps a lifetime budget and an end date, and the next one is approved before it ends | rs | Done |
 
-## 10. Success review
+## 11. Success review
 
 Filled in at the end of phase 1 and again at each quarterly review.
 

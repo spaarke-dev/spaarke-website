@@ -5,7 +5,7 @@ status: active                     # planned | scheduled | active | complete | r
 date_range:
   start: "2026-11-02"
   launch: "2026-11-03"             # fallback 2026-11-04
-  end: "2026-12-18"                # end date on every paid campaign (procedure 7.2); owner to confirm
+  end: "2026-12-18"                # end date of the lead campaign; the Design Partner Document ad follows on 2026-12-19 (plan section 5)
 owner: rs
 milestone: "2026-11 Legal AI Accelerator (GitHub milestone 8)"
 theme: "Microsoft is now the platform for legal AI, and the Spaarke Legal AI Accelerator for Microsoft Copilot puts it to work for legal teams in days, building toward the Legal Operations Intelligence platform."
@@ -46,10 +46,10 @@ Ignite (17 to 20 November 2026).
 | Date | Type | Slug | Status | Channel(s) | Notes |
 |---|---|---|---|---|---|
 | 2026-11-03 | blog-post | `spaarke-legal-ai-accelerator` | published | website, linkedin | founder byline; URL `/why-spaarke/microsoft-is-now-the-platform-for-legal-ai` |
-| 2026-11-03 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-personal` | ready | linkedin (founder) | founder post linking the article; posted the evening of 2026-11-03 and sponsored as a Thought Leader Ad |
+| 2026-11-03 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-personal` | published | linkedin (founder) | founder post linking the article; posted the evening of 2026-11-03 and sponsored as a Thought Leader Ad |
 | 2026-11-03 | linkedin-post | `spaarke-legal-ai-accelerator-syndication-company` | ready | linkedin (company) | company page post |
 | 2026-11-03 | landing page | `/accelerator` | published | website | scoping session request form (contact form, reason "Book an accelerator scoping session") |
-| 2026-11-04 to 2026-12-18 | linkedin-ad | accelerator ads | building | linkedin (paid) | see Paid support |
+| 2026-11-04 to 2026-12-18 | linkedin-ad | accelerator ads | active | linkedin (paid) | Thought Leader Ad live since 2026-11-04; Document ads not yet launched. See Paid support |
 | 2026-11-03 | document | accelerator brief (web page and PDF) | published | linkedin (paid), website | `/accelerator/brief`, `/accelerator/legal-ai-accelerator-brief.pdf` |
 | 2026-11-03 | document | readiness checklist (web page and PDF) | published | linkedin (paid), website | `/accelerator/readiness-checklist`, `/accelerator/legal-ai-on-microsoft-checklist.pdf` |
 
@@ -63,11 +63,13 @@ once.
 | 2026-11-03 | website | Publish the article, the brief, and the checklist |
 | 2026-11-03 | linkedin | Company page post; the founder post in the evening |
 | 2026-11-03, evening | linkedin (paid) | Build the Thought Leader Ad on the founder post, the two Document ads with their Lead Gen Forms, and the W2 engagement audience; submit them for LinkedIn's review |
-| 2026-11-04 | linkedin (paid) | Warm and convert together: the Thought Leader Ad to A1 and A2, the brief to A1 and A2, the checklist to A4 |
+| 2026-11-04 | linkedin (paid) | Planned: warm and convert together. As built, the Thought Leader Ad launched to A1 and A2; the Document ads did not |
+| On the owner's approval | linkedin (paid) | Launch the brief to A1 and A2 and the checklist to A4, after the pre-launch checklist |
+| By 2026-11-30 | linkedin (paid) | Approve the next brand track Thought Leader Ad, to start 2026-12-01 (plan decision 12) |
 | Week of 2026-11-09 | linkedin | Exhibit posts (organic) |
 | 2026-11-17 to 2026-11-20 | linkedin | Microsoft Ignite: a founder post on the week's Copilot news, a candidate for a second Thought Leader Ad |
 | When W2 passes 300 | linkedin (paid) | Scoping session offer to W2 |
-| 2026-12-18 | linkedin (paid) | End date on every paid campaign; retro in early January |
+| 2026-12-18 | linkedin (paid) | End date of the lead campaign; the Design Partner Document ad starts the next day. Retro in early January |
 
 Every paid step starts only after the pre-launch checklist (procedure 7.3) and
 the owner's approval.
@@ -104,19 +106,28 @@ ads are in market before Microsoft Ignite (17 to 20 November). The money goes
 to the founder post and the two documents; the exhibit ads and the
 Conversation ad are not funded.
 
+As built on 2026-11-12: the Thought Leader Ad launched on 2026-11-04, and both
+Lead Gen Forms were created that day. The Document ads did not launch, so the
+lead campaign starts on the owner's approval and runs to 2026-12-18 at the
+same budget. In the plan's two standing tracks (plan section 5), the Thought
+Leader Ad is the brand track until 2026-11-30, and this lead campaign is the
+first offer in the lead gen track.
+
 ### Paid assets
 
 | Asset | Route | Format | Objective | Audience | Window | Status |
 |---|---|---|---|---|---|---|
-| Founder post (`-syndication-personal`) | C | Thought Leader Ad | Engagement | A1, A2 | 2026-11-04 to 2026-11-30 | approved by the owner 2026-11-03 |
-| Accelerator brief (PDF) | B | Document ad, three preview pages, the rest gated | Lead generation | A1, A2 | 2026-11-04 to 2026-12-18 | ready |
-| Readiness checklist (PDF) | B | Document ad, one preview page, the rest gated | Lead generation | A4 | 2026-11-04 to 2026-12-18 | ready |
+| Founder post (`-syndication-personal`) | C | Thought Leader Ad | Engagement | A1, A2 | 2026-11-04 to 2026-11-30 | active since 2026-11-04, one ad set for A1 and A2 |
+| Accelerator brief (PDF) | B | Document ad, three preview pages, the rest gated | Lead generation | A1, A2 | from the owner's approval to 2026-12-18 | form built 2026-11-04; ad not launched |
+| Readiness checklist (PDF) | B | Document ad, one preview page, the rest gated | Lead generation | A4 | from the owner's approval to 2026-12-18 | form built 2026-11-04; ad not launched |
 | Scoping session offer | E | Single image with a Lead Gen Form | Lead generation | W2 | when W2 passes 300, to 2026-12-18 | image to produce |
 | Exhibit 1 and Exhibit 2 | A | Single image to the article | Website visits | A3, A4 | not funded | organic posts only |
 | Founder invitation | D | Conversation ad | Lead generation | W2 | not funded | revisit if W2 leads are slow |
 | Practice pack demo (video, new) | C, E | Video | Video views | A1, then W2 | phase 2 | deferred until a demo is recorded |
 
-The windows end on 2026-12-18, before the holiday slowdown. The retro is
+The windows end on 2026-12-18. The tracks do not stop there: the brand track
+moves to the next founder post on 2026-12-01, and the lead gen track moves to
+the Design Partner Document ad on 2026-12-19 (plan section 5). The retro is
 written in the first week of January.
 
 ### Build structure
@@ -151,9 +162,9 @@ policy, licenses, and connectors.
 **Overlap with the Design Partner Program.** Its overview Document ad also
 targets A1 and has not launched. Running both offers to A1 at once splits the
 budget and shows legal operations leaders two asks from one company in the
-same weeks. Recommendation: the accelerator has A1 until 2026-12-18, and the
-Design Partner Document ad runs to A2 only, or starts in January. Owner
-decision (open decision 3).
+same weeks. The owner decided on 2026-11-12 that the accelerator holds A1
+until 2026-12-18 and the Design Partner Document ad starts on 2026-12-19, so
+the lead gen track has one offer to A1 at a time (open decision 3).
 
 ### Ad briefs
 
@@ -274,7 +285,7 @@ be reported.
 |---|---|---|
 | 1 | Budget and its split | Set by the owner on 2026-11-03; amount and split in the private archive |
 | 2 | The founder post as a Thought Leader Ad | Approved 2026-11-03. The Conversation ad sender is not needed while the Conversation ad is unfunded |
-| 3 | Overlap with the Design Partner Document ad on A1 | Open. Recommendation: the accelerator holds A1 until 2026-12-18 |
+| 3 | Overlap with the Design Partner Document ad on A1 | Decided 2026-11-12: the accelerator holds A1 until 2026-12-18; the Design Partner Document ad starts on 2026-12-19 |
 | 4 | Brief and checklist on the site without a form | Decided 2026-11-03: both are public web pages with PDF downloads, linked from `/accelerator` and the article. The Document ads still ask for the form |
 | 5 | A short live session after Ignite (Event ad) | Not funded |
 | 6 | Who replies to leads and runs the scoping sessions | Open. Recommendation: the founder, from getstarted@spaarke.com, within two working days, with a legal engineer in the session |

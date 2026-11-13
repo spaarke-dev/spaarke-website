@@ -1,11 +1,11 @@
 ---
 slug: 2026-11-design-partner-program
 name: Design Partner Program
-status: planned                    # planned | scheduled | active | complete | retro
+status: scheduled                  # planned | scheduled | active | complete | retro
 date_range:
-  start: "**TBD — confirm**"       # the day the overview Document ad launches, after PR #124 puts /design-partners live
-  launch: "**TBD — confirm**"
-  end: "**TBD — confirm**"         # the Document ad runs with a lifetime budget and an end date (procedure 7.2)
+  start: "2026-11-12"              # /design-partners and the revised privacy policy went live (PR #124)
+  launch: "2026-12-19"             # the overview Document ad, the day after the accelerator lead campaign ends (plan section 5)
+  end: "**TBD — confirm**"         # the Document ad runs with a lifetime budget and an end date (procedure 7.2); plan decision 13
 owner: rs
 milestone: "2026-11 Design Partner Program (GitHub milestone 7)"
 theme: "Invite legal departments and law firms to help direct Spaarke as design partners, with early and free access in return for product direction, requirements, and feedback."
@@ -50,9 +50,9 @@ has seen the argument now has a concrete next step.
 
 | Date | Type | Slug | Status | Channel(s) | Notes |
 |---|---|---|---|---|---|
-| **TBD — confirm** | site page | `/design-partners` | review | website | PR #124; live when it merges. `/advisory-group` and `/go/more-info-1` redirect here |
-| **TBD — confirm** | linkedin-ad | overview-document-ad | brief | linkedin (paid) | the carousel PDF as a gated Document ad; see Paid support |
-| **TBD — confirm** | linkedin-lead-form | general lead form | approved | linkedin (paid) | "Make every legal decision intelligent"; reusable across campaigns |
+| 2026-11-12 | site page | `/design-partners` | published | website | PR #124, merged 2026-11-12. `/advisory-group` and `/go/more-info-1` redirect here |
+| 2026-12-19 | linkedin-ad | overview-document-ad | brief | linkedin (paid) | the carousel PDF as a gated Document ad; starts the day after the accelerator lead campaign ends (plan section 5). See Paid support |
+| by 2026-10-22 | linkedin-lead-form | general lead form | built | linkedin (paid) | "Make every legal decision intelligent"; reusable across campaigns. Still to set: the thank-you link, the optional updates checkbox, and the hidden source field; then a test lead |
 | **TBD — confirm** | linkedin-ad | design-partner-image-ad | planned | linkedin (paid) | phase 1: single image to `/design-partners`, to compare with the form route |
 | **TBD — confirm** | linkedin-ad | design-partner-conversation-ad | planned | linkedin (paid) | phase 3: a Conversation ad to a named shortlist |
 
@@ -63,9 +63,10 @@ The organic carousel post is an asset of `2026-10-the-spaarke-method`, Issue
 
 | Date | Channel | Action |
 |---|---|---|
-| **TBD — confirm** | website | Merge PR #124 after the test application; `/design-partners` and the revised privacy policy go live |
-| **TBD — confirm** | linkedin | Post the overview carousel to the company page (organic; Issue #123) |
-| **TBD — confirm** | linkedin (paid) | Launch the overview Document ad, after the pre-launch checklist (procedure 7.3) and the owner's approval |
+| 2026-11-12 | website | PR #124 merged after the test application; `/design-partners` and the revised privacy policy are live |
+| Before 2026-12-19, with some days to spare | linkedin | Post the overview carousel to the company page (organic; Issue #123), so the organic post runs before the paid one |
+| By 2026-12-18 | linkedin (paid) | Rename the campaign and ad set, build the ad from the brief, finish the Lead Gen Form, run the pre-launch checklist (procedure 7.3); the owner approves |
+| 2026-12-19 | linkedin (paid) | Launch the overview Document ad, the day after the accelerator lead campaign ends (plan section 5) |
 | Launch plus 48 hours | linkedin (paid) | Delivery, disapproval, form, and landing page check |
 | Weekly | linkedin (paid) | Download leads, reply within two working days, record fit; weekly report with one decision |
 
@@ -77,7 +78,7 @@ identifiers are in the private archive.
 
 | Asset | Route | Format | Objective | Audience | Window | Status |
 |---|---|---|---|---|---|---|
-| Overview carousel PDF | B | Document ad, four preview pages, the rest gated by the Lead Gen Form | Lead generation | A1, then A2 | **TBD — confirm** | brief |
+| Overview carousel PDF | B | Document ad, four preview pages, the rest gated by the Lead Gen Form | Lead generation | A1, then A2 | From 2026-12-19; end date **TBD — confirm** (plan decision 13) | brief |
 | `/design-partners` | A | Single image | Website visits | A1, A2 | Phase 1 | planned |
 | Design partner shortlist | D | Conversation ad | Lead generation | A5 | Phase 3 | planned |
 

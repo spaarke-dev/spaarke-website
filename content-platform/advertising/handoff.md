@@ -1,67 +1,99 @@
-# Handoff: LinkedIn advertising procedure and plan
+# Handoff: paid LinkedIn program
 
-Written 2026-10-26 on the laptop; updated 2026-10-28 on the desktop. Delete
-this file once the open items below are closed.
+Written 2026-10-26; restarted 2026-11-12, after the design partner page went
+live. Delete this file once the open items below are closed. Budgets,
+audiences, and account identifiers are in the private archive
+(`C:\code_files\spaarke-research\2026-11-legal-ai-accelerator\build-sheet.md`
+and `C:\code_files\spaarke-research\linkedin-carousel\lead-gen\HANDOFF.md`).
 
-## State
+## State on 2026-11-12
 
-- Branch `docs/linkedin-advertising`, PR #126.
-- [`linkedin-ads-procedure.md`](linkedin-ads-procedure.md): how LinkedIn
-  works, objectives, routes, ad types, the Campaign / Ad set / Ad build
-  structure, targeting, measurement, creative rules, and the operating
-  procedure. Checked against LinkedIn's help pages on 2026-10-24.
-- [`linkedin-ads-plan.md`](linkedin-ads-plan.md): objectives, audiences, the
-  asset-by-asset route and format table, phases 0 to 4, the build structure,
-  how paid fits the campaign and content plan, governance, open decisions.
-- Voice lint: 0 errors on both files.
+| Item | Track | State | Blocks launch |
+|---|---|---|---|
+| Accelerator founder post, Thought Leader Ad (`2026-11-legal-ai-accelerator / reach`) | Brand | Live since 2026-11-04, one ad set for A1 and A2, ends 2026-11-30 | Nothing |
+| Next brand ad, from 2026-12-01 | Brand | Not chosen (plan decision 12) | The owner picks a founder post; it is posted organically first |
+| Accelerator brief and readiness checklist Document ads (`2026-11-legal-ai-accelerator / leadgen`) | Lead gen | Both Lead Gen Forms built 2026-11-04; the ads did not launch | Build or finish the ads, the pre-launch checklist, the owner's approval. Lead handling (plan decision 4) should be settled first |
+| Accelerator scoping offer to W2 | Lead gen | Not built | W2 passes 300; the hero recut to 1200 by 627 |
+| Design Partner overview Document ad (`2026-11-design-partner-program / leadgen`, Issue #127) | Lead gen | Ad brief ready; the campaign and draft ad set exist under their old names; the general Lead Gen Form is built | Starts 2026-12-19 by the owner's decision. Before then: the carousel posted (Issue #123), the renames, the form settings, the ad, the checklist, approval |
+| Method series Thought Leader Ads and article ads | Brand | Planned, never built | Candidates for the brand track |
 
-## Decisions made on 2026-10-28
+The site no longer blocks anything: `/design-partners` and the revised privacy
+policy went live with PR #124 on 2026-11-12.
 
-- **No Insight Tag.** The privacy policy rewrite in PR #124 says the site
-  sets no analytics or advertising cookies and has no banner (Clarity runs
-  with cookies off). Lead generation ads are measured in LinkedIn;
-  retargeting uses engagement audiences only; website-visit ads are read
-  through UTM tags in Plausible. Procedure 5.1 and plan sections 3 to 5 now
-  say so.
-- **The Design Partner Program has its own campaign file and Milestone:**
-  `campaigns/2026-11-design-partner-program.md`, Milestone 7. The overview
-  Document ad moves there, because its leads are design partner prospects;
-  the organic carousel post stays in The Spaarke Method.
-- **Nothing is live in LinkedIn yet**: the carousel is not posted and the
-  Document ad is not launched.
+## Decisions on 2026-11-12
 
-## Follow-on edits made
+- **Launch order.** The accelerator lead ads go first and run to 2026-12-18.
+  The Design Partner Document ad starts 2026-12-19, so A1 sees one lead gen
+  offer at a time.
+- **Budget rule kept.** Every LinkedIn campaign keeps a lifetime budget and
+  an end date. Continuity comes from approving the next campaign in each
+  track before the current one ends (plan section 5, procedure 2.6).
+- **PR #133** (the accelerator paid plan) is folded into the restart PR and
+  merges with it.
 
-- [x] *Paid support* section in `campaigns/_template-campaign.md`, in
-      `campaigns/2026-10-the-spaarke-method.md`, and in the new Design
-      Partner Program file (with the full ad brief for the Document ad)
-- [x] *Paid* column in `calendar.md`, documented under its own heading
-- [x] `type:paid-linkedin` label, Milestone 7, and the paid Issue convention
-      in `github-setup.md`
+Earlier decisions stand: no Insight Tag (2026-10-28), the Design Partner
+Program has its own campaign and Milestone 7 (2026-10-28), and paid runs as
+two standing tracks (2026-11-04).
+
+## Next manual steps in Campaign Manager
+
+These are the owner's to do by hand. Nothing here launches, posts, or spends
+without the owner.
+
+**Now: the accelerator lead campaign**
+
+1. Open `2026-11-legal-ai-accelerator / leadgen`. Build the ad sets and ads
+   in Draft if they are not built: the brief ads `brief / v1-week`,
+   `brief / v2-capital`, and `brief / v3-exact` to A1 and A2, and the
+   checklist ads `checklist / v1-it` and `checklist / v2-legal` to A4. Paste
+   the copy from the campaign file's *Ad briefs* unchanged.
+2. Set the lifetime budgets and the end date 2026-12-18 from the private build
+   sheet. The budget was set for a 2026-11-04 start, so confirm it still fits
+   the shorter window.
+3. Confirm who replies to leads and from which address (plan decision 4).
+4. Submit a test lead through each form, then delete it from the count.
+5. Run the pre-launch checklist (build sheet section 6), approve, and set the
+   campaign Active.
+6. Two days later, check delivery and disapprovals.
+
+**By 2026-11-30: the next brand ad**
+
+7. Choose the founder post to sponsor from 2026-12-01 (plan decision 12),
+   post it organically, and build its Thought Leader Ad in Draft with a
+   lifetime budget and an end date. Approve it to start on 2026-12-01.
+8. Move any unspent reach budget to the best lead ad set, as the build sheet
+   says.
+
+**By 2026-12-18: the Design Partner Document ad**
+
+9. Post the overview carousel to the company page some days before
+   2026-12-19 (Issue #123), with the link
+   `https://www.spaarke.com/design-partners?utm_source=linkedin&utm_medium=social&utm_campaign=spaarke-overview`.
+   Then run the ship step in
+   `content-platform/articles/spaarke-overview-carousel/tasks.md` section 6.
+10. Rename the "Spaarke Overview" campaign to
+    `2026-11-design-partner-program / leadgen` and the draft ad set "Spaarke
+    Overview Presentation" to `A1-legalops / B / document / 202612`; confirm
+    its format is Document.
+11. In the general Lead Gen Form, set the thank-you link to
+    `https://www.spaarke.com/design-partners?utm_source=linkedin&utm_medium=paid&utm_campaign=2026-11-design-partner-program&utm_content=lead-form`,
+    and confirm the optional updates checkbox and the hidden field
+    `source=linkedin-lead-form`. Submit a test lead.
+12. Build the ad `overview-doc-decisions-question` from the ad brief in
+    `campaigns/2026-11-design-partner-program.md`, with four preview pages.
+13. Set the lifetime budget and an end date (plan decision 13), run the
+    pre-launch checklist (procedure 7.3), approve, and schedule the start for
+    2026-12-19.
 
 ## Open items
 
-Items marked **[UI]** in the procedure (section 9) need a look in Campaign
-Manager:
+Items marked **[UI]** in the procedure (section 9) still need a look in
+Campaign Manager: current minimum budgets, auction mechanics, Lead Gen Forms
+on Thought Leader Ads, the flexible versus standard creation method, and the
+menu labels after the rename.
 
-- [ ] Current minimum daily and lifetime budgets
-- [ ] Auction mechanics
-- [ ] Whether Lead Gen Forms work on Thought Leader Ads
-- [ ] Flexible versus standard ad creation method
-- [ ] Exact menu labels after the rename, and effects on the API
-
-Owner decisions still open (plan section 9): total budget and test
-allocation, target markets, lead handling, which founder posts are approved
-for Thought Leader Ads, the qualified-lead definition, named-account uploads,
-and the advisory group wording in paid copy.
-
-## Launch order for the first paid test
-
-1. Writer: one test application on the PR #124 preview; then merge PR #124
-   (`projects/overview-landing-page/current-task.md` has the steps).
-2. Writer: post the carousel to the company page (Issue #123).
-3. Operator: rename the Campaign Manager campaign and ad set to the plan's
-   names, build the ad from the ad brief in the Design Partner Program
-   campaign file, and set the Lead Gen Form's thank-you link to the URL in
-   that brief.
-4. Owner: pre-launch checklist (procedure 7.3), approve, set Active.
+Owner decisions still open (plan section 10): total budget and test
+allocation, target markets, lead handling, the brand ad from 2026-12-01, the
+Design Partner Document ad's end date and its successor, which founder posts
+are approved for Thought Leader Ads, the qualified-lead definition,
+named-account uploads, and the advisory group wording in paid copy.

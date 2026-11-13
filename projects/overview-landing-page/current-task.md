@@ -5,15 +5,18 @@
 > is `tasks/TASK-INDEX.md`, `notes/launch-verification.md`, and
 > `notes/lessons-learned.md`.
 >
-> Last updated 2026-11-12, after PR #124 merged and the page went live.
+> Last updated 2026-11-12, after PR #124 merged and the page went live, and
+> again the same day when the paid program was restarted. The paid program as
+> a whole, its launch order, and the next Campaign Manager steps are in
+> `content-platform/advertising/handoff.md`.
 
 ## Quick Recovery
 
 | Field | Value |
 |-------|-------|
 | **Task** | The LinkedIn Lead Gen Form and Document Ad (Issue #127), and the carousel ship step (Issue #123) |
-| **Status** | The page, `/privacy`, and both redirects are live, so nothing on the site blocks the ads any longer |
-| **Next Action** | The writer finishes the Lead Gen Form settings below and launches the ads in Campaign Manager. After the carousel is posted, run its ship step |
+| **Status** | The page, `/privacy`, and both redirects are live, so nothing on the site blocks the ads any longer. The owner decided on 2026-11-12 that the Document ad starts on 2026-12-19, after the accelerator lead campaign ends |
+| **Next Action** | Post the carousel some days before 2026-12-19 and run its ship step. By 2026-12-18 the writer finishes the Lead Gen Form settings below and builds the ad; the owner approves it to start 2026-12-19 |
 
 ## Setting up on a new machine
 
@@ -80,9 +83,10 @@ Decisions the writer made on 2026-10-22:
 - The daily report keeps its Clarity traffic section for now. Its "sessions"
   are now single page views; revisit later.
 
-Still for the writer: privacy@spaarke.com must be a working mailbox, and any
-marketing email sent to people who tick the updates box needs a postal address
-and an unsubscribe link (CAN-SPAM).
+Still for the writer: ~~privacy@spaarke.com must be a working mailbox~~ (the
+writer confirmed on 2026-11-12 that it exists), and any marketing email sent to
+people who tick the updates box needs a postal address and an unsubscribe link
+(CAN-SPAM).
 
 ### LinkedIn Lead Gen Form (built in Campaign Manager)
 
@@ -120,7 +124,11 @@ files. The gated overview Document ad has its full ad brief in
 `content-platform/campaigns/2026-11-design-partner-program.md` (Milestone 7,
 Issue #127). Decisions on 2026-10-28: no Insight Tag (leads measured in
 LinkedIn, engagement retargeting only); the Design Partner Program has its own
-campaign; nothing is live in LinkedIn yet. Budgets and targeting notes stay in
+campaign; nothing was live in LinkedIn on that date. Since then the
+accelerator founder post's Thought Leader Ad went live on 2026-11-04. On
+2026-11-12 the owner set the launch order: the accelerator lead ads first, to
+2026-12-18, then this Document ad from 2026-12-19 (plan section 5). Budgets and
+targeting notes stay in
 `C:\code_files\spaarke-research\linkedin-carousel\lead-gen\HANDOFF.md`.
 
 ### Carousel (Issue #123)
