@@ -50,7 +50,7 @@ has seen the argument now has a concrete next step.
 
 | Date | Type | Slug | Status | Channel(s) | Notes |
 |---|---|---|---|---|---|
-| **TBD — confirm** | site page | `/design-partners` | review | website | PR #124; live when it merges. `/advisory-group` and `/go/more-info-1` redirect here |
+| **TBD — confirm** | site page | `/design-partners` | review | website | PR #124; live when it merges. `/advisory-group` redirects here; `/go/more-info-1` (postcard) did until 2026-11-13 and now goes to `/meet` |
 | **TBD — confirm** | linkedin-ad | overview-document-ad | brief | linkedin (paid) | the carousel PDF as a gated Document ad; see Paid support |
 | **TBD — confirm** | linkedin-lead-form | general lead form | approved | linkedin (paid) | "Make every legal decision intelligent"; reusable across campaigns |
 | **TBD — confirm** | linkedin-ad | design-partner-image-ad | planned | linkedin (paid) | phase 1: single image to `/design-partners`, to compare with the form route |
