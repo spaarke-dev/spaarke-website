@@ -23,6 +23,9 @@ export type PlausibleEventName =
   // strip) so the two download links can be compared.
   | "Overview Download"
   | "Design Partner Submit"
+  // /meet. Bookings runs in an iframe, so the new-tab link is the only
+  // booking signal beyond the pageview.
+  | "Meeting Booking New Tab"
   // The article assistant. Task 040. The question these exist to answer is
   // whether the assistant deepens engagement with the articles or replaces it,
   // which is why "Article Engagement" carries an `assistant` property rather
