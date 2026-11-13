@@ -32,7 +32,31 @@ function siteUrl(): string {
 }
 
 /**
- * The prompt every provider receives. Kept short: it is a URL parameter.
+ * The shape of the first answer. The prompt carries it, because an assistant
+ * follows the reader's own prompt reliably; /llms-full.txt repeats it at the
+ * top as a backstop, though assistants treat instructions inside a fetched
+ * file as advisory.
+ */
+export const BRIEFING_SECTIONS = [
+  "Spaarke in one sentence",
+  "The problem: why legal organizations need it now",
+  "What it does, in three or four short bullets",
+  "Who it is for",
+  "How it is built: Microsoft, frontier AI, and governance, in two or three sentences",
+] as const;
+
+/** Offered as numbered follow-ups at the end of the first answer. */
+export const FOLLOW_UPS = [
+  "What is Legal Operations Intelligence?",
+  "How does Spaarke work inside Microsoft 365?",
+  "How does Spaarke keep our data and AI governed?",
+  "What does getting started look like?",
+  "How is Spaarke different from other legal AI tools?",
+] as const;
+
+/**
+ * The prompt every provider receives. It is a URL parameter, so it stays well
+ * under Claude's documented prefill limit.
  *
  * It asks for a briefing, not a review. An earlier version ended "tell me when
  * something is not covered", and Claude read that as a request to audit the
@@ -40,13 +64,14 @@ function siteUrl(): string {
  * by sending the reader to the team.
  */
 export function askPrompt(): string {
-  return (
-    `Read ${siteUrl()}/llms-full.txt, Spaarke's own published material. ` +
-    "Brief me on Spaarke in a few short paragraphs: the problem it solves for legal organizations, " +
-    "what it does, who it is for, and why it is built the way it is. " +
-    "Then suggest three questions I might ask next, and answer my follow-ups from that material. " +
-    `If something is not covered there, say so briefly and point me to ${siteUrl()}/meet to ask the Spaarke team.`
-  );
+  const site = siteUrl();
+  return [
+    `Read ${site}/llms-full.txt, Spaarke's own published material, and brief me on Spaarke in under 250 words with these headings:`,
+    ...BRIEFING_SECTIONS.map((s, i) => `${i + 1}. ${s}`),
+    "Then offer these as numbered follow-up questions I can pick by number:",
+    ...FOLLOW_UPS.map((q, i) => `${i + 1}. ${q}`),
+    `Answer my follow-ups from that material. If something is not covered there, say so briefly and point me to ${site}/meet to ask the Spaarke team.`,
+  ].join("\n");
 }
 
 /** Where /ask/<provider> sends the reader. */

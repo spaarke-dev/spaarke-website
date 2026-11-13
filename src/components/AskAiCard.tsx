@@ -43,12 +43,10 @@ export function AskAiCard({ src, variant = "rail" }: Props) {
             : "text-fg-low font-mono text-[11px] font-medium uppercase tracking-[0.18em]")
         }
       >
-        {/* eslint-disable-next-line @next/next/no-img-element -- a 16px static SVG mark */}
-        <img src="/images/logo-icon-color.svg" alt="" aria-hidden="true" className={page ? "h-6 w-auto" : "h-3.5 w-auto"} />
-        Ask your AI about Spaarke
+        Learn more about Spaarke
       </h2>
       <p className={page ? "text-fg-mid mt-3 text-base leading-relaxed" : "text-fg-mid mt-3 text-[13px] leading-snug"}>
-        One click gives your assistant everything we have published. Then ask it anything.
+        One click briefs your AI assistant on Spaarke. Then ask it anything.
       </p>
       <div className={page ? "mt-6 flex flex-wrap gap-3" : "mt-3 flex flex-col gap-2"}>
         {ASK_PROVIDERS.map((p) => (
