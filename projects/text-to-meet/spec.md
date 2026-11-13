@@ -1,6 +1,6 @@
 # Text to Meet: AI Implementation Specification
 
-> **Status**: Draft for owner sign-off
+> **Status**: Draft for owner sign-off. The Twilio toll-free number is bought and in Toll-Free Verification (owner, 2026-11-13).
 > **Created**: 2026-11-13
 > **Source**: Task brief from the /meet session (2026-11-13): inbound-first "Text MEET to <number>", building on the /meet Graph booking work in PR #142
 
@@ -519,8 +519,11 @@ it carries the same never-404 rule.
 - PR #142 merged: this work extends `tokens.ts`, `store.ts`, the book route,
   and `MeetBookingFlow`. The Bookings-mode part (FR-16) works without Graph
   settings.
-- The privacy and /sms pages live before the verification is submitted,
-  since the reviewer checks them.
+- The privacy paragraph (FR-19) and the /sms page (FR-18) live while the
+  verification is under review. The number went into review on 2026-11-13,
+  before either page existed, and the reviewer checks both URLs, the
+  required privacy clause, and that the opt-in matches the submission. These
+  two pieces ship first, ahead of the webhook, as their own PR.
 - The EIN and the legal business name for the verification.
 
 ### External Dependencies
@@ -546,8 +549,8 @@ it carries the same never-404 rule.
   are set well above that and below a level that costs real money.
 - **Host:** the reply link uses `https://spaarke.com`. A longer host pushes
   the MEET reply past one segment; the check script catches it.
-- **Account:** Spaarke opens its own Twilio account rather than using one
-  held by another Spaarke project.
+- **Account:** the Twilio account the owner opened on 2026-11-13 holds the
+  number; no other Spaarke project shares it.
 - **Unrecognized text:** gets one nudge per sender per 24 hours (FR-12)
   rather than silence.
 
@@ -556,8 +559,11 @@ it carries the same never-404 rule.
       back? Blocks: FR-13 and the privacy paragraph. The spec assumes no.
 - [ ] Is the keyword MEET final, and is a placement code as a second word
       acceptable on print? Blocks: the card copy and FR-17.
-- [ ] Who submits the Toll-Free Verification and owns the Twilio account (the
-      EIN and a notification email are required)? Blocks: FR-02.
+- [ ] What the verification submission says: the Privacy and Terms URLs,
+      the opt-in image URL, the use case summary, the sample message, and
+      the monthly volume. Blocks: FR-02, FR-07, FR-18. The spec's texts and
+      pages must match the submission, or the submission is amended to
+      match them.
 - [ ] Counsel review of the Compliance section. Blocks: going live.
 
 ---
