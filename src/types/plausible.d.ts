@@ -26,6 +26,12 @@ export type PlausibleEventName =
   // /meet. Bookings runs in an iframe, so the new-tab link is the only
   // booking signal beyond the pageview.
   | "Meeting Booking New Tab"
+  // The Graph booking flow on /meet. "Meeting Booked" carries the attribution
+  // properties; "Meeting Slot Taken" counts lost races and stale pickers.
+  | "Meeting Booked"
+  | "Meeting Rescheduled"
+  | "Meeting Cancelled"
+  | "Meeting Slot Taken"
   // The article assistant. Task 040. The question these exist to answer is
   // whether the assistant deepens engagement with the articles or replaces it,
   // which is why "Article Engagement" carries an `assistant` property rather

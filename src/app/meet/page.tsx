@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Button, PageHeader, Shell, Slab } from "@/components/primitives";
 import { BookingsNewTabLink } from "@/components/BookingsNewTabLink";
+import { MeetBookingFlow } from "@/components/meet/MeetBookingFlow";
 import { getBookingsPageUrl } from "@/lib/bookings";
+import { trackException } from "@/lib/logger";
+import { getMeetConfig, wantsGraphMode } from "@/lib/meet/config";
+import { getOpenSlots } from "@/lib/meet/service";
+import { isStorageConfigured } from "@/lib/meet/store";
 
-// Dynamic because the Bookings URL is an app setting read at request time,
-// the same way /contact reads its reCAPTCHA key.
+// Dynamic because the booking mode, the Bookings URL, and the open slots are
+// all read at request time.
 export const dynamic = "force-dynamic";
 
 const TITLE = "Meet the Spaarke Team";
@@ -23,8 +28,48 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Meet() {
-  const bookingsUrl = getBookingsPageUrl();
+type GraphFlow = { slots: string[]; durationMinutes: number };
+
+/**
+ * The Graph booking flow, when MEET_BOOKING_MODE=graph and every setting it
+ * needs is present and Graph answers. Null means fall back: to the Bookings
+ * embed when its URL is set, otherwise to /contact. The fallback is decided
+ * per request, so a Graph outage degrades the page rather than breaking it.
+ */
+async function loadGraphFlow(): Promise<GraphFlow | null> {
+  if (!wantsGraphMode()) return null;
+  const config = getMeetConfig();
+  if (!config || !isStorageConfigured()) {
+    console.warn("[meet] MEET_BOOKING_MODE=graph but Graph or storage settings are missing; falling back.");
+    return null;
+  }
+  try {
+    const slots = await getOpenSlots(config);
+    return {
+      slots: slots.map((s) => new Date(s).toISOString()),
+      durationMinutes: config.rules.durationMinutes,
+    };
+  } catch (err) {
+    console.error("[meet] availability failed; falling back:", err);
+    trackException(err instanceof Error ? err : new Error(String(err)), { step: "meet.page" });
+    return null;
+  }
+}
+
+const CONTACT_LINE = (
+  <p>
+    Prefer to write first?{" "}
+    <Link href="/contact" className="text-cta-blue underline">
+      Contact us
+    </Link>
+    .
+  </p>
+);
+
+export default async function Meet() {
+  const graph = await loadGraphFlow();
+  const bookingsUrl = graph ? null : getBookingsPageUrl();
+  const canBook = Boolean(graph || bookingsUrl);
 
   return (
     <Slab tone="light">
@@ -34,13 +79,22 @@ export default function Meet() {
             eyebrow="Book a meeting"
             title="Let’s meet"
             lede={
-              bookingsUrl
+              canBook
                 ? "Choose a time that works for you. You will receive a calendar invitation with a Microsoft Teams link."
                 : "Online booking is not available right now. Send us a note and we will propose times by email."
             }
           />
 
-          {bookingsUrl ? (
+          {graph ? (
+            <>
+              <MeetBookingFlow
+                initialSlots={graph.slots}
+                durationMinutes={graph.durationMinutes}
+                recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
+              />
+              <div className="text-fg-low mt-10 space-y-3 text-sm">{CONTACT_LINE}</div>
+            </>
+          ) : bookingsUrl ? (
             <>
               <div className="border-line mt-12 overflow-hidden rounded-xl border bg-white">
                 <iframe
@@ -58,13 +112,7 @@ export default function Meet() {
                   Trouble with the calendar above?{" "}
                   <BookingsNewTabLink href={bookingsUrl} />.
                 </p>
-                <p>
-                  Prefer to write first?{" "}
-                  <Link href="/contact" className="text-cta-blue underline">
-                    Contact us
-                  </Link>
-                  .
-                </p>
+                {CONTACT_LINE}
               </div>
             </>
           ) : (
