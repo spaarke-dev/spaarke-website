@@ -212,7 +212,7 @@ export const BRIEF: AcceleratorDocument = {
         {
           kind: "text",
           paragraphs: [
-            "Legal teams have proven where AI fits in their work and are ready for the next step. The early tools sit outside the core legal systems, or inside only one, and are governed by their vendors rather than by the organization. Microsoft Copilot brings the legal skills and the governance into the environment most legal teams already run.",
+            "Legal teams have proven where AI fits in their work and are ready for the next step. The early tools sit outside the core legal systems and are governed by their vendors, not by the organization. Standard Copilot is a capable generalist, and legal work needs a specialist. Copilot for Legal provides one, inside the environment most legal teams already run.",
           ],
         },
         {
@@ -221,11 +221,11 @@ export const BRIEF: AcceleratorDocument = {
           items: [
             {
               name: "The legal skills",
-              body: "Copilot for Legal makes more than 20 legal skills generally available. In Word, a lawyer reviews a contract against the team's playbook. In Cowork, the Legal plugin reviews, summarizes, drafts, and redlines across many files, including a set of invoices.",
+              body: "More than 20 legal skills are generally available. In Word, a lawyer reviews a contract against the team's playbook. In Cowork, the Legal plugin reviews, summarizes, drafts, and redlines across many files, including a set of invoices.",
             },
             {
               name: "Tuned to the team",
-              body: "Each team tunes the platform to its own practice. Plugins package skills, tools, and MCP connectors to other systems. Playbooks capture the team's positions in Word documents the skills apply. Administrators govern all of it through a plugin registry.",
+              body: "Plugins package skills, tools, and MCP connectors to other systems. Playbooks capture the team's positions in Word documents the skills apply. Administrators govern all of it through a plugin registry.",
             },
             {
               name: "The tenant",
@@ -250,7 +250,7 @@ export const BRIEF: AcceleratorDocument = {
         {
           kind: "text",
           paragraphs: [
-            "The accelerator starts at the top layer, on the governance and services Microsoft already provides, and the platform layers follow.",
+            "Because Microsoft is enterprise software, the organization can extend any layer with its own applications and integrations. The accelerator starts at the top layer, and the platform layers follow.",
           ],
         },
       ],
@@ -423,7 +423,7 @@ export const CHECKLIST: AcceleratorDocument = {
             {
               name: "Plugins and connectors",
               question: "Who approves plugins in the plugin registry, and the connectors the practice needs, such as one to the document management system?",
-              why: "The accelerator's skills and calculation tools arrive as plugins.",
+              why: "The accelerator's skills and calculation tools arrive as plugins, and any further connectors or applications are built in the same tenant, under the same governance.",
             },
             {
               name: "Sensitivity labels",

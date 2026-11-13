@@ -1,5 +1,6 @@
 import sgMail from "@sendgrid/mail";
 import type { ContactFormData } from "@/lib/contact";
+import type { DesignPartnerApplication } from "@/lib/design-partners";
 
 let initialized = false;
 
@@ -177,6 +178,62 @@ export async function sendEarlyReleaseNotification(data: {
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[email] Failed to send early release notification:", message);
+    return { sent: false, error: message };
+  }
+}
+
+/**
+ * A Design Partner Program application. Reply-to is the applicant, so the team
+ * answers from the mail itself.
+ */
+export async function sendDesignPartnerNotification(
+  data: DesignPartnerApplication & { rowKey: string | null },
+): Promise<{ sent: true } | { sent: false; error: string }> {
+  if (!ensureInit()) {
+    return { sent: false, error: "SendGrid not configured." };
+  }
+
+  const to = process.env.CONTACT_EMAIL_TO;
+  const from = process.env.SENDGRID_FROM_EMAIL;
+
+  if (!to || !from) {
+    console.warn(
+      "[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set - skipping.",
+    );
+    return { sent: false, error: "Email recipients not configured." };
+  }
+
+  const timestamp = new Date().toISOString();
+  const stored = data.rowKey
+    ? `Saved in Table Storage, DesignPartnerApplications, row ${data.rowKey}.`
+    : "NOT SAVED. Table Storage was unavailable, so this mail is the only copy.";
+
+  const text = [
+    `New design partner application at ${timestamp}`,
+    stored,
+    "",
+    `Name:              ${data.firstName} ${data.lastName}`,
+    `Email:             ${data.email}`,
+    `Organization:      ${data.organization}`,
+    `Role:              ${data.role}`,
+    `Organization type: ${data.organizationType}`,
+    "",
+    "The decision they would start with:",
+    data.startingDecision || "(not provided)",
+  ].join("\n");
+
+  try {
+    await sgMail.send({
+      to,
+      from,
+      replyTo: data.email,
+      subject: `[Spaarke] Design partner application - ${data.organization}`,
+      text,
+    });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send design partner notification:", message);
     return { sent: false, error: message };
   }
 }
