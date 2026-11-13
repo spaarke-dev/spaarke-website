@@ -382,7 +382,7 @@ export async function sendMeetingNotification(data: {
   const to = process.env.CONTACT_EMAIL_TO;
   const from = process.env.SENDGRID_FROM_EMAIL;
   if (!to || !from) {
-    console.warn("[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set - skipping.");
+    console.warn("[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set; skipping.");
     return { sent: false, error: "Email recipients not configured." };
   }
 

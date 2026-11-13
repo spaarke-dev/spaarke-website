@@ -34,6 +34,8 @@ flow has proven itself.
 - Setup guide `docs/meet-graph-booking.md`: app registration, Exchange RBAC
   for Applications scope, Key Vault, app settings, secret rotation.
 - Slot check script `scripts/check-meet-slots.mts` (`npm run meet:check`).
+- Development mock (`MEET_DEV_MOCK=1`, honored only under `next dev`): an
+  in-memory calendar and table, so the UI can be worked on without a tenant.
 
 ### Out of Scope
 - Writing bookings to the CRM, Dataverse, or the BFF.
@@ -84,10 +86,11 @@ flow has proven itself.
    committed file. Acceptance: `git grep` for the values finds nothing; the
    guide documents rotation.
 
-3. **FR-03 Availability.** `GET /api/meet/availability?from&to` calls
-   `POST /users/{host}/calendar/getSchedule` for the host over the requested
-   range (at most the booking window) and returns open slot starts as UTC ISO
-   strings plus the duration. A candidate slot is open when it falls inside
+3. **FR-03 Availability.** `GET /api/meet/availability` calls
+   `POST /users/{host}/calendar/getSchedule` for the host over the booking
+   window and returns open slot starts as UTC ISO strings plus the duration.
+   With `t` (a manage token) the visitor's own meeting does not block the
+   times beside it. A candidate slot is open when it falls inside
    business hours in the host time zone, starts at least the minimum notice
    from now, starts within the booking window, and no `busy`, `tentative`, or
    `oof` item overlaps the slot widened by the buffer on each side. `free` and
@@ -131,8 +134,11 @@ flow has proven itself.
 
 8. **FR-08 Reschedule and cancel.** The invitation body and the confirmation
    screen carry a link to `/meet/manage?t=<token>`. The token is the booking ID
-   and an expiry (the meeting start), signed with HMAC SHA-256 using
-   `MEET_LINK_SECRET` and compared in constant time. The page shows the booking
+   and a 90 day expiry, signed with HMAC SHA-256 using `MEET_LINK_SECRET` and
+   compared in constant time. The page refuses a meeting that has started and
+   reads the event's current time from Graph, so a move made in Outlook shows.
+   The page and its routes need only the Graph settings, not
+   `MEET_BOOKING_MODE`, so links already sent survive a rollback. The page shows the booking
    and offers a new time (same picker; the event is moved with
    `PATCH /users/{host}/events/{id}`, which keeps the Teams link and sends an
    update) or cancellation with an optional note (`POST .../events/{id}/cancel`,
@@ -145,9 +151,12 @@ flow has proven itself.
    ID) stores: event ID, host, start and end (UTC), visitor time zone, name,
    email, organization, role, topic, status (`booked`, `rescheduled`,
    `cancelled`), IP hash, created and updated times, and the same attribution
-   fields as `DesignPartnerApplications`. A storage failure after the event is
-   created does not fail the booking, since the event and the email are
-   records too; it is logged with `trackException`.
+   fields as `DesignPartnerApplications`. Storage is required in Graph mode:
+   the slot lock and the manage link both depend on it. The row is written as
+   `pending` before the event is created, so the link in the invitation always
+   has a row to find. A storage failure before that point refuses the booking
+   (503); a failure updating the row afterwards keeps the booking, logs with
+   `trackException`, and marks the team email NOT SAVED.
 
 10. **FR-10 Notifications.** `sendMeetingNotification` emails
     `CONTACT_EMAIL_TO` for booked, rescheduled, and cancelled meetings, with the

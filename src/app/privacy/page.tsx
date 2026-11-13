@@ -235,13 +235,22 @@ export default function Privacy() {
             Meeting bookings
           </h3>
           <p>
-            The booking page at /meet runs on Microsoft Bookings in our
-            Microsoft 365 tenant. When you book a meeting, Bookings stores what
-            you enter (your name, email address, and answers to any questions
-            on the booking form) with the appointment, adds the meeting to our
-            team&rsquo;s calendars, and sends you a calendar invitation with a
-            Microsoft Teams link. Bookings data stays in Microsoft 365; it is
-            not copied to Azure Table Storage or sent through SendGrid.
+            The booking page at /meet adds your meeting directly to a Spaarke
+            team member&rsquo;s calendar in our Microsoft 365 tenant and sends
+            you a calendar invitation with a Microsoft Teams link. What you
+            enter (your name, work email, organization, role, and what you
+            would like to cover) appears in the invitation. As with the forms
+            above, we also store your entries with the meeting time, your time
+            zone, the attribution snapshot, and a one-way hash of your IP
+            address in Azure Table Storage, and email a copy to our team
+            through SendGrid. The invitation includes a private link that lets
+            you reschedule or cancel the meeting.
+          </p>
+          <p>
+            At times the page may show a Microsoft Bookings page from our
+            Microsoft 365 tenant instead. Bookings keeps what you enter there
+            with the appointment in Microsoft 365; we do not copy it to Azure
+            Table Storage or send it through SendGrid.
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">

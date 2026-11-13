@@ -1,3 +1,4 @@
+import { devMockEnabled } from "@/lib/meet/dev-mock";
 import { isValidTimeZone } from "@/lib/meet/tz";
 
 /**
@@ -99,6 +100,16 @@ export function getSlotRules(): SlotRules {
 }
 
 function getGraphSettings(): GraphSettings | null {
+  if (devMockEnabled()) {
+    // Placeholders: no Graph call is made in mock mode.
+    return {
+      tenantId: "mock",
+      clientId: "mock",
+      clientSecret: "mock",
+      host: "host@example.test",
+      linkSecret: "dev-mock-link-secret-not-for-production-use",
+    };
+  }
   const tenantId = process.env.MEET_GRAPH_TENANT_ID?.trim();
   const clientId = process.env.MEET_GRAPH_CLIENT_ID?.trim();
   const clientSecret = process.env.MEET_GRAPH_CLIENT_SECRET?.trim();

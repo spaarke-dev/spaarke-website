@@ -95,6 +95,10 @@ export function validateDetails(d: MeetDetails): MeetFieldErrors {
   }
   if (d.role.length > 100) errors.role = "Role can be up to 100 characters.";
   if (d.topic.length > TOPIC_MAX) errors.topic = `Please keep this to ${TOPIC_MAX} characters.`;
+  // Single-line fields end up in the event subject and the email subject.
+  for (const field of ["name", "email", "organization", "role"] as const) {
+    if (/[\r\n\t]/.test(d[field]) && !errors[field]) errors[field] = "Please use a single line.";
+  }
   return errors;
 }
 
@@ -114,7 +118,7 @@ export function normalizeTimeZone(tz: unknown, fallback: string): string {
 export async function verifyCaptcha(token: string): Promise<boolean> {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
   if (!secret) {
-    console.warn("[meet] RECAPTCHA_SECRET_KEY not set - skipping verification.");
+    console.warn("[meet] RECAPTCHA_SECRET_KEY not set; skipping verification.");
     return true;
   }
   if (!token) return false;

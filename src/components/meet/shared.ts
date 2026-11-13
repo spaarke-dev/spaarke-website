@@ -114,5 +114,6 @@ export const MEET_ERRORS: Record<string, string> = {
   LINK_INVALID: "This link is no longer valid. Please use the latest invitation, or book a new time.",
   UNAVAILABLE: "Booking is not available right now. Please try again shortly, or contact us and we will propose times by email.",
   BOOKING_FAILED: "We could not create the meeting. Please try again, or contact us and we will propose times by email.",
+  SAME_TIME: "That is the time the meeting already has. Please choose a different one.",
   NETWORK: "Could not reach our server. Check your connection and try again.",
 };

@@ -113,7 +113,7 @@ export function ManageBooking({
         </p>
         {mode === "moved" && (
           <p className="text-fg-mid mt-3 text-base">
-            We sent an updated invitation. The Microsoft Teams link is the same.
+            We sent an updated invitation, and the Microsoft Teams link stays the same.
           </p>
         )}
         {mode === "cancelled" && (
@@ -145,11 +145,12 @@ export function ManageBooking({
 
       {mode === "reschedule" && (
         <div className="mt-12">
-          {slots.length === 0 ? (
+          {slots.filter((s) => s !== current).length === 0 ? (
             <p className="text-fg-mid text-base">There are no other open times in the next few weeks.</p>
           ) : (
             <SlotPicker
-              slots={slots}
+              // The meeting's own time is not a new time to offer.
+              slots={slots.filter((s) => s !== current)}
               timeZone={timeZone}
               onTimeZoneChange={setTimeZone}
               selected={selected}

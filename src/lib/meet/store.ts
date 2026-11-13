@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import { TableClient } from "@azure/data-tables";
 import type { Attribution } from "@/lib/attribution";
+import { devMockEnabled, mockDelete, mockInsert, mockMerge, mockRead } from "@/lib/meet/dev-mock";
 
 /**
  * Booking records and slot locks in Table Storage.
@@ -42,7 +43,7 @@ async function getClient(table: string): Promise<TableClient | null> {
 }
 
 export function isStorageConfigured(): boolean {
-  return Boolean(process.env.STORAGE_ACCOUNT_CONNECTION);
+  return devMockEnabled() || Boolean(process.env.STORAGE_ACCOUNT_CONNECTION);
 }
 
 export function newBookingId(now = Date.now()): string {
@@ -65,6 +66,10 @@ function lockKeys(host: string, start: number) {
  * is the property the in-memory cache and rate limiter cannot give.
  */
 export async function acquireSlotLock(host: string, start: number, bookingId: string): Promise<boolean> {
+  if (devMockEnabled()) {
+    const k = lockKeys(host, start);
+    return mockInsert(LOCKS_TABLE, `${k.partitionKey}|${k.rowKey}`, { bookingId });
+  }
   const client = await getClient(LOCKS_TABLE);
   if (!client) throw new Error("Storage is not configured");
   try {
@@ -78,6 +83,12 @@ export async function acquireSlotLock(host: string, start: number, bookingId: st
 
 /** Releases a slot, but only if the given booking holds it. Never throws. */
 export async function releaseSlotLock(host: string, start: number, bookingId: string): Promise<void> {
+  if (devMockEnabled()) {
+    const k = lockKeys(host, start);
+    const key = `${k.partitionKey}|${k.rowKey}`;
+    if (mockRead<{ bookingId: string }>(LOCKS_TABLE, key)?.bookingId === bookingId) mockDelete(LOCKS_TABLE, key);
+    return;
+  }
   try {
     const client = await getClient(LOCKS_TABLE);
     if (!client) return;
@@ -121,25 +132,32 @@ export type BookingRecord = {
   utm_campaign: string;
 };
 
+/** Attribution as sent by the browser: untrusted, so typed and capped here. */
 export function attributionFields(a?: Attribution | null) {
+  const f = (v: unknown) => (typeof v === "string" ? v.slice(0, 500) : "");
   return {
-    entry_referrer: a?.entry_referrer ?? "",
-    entry_landing: a?.entry_landing ?? "",
-    first_visit_at: a?.first_visit_at ?? "",
-    ai_source: a?.ai_source ?? "",
-    utm_source: a?.utm_source ?? "",
-    utm_medium: a?.utm_medium ?? "",
-    utm_campaign: a?.utm_campaign ?? "",
+    entry_referrer: f(a?.entry_referrer),
+    entry_landing: f(a?.entry_landing),
+    first_visit_at: f(a?.first_visit_at),
+    ai_source: f(a?.ai_source),
+    utm_source: f(a?.utm_source),
+    utm_medium: f(a?.utm_medium),
+    utm_campaign: f(a?.utm_campaign),
   };
 }
 
 export async function createBooking(record: BookingRecord): Promise<void> {
+  if (devMockEnabled()) {
+    mockInsert(BOOKINGS_TABLE, record.bookingId, record);
+    return;
+  }
   const client = await getClient(BOOKINGS_TABLE);
   if (!client) throw new Error("Storage is not configured");
   await client.createEntity({ partitionKey: PARTITION, rowKey: record.bookingId, ...record });
 }
 
 export async function getBooking(bookingId: string): Promise<BookingRecord | null> {
+  if (devMockEnabled()) return mockRead<BookingRecord>(BOOKINGS_TABLE, bookingId);
   const client = await getClient(BOOKINGS_TABLE);
   if (!client) return null;
   try {
@@ -155,6 +173,10 @@ export async function updateBooking(
   bookingId: string,
   patch: Partial<Omit<BookingRecord, "bookingId">>,
 ): Promise<void> {
+  if (devMockEnabled()) {
+    mockMerge(BOOKINGS_TABLE, bookingId, { ...patch, updatedAt: new Date().toISOString() });
+    return;
+  }
   const client = await getClient(BOOKINGS_TABLE);
   if (!client) throw new Error("Storage is not configured");
   await client.updateEntity(

@@ -1,6 +1,7 @@
 import { ClientSecretCredential } from "@azure/identity";
 import type { GraphSettings } from "@/lib/meet/config";
 import type { Interval } from "@/lib/meet/slots";
+import { devMockEnabled, mockBusy, mockCancel, mockCreate, mockGet, mockMove } from "@/lib/meet/dev-mock";
 
 /**
  * The few Microsoft Graph calls the booking flow makes, over fetch. The app
@@ -121,6 +122,7 @@ type ScheduleResponse = {
 
 /** Busy, tentative, and out-of-office time on the host's calendar. */
 export async function getBusyIntervals(s: GraphSettings, range: Interval): Promise<Interval[]> {
+  if (devMockEnabled()) return mockBusy(range);
   const data = await graphFetch<ScheduleResponse>(
     s,
     `/users/${encodeURIComponent(s.host)}/calendar/getSchedule`,
@@ -163,6 +165,7 @@ export async function createMeetingEvent(
     transactionId: string;
   },
 ): Promise<CreatedEvent> {
+  if (devMockEnabled()) return mockCreate(input.start, input.end);
   const event = await graphFetch<{ id: string; onlineMeeting?: { joinUrl?: string } | null }>(
     s,
     `/users/${encodeURIComponent(s.host)}/events`,
@@ -197,6 +200,7 @@ export type EventState = { start: number; end: number; isCancelled: boolean };
 
 /** The event's current time, or null when it no longer exists. */
 export async function getMeetingEvent(s: GraphSettings, eventId: string): Promise<EventState | null> {
+  if (devMockEnabled()) return mockGet(eventId);
   try {
     const e = await graphFetch<{
       start: { dateTime: string; timeZone: string };
@@ -221,6 +225,7 @@ export async function moveMeetingEvent(
   start: number,
   end: number,
 ): Promise<void> {
+  if (devMockEnabled()) return mockMove(eventId, start, end);
   await graphFetch<unknown>(s, `/users/${encodeURIComponent(s.host)}/events/${encodeURIComponent(eventId)}`, {
     method: "PATCH",
     body: { start: utcDateTime(start), end: utcDateTime(end) },
@@ -229,6 +234,7 @@ export async function moveMeetingEvent(
 
 /** Cancels the event and sends the cancellation to attendees. */
 export async function cancelMeetingEvent(s: GraphSettings, eventId: string, comment: string): Promise<void> {
+  if (devMockEnabled()) return mockCancel(eventId);
   try {
     await graphFetch<unknown>(
       s,

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import { Button, PageHeader, Shell, Slab } from "@/components/primitives";
 import { ManageBooking } from "@/components/meet/ManageBooking";
 import { getMeetConfig } from "@/lib/meet/config";
@@ -22,6 +21,30 @@ const MESSAGES: Record<string, string> = {
   error: "We could not load your meeting just now. Please try again in a few minutes.",
 };
 
+type Loaded =
+  | { kind: "notice"; text: string }
+  | { kind: "manage"; start: string; durationMinutes: number; slots: string[] };
+
+async function load(token: string): Promise<Loaded> {
+  const config = getMeetConfig();
+  if (!config || !token) return { kind: "notice", text: MESSAGES.invalid };
+  try {
+    const found = await lookupManagedBooking(config, token);
+    if (!found.ok) return { kind: "notice", text: MESSAGES[found.reason] };
+    const { event } = found.value;
+    const slots = await getOpenSlots(config, { exclude: { start: event.start, end: event.end } });
+    return {
+      kind: "manage",
+      start: new Date(event.start).toISOString(),
+      durationMinutes: config.rules.durationMinutes,
+      slots: slots.map((s) => new Date(s).toISOString()),
+    };
+  } catch (err) {
+    console.error("[meet] manage page failed:", err);
+    return { kind: "notice", text: MESSAGES.error };
+  }
+}
+
 /**
  * Reschedule or cancel a meeting booked on /meet. Reached only through the
  * signed link in the invitation. It works whenever the Graph settings are
@@ -35,40 +58,23 @@ export default async function ManageMeeting({
 }) {
   const { t } = await searchParams;
   const token = typeof t === "string" ? t : "";
-  const config = getMeetConfig();
-
-  let content: ReactNode;
-  if (!config || !token) {
-    content = <Notice text={MESSAGES.invalid} />;
-  } else {
-    try {
-      const found = await lookupManagedBooking(config, token);
-      if (!found.ok) {
-        content = <Notice text={MESSAGES[found.reason]} />;
-      } else {
-        const { event } = found.value;
-        const slots = await getOpenSlots(config, { exclude: { start: event.start, end: event.end } });
-        content = (
-          <ManageBooking
-            token={token}
-            start={new Date(event.start).toISOString()}
-            durationMinutes={config.rules.durationMinutes}
-            initialSlots={slots.map((s) => new Date(s).toISOString())}
-          />
-        );
-      }
-    } catch (err) {
-      console.error("[meet] manage page failed:", err);
-      content = <Notice text={MESSAGES.error} />;
-    }
-  }
+  const loaded = await load(token);
 
   return (
     <Slab tone="light">
       <Shell>
         <div className="mx-auto w-full max-w-5xl">
           <PageHeader eyebrow="Meet the Spaarke team" title="Manage your meeting" />
-          {content}
+          {loaded.kind === "manage" ? (
+            <ManageBooking
+              token={token}
+              start={loaded.start}
+              durationMinutes={loaded.durationMinutes}
+              initialSlots={loaded.slots}
+            />
+          ) : (
+            <Notice text={loaded.text} />
+          )}
         </div>
       </Shell>
     </Slab>
