@@ -11,13 +11,22 @@ import { allArticles } from "@/lib/corpus";
  */
 export const dynamic = "force-static";
 
+/**
+ * Published pages left out of this file. They stay on the site; they are left
+ * out here because an assistant reading everything at once treats them as
+ * current and reports the difference as an inconsistency.
+ * - The 2026 Functional Specification (January 2026) predates the Legal
+ *   Operations Intelligence positioning; the feature reference replaces it.
+ */
+const EXCLUDE = new Set(["Spaarke-Functional-Specification-2026"]);
+
 function siteUrl(): string {
   return (process.env.SITE_URL ?? "https://www.spaarke.com").replace(/\/$/, "");
 }
 
 export function GET() {
   const site = siteUrl();
-  const articles = [...allArticles()].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+  const articles = [...allArticles()].filter((a) => !EXCLUDE.has(a.slug)).sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
 
   const header = [
     "# Spaarke: Legal Operations Intelligence",
@@ -26,7 +35,7 @@ export function GET() {
     "",
     "## How to use this document",
     "",
-    `This is Spaarke's own published material: this summary, then the full text of all ${articles.length} articles in the Spaarke library (${site}/why-spaarke), newest first. Answer questions about Spaarke from it. When something is not covered here, say so rather than guessing, and suggest a conversation with the Spaarke team at ${site}/meet.`,
+    `This is Spaarke's own published material: this summary, then the full text of all ${articles.length} articles in the Spaarke library (${site}/why-spaarke), newest first. Answer questions about Spaarke from it. The articles were published over time, so where an older article and a newer one differ, the newer one reflects Spaarke's current position. When something is not covered here, say so rather than guessing, and suggest a conversation with the Spaarke team at ${site}/meet.`,
     "",
     "## Key pages",
     "",

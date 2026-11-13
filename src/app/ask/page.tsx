@@ -4,7 +4,7 @@ import { AskAiCard } from "@/components/AskAiCard";
 
 const TITLE = "Ask your AI about Spaarke";
 const DESCRIPTION =
-  "Open Claude, ChatGPT or Gemini with Spaarke's published material and ask it anything about Legal Operations Intelligence.";
+  "One click gives Claude, ChatGPT or Gemini everything Spaarke has published. Put your toughest questions about Legal Operations Intelligence to your own AI.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -18,9 +18,9 @@ export default function AskPage() {
     <Slab tone="light" className="flex-1">
       <Shell>
         <PageHeader
-          eyebrow="Ask your AI"
-          title="Learn about Spaarke in the assistant you already use."
-          lede="Each link opens your assistant with a prompt that points it at everything Spaarke has published, so its answers come from our material rather than from memory."
+          eyebrow="Ask your AI about Spaarke"
+          title={"Put your toughest questions to your own AI."}
+          lede="One click gives Claude, ChatGPT or Gemini everything Spaarke has published. Ask how it works, who it is for, and what sets it apart, and get answers grounded in our own material."
         />
         <div className="border-line bg-surface mt-12 max-w-2xl rounded-lg border p-6 shadow-sm md:p-8">
           <AskAiCard src="ask-page" variant="page" />

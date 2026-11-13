@@ -31,12 +31,21 @@ function siteUrl(): string {
   return (process.env.SITE_URL ?? "https://www.spaarke.com").replace(/\/$/, "");
 }
 
-/** The prompt every provider receives. Kept short: it is a URL parameter. */
+/**
+ * The prompt every provider receives. Kept short: it is a URL parameter.
+ *
+ * It asks for a briefing, not a review. An earlier version ended "tell me when
+ * something is not covered", and Claude read that as a request to audit the
+ * material for gaps and inconsistencies. What is not covered is now handled
+ * by sending the reader to the team.
+ */
 export function askPrompt(): string {
   return (
-    `Read ${siteUrl()}/llms-full.txt, which is Spaarke's own published material. ` +
-    "Give me a short overview of Spaarke: what it does, who it is for, and how it is built. " +
-    "Then answer my follow-up questions from that document, and tell me when something is not covered there."
+    `Read ${siteUrl()}/llms-full.txt, Spaarke's own published material. ` +
+    "Brief me on Spaarke in a few short paragraphs: the problem it solves for legal organizations, " +
+    "what it does, who it is for, and why it is built the way it is. " +
+    "Then suggest three questions I might ask next, and answer my follow-ups from that material. " +
+    `If something is not covered there, say so briefly and point me to ${siteUrl()}/meet to ask the Spaarke team.`
   );
 }
 

@@ -48,7 +48,7 @@ export function AskAiCard({ src, variant = "rail" }: Props) {
         Ask your AI about Spaarke
       </h2>
       <p className={page ? "text-fg-mid mt-3 text-base leading-relaxed" : "text-fg-mid mt-3 text-[13px] leading-snug"}>
-        Open your own assistant with our published material, and ask it anything.
+        One click gives your assistant everything we have published. Then ask it anything.
       </p>
       <div className={page ? "mt-6 flex flex-wrap gap-3" : "mt-3 flex flex-col gap-2"}>
         {ASK_PROVIDERS.map((p) => (
