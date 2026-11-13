@@ -352,3 +352,93 @@ export async function sendDailyReport(data: {
     return { sent: false, error: message };
   }
 }
+
+/**
+ * A meeting booked, moved, or cancelled through the Graph flow on /meet. The
+ * calendar event is on the host's calendar already; this mail is what puts it
+ * in front of the rest of the team, alongside the other leads. Reply-to is the
+ * visitor.
+ */
+export async function sendMeetingNotification(data: {
+  kind: "booked" | "rescheduled" | "cancelled";
+  bookingId: string;
+  stored: boolean;
+  start: number;
+  previousStart?: number;
+  hostTimeZone: string;
+  visitorTimeZone: string;
+  name: string;
+  email: string;
+  organization: string;
+  role?: string;
+  topic?: string;
+  note?: string;
+  attribution?: Record<string, string>;
+}): Promise<{ sent: true } | { sent: false; error: string }> {
+  if (!ensureInit()) {
+    return { sent: false, error: "SendGrid not configured." };
+  }
+
+  const to = process.env.CONTACT_EMAIL_TO;
+  const from = process.env.SENDGRID_FROM_EMAIL;
+  if (!to || !from) {
+    console.warn("[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set - skipping.");
+    return { sent: false, error: "Email recipients not configured." };
+  }
+
+  const when = (ms: number, tz: string) =>
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      dateStyle: "full",
+      timeStyle: "short",
+      timeZoneName: "short",
+    }).format(new Date(ms));
+
+  const heading = {
+    booked: "New meeting booked on /meet",
+    rescheduled: "Meeting moved on /meet",
+    cancelled: "Meeting cancelled on /meet",
+  }[data.kind];
+
+  const attribution = Object.entries(data.attribution ?? {})
+    .filter(([, v]) => v)
+    .map(([k, v]) => `${k}: ${v}`);
+
+  const text = [
+    heading,
+    data.stored
+      ? `Saved in Table Storage, MeetingBookings, row ${data.bookingId}.`
+      : `NOT SAVED to Table Storage (booking ${data.bookingId}). The calendar event and this mail are the record.`,
+    "",
+    `When:          ${when(data.start, data.hostTimeZone)}`,
+    ...(data.previousStart !== undefined
+      ? [`Was:           ${when(data.previousStart, data.hostTimeZone)}`]
+      : []),
+    `Visitor zone:  ${data.visitorTimeZone}`,
+    "",
+    `Name:          ${data.name}`,
+    `Email:         ${data.email}`,
+    `Organization:  ${data.organization}`,
+    `Role:          ${data.role || "(not provided)"}`,
+    "",
+    "What to cover:",
+    data.topic || "(not provided)",
+    ...(data.note ? ["", "Note from the visitor:", data.note] : []),
+    ...(attribution.length ? ["", "Attribution:", ...attribution] : []),
+  ].join("\n");
+
+  try {
+    await sgMail.send({
+      to,
+      from,
+      replyTo: data.email,
+      subject: `[Spaarke] ${heading} - ${data.organization}`,
+      text,
+    });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send meeting notification:", message);
+    return { sent: false, error: message };
+  }
+}
