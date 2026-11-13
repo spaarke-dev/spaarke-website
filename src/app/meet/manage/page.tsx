@@ -64,7 +64,7 @@ export default async function ManageMeeting({
     <Slab tone="light">
       <Shell>
         <div className="mx-auto w-full max-w-5xl">
-          <PageHeader eyebrow="Meet the Spaarke team" title="Manage your meeting" />
+          <PageHeader eyebrow="Book a meeting" title="Manage your meeting" />
           {loaded.kind === "manage" ? (
             <ManageBooking
               token={token}

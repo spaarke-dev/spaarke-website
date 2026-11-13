@@ -76,8 +76,8 @@ export default async function Meet() {
       <Shell>
         <div className="mx-auto w-full max-w-5xl">
           <PageHeader
-            eyebrow="Meet the Spaarke team"
-            title="Book time with us"
+            eyebrow="Book a meeting"
+            title="Let’s meet"
             lede={
               canBook
                 ? "Choose a time that works for you. You will receive a calendar invitation with a Microsoft Teams link."
