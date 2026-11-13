@@ -388,25 +388,11 @@ type MeetingNotification = {
   role?: string;
   topic?: string;
   note?: string;
+  guests?: string[];
   attribution?: Record<string, string>;
 };
 
-async function sendMeetingNotificationUnsafe(data: {
-  kind: "booked" | "rescheduled" | "cancelled";
-  bookingId: string;
-  stored: boolean;
-  start: number;
-  previousStart?: number;
-  hostTimeZone: string;
-  visitorTimeZone: string;
-  name: string;
-  email: string;
-  organization: string;
-  role?: string;
-  topic?: string;
-  note?: string;
-  attribution?: Record<string, string>;
-}): Promise<{ sent: true } | { sent: false; error: string }> {
+async function sendMeetingNotificationUnsafe(data: MeetingNotification): Promise<{ sent: true } | { sent: false; error: string }> {
   if (!ensureInit()) {
     return { sent: false, error: "SendGrid not configured." };
   }
@@ -458,6 +444,7 @@ async function sendMeetingNotificationUnsafe(data: {
     `Email:         ${data.email}`,
     `Organization:  ${data.organization}`,
     `Role:          ${data.role || "(not provided)"}`,
+    `Guests:        ${data.guests?.length ? data.guests.join(", ") : "(none)"}`,
     "",
     "What to cover:",
     data.topic || "(not provided)",

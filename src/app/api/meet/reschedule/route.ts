@@ -7,7 +7,8 @@ import { moveMeetingEvent } from "@/lib/meet/graph";
 import { getMeetConfig } from "@/lib/meet/config";
 import { errorOf, json, lookupManagedBooking } from "@/lib/meet/routes";
 import { getOpenSlots, invalidateAvailability, isSlotStillClear, slotEnd } from "@/lib/meet/service";
-import { acquireSlotLock, releaseSlotLock, updateBooking } from "@/lib/meet/store";
+import { sendBookingEmails } from "@/lib/meet/notify";
+import { acquireSlotLock, guestsOf, releaseSlotLock, updateBooking } from "@/lib/meet/store";
 
 // A meeting moved twice comes back to a slot it held before; that row was
 // deleted when it moved away, so the insert succeeds.
@@ -69,6 +70,7 @@ export async function POST(request: NextRequest) {
         status: "rescheduled",
         start: new Date(start).toISOString(),
         end: new Date(end).toISOString(),
+        movedAt: new Date().toISOString(),
       });
     } catch (err) {
       stored = false;
@@ -88,7 +90,16 @@ export async function POST(request: NextRequest) {
       organization: booking.organization,
       role: booking.role,
       topic: booking.topic,
+      guests: guestsOf(booking),
     });
+
+    await sendBookingEmails(
+      "moved",
+      config,
+      booking,
+      { start, previousStart: event.start, joinUrl: event.joinUrl ?? booking.joinUrl ?? null },
+      { includeGuests: true },
+    );
 
     trackEvent("meet.rescheduled");
     await flushTelemetry();

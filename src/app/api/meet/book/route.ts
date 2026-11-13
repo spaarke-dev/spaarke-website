@@ -13,6 +13,7 @@ import {
   invitationSubject,
   isSlotStillClear,
   manageUrl,
+  normalizeGuests,
   normalizeTimeZone,
   slotEnd,
   validateDetails,
@@ -29,11 +30,13 @@ import {
   updateBooking,
 } from "@/lib/meet/store";
 import { createManageToken } from "@/lib/meet/tokens";
+import { sendBookingEmails } from "@/lib/meet/notify";
 
 export const dynamic = "force-dynamic";
 
 type Body = Partial<Record<keyof MeetDetails | "start" | "captchaToken" | "hp", string>> & {
   attribution?: Attribution | null;
+  guests?: unknown;
 };
 
 const str = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -75,7 +78,10 @@ export async function POST(request: NextRequest) {
     topic: str(body.topic, 2000),
     timeZone: normalizeTimeZone(body.timeZone, config.rules.hostTimeZone),
   };
-  const fields = validateDetails(details);
+  const fields: Record<string, string> = validateDetails(details);
+  const guestCheck = normalizeGuests(body.guests, details.email, config.host);
+  if (!guestCheck.ok) fields.guests = guestCheck.error;
+  const guests = guestCheck.ok ? guestCheck.guests : [];
   const start = Date.parse(str(body.start, 40));
   if (Object.keys(fields).length > 0 || !Number.isFinite(start)) {
     trackEvent("meet.validation_failed", { fields: Object.keys(fields).join(",") });
@@ -132,6 +138,7 @@ export async function POST(request: NextRequest) {
       ipHash,
       createdAt: now,
       updatedAt: now,
+      guests: JSON.stringify(guests),
       ...attributionFields(body.attribution),
     });
   } catch (err) {
@@ -146,16 +153,18 @@ export async function POST(request: NextRequest) {
   const link = manageUrl(token);
 
   let eventId: string;
+  let joinUrl: string | null;
   try {
     const event = await createMeetingEvent(config, {
       subject: invitationSubject(details),
       htmlBody: invitationBody(details, link),
       start,
       end,
-      attendee: { name: details.name, email: details.email },
+      attendees: [{ name: details.name, email: details.email }, ...guests.map((email) => ({ email }))],
       transactionId: bookingId,
     });
     eventId = event.id;
+    joinUrl = event.joinUrl;
   } catch (err) {
     await releaseSlotLock(config.host, start, bookingId);
     await updateBooking(bookingId, { status: "failed" }).catch(() => undefined);
@@ -169,7 +178,7 @@ export async function POST(request: NextRequest) {
 
   let stored = true;
   try {
-    await updateBooking(bookingId, { status: "booked", eventId });
+    await updateBooking(bookingId, { status: "booked", eventId, joinUrl: joinUrl ?? "" });
   } catch (err) {
     // The meeting exists and the invitation is sent. The manage link will not
     // find the event until the row is fixed by hand, which the email says.
@@ -190,12 +199,25 @@ export async function POST(request: NextRequest) {
     organization: details.organization,
     role: details.role,
     topic: details.topic,
+    guests,
     attribution: attributionFields(body.attribution),
   });
   if (!sent.sent) trackEvent("meet.email_failed", { kind: "booked" });
 
+  // The branded confirmation goes to the booker even when the address is the
+  // host's own, which Exchange sends no invitation to. Guests already have
+  // the Outlook invitation, so their first branded email is a reminder.
+  await sendBookingEmails(
+    "confirmation",
+    config,
+    { bookingId, name: details.name, email: details.email, visitorTimeZone: details.timeZone },
+    { start, joinUrl, guests },
+    { includeGuests: false },
+  );
+
   trackEvent("meet.booked", {
     stored: String(stored),
+    guests: String(guests.length),
     entry_referrer: body.attribution?.entry_referrer ?? "",
     ai_source: body.attribution?.ai_source ?? "",
   });
@@ -206,6 +228,7 @@ export async function POST(request: NextRequest) {
     start: new Date(start).toISOString(),
     end: new Date(end).toISOString(),
     manageUrl: link,
+    guests,
   });
 }
 

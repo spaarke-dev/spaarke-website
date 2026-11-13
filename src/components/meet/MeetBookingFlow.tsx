@@ -5,6 +5,7 @@ import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
 import InlineAlert from "@/components/InlineAlert";
 import { Button } from "@/components/primitives";
+import { GuestList } from "@/components/meet/GuestList";
 import { SlotPicker } from "@/components/meet/SlotPicker";
 import {
   MEET_ERRORS,
@@ -18,7 +19,7 @@ import { readAttribution, submissionProps } from "@/lib/attribution";
 import { track } from "@/lib/analytics";
 
 type Fields = "name" | "email" | "organization" | "role" | "topic";
-type FieldErrors = Partial<Record<Fields, string>>;
+type FieldErrors = Partial<Record<Fields | "guests", string>>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TOPIC_MAX = 1000;
@@ -32,7 +33,7 @@ function validate(v: Record<Fields, string>): FieldErrors {
   return e;
 }
 
-type Booked = { start: string; email: string; manageUrl: string };
+type Booked = { start: string; email: string; manageUrl: string; guests: string[] };
 
 export function MeetBookingFlow({
   initialSlots,
@@ -54,6 +55,7 @@ export function MeetBookingFlow({
     role: "",
     topic: "",
   });
+  const [guests, setGuests] = useState<string[]>([]);
   const [hp, setHp] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [error, setError] = useState("");
@@ -115,6 +117,7 @@ export function MeetBookingFlow({
           role: values.role.trim(),
           topic: values.topic.trim(),
           timeZone,
+          guests,
           hp,
           captchaToken,
           attribution: readAttribution(),
@@ -126,6 +129,7 @@ export function MeetBookingFlow({
         fields?: FieldErrors;
         start?: string;
         manageUrl?: string;
+        guests?: string[];
       };
 
       if (!res.ok || !data.ok) {
@@ -143,8 +147,13 @@ export function MeetBookingFlow({
         return;
       }
 
-      track("Meeting Booked", submissionProps());
-      setBooked({ start: data.start ?? selected, email: values.email.trim(), manageUrl: data.manageUrl ?? "" });
+      track("Meeting Booked", { ...submissionProps(), guests: String(guests.length) });
+      setBooked({
+        start: data.start ?? selected,
+        email: values.email.trim(),
+        manageUrl: data.manageUrl ?? "",
+        guests: data.guests ?? guests,
+      });
       setStep("done");
       requestAnimationFrame(() => headingRef.current?.focus());
     } catch {
@@ -173,14 +182,20 @@ export function MeetBookingFlow({
           {formatMeeting(booked.start, durationMinutes, timeZone)}
         </p>
         <p className="text-fg-mid mt-4 text-base">
-          We sent a calendar invitation to {booked.email} with the Microsoft Teams link. If it is not in
-          your inbox in a few minutes, check your junk folder.
+          We sent a calendar invitation with the Microsoft Teams link and a confirmation email to{" "}
+          {booked.email}. If they are not in your inbox in a few minutes, check your junk folder. We will
+          also email a reminder the day before and an hour before.
         </p>
+        {booked.guests.length > 0 && (
+          <p className="text-fg-mid mt-4 text-base">
+            We also invited {booked.guests.join(", ")}.
+          </p>
+        )}
         {booked.manageUrl && (
           <p className="text-fg-mid mt-4 text-base">
-            Need a different time? Use the link in the invitation, or{" "}
+            Need a different time, or want to invite someone else? Use the link in the email, or{" "}
             <a href={booked.manageUrl} className="text-cta-blue underline underline-offset-2">
-              reschedule or cancel here
+              manage your meeting here
             </a>
             .
           </p>
@@ -282,6 +297,15 @@ export function MeetBookingFlow({
                 </p>
               )}
             </div>
+            <GuestList
+              guests={guests}
+              onChange={(next) => {
+                setGuests(next);
+                if (fieldErrors.guests) setFieldErrors((f) => ({ ...f, guests: undefined }));
+              }}
+              ownEmail={values.email}
+              error={fieldErrors.guests}
+            />
           </div>
 
           {/* Honeypot: hidden from people and assistive technology. */}

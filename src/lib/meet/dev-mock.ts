@@ -13,7 +13,7 @@ export function devMockEnabled(): boolean {
   return process.env.NODE_ENV === "development" && process.env.MEET_DEV_MOCK === "1";
 }
 
-type MockEvent = Interval & { id: string; isCancelled: boolean };
+type MockEvent = Interval & { id: string; isCancelled: boolean; joinUrl: string; attendees: string[] };
 
 type MockState = {
   events: Map<string, MockEvent>;
@@ -44,15 +44,21 @@ export function mockBusy(range: Interval): Interval[] {
   return [...s.fixedBusy, ...events].filter((b) => b.start < range.end && range.start < b.end).map((b) => ({ start: b.start, end: b.end }));
 }
 
-export function mockCreate(start: number, end: number): { id: string; joinUrl: string } {
+export function mockCreate(start: number, end: number, attendees: string[]): { id: string; joinUrl: string } {
   const id = `mock-${Math.random().toString(36).slice(2, 10)}`;
-  state().events.set(id, { id, start, end, isCancelled: false });
-  return { id, joinUrl: "https://teams.microsoft.com/l/meetup-join/mock" };
+  const joinUrl = `https://teams.microsoft.com/l/meetup-join/${id}`;
+  state().events.set(id, { id, start, end, isCancelled: false, joinUrl, attendees });
+  return { id, joinUrl };
 }
 
 export function mockGet(id: string) {
   const e = state().events.get(id);
-  return e ? { start: e.start, end: e.end, isCancelled: e.isCancelled } : null;
+  return e ? { start: e.start, end: e.end, isCancelled: e.isCancelled, joinUrl: e.joinUrl } : null;
+}
+
+export function mockSetAttendees(id: string, attendees: string[]) {
+  const e = state().events.get(id);
+  if (e) e.attendees = attendees;
 }
 
 export function mockMove(id: string, start: number, end: number) {
@@ -74,11 +80,29 @@ function table(name: string) {
   return t;
 }
 
+// Each row carries an ETag that changes on every write, like Table Storage.
+let etagCounter = 0;
+const nextEtag = () => `mock-${++etagCounter}`;
+
 export function mockInsert(name: string, key: string, row: Record<string, unknown>): boolean {
   const t = table(name);
   if (t.has(key)) return false;
-  t.set(key, { ...row });
+  t.set(key, { ...row, etag: nextEtag() });
   return true;
+}
+
+export function mockList<T>(name: string): T[] {
+  return [...table(name).values()].map((r) => ({ ...r }) as T);
+}
+
+/** Merges only when the row's ETag still matches; returns the new ETag or null. */
+export function mockMergeIf(name: string, key: string, etag: string, patch: Record<string, unknown>): string | null {
+  const t = table(name);
+  const row = t.get(key);
+  if (!row || row.etag !== etag) return null;
+  const next = nextEtag();
+  t.set(key, { ...row, ...patch, etag: next });
+  return next;
 }
 
 export function mockRead<T>(name: string, key: string): T | null {
@@ -87,7 +111,7 @@ export function mockRead<T>(name: string, key: string): T | null {
 
 export function mockMerge(name: string, key: string, patch: Record<string, unknown>) {
   const t = table(name);
-  t.set(key, { ...(t.get(key) ?? {}), ...patch });
+  t.set(key, { ...(t.get(key) ?? {}), ...patch, etag: nextEtag() });
 }
 
 export function mockDelete(name: string, key: string) {

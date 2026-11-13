@@ -1,6 +1,6 @@
 # Meeting Emails and Guests: AI Implementation Specification
 
-> **Status**: Draft for review
+> **Status**: Approved 2026-11-13
 > **Created**: 2026-11-13
 > **Source**: Owner request after the /meet Graph cutover (2026-11-13), plus
 > the answers to three design questions. Builds on
@@ -104,10 +104,10 @@ email arrived at all. A SendGrid confirmation goes out whatever the address.
    - The 24-hour reminder is due from 24 hours before the start until 20
      hours before; the 1-hour reminder from 60 minutes before until 10
      minutes before. A run that finds a reminder past its window skips it.
-   - A reminder is skipped when the booking or the latest move happened less
-     than 12 hours before the reminder fell due. In practice: a meeting
-     booked 25 hours ahead gets no 24-hour reminder, since the confirmation
-     arrived an hour earlier.
+   - A reminder is skipped when the booking or the latest move happened too
+     shortly before it fell due: 12 hours for the 24-hour reminder, 30
+     minutes for the 1-hour one. In practice: a meeting booked 25 hours ahead
+     gets no 24-hour reminder, since the confirmation arrived an hour earlier.
    - Cancelled, failed, and pending bookings get no reminders.
    - Each reminder is sent at most once per meeting time. The row records the
      start time each reminder was sent for (`reminder24hFor`,
@@ -154,8 +154,8 @@ email arrived at all. A SendGrid confirmation goes out whatever the address.
    list, validates it as in FR-08, PATCHes the event's attendees (booker plus
    guests), and updates the row. Exchange sends the invitation to added
    guests and a cancellation to removed ones. Limits: 10 guest changes per
-   booking, plus the existing per-IP rate limit (bucket `meet-guests`, 10 per
-   hour). Rejected for cancelled or past meetings.
+   booking, plus the existing per-IP rate limit (bucket `meet-guests`, 5 per
+   minute). Rejected for cancelled or past meetings.
 10. **FR-10 Data.** New `MeetingBookings` fields: `guests` (a JSON array of
     addresses, at most five), `joinUrl` (stored at booking time, for
     reminders), `reminder24hFor`, `reminder1hFor`, `guestChanges`, and
@@ -275,8 +275,8 @@ email arrived at all. A SendGrid confirmation goes out whatever the address.
   Outlook invitation, which already names the time and Teams link.
 - **Guest time zone**: unknown, so guest emails show the booker's zone with
   its name.
-- **Skip rule of 12 hours** for a reminder that would follow the
-  confirmation too closely.
+- **Skip rules of 12 hours and 30 minutes** for a reminder that would follow
+  the confirmation or a move too closely.
 - **Logic App name and location**: `logic-spaarke-meet-reminders`, same
   region as the storage account.
 

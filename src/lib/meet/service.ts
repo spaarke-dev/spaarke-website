@@ -102,6 +102,45 @@ export function validateDetails(d: MeetDetails): MeetFieldErrors {
   return errors;
 }
 
+export const GUESTS_MAX = 5;
+
+/**
+ * Cleans the guest list from a request: trims, drops blanks and repeats
+ * (case insensitive), and rejects anything that is not an address, the
+ * booker's own address, the host's, or more than five. The error is the text
+ * shown under the field.
+ */
+export function normalizeGuests(
+  input: unknown,
+  bookerEmail: string,
+  host: string,
+): { ok: true; guests: string[] } | { ok: false; error: string } {
+  if (input === undefined || input === null) return { ok: true, guests: [] };
+  if (!Array.isArray(input)) return { ok: false, error: "Please list each guest's email address." };
+  const seen = new Set<string>();
+  const guests: string[] = [];
+  for (const raw of input) {
+    if (typeof raw !== "string") return { ok: false, error: "Please list each guest's email address." };
+    const email = raw.trim();
+    if (!email) continue;
+    const key = email.toLowerCase();
+    if (email.length > 254 || !EMAIL_RE.test(email) || /[\r\n\t,;<>]/.test(email)) {
+      return { ok: false, error: `"${email.slice(0, 60)}" is not a valid email address.` };
+    }
+    if (key === bookerEmail.trim().toLowerCase()) {
+      return { ok: false, error: "Your own address is already on the invitation." };
+    }
+    if (key === host.trim().toLowerCase()) {
+      return { ok: false, error: "The Spaarke host is already on the invitation." };
+    }
+    if (seen.has(key)) continue;
+    seen.add(key);
+    guests.push(email);
+  }
+  if (guests.length > GUESTS_MAX) return { ok: false, error: `You can invite up to ${GUESTS_MAX} guests.` };
+  return { ok: true, guests };
+}
+
 export function normalizeTimeZone(tz: unknown, fallback: string): string {
   return typeof tz === "string" && isValidTimeZone(tz) ? tz : fallback;
 }

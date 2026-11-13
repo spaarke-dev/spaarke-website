@@ -3,23 +3,28 @@
 import { useRef, useState } from "react";
 import InlineAlert from "@/components/InlineAlert";
 import { Button } from "@/components/primitives";
+import { GuestList } from "@/components/meet/GuestList";
 import { SlotPicker } from "@/components/meet/SlotPicker";
 import { MEET_ERRORS, formatMeeting, inputBase, inputBorder, labelClass, useVisitorTimeZone } from "@/components/meet/shared";
 import { track } from "@/lib/analytics";
 
 type Mode = "view" | "reschedule" | "cancel" | "moved" | "cancelled";
 
-/** Reschedule or cancel one booking, from the signed link in its invitation. */
+/** Reschedule, cancel, or change the guests of one booking, from its signed link. */
 export function ManageBooking({
   token,
   start,
   durationMinutes,
   initialSlots,
+  initialGuests,
+  ownEmail,
 }: {
   token: string;
   start: string;
   durationMinutes: number;
   initialSlots: string[];
+  initialGuests: string[];
+  ownEmail: string;
 }) {
   const [timeZone, setTimeZone] = useVisitorTimeZone();
   const [current, setCurrent] = useState(start);
@@ -29,6 +34,10 @@ export function ManageBooking({
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [savedGuests, setSavedGuests] = useState(initialGuests);
+  const [guests, setGuests] = useState(initialGuests);
+  const [guestError, setGuestError] = useState("");
+  const [guestNotice, setGuestNotice] = useState("");
   const statusRef = useRef<HTMLHeadingElement>(null);
 
   async function refreshSlots() {
@@ -41,7 +50,7 @@ export function ManageBooking({
     }
   }
 
-  async function post(path: string, body: Record<string, string>) {
+  async function post(path: string, body: Record<string, unknown>) {
     setBusy(true);
     setError("");
     try {
@@ -50,8 +59,18 @@ export function ManageBooking({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, ...body }),
       });
-      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; start?: string };
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        start?: string;
+        guests?: string[];
+        fields?: { guests?: string };
+      };
       if (!res.ok || !data.ok) {
+        if (data.fields?.guests) {
+          setGuestError(data.fields.guests);
+          return null;
+        }
         if (data.error === "SLOT_TAKEN") {
           setSelected(null);
           await refreshSlots();
@@ -85,6 +104,26 @@ export function ManageBooking({
       track("Meeting Cancelled");
       setMode("cancelled");
       requestAnimationFrame(() => statusRef.current?.focus());
+    }
+  }
+
+  const guestsChanged =
+    guests.length !== savedGuests.length || guests.some((g, i) => g.toLowerCase() !== savedGuests[i]?.toLowerCase());
+
+  async function saveGuests() {
+    setGuestNotice("");
+    const added = guests.filter((g) => !savedGuests.some((s) => s.toLowerCase() === g.toLowerCase()));
+    const data = await post("/api/meet/guests", { guests });
+    if (data) {
+      track("Meeting Guests Updated", { count: String(guests.length) });
+      const next = data.guests ?? guests;
+      setSavedGuests(next);
+      setGuests(next);
+      setGuestNotice(
+        added.length > 0
+          ? `Saved. We sent the invitation to ${added.join(", ")}.`
+          : "Saved. Anyone you removed gets a cancellation from their calendar.",
+      );
     }
   }
 
@@ -140,6 +179,44 @@ export function ManageBooking({
       {error && (
         <div className="mt-8">
           <InlineAlert variant="error" message={error} />
+        </div>
+      )}
+
+      {(mode === "view" || mode === "moved") && (
+        <div className="border-line mt-8 max-w-2xl rounded-xl border p-6 md:p-8">
+          <GuestList
+            guests={guests}
+            onChange={(next) => {
+              setGuests(next);
+              setGuestError("");
+              setGuestNotice("");
+            }}
+            ownEmail={ownEmail}
+            error={guestError}
+            label="Guests"
+            hint="Invite colleagues to this meeting. They get the invitation with the Teams link and the reminders; only you can move or cancel it. Up to 5."
+          />
+          {guestsChanged && (
+            <div className="mt-6 flex justify-end gap-3">
+              <Button
+                variant="text"
+                onClick={() => {
+                  setGuests(savedGuests);
+                  setGuestError("");
+                }}
+              >
+                Undo
+              </Button>
+              <Button variant="primary" disabled={busy} onClick={saveGuests}>
+                {busy ? "Saving…" : "Save guests"}
+              </Button>
+            </div>
+          )}
+          {guestNotice && (
+            <p className="text-fg-mid mt-4 text-sm" role="status">
+              {guestNotice}
+            </p>
+          )}
         </div>
       )}
 

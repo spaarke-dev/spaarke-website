@@ -4,6 +4,7 @@ import { ManageBooking } from "@/components/meet/ManageBooking";
 import { getMeetConfig } from "@/lib/meet/config";
 import { lookupManagedBooking } from "@/lib/meet/routes";
 import { getOpenSlots } from "@/lib/meet/service";
+import { guestsOf } from "@/lib/meet/store";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,7 @@ const MESSAGES: Record<string, string> = {
 
 type Loaded =
   | { kind: "notice"; text: string }
-  | { kind: "manage"; start: string; durationMinutes: number; slots: string[] };
+  | { kind: "manage"; start: string; durationMinutes: number; slots: string[]; guests: string[]; email: string };
 
 async function load(token: string): Promise<Loaded> {
   const config = getMeetConfig();
@@ -31,13 +32,15 @@ async function load(token: string): Promise<Loaded> {
   try {
     const found = await lookupManagedBooking(config, token);
     if (!found.ok) return { kind: "notice", text: MESSAGES[found.reason] };
-    const { event } = found.value;
+    const { booking, event } = found.value;
     const slots = await getOpenSlots(config, { exclude: { start: event.start, end: event.end } });
     return {
       kind: "manage",
       start: new Date(event.start).toISOString(),
       durationMinutes: config.rules.durationMinutes,
       slots: slots.map((s) => new Date(s).toISOString()),
+      guests: guestsOf(booking),
+      email: booking.email,
     };
   } catch (err) {
     console.error("[meet] manage page failed:", err);
@@ -46,7 +49,7 @@ async function load(token: string): Promise<Loaded> {
 }
 
 /**
- * Reschedule or cancel a meeting booked on /meet. Reached only through the
+ * Reschedule, cancel, or invite guests to a meeting booked on /meet. Reached only through the
  * signed link in the invitation. It works whenever the Graph settings are
  * present, even if /meet has been switched back to the Bookings embed, so
  * links already sent keep working through a rollback.
@@ -71,6 +74,8 @@ export default async function ManageMeeting({
               start={loaded.start}
               durationMinutes={loaded.durationMinutes}
               initialSlots={loaded.slots}
+              initialGuests={loaded.guests}
+              ownEmail={loaded.email}
             />
           ) : (
             <Notice text={loaded.text} />
