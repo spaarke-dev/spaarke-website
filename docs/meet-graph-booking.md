@@ -148,6 +148,19 @@ production build ignores it.
 
 `npm run meet:check` runs the slot, time zone, and manage link checks.
 
+`npm run meet:graph` checks the live tenant from `.env.local` without
+printing secrets:
+
+- `access --outside <mailbox>`: the host's schedule reads, and a mailbox
+  outside the scope gets 403.
+- `block <ISO start> [minutes]` and `unblock <event id>`: create and delete
+  a plain busy event for the "meeting added in Outlook" check.
+- `event <event id>`: an event's time, attendees, and a hash of its Teams
+  link, to confirm a move kept the same link.
+
+Last run against the real host on 2026-11-13: every item in the checklist
+passed, and the test meetings were cancelled afterward.
+
 ## 5. App settings and cutover
 
 Copy the values into the static web app. Every other secret on the site is a

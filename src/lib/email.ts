@@ -358,8 +358,40 @@ export async function sendDailyReport(data: {
  * calendar event is on the host's calendar already; this mail is what puts it
  * in front of the rest of the team, alongside the other leads. Reply-to is the
  * visitor.
+ *
+ * Never throws. It runs after the meeting already exists, so a failure here
+ * must not turn a booking the visitor has into an error on their screen.
  */
-export async function sendMeetingNotification(data: {
+export async function sendMeetingNotification(
+  data: MeetingNotification,
+): Promise<{ sent: true } | { sent: false; error: string }> {
+  try {
+    return await sendMeetingNotificationUnsafe(data);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to build meeting notification:", message);
+    return { sent: false, error: message };
+  }
+}
+
+type MeetingNotification = {
+  kind: "booked" | "rescheduled" | "cancelled";
+  bookingId: string;
+  stored: boolean;
+  start: number;
+  previousStart?: number;
+  hostTimeZone: string;
+  visitorTimeZone: string;
+  name: string;
+  email: string;
+  organization: string;
+  role?: string;
+  topic?: string;
+  note?: string;
+  attribution?: Record<string, string>;
+};
+
+async function sendMeetingNotificationUnsafe(data: {
   kind: "booked" | "rescheduled" | "cancelled";
   bookingId: string;
   stored: boolean;
@@ -386,11 +418,17 @@ export async function sendMeetingNotification(data: {
     return { sent: false, error: "Email recipients not configured." };
   }
 
+  // Explicit fields: Intl refuses dateStyle or timeStyle combined with
+  // timeZoneName, and the zone name is the part the team needs.
   const when = (ms: number, tz: string) =>
     new Intl.DateTimeFormat("en-US", {
       timeZone: tz,
-      dateStyle: "full",
-      timeStyle: "short",
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
       timeZoneName: "short",
     }).format(new Date(ms));
 
