@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ASK_PROVIDERS, ASK_PROVIDER_LABEL, askLink, askPrompt, type AskProvider } from "@/lib/ask-ai";
+import { useState, useSyncExternalStore } from "react";
+import { ASK_PROVIDERS, ASK_PROVIDER_LABEL, askLink, askPrompt, isBriefKey, type AskProvider } from "@/lib/ask-ai";
 
 type Props = {
   /** Where the card sits, recorded with each click (for example "article" or "ask-page"). */
@@ -11,19 +11,27 @@ type Props = {
 };
 
 /**
- * "Ask your AI about Spaarke". Three links that open Claude, ChatGPT or Gemini
- * with a prompt pointing at /llms-full.txt.
+ * "Learn more about Spaarke". Three links that open Claude, ChatGPT or Gemini
+ * with a prompt pointing at /llms-full.txt, or at a private brief when the page
+ * was opened from a link carrying one (`?k=`, from an investor email).
  *
  * Clicking also copies the prompt, because not every provider fills it in from
  * the link (see src/lib/ask-ai.ts). The note under the buttons tells the reader
  * it is on their clipboard.
  */
+const noSubscribe = () => () => {};
+
 export function AskAiCard({ src, variant = "rail" }: Props) {
   const [copied, setCopied] = useState<AskProvider | null>(null);
+  // The page is static, so the key is read from the address in the browser
+  // (empty during prerender).
+  const search = useSyncExternalStore(noSubscribe, () => window.location.search, () => "");
+  const k = new URLSearchParams(search).get("k");
+  const briefKey = isBriefKey(k) ? k : undefined;
 
   const onClick = async (provider: AskProvider) => {
     try {
-      await navigator.clipboard.writeText(askPrompt());
+      await navigator.clipboard.writeText(askPrompt(briefKey));
       setCopied(provider);
     } catch {
       // Clipboard unavailable: the link still opens the provider.
@@ -52,7 +60,7 @@ export function AskAiCard({ src, variant = "rail" }: Props) {
         {ASK_PROVIDERS.map((p) => (
           <a
             key={p}
-            href={askLink(p, src)}
+            href={askLink(p, src, briefKey)}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => void onClick(p)}

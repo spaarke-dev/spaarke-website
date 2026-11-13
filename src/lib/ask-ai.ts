@@ -27,13 +27,23 @@ export function isAskProvider(value: string): value is AskProvider {
   return (ASK_PROVIDERS as readonly string[]).includes(value);
 }
 
-function siteUrl(): string {
+export function siteUrl(): string {
   return (process.env.SITE_URL ?? "https://www.spaarke.com").replace(/\/$/, "");
 }
 
 /**
+ * A private brief key: the unguessable part of /brief/<key>, the unlisted
+ * copy of the material that adds the investor overview. The key arrives on
+ * an email link as `k`; the overview itself lives in Table Storage under that
+ * key (src/lib/private-brief.ts), never in this repository.
+ */
+export function isBriefKey(value: string | null | undefined): value is string {
+  return typeof value === "string" && /^[A-Za-z0-9_-]{20,64}$/.test(value);
+}
+
+/**
  * The shape of the first answer. The prompt carries it, because an assistant
- * follows the reader's own prompt reliably; /llms-full.txt repeats it at the
+ * follows the reader's own prompt reliably; the text file repeats it at the
  * top as a backstop, though assistants treat instructions inside a fetched
  * file as advisory.
  */
@@ -54,6 +64,25 @@ export const FOLLOW_UPS = [
   "How is Spaarke different from other legal AI tools?",
 ] as const;
 
+/** The private brief adds the founder and the company's stage. */
+export const INVESTOR_BRIEFING_SECTIONS = [
+  ...BRIEFING_SECTIONS,
+  "The founder and where Spaarke is today",
+] as const;
+
+export const INVESTOR_FOLLOW_UPS = [
+  "What is Legal Operations Intelligence?",
+  "How does Spaarke build on frontier AI models?",
+  "How does Spaarke work inside Microsoft 365?",
+  "How does Spaarke go to market?",
+  "Who is behind Spaarke, and where is it today?",
+] as const;
+
+/** Where the assistant reads from: the public file, or a private brief. */
+export function materialUrl(briefKey?: string): string {
+  return isBriefKey(briefKey) ? `${siteUrl()}/brief/${briefKey}` : `${siteUrl()}/llms-full.txt`;
+}
+
 /**
  * The prompt every provider receives. It is a URL parameter, so it stays well
  * under Claude's documented prefill limit.
@@ -63,20 +92,23 @@ export const FOLLOW_UPS = [
  * material for gaps and inconsistencies. What is not covered is now handled
  * by sending the reader to the team.
  */
-export function askPrompt(): string {
+export function askPrompt(briefKey?: string): string {
   const site = siteUrl();
+  const investor = isBriefKey(briefKey);
+  const sections = investor ? INVESTOR_BRIEFING_SECTIONS : BRIEFING_SECTIONS;
+  const followUps = investor ? INVESTOR_FOLLOW_UPS : FOLLOW_UPS;
   return [
-    `Read ${site}/llms-full.txt, Spaarke's own published material, and brief me on Spaarke in under 250 words with these headings:`,
-    ...BRIEFING_SECTIONS.map((s, i) => `${i + 1}. ${s}`),
+    `Read ${materialUrl(briefKey)}, Spaarke's own material, and brief me on Spaarke in under ${investor ? 300 : 250} words with these headings:`,
+    ...sections.map((s, i) => `${i + 1}. ${s}`),
     "Then offer these as numbered follow-up questions I can pick by number:",
-    ...FOLLOW_UPS.map((q, i) => `${i + 1}. ${q}`),
+    ...followUps.map((q, i) => `${i + 1}. ${q}`),
     `Answer my follow-ups from that material. If something is not covered there, say so briefly and point me to ${site}/meet to ask the Spaarke team.`,
   ].join("\n");
 }
 
 /** Where /ask/<provider> sends the reader. */
-export function providerUrl(provider: AskProvider): string {
-  const q = encodeURIComponent(askPrompt());
+export function providerUrl(provider: AskProvider, briefKey?: string): string {
+  const q = encodeURIComponent(askPrompt(briefKey));
   switch (provider) {
     case "claude":
       return `https://claude.ai/new?q=${q}`;
@@ -87,7 +119,11 @@ export function providerUrl(provider: AskProvider): string {
   }
 }
 
-/** The link to put on a page or in an email. `src` says where it was clicked. */
-export function askLink(provider: AskProvider, src: string): string {
-  return `/ask/${provider}?src=${encodeURIComponent(src)}`;
+/**
+ * The link to put on a page or in an email. `src` says where it was clicked;
+ * `briefKey`, when given, points the assistant at that private brief.
+ */
+export function askLink(provider: AskProvider, src: string, briefKey?: string): string {
+  const k = isBriefKey(briefKey) ? `&k=${briefKey}` : "";
+  return `/ask/${provider}?src=${encodeURIComponent(src)}${k}`;
 }
