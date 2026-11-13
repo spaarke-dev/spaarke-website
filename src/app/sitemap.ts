@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/design-partners",
     "/meet",
     "/sms",
+    "/ask",
     "/privacy",
     "/terms",
     "/signin",

@@ -19,9 +19,16 @@ the static web app's settings, and your own `.env.local`.
    claims the slot with a row in `MeetingSlotLocks`, asks Graph again whether
    the slot is still free, writes the booking to `MeetingBookings`, and creates
    the event on the host's calendar with a Teams link. Graph sends the
-   invitation. SendGrid emails the team.
+   invitation. SendGrid emails a notice to the team (`CONTACT_EMAIL_TO`) and the
+   host (`MEET_HOST`), since Exchange sends the organizer no invitation.
 4. The invitation carries a signed link to `/meet/manage`, where the visitor
-   can move or cancel the meeting.
+   can move or cancel the meeting and add or remove guests.
+5. SendGrid sends the visitor a branded confirmation, and the visitor and
+   their guests reminders 24 hours and 1 hour before, plus a notice if the
+   meeting moves or is cancelled. A Logic App calls `/api/meet/reminders`
+   every five minutes to send the reminders that are due (section 6). The
+   design is in
+   [`projects/meet-emails-guests/spec.md`](../projects/meet-emails-guests/spec.md).
 
 ## Settings
 
@@ -33,6 +40,7 @@ the static web app's settings, and your own `.env.local`.
 | `MEET_GRAPH_CLIENT_SECRET` | yes | | From Key Vault, see below |
 | `MEET_HOST` | yes | | The host mailbox address; the meeting organizer |
 | `MEET_LINK_SECRET` | yes | | At least 32 characters; signs the manage links |
+| `MEET_CRON_SECRET` | for reminders | | At least 32 characters; the Logic App's bearer token. Without it `/api/meet/reminders` answers 404 |
 | `MEET_HOST_TIME_ZONE` | | `America/New_York` | IANA zone the business hours are in |
 | `MEET_BUSINESS_HOURS` | | `09:00-17:00` | In the host zone |
 | `MEET_BUSINESS_DAYS` | | `1,2,3,4,5` | 0 is Sunday |
@@ -146,7 +154,7 @@ Without a tenant, `MEET_DEV_MOCK=1` with `MEET_BOOKING_MODE=graph` runs the
 whole flow against an in-memory calendar and table under `npm run dev`. A
 production build ignores it.
 
-`npm run meet:check` runs the slot, time zone, and manage link checks.
+`npm run meet:check` runs the slot, time zone, manage link, reminder timing, guest, and email checks.
 
 `npm run meet:graph` checks the live tenant from `.env.local` without
 printing secrets:
@@ -160,6 +168,11 @@ printing secrets:
 
 Last run against the real host on 2026-11-13: every item in the checklist
 passed, and the test meetings were cancelled afterward.
+
+The emails, guests, and reminders were tested the same way on 2026-11-13: a
+booking with one guest, a guest removed and added back from the manage page,
+the 1-hour reminder sent once when two reminder runs started at the same
+moment, and a cancellation from the manage page.
 
 ## 5. App settings and cutover
 
@@ -192,7 +205,77 @@ The page also falls back on its own, per request: to the embed (when
 is missing or Graph fails to answer. App Insights records each fallback as an
 exception with `step: meet.page`.
 
-## 6. Rotating the client secret
+## 6. Reminder emails
+
+The site cannot run on a timer, so a Logic App (Consumption plan) in the
+website's resource group calls `POST /api/meet/reminders` every five minutes
+with `Authorization: Bearer <MEET_CRON_SECRET>`. Each call sends the
+reminders that are due and answers with counts:
+`{ ok, checked, sent, skipped, failed }`. Reminders have windows (24 hours
+before until 20; 60 minutes before until 10), so a missed run is harmless,
+and each is claimed on its booking row before it is sent, so two runs at once
+never send it twice.
+
+Create the secret, give it to the site, and create the Logic App:
+
+```bash
+az keyvault secret set --vault-name <vault> --name meet-cron-secret --output none \
+  --value "$(openssl rand -base64 48)"
+CRON="$(az keyvault secret show --vault-name <vault> --name meet-cron-secret --query value -o tsv)"
+az staticwebapp appsettings set -n <static-web-app> --setting-names MEET_CRON_SECRET="$CRON" --output none
+
+az extension add --name logic --yes
+az logic workflow create -g <resource group> -n logic-spaarke-meet-reminders \
+  --location <region> --definition reminders-workflow.json
+```
+
+`reminders-workflow.json` is written at setup time (it holds the secret, so it
+is never committed) from this shape, with the secret in `parameters`:
+
+```json
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "endpoint": { "type": "String" },
+      "cronSecret": { "type": "SecureString" }
+    },
+    "triggers": {
+      "Every_5_minutes": { "type": "Recurrence", "recurrence": { "frequency": "Minute", "interval": 5 } }
+    },
+    "actions": {
+      "Send_due_reminders": {
+        "type": "Http",
+        "inputs": {
+          "method": "POST",
+          "uri": "@parameters('endpoint')",
+          "headers": { "Authorization": "@{concat('Bearer ', parameters('cronSecret'))}" }
+        },
+        "limit": { "timeout": "PT1M" },
+        "runtimeConfiguration": { "secureData": { "properties": ["inputs"] } }
+      }
+    },
+    "outputs": {}
+  },
+  "parameters": {
+    "endpoint": { "value": "https://www.spaarke.com/api/meet/reminders" },
+    "cronSecret": { "value": "<the secret>" }
+  }
+}
+```
+
+`secureData` keeps the header out of the run history. Delete the file after
+the create. To pause reminders, disable the workflow
+(`az logic workflow update -g <resource group> -n logic-spaarke-meet-reminders --state Disabled`).
+
+To look at the emails while working on them, run `npm run dev` and open
+`/api/meet/dev/email-preview?type=confirmation&as=booker`. `type` is one of
+`confirmation`, `reminder24`, `reminder1`, `moved`, `cancelled`; `as` is
+`booker` or `guest`; `format=text` shows the plain-text part. The route
+answers 404 outside development.
+
+## 7. Rotating the client secret
 
 ```bash
 az keyvault secret set --vault-name <vault> --name meet-graph-client-secret --output none \
@@ -220,3 +303,6 @@ only if the secret leaks.
 | Graph 401 | Wrong tenant or client ID, or the secret expired |
 | Event has no Teams link | The host mailbox has no Teams license |
 | Manage link says "We could not find this meeting" | The booking row is missing; the team email for that booking says NOT SAVED |
+| No confirmation or reminder emails | `SENDGRID_API_KEY` or `SENDGRID_FROM_EMAIL` missing; App Insights event `meet.visitor_email_failed` |
+| No reminders at all | The Logic App is disabled or failing (its run history), or `MEET_CRON_SECRET` differs between it and the site (401s) |
+| A guest got no invitation | Exchange sends it; check the address on the manage page. Guests are not sent the branded confirmation, only the reminders |

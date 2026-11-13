@@ -356,8 +356,8 @@ export async function sendDailyReport(data: {
 /**
  * A meeting booked, moved, or cancelled through the Graph flow on /meet. The
  * calendar event is on the host's calendar already; this mail is what puts it
- * in front of the rest of the team, alongside the other leads. Reply-to is the
- * visitor.
+ * in front of the team (CONTACT_EMAIL_TO) and the host (MEET_HOST), alongside
+ * the other leads. Reply-to is the visitor.
  *
  * Never throws. It runs after the meeting already exists, so a failure here
  * must not turn a booking the visitor has into an error on their screen.
@@ -388,35 +388,25 @@ type MeetingNotification = {
   role?: string;
   topic?: string;
   note?: string;
+  guests?: string[];
   attribution?: Record<string, string>;
 };
 
-async function sendMeetingNotificationUnsafe(data: {
-  kind: "booked" | "rescheduled" | "cancelled";
-  bookingId: string;
-  stored: boolean;
-  start: number;
-  previousStart?: number;
-  hostTimeZone: string;
-  visitorTimeZone: string;
-  name: string;
-  email: string;
-  organization: string;
-  role?: string;
-  topic?: string;
-  note?: string;
-  attribution?: Record<string, string>;
-}): Promise<{ sent: true } | { sent: false; error: string }> {
+async function sendMeetingNotificationUnsafe(data: MeetingNotification): Promise<{ sent: true } | { sent: false; error: string }> {
   if (!ensureInit()) {
     return { sent: false, error: "SendGrid not configured." };
   }
 
-  const to = process.env.CONTACT_EMAIL_TO;
+  const team = process.env.CONTACT_EMAIL_TO?.trim();
   const from = process.env.SENDGRID_FROM_EMAIL;
-  if (!to || !from) {
+  if (!team || !from) {
     console.warn("[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set; skipping.");
     return { sent: false, error: "Email recipients not configured." };
   }
+  // The host gets the notice too: Exchange sends the organizer no invitation,
+  // so without it a booking reaches the host only as a calendar entry.
+  const host = process.env.MEET_HOST?.trim();
+  const to = host && host.toLowerCase() !== team.toLowerCase() ? [team, host] : team;
 
   // Explicit fields: Intl refuses dateStyle or timeStyle combined with
   // timeZoneName, and the zone name is the part the team needs.
@@ -458,6 +448,7 @@ async function sendMeetingNotificationUnsafe(data: {
     `Email:         ${data.email}`,
     `Organization:  ${data.organization}`,
     `Role:          ${data.role || "(not provided)"}`,
+    `Guests:        ${data.guests?.length ? data.guests.join(", ") : "(none)"}`,
     "",
     "What to cover:",
     data.topic || "(not provided)",

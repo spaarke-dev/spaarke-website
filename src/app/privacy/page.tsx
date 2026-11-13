@@ -265,6 +265,13 @@ export default function Privacy() {
             you reschedule or cancel the meeting.
           </p>
           <p>
+            We also email you a confirmation and reminders the day before and
+            an hour before the meeting, through SendGrid. If you invite
+            colleagues, we store their email addresses with the booking, add
+            them to the calendar invitation, and send them the reminders. We
+            use their addresses only for that meeting.
+          </p>
+          <p>
             At times the page may show a Microsoft Bookings page from our
             Microsoft 365 tenant instead. Bookings keeps what you enter there
             with the appointment in Microsoft 365; we do not copy it to Azure

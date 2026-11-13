@@ -7,7 +7,8 @@ import { cancelMeetingEvent } from "@/lib/meet/graph";
 import { getMeetConfig } from "@/lib/meet/config";
 import { errorOf, json, lookupManagedBooking } from "@/lib/meet/routes";
 import { invalidateAvailability } from "@/lib/meet/service";
-import { releaseSlotLock, updateBooking } from "@/lib/meet/store";
+import { sendBookingEmails } from "@/lib/meet/notify";
+import { guestsOf, releaseSlotLock, updateBooking } from "@/lib/meet/store";
 
 export const dynamic = "force-dynamic";
 
@@ -63,7 +64,10 @@ export async function POST(request: NextRequest) {
       role: booking.role,
       topic: booking.topic,
       note,
+      guests: guestsOf(booking),
     });
+
+    await sendBookingEmails("cancelled", config, booking, { start: event.start, joinUrl: null }, { includeGuests: true });
 
     trackEvent("meet.cancelled");
     await flushTelemetry();
