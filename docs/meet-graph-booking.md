@@ -19,7 +19,8 @@ the static web app's settings, and your own `.env.local`.
    claims the slot with a row in `MeetingSlotLocks`, asks Graph again whether
    the slot is still free, writes the booking to `MeetingBookings`, and creates
    the event on the host's calendar with a Teams link. Graph sends the
-   invitation. SendGrid emails the team.
+   invitation. SendGrid emails a notice to the team (`CONTACT_EMAIL_TO`) and the
+   host (`MEET_HOST`), since Exchange sends the organizer no invitation.
 4. The invitation carries a signed link to `/meet/manage`, where the visitor
    can move or cancel the meeting and add or remove guests.
 5. SendGrid sends the visitor a branded confirmation, and the visitor and
