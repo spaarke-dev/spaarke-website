@@ -184,7 +184,7 @@ export function MeetBookingFlow({
         <p className="text-fg-mid mt-4 text-base">
           We sent a calendar invitation with the Microsoft Teams link and a confirmation email to{" "}
           {booked.email}. If they are not in your inbox in a few minutes, check your junk folder. We will
-          also email a reminder the day before and an hour before.
+          also email reminders before the meeting.
         </p>
         {booked.guests.length > 0 && (
           <p className="text-fg-mid mt-4 text-base">

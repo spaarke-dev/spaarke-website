@@ -168,6 +168,11 @@ printing secrets:
 Last run against the real host on 2026-11-13: every item in the checklist
 passed, and the test meetings were cancelled afterward.
 
+The emails, guests, and reminders were tested the same way on 2026-11-13: a
+booking with one guest, a guest removed and added back from the manage page,
+the 1-hour reminder sent once when two reminder runs started at the same
+moment, and a cancellation from the manage page.
+
 ## 5. App settings and cutover
 
 Copy the values into the static web app. Every other secret on the site is a

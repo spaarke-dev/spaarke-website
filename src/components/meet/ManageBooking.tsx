@@ -122,7 +122,7 @@ export function ManageBooking({
       setGuestNotice(
         added.length > 0
           ? `Saved. We sent the invitation to ${added.join(", ")}.`
-          : "Saved. Anyone you removed gets a cancellation from their calendar.",
+          : "Saved. We sent a cancellation to anyone you removed.",
       );
     }
   }
