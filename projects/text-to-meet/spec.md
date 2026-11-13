@@ -77,10 +77,26 @@ maintenance mode. Microsoft points SMS customers to Marketplace partners
 (Blip, Infobip, Telesign).
 ([Retirement guide](https://learn.microsoft.com/en-us/azure/communication-services/acs-retirement-and-breaking-changes-guide))
 
-Even for a tenant that still holds an older ACS resource with numbers, a new
-program built on a service with a fixed end date is a migration scheduled in
-advance. For the record, the figures ACS publishes are below, but they do not
-change the decision.
+The retirement guide's FAQ narrows this further: new SMS numbers can be
+acquired "only if you're an existing customer with ACS resources that have
+existing ACS phone numbers." Spaarke's only ACS resource, `spaarke-acs-dev`
+(created 2026-07-16 for the platform's ACS Chat messaging, which defers SMS to
+its R2), holds no phone numbers (checked with the phone numbers API on
+2026-11-13), and no other Spaarke subscription has an ACS resource. So the
+platform's ACS work does not open a path to an SMS number. The same guide
+lists ACS Chat and ACS Email as retiring too.
+
+Microsoft's other SMS routes do not fit this flow. The guide says Microsoft
+"will offer equivalent alternative SMS services before the ACS retirement
+date", with no date or product named. Dynamics 365 Contact Center offers SMS
+for Dynamics customers, which brings contact center licensing for one
+keyword. The Marketplace partners are third-party providers, as Twilio is.
+The flow keeps the provider behind `src/lib/sms/` (signature check, reply
+format) so a later move to a Microsoft service changes those files only.
+
+Even with a number, a new program built on a service with a fixed end date
+is a migration scheduled in advance. For the record, the figures ACS
+publishes are below, but they do not change the decision.
 
 | ACS (for reference) | Toll-free | 10DLC |
 |---|---|---|
@@ -460,8 +476,9 @@ it carries the same never-404 rule.
   Advanced Opt-Out
 
 ### Key Decisions
-- **Twilio over ACS.** ACS SMS cannot be acquired by new customers and
-  retires on 2028-09-30.
+- **Twilio over ACS.** ACS SMS numbers can be acquired only on a resource
+  that already has numbers, which Spaarke's does not, and ACS SMS retires on
+  2028-09-30.
 - **Toll-free over 10DLC.** One verification instead of a brand and a
   campaign, no campaign fee, and a business-looking number for print.
 - **TwiML reply over a REST send.** The reply rides on the webhook response,
@@ -539,9 +556,6 @@ it carries the same never-404 rule.
       back? Blocks: FR-13 and the privacy paragraph. The spec assumes no.
 - [ ] Is the keyword MEET final, and is a placement code as a second word
       acceptable on print? Blocks: the card copy and FR-17.
-- [ ] Does any Spaarke Azure subscription already hold an ACS resource with
-      phone numbers? Does not change the recommendation; noted only because
-      such a customer could still buy ACS numbers until 2028.
 - [ ] Who submits the Toll-Free Verification and owns the Twilio account (the
       EIN and a notification email are required)? Blocks: FR-02.
 - [ ] Counsel review of the Compliance section. Blocks: going live.
