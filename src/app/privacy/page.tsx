@@ -18,7 +18,7 @@ export default function Privacy() {
         />
 
         <div className="text-fg-mid mt-12 max-w-2xl space-y-6 text-base leading-relaxed">
-          <p className="text-fg-low text-sm">Last updated: 2026-10-22</p>
+          <p className="text-fg-low text-sm">Last updated: 2026-11-13</p>
 
           <p>
             This policy covers two related but distinct contexts: (1) the
@@ -145,6 +145,24 @@ export default function Privacy() {
                     </a>
                   </td>
                 </tr>
+                <tr className="border-line border-b">
+                  <td className="py-2 pr-4">Twilio</td>
+                  <td className="py-2 pr-4">
+                    Your phone number and message, only if you text our booking
+                    number
+                  </td>
+                  <td className="py-2 pr-4">No</td>
+                  <td className="py-2">
+                    <a
+                      href="https://www.twilio.com/en-us/legal/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cta-blue underline"
+                    >
+                      Link
+                    </a>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -232,6 +250,67 @@ export default function Privacy() {
           </p>
 
           <h3 className="text-fg font-display text-lg font-medium">
+            Meeting bookings
+          </h3>
+          <p>
+            The booking page at /meet adds your meeting directly to a Spaarke
+            team member&rsquo;s calendar in our Microsoft 365 tenant and sends
+            you a calendar invitation with a Microsoft Teams link. What you
+            enter (your name, work email, organization, role, and what you
+            would like to cover) appears in the invitation. As with the forms
+            above, we also store your entries with the meeting time, your time
+            zone, the attribution snapshot, and a one-way hash of your IP
+            address in Azure Table Storage, and email a copy to our team
+            through SendGrid. The invitation includes a private link that lets
+            you reschedule or cancel the meeting.
+          </p>
+          <p>
+            We also email you a confirmation and reminders the day before and
+            an hour before the meeting, through SendGrid. If you invite
+            colleagues, we store their email addresses with the booking, add
+            them to the calendar invitation, and send them the reminders. We
+            use their addresses only for that meeting.
+          </p>
+          <p>
+            At times the page may show a Microsoft Bookings page from our
+            Microsoft 365 tenant instead. Bookings keeps what you enter there
+            with the appointment in Microsoft 365; we do not copy it to Azure
+            Table Storage or send it through SendGrid.
+          </p>
+
+          <h3
+            id="text-messages"
+            className="text-fg font-display scroll-mt-32 text-lg font-medium"
+          >
+            Text messages
+          </h3>
+          <p>
+            If you text MEET to our booking number (see{" "}
+            <a href="/sms" className="text-cta-blue underline">
+              Text MEET to book a meeting
+            </a>
+            ), our messaging provider, Twilio, receives your phone number and
+            your message and passes them to us so that we can reply with a link
+            to book a meeting. We send one reply to each text you send, and we
+            do not text you otherwise. We do not store your phone number in
+            readable form: we keep a one-way, keyed code derived from it, which
+            we use to honor STOP requests, to limit repeated replies, and to
+            connect a meeting you book through the link to your text. We do not
+            keep the text of your messages. Twilio keeps its own records of the
+            messages it carries, under the{" "}
+            <a
+              href="https://www.twilio.com/en-us/legal/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cta-blue underline"
+            >
+              Twilio Privacy Notice
+            </a>
+            . We do not use your phone number for marketing. Reply STOP at any
+            time to stop receiving replies.
+          </p>
+
+          <h3 className="text-fg font-display text-lg font-medium">
             LinkedIn lead forms
           </h3>
           <p>
@@ -261,7 +340,9 @@ export default function Privacy() {
             the basis of our legitimate interest in responding to business
             inquiries. We do not sell form data, share it for cross-context
             behavioral advertising, or share it with third parties for their own
-            marketing.
+            marketing. All the above categories exclude text messaging
+            originator opt-in data and consent; this information won&rsquo;t
+            be shared with any third parties.
           </p>
           <p>
             A form submission does not add you to marketing email on its own.

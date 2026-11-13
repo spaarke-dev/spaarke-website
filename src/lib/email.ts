@@ -352,3 +352,122 @@ export async function sendDailyReport(data: {
     return { sent: false, error: message };
   }
 }
+
+/**
+ * A meeting booked, moved, or cancelled through the Graph flow on /meet. The
+ * calendar event is on the host's calendar already; this mail is what puts it
+ * in front of the team (CONTACT_EMAIL_TO) and the host (MEET_HOST), alongside
+ * the other leads. Reply-to is the visitor.
+ *
+ * Never throws. It runs after the meeting already exists, so a failure here
+ * must not turn a booking the visitor has into an error on their screen.
+ */
+export async function sendMeetingNotification(
+  data: MeetingNotification,
+): Promise<{ sent: true } | { sent: false; error: string }> {
+  try {
+    return await sendMeetingNotificationUnsafe(data);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to build meeting notification:", message);
+    return { sent: false, error: message };
+  }
+}
+
+type MeetingNotification = {
+  kind: "booked" | "rescheduled" | "cancelled";
+  bookingId: string;
+  stored: boolean;
+  start: number;
+  previousStart?: number;
+  hostTimeZone: string;
+  visitorTimeZone: string;
+  name: string;
+  email: string;
+  organization: string;
+  role?: string;
+  topic?: string;
+  note?: string;
+  guests?: string[];
+  attribution?: Record<string, string>;
+};
+
+async function sendMeetingNotificationUnsafe(data: MeetingNotification): Promise<{ sent: true } | { sent: false; error: string }> {
+  if (!ensureInit()) {
+    return { sent: false, error: "SendGrid not configured." };
+  }
+
+  const team = process.env.CONTACT_EMAIL_TO?.trim();
+  const from = process.env.SENDGRID_FROM_EMAIL;
+  if (!team || !from) {
+    console.warn("[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set; skipping.");
+    return { sent: false, error: "Email recipients not configured." };
+  }
+  // The host gets the notice too: Exchange sends the organizer no invitation,
+  // so without it a booking reaches the host only as a calendar entry.
+  const host = process.env.MEET_HOST?.trim();
+  const to = host && host.toLowerCase() !== team.toLowerCase() ? [team, host] : team;
+
+  // Explicit fields: Intl refuses dateStyle or timeStyle combined with
+  // timeZoneName, and the zone name is the part the team needs.
+  const when = (ms: number, tz: string) =>
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      timeZoneName: "short",
+    }).format(new Date(ms));
+
+  const heading = {
+    booked: "New meeting booked on /meet",
+    rescheduled: "Meeting moved on /meet",
+    cancelled: "Meeting cancelled on /meet",
+  }[data.kind];
+
+  const attribution = Object.entries(data.attribution ?? {})
+    .filter(([, v]) => v)
+    .map(([k, v]) => `${k}: ${v}`);
+
+  const text = [
+    heading,
+    data.stored
+      ? `Saved in Table Storage, MeetingBookings, row ${data.bookingId}.`
+      : `NOT SAVED to Table Storage (booking ${data.bookingId}). The calendar event and this mail are the record.`,
+    "",
+    `When:          ${when(data.start, data.hostTimeZone)}`,
+    ...(data.previousStart !== undefined
+      ? [`Was:           ${when(data.previousStart, data.hostTimeZone)}`]
+      : []),
+    `Visitor zone:  ${data.visitorTimeZone}`,
+    "",
+    `Name:          ${data.name}`,
+    `Email:         ${data.email}`,
+    `Organization:  ${data.organization}`,
+    `Role:          ${data.role || "(not provided)"}`,
+    `Guests:        ${data.guests?.length ? data.guests.join(", ") : "(none)"}`,
+    "",
+    "What to cover:",
+    data.topic || "(not provided)",
+    ...(data.note ? ["", "Note from the visitor:", data.note] : []),
+    ...(attribution.length ? ["", "Attribution:", ...attribution] : []),
+  ].join("\n");
+
+  try {
+    await sgMail.send({
+      to,
+      from,
+      replyTo: data.email,
+      subject: `[Spaarke] ${heading} - ${data.organization}`,
+      text,
+    });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send meeting notification:", message);
+    return { sent: false, error: message };
+  }
+}

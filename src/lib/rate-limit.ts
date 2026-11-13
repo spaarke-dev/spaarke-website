@@ -16,12 +16,22 @@ type RateLimitResult =
   | { allowed: true }
   | { allowed: false; retryAfter: number };
 
-export function checkRateLimit(ipHash: string): RateLimitResult {
+/**
+ * Counts a request against a per-minute limit. `bucket` keeps endpoints with
+ * different limits from sharing one counter (the /meet availability endpoint
+ * is called far more often than a form is submitted); `max` overrides
+ * RATE_LIMIT_PER_MINUTE for that bucket.
+ */
+export function checkRateLimit(
+  ipHash: string,
+  options: { bucket?: string; max?: number } = {},
+): RateLimitResult {
   const now = Date.now();
-  const maxPerMinute = getMaxPerMinute();
+  const maxPerMinute = options.max ?? getMaxPerMinute();
+  const key = options.bucket ? `${options.bucket}:${ipHash}` : ipHash;
 
   // Get existing timestamps and remove expired ones
-  const timestamps = (submissions.get(ipHash) ?? []).filter(
+  const timestamps = (submissions.get(key) ?? []).filter(
     (ts) => now - ts < WINDOW_MS,
   );
 
@@ -30,13 +40,13 @@ export function checkRateLimit(ipHash: string): RateLimitResult {
     const oldest = timestamps[timestamps.length - maxPerMinute];
     const retryAfter = Math.ceil((oldest + WINDOW_MS - now) / 1000);
     // Update stored timestamps (pruned)
-    submissions.set(ipHash, timestamps);
+    submissions.set(key, timestamps);
     return { allowed: false, retryAfter: Math.max(retryAfter, 1) };
   }
 
   // Allow and record
   timestamps.push(now);
-  submissions.set(ipHash, timestamps);
+  submissions.set(key, timestamps);
   return { allowed: true };
 }
 

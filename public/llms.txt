@@ -37,6 +37,10 @@ Our articles cover Legal Operations Intelligence, AI strategy for legal
 departments, data sovereignty, Microsoft ecosystem integration, and
 operational best practices for legal teams.
 
+## Full text
+
+- Everything Spaarke has published, in one file for AI assistants: https://www.spaarke.com/llms-full.txt
+
 ## Contact
 
 - Website: https://www.spaarke.com

@@ -50,7 +50,7 @@ has seen the argument now has a concrete next step.
 
 | Date | Type | Slug | Status | Channel(s) | Notes |
 |---|---|---|---|---|---|
-| 2026-11-12 | site page | `/design-partners` | published | website | PR #124, merged 2026-11-12. `/advisory-group` and `/go/more-info-1` redirect here |
+| 2026-11-12 | site page | `/design-partners` | published | website | PR #124, merged 2026-11-12. `/advisory-group` redirects here; `/go/more-info-1` (postcard) did until 2026-11-13 and now goes to `/meet` |
 | 2026-12-19 | linkedin-ad | overview-document-ad | brief | linkedin (paid) | the carousel PDF as a gated Document ad; starts the day after the accelerator lead campaign ends (plan section 5). See Paid support |
 | by 2026-10-22 | linkedin-lead-form | general lead form | built | linkedin (paid) | "Make every legal decision intelligent"; reusable across campaigns. Still to set: the thank-you link, the optional updates checkbox, and the hidden source field; then a test lead |
 | **TBD — confirm** | linkedin-ad | design-partner-image-ad | planned | linkedin (paid) | phase 1: single image to `/design-partners`, to compare with the form route |
