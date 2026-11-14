@@ -24,8 +24,11 @@ const CORE = [
   "spaarke-feature-specification",
   "tenant-dedicated-deployment",
   "the-iq-stack",
-  "Spaarke-Functional-Specification-2026",
 ];
+// Not in CORE: the 2026 Functional Specification (January 2026). Its summary and
+// closing call Spaarke "the document and matter intelligence platform", which
+// assistants report as conflicting positioning. The feature reference covers
+// the same functions. It stays on the site and in the "more articles" list.
 
 export function llmsFullText(opts: { investorOverview?: string } = {}): string {
   const site = siteUrl();
