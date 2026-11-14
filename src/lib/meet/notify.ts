@@ -1,6 +1,6 @@
 import { trackEvent, trackException } from "@/lib/logger";
 import type { MeetConfig } from "@/lib/meet/config";
-import { sendMeetingEmails, type MeetingEmailKind, type SendResult } from "@/lib/meet/emails";
+import { sendMeetingEmails, signatureFromEnv, type MeetingEmailKind, type SendResult } from "@/lib/meet/emails";
 import { manageUrl } from "@/lib/meet/service";
 import { guestsOf, type BookingRecord } from "@/lib/meet/store";
 import { createManageToken } from "@/lib/meet/tokens";
@@ -29,6 +29,7 @@ export async function sendBookingEmails(
         guests: meeting.guests ?? guestsOf(booking),
         manageUrl: manageUrl(createManageToken(booking.bookingId, config.linkSecret)),
         previousStart: meeting.previousStart,
+        signature: signatureFromEnv(),
       },
       { bookerEmail: booking.email, includeGuests: options.includeGuests },
       config.host,

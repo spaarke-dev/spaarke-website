@@ -29,9 +29,34 @@ export type MeetingEmailData = {
   manageUrl: string;
   /** For "moved": where the meeting was. */
   previousStart?: number;
+  /** The host's sign-off. Without it the email signs as the Spaarke team. */
+  signature?: Signature | null;
 };
 
+export type Signature = { name: string; phone: string };
+
 export type BuiltEmail = { subject: string; html: string; text: string; preheader: string };
+
+/**
+ * The host's name and phone come from app settings, not from this file: the
+ * repository is public, and a personal mobile number does not belong in it.
+ */
+export function signatureFromEnv(): Signature | null {
+  const name = process.env.MEET_SIGNATURE_NAME?.trim() ?? "";
+  const phone = process.env.MEET_SIGNATURE_PHONE?.trim() ?? "";
+  return name ? { name: oneLine(name).slice(0, 100), phone: oneLine(phone).slice(0, 40) } : null;
+}
+
+/** Company description shown under the sign-off in every meeting email. */
+export const COMPANY_BLURB =
+  "Spaarke is a Legal Operations Intelligence platform built on its expert legal ontology: a single model of the matters, documents, requests, obligations, spend and decisions a legal team works on, the relationships among them, and the actions the team may take on them under rules it sets. That ontology is the foundation of Spaarke’s Legal IQ, which joins the team’s operational data, its institutional memory and AI inference, so that AI works from the full context of the team’s legal work. The platform integrates and extends the legal team’s core systems, and it is designed to run where legal teams already work, with enterprise scale and governance. Spaarke delivers this as service as software: legal engineers work alongside the team to translate its knowledge and processes into the ontology, and managed services then run and improve the platform, one decision-focused use case at a time.";
+
+/** "(630) 555-0100" becomes "tel:+16305550100"; anything else keeps its digits. */
+function telHref(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 10) return `tel:+1${digits}`;
+  return `tel:${phone.trim().startsWith("+") ? "+" : ""}${digits}`;
+}
 
 const COLORS = {
   page: "#f6f6f4",
@@ -205,6 +230,17 @@ export function buildMeetingEmail(kind: MeetingEmailKind, audience: Audience, d:
       ? "You received this email because you booked a meeting with Spaarke on spaarke.com."
       : `You received this email because ${esc(d.bookerName)} invited you to a meeting with Spaarke.`;
 
+  const sig = d.signature ?? null;
+  const signatureHtml = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:32px;border-top:1px solid ${COLORS.line};"><tr><td style="padding-top:22px;font-family:${FONT};font-size:15px;line-height:22px;color:${COLORS.text};">
+<strong style="font-weight:600;">${esc(sig?.name || "The Spaarke team")}</strong><br>
+<span style="color:${COLORS.mid};">Spaarke&nbsp;&nbsp;<a href="${esc(site)}" style="color:${COLORS.blue};">${esc(site)}</a></span>${
+    sig?.phone
+      ? `<br><span style="color:${COLORS.mid};">Mobile <a href="${esc(telHref(sig.phone))}" style="color:${COLORS.mid};text-decoration:none;">${esc(sig.phone)}</a></span>`
+      : ""
+  }
+<p style="margin:16px 0 0;font-family:${FONT};font-size:13px;line-height:20px;color:${COLORS.low};">${esc(COMPANY_BLURB)}</p>
+</td></tr></table>`;
+
   const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -228,6 +264,7 @@ export function buildMeetingEmail(kind: MeetingEmailKind, audience: Audience, d:
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${details}</table>
 ${primary}
 ${manage}
+${signatureHtml}
 </td></tr>
 <tr><td style="padding:32px 32px 28px;">
 <p style="margin:0;font-family:${FONT};font-size:13px;line-height:19px;color:${COLORS.low};">${why} Reply to this email and it reaches the Spaarke team.</p>
@@ -253,6 +290,13 @@ ${manage}
     ...(d.guests.length > 0 && kind !== "cancelled" && audience === "booker" ? ["", "Also invited:", ...d.guests] : []),
     ...(audience === "booker" && kind !== "cancelled" ? ["", "Reschedule, cancel, or invite colleagues:", d.manageUrl] : []),
     ...(kind === "cancelled" && audience === "booker" ? ["", "Book a new time:", `${site}/meet`] : []),
+    "",
+    "--",
+    sig?.name || "The Spaarke team",
+    `Spaarke  ${site}`,
+    ...(sig?.phone ? [`Mobile ${sig.phone}`] : []),
+    "",
+    COMPANY_BLURB,
     "",
     `${audience === "booker" ? "You received this email because you booked a meeting with Spaarke on spaarke.com." : `You received this email because ${d.bookerName} invited you to a meeting with Spaarke.`} Reply to this email and it reaches the Spaarke team.`,
   ].join("\n");

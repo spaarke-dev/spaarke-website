@@ -40,6 +40,8 @@ the static web app's settings, and your own `.env.local`.
 | `MEET_GRAPH_CLIENT_SECRET` | yes | | From Key Vault, see below |
 | `MEET_HOST` | yes | | The host mailbox address; the meeting organizer |
 | `MEET_LINK_SECRET` | yes | | At least 32 characters; signs the manage links |
+| `MEET_SIGNATURE_NAME` | | | Name in the sign-off of the visitor emails. Unset: "The Spaarke team" |
+| `MEET_SIGNATURE_PHONE` | | | Phone under the sign-off. Kept in settings because the repository is public |
 | `MEET_CRON_SECRET` | for reminders | | At least 32 characters; the Logic App's bearer token. Without it `/api/meet/reminders` answers 404 |
 | `MEET_HOST_TIME_ZONE` | | `America/New_York` | IANA zone the business hours are in |
 | `MEET_BUSINESS_HOURS` | | `09:00-17:00` | In the host zone |
