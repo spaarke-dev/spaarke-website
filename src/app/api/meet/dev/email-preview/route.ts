@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { buildMeetingEmail, type Audience, type MeetingEmailKind } from "@/lib/meet/emails";
+import { buildMeetingEmail, signatureFromEnv, type Audience, type MeetingEmailKind } from "@/lib/meet/emails";
 import { siteUrl } from "@/lib/meet/service";
 
 export const dynamic = "force-dynamic";
@@ -30,6 +30,8 @@ export function GET(request: NextRequest) {
     guests: ["alex.chen@example.com", "sam.patel@example.com"],
     manageUrl: `${siteUrl()}/meet/manage?t=sample`,
     previousStart: start - day,
+    // The real settings when set locally, otherwise a placeholder.
+    signature: signatureFromEnv() ?? { name: "Sample Host", phone: "(555) 010-0100" },
   });
 
   const body = params.get("format") === "text" ? `<pre>${email.text.replace(/</g, "&lt;")}</pre>` : email.html;

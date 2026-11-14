@@ -285,6 +285,20 @@ check("times show in the reader's zone with its name", () => {
   assert.match(e.text, /10:00 AM to 10:30 AM EST/);
 });
 
+check("every email signs off with the host and the company description", () => {
+  const signed = { ...sample, signature: { name: "Pat <Host>", phone: "(555) 010-0100" } };
+  for (const kind of ["confirmation", "reminder24", "reminder1", "moved", "cancelled"] as const) {
+    for (const who of ["booker", "guest"] as const) {
+      const e = buildMeetingEmail(kind, who, signed);
+      assert.ok(e.html.includes("Pat &lt;Host&gt;") && e.text.includes("Pat <Host>"), `${kind} ${who}`);
+      assert.ok(e.html.includes('href="tel:+15550100100"'), `${kind} ${who} tel`);
+      assert.ok(e.text.includes("Legal Operations Intelligence platform"), `${kind} ${who} blurb`);
+    }
+  }
+  const unsigned = buildMeetingEmail("confirmation", "booker", sample);
+  assert.ok(unsigned.text.includes("The Spaarke team") && !unsigned.html.includes("tel:"));
+});
+
 check("a cancelled email has no join link and offers a new time", () => {
   const e = buildMeetingEmail("cancelled", "booker", sample);
   assert.ok(!e.html.includes("meetup-join"));
