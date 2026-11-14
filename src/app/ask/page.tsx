@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Button, PageHeader, Shell, Slab } from "@/components/primitives";
 import { AskAiCard } from "@/components/AskAiCard";
 
-const TITLE = "Ask your AI about Spaarke";
+const TITLE = "Learn more about Spaarke";
 const DESCRIPTION =
-  "One click gives Claude, ChatGPT or Gemini everything Spaarke has published. Put your toughest questions about Legal Operations Intelligence to your own AI.";
+  "One click briefs Claude, ChatGPT or Gemini on Spaarke from our own material. Learn how Spaarke is transforming the legal AI market.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -18,9 +18,9 @@ export default function AskPage() {
     <Slab tone="light" className="flex-1">
       <Shell>
         <PageHeader
-          eyebrow="Ask your AI about Spaarke"
-          title={"Put your toughest questions to your own AI."}
-          lede="One click gives Claude, ChatGPT or Gemini everything Spaarke has published. Ask how it works, who it is for, and what sets it apart, and get answers grounded in our own material."
+          eyebrow="Explore Spaarke"
+          title={"Learn how Spaarke is transforming the legal AI market."}
+          lede="One click briefs Claude, ChatGPT or Gemini on Spaarke from our own material. Ask how it works, who it is for, and what sets it apart."
         />
         <div className="border-line bg-surface mt-12 max-w-2xl rounded-lg border p-6 shadow-sm md:p-8">
           <AskAiCard src="ask-page" variant="page" />

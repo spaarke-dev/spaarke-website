@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isAskProvider, providerUrl } from "@/lib/ask-ai";
+import { isAskProvider, isBriefKey, providerUrl } from "@/lib/ask-ai";
 import { trackEvent } from "@/lib/logger";
 
 /**
@@ -17,8 +17,12 @@ export async function GET(
     return NextResponse.redirect(new URL("/ask", request.url), 302);
   }
   const src = (request.nextUrl.searchParams.get("src") ?? "direct").slice(0, 32).replace(/[^\w-]/g, "");
-  trackEvent("ask_ai.click", { provider, src: src || "direct" });
-  return NextResponse.redirect(providerUrl(provider), {
+  // A private brief key (from an investor email) points the prompt at
+  // /brief/<key> instead of the public file. The key itself is not logged.
+  const k = request.nextUrl.searchParams.get("k");
+  const briefKey = isBriefKey(k) ? k : undefined;
+  trackEvent("ask_ai.click", { provider, src: src || "direct", brief: briefKey ? "yes" : "no" });
+  return NextResponse.redirect(providerUrl(provider, briefKey), {
     status: 302,
     headers: { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" },
   });
