@@ -102,7 +102,7 @@ export function askPrompt(briefKey?: string): string {
     ...sections.map((s, i) => `${i + 1}. ${s}`),
     "Then offer these as numbered follow-up questions I can pick by number:",
     ...followUps.map((q, i) => `${i + 1}. ${q}`),
-    `Answer my follow-ups from that material. If something is not covered there, say so briefly and point me to ${site}/meet to ask the Spaarke team.`,
+    `Use only that material; don't search the web unless I ask. Answer my follow-ups from it. If something is not covered there, say so briefly and point me to ${site}/meet to ask the Spaarke team.`,
   ].join("\n");
 }
 
