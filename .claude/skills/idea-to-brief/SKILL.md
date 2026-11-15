@@ -165,13 +165,20 @@ EXTRACT (best-effort) from idea.md:
 1. TOPIC: what is this about, in one sentence?
 2. ANGLE: what's the specific argument the reader should walk
    away believing? (The take, as distinct from the topic.)
-2a. PRIME MOVER: if the idea names more than one cause, which one is
-    driving the others? Words such as "the more important driver", "the
-    largest", or "the primary" are a ranking. Record it in the brief as
-    subordination ("Driven by X, A and B are changing"), never as an
-    ordered list of coequal drivers.
-2b. CONCESSION: what fault in the reader's own function does this
-    argument depend on?
+2a. WHAT HAS CHANGED: if the idea names more than one cause, which
+    one is driving the others? Words such as "the more important
+    driver", "the largest", or "the primary" are a ranking. Record it
+    in the brief's "What has changed" section in plain words, as a
+    change with an actor, and as subordination ("Driven by X, A and B
+    are changing"), never as an ordered list of coequal drivers. Do
+    not call AI "the force" and do not anchor on a single launch date
+    (voice/stance.md rule 3).
+2b. DIRECTION: where is the reader's function heading, and what is it
+    building to get there? Record it in the brief's "The direction
+    legal teams are taking" section. If the argument also depends on a
+    shortfall in that function, record the shortfall there too, as
+    support for the direction rather than the frame of the piece
+    (voice/stance.md rule 4).
 2c. FROM PRACTICE: which claims does the writer hold from practice,
     without a source?
 2d. FIRST MOVES: what does the reader do on Monday?
@@ -236,17 +243,19 @@ GAP TYPES -> QUESTION PATTERNS:
              or something else?"
 
 7. UNRANKED CAUSES
-   Gap: the idea lists several drivers with no order of force
+   Gap: the idea lists several drivers with no ranking
    Question: "The idea names <n> drivers. Which one is causing the
              others? The article will name that one in the thesis
              and make the rest subordinate to it, and it will not
              carry a section that lists them as equals."
 
-8. MISSING CONCESSION
-   Gap: the argument proposes a remedy without naming the fault
-   Question: "What does this argument require us to admit about
-             <the reader's function>? Without the admission the
-             remedy has no motive."
+8. MISSING DIRECTION
+   Gap: the argument proposes a remedy without saying where the
+        reader's function is heading
+   Question: "Where is <the reader's function> moving, and what is it
+             building to get there? The piece leads with that
+             direction. Is there a shortfall today that the direction
+             answers, and should the piece name it?"
 
 9. NO EXIT
    Gap: the idea has stakes but no first move

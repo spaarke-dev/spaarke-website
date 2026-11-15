@@ -205,7 +205,10 @@ Suggestions are not guaranteed inventory.
   budget type. It cannot be turned off after the campaign launches.
 
 **Spaarke rule:** every campaign carries a campaign-level **lifetime budget
-and an end date** as a ceiling, so nothing runs past its window. Phase 1 ad
+and an end date** as a ceiling, so nothing runs past its window. Paid runs as
+two standing tracks, brand and lead gen (plan section 5), so the next campaign
+in the same track is built, checked, and approved before the end date and
+starts the day after; an end date never leaves a track empty. Phase 1 ad
 sets use maximum delivery. Move to cost cap once there is a baseline cost.
 
 ---

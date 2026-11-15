@@ -79,7 +79,7 @@ The first 35 rows are the original do-not-say list. The rows from `delve` onward
 | leverage | use / build on | the single most common consultantism; cut on sight |
 | empower / empowered | help / let / make it possible to | corporate-speak; a tell of marketing-by-committee |
 | solution / solutions | platform / product / answer / approach | sales-y by default; we are a platform, not a "solution" |
-| AI-powered / AI-driven (as a compound adjective attached to a product, a capability, or a platform) | (specific: AI-directed / built on / inference layer) | meaningless by 2026; on the do-not-claim list. The participial phrase that names AI as the force behind a change the piece then shows is the prime-mover construction and is house form: "Driven by the AI imperative, general counsel and their departments are reimagining how legal services are delivered" (`stance.md`, rule 3) |
+| AI-powered / AI-driven (as a compound adjective attached to a product, a capability, or a platform) | (specific: AI-directed / built on / inference layer) | meaningless by 2026; on the do-not-claim list. The participial phrase that names AI as the cause of a change the piece then shows is house form: "Driven by the AI imperative, general counsel and their departments are reimagining how legal services are delivered" (`stance.md`, rule 3) |
 | ChatGPT for legal / Copilot for lawyers | Legal Operations Intelligence platform | undersells and miscategorizes us |
 | autonomous legal AI | AI-directed, human-controlled | overstates AI maturity; alienates buyers |
 | replace lawyers / replace attorneys | augment / support / accelerate | do-not-claim; alienates the entire market |
@@ -138,6 +138,7 @@ The first 35 rows are the original do-not-say list. The rows from `delve` onward
 | in conclusion / in summary / this article explored | (cut; end on consequence) | summary closer (style guide, section 5, rule 25) |
 | despite these challenges / the future remains bright | (cut; end on the last substantive point) | formula conclusion |
 | bottleneck | impediment | "bottleneck" describes a queue and implies the fix is throughput; "impediment" names the relationship, and it is the word the business uses about legal (`stance.md`, rule 4) |
+| AI is the force / the defining force / the force reshaping (of AI or any technology) | (name what changed and who acted: "the frontier providers introduced legal solutions on their platforms") | the writer ruled on 2026-11-12 that it reads as machine-written (`stance.md`, rule 3) |
 | enabler of the business / legal as an enabler | (cut; say what the business can now do) | vendor vocabulary; the writer removed it without replacement |
 | participant in its own legal risk / the business takes on risk / shares the risk | business teams manage certain legal-related activities, clearly scoped and inside guardrails the department sets | a general counsel reads risk-sharing language as legal risk leaving the department (`stance.md`, section 2) |
 

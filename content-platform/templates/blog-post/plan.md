@@ -77,7 +77,7 @@ within the first 250 words of a long-form article and within the
 first 150 words of a short post, and in either format no later than
 the third paragraph.
 
-- **¶1, claim:** <the change, as one declarative sentence, then the single named force causing it. No statistic in the first sentence.>
+- **¶1, claim:** <the change, as one declarative sentence, then its main cause, named in plain words as a change with an actor (brief.md, "What has changed"). No statistic in the first sentence.>
 - **¶2, stakes:** <at most two secondary shifts, enumerated inline as First... Second..., closing on the one recurring decision the article is about, stated by listing its actual options>
 - **¶3, credential:** <the evidence that the article's subject is equipped to act, plus one cross-link in the form "In our earlier article, [Title], we ...">
 - **¶4, or the last sentence of ¶3, frame:** <one sentence naming what the article sets out to show, phrased as the article's own action: "This article sets out how...". Never a numbered inventory of causes.>

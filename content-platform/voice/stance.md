@@ -87,18 +87,28 @@ leaving the department, which is the opposite of the argument.
 
 ---
 
-## 3. The prime mover
+## 3. The main cause, named plainly
 
-When several forces act at once, name in the thesis sentence the one
-force driving the others and make the rest grammatically subordinate to
-it: "Driven by the AI imperative, general counsel and their departments
-are reimagining how legal services are delivered."
+When several causes act at once, name in the thesis sentence the one
+driving the others and make the rest grammatically subordinate to it:
+"Driven by the AI imperative, general counsel and their departments are
+reimagining how legal services are delivered."
 
-An article whose spine is a numbered list of drivers gives the reader a
-survey to agree with in place of a thesis to accept or reject. If an
-idea or a brief arrives with a numbered list of causes, that list is the
-raw material for the ranking, not the outline. Call the prime mover a
-force; call what it produces a shift, a trend, or a development.
+Name the cause as a change with an actor, in plain words: what changed,
+who changed it, and roughly when. "2026 has been the year the frontier
+providers introduced legal solutions on their platforms" is the form. Do
+not call AI "the force" or make it the actor of a sweeping sentence ("AI
+is the force reshaping...", "AI is the defining force on..."). The writer
+ruled on 2026-11-12 that the construction reads as machine-written. The
+same ruling applies to anchoring a piece on a single launch date: say
+what changed over the year and what is likely to keep changing, and keep
+individual release dates for the sentences where the date matters.
+
+An article whose structure is a numbered list of drivers gives the
+reader a survey to agree with in place of a thesis to accept or reject.
+If an idea or a brief arrives with a numbered list of causes, that list
+is the raw material for the ranking, not the outline. Call what the
+main cause produces a shift, a trend, or a development.
 
 > **The draft it replaced:** "Six drivers push those changes in the same
 > direction. The largest is a new view of the resource requirements of
@@ -106,22 +116,25 @@ force; call what it produces a shift, a trend, or a development.
 
 ---
 
-## 4. The concession we make
+## 4. The direction the reader's function is taking
 
-We say plainly that legal can become an impediment to the business, and
-we give the concession a mechanism instead of leaving it as an
-adjective. Name the delay or the omission, say what it costs the
-business, and say what the business does next when it recurs. The
-mechanism is what makes the concession credible to the reader whose
-function it describes.
+Lead with the direction legal teams are moving, stated as something they
+are doing: "Legal teams are moving to capture their knowledge and
+intellectual capital in a form AI can use." The writer ruled on
+2026-11-12 that briefs built around a "concession" came out as a list of
+negatives about the reader, and the brief template now records the
+direction in its place. A reader follows an argument that describes
+where their function is going more readily than one that opens on what
+it has done wrong.
 
-We say it about the function, never about a named department or person,
-we put it in the department's own mouth where we can ("departments
-increasingly acknowledge that..."), and we pair it with the remedy in
-the same section. Conceding it is what earns us the right to argue for
-self-service and delegation to a legal operations reader. Where an
-argument proposes a remedy, the fault it remedies is stated first, as a
-direct predicate with the reader's own function as the subject.
+Where a shortfall is the reason for the direction, name it plainly and
+give it a mechanism, as the published article does: name the delay or
+the omission, say what it costs the business, and say what the business
+does next when it recurs. Say it about the function, never about a named
+department or person, put it in the department's own mouth where we can
+("departments increasingly acknowledge that..."), and pair it with the
+remedy in the same section. The shortfall supports the direction; it is
+not the frame of the piece.
 
 What stays off the table is unchanged: taking sides between in-house and
 firms, on the billable hour, or on whether legal is "really" strategic
@@ -236,11 +249,13 @@ still part of the decision."
 
 ## 9. Our position on AI: two claims, never one without the other
 
-**The macro claim.** AI is the force reshaping how the corporate legal
-department delivers legal work, and operating models are being rebuilt
-around what it now makes possible. State it as a claim about the
-department and its operating model, and never as a claim about a
-product.
+**The macro claim.** AI is changing how the corporate legal department
+delivers legal work, and operating models are being rebuilt around what
+it now makes possible. State it as a claim about the department and its
+operating model, and never as a claim about a product. Name what changed
+and who is acting, as rule 3 requires; the published wording below
+predates the writer's ruling of 2026-11-12 on "force" and is evidence of
+the claim, not wording to reuse.
 
 **The tool claim.** Today's AI has limits that a legal reader already
 suspects, and we name them in our own voice. Say what the limitation is,
@@ -280,3 +295,24 @@ work it is about.
 > generative model returns a different answer to the same question on a
 > second run." The draft carried the tool observation as a design
 > obstacle and made no macro claim at all.
+
+---
+
+## 10. Objective is not the same as neutral
+
+An informational piece still has a view. Where we think a platform, a
+practice, or an approach is strong, say so and give the reason, in the
+same plain register we use for its limits. Objectivity is a matter of
+method: every claim sourced or grounded in practice, every limit stated,
+and every party described fairly in its own terms. It does not require
+withholding a judgment the evidence supports, and a piece that lists
+strengths and limits without weighing them has fallen into the balanced
+non-position (`examples/ai-tells.md`, section 6.5).
+
+Writer ruling, 2026-11-12, on the Microsoft Copilot companion pieces:
+"objective and informational, and not promotional; however, this does
+not mean that we don't have an opinion."
+
+Where Spaarke has a commercial interest in the subject, say so once, in
+one or two sentences near the opening, in the first person, and then
+write the piece on its merits.

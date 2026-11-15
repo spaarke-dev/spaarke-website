@@ -10,12 +10,20 @@ import {
   Slab,
 } from "@/components/primitives";
 import ContactForm from "@/components/ContactForm";
+import {
+  ARTICLE_URL,
+  BRIEF,
+  CHECKLIST,
+  CONTACT_EMAIL,
+  INCLUDED,
+  LAYERS,
+  SESSION_STEPS,
+  WEEK_OUTCOMES,
+} from "./documents";
 
 // SSR per request so ContactForm receives a runtime-resolved
 // RECAPTCHA_SITE_KEY (Azure SWA app settings are runtime-only).
 export const dynamic = "force-dynamic";
-
-const ARTICLE_URL = "/why-spaarke/microsoft-is-now-the-platform-for-legal-ai";
 
 export const metadata: Metadata = {
   title: "Spaarke Legal AI Accelerator",
@@ -23,76 +31,9 @@ export const metadata: Metadata = {
     "Put Microsoft Copilot to work for one legal practice in one week, with core legal skills, practice packs, tools, and forward-deployed legal engineers.",
 };
 
-// The copy below follows the founder article. Keep the two in step: the
-// article's closing call to action links here and promises this session.
-const SESSION_STEPS = [
-  "Choose the practice and the first two or three tasks.",
-  "Confirm the Microsoft setup with your IT lead: Copilot licences, the Cowork usage policy, and who approves connectors.",
-  "Plan the week.",
-];
-
-const WEEK_OUTCOMES = [
-  "The team's own playbooks, written with the setup interview and held in its own files.",
-  "The practice pack and agent deployed in your own tenant.",
-  "Results measured on your own documents against today's baseline.",
-  "A deployment package your IT team has reviewed.",
-  "A plan for the next practice.",
-];
-
-const LAYERS = [
-  {
-    name: "The foundation",
-    body: "Core legal skills that every practice uses: reviewing a document against a playbook, preparing an issues list, extracting key terms, comparing documents, building a chronology, writing a matter brief, and checking citations.",
-  },
-  {
-    name: "Practice packs",
-    body: "Specialty skills, playbook templates, checklists, and calculation tools for practices such as NDAs, commercial real estate, M&A, employment, litigation, patents, and trademarks, and an invoice review pack for legal operations.",
-  },
-  {
-    name: "The team's own playbooks",
-    body: "Your preferred and fallback positions, escalation rules, house style, and approved precedents, captured in files the team owns. Updates to the foundation and the packs never overwrite them.",
-  },
-];
-
-const INCLUDED = [
-  {
-    name: "Legal skills",
-    body: "Foundation and practice pack skills in the Agent Skills format, deployed as plugins to Cowork and Copilot Chat.",
-  },
-  {
-    name: "Playbooks for Word",
-    body: "Playbooks rendered as Word documents from the team's own positions, for Word's legal drafting and review skills.",
-  },
-  {
-    name: "Knowledge library",
-    body: "A SharePoint site structure for precedents, the clause library, and checklists, in your own tenant.",
-  },
-  {
-    name: "Agents",
-    body: "Copilot agents for each practice, grounded on the knowledge library and shared with the team.",
-  },
-  {
-    name: "Tools and MCP connectors",
-    body: "Calculation tools for the work that must be exact, and connectors to the systems you already license.",
-  },
-  {
-    name: "Setup interview",
-    body: "A guided skill that walks a practice lead through positions, fallbacks, escalation, and house style.",
-  },
-  {
-    name: "Evaluation set",
-    body: "Questions and documents for each practice, extended with your own, to test results on your work.",
-  },
-  {
-    name: "Governance and deployment",
-    body: "Human review guidance in every skill, a summary for IT of how data flows, and an administrator deployment package.",
-  },
-  {
-    name: "Adoption",
-    body: "Installation guides, training prompts, and a usage baseline from which to measure results.",
-  },
-];
-
+// The copy lives in documents.ts and follows the founder article. Keep the two
+// in step: the article's closing call to action links here and promises this
+// session.
 export default function Accelerator() {
   return (
     <>
@@ -170,6 +111,38 @@ export default function Accelerator() {
 
       <Slab tone="light">
         <Shell>
+          <div className="max-w-3xl">
+            <Eyebrow>Read before the session</Eyebrow>
+            <Heading level={2} className="mt-5">
+              Two short documents for the legal team and its IT lead.
+            </Heading>
+          </div>
+          <div className="mt-12 grid gap-10 md:grid-cols-2">
+            {[BRIEF, CHECKLIST].map((doc) => (
+              <div key={doc.slug} className="border-line-strong border-t pt-6">
+                <Heading level={3}>{doc.title}</Heading>
+                <p className="text-fg-mid mt-4 text-base leading-relaxed">
+                  {doc.description}
+                </p>
+                <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3">
+                  <Button variant="outline" href={doc.webUrl}>
+                    Read the {doc.shortTitle.toLowerCase()}
+                  </Button>
+                  <a
+                    href={doc.pdf}
+                    className="text-fg-mid hover:text-fg text-sm underline underline-offset-4 transition-colors"
+                  >
+                    Download the PDF ({doc.pages.length} pages)
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Shell>
+      </Slab>
+
+      <Slab tone="dark">
+        <Shell>
           <div
             id="book"
             className="mx-auto flex w-full max-w-6xl scroll-mt-24 flex-col gap-14 md:flex-row md:items-start md:gap-20 lg:gap-28"
@@ -200,10 +173,10 @@ export default function Accelerator() {
                 in Cowork and run the setup interview. To ask a question first,
                 email{" "}
                 <a
-                  href="mailto:ralph.schroeder@spaarke.com"
+                  href={`mailto:${CONTACT_EMAIL}`}
                   className="text-fg underline underline-offset-4"
                 >
-                  ralph.schroeder@spaarke.com
+                  {CONTACT_EMAIL}
                 </a>
                 .
               </p>

@@ -7,6 +7,7 @@ import { Button, Shell, Slab } from "@/components/primitives";
 import { ArticleHeader } from "@/components/article/ArticleHeader";
 import { ArticleTOC } from "@/components/article/ArticleTOC";
 import { ArticleShare } from "@/components/article/ArticleShare";
+import { AskAiCard } from "@/components/AskAiCard";
 import { ArticleRelated } from "@/components/article/ArticleRelated";
 import { ArticleProgressBar } from "@/components/article/ArticleProgressBar";
 import { ArticleLink } from "@/components/article/ArticleLink";
@@ -194,6 +195,9 @@ export default async function WhySpaarkeArticle({ params }: Props) {
                     <RailEntry />
                   </div>
                 )}
+                <div className="border-line bg-surface rounded-lg border p-4 shadow-sm">
+                  <AskAiCard src="article" />
+                </div>
               </div>
             </aside>
     </div>

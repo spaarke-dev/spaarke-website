@@ -15,6 +15,7 @@
     "linkedin:status": "tsx scripts/linkedin-status.ts",
     "voice:lint": "node scripts/voice-lint.mjs",
     "corpus": "node scripts/build-corpus-manifest.mjs",
+    "accelerator:pdf": "tsx scripts/render-accelerator-pdfs.mts",
     "insights:check": "tsx scripts/check-insights-prompt.ts",
     "insights:questions": "tsx scripts/generate-suggested-questions.ts",
     "insights:eval": "tsx scripts/eval-insights.ts",
@@ -23,7 +24,9 @@
     "insights:console": "tsx scripts/check-insights-console.mts",
     "demo-request:check": "tsx scripts/check-demo-request-capture.mts",
     "demo-request:orphans": "tsx scripts/demo-request-orphans.mts",
-    "report:daily": "tsx scripts/daily-report.mts"
+    "report:daily": "tsx scripts/daily-report.mts",
+    "meet:check": "tsx scripts/check-meet-slots.mts",
+    "meet:graph": "tsx scripts/check-meet-graph.mts"
   },
   "dependencies": {
     "@anthropic-ai/foundry-sdk": "^0.4.9",
