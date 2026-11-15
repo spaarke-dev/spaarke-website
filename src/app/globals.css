@@ -112,7 +112,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* v2 (wired in Task 003 — next/font/google sets the variable names below): */
+  /* v2 (src/app/layout.tsx sets the variable names below, from bundled font files): */
   --font-display: var(--font-inter-tight);
   --font-body: var(--font-inter);
   --font-mono-display: var(--font-jetbrains-mono);
