@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Shell, Slab } from "@/components/primitives";
+import { Button, Shell, Slab } from "@/components/primitives";
 import ContactForm from "@/components/ContactForm";
 import { SocialIcon } from "@/components/SocialIcons";
 
@@ -95,6 +95,12 @@ export default function Contact() {
               Have a question, a partnership idea, or want to see Spaarke
               live? Send a note and we&rsquo;ll come back to you ASAP!
             </p>
+
+            <div className="mt-8">
+              <Button variant="primary" href="/meet" arrow>
+                Schedule a meeting
+              </Button>
+            </div>
 
             {/* Other ways to reach us */}
             <div className="mt-12">
