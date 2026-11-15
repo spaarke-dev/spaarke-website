@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useId, useState, useSyncExternalStore } from "react";
 import { ASK_PROVIDERS, ASK_PROVIDER_LABEL, askLink, askPrompt, isBriefKey, type AskProvider } from "@/lib/ask-ai";
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
   variant?: "rail" | "page";
   /** Which assistants to offer; all three by default. */
   providers?: readonly AskProvider[];
+  /** The heading; "Learn more about Spaarke" by default. */
+  title?: string;
 };
 
 /**
@@ -23,8 +25,15 @@ type Props = {
  */
 const noSubscribe = () => () => {};
 
-export function AskAiCard({ src, variant = "rail", providers = ASK_PROVIDERS }: Props) {
+export function AskAiCard({
+  src,
+  variant = "rail",
+  providers = ASK_PROVIDERS,
+  title = "Learn more about Spaarke",
+}: Props) {
   const [copied, setCopied] = useState<AskProvider | null>(null);
+  // A page may carry the card twice (one per breakpoint), so the ID is unique per instance.
+  const headingId = `ask-ai-heading-${useId()}`;
   // The page is static, so the key is read from the address in the browser
   // (empty during prerender).
   const search = useSyncExternalStore(noSubscribe, () => window.location.search, () => "");
@@ -43,9 +52,9 @@ export function AskAiCard({ src, variant = "rail", providers = ASK_PROVIDERS }: 
   const page = variant === "page";
 
   return (
-    <section aria-labelledby={`ask-ai-heading-${src}`}>
+    <section aria-labelledby={headingId}>
       <h2
-        id={`ask-ai-heading-${src}`}
+        id={headingId}
         className={
           "flex items-center gap-2 " +
           (page
@@ -53,7 +62,7 @@ export function AskAiCard({ src, variant = "rail", providers = ASK_PROVIDERS }: 
             : "text-fg-low font-mono text-[11px] font-medium uppercase tracking-[0.18em]")
         }
       >
-        Learn more about Spaarke
+        {title}
       </h2>
       <p className={page ? "text-fg-mid mt-3 text-base leading-relaxed" : "text-fg-mid mt-3 text-[13px] leading-snug"}>
         One click briefs your AI assistant on Spaarke. Then ask it anything.
