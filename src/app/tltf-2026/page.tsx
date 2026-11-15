@@ -50,9 +50,9 @@ export default function TltfSummit2026() {
           <div>
             <Eyebrow>{TITLE}</Eyebrow>
             <Heading level={1} className="mt-6">
-              Get to
+              Get to Know
               <br />
-              Know Spaarke
+              Spaarke
             </Heading>
             <div
               aria-hidden="true"
