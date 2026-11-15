@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isAskProvider, isBriefKey, providerUrl } from "@/lib/ask-ai";
+import { isAskProvider, isBriefKey, providerUrl, siteUrl } from "@/lib/ask-ai";
 import { trackEvent } from "@/lib/logger";
 
 /**
@@ -14,7 +14,8 @@ export async function GET(
 ) {
   const { provider } = await params;
   if (!isAskProvider(provider)) {
-    return NextResponse.redirect(new URL("/ask", request.url), 302);
+    // siteUrl(), not request.url: behind Static Web Apps that is localhost:8080.
+    return NextResponse.redirect(new URL("/ask", siteUrl()), 302);
   }
   const src = (request.nextUrl.searchParams.get("src") ?? "direct").slice(0, 32).replace(/[^\w-]/g, "");
   // A private brief key (from an investor email) points the prompt at

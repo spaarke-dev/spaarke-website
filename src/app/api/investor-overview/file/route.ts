@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { flushTelemetry, trackEvent, trackException } from "@/lib/logger";
 import { DOWNLOAD_FILENAME, readPdf, verifyDownloadToken } from "@/lib/investor-overview";
+import { siteUrl } from "@/lib/ask-ai";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,9 @@ export async function GET(request: NextRequest) {
   if (!check.ok) {
     trackEvent("investor_overview.link_rejected", { reason: check.reason });
     await flushTelemetry();
-    const back = new URL("/tltf-2026", request.nextUrl.origin);
+    // The public origin, not request.nextUrl.origin: behind Static Web Apps
+    // that is the internal host (localhost:8080).
+    const back = new URL("/tltf-2026", siteUrl());
     back.searchParams.set("download", check.reason);
     back.hash = "investor-overview";
     return NextResponse.redirect(back, 302);
