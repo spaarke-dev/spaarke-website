@@ -122,8 +122,8 @@ export function InvestorOverviewForm({ source, recaptchaSiteKey }: { source: str
           <InlineAlert variant="error" message={error} />
         </div>
       )}
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-end">
-        <div className="flex-1">
+      <div className="flex flex-col items-start gap-5">
+        <div className="w-full">
           <label htmlFor="io-email" className={labelClass}>
             Work email<span className="text-error">*</span>
           </label>
