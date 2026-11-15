@@ -33,6 +33,11 @@ export type PlausibleEventName =
   | "Meeting Cancelled"
   | "Meeting Slot Taken"
   | "Meeting Guests Updated"
+  // LetsMeetPanel. `src` is the page, `where` is "rail" (wide screens) or
+  // "sheet" (the phone bar).
+  | "Lets Meet Opened"
+  // The investor overview email gate on /tltf-2026.
+  | "Investor Overview Requested"
   // The article assistant. Task 040. The question these exist to answer is
   // whether the assistant deepens engagement with the articles or replaces it,
   // which is why "Article Engagement" carries an `assistant` property rather

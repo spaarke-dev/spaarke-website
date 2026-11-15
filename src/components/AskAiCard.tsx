@@ -8,6 +8,8 @@ type Props = {
   src: string;
   /** "rail" is the compact article-rail version; "page" is the larger standalone card. */
   variant?: "rail" | "page";
+  /** Which assistants to offer; all three by default. */
+  providers?: readonly AskProvider[];
 };
 
 /**
@@ -21,7 +23,7 @@ type Props = {
  */
 const noSubscribe = () => () => {};
 
-export function AskAiCard({ src, variant = "rail" }: Props) {
+export function AskAiCard({ src, variant = "rail", providers = ASK_PROVIDERS }: Props) {
   const [copied, setCopied] = useState<AskProvider | null>(null);
   // The page is static, so the key is read from the address in the browser
   // (empty during prerender).
@@ -57,7 +59,7 @@ export function AskAiCard({ src, variant = "rail" }: Props) {
         One click briefs your AI assistant on Spaarke. Then ask it anything.
       </p>
       <div className={page ? "mt-6 flex flex-wrap gap-3" : "mt-3 flex flex-col gap-2"}>
-        {ASK_PROVIDERS.map((p) => (
+        {providers.map((p) => (
           <a
             key={p}
             href={askLink(p, src, briefKey)}

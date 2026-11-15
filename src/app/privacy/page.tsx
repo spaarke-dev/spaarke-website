@@ -18,7 +18,7 @@ export default function Privacy() {
         />
 
         <div className="text-fg-mid mt-12 max-w-2xl space-y-6 text-base leading-relaxed">
-          <p className="text-fg-low text-sm">Last updated: 2026-11-13</p>
+          <p className="text-fg-low text-sm">Last updated: 2026-11-15</p>
 
           <p>
             This policy covers two related but distinct contexts: (1) the
@@ -238,8 +238,10 @@ export default function Privacy() {
           </h3>
           <p>
             The forms on this site are the contact form, the evaluation access
-            request, the product tour sign-up, and the Design Partner Program
-            application. When you submit one, we store what you entered (for
+            request, the product tour sign-up, the Design Partner Program
+            application, and the investor overview download, which asks only
+            for your email address and emails you a link to the file. When you
+            submit one, we store what you entered (for
             example your name, work email, organization, role, and message) with
             the attribution snapshot above and a one-way hash of your IP
             address, which we use to limit repeated submissions. The data is

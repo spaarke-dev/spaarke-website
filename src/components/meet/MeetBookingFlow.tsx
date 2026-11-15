@@ -39,11 +39,18 @@ export function MeetBookingFlow({
   initialSlots,
   durationMinutes,
   recaptchaSiteKey,
+  compact = false,
+  idPrefix = "meet",
 }: {
   initialSlots: string[];
   durationMinutes: number;
   recaptchaSiteKey: string;
+  /** One column throughout, for the side panel (LetsMeetPanel). */
+  compact?: boolean;
+  /** Prefix for element IDs, so two flows can share a page. */
+  idPrefix?: string;
 }) {
+  const top = compact ? "mt-6" : "mt-12";
   const [timeZone, setTimeZone] = useVisitorTimeZone();
   const [slots, setSlots] = useState(initialSlots);
   const [selected, setSelected] = useState<string | null>(null);
@@ -164,17 +171,17 @@ export function MeetBookingFlow({
   }
 
   if (!timeZone) {
-    return <div className="text-fg-low mt-12 text-sm">Loading available times…</div>;
+    return <div className={`text-fg-low ${top} text-sm`}>Loading available times…</div>;
   }
 
   if (step === "done" && booked) {
     return (
-      <div className="border-line mt-12 rounded-xl border p-6 md:p-10">
+      <div className={`border-line ${top} rounded-xl border ${compact ? "p-5" : "p-6 md:p-10"}`}>
         <h2
           ref={headingRef}
           tabIndex={-1}
           className="font-display text-fg font-medium tracking-tight focus:outline-none"
-          style={{ fontSize: "clamp(26px, 3.5vw, 38px)", lineHeight: 1.1 }}
+          style={{ fontSize: compact ? "26px" : "clamp(26px, 3.5vw, 38px)", lineHeight: 1.1 }}
         >
           You are booked
         </h2>
@@ -206,7 +213,7 @@ export function MeetBookingFlow({
 
   if (slots.length === 0) {
     return (
-      <div className="mt-12">
+      <div className={top}>
         <p className="text-fg-mid text-base">
           There are no open times in the next few weeks. Send us a note and we will propose times by email.
         </p>
@@ -220,7 +227,7 @@ export function MeetBookingFlow({
   }
 
   return (
-    <div className="mt-12">
+    <div className={top}>
       {error && (
         <div className="mb-8">
           <InlineAlert variant="error" message={error} />
@@ -236,8 +243,16 @@ export function MeetBookingFlow({
             selected={selected}
             onSelect={setSelected}
             durationMinutes={durationMinutes}
+            compact={compact}
+            idPrefix={idPrefix}
           />
-          <div className="border-line mt-10 flex flex-col items-start gap-4 border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <div
+            className={
+              compact
+                ? "border-line mt-8 flex flex-col items-start gap-4 border-t pt-6"
+                : "border-line mt-10 flex flex-col items-start gap-4 border-t pt-8 sm:flex-row sm:items-center sm:justify-between"
+            }
+          >
             <p className="text-fg-mid text-sm" aria-live="polite">
               {selected ? formatMeeting(selected, durationMinutes, timeZone) : "Choose a time to continue."}
             </p>
@@ -269,21 +284,21 @@ export function MeetBookingFlow({
             </button>
           </div>
 
-          <div className="mt-10 space-y-7">
-            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
-              <Field id="name" label="Name" required value={values.name} error={fieldErrors.name} autoComplete="name" onChange={set} />
-              <Field id="email" label="Work email" required type="email" value={values.email} error={fieldErrors.email} autoComplete="email" onChange={set} />
+          <div className={`${compact ? "mt-8" : "mt-10"} space-y-7`}>
+            <div className={`grid grid-cols-1 gap-7 ${compact ? "" : "sm:grid-cols-2"}`}>
+              <Field idPrefix={idPrefix} id="name" label="Name" required value={values.name} error={fieldErrors.name} autoComplete="name" onChange={set} />
+              <Field idPrefix={idPrefix} id="email" label="Work email" required type="email" value={values.email} error={fieldErrors.email} autoComplete="email" onChange={set} />
             </div>
-            <div className="grid grid-cols-1 gap-7 sm:grid-cols-2">
-              <Field id="organization" label="Organization" required value={values.organization} error={fieldErrors.organization} autoComplete="organization" onChange={set} />
-              <Field id="role" label="Role" value={values.role} error={fieldErrors.role} autoComplete="organization-title" onChange={set} />
+            <div className={`grid grid-cols-1 gap-7 ${compact ? "" : "sm:grid-cols-2"}`}>
+              <Field idPrefix={idPrefix} id="organization" label="Organization" required value={values.organization} error={fieldErrors.organization} autoComplete="organization" onChange={set} />
+              <Field idPrefix={idPrefix} id="role" label="Role" value={values.role} error={fieldErrors.role} autoComplete="organization-title" onChange={set} />
             </div>
             <div>
-              <label htmlFor="meet-topic" className={labelClass}>
+              <label htmlFor={`${idPrefix}-topic`} className={labelClass}>
                 What would you like to cover?
               </label>
               <textarea
-                id="meet-topic"
+                id={`${idPrefix}-topic`}
                 rows={4}
                 maxLength={TOPIC_MAX}
                 value={values.topic}
@@ -310,17 +325,17 @@ export function MeetBookingFlow({
 
           {/* Honeypot: hidden from people and assistive technology. */}
           <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
-            <label htmlFor="meet-website">Website</label>
-            <input id="meet-website" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+            <label htmlFor={`${idPrefix}-website`}>Website</label>
+            <input id={`${idPrefix}-website`} tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
           </div>
 
-          <div className="flex justify-end pt-10">
+          <div className={compact ? "pt-8" : "flex justify-end pt-10"}>
             <Button variant="primary" type="submit" disabled={submitting} arrow={!submitting}>
               {submitting ? "Booking…" : "Book meeting"}
             </Button>
           </div>
 
-          <p className="text-fg-low mt-10 text-xs leading-relaxed">
+          <p className={`text-fg-low ${compact ? "mt-6" : "mt-10"} text-xs leading-relaxed`}>
             We use what you enter to schedule and prepare for the meeting. See our{" "}
             <Link href="/privacy" className="underline underline-offset-2">
               privacy policy
@@ -347,6 +362,7 @@ export function MeetBookingFlow({
 }
 
 function Field({
+  idPrefix,
   id,
   label,
   value,
@@ -356,6 +372,7 @@ function Field({
   autoComplete,
   onChange,
 }: {
+  idPrefix: string;
   id: Fields;
   label: string;
   value: string;
@@ -367,23 +384,23 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={`meet-${id}`} className={labelClass}>
+      <label htmlFor={`${idPrefix}-${id}`} className={labelClass}>
         {label}
         {required && <span className="text-error">*</span>}
       </label>
       <input
-        id={`meet-${id}`}
+        id={`${idPrefix}-${id}`}
         type={type}
         value={value}
         required={required}
         autoComplete={autoComplete}
         onChange={(e) => onChange(id, e.target.value)}
         aria-invalid={!!error}
-        aria-describedby={error ? `meet-${id}-error` : undefined}
+        aria-describedby={error ? `${idPrefix}-${id}-error` : undefined}
         className={`${inputBase} ${inputBorder(!!error)}`}
       />
       {error && (
-        <p id={`meet-${id}-error`} className="text-error mt-1.5 text-sm" role="alert">
+        <p id={`${idPrefix}-${id}-error`} className="text-error mt-1.5 text-sm" role="alert">
           {error}
         </p>
       )}

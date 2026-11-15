@@ -25,6 +25,10 @@ type Props = {
   durationMinutes: number;
   /** Shown above the calendar; defaults to "Choose a day". */
   dayHeading?: string;
+  /** Stacks the calendar above the times, for a narrow side panel. */
+  compact?: boolean;
+  /** Prefix for element IDs, so two pickers can share a page. */
+  idPrefix?: string;
 };
 
 /**
@@ -40,6 +44,8 @@ export function SlotPicker({
   onSelect,
   durationMinutes,
   dayHeading = "Choose a day",
+  compact = false,
+  idPrefix = "meet",
 }: Props) {
   const byDay = useMemo(() => groupByDay(slots, timeZone), [slots, timeZone]);
   const dayKeys = useMemo(() => [...byDay.keys()].sort(), [byDay]);
@@ -75,7 +81,13 @@ export function SlotPicker({
   })();
 
   return (
-    <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,18rem)] md:gap-12">
+    <div
+      className={
+        compact
+          ? "grid grid-cols-1 gap-8"
+          : "grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,18rem)] md:gap-12"
+      }
+    >
       <div>
         <div className="flex items-baseline justify-between gap-4">
           <h2 className="font-display text-fg text-lg font-medium">{dayHeading}</h2>
@@ -120,13 +132,13 @@ export function SlotPicker({
           })}
         </div>
 
-        <div className="mt-8 max-w-xs">
-          <label htmlFor="meet-tz" className={labelClass}>
+        <div className={compact ? "mt-6" : "mt-8 max-w-xs"}>
+          <label htmlFor={`${idPrefix}-tz`} className={labelClass}>
             Time zone
           </label>
           <div className="relative">
             <select
-              id="meet-tz"
+              id={`${idPrefix}-tz`}
               value={timeZone}
               onChange={(e) => onTimeZoneChange(e.target.value)}
               className={`${inputBase} ${inputBorder(false)} appearance-none pr-8`}
@@ -156,7 +168,7 @@ export function SlotPicker({
           {activeDay ? dayLabel(activeDay, { weekday: "long", month: "long", day: "numeric" }) : "Times"}
         </h2>
         <p className="text-fg-low mt-1 text-sm">{durationMinutes} minute meeting, Microsoft Teams</p>
-        <div className="mt-5 grid grid-cols-2 gap-2" role="group" aria-label="Open times">
+        <div className={`mt-5 grid gap-2 ${compact ? "grid-cols-3" : "grid-cols-2"}`} role="group" aria-label="Open times">
           {times.map((iso) => {
             const isSelected = iso === selected;
             return (

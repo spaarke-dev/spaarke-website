@@ -33,6 +33,7 @@
     "@azure/data-tables": "^13.3.2",
     "@azure/identity": "^4.5.0",
     "@azure/keyvault-secrets": "^4.9.0",
+    "@azure/storage-blob": "^12.26.0",
     "@fluentui/react-icons": "^2.0.318",
     "@sendgrid/mail": "^8.1.6",
     "@tailwindcss/typography": "^0.5.19",
