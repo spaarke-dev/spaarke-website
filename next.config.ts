@@ -43,11 +43,12 @@ const nextConfig: NextConfig = {
       // required — a cached 308 would keep sending visitors to an old
       // destination after the slot moves. To give a slot its own page: delete
       // its entry here and add the page at src/app/go/<code>/.
-      // more-info-1 (postcards printed August 2026): /meet since 2026-11-13,
-      // /design-partners from 2026-11-12, the homepage before that.
+      // more-info-1 (postcards printed August 2026, handed out at The Legal
+      // Technology Fund Summit 2026): /tltf-2026 since 2026-11-15, /meet from
+      // 2026-11-13, /design-partners from 2026-11-12, the homepage before that.
       {
         source: "/go/more-info-1",
-        destination: "/meet",
+        destination: "/tltf-2026",
         permanent: false,
       },
     ];
