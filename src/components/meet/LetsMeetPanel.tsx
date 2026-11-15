@@ -3,9 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/primitives";
 import { MeetBookingFlow } from "@/components/meet/MeetBookingFlow";
+import { SocialIcon } from "@/components/SocialIcons";
 import { track } from "@/lib/analytics";
 
-type Contact = { name?: string; email: string };
+/** Who to contact instead; `linkedin` is a profile URL. */
+type Contact = { name?: string; email: string; linkedin?: string };
 
 type Props = {
   /** Where the panel sits, recorded when it is opened (for example "tltf-2026"). */
@@ -182,6 +184,20 @@ function ContactLines({ contact }: { contact: Contact }) {
           {contact.email}
         </a>
       </p>
+      {contact.linkedin && (
+        <p className="pt-1">
+          <a
+            href={contact.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track("Outbound Click — LinkedIn", { from_page: window.location.pathname })}
+            className="text-cta-blue inline-flex items-center gap-2 underline underline-offset-2"
+          >
+            <SocialIcon platform="linkedin" className="h-4 w-4 shrink-0" />
+            LinkedIn
+          </a>
+        </p>
+      )}
     </div>
   );
 }

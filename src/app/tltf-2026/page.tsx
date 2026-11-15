@@ -39,7 +39,8 @@ export default function TltfSummit2026() {
   const recaptchaSiteKey = process.env.RECAPTCHA_SITE_KEY ?? "";
   const contact = {
     name: process.env.MEET_SIGNATURE_NAME?.trim() || undefined,
-    email: "contactus@spaarke.com",
+    email: "ralph.schroeder@spaarke.com",
+    linkedin: "https://www.linkedin.com/in/ralphschroeder",
   };
 
   return (
@@ -49,7 +50,9 @@ export default function TltfSummit2026() {
           <div>
             <Eyebrow>{TITLE}</Eyebrow>
             <Heading level={1} className="mt-6">
-              Good to meet you
+              Get to
+              <br />
+              Know Spaarke
             </Heading>
             <div
               aria-hidden="true"
@@ -75,8 +78,9 @@ export default function TltfSummit2026() {
               </p>
             </section>
 
-            <div className="border-line mt-14 border-t pt-12">
-              <AskAiCard src={SOURCE} variant="page" providers={["claude", "chatgpt"]} />
+            {/* On a phone the rail falls below everything, so the card also sits here. */}
+            <div className="border-line mt-14 border-t pt-12 lg:hidden">
+              <AskAiCard src={SOURCE} variant="page" title="Learn more" providers={["claude", "chatgpt"]} />
             </div>
 
             <section
@@ -98,8 +102,11 @@ export default function TltfSummit2026() {
             </section>
           </div>
 
-          <aside id="meet" aria-label="Book a meeting" className="scroll-mt-32 lg:self-start lg:sticky lg:top-28">
-            <div className="lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
+          <aside id="meet" aria-label="Learn more and book a meeting" className="scroll-mt-32 lg:self-start lg:sticky lg:top-28">
+            <div className="space-y-6 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
+              <div className="border-line bg-bg hidden rounded-xl border p-6 lg:block">
+                <AskAiCard src={SOURCE} variant="page" title="Learn more" providers={["claude", "chatgpt"]} />
+              </div>
               <LetsMeetPanel src={SOURCE} recaptchaSiteKey={recaptchaSiteKey} contact={contact} openOnHash="meet" />
             </div>
           </aside>
