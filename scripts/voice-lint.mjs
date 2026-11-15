@@ -40,7 +40,7 @@ const TBD_MARKER = "**TBD " + EM + " confirm**";
 
 // A form of "to be" followed by a past participle. Used for the passive-share
 // statistic only (style guide section 2); it never raises an error, because a
-// legitimate passive is common and the judgement belongs to the writer.
+// legitimate passive is common and the judgment belongs to the writer.
 const PASSIVE_IRREGULAR =
   "written|given|taken|made|held|seen|known|built|done|kept|shown|found|brought|put|set|sent|told|left|drawn|run|paid|met|lost|won|read|understood|chosen|driven|begun|spent|dealt|sold|bought|caught|taught|thought|meant|felt|led|said|heard";
 const PASSIVE = new RegExp(
@@ -77,6 +77,32 @@ const WORDS = [
   "multifaceted", "nuanced", "intricate", "vibrant", "boasts", "showcasing", "groundbreaking",
 ];
 
+// Warnings: British spellings. The house writes American English (style guide,
+// section 4). A quotation or a proper name keeps its own spelling, so these
+// warn rather than fail. `us` rewrites the match to the American form.
+const BRITISH = [
+  { re: /\blicenc(e|es|ed|ing)\b/gi, us: "licens$1" },
+  {
+    re: /\b(organi|recogni|prioriti|optimi|minimi|maximi|standardi|centrali|summari|categori|characteri|emphasi|generali|utili|reali|authori|digiti|speciali|capitali|moderni|operationali|internali|personali)s(e|es|ed|ing|ation|ations|ational|able)\b/gi,
+    us: "$1z$2",
+  },
+  { re: /\banalys(e|ed|ing)\b/gi, us: "analyz$1" },
+  { re: /\b(behavio|colo|favo|hono|labo|neighbo|endeavo|humo|rumo)ur(s|ed|ing|able|ite|ites|al)?\b/gi, us: "$1r$2" },
+  { re: /\bcentre(s)?\b/gi, us: "center$1" },
+  { re: /\bcentred\b/gi, us: "centered" },
+  { re: /\bprogramme(s)?\b/gi, us: "program$1" },
+  { re: /\bcatalogue(s)?\b/gi, us: "catalog$1" },
+  { re: /\bcatalogu(ed|ing)\b/gi, us: "catalog$1" },
+  { re: /\bjudgement(s)?\b/gi, us: "judgment$1" },
+  { re: /\b(defen|offen)ce(s)?\b/gi, us: "$1se$2" },
+  { re: /\b(travel|cancel|model|label|signal|total|channel|level|fuel)l(ed|ing|er|ers)\b/gi, us: "$1$2" },
+  { re: /\b(fulfil|enrol|instil)(s|ment|ments)?\b/gi, us: "$1l$2" },
+  { re: /\bpractis(e|es|ed|ing)\b/gi, us: "practic$1" },
+  { re: /\bwhilst\b/gi, us: "while" },
+  { re: /\bamongst\b/gi, us: "among" },
+  { re: /\blearnt\b/gi, us: "learned" },
+];
+
 const PHRASES = [
   // From the writer's author calibration, September 2026.
   { re: /\bGeneral Counsel\b(?!\s+[A-Z])/g, msg: "\"general counsel\" is lowercase in our own prose" },
@@ -109,7 +135,7 @@ const PHRASES = [
 // retuned once more articles have been measured against it. All of these
 // report warnings or statistics. The one exception, and the only error in
 // this block, is a keyTakeaways count above the ceiling, which is a
-// frontmatter contract rather than a judgement about prose.
+// frontmatter contract rather than a judgment about prose.
 const BIBLIOGRAPHIC_WE_RATIO = 0.5; // "In our earlier article" per link to a Spaarke article
 const TERMINAL_CAVEATS_PER_1000 = 1; // caveats that end on what a figure cannot show
 const FULL_DATES_PER_1000 = 3; // "Month D, YYYY" density
@@ -130,7 +156,7 @@ const CLOSE_FIRST_STEP = /(?:the )?(?:practical )?first (?:step|move)\b|starts? 
 // audit proposed fires on the approved exemplar's own headings ("AI is
 // redefining the department's people and roles", "The economics of outside
 // counsel are being reset"), both of which render a verdict, so the check is
-// narrowed to verbs that name a movement rather than a judgement.
+// narrowed to verbs that name a movement rather than a judgment.
 const MOVEMENT_VERBS =
   "settling|shifting|moving|becoming|emerging|evolving|growing|rising|expanding|converging|changing|trending|heading|drifting|migrating|coalescing";
 const MOVEMENT_HEADING = new RegExp(`\\b(?:is|are)\\s+(?:\\w+ly\\s+)?(?:${MOVEMENT_VERBS})\\b`, "i");
@@ -308,6 +334,12 @@ for (const file of files) {
   }
   for (const { re, msg } of PHRASES) {
     for (const m of text.matchAll(re)) push("warn", m.index, msg);
+  }
+  for (const { re, us } of BRITISH) {
+    for (const m of text.matchAll(re)) {
+      const fix = m[0].replace(new RegExp(re.source, "i"), us);
+      push("warn", m.index, `British spelling "${m[0]}": write "${fix}" (American English, style guide section 4)`);
+    }
   }
 
   // Structural checks on body paragraphs (frontmatter, headings, lists, and quotes excluded).

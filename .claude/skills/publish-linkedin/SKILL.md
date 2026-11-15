@@ -329,7 +329,7 @@ cancel:
   -> Exit without posting.
   -> Leave any rasterized image artifact in place (it's still useful
      to the content pipeline).
-  -> Output: "Cancelled. Nothing was posted. Image at <path> remains
+  -> Output: "Canceled. Nothing was posted. Image at <path> remains
      for next time."
 ```
 
@@ -517,7 +517,7 @@ authored from real personal posts):
 
 **Inputs to the prompt**: same article frontmatter, plus permission
 to pull one specific example or claim from the article body if the
-operator has flagged a favourite line.
+operator has flagged a favorite line.
 
 #### Worked example — `the-iq-stack` (personal voice)
 

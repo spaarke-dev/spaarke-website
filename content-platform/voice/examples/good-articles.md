@@ -13,7 +13,7 @@ The extracts model six traits that still hold:
 5. Knowledge is quoted in the voice of the person who held it.
 6. Paired examples show a difference that a description could only assert.
 
-The constructions to avoid are catalogued in `ai-tells.md`, and section 7 of that file rewrites several of the passages that this file used to praise.
+The constructions to avoid are cataloged in `ai-tells.md`, and section 7 of that file rewrites several of the passages that this file used to praise.
 
 Source articles (all from `content/blog/`):
 

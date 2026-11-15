@@ -106,7 +106,7 @@ full done-when checklist per gate.
    reads the draft against `../../voice/stance.md` and the eight
    traits in `../../voice/examples/house-exemplar.md` section 2.
    Review runs on four lenses: voice, fidelity, evidence, and
-   stance. The stance lens exists because the judgement calls it
+   stance. The stance lens exists because the judgment calls it
    catches, who holds which authority and whether the piece takes a
    position, fall outside the other three and outside the lint.
 5. **Hero**: SVG (default) or photographic prompt.

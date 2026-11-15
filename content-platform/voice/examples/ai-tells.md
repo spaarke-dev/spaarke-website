@@ -508,7 +508,7 @@ Run this checklist on the complete draft, including the title and the frontmatte
 - [ ] Numeric ranges are written with "to".
 - [ ] No paragraph carries three colons or three semicolons as a result of dash replacement.
 - [ ] Every parallel enumeration of three or more one-claim items is rendered as a bulleted or numbered list, each item carries a bold label and a claim the item itself supports, and no bold label stands in place of evidence. Either label form is correct: a bare noun where the item carries its own content, or "Name: what it does" where the label has to say what the item is for. Where genuinely parallel items each need a full paragraph of reasoning, they stay as paragraphs with a bold label on each, worded the same way across the set (`style-guide.md`, section 4).
-- [ ] The article carries no more than the number of bold lead-in lists that `style-guide.md`, section 4, allows for its length. Bold-labelled paragraphs are not counted against that ceiling.
+- [ ] The article carries no more than the number of bold lead-in lists that `style-guide.md`, section 4, allows for its length. Bold-labeled paragraphs are not counted against that ceiling.
 - [ ] Headings are in sentence case and state the point of each section. None is a topic label or a template.
 - [ ] Running text has no mechanical bold, no emoji, and no decorative arrows.
 
