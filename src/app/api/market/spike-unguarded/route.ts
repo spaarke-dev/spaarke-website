@@ -17,6 +17,10 @@ export async function GET(request: NextRequest) {
       hasPrincipalHeader: Boolean(raw),
       principal: decodePrincipal(raw),
       swaHeaders: swaHeaderNames(request.headers),
+      // Whether other principal-like headers carry a client-supplied value.
+      principalId: request.headers.get("x-ms-client-principal-id"),
+      principalIdp: request.headers.get("x-ms-client-principal-idp"),
+      authTokenLength: request.headers.get("x-ms-auth-token")?.length ?? 0,
     },
     { headers: { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" } },
   );
