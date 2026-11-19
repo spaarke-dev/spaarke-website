@@ -283,7 +283,7 @@ Every site writer feeds the log, and so does Ralph's mailbox through Microsoft G
   - the `Application Mail.Read` role for the Graph app, on that scope.
   - This can be the `/meet` app or a separate one; see the open questions.
 - Adding a mailbox later takes two steps: add it to the group in Exchange (an admin task, and it can take up to an hour to apply), then register it at `/admin/mailboxes`. The implementation documents both steps in `docs/market-access-mailboxes.md`.
-- contactus@spaarke.com must be a mailbox that Graph can read: a shared mailbox or a user mailbox, not a distribution list. Check its type during setup.
+- contactus@spaarke.com is a normal user mailbox with an Exchange license only, so Graph can read it once it is in the management scope. It needs no Power Apps or other license.
 - New app settings: auth client ID and secret, and the sync bearer token. Mailbox addresses go in `MaMailboxes`, not in app settings or code.
 
 ### External Dependencies
@@ -301,6 +301,7 @@ Every site writer feeds the log, and so does Ralph's mailbox through Microsoft G
 | Investors | How are investor contacts handled? | Same store, restricted | `visibility` field and an `investor` role (FR-02) |
 | Users | Who signs in? | Ralph only for now | One role assignment; roles still built in |
 | Mailboxes | Which mailboxes sync? | Ralph's and contactus@spaarke.com, with a way to add more | Mailbox registry, triage for shared inboxes, a group-based Exchange scope (FR-08) |
+| contactus mailbox | What kind of mailbox is contactus@spaarke.com? | A normal user mailbox with only an Exchange license; no Power Apps or other license is needed | Graph reads it like any user mailbox in the scope; no mailbox type check at setup. Its registry `kind` is still `shared`, since it is a team inbox in `capture-new` mode |
 | Purpose | Is this for repeatable outreach like TLTF? | Yes | Campaigns are outreach projects with members and results (FR-09, FR-10) |
 
 ## Assumptions
