@@ -6,7 +6,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [001](001-auth-spike.md) | Auth spike on a preview environment | none | not-started |
+| [001](001-auth-spike.md) | Auth spike on a preview environment | none | in-progress |
 | [002](002-admin-guard-and-shell.md) | Admin guard and shell | 001 | not-started |
 | [003](003-exchange-and-app-setup-instructions.md) | Exchange and app setup instructions (Ralph runs them) | open question 1 | not-started |
 | [004](004-app-insights-safety-export.md) | App Insights safety export | none | not-started |
@@ -15,9 +15,9 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [010](010-market-store.md) | Market store | none | not-started |
-| [011](011-contact-and-organization-resolution.md) | Contact and organization resolution | 010 | not-started |
-| [012](012-record-activity.md) | `recordActivity` | 011 | not-started |
+| [010](010-market-store.md) | Market store | none | done |
+| [011](011-contact-and-organization-resolution.md) | Contact and organization resolution | 010 | done |
+| [012](012-record-activity.md) | `recordActivity` | 011 | done |
 | [013](013-campaigns-members-audit.md) | Campaigns, members and audit | 012 | not-started |
 
 ## Phase 2: Site writers
