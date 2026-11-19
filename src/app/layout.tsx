@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Inter_Tight, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import ThemeProvider from "@/components/ThemeProvider";
 import NotificationBar from "@/components/NotificationBar";
 import SiteHeader from "@/components/SiteHeader";
@@ -13,36 +15,31 @@ import {
 } from "@/lib/seo";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// Fonts are bundled from npm packages (geist, @fontsource-variable/*), not
+// fetched from Google at build time: the Google fetch failed intermittently and
+// broke deploys. All are variable fonts, latin subset, the same families as before.
+const geistSans = GeistSans;
+const geistMono = GeistMono;
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-// v2 fonts — Inter Tight (display), Inter (body), JetBrains Mono (eyebrows / captions).
-// Self-hosted at build time by next/font/google.
-const interTight = Inter_Tight({
+// v2 fonts: Inter Tight (display), Inter (body), JetBrains Mono (eyebrows / captions).
+const interTight = localFont({
+  src: "../../node_modules/@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2",
   variable: "--font-inter-tight",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "100 900",
   display: "swap",
 });
 
-const inter = Inter({
+const inter = localFont({
+  src: "../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
   variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: "100 900",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const jetbrainsMono = localFont({
+  src: "../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2",
   variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: "100 800",
   display: "swap",
 });
 
