@@ -6,7 +6,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 001 - Auth spike on a preview environment |
+| **Task** | 001: Auth spike on a preview environment |
 | **Step** | 5 of 9: curl tests on the preview, then Ralph's sign-in |
 | **Status** | in-progress (waiting on the preview deploy, then on Ralph) |
 | **Next action** | Run the signed-out, forged-header and bad-token curl tests against the spike preview; ask Ralph to invite himself with the `admin` role and sign in |
