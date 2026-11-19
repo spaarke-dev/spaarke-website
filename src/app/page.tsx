@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Spaarke — Legal Operations Intelligence platform",
   description:
-    "The shared platform for legal departments, business stakeholders, and outside counsel. Built on Microsoft 365.",
+    "The shared platform for legal departments, business stakeholders, and outside counsel. It integrates and extends a legal team's core systems and runs where legal teams already work.",
 };
 
 export default function Home() {

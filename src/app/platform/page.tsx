@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Platform",
   description:
-    "The Spaarke platform — one platform, all sides, every matter. Operations, Documents & Knowledge, Collaboration, Agents & Automation, Spend & Performance, on a Microsoft 365 foundation.",
+    "The Spaarke platform: one platform, all sides, every matter. Operations, Documents & Knowledge, Collaboration, Agents & Automation, and Spend & Performance, running where legal teams already work.",
 };
 
 export default function Platform() {

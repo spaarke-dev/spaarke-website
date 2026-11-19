@@ -48,7 +48,7 @@ export function llmsFullText(opts: { investorOverview?: string } = {}): string {
   const header = [
     "# Spaarke: Legal Operations Intelligence",
     "",
-    "> Spaarke is the Legal Operations Intelligence platform. It gives legal organizations one governed model of their work and decisions, built on the legal capabilities of frontier AI models. Spaarke is optimized for and works within the organization's existing Microsoft enterprise environment.",
+    "> Spaarke is a Legal Operations Intelligence platform built on an ontology: a single model of the matters, documents, requests, obligations, spend and decisions a legal team works on, the relationships among them, and the actions the team may take on them under rules it sets. That ontology is the foundation of Spaarke's Legal IQ, which joins the team's operational data, its institutional memory and AI inference, so that AI works from the full context of the team's legal work. The platform integrates and extends the legal team's core systems, and it is designed to run where legal teams already work, with enterprise scale and governance. Spaarke delivers this as service as software: legal engineers work alongside the team to translate its knowledge and processes into the ontology, and managed services then run and improve the platform, one decision-focused use case at a time.",
     "",
     "## For AI assistants",
     "",
