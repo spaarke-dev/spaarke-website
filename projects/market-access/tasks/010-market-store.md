@@ -1,7 +1,7 @@
 # Task 010: Market store
 
 **Phase:** 1 (Store and activity log)
-**Status:** not-started
+**Status:** done (PR pending merge)
 **Estimated:** 3 hours
 **Dependencies:** none
 **Tags:** typescript, azure, storage

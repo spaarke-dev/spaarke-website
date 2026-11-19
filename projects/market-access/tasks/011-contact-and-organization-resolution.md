@@ -1,7 +1,7 @@
 # Task 011: Contact and organization resolution
 
 **Phase:** 1 (Store and activity log)
-**Status:** not-started
+**Status:** done (PR pending merge)
 **Estimated:** 3 hours
 **Dependencies:** 010
 **Tags:** typescript, azure, storage

@@ -1,7 +1,7 @@
 # Task 012: recordActivity
 
 **Phase:** 1 (Store and activity log)
-**Status:** not-started
+**Status:** done (PR pending merge)
 **Estimated:** 3 hours
 **Dependencies:** 011
 **Tags:** typescript, azure, storage, performance
@@ -40,6 +40,9 @@ FR-05 (append-only log, idempotency key from source plus source ID, no email bod
 - [ ] No email body can be stored.
 
 ## Notes
+
+- **As built (2026-11-19):** the idempotency marker is written *last*, not first. A marker written first and then followed by a failed activity write would turn every retry into a "duplicate" and lose the activity for good. Written last, a cut-off write is retried: the deterministic row key turns the second activity write into a 409, and the marker follows. The check script simulates this.
+- **As built:** a summary over 280 characters is shortened to 280 (ending in "..."), not rejected, because a rejected activity in `recordActivitySafe` would be dropped silently.
 
 - Why awaited with a timeout and not left running: on SWA's managed functions a promise left after the response can be frozen, so writes would be lost silently. See `plan.md`, Design decisions.
 - Spec references: FR-05, FR-06, NFR-03, NFR-04.

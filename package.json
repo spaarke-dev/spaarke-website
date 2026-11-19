@@ -26,7 +26,8 @@
     "demo-request:orphans": "tsx scripts/demo-request-orphans.mts",
     "report:daily": "tsx scripts/daily-report.mts",
     "meet:check": "tsx scripts/check-meet-slots.mts",
-    "meet:graph": "tsx scripts/check-meet-graph.mts"
+    "meet:graph": "tsx scripts/check-meet-graph.mts",
+    "market:check": "tsx scripts/check-market.mts"
   },
   "dependencies": {
     "@anthropic-ai/foundry-sdk": "^0.4.9",
