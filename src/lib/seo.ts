@@ -39,7 +39,7 @@ function resolveOgImage(heroImage: string | undefined, siteUrl: string): string 
 
 const SITE_NAME = "Spaarke";
 const SITE_DESCRIPTION =
-  "Spaarke is a Legal Operations Intelligence platform built on Microsoft 365. Raise the IQ of your legal work with unified data, operational memory, and AI-powered inference.";
+  "Spaarke is a Legal Operations Intelligence platform built on an ontology of legal work, delivered as service as software. It integrates and extends a legal team's core systems and runs where legal teams already work, with enterprise scale and governance.";
 
 /* ------------------------------------------------------------------ */
 /*  Organization JSON-LD (site-wide)                                   */

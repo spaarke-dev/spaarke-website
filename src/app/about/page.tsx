@@ -5,7 +5,7 @@ import { PageHeader, Shell, Slab } from "@/components/primitives";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Spaarke — the shared platform for legal departments, business stakeholders, and outside counsel. Built on Microsoft 365.",
+    "About Spaarke: a Legal Operations Intelligence platform built on an ontology of legal work, delivered as service as software.",
 };
 
 export default function About() {

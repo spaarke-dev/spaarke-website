@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     template: "%s | Spaarke",
   },
   description:
-    "Spaarke is a Legal Operations Intelligence platform built on Microsoft 365. Raise the IQ of your legal work with unified data, operational memory, and AI-powered inference.",
+    "Spaarke is a Legal Operations Intelligence platform built on an ontology of legal work, delivered as service as software. It integrates and extends a legal team's core systems and runs where legal teams already work, with enterprise scale and governance.",
   metadataBase: new URL(siteUrl),
   alternates: {
     types: {
