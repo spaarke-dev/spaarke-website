@@ -44,7 +44,7 @@ Each part of the site that collects a lead also writes an activity. Nothing alre
 ## Decisions made in the session
 
 - **Store:** the website's existing Table Storage account. Not Dataverse, and not an off-the-shelf CRM.
-- **Email:** sync automatically from Ralph's Spaarke mailbox through Microsoft Graph, limited to that one mailbox, the same way `/meet` is limited to its host calendar. Only mail with a known contact is logged.
+- **Email:** sync automatically through Microsoft Graph, read-only, and limited to the mailboxes registered for it, the same way `/meet` is limited to its host calendar. The first two are Ralph's mailbox and contactus@spaarke.com. More can be added from the admin area once they're in the Exchange access scope. Ralph's mailbox logs only mail with known contacts. The contactus inbox also queues mail from new senders for triage, so a first inquiry can become a contact in one click.
 - **Investors:** in the same store, but tagged and visible only to an `investor` role.
 - **Users:** Ralph only for now, with roles designed so the team can be added later.
 - **Public repo:** no contact data, lists or mailbox addresses in git. Imports read from the private folder at run time.
