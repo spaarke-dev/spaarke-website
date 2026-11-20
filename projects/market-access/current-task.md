@@ -6,15 +6,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 003: Exchange and app setup instructions |
-| **Step** | 5 of 5: PR open; then Ralph runs the steps |
-| **Status** | in-progress (PR pending merge; tenant steps not yet run) |
-| **Next action** | Merge on Ralph's go-ahead; Ralph runs `docs/market-access-mailboxes.md` sections 1 to 3 and confirms here (task 040 waits on it). Meanwhile tasks 004 and 013 |
+| **Task** | 004 done; 003 tenant steps done |
+| **Step** | between tasks |
+| **Status** | waiting on Ralph (PR #170 merge) |
+| **Next action** | Task 013, then task 040 (tenant setup is done; Mail.Read applies within two hours of 2026-11-20 05:00 UTC) |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
 - **Admin guard:** task 002 merged (PR #168); `/admin` live behind the `admin` role.
-- **Mailbox instructions branch:** `docs/market-access-mailboxes` (task 003).
+- **Mailbox setup:** task 003 merged (PR #169) and run in the tenant 2026-11-20.
 - **Plan:** approved and merged 2026-11-19 (PR #162).
 
 ## Open questions and where they stand
@@ -40,3 +40,5 @@
 - 2026-11-19: store merged (PR #164). Auth spike finished in the browser signed in as Ralph; all seven questions answered (`notes/auth-spike.md`).
 - 2026-11-19: task 002 built (guards, admin layout and home, SWA rules, robots).
 - 2026-11-19: task 002 merged (PR #168) and verified on production signed out. Open question 1 answered: reuse the `/meet` Graph app. Task 003 instructions written.
+- 2026-11-19: task 003 merged (PR #169); tenant steps waiting on Ralph. Task 004 done: 508 custom events exported privately (`notes/appinsights-export.md`).
+- 2026-11-20: tenant setup for task 003 run by Claude at Ralph's request (his Exchange admin sign-in): "Market access sync" group (2 members), scope, `Application Mail.Read` on it. `Test-ServicePrincipalAuthorization`: Mail.Read in scope for both synced mailboxes, out of scope for another mailbox; the meet calendar scope unchanged. `market-sync-token` created in the website's Key Vault, `MA_SYNC_TOKEN` set in app settings and GitHub secrets.

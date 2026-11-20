@@ -2,7 +2,7 @@
 
 The market access admin area (`/admin`) logs email with known contacts by reading message metadata from a short list of mailboxes through Microsoft Graph. This guide covers the one-time tenant setup, the settings, and how to add or remove a mailbox later. The design is in [`projects/market-access/spec.md`](../projects/market-access/spec.md) (FR-07, FR-08, NFR-02, NFR-05).
 
-**Ralph runs these steps.** Claude wrote them but does not run tenant admin changes. Nothing here goes into a committed file: the repository is public, so tenant IDs, app IDs, mailbox addresses and secrets live only in Key Vault, the static web app's settings, GitHub secrets and your own `.env.local`.
+**Ralph runs these steps, or asks Claude to run them with his sign-in** (first run: 2026-11-20). Nothing here goes into a committed file: the repository is public, so tenant IDs, app IDs, mailbox addresses and secrets live only in Key Vault, the static web app's settings, GitHub secrets and your own `.env.local`.
 
 ## What this sets up
 
@@ -45,6 +45,8 @@ Get-ServicePrincipal | Where-Object AppId -eq "<APP_ID>"
 New-ManagementScope -Name "Market access sync" -RecipientRestrictionFilter "MemberOfGroup -eq '$dn'"
 New-ManagementRoleAssignment -App <APP_ID> -Role "Application Mail.Read" -CustomResourceScope "Market access sync"
 ```
+
+Run from a script or a background shell, `Connect-ExchangeOnline` can fail with "A window handle must be configured"; add `-DisableWAM` so it signs in through the browser. Device code sign-in (`-Device`) may be blocked by the tenant's sign-in policy.
 
 Then check the result. `Test-ServicePrincipalAuthorization` lists every role the app holds, with `InScope` for the mailbox you name:
 

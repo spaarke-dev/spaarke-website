@@ -1,7 +1,7 @@
 # Task 003: Exchange and app setup instructions
 
 **Phase:** 0 (Foundations)
-**Status:** instructions written (PR pending merge); waiting on Ralph to run them
+**Status:** done (instructions merged in PR #169; run in the tenant 2026-11-20)
 **Estimated:** 2 hours (writing); Ralph runs the steps
 **Dependencies:** none (open question 1 is answered first)
 **Tags:** azure, config, deploy
