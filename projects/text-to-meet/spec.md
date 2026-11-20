@@ -151,9 +151,9 @@ $0.0045 / $0.0025, Verizon $0.005 / none, other carriers $0.0042 / none.
 Twilio's automatic STOP and HELP replies are free; the inbound message is
 billed. ([US SMS pricing](https://www.twilio.com/en-us/sms/pricing/us))
 
-At 100 MEET texts a month, each with one single-segment reply, the cost is
-roughly $1.00 inbound plus $1.30 outbound plus $2.15 for the number: about
-$4.50 a month. Volume is not the cost risk; abuse is, and the rate limits
+At 100 MEET texts a month, each with one two-segment reply (FR-07), the cost
+is roughly $1.00 inbound plus $2.60 outbound plus $2.15 for the number: about
+$5.75 a month. Volume is not the cost risk; abuse is, and the rate limits
 below cap it.
 
 ## Requirements
@@ -169,14 +169,31 @@ below cap it.
    Acceptance: the setup guide reproduces the configuration from a new
    account; `git grep` finds none of the values.
 
-2. **FR-02 Toll-Free Verification.** The submission uses opt-in type
-   `VIA_TEXT`, a use case summary that describes a person texting MEET to
-   receive one booking link, the MEET reply in FR-07 as the production
-   sample, a volume of 1,000 a month (the lowest step that covers events),
-   the EIN, `https://<site>/privacy` as the Privacy Policy URL, and
-   `https://<site>/sms` as both the Terms URL and the public opt-in image
-   URL. Since 2026-09-15 a submission without separate Privacy and Terms URLs
-   is rejected with error 30493. Acceptance: the number's status is Verified.
+2. **FR-02 Toll-Free Verification.** The submission, as resubmitted on
+   2026-11-19, says:
+
+   | Field | Value |
+   |---|---|
+   | Opt-in type | Via Text (`VIA_TEXT`) |
+   | Use case category | Customer Care |
+   | Monthly volume | 100 |
+   | Proof of consent | `https://spaarke.com/sms/opt-in.png` |
+   | Use case description | A person texts MEET and receives one reply with a booking link; inbound only, no texts to a number that has not texted first |
+   | Sample message and opt-in confirmation | The MEET reply in FR-07 |
+   | HELP message sample | The HELP text in FR-11 |
+   | Opt-in keyword | MEET |
+   | Additional information | Where the call to action appears, the consent statement, and `https://spaarke.com/sms` (500 character limit) |
+   | Privacy Policy URL | `https://spaarke.com/privacy` |
+   | Terms URL | `https://spaarke.com/sms` |
+
+   Since 2026-09-15 a submission without separate Privacy and Terms URLs is
+   rejected with error 30493. The first submission (2026-11-13) was rejected
+   on 2026-11-19 with error 30513, opt-in language unclear: it had no consent
+   statement, a one-line sample message, and the privacy page as its proof of
+   consent. PR #166 added the consent statement, the workflow, and the
+   opt-in image, and the resubmission above followed. Any later change to the
+   texts in `src/lib/sms/messages.ts` must be matched by an edit to the
+   submission. Acceptance: the number's status is Verified.
 
 3. **FR-03 Inbound route.** `POST /api/sms/inbound` accepts
    `application/x-www-form-urlencoded` bodies up to 16 KB and runs, in order:
@@ -220,13 +237,18 @@ below cap it.
    sender's open conversation if one was created in the last 24 hours,
    otherwise creates one, and replies:
 
-   > Spaarke: pick a time to meet our team: https://spaarke.com/meet?c=<token> Msg&data rates may apply. Reply STOP to opt out.
+   > Spaarke: Thanks for texting MEET. Book a time with our team: https://spaarke.com/meet?c=<token> One reply per text. Msg & data rates may apply. Reply HELP for help, STOP to opt out.
 
-   With a 42 character token on `https://spaarke.com`, the reply is 157 GSM-7
-   characters, one segment. The reply builder uses `SITE_URL`, and the check
-   script fails if the reply would exceed 160 characters, which would happen
-   with a longer host. Acceptance: one MEET text produces one single-segment
-   reply with a link that opens /meet with the welcome line.
+   The reply is also the opt-in confirmation Toll-Free Verification asks for,
+   so it names the program, the frequency, HELP, and STOP. It comes from
+   `meetReply()` in `src/lib/sms/messages.ts`, the same source the /sms page
+   and the opt-in image use, so the webhook cannot drift from what the
+   reviewer saw. With a 42 character token on `https://spaarke.com` it is 216
+   GSM-7 characters, two segments. The reply builder uses `SITE_URL`, and the
+   check script fails if the reply would exceed 306 characters (two
+   segments) or contain a character outside GSM-7. Acceptance: one MEET text
+   produces one two-segment reply with a link that opens /meet with the
+   welcome line.
 
 8. **FR-08 STOP.** Twilio handles STOP, STOPALL, UNSUBSCRIBE, CANCEL, END,
    REVOKE, OPTOUT, and QUIT: it blocks the number and sends the carrier's
@@ -248,10 +270,14 @@ below cap it.
     `<Response/>` so the person does not get two replies. The route does not
     send its own HELP text, because Twilio's default would send a second one.
 
-11. **FR-11 HELP text** (158 characters, one segment; configured in the
-    Messaging Service, not in code):
+11. **FR-11 HELP text** (162 characters, two segments; configured in the
+    Messaging Service, not in code, and kept identical to `HELP_REPLY` in
+    `src/lib/sms/messages.ts` and the verification submission):
 
-    > Spaarke meeting links: text MEET for a link to book a meeting. 1 reply per text. Msg&data rates may apply. Help: contactus@spaarke.com. Reply STOP to opt out.
+    > Spaarke meeting links: text MEET for a link to book a meeting. One reply per text. Msg & data rates may apply. Help: contactus@spaarke.com. Reply STOP to opt out.
+
+    Twilio does not bill its automatic HELP replies, so the second segment
+    costs nothing.
 12. **FR-12 Rate limits.** Checked after the keyword is known, before any
     reply, and stored in Table Storage because the in-memory limiter in
     `src/lib/rate-limit.ts` is per instance:
@@ -349,9 +375,11 @@ below cap it.
     reviewers must reach it), linked from the privacy policy and the /meet
     footer. It shows the call to action as it appears on print, with the
     number read from the `SMS_PUBLIC_NUMBER` app setting at request time (so
-    no number is committed), and the program terms from the Compliance
-    section. The page hosts the opt-in image that Toll-Free Verification
-    requires. `/sms` is printed on cards, so like a `/go/` slot it must never
+    no number is committed), the consent statement, a "How it works" list
+    with the exact MEET and HELP replies, and the program terms from the
+    Compliance section. The opt-in image Toll-Free Verification requires is
+    `/sms/opt-in.png`, rendered at request time with `next/og` from the same
+    texts. Live since PR #145 (page) and PR #166 (consent and image). `/sms` is printed on cards, so like a `/go/` slot it must never
     404; the route carries a comment saying so. With `SMS_MODE` off, the page
     still renders, says the program is paused, and points to /meet.
 
@@ -398,6 +426,16 @@ position under the TCPA, state law, or the CTIA guidelines.
 > Spaarke. One reply per text. Msg & data rates may apply. Reply STOP to opt
 > out, HELP for help. Terms: spaarke.com/sms. Privacy: spaarke.com/privacy.
 
+Every placement also carries the consent statement, which is what error
+30513 asked for (the full text is `consentStatement()` in
+`src/lib/sms/messages.ts`):
+
+> By texting MEET to (8XX) XXX-XXXX, you agree to receive SMS text messages
+> from Spaarke, Inc. in reply: one text with a link to book a meeting for
+> each MEET you send. Message frequency: one reply per text you send. Msg &
+> data rates may apply. Reply STOP to opt out, HELP for help. Consent is not
+> a condition of any purchase.
+
 Twilio requires the terms and privacy links near the call to action and the
 "rates may apply" phrase. On a slide or sign where space is short, the first
 sentence stays and the rest moves to a footer line on the same surface.
@@ -436,8 +474,11 @@ counsel.
       for the reply under the TCPA and the FCC's consent revocation rules, and
       whether the "stop texting" handling in FR-08 is enough for revocation
       "by any reasonable means".
-- [ ] The call to action, the /sms terms, the HELP text, and the frequency
-      wording ("One reply per text" in place of "Message frequency varies").
+- [ ] The call to action, the consent statement, the /sms terms, the HELP
+      text, and the frequency wording ("One reply per text" in place of
+      "Message frequency varies"). These are live on spaarke.com/sms and in
+      the verification submission, so a change counsel asks for means an
+      edit to both.
 - [ ] The privacy paragraph, where the required Twilio clause sits, and
       whether Twilio's message logs need their own retention statement.
 - [ ] Whether Twilio needs a data processing agreement or a service
@@ -501,8 +542,8 @@ it carries the same never-404 rule.
 2. [ ] Counsel has approved the Compliance section. Verify by: the counsel
        checklist ticked.
 3. [ ] The toll-free number is Verified. Verify by: Twilio console status.
-4. [ ] A MEET text from a test phone returns one single-segment reply whose
-       link opens /meet with the welcome line. Verify by: live test.
+4. [ ] A MEET text from a test phone returns one reply, worded as in FR-07,
+       whose link opens /meet with the welcome line. Verify by: live test.
 5. [ ] STOP gets only Twilio's reply, and MEET after STOP gets nothing. HELP
        gets the custom text once. Verify by: live test.
 6. [ ] In Graph mode, a booking through the link carries
@@ -520,10 +561,9 @@ it carries the same never-404 rule.
   and `MeetBookingFlow`. The Bookings-mode part (FR-16) works without Graph
   settings.
 - The privacy paragraph (FR-19) and the /sms page (FR-18) live while the
-  verification is under review. The number went into review on 2026-11-13,
-  before either page existed, and the reviewer checks both URLs, the
-  required privacy clause, and that the opt-in matches the submission. These
-  two pieces ship first, ahead of the webhook, as their own PR.
+  verification is under review. Done: PR #145 (2026-11-13) shipped both, and
+  PR #166 (2026-11-19) added the consent statement and the opt-in image
+  after the 30513 rejection (FR-02).
 - The EIN and the legal business name for the verification.
 
 ### External Dependencies
@@ -547,8 +587,8 @@ it carries the same never-404 rule.
 ## Assumptions
 - **Volume:** tens to low hundreds of MEET texts a month; the caps in FR-12
   are set well above that and below a level that costs real money.
-- **Host:** the reply link uses `https://spaarke.com`. A longer host pushes
-  the MEET reply past one segment; the check script catches it.
+- **Host:** the reply link uses `https://spaarke.com`. A much longer host
+  pushes the MEET reply past two segments; the check script catches it.
 - **Account:** the Twilio account the owner opened on 2026-11-13 holds the
   number; no other Spaarke project shares it.
 - **Unrecognized text:** gets one nudge per sender per 24 hours (FR-12)
@@ -559,11 +599,8 @@ it carries the same never-404 rule.
       back? Blocks: FR-13 and the privacy paragraph. The spec assumes no.
 - [ ] Is the keyword MEET final, and is a placement code as a second word
       acceptable on print? Blocks: the card copy and FR-17.
-- [ ] What the verification submission says: the Privacy and Terms URLs,
-      the opt-in image URL, the use case summary, the sample message, and
-      the monthly volume. Blocks: FR-02, FR-07, FR-18. The spec's texts and
-      pages must match the submission, or the submission is amended to
-      match them.
+- [x] What the verification submission says. Answered: FR-02 records the
+      2026-11-19 resubmission, and the texts in FR-07 and FR-11 match it.
 - [ ] Counsel review of the Compliance section. Blocks: going live.
 
 ---
