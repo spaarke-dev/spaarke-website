@@ -1,7 +1,7 @@
 # Task 020: Form writers
 
 **Phase:** 2 (Site writers)
-**Status:** done (PR pending merge)
+**Status:** done
 **Estimated:** 3 hours
 **Dependencies:** 012
 **Tags:** nextjs, api, forms, storage

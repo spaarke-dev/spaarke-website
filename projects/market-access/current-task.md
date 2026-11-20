@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 020: Form writers |
+| **Task** | 030: Admin home and contacts list |
 | **Step** | PR open |
 | **Status** | done; PR pending Ralph's go-ahead to merge |
-| **Next action** | After merge: tasks 030 to 033 toward the LinkedIn import (053, before 2026-12-19) |
+| **Next action** | After merge: tasks 031 and 033 toward the LinkedIn import (053, before 2026-12-19) |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
@@ -45,3 +45,4 @@
 - 2026-11-20: PR #170 merged. Task 013 built: campaigns, members with code and brief-label lookups, member links in recordActivity, audit log; 21 checks pass against Azurite.
 - 2026-11-20: PR #171 merged; stale preview environments removed. Question 3 answered; Ralph confirmed all mail with a known contact is logged, personal or not. Tasks 021 and 022 built; 24 checks pass.
 - 2026-11-20: PR #174 merged (tasks 021, 022) and live. Task 020 built: the five forms record after their own save; 26 checks pass.
+- 2026-11-20: PR #175 merged (task 020) and live. Task 030 built: admin home and contacts list on `queries.ts`; 28 checks pass; a 10,000-contact scan takes about 200 ms in the emulator.

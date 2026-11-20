@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013 and 020 to 022).
+// tasks 002, 010 to 013, 020 to 022 and 030).
 //
 //   npm run market:check
 //
@@ -180,6 +180,37 @@ console.log("Pure checks");
   assert.notEqual(idempotencyKey("ContactSubmissions", "row-1"), idempotencyKey("DemoRequests", "row-1"));
   assert.equal(SUMMARY_MAX, 280);
   ok("idempotency keys depend on source and source ID");
+}
+
+{
+  const { filterContacts } = await import("@/lib/market/queries");
+  const base = {
+    tags: [] as string[],
+    editedFields: [] as string[],
+    visibility: "general" as const,
+    createdAt: "2026-11-01T00:00:00.000Z",
+    updatedAt: "2026-11-01T00:00:00.000Z",
+  };
+  const rows = [
+    { ...base, id: "a", email: "jane.doe@acme.test", name: "Jane Doe", kind: "prospect" as const, stage: "new" as const, organizationName: "Acme Widgets", tags: ["TLTF"] },
+    { ...base, id: "b", email: "sam@other.test", name: "Sam Lee", kind: "partner" as const, stage: "engaged" as const, organizationName: "Other Co" },
+    { ...base, id: "c", email: "pat@acme.test", kind: "prospect" as const, stage: "engaged" as const, organizationName: "Acme Widgets" },
+  ];
+  const ids = (r: { rows: { id: string }[] }) => r.rows.map((x) => x.id);
+  assert.deepEqual(ids(filterContacts(rows, { q: "jan" })), ["a"], "part of a name");
+  assert.deepEqual(ids(filterContacts(rows, { q: "SAM@OTH" })), ["b"], "part of an email, any case");
+  assert.deepEqual(ids(filterContacts(rows, { q: "widg" })), ["a", "c"], "part of an organization");
+  assert.deepEqual(ids(filterContacts(rows, { q: "jane acme" })), ["a"], "every word must match");
+  assert.deepEqual(ids(filterContacts(rows, { kind: "prospect", stage: "engaged" })), ["c"]);
+  assert.deepEqual(ids(filterContacts(rows, { tag: "tltf" })), ["a"], "tags match without case");
+  assert.deepEqual(ids(filterContacts(rows, { campaignMembers: new Set(["b", "c"]) })), ["b", "c"]);
+  assert.deepEqual(ids(filterContacts(rows, { campaignMembers: new Set<string>() })), []);
+  const paged = filterContacts(rows, { pageSize: 2, page: 9 });
+  assert.equal(paged.page, 2, "a page past the end shows the last page");
+  assert.equal(paged.pageCount, 2);
+  assert.deepEqual(ids(paged), ["c"]);
+  assert.equal(paged.total, 3);
+  ok("contact search finds part of a name, email or organization; filters and paging (task 030)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -488,6 +519,49 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.equal(lp?.visibility, "investor");
   assert.equal(lp?.kind, "investor");
   ok("two forms with different capitalization give one contact and two activities; investor form contacts are investor-only (FR-03, FR-06)");
+}
+
+{
+  const q = await import("@/lib/market/queries");
+  const general = ["authenticated", "admin"];
+  const investor = ["authenticated", "admin", "investor"];
+  q.clearQueryCache();
+
+  const jane = await contacts.findContactByEmail(addr("jane.doe"));
+  const lp = await contacts.findContactByEmail(addr("lp", `fund-${run}.example.test`));
+  assert.ok(jane && lp);
+  assert.equal(lp.visibility, "investor");
+
+  const seen = await q.loadContacts(general);
+  const seenAll = await q.loadContacts(investor);
+  assert.ok(seen.every((c) => c.visibility === "general"), "no investor contact without the role");
+  assert.ok(!seen.some((c) => c.id === lp.id));
+  assert.ok(seenAll.some((c) => c.id === lp.id));
+  assert.equal(seenAll.length - seen.length, seenAll.filter((c) => c.visibility === "investor").length, "counts leave investor contacts out");
+  const lpOrg = seenAll.find((c) => c.id === lp.id)?.organizationName;
+  assert.ok(lpOrg, "the investor firm is named for the investor role");
+  assert.ok(!seen.some((c) => c.organizationName === lpOrg), "and nowhere for an admin without it");
+
+  const found = q.filterContacts(seen, { q: `co-${run}` }).rows.map((c) => c.id);
+  assert.ok(found.includes(jane.id), "search finds a contact by part of its organization");
+
+  const recent = await q.recentActivity(general, { limit: 1000 });
+  const recentAll = await q.recentActivity(investor, { limit: 1000 });
+  assert.ok(recent.every((a) => a.visibility === "general" && a.contactId !== lp.id));
+  assert.ok(recentAll.some((a) => a.contactId === lp.id));
+  const fresh = await q.newContacts(general);
+  assert.ok(fresh.some((c) => c.id === jane.id) && !fresh.some((c) => c.id === lp.id));
+  assert.ok((await q.newContacts(investor)).some((c) => c.id === lp.id));
+
+  await camp.upsertCampaign({ slug: `qg-${run}`, name: "Query check", kind: "outreach", visibility: "general" });
+  await camp.upsertCampaign({ slug: `qi-${run}`, name: "Investor query check", kind: "outreach", visibility: "investor" });
+  await camp.addMember({ campaignSlug: `qg-${run}`, contactId: jane.id });
+  await camp.addMember({ campaignSlug: `qi-${run}`, contactId: jane.id });
+  assert.deepEqual([...((await q.campaignMemberIds(`qg-${run}`, general)) ?? [])], [jane.id]);
+  assert.equal(await q.campaignMemberIds(`qi-${run}`, general), null, "an investor campaign is not a filter without the role");
+  assert.ok(!(await q.visibleCampaigns(general)).some((c) => c.slug === `qi-${run}`));
+  assert.ok((await q.visibleCampaigns(investor)).some((c) => c.slug === `qi-${run}`));
+  ok("admin lists, counts, recent activity and campaign filters leave investor records out without the role (FR-02, FR-15)");
 }
 
 {

@@ -24,7 +24,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [020](020-form-writers.md) | Form writers | 012 | done (PR pending merge) |
+| [020](020-form-writers.md) | Form writers | 012 | done |
 | [021](021-meeting-writers.md) | Meeting writers | 012 | done |
 | [022](022-brief-and-ask-ai-writers.md) | Brief read and Ask AI writers | 013 | done |
 
@@ -32,7 +32,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [030](030-admin-home-and-contacts-list.md) | Admin home and contacts list | 002, 012 | not-started |
+| [030](030-admin-home-and-contacts-list.md) | Admin home and contacts list | 002, 012 | done |
 | [031](031-contact-detail-and-edits.md) | Contact detail and edits | 030, 013 | not-started |
 | [032](032-organizations.md) | Organizations | 030 | not-started |
 | [033](033-campaigns-and-results.md) | Campaigns and results | 030, 013 | not-started |
