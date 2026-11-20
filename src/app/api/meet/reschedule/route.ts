@@ -9,6 +9,7 @@ import { errorOf, json, lookupManagedBooking } from "@/lib/meet/routes";
 import { getOpenSlots, invalidateAvailability, isSlotStillClear, slotEnd } from "@/lib/meet/service";
 import { sendBookingEmails } from "@/lib/meet/notify";
 import { acquireSlotLock, guestsOf, releaseSlotLock, updateBooking } from "@/lib/meet/store";
+import { recordMeeting } from "@/lib/market/writers";
 
 // A meeting moved twice comes back to a slot it held before; that row was
 // deleted when it moved away, so the insert succeeds.
@@ -100,6 +101,13 @@ export async function POST(request: NextRequest) {
       { start, previousStart: event.start, joinUrl: event.joinUrl ?? booking.joinUrl ?? null },
       { includeGuests: true },
     );
+
+    await recordMeeting("rescheduled", {
+      ...booking,
+      guests: guestsOf(booking),
+      start,
+      hostTimeZone: config.rules.hostTimeZone,
+    });
 
     trackEvent("meet.rescheduled");
     await flushTelemetry();

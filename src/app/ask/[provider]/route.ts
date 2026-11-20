@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isAskProvider, isBriefKey, providerUrl, siteUrl } from "@/lib/ask-ai";
 import { trackEvent } from "@/lib/logger";
+import { getPrivateBrief } from "@/lib/private-brief";
+import { recordAskClick } from "@/lib/market/writers";
 
 /**
  * Count the click, then send the reader to their AI with the prompt filled in.
@@ -23,6 +25,10 @@ export async function GET(
   const k = request.nextUrl.searchParams.get("k");
   const briefKey = isBriefKey(k) ? k : undefined;
   trackEvent("ask_ai.click", { provider, src: src || "direct", brief: briefKey ? "yes" : "no" });
+  // The market access log (FR-06): a recipient code in `src`, or the brief
+  // behind `k`, ties the click to a campaign member. Neither is logged.
+  const label = briefKey ? (await getPrivateBrief(briefKey))?.label : undefined;
+  await recordAskClick(provider, src, label);
   return NextResponse.redirect(providerUrl(provider, briefKey), {
     status: 302,
     headers: { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" },

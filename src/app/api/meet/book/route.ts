@@ -31,6 +31,7 @@ import {
 } from "@/lib/meet/store";
 import { createManageToken } from "@/lib/meet/tokens";
 import { sendBookingEmails } from "@/lib/meet/notify";
+import { recordMeeting } from "@/lib/market/writers";
 
 export const dynamic = "force-dynamic";
 
@@ -214,6 +215,19 @@ export async function POST(request: NextRequest) {
     { start, joinUrl, guests },
     { includeGuests: false },
   );
+
+  // The market access log (FR-06): never fails or holds up the booking.
+  await recordMeeting("booked", {
+    bookingId,
+    name: details.name,
+    email: details.email,
+    organization: details.organization,
+    role: details.role,
+    guests,
+    start,
+    hostTimeZone: config.rules.hostTimeZone,
+    ...attributionFields(body.attribution),
+  });
 
   trackEvent("meet.booked", {
     stored: String(stored),

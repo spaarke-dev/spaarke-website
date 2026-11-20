@@ -1,7 +1,7 @@
 # Task 022: Brief read and Ask AI writers
 
 **Phase:** 2 (Site writers)
-**Status:** not-started
+**Status:** done (PR pending merge)
 **Estimated:** 2 hours
 **Dependencies:** 013
 **Tags:** nextjs, api, storage
@@ -35,3 +35,11 @@ FR-06: these routes have no email. A brief read resolves through the brief label
 ## Notes
 
 - Spec references: FR-06, FR-10.
+
+## As built
+
+- `recordBriefRead(label)` and `recordAskClick(provider, src, label)` in `src/lib/market/writers.ts`.
+- Source IDs hold the time to the second and a hash slice, never the code, key or label.
+- `src` values that name a place on the site (`article`, `email`, `direct` and similar) skip the lookup, so ordinary Ask AI clicks cost no table reads.
+- `k` is turned into its brief label with `getPrivateBrief`, then resolved like a brief read.
+- A brief label shared by several members resolves to no contact, so nothing is written (task 013).

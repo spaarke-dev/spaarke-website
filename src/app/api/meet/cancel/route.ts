@@ -9,6 +9,7 @@ import { errorOf, json, lookupManagedBooking } from "@/lib/meet/routes";
 import { invalidateAvailability } from "@/lib/meet/service";
 import { sendBookingEmails } from "@/lib/meet/notify";
 import { guestsOf, releaseSlotLock, updateBooking } from "@/lib/meet/store";
+import { recordMeeting } from "@/lib/market/writers";
 
 export const dynamic = "force-dynamic";
 
@@ -68,6 +69,13 @@ export async function POST(request: NextRequest) {
     });
 
     await sendBookingEmails("cancelled", config, booking, { start: event.start, joinUrl: null }, { includeGuests: true });
+
+    await recordMeeting("cancelled", {
+      ...booking,
+      guests: guestsOf(booking),
+      start: event.start,
+      hostTimeZone: config.rules.hostTimeZone,
+    });
 
     trackEvent("meet.cancelled");
     await flushTelemetry();
