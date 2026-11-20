@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHeader, Shell, Slab } from "@/components/primitives";
+import {
+  HELP_REPLY,
+  KEYWORD,
+  SAMPLE_LINK,
+  callToAction,
+  consentStatement,
+  meetReply,
+} from "@/lib/sms/messages";
 
 // Program terms for "Text MEET to <number>". Twilio's toll-free verification
 // uses this page as the Terms of Service URL and as the proof of where people
@@ -62,13 +70,13 @@ export default function Sms() {
         <div className="text-fg-mid mt-12 max-w-2xl space-y-6 text-base leading-relaxed">
           <div className="border-line rounded-xl border p-6">
             <p className="text-fg font-display text-xl font-medium">
-              Text <span className="font-semibold">MEET</span> to{" "}
+              Text <span className="font-semibold">{KEYWORD}</span> to{" "}
               {number ? <span className="whitespace-nowrap">{number.display}</span> : numberText}
             </p>
-            <p className="mt-3">
-              You will get one text back with a link to book a meeting with
-              Spaarke. One reply per text. Msg &amp; data rates may apply. Reply
-              STOP to opt out, HELP for help.
+            <p className="mt-3">{callToAction(numberText)}</p>
+            <p className="text-fg mt-3 text-sm leading-relaxed">
+              <strong className="font-medium">Consent to receive texts. </strong>
+              {consentStatement(numberText)}
             </p>
             <p className="mt-3 text-sm">
               <Link href="#terms" className={link}>
@@ -89,8 +97,50 @@ export default function Sms() {
             </p>
           </div>
 
+          <h2 id="how-it-works" className={`${h2} scroll-mt-32 pt-6`}>
+            How it works
+          </h2>
+          <ol className="list-decimal space-y-3 pl-6">
+            <li>
+              You see the call to action above on a Spaarke postcard, an event
+              sign or slide, an email signature, or this page. The consent
+              statement appears with it every time.
+            </li>
+            <li>
+              You text {KEYWORD} to {numberText}. Sending that text is how you
+              agree to receive a reply. We never text a number that has not
+              texted us first.
+            </li>
+            <li>
+              We reply once with a link to book a meeting. That reply also
+              confirms the program, how often we text, and how to get help or
+              opt out:
+              <blockquote className="border-line text-fg mt-2 rounded-lg border px-4 py-3 text-sm break-words">
+                {meetReply(SAMPLE_LINK)}
+              </blockquote>
+            </li>
+            <li>
+              Reply HELP at any time and we send:
+              <blockquote className="border-line text-fg mt-2 rounded-lg border px-4 py-3 text-sm break-words">
+                {HELP_REPLY}
+              </blockquote>
+            </li>
+            <li>
+              Reply STOP at any time and you receive one message confirming that
+              you have opted out, and nothing after that. Reply START to opt
+              back in.
+            </li>
+          </ol>
+          <p className="text-sm">
+            <a href="/sms/opt-in.png" className={link}>
+              Picture of the opt-in workflow
+            </a>{" "}
+            (the call to action, the consent statement, and the messages
+            above).
+          </p>
+
           <p>
-            This is the same booking page as{" "}
+            The link opens the same booking page as{" "}
             <Link href="/meet" className={link}>
               spaarke.com/meet
             </Link>
@@ -101,7 +151,7 @@ export default function Sms() {
             SMS Terms of Service
           </h2>
 
-          <p className="text-fg-low text-sm">Last updated: 2026-11-13</p>
+          <p className="text-fg-low text-sm">Last updated: 2026-11-19</p>
 
           <p>
             <strong className="text-fg font-medium">Spaarke meeting links.</strong>{" "}
@@ -112,7 +162,9 @@ export default function Sms() {
             unless you text us first.
           </p>
           <p>
-            Message and data rates may apply, according to your mobile plan.
+            <strong className="text-fg font-medium">Message frequency:</strong>{" "}
+            one reply per text you send. Message and data rates may apply,
+            according to your mobile plan.
           </p>
           <p>
             <strong className="text-fg font-medium">To opt out,</strong> reply
