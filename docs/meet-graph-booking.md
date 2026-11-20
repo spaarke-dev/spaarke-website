@@ -288,6 +288,8 @@ az staticwebapp appsettings set -n <static-web-app> --setting-names \
   --output none
 ```
 
+The market access mail sync uses the same app and secret (see [`market-access-mailboxes.md`](market-access-mailboxes.md)), so this rotation covers it too.
+
 `--append` keeps the old secret valid until you remove it, so there is no gap.
 Once /meet shows slots again, remove the old credential with
 `az ad app credential delete --id <APP_ID> --key-id <old key id>`

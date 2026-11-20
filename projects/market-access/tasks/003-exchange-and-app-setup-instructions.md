@@ -1,7 +1,7 @@
 # Task 003: Exchange and app setup instructions
 
 **Phase:** 0 (Foundations)
-**Status:** not-started
+**Status:** instructions written (PR pending merge); waiting on Ralph to run them
 **Estimated:** 2 hours (writing); Ralph runs the steps
 **Dependencies:** none (open question 1 is answered first)
 **Tags:** azure, config, deploy
@@ -54,3 +54,9 @@ FR-07, FR-08, NFR-02, NFR-05 and the Dependencies section of the spec. The patte
 
 - If the `/meet` app is reused, the new role assignment sits beside its existing `Application Calendars.ReadWrite` assignment on the "Spaarke meet hosts" scope; the mail scope is still its own group.
 - Spec references: FR-07, FR-08, NFR-02, NFR-05, Dependencies.
+
+## As built
+
+- Open question 1 answered 2026-11-19: reuse the `/meet` app. The doc therefore skips app registration, the new secret and `New-ServicePrincipal`, and adds a check that the app still has no Entra Graph permissions.
+- The sync reads `MEET_GRAPH_TENANT_ID`, `MEET_GRAPH_CLIENT_ID` and `MEET_GRAPH_CLIENT_SECRET`; the only new setting is `MA_SYNC_TOKEN`.
+- The doc names the task 040 check script `npm run market:mail`.

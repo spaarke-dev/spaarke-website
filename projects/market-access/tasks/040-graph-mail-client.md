@@ -16,11 +16,11 @@ FR-07, NFR-02, NFR-05. The fetch pattern, token cache and retry are those of `sr
 
 ## Steps
 
-1. Settings from app settings (names fixed in task 003); null when unset, so sync reports "not configured" instead of failing.
+1. Settings: reuse the `/meet` app (open question 1), so read `MEET_GRAPH_TENANT_ID`, `MEET_GRAPH_CLIENT_ID` and `MEET_GRAPH_CLIENT_SECRET` (reuse the token cache in `src/lib/meet/graph.ts` if it can be shared without coupling to `MEET_HOST`); null when unset, so sync reports "not configured" instead of failing.
 2. `listMessagesSince(mailbox, folder, sinceIso)`: `GET /users/{mailbox}/mailFolders/{inbox|sentitems}/messages?$filter=receivedDateTime ge {since}&$select=id,internetMessageId,from,toRecipients,ccRecipients,subject,receivedDateTime,sentDateTime,webLink&$orderby=receivedDateTime&$top=50`, following `@odata.nextLink`.
 3. `isBounce(message)`: sender `postmaster@` or `MAILER-DAEMON@`, or subject patterns ("Undeliverable:", "Delivery Status Notification", "Mail delivery failed"); for bounces only, fetch `body` with `Prefer: outlook.body-content-type="text"` and extract the failed recipient address; discard the body after extraction.
 4. Map Graph 403 `ErrorAccessDenied` to a typed `NoMailboxAccess` error, so the registry can show "This mailbox is not in the Exchange access scope yet."
-5. A local check script `scripts/check-market-mail.mts` that lists the last day's metadata counts (not content) for a mailbox given on the command line, like `npm run meet:graph`.
+5. A local check script `scripts/check-market-mail.mts` that lists the last day's metadata counts (not content) for a mailbox given on the command line, like `npm run meet:graph`. Name it `market:mail`, as `docs/market-access-mailboxes.md` says.
 
 ## Expected outputs
 

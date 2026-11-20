@@ -302,6 +302,7 @@ Every site writer feeds the log, and so does Ralph's mailbox through Microsoft G
 | Users | Who signs in? | Ralph only for now | One role assignment; roles still built in |
 | Mailboxes | Which mailboxes sync? | Ralph's and contactus@spaarke.com, with a way to add more | Mailbox registry, triage for shared inboxes, a group-based Exchange scope (FR-08) |
 | contactus mailbox | What kind of mailbox is contactus@spaarke.com? | A normal user mailbox with only an Exchange license; no Power Apps or other license is needed | Graph reads it like any user mailbox in the scope; no mailbox type check at setup. Its registry `kind` is still `shared`, since it is a team inbox in `capture-new` mode |
+| Graph app for mail read | Reuse the `/meet` Graph app, or register a separate app? | Reuse the `/meet` app (decided 2026-11-19) | Mail sync reads `MEET_GRAPH_TENANT_ID`, `MEET_GRAPH_CLIENT_ID` and `MEET_GRAPH_CLIENT_SECRET`; no new app or secret. Mail read is its own Exchange scope ("Market access sync") beside the meet hosts scope. The `/meet` secret now also opens mail read on synced mailboxes, so its rotation covers both |
 | Purpose | Is this for repeatable outreach like TLTF? | Yes | Campaigns are outreach projects with members and results (FR-09, FR-10) |
 
 ## Assumptions
@@ -315,7 +316,7 @@ Every site writer feeds the log, and so does Ralph's mailbox through Microsoft G
 
 ## Unresolved Questions
 
-- [ ] Reuse the `/meet` Graph app for mail read, or register a separate app? Blocks: the prerequisites and the secret settings.
+- [x] Reuse the `/meet` Graph app for mail read, or register a separate app? Answered: reuse it (see Owner Clarifications).
 - [ ] Should `meeting.in_person` entries for the Summit come from the calendar import only, or should Ralph also confirm which meetings took place? Blocks: FR-11 detail.
 - [ ] Should contacts collected through the website forms (FR-06) start as `general` even when they're investors, with Ralph reclassifying them? Blocks: the default visibility rule.
 
