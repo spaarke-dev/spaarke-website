@@ -1,7 +1,7 @@
 # Task 002: Admin guard and shell
 
 **Phase:** 0 (Foundations)
-**Status:** not-started
+**Status:** done (PR pending merge)
 **Estimated:** 3 hours
 **Dependencies:** 001
 **Tags:** nextjs, react, swa, api, seo, tailwind
@@ -50,3 +50,10 @@ FR-01 and FR-02. Every later admin page and route calls the same two functions, 
 
 - UI text follows the voice rules: US spelling, no em dashes.
 - Spec references: FR-01, FR-02, FR-15 (acceptance), NFR-07.
+
+## As built
+
+- The header parsing lives in `src/lib/market/principal.ts` (no Next.js imports, so the check script can load it); `auth.ts` holds the guards.
+- `/api/admin/*` has no SWA role rule, per the spike decision; the rule there only adds `X-Robots-Tag` and `Cache-Control`. Every admin route handler must start with `requireAdminApi()`.
+- Step 6 had nothing to remove: the spike routes were only on the spike branch, which is not merged.
+- Admin nav shows unbuilt sections as plain text until their tasks land.
