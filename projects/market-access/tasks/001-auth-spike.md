@@ -1,7 +1,7 @@
 # Task 001: Auth spike on a preview environment
 
 **Phase:** 0 (Foundations)
-**Status:** not-started
+**Status:** done (findings in `notes/auth-spike.md`)
 **Estimated:** 3 hours (plus Ralph's sign-in on the preview URL)
 **Dependencies:** none
 **Tags:** swa, azure, nextjs, api, config

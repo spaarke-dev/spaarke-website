@@ -6,8 +6,8 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [001](001-auth-spike.md) | Auth spike on a preview environment | none | in-progress |
-| [002](002-admin-guard-and-shell.md) | Admin guard and shell | 001 | not-started |
+| [001](001-auth-spike.md) | Auth spike on a preview environment | none | done |
+| [002](002-admin-guard-and-shell.md) | Admin guard and shell | 001 | done (PR pending merge) |
 | [003](003-exchange-and-app-setup-instructions.md) | Exchange and app setup instructions (Ralph runs them) | open question 1 | not-started |
 | [004](004-app-insights-safety-export.md) | App Insights safety export | none | not-started |
 

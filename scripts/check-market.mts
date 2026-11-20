@@ -1,4 +1,5 @@
-// Checks for the market access store (projects/market-access, tasks 010 to 012).
+// Checks for the market access store and admin guard (projects/market-access,
+// tasks 002 and 010 to 012).
 //
 //   npm run market:check
 //
@@ -19,6 +20,7 @@ import { randomBytes } from "node:crypto";
 // taken from dynamic imports, as the other check scripts do.
 const keys = await import("@/lib/market/keys");
 const vis = await import("@/lib/market/visibility");
+const principal = await import("@/lib/market/principal");
 const { idempotencyKey, SUMMARY_MAX } = await import("@/lib/market/activity");
 
 let passed = 0;
@@ -81,6 +83,28 @@ console.log("Pure checks");
   assert.equal(vis.widen("general", "investor"), "investor");
   assert.equal(vis.widen("investor", "general"), "investor");
   ok("investor records are hidden without the investor role (FR-02)");
+}
+
+{
+  const encode = (v: unknown) => Buffer.from(JSON.stringify(v), "utf8").toString("base64");
+  const admin = {
+    identityProvider: "aad",
+    userId: "0123abcd",
+    userDetails: "admin@example.test",
+    userRoles: ["admin", "anonymous", "authenticated"],
+  };
+  const h = (raw: string | null) => ({ get: (n: string) => (n === "x-ms-client-principal" ? raw : null) });
+  const p = principal.readPrincipal(h(encode(admin)));
+  assert.ok(p);
+  assert.deepEqual(p.roles, ["admin", "authenticated"]);
+  assert.equal(principal.adminStatus(p), "ok");
+  const noRole = principal.readPrincipal(h(encode({ ...admin, userRoles: ["anonymous", "authenticated"] })));
+  assert.equal(principal.adminStatus(noRole), "forbidden");
+  for (const bad of [null, "", "not base64 json", encode({ ...admin, userRoles: "admin" }), encode({ ...admin, userId: "" }), encode({ ...admin, userRoles: ["admin"] }), encode([1, 2])]) {
+    assert.equal(principal.readPrincipal(h(bad)), null, `should reject ${String(bad).slice(0, 20)}`);
+  }
+  assert.equal(principal.adminStatus(null), "signed-out");
+  ok("readPrincipal accepts a valid header, rejects malformed ones and needs the admin role (FR-01)");
 }
 
 {

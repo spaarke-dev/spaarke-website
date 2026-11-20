@@ -7,6 +7,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
+      // The market access admin area (projects/market-access, FR-01).
+      disallow: ["/admin", "/api/admin"],
     },
     sitemap: `${siteUrl}/sitemap.xml`,
   };

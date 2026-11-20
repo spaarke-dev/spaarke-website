@@ -1,4 +1,30 @@
 {
+  "routes": [
+    {
+      "route": "/admin",
+      "allowedRoles": ["admin"],
+      "headers": { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": "no-store" }
+    },
+    {
+      "route": "/admin/*",
+      "allowedRoles": ["admin"],
+      "headers": { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": "no-store" }
+    },
+    {
+      "route": "/api/admin/*",
+      "headers": { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": "no-store" }
+    },
+    {
+      "route": "/.auth/login/github",
+      "statusCode": 404
+    }
+  ],
+  "responseOverrides": {
+    "401": {
+      "redirect": "/.auth/login/aad?post_login_redirect_uri=.referrer",
+      "statusCode": 302
+    }
+  },
   "globalHeaders": {
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
