@@ -14,6 +14,7 @@ import {
   sendTeamNotice,
   sendVisitorEmail,
 } from "@/lib/investor-overview";
+import { recordForm } from "@/lib/market/writers";
 
 export const dynamic = "force-dynamic";
 
@@ -77,6 +78,11 @@ export async function POST(request: NextRequest) {
       sendVisitorEmail(email, url, `${base}/${source}#meet`),
       sendTeamNotice({ email, source, requestId, saved, attribution }),
     ]);
+
+    // Investor overview contacts start investor-only (open question 3).
+    if (saved) {
+      await recordForm("investor_overview", { rowKey: requestId, email, detail: source, attribution });
+    }
 
     trackEvent("investor_overview.requested", {
       source,

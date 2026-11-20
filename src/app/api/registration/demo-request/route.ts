@@ -6,6 +6,7 @@ import { trackEvent, trackException } from "@/lib/logger";
 import type { Attribution } from "@/lib/attribution";
 import { saveDemoRequestLead, markDemoRequestOutcome } from "@/lib/storage";
 import { sendDemoRequestFallbackNotification } from "@/lib/email";
+import { recordForm } from "@/lib/market/writers";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -219,6 +220,21 @@ export async function POST(request: NextRequest) {
       ipHash,
       attribution,
     );
+
+    // The market access log (FR-06): the lead is held from here on, whatever
+    // the backend does next. Never fails the request.
+    if (leadRowKey) {
+      await recordForm("demo", {
+        rowKey: leadRowKey,
+        email: payload.email,
+        name: [payload.firstName, payload.lastName].filter(Boolean).join(" "),
+        title: payload.jobTitle,
+        organization: payload.organization,
+        phone: payload.phone,
+        detail: payload.useCase,
+        attribution,
+      });
+    }
 
     /**
      * The backend did not take it, and the fault is ours rather than the

@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 021 and 022).
+// tasks 002, 010 to 013 and 020 to 022).
 //
 //   npm run market:check
 //
@@ -147,6 +147,32 @@ console.log("Pure checks");
   assert.equal(added.length, 1);
   assert.equal(added[0].sourceId, booked[1].sourceId, "a guest added later matches the at-booking key");
   ok("meeting events map to one activity per person with stable source IDs (FR-06)");
+}
+
+{
+  const c = writers.formActivity("contact", {
+    rowKey: "1763650000000-ab12cd34",
+    email: "Lee@Example.test",
+    name: " Lee Example ",
+    organization: "Example Co",
+    detail: "pricing",
+    attribution: { utm_source: "linkedin", utm_medium: "paid", utm_campaign: "dp-2026-12" },
+    occurredAt: 5,
+  });
+  assert.equal(c.type, "form.contact");
+  assert.equal(c.source, "ContactSubmissions");
+  assert.equal(c.sourceId, "1763650000000-ab12cd34");
+  assert.equal(c.visibility, "general");
+  assert.equal(c.contactHints?.name, "Lee Example");
+  assert.equal(c.summary, "Contact form (pricing)");
+  assert.equal(c.utm?.campaign, "dp-2026-12");
+  const inv = writers.formActivity("investor_overview", { rowKey: "r1", email: "fund@example.test", detail: "tltf-2026" });
+  assert.equal(inv.visibility, "investor");
+  assert.equal(inv.contactHints?.kind, "investor");
+  assert.equal(inv.source, "InvestorOverviewRequests");
+  for (const k of ["demo", "design_partner", "early_release"] as const) assert.equal(writers.formVisibility(k), "general");
+  assert.ok(!("message" in c) && !("body" in c), "no message text reaches the log");
+  ok("each form maps to its type, source table and row key; only the investor form starts investor-only");
 }
 
 {
@@ -441,6 +467,27 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.equal((await activity.listContactActivities(guest!.id)).length, 3);
   assert.equal(morgan?.name, "Morgan Meet");
   ok("each meeting action writes one activity per person, and a repeat writes none (FR-06)");
+}
+
+{
+  const email = addr("Former");
+  const one = await writers.recordForm("contact", { rowKey: `row-${run}-1`, email: email.toUpperCase(), name: "Form Er", detail: "demo" });
+  const two = await writers.recordForm("demo", { rowKey: `row-${run}-2`, email, title: "COO" });
+  const again = await writers.recordForm("contact", { rowKey: `row-${run}-1`, email });
+  assert.ok(one?.status === "recorded" && two?.status === "recorded");
+  assert.equal(again?.status, "duplicate");
+  assert.ok(one.status === "recorded" && two.status === "recorded");
+  assert.equal(one.contactId, two.contactId);
+  assert.equal((await activity.listContactActivities(one.contactId)).length, 2);
+  const contact = await contacts.getContact(one.contactId);
+  assert.equal(contact?.title, "COO");
+
+  const inv = await writers.recordForm("investor_overview", { rowKey: `inv-${run}`, email: addr("lp", `fund-${run}.example.test`) });
+  assert.ok(inv?.status === "recorded");
+  const lp = await contacts.getContact(inv.contactId);
+  assert.equal(lp?.visibility, "investor");
+  assert.equal(lp?.kind, "investor");
+  ok("two forms with different capitalization give one contact and two activities; investor form contacts are investor-only (FR-03, FR-06)");
 }
 
 {

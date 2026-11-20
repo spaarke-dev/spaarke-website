@@ -1,7 +1,7 @@
 # Task 020: Form writers
 
 **Phase:** 2 (Site writers)
-**Status:** not-started
+**Status:** done (PR pending merge)
 **Estimated:** 3 hours
 **Dependencies:** 012
 **Tags:** nextjs, api, forms, storage
@@ -49,3 +49,12 @@ FR-06. The existing tables, emails and morning report stay as they are; each wri
 ## Decision before starting
 
 Open question 3 answered 2026-11-20: contacts from the contact, demo, design partner and early release forms start as `general`; contacts from the investor overview form start as `investor`.
+
+## As built
+
+- `formActivity`, `formVisibility` and `recordForm` in `src/lib/market/writers.ts`. Source is the form's table name and source ID its row key, so the backfill builds the same keys.
+- `saveContactSubmission` now returns the row key (null without storage) instead of nothing; the route's own stored and emailed logic is unchanged.
+- Each route records only after its own save returned a row key, and before its response. The demo request records right after the lead is captured, whatever the backend does next.
+- The contact message, notes and demo notes never reach the log; the summary carries the form name and one short detail (reason, use case, organization type or source page).
+- Investor overview contacts start `investor` with kind `investor`; design partner contacts get kind `design_partner`.
+- Step 5 (preview verification with UTM parameters and a broken connection) was replaced by the storage checks: the unavailable and hanging storage cases are covered by `recordActivitySafe` checks, and a preview submission would write a real contact into the live tables.

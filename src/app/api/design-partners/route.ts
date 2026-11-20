@@ -11,6 +11,7 @@ import { saveDesignPartnerApplication } from "@/lib/storage";
 import { sendDesignPartnerNotification } from "@/lib/email";
 import { trackEvent, trackException, flushTelemetry } from "@/lib/logger";
 import type { Attribution } from "@/lib/attribution";
+import { recordForm } from "@/lib/market/writers";
 
 async function verifyCaptcha(token: string): Promise<boolean> {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
@@ -110,6 +111,18 @@ export async function POST(request: NextRequest) {
         { ok: false, error: "INTERNAL_ERROR" },
         { status: 500 },
       );
+    }
+
+    if (rowKey) {
+      await recordForm("design_partner", {
+        rowKey,
+        email: data.email,
+        name: [data.firstName, data.lastName].filter(Boolean).join(" "),
+        title: data.role,
+        organization: data.organization,
+        detail: data.organizationType,
+        attribution,
+      });
     }
 
     trackEvent("design_partner.success", {

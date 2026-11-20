@@ -24,9 +24,9 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [020](020-form-writers.md) | Form writers | 012 | not-started |
-| [021](021-meeting-writers.md) | Meeting writers | 012 | done (PR pending merge) |
-| [022](022-brief-and-ask-ai-writers.md) | Brief read and Ask AI writers | 013 | done (PR pending merge) |
+| [020](020-form-writers.md) | Form writers | 012 | done (PR pending merge) |
+| [021](021-meeting-writers.md) | Meeting writers | 012 | done |
+| [022](022-brief-and-ask-ai-writers.md) | Brief read and Ask AI writers | 013 | done |
 
 ## Phase 3: Admin pages
 
