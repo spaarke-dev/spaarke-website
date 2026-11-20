@@ -103,9 +103,9 @@ export async function saveContactSubmission(
   data: ContactFormData,
   ipHash: string,
   attribution?: Attribution | null,
-): Promise<void> {
+): Promise<string | null> {
   const client = getTableClient();
-  if (!client) return;
+  if (!client) return null;
 
   const now = new Date();
   const random = randomBytes(4).toString("hex");
@@ -130,6 +130,7 @@ export async function saveContactSubmission(
       utm_medium: attribution?.utm_medium ?? "",
       utm_campaign: attribution?.utm_campaign ?? "",
     });
+    return rowKey;
   } catch (err) {
     console.error("[storage] Failed to save contact submission:", err);
     // Re-throw so the caller is aware, but the API route can decide how to handle it

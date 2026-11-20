@@ -10,6 +10,7 @@ import {
   type EarlyReleaseSource,
 } from "@/lib/email";
 import type { Attribution } from "@/lib/attribution";
+import { recordForm } from "@/lib/market/writers";
 
 /**
  * Build the deterministic, non-PII tour session token bound to an
@@ -113,10 +114,11 @@ export async function POST(request: NextRequest) {
     // Save to Azure Table Storage
     const connectionString = process.env.STORAGE_ACCOUNT_CONNECTION;
     let persisted = false;
+    let rowKey: string | null = null;
     if (connectionString) {
       const client = TableClient.fromConnectionString(connectionString, TABLE_NAME);
       const random = randomBytes(4).toString("hex");
-      const rowKey = `${Date.now()}-${random}`;
+      rowKey = `${Date.now()}-${random}`;
 
       await client.createEntity({
         partitionKey: "signup",
@@ -163,6 +165,10 @@ export async function POST(request: NextRequest) {
         err instanceof Error ? err : new Error(String(err)),
         { step: "email", source },
       );
+    }
+
+    if (persisted && rowKey) {
+      await recordForm("early_release", { rowKey, email, name, detail: source, attribution });
     }
 
     trackEvent("early_release.success", {

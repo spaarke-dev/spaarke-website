@@ -1,7 +1,7 @@
 # Task 022: Brief read and Ask AI writers
 
 **Phase:** 2 (Site writers)
-**Status:** done (PR pending merge)
+**Status:** done
 **Estimated:** 2 hours
 **Dependencies:** 013
 **Tags:** nextjs, api, storage

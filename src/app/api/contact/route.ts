@@ -7,6 +7,7 @@ import { saveContactSubmission } from "@/lib/storage";
 import { sendContactNotification } from "@/lib/email";
 import { trackEvent, trackException, flushTelemetry } from "@/lib/logger";
 import type { Attribution } from "@/lib/attribution";
+import { recordForm } from "@/lib/market/writers";
 
 async function verifyCaptcha(token: string): Promise<boolean> {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
@@ -94,9 +95,10 @@ export async function POST(request: NextRequest) {
     // got a 500 with their message lost in both places.
     let stored = false;
     let emailed = false;
+    let rowKey: string | null = null;
 
     try {
-      await saveContactSubmission(data, ipHash, attribution);
+      rowKey = await saveContactSubmission(data, ipHash, attribution);
       stored = true;
     } catch (err) {
       console.error("[contact] Storage write failed:", err);
@@ -126,6 +128,18 @@ export async function POST(request: NextRequest) {
         { ok: false, error: "INTERNAL_ERROR" },
         { status: 500 },
       );
+    }
+
+    // The market access log (FR-06), keyed by the saved row. Never fails the form.
+    if (rowKey) {
+      await recordForm("contact", {
+        rowKey,
+        email: data.email,
+        name: data.name,
+        organization: data.company,
+        detail: data.reason,
+        attribution,
+      });
     }
 
     trackEvent("contact.success", {

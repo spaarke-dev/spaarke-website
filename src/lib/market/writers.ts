@@ -174,3 +174,87 @@ export async function recordAskClick(
     summary: `Opened Ask AI in ${provider}`,
   });
 }
+
+// ---------------------------------------------------------------------------
+// Forms (task 020)
+// ---------------------------------------------------------------------------
+
+export type FormKind = "contact" | "demo" | "design_partner" | "early_release" | "investor_overview";
+
+/** The table each form saves to, so the backfill (task 052) builds the same idempotency keys. */
+export const FORM_SOURCES: Record<FormKind, string> = {
+  contact: "ContactSubmissions",
+  demo: "DemoRequests",
+  design_partner: "DesignPartnerApplications",
+  early_release: "EarlyReleaseSignups",
+  investor_overview: "InvestorOverviewRequests",
+};
+
+export type FormFacts = {
+  /** The row key the form's own table write used. */
+  rowKey: string;
+  email: string;
+  name?: string;
+  title?: string;
+  organization?: string;
+  phone?: string;
+  /** A short detail for the summary: the contact reason, use case, source page. */
+  detail?: string;
+  attribution?: {
+    utm_source?: string;
+    utm_medium?: string;
+    utm_campaign?: string;
+  } | null;
+  occurredAt?: number;
+};
+
+const FORM_LABEL: Record<FormKind, string> = {
+  contact: "Contact form",
+  demo: "Demo request",
+  design_partner: "Design partner application",
+  early_release: "Early release signup",
+  investor_overview: "Requested the investor overview",
+};
+
+/**
+ * Open question 3 (2026-11-20): form contacts start as general, except the
+ * investor overview form, whose contacts start as investor-only.
+ */
+export function formVisibility(kind: FormKind): ActivityInput["visibility"] {
+  return kind === "investor_overview" ? "investor" : "general";
+}
+
+export function formActivity(kind: FormKind, facts: FormFacts): ActivityInput {
+  const a = facts.attribution;
+  const detail = facts.detail?.replace(/\s+/g, " ").trim();
+  return {
+    type: `form.${kind}` as ActivityInput["type"],
+    source: FORM_SOURCES[kind],
+    sourceId: facts.rowKey,
+    occurredAt: facts.occurredAt ?? Date.now(),
+    email: facts.email,
+    visibility: formVisibility(kind),
+    contactHints: {
+      name: facts.name?.trim() || undefined,
+      title: facts.title?.trim() || undefined,
+      organizationName: facts.organization?.trim() || undefined,
+      phone: facts.phone?.trim() || undefined,
+      kind: kind === "investor_overview" ? "investor" : kind === "design_partner" ? "design_partner" : undefined,
+    },
+    utm: {
+      source: a?.utm_source || undefined,
+      medium: a?.utm_medium || undefined,
+      campaign: a?.utm_campaign || undefined,
+    },
+    summary: detail ? `${FORM_LABEL[kind]} (${detail})` : FORM_LABEL[kind],
+  };
+}
+
+/** Record a form submission after the form's own save. Never throws. */
+export async function recordForm(kind: FormKind, facts: FormFacts): Promise<SafeResult | null> {
+  try {
+    return await recordActivitySafe(formActivity(kind, facts));
+  } catch {
+    return null;
+  }
+}
