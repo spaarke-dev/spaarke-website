@@ -1,7 +1,7 @@
 # Task 004: App Insights safety export
 
 **Phase:** 0 (Foundations)
-**Status:** not-started
+**Status:** done (counts in `notes/appinsights-export.md`)
 **Estimated:** 1 hour
 **Dependencies:** none
 **Tags:** azure, storage
