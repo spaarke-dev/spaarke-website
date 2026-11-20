@@ -18,7 +18,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 | [010](010-market-store.md) | Market store | none | done |
 | [011](011-contact-and-organization-resolution.md) | Contact and organization resolution | 010 | done |
 | [012](012-record-activity.md) | `recordActivity` | 011 | done |
-| [013](013-campaigns-members-audit.md) | Campaigns, members and audit | 012 | not-started |
+| [013](013-campaigns-members-audit.md) | Campaigns, members and audit | 012 | done (PR pending merge) |
 
 ## Phase 2: Site writers
 
