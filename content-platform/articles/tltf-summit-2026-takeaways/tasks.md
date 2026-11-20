@@ -19,28 +19,28 @@
 - [x] Body drafted (short paragraphs, 1 to 3 sentences each)
 - [x] Close drafted (CTA, question, or syndication link)
 - [x] Length within target (text-only: 150 to 400 words)
-- [ ] No `**TBD — confirm**` markers
+- [x] No `**TBD — confirm**` markers
 - [x] Draft written to `draft.md` in this article's workspace
 
 ## 3. Revise (gate: reviewer accepts)
 
-- [ ] Reviewer feedback captured
-- [ ] Revisions applied in `draft.md` (one source of truth)
-- [ ] Revision rounds repeat as needed; mark complete only when the
+- [x] Reviewer feedback captured
+- [x] Revisions applied in `draft.md` (one source of truth)
+- [x] Revision rounds repeat as needed; mark complete only when the
       reviewer accepts
 
 ## 4. Polish (gate: pre-publish checklist clean)
 
-- [ ] Hook reads cleanly cold (no "as I was saying" or context
+- [x] Hook reads cleanly cold (no "as I was saying" or context
       that requires the writer to be known)
-- [ ] Hashtags are 3 max, at the bottom
-- [ ] Personal byline if appropriate (LinkedIn rewards individual
+- [x] Hashtags are 3 max, at the bottom
+- [x] Personal byline if appropriate (LinkedIn rewards individual
       voice over org voice)
-- [ ] **Final-pass sweep against `voice/examples/avoid-this.md`**
-- [ ] **Final-pass sweep against `voice/style-guide.md` §5**
-- [ ] **Final-pass sweep against `voice/examples/ai-tells.md`** (no em
+- [x] **Final-pass sweep against `voice/examples/avoid-this.md`**
+- [x] **Final-pass sweep against `voice/style-guide.md` §5**
+- [x] **Final-pass sweep against `voice/examples/ai-tells.md`** (no em
       dashes, no dash substitutes, no AI-sounding constructions)
-- [ ] `npm run voice:lint -- <path to draft.md>` reports 0 errors, and
+- [x] `npm run voice:lint -- <path to draft.md>` reports 0 errors, and
       every warning has been read and either fixed or accepted
 
 ## 5. Image (gate: optional; skip if text-only)
@@ -70,4 +70,6 @@ if the brief specifies a graphic, carousel, or syndication header.
 - 2026-11-19: primary audience firm-operations-leader, secondary legal-ops-director (writer).
 - 2026-11-19: billable hour reported as pressure, no verdict; Microsoft and Google line kept as written (writer).
 - 2026-11-19: plan signed off; draft at 402 words including hashtags. Lint 0 errors; two warnings accepted: the list lead-in is a functional one-sentence paragraph (style guide section 3), and the closing question is the post's CTA (linkedin-post.md sections 5 and 6).
-- Open before ship: attendance figure, Pathways title and form, publish date. List items use "- " markers, which post to LinkedIn as plain hyphens.
+- 2026-11-19 (revise, writer): attendance is the writer's estimate and the post says so; the Pathways piece is a book handed out to attendees; list markers changed to "•" so the post copies straight into LinkedIn; publish tonight, 2026-11-19.
+- 2026-11-19 (polish): body 399 words; "on show" cut from the audience sentence to hold the 400 limit. Lint 0 errors, three warnings accepted: the list lead-in and the closing question as before, and the two short sentences that end the frontier model item ("We are doing exactly that at Spaarke. I didn't see Microsoft or Google."), which are the writer's own lines kept as written. The third warning appeared only because the lint reads "•" items as paragraphs, which it did not do for "- " items.
+- No image (writer default). Ship gate open: post manually, then move to `published/linkedin-posts/`, record `posted_url`, close #165.
