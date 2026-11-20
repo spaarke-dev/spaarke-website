@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022 and 030).
+// tasks 002, 010 to 013, 020 to 022, 030 and 031).
 //
 //   npm run market:check
 //
@@ -211,6 +211,23 @@ console.log("Pure checks");
   assert.deepEqual(ids(paged), ["c"]);
   assert.equal(paged.total, 3);
   ok("contact search finds part of a name, email or organization; filters and paging (task 030)");
+}
+
+{
+  const { parsePatch, PatchError } = await import("@/lib/market/contact-admin");
+  const p = parsePatch({ name: "  Jane   Doe ", tags: ["TLTF", "tltf", " Summit "], phone: "", kind: "investor" });
+  assert.deepEqual(p, { name: "Jane Doe", tags: ["TLTF", "Summit"], phone: null, kind: "investor" });
+  for (const bad of [{ email: "x@y.test" }, { kind: "boss" }, { stage: 3 }, { tags: "a,b" }, { linkedinUrl: "https://evil.test/x" }, []]) {
+    assert.throws(() => parsePatch(bad), PatchError, JSON.stringify(bad));
+  }
+  const { sameSite } = await import("@/lib/market/admin-api");
+  const h = (o: Record<string, string>) => new Headers(o);
+  assert.equal(sameSite(h({ "sec-fetch-site": "same-origin" })), true);
+  assert.equal(sameSite(h({ "sec-fetch-site": "cross-site", origin: "https://evil.test" })), false);
+  assert.equal(sameSite(h({ "sec-fetch-site": "same-site" })), false);
+  assert.equal(sameSite(h({ origin: "https://spaarke.com", host: "spaarke.com" })), true);
+  assert.equal(sameSite(h({ origin: "https://evil.test", host: "spaarke.com" })), false);
+  ok("contact edits accept only known fields; admin changes refuse cross-site requests (task 031)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -562,6 +579,143 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.ok(!(await q.visibleCampaigns(general)).some((c) => c.slug === `qi-${run}`));
   assert.ok((await q.visibleCampaigns(investor)).some((c) => c.slug === `qi-${run}`));
   ok("admin lists, counts, recent activity and campaign filters leave investor records out without the role (FR-02, FR-15)");
+}
+
+{
+  const admin = await import("@/lib/market/contact-admin");
+  const who = "admin@example.test";
+  const auditRows = async (entityId: string) =>
+    (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.entityId === entityId);
+
+  // Edit: a field typed by hand stays when a later form brings a different value.
+  const edited = await contacts.resolveContact({ email: addr("edit-me"), name: "Ed" });
+  assert.ok(edited.status === "created");
+  const after = await admin.editContact(
+    edited.contact.id,
+    admin.parsePatch({ name: "Edward Example", stage: "engaged", tags: ["VIP"] }),
+    who,
+  );
+  assert.equal(after?.name, "Edward Example");
+  assert.ok(after?.editedFields.includes("name") && !after.editedFields.includes("stage"));
+  await writers.recordForm("contact", { rowKey: `edit-${run}`, email: addr("edit-me"), name: "Eddie" });
+  assert.equal((await contacts.getContact(edited.contact.id))?.name, "Edward Example");
+  const editAudit = await auditRows(edited.contact.id);
+  assert.equal(editAudit.length, 1);
+  assert.equal(editAudit[0].action, "contact.edit");
+  assert.equal(editAudit[0].who, who);
+  assert.deepEqual(editAudit[0].changes.map((c) => c.field), ["name", "stage", "tags"]);
+  await admin.editContact(edited.contact.id, admin.parsePatch({ stage: "engaged" }), who);
+  assert.equal((await auditRows(edited.contact.id)).length, 1, "no change, no audit row");
+
+  // Log by hand.
+  const logged = await admin.logActivity(edited.contact.id, {
+    type: "meeting.in_person",
+    summary: "Coffee at the Summit",
+    occurredAt: "2026-11-12T15:00:00Z",
+  });
+  assert.equal(logged.status, "recorded");
+  await assert.rejects(admin.logActivity(edited.contact.id, { type: "note", summary: "   " }), admin.PatchError);
+  await assert.rejects(
+    admin.logActivity(edited.contact.id, { type: "note", summary: "x", occurredAt: "2099-01-01T00:00:00Z" }),
+    admin.PatchError,
+  );
+  ok("an edit by hand is audited and protects the field from later forms; touches can be logged with a date (task 031)");
+}
+
+{
+  const admin = await import("@/lib/market/contact-admin");
+  const who = "admin@example.test";
+
+  // Two records for one person: a work address and a personal one.
+  const keep = await writers.recordForm("contact", { rowKey: `m-${run}-1`, email: addr("dup"), name: "Dee Duplicate" });
+  const extra = await writers.recordForm("demo", { rowKey: `m-${run}-2`, email: `dee-${run}@gmail.com`, title: "COO" });
+  await writers.recordForm("early_release", { rowKey: `m-${run}-3`, email: `dee-${run}@gmail.com` });
+  assert.ok(keep?.status === "recorded" && extra?.status === "recorded");
+  const survivorId = keep.contactId;
+  const otherId = extra.contactId;
+  await camp.upsertCampaign({ slug: `merge-${run}`, name: "Merge check", visibility: "general" });
+  await camp.addMember({ campaignSlug: `merge-${run}`, contactId: otherId, code: `mg${run}` });
+  const fu = (await getTable("followUps"))!;
+  await fu.createEntity({ partitionKey: otherId, rowKey: "fu1", contactId: otherId, title: "Thank-you" });
+  await fu.createEntity({ partitionKey: "due:2026-12", rowKey: `2026-12-01-${otherId}-fu1`, contactId: otherId });
+
+  const preview = await admin.previewMerge(survivorId, otherId);
+  assert.deepEqual([preview.activities, preview.memberships, preview.followUps], [2, 1, 1]);
+  const summary = await admin.mergeContacts(survivorId, otherId, who);
+  assert.equal(summary.activities, 2);
+
+  assert.equal(await contacts.getContact(otherId), null, "the merged record is gone");
+  const timeline = await activity.listContactActivities(survivorId);
+  assert.equal(timeline.length, 3, "one contact with every activity from both");
+  assert.ok(timeline.every((a) => a.contactId === survivorId));
+  assert.equal((await activity.listContactActivities(otherId)).length, 0);
+  const month = await activity.listActivitiesInMonth(keys.monthKey(Date.now()), 5000);
+  assert.ok(!month.some((a) => a.contactId === otherId), "the month index follows");
+  assert.equal((await contacts.findContactByEmail(`DEE-${run}@gmail.com`))?.id, survivorId, "the other email is an alternate");
+  assert.equal((await contacts.getContact(survivorId))?.title, "COO", "empty fields filled from the other");
+  assert.equal((await camp.findMemberByCode(`mg${run}`))?.contactId, survivorId, "codes find the survivor");
+  assert.ok(await camp.getMember(`merge-${run}`, survivorId));
+  assert.equal(await camp.getMember(`merge-${run}`, otherId), null);
+  assert.equal((await fu.getEntity<{ contactId: string }>(survivorId, "fu1")).contactId, survivorId);
+  assert.equal(
+    (await fu.getEntity<{ contactId: string }>("due:2026-12", `2026-12-01-${otherId}-fu1`)).contactId,
+    survivorId,
+  );
+
+  // A repeat of a source event already moved is still a duplicate, not a second row.
+  const again = await writers.recordForm("demo", { rowKey: `m-${run}-2`, email: `dee-${run}@gmail.com` });
+  assert.equal(again?.status, "duplicate");
+  assert.equal((await activity.listContactActivities(survivorId)).length, 3);
+  // New activity from the other address lands on the survivor.
+  const later = await writers.recordForm("contact", { rowKey: `m-${run}-4`, email: `dee-${run}@gmail.com` });
+  assert.ok(later?.status === "recorded" && later.contactId === survivorId);
+
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter(
+    (e) => e.entityId === survivorId || e.entityId === otherId,
+  );
+  assert.deepEqual(audits.map((e) => e.action).sort(), ["contact.merge", "contact.merged_into"]);
+  ok("a merge leaves one contact with every activity, membership, follow-up and email from both, audited (task 031)");
+}
+
+{
+  const admin = await import("@/lib/market/contact-admin");
+  const who = "admin@example.test";
+  const gone = await writers.recordForm("contact", { rowKey: `d-${run}-1`, email: addr("forget-me"), name: "Fay Forget" });
+  assert.ok(gone?.status === "recorded");
+  const id = gone.contactId;
+  // A second email, merged in earlier, is tombstoned too.
+  const alt = await writers.recordForm("demo", { rowKey: `d-${run}-2`, email: `fay-${run}@gmail.com` });
+  assert.ok(alt?.status === "recorded");
+  await admin.mergeContacts(id, alt.contactId, who);
+  await camp.upsertCampaign({ slug: `del-${run}`, name: "Delete check", visibility: "general" });
+  await camp.addMember({ campaignSlug: `del-${run}`, contactId: id, code: `dl${run}`, briefLabel: `del-brief-${run}` });
+
+  const summary = await admin.deleteContact(id, who);
+  assert.deepEqual(summary, { activities: 2, memberships: 1, followUps: 0, emails: 2 });
+  assert.equal(await contacts.getContact(id), null);
+  assert.equal((await activity.listContactActivities(id)).length, 0);
+  const month = await activity.listActivitiesInMonth(keys.monthKey(Date.now()), 5000);
+  assert.ok(!month.some((a) => a.contactId === id), "gone from the month index");
+  assert.equal(await camp.getMember(`del-${run}`, id), null);
+  assert.equal(await camp.findMemberByCode(`dl${run}`), null);
+  assert.equal(await camp.findMemberByBriefLabel(`del-brief-${run}`), null);
+
+  // Re-running the same writes, or a new form, does not bring the person back (FR-17).
+  for (const [kind, rowKey, email] of [
+    ["contact", `d-${run}-1`, addr("forget-me")],
+    ["demo", `d-${run}-2`, `fay-${run}@gmail.com`],
+    ["contact", `d-${run}-3`, addr("Forget-Me").toUpperCase()],
+  ] as const) {
+    const r = await writers.recordForm(kind, { rowKey, email });
+    assert.deepEqual(r, { status: "skipped", reason: "tombstoned" }, `${kind} ${rowKey}`);
+  }
+  assert.equal(await contacts.findContactByEmail(addr("forget-me")), null);
+
+  const rows = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.entityId === id);
+  const del = rows.find((e) => e.action === "contact.delete");
+  assert.ok(del);
+  assert.ok(!JSON.stringify(del.changes).includes("@"), "no email in the audit");
+  ok("a delete removes the contact, activities, memberships and lookups, and nothing brings it back (FR-17, task 031)");
 }
 
 {

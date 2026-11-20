@@ -11,10 +11,12 @@ export const dynamic = "force-dynamic";
 
 const NEW_CONTACTS_SHOWN = 15;
 
-function ContactCell({ name, email }: { name?: string; email?: string }) {
+function ContactCell({ id, name, email }: { id: string; name?: string; email?: string }) {
   return (
     <div className="min-w-0 [overflow-wrap:anywhere]">
-      <div className="font-medium">{name || email}</div>
+      <Link href={`/admin/contacts/${id}`} className="font-medium hover:underline">
+        {name || email}
+      </Link>
       {name && email ? <div className="text-xs text-fg-mid">{email}</div> : null}
     </div>
   );
@@ -27,7 +29,7 @@ const ACTIVITY_COLUMNS: Column<ActivityRow>[] = [
     className: "hidden sm:table-cell",
     cell: (a) => <span className="whitespace-nowrap">{formatWhen(a.occurredAt)}</span>,
   },
-  { key: "contact", header: "Contact", cell: (a) => <ContactCell name={a.contactName} email={a.contactEmail} /> },
+  { key: "contact", header: "Contact", cell: (a) => <ContactCell id={a.contactId} name={a.contactName} email={a.contactEmail} /> },
   {
     key: "what",
     header: "Activity",
@@ -50,7 +52,7 @@ const ACTIVITY_COLUMNS: Column<ActivityRow>[] = [
 ];
 
 const CONTACT_COLUMNS: Column<ContactRow>[] = [
-  { key: "contact", header: "Contact", cell: (c) => <ContactCell name={c.name} email={c.email} /> },
+  { key: "contact", header: "Contact", cell: (c) => <ContactCell id={c.id} name={c.name} email={c.email} /> },
   { key: "org", header: "Organization", className: "hidden sm:table-cell", cell: (c) => c.organizationName ?? "" },
   { key: "kind", header: "Kind", className: "hidden md:table-cell", cell: (c) => <Badge>{label(c.kind)}</Badge> },
   {
