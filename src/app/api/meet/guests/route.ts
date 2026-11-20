@@ -7,6 +7,7 @@ import { setMeetingAttendees } from "@/lib/meet/graph";
 import { errorOf, json, lookupManagedBooking } from "@/lib/meet/routes";
 import { normalizeGuests } from "@/lib/meet/service";
 import { guestsOf, updateBooking } from "@/lib/meet/store";
+import { recordMeeting } from "@/lib/market/writers";
 
 export const dynamic = "force-dynamic";
 
@@ -57,6 +58,16 @@ export async function POST(request: NextRequest) {
     } catch (err) {
       // The calendar has the new list; the row catches up on the next change.
       trackException(errorOf(err), { step: "meet.guests.store" });
+    }
+
+    // Guests added here get the same "booked" activity they would have had at booking.
+    const added = check.guests.filter((g) => !current.some((c) => c.toLowerCase() === g.toLowerCase()));
+    if (added.length > 0) {
+      await recordMeeting(
+        "booked",
+        { ...booking, guests: check.guests, start: Date.parse(booking.start), hostTimeZone: config.rules.hostTimeZone },
+        { onlyGuests: added },
+      );
     }
 
     trackEvent("meet.guests_updated", { count: String(check.guests.length) });

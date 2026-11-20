@@ -45,3 +45,7 @@ FR-06. The existing tables, emails and morning report stay as they are; each wri
 
 - The source ID is the existing row key, so the backfill (task 052) produces the same idempotency keys and never doubles these rows.
 - Spec references: FR-03, FR-06, NFR-03, Unresolved question 3.
+
+## Decision before starting
+
+Open question 3 answered 2026-11-20: contacts from the contact, demo, design partner and early release forms start as `general`; contacts from the investor overview form start as `investor`.

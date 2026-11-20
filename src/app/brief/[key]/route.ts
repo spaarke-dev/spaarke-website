@@ -1,6 +1,7 @@
 import { llmsFullText } from "@/lib/llms-full";
 import { getPrivateBrief } from "@/lib/private-brief";
 import { trackEvent } from "@/lib/logger";
+import { recordBriefRead } from "@/lib/market/writers";
 
 /**
  * The unlisted copy of /llms-full.txt with a private brief (the investor
@@ -28,6 +29,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ key
     });
   }
   trackEvent("brief.read", { label: brief.label });
+  // The market access log (FR-06): only when the label belongs to a campaign member.
+  await recordBriefRead(brief.label);
   return new Response(llmsFullText({ investorOverview: brief.text }), {
     headers: { "Content-Type": "text/plain; charset=utf-8", ...PRIVATE_HEADERS },
   });

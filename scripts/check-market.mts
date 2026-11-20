@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002 and 010 to 013).
+// tasks 002, 010 to 013, 021 and 022).
 //
 //   npm run market:check
 //
@@ -23,6 +23,7 @@ const vis = await import("@/lib/market/visibility");
 const principal = await import("@/lib/market/principal");
 const camp = await import("@/lib/market/campaigns");
 const auditLog = await import("@/lib/market/audit");
+const writers = await import("@/lib/market/writers");
 const { idempotencyKey, SUMMARY_MAX } = await import("@/lib/market/activity");
 
 let passed = 0;
@@ -119,6 +120,33 @@ console.log("Pure checks");
   assert.equal(d.find((c) => c.field === "title")?.to?.length, 80);
   assert.equal(d.find((c) => c.field === "title")?.from, undefined);
   ok("campaign slugs avoid the index partitions; audit diffs keep changed fields and short values");
+}
+
+{
+  const facts = {
+    bookingId: "bk1",
+    name: "Pat Example",
+    email: "Pat@Example.test",
+    organization: "Example Co",
+    guests: ["guest@example.test", "pat@example.test"],
+    start: Date.parse("2026-11-25T15:00:00Z"),
+    hostTimeZone: "America/New_York",
+    utm_campaign: "tltf",
+  };
+  const booked = writers.meetingActivities("booked", facts, { occurredAt: 1 });
+  assert.equal(booked.length, 2, "the booker's own address in the guest list is not a second activity");
+  assert.equal(booked[0].sourceId, "bk1:booked");
+  assert.match(booked[1].sourceId, /^bk1:booked:[0-9a-f]{12}$/);
+  assert.equal(booked[0].summary, "Meeting booked for Wed, Nov 25, 10:00 AM EST");
+  assert.equal(booked[1].summary, "Meeting booked for Wed, Nov 25, 10:00 AM EST (as a guest)");
+  assert.equal(booked[0].utm?.campaign, "tltf");
+  const moved1 = writers.meetingActivities("rescheduled", facts, { occurredAt: 1000 });
+  const moved2 = writers.meetingActivities("rescheduled", facts, { occurredAt: 2000 });
+  assert.notEqual(moved1[0].sourceId, moved2[0].sourceId, "a second move is a new activity");
+  const added = writers.meetingActivities("booked", facts, { onlyGuests: ["guest@example.test"] });
+  assert.equal(added.length, 1);
+  assert.equal(added[0].sourceId, booked[1].sourceId, "a guest added later matches the at-booking key");
+  ok("meeting events map to one activity per person with stable source IDs (FR-06)");
 }
 
 {
@@ -360,6 +388,59 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.equal(found?.at, now.toISOString());
   assert.deepEqual(found?.changes, [{ field: "statusOverride", to: "meeting" }]);
   ok("audit rows record who, when and what changed (NFR-06)");
+}
+
+{
+  const slug = `writers-${run}`;
+  await camp.upsertCampaign({ slug, name: "Writers check" });
+  const person = await contacts.resolveContact({ email: addr("reader") });
+  assert.ok(person.status === "created");
+  const label = `label-${run}`;
+  const code = `w${run}`;
+  await camp.addMember({ campaignSlug: slug, contactId: person.contact.id, code, briefLabel: label });
+
+  const t = Date.parse("2026-11-19T18:00:00Z");
+  const r1 = await writers.recordBriefRead(label, t);
+  const r2 = await writers.recordBriefRead(label, t + 300);
+  assert.equal(r1?.status, "recorded");
+  assert.equal(r2?.status, "duplicate", "a retry in the same second is one read");
+  assert.equal((await writers.recordBriefRead(label, t + 5000))?.status, "recorded");
+  assert.equal((await writers.recordBriefRead(`unknown-${run}`, t))?.status, "skipped");
+
+  const click = await writers.recordAskClick("claude", code, undefined, t);
+  assert.equal(click?.status, "recorded");
+  assert.equal(await writers.recordAskClick("claude", "article", undefined, t), null, "site clicks are not looked up");
+  assert.equal((await writers.recordAskClick("claude", `nobody${run}`, undefined, t))?.status, "skipped");
+  assert.equal((await writers.recordAskClick("chatgpt", "direct", label, t))?.status, "recorded");
+
+  const log = await activity.listContactActivities(person.contact.id);
+  assert.equal(log.filter((a) => a.type === "brief.read").length, 2);
+  assert.equal(log.filter((a) => a.type === "ask_ai.click").length, 2);
+  assert.ok(log.every((a) => a.campaignSlug === slug && a.memberId === person.contact.id));
+  assert.ok(!JSON.stringify(log).includes(code) && !JSON.stringify(log).includes(label), "neither code nor label is stored");
+  ok("brief reads and Ask AI clicks land on the member; unknown codes write nothing (FR-06)");
+
+  const meeting = {
+    bookingId: `bk-${run}`,
+    name: "Morgan Meet",
+    email: addr("morgan"),
+    guests: [addr("guest1")],
+    start: Date.parse("2026-11-26T15:00:00Z"),
+    hostTimeZone: "America/New_York",
+  };
+  const first = await writers.recordMeeting("booked", meeting, { occurredAt: t });
+  const again = await writers.recordMeeting("booked", meeting, { occurredAt: t });
+  assert.deepEqual(first.map((r) => r.status), ["recorded", "recorded"]);
+  assert.deepEqual(again.map((r) => r.status), ["duplicate", "duplicate"]);
+  await writers.recordMeeting("rescheduled", meeting, { occurredAt: t + 60_000 });
+  await writers.recordMeeting("cancelled", meeting, { occurredAt: t + 120_000 });
+  const morgan = await contacts.findContactByEmail(meeting.email);
+  const types = (await activity.listContactActivities(morgan!.id)).map((a) => a.type);
+  assert.deepEqual(types, ["meeting.cancelled", "meeting.rescheduled", "meeting.booked"]);
+  const guest = await contacts.findContactByEmail(addr("guest1"));
+  assert.equal((await activity.listContactActivities(guest!.id)).length, 3);
+  assert.equal(morgan?.name, "Morgan Meet");
+  ok("each meeting action writes one activity per person, and a repeat writes none (FR-06)");
 }
 
 {

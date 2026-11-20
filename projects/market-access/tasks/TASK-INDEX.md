@@ -7,7 +7,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 | Task | Title | Depends on | Status |
 |---|---|---|---|
 | [001](001-auth-spike.md) | Auth spike on a preview environment | none | done |
-| [002](002-admin-guard-and-shell.md) | Admin guard and shell | 001 | done (PR pending merge) |
+| [002](002-admin-guard-and-shell.md) | Admin guard and shell | 001 | done |
 | [003](003-exchange-and-app-setup-instructions.md) | Exchange and app setup instructions (Ralph runs them) | open question 1 | done |
 | [004](004-app-insights-safety-export.md) | App Insights safety export | none | done |
 
@@ -18,15 +18,15 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 | [010](010-market-store.md) | Market store | none | done |
 | [011](011-contact-and-organization-resolution.md) | Contact and organization resolution | 010 | done |
 | [012](012-record-activity.md) | `recordActivity` | 011 | done |
-| [013](013-campaigns-members-audit.md) | Campaigns, members and audit | 012 | done (PR pending merge) |
+| [013](013-campaigns-members-audit.md) | Campaigns, members and audit | 012 | done |
 
 ## Phase 2: Site writers
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [020](020-form-writers.md) | Form writers | 012, open question 3 | not-started |
-| [021](021-meeting-writers.md) | Meeting writers | 012 | not-started |
-| [022](022-brief-and-ask-ai-writers.md) | Brief read and Ask AI writers | 013 | not-started |
+| [020](020-form-writers.md) | Form writers | 012 | not-started |
+| [021](021-meeting-writers.md) | Meeting writers | 012 | done (PR pending merge) |
+| [022](022-brief-and-ask-ai-writers.md) | Brief read and Ask AI writers | 013 | done (PR pending merge) |
 
 ## Phase 3: Admin pages
 
