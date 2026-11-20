@@ -3,7 +3,10 @@ slug: tltf-summit-2026-takeaways
 type: linkedin-post
 target: personal
 byline: ralph-schroeder
-publish_date: "2026-11-19"
+campaign: none
+publish_date: 2026-11-19
+posted_url: "**TBD — confirm**"
+image: TLTF Summit "I attended" attendee graphic (TLTF's asset, not stored in the repo)
 hashtags: [LegalTech, LegalOps]
 format: standalone
 github_issue: 165
