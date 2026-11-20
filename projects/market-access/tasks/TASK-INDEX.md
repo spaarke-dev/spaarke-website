@@ -8,7 +8,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 |---|---|---|---|
 | [001](001-auth-spike.md) | Auth spike on a preview environment | none | done |
 | [002](002-admin-guard-and-shell.md) | Admin guard and shell | 001 | done (PR pending merge) |
-| [003](003-exchange-and-app-setup-instructions.md) | Exchange and app setup instructions (Ralph runs them) | open question 1 | not-started |
+| [003](003-exchange-and-app-setup-instructions.md) | Exchange and app setup instructions (Ralph runs them) | open question 1 | done |
 | [004](004-app-insights-safety-export.md) | App Insights safety export | none | done |
 
 ## Phase 1: Store and activity log
