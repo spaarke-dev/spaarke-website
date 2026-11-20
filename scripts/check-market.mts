@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002 and 010 to 012).
+// tasks 002 and 010 to 013).
 //
 //   npm run market:check
 //
@@ -21,6 +21,8 @@ import { randomBytes } from "node:crypto";
 const keys = await import("@/lib/market/keys");
 const vis = await import("@/lib/market/visibility");
 const principal = await import("@/lib/market/principal");
+const camp = await import("@/lib/market/campaigns");
+const auditLog = await import("@/lib/market/audit");
 const { idempotencyKey, SUMMARY_MAX } = await import("@/lib/market/activity");
 
 let passed = 0;
@@ -105,6 +107,18 @@ console.log("Pure checks");
   }
   assert.equal(principal.adminStatus(null), "signed-out");
   ok("readPrincipal accepts a valid header, rejects malformed ones and needs the admin role (FR-01)");
+}
+
+{
+  assert.ok(camp.isCampaignSlug("tltf-2026"));
+  for (const bad of ["code", "brief", "campaign", "Has Caps", "-lead", "a/b", ""]) assert.ok(!camp.isCampaignSlug(bad), bad);
+  assert.ok(camp.isMemberCode("r7Kx2"));
+  assert.ok(!camp.isMemberCode("has space"));
+  const d = auditLog.diffFields({ name: "Jane", stage: "new", tags: ["a"] }, { name: "Jane", stage: "engaged", tags: ["a", "b"], title: "x".repeat(200) });
+  assert.deepEqual(d.map((c) => c.field), ["stage", "tags", "title"]);
+  assert.equal(d.find((c) => c.field === "title")?.to?.length, 80);
+  assert.equal(d.find((c) => c.field === "title")?.from, undefined);
+  ok("campaign slugs avoid the index partitions; audit diffs keep changed fields and short values");
 }
 
 {
@@ -277,6 +291,75 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   });
   assert.deepEqual(r, { status: "skipped", reason: "no_contact" });
   ok("an activity with no email or contact is skipped");
+}
+
+{
+  const slug = `check-${run}`;
+  const campaign = await camp.upsertCampaign({ slug, name: "Check outreach", kind: "outreach", utmCampaign: slug });
+  assert.equal(campaign?.visibility, "investor", "a campaign without a visibility is investor-only");
+  const people = await Promise.all(
+    ["ana", "ben", "cy"].map((n) => contacts.resolveContact({ email: addr(`member-${n}`) }, { source: "check" })),
+  );
+  const ids = people.map((p) => (p.status === "created" || p.status === "found" ? p.contact.id : ""));
+  const label = `brief-${run}`;
+  await camp.addMember({ campaignSlug: slug, contactId: ids[0], code: `a${run}`, briefKey: `key-${run}-a`, briefLabel: label, group: "A" });
+  await camp.addMember({ campaignSlug: slug, contactId: ids[1], code: `b${run}`, group: "B", templateLabel: "short" });
+  await camp.addMember({ campaignSlug: slug, contactId: ids[2], code: `c${run}`, briefLabel: `solo-${run}` });
+
+  const members = await camp.listMembers(slug);
+  assert.equal(members.length, 3);
+  const ana = members.find((m) => m.contactId === ids[0])!;
+  assert.equal(ana.status, "planned");
+  assert.equal(ana.briefKeyHash, keys.sha256(`key-${run}-a`));
+  assert.ok(!JSON.stringify(members).includes(`key-${run}-a`), "the brief key itself is never stored");
+
+  assert.deepEqual(await camp.findMemberByCode(`b${run}`), { campaignSlug: slug, contactId: ids[1] });
+  assert.deepEqual(await camp.findMemberByBriefLabel(`solo-${run}`), { campaignSlug: slug, contactId: ids[2] });
+  assert.equal(await camp.findMemberByCode("nope"), null);
+
+  // Re-adding updates details without resetting the status or freeing the code.
+  await camp.addMember({ campaignSlug: slug, contactId: ids[1], code: `b${run}`, group: "B2" });
+  assert.equal((await camp.getMember(slug, ids[1]))?.group, "B2");
+  await assert.rejects(camp.addMember({ campaignSlug: slug, contactId: ids[2], code: `a${run}` }), camp.MemberConflictError);
+
+  // A brief label sent to two people resolves to the campaign only.
+  await camp.addMember({ campaignSlug: slug, contactId: ids[1], briefLabel: label });
+  assert.deepEqual(await camp.findMemberByBriefLabel(label), { campaignSlug: slug, contactId: undefined });
+  ok("a campaign of three members: found by code and brief label, codes unique, brief keys hashed (FR-09)");
+
+  const read = await activity.recordActivity({
+    type: "brief.read",
+    source: "brief",
+    sourceId: `read-${run}`,
+    occurredAt: "2026-11-19T16:00:00Z",
+    memberCode: `c${run}`,
+  });
+  assert.ok(read.status === "recorded");
+  assert.equal(read.contactId, ids[2]);
+  const [a] = await activity.listContactActivities(ids[2]);
+  assert.equal(a.campaignSlug, slug);
+  assert.equal(a.memberId, ids[2]);
+  const shared = await activity.recordActivity({
+    type: "brief.read",
+    source: "brief",
+    sourceId: `shared-${run}`,
+    occurredAt: new Date(),
+    briefLabel: label,
+  });
+  assert.deepEqual(shared, { status: "skipped", reason: "no_contact" });
+  ok("an activity with a member code resolves the contact and carries the campaign and member links (FR-06)");
+
+  const now = new Date("2026-11-19T17:00:00Z");
+  const entry = await auditLog.audit(
+    { who: "admin@example.test", action: "member.status_override", entity: "member", entityId: `${slug}/${ids[1]}`, before: { statusOverride: null }, after: { statusOverride: "meeting" } },
+    now,
+  );
+  const log = await auditLog.listAudit("2026-11", 10_000);
+  const found = log.find((e) => e.id === entry?.id);
+  assert.equal(found?.who, "admin@example.test");
+  assert.equal(found?.at, now.toISOString());
+  assert.deepEqual(found?.changes, [{ field: "statusOverride", to: "meeting" }]);
+  ok("audit rows record who, when and what changed (NFR-06)");
 }
 
 {

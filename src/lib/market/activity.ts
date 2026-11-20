@@ -1,6 +1,7 @@
 import { getTable, statusOf } from "@/lib/market/tables";
 import { hashPartition, invertedTime, monthKey, sha256 } from "@/lib/market/keys";
 import { getContact, resolveContact, touchLastActivity } from "@/lib/market/contacts";
+import { findMemberByBriefLabel, findMemberByCode, type MemberRef } from "@/lib/market/campaigns";
 import { trackEvent } from "@/lib/logger";
 import type { Activity, ActivityType, ContactHints, Utm, Visibility } from "@/lib/market/types";
 import { isActivityType } from "@/lib/market/types";
@@ -36,6 +37,14 @@ export type ActivityInput = {
   visibility?: Visibility;
   campaignSlug?: string;
   memberId?: string;
+  /**
+   * A recipient code (the `src` on a tracked link) or brief label. When it
+   * resolves to a campaign member, the activity carries the campaign and
+   * member links, and an input without an email or contact ID uses the
+   * member's contact (FR-06).
+   */
+  memberCode?: string;
+  briefLabel?: string;
   utm?: Utm;
   summary?: string;
   subject?: string;
@@ -125,7 +134,12 @@ export async function recordActivity(input: ActivityInput): Promise<RecordResult
   const occurredAt = new Date(occurredMs).toISOString();
   let visibility: Visibility = input.visibility ?? "general";
 
-  let contactId = input.contactId;
+  // Brief reads and Ask AI clicks carry no email: the code or label finds the member.
+  let member: MemberRef | null = null;
+  if (input.memberCode) member = await findMemberByCode(input.memberCode);
+  if (!member && input.briefLabel) member = await findMemberByBriefLabel(input.briefLabel);
+
+  let contactId = input.contactId ?? (input.email ? undefined : member?.contactId);
   if (contactId) {
     const c = await getContact(contactId);
     if (!c) return { status: "skipped", reason: "no_contact" };
@@ -145,6 +159,16 @@ export async function recordActivity(input: ActivityInput): Promise<RecordResult
     return { status: "skipped", reason: "no_contact" };
   }
 
+  // Links come from the member only when it is this contact's membership; a
+  // shared brief label links the campaign alone.
+  let campaignSlug = input.campaignSlug;
+  let memberId = input.memberId;
+  if (member && (!member.contactId || member.contactId === contactId)) {
+    campaignSlug = campaignSlug ?? member.campaignSlug;
+    // A member's ID is its contact ID within the campaign (MaMembers row key).
+    if (member.contactId) memberId = memberId ?? member.contactId;
+  }
+
   const activityId = `${invertedTime(occurredMs)}-${hash.slice(0, 12)}`;
   const entity: ActivityEntity = {
     partitionKey: contactId,
@@ -156,8 +180,8 @@ export async function recordActivity(input: ActivityInput): Promise<RecordResult
     occurredAt,
     recordedAt: new Date().toISOString(),
     visibility,
-    campaignSlug: trimTo(input.campaignSlug, 100),
-    memberId: trimTo(input.memberId, 100),
+    campaignSlug: trimTo(campaignSlug, 100),
+    memberId: trimTo(memberId, 100),
     utmSource: trimUtm(input.utm?.source),
     utmMedium: trimUtm(input.utm?.medium),
     utmCampaign: trimUtm(input.utm?.campaign),

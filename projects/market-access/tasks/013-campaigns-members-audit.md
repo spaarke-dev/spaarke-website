@@ -1,7 +1,7 @@
 # Task 013: Campaigns, members and audit
 
 **Phase:** 1 (Store and activity log)
-**Status:** not-started
+**Status:** done (PR pending merge)
 **Estimated:** 3 hours
 **Dependencies:** 012
 **Tags:** typescript, azure, storage
@@ -42,3 +42,12 @@ FR-09 (campaigns as outreach projects with members), FR-06 (brief reads and Ask 
 
 - Status derivation from the log is task 033; this task stores the field.
 - Spec references: FR-06, FR-09, NFR-06.
+
+## As built
+
+- A brief label can be shared, since one brief may go to a whole group. The first member to use it owns the label index row; when a second member uses the same label, the row is marked shared and then resolves to the campaign only, with no contact. A read through a shared label is then skipped, because there is no one to attach it to. Codes stay unique, and reusing one throws `MemberConflictError`.
+- A member's ID in an activity (`memberId`) is its contact ID, which is the member's row key within the campaign.
+- `recordActivity` takes `memberCode` or `briefLabel`. Links are set only when the member is the activity's own contact, so an email that resolves to someone else never picks up another person's membership.
+- A campaign saved without a visibility is investor-only.
+- Re-adding a member updates its details but never resets the derived status.
+- `audit()` throws on storage errors, so an admin edit fails rather than going unrecorded. `listAudit(month)` reads one month.
