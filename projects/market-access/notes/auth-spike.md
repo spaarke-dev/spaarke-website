@@ -19,7 +19,7 @@ Other findings:
 - With a route rule, `/.auth/login/github` returns 404.
 - A signed-in request carries about 3.7 KB of headers: the auth cookie is about 320 bytes and `x-ms-auth-token` about 1.1 KB, well under the backend's 16 KB limit (a 12 KB cookie passes; 16 KB gets a 431).
 
-One unexplained failure: Ralph's first signed-in attempt in Chrome returned SWA's plain-text "Backend call failure" on both admin routes. The same account and routes worked in a second browser minutes later. If it comes back, compare the request headers with `/api/market/spike-unguarded?sizes=1` (spike branch) and check the backend logs.
+One unexplained failure: Ralph's first signed-in attempt in Chrome returned SWA's plain-text "Backend call failure" on both admin routes. The same account and routes worked in a second browser minutes later. If it comes back, compare the request headers with `/api/market/spike-unguarded?sizes=1` (closed PR #163) and check the backend logs.
 
 ## Decision
 
