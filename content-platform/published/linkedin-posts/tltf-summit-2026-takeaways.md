@@ -5,7 +5,7 @@ target: personal
 byline: ralph-schroeder
 campaign: none
 publish_date: 2026-11-19
-posted_url: "**TBD — confirm**"
+posted_url: https://lnkd.in/p/eENcu3Eh
 image: TLTF Summit "I attended" attendee graphic (TLTF's asset, not stored in the repo)
 hashtags: [LegalTech, LegalOps]
 format: standalone
