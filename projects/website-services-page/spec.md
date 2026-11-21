@@ -1,4 +1,4 @@
-# Services Page (Managed Legal Operations) - AI Implementation Specification
+# Services Page (Managed Legal Operations): AI Implementation Specification
 
 > **Status**: Ready for Implementation (first draft in progress)
 > **Created**: 2026-11-21
@@ -31,11 +31,11 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 - Ethics, regulatory and entity strategy.
 
 ### Affected Areas
-- `src/app/services/` - the route, its content file and page-only components
-- `src/components/services/` - audience context, toggle, diagrams, calculator
-- `src/content/nav.ts` - nav link
-- `src/app/globals.css` - two keyframe utilities (fade, pulse) if not expressible in Tailwind
-- `package.json` - `d3-sankey`, `@types/d3-sankey`
+- `src/app/services/`: the route, its content file and page-only components
+- `src/components/services/`: audience context, toggle, diagrams, calculator
+- `src/content/nav.ts`: nav link
+- `src/app/globals.css`: two keyframe utilities (fade, pulse) if not expressible in Tailwind
+- `package.json`: `d3-sankey`, `@types/d3-sankey`
 
 ## Requirements
 
@@ -76,13 +76,13 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 
 ## Success Criteria
 
-1. [ ] Page renders both views with all eight sections - Verify by: browser preview at desktop and 375 px
-2. [ ] `?audience=corporate` lands on the corporate view on first paint - Verify by: load the URL, read the hero subhead
-3. [ ] Calculator outputs match the prototype defaults (corporate savings $1.50M on $25.75M) - Verify by: ported model tests and the KPI cards
-4. [ ] GUARDRAIL tests pass - Verify by: `npm run test:services`
-5. [ ] Typecheck and build pass - Verify by: `npm run typecheck`, `npm run build`
-6. [ ] Voice lint clean on the content file - Verify by: `npm run voice:lint`
-7. [ ] No console errors - Verify by: preview console
+1. [ ] Page renders both views with all eight sections. Verify by: browser preview at desktop and 375 px
+2. [ ] `?audience=corporate` lands on the corporate view on first paint. Verify by: load the URL, read the hero subhead
+3. [ ] Calculator outputs match the prototype defaults (corporate savings $1.50M on $25.75M). Verify by: ported model tests and the KPI cards
+4. [ ] GUARDRAIL tests pass. Verify by: `npm run test:services`
+5. [ ] Typecheck and build pass. Verify by: `npm run typecheck`, `npm run build`
+6. [ ] Voice lint clean on the content file. Verify by: `npm run voice:lint`
+7. [ ] No console errors. Verify by: preview console
 
 ## Dependencies
 
@@ -101,22 +101,22 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 
 ## Assumptions
 
-- **Headline**: "Practice law. We'll run the business." (first candidate) - affects hero.
-- **Hero image**: labeled placeholder frame - affects hero.
-- **CTAs**: "Start a conversation" to `/meet`; "Request an assessment" and "Discuss your numbers" to `/contact` - affects all CTAs.
-- **Stats**: the six prototype stats ship with their verification status shown only in code comments, not on the page - affects section 3.
-- **Calculator defaults and labels**: prototype placeholders - affects section 6.
-- **Network pairs**: six pairs in the diagram - affects section 5.
-- **Nav link**: added in the draft branch; the decision to keep it at first merge is open - affects nav.
+- **Headline**: "Practice law. We'll run the business." (first candidate). Affects hero.
+- **Hero image**: labeled placeholder frame. Affects hero.
+- **CTAs**: "Start a conversation" to `/meet`; "Request an assessment" and "Discuss your numbers" to `/contact`. Affects all CTAs.
+- **Stats**: the six prototype stats ship with their verification status shown only in code comments, not on the page. Affects section 3.
+- **Calculator defaults and labels**: prototype placeholders. Affects section 6.
+- **Network pairs**: six pairs in the diagram. Affects section 5.
+- **Nav link**: added in the draft branch; the decision to keep it at first merge is open. Affects nav.
 
 ## Unresolved Questions
 
-- [ ] Final headline - Blocks: launch
-- [ ] Hero photograph source - Blocks: launch
-- [ ] Counsel review of function labels, boundary and fee language, FAQ answers - Blocks: launch and indexing
-- [ ] Finance-set calculator defaults and ranges - Blocks: launch
-- [ ] Primary sources for stats marked R, D, P - Blocks: launch
-- [ ] Link to the Spaarke Method services message (design.md open item 9) - Blocks: final copy
+- [ ] Final headline. Blocks: launch
+- [ ] Hero photograph source. Blocks: launch
+- [ ] Counsel review of function labels, boundary and fee language, FAQ answers. Blocks: launch and indexing
+- [ ] Finance-set calculator defaults and ranges. Blocks: launch
+- [ ] Primary sources for stats marked R, D, P. Blocks: launch
+- [ ] Link to the Spaarke Method services message (design.md open item 9). Blocks: final copy
 
 ---
 

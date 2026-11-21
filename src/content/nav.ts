@@ -15,6 +15,7 @@ export const navLinks: { left: NavLink[]; right: NavLink[] } = {
   left: [],
   right: [
     { label: "Platform", href: "/platform" },
+    { label: "Services", href: "/services" },
     { label: "Why Spaarke", href: "/why-spaarke" },
     { label: "Contact us", href: "/contact" },
     { label: "Sign in", href: "/signin" },
