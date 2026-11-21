@@ -129,7 +129,7 @@ export const whatIsMlo = {
   ],
   /** Keep visible wherever the structure is explained (design.md section 9). */
   boundaryLine:
-    "The MLO does not practice law, does not share in legal fees, and does not direct legal judgment. Its fee is set on a fixed or per-unit method and is never tied to legal fees.",
+    "The MSO does not practice law, does not share in legal fees, and does not direct legal judgment. Its fee is set on a fixed or per-unit method and is never tied to legal fees.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -303,11 +303,11 @@ export interface AllocationItem {
 export const howItWorks = {
   id: "how-it-works",
   eyebrow: "How Managed Legal Operations works",
-  title: "What stays with the lawyers, and what the MLO takes on",
+  title: "What stays with the lawyers, and what the MSO takes on",
   intro: {
-    firm: "The firm keeps everything that is the practice of law. The MLO runs the operating functions under a services agreement, at a fee set by the cost of the services delivered.",
+    firm: "The firm keeps everything that is the practice of law. The MSO runs the operating functions under a services agreement, at a fee set by the cost of the services delivered.",
     corporate:
-      "The legal department keeps its lawyers, its judgment and its decisions. The MLO runs the operations, technology and reporting that support them, under a services agreement with clear service levels.",
+      "The legal department keeps its lawyers, its judgment and its decisions. The MSO runs the operations, technology and reporting that support them, under a services agreement with clear service levels.",
   } satisfies ByAudience<string>,
   keeps: {
     firm: {
@@ -333,9 +333,9 @@ export const howItWorks = {
   } satisfies ByAudience<{ title: string; items: AllocationItem[] }>,
   takes: {
     firm: {
-      title: "MLO takes on",
+      title: "MSO takes on",
       items: [
-        { label: "Non-attorney staff", detail: "Administrative and support teams, employed and managed by the MLO." },
+        { label: "Non-attorney staff", detail: "Administrative and support teams, employed and managed by the MSO." },
         { label: "Technical staff", detail: "Engineers and analysts who run the firm’s systems and data." },
         { label: "IT systems", detail: "Infrastructure, security, support and vendor management." },
         { label: "Accounting and finance", detail: "Bookkeeping, payables, reporting and financial planning." },
@@ -346,7 +346,7 @@ export const howItWorks = {
       ],
     },
     corporate: {
-      title: "MLO takes on",
+      title: "MSO takes on",
       items: [
         { label: "Legal operations", detail: "Intake, workflow, process design and day-to-day running of the function." },
         { label: "Matter and spend management", detail: "Matter records, budgets, invoice review and accruals." },
@@ -359,7 +359,7 @@ export const howItWorks = {
   } satisfies ByAudience<{ title: string; items: AllocationItem[] }>,
   sideLabel: {
     firm: { left: "Law firm", right: "MSO" },
-    corporate: { left: "Legal department", right: "MLO" },
+    corporate: { left: "Legal department", right: "MSO" },
   } satisfies ByAudience<{ left: string; right: string }>,
   tailored: {
     title: "Every structure is tailored",
@@ -400,7 +400,7 @@ export const howItWorks = {
       ],
     } satisfies ByAudience<{ name: string; chosen: string[] }[]>,
   },
-  operatorNote: "Every MLO is operated by Spaarke.",
+  operatorNote: "Every MSO is operated by Spaarke.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -412,16 +412,17 @@ export const network = {
   eyebrow: "The operating company and the MLO partner network",
   title: "One operator. A network that gets stronger with every member.",
   intro: {
-    firm: "Spaarke is the operating company behind every MLO. Each firm works with its own MLO, and every MLO draws on the same platform, playbooks and shared services.",
+    firm: "Spaarke is the MSO operator behind every firm’s MSO. Each firm works with its own MSO, and every MSO draws on the same platform, playbooks and shared services to deliver Managed Legal Operations.",
     corporate:
-      "Spaarke is the operating company behind every MLO. Each legal department works with its own MLO, and every MLO draws on the same platform, playbooks and shared services.",
+      "Spaarke is the MSO operator behind every department’s MSO. Each legal department works with its own MSO, and every MSO draws on the same platform, playbooks and shared services to deliver Managed Legal Operations.",
   } satisfies ByAudience<string>,
   hub: {
     title: "Spaarke",
-    subtitle: "Operating company",
+    subtitle: "MSO operator",
     capabilities: [
       "Technology platform",
-      "AI and transformation",
+      "AI capabilities",
+      "Business transformation",
       "Shared services",
       "Employment services (PEO)",
       "Best practices and playbooks",
@@ -431,20 +432,20 @@ export const network = {
   /** Six pairs in the diagram; labels flip with the audience. */
   pairCount: 6,
   pairLabel: {
-    firm: { client: "Law firm", mlo: "MLO" },
-    corporate: { client: "Legal department", mlo: "MLO" },
+    firm: { client: "Law firm", mlo: "MSO" },
+    corporate: { client: "Legal department", mlo: "MSO" },
   } satisfies ByAudience<{ client: string; mlo: string }>,
   legend: {
-    agreement: "Services agreement between a client and its MLO",
-    operator: "Operator services from Spaarke to each MLO",
+    agreement: "Services agreement between a client and its MSO",
+    operator: "Operator services from Spaarke to each MSO",
   },
   blocks: [
-    { title: "Center of excellence", body: "Playbooks, standards and training developed once and applied in every MLO." },
+    { title: "Center of excellence", body: "Playbooks, standards and training developed once and applied in every MSO." },
     { title: "Technology", body: "One platform instead of a dozen vendors per firm, kept current as AI changes." },
     { title: "Shared services", body: "Purchasing and operations at a scale no single organization reaches alone." },
     {
       title: "Network learning",
-      body: "What works at one MLO improves the others. Benchmarks are shared only in aggregate.",
+      body: "What works at one MSO improves the others. Benchmarks are shared only in aggregate.",
     },
   ],
   corporateBlock: {
@@ -466,11 +467,11 @@ export const financial = {
     corporate: "See how the cost of legal changes",
   } satisfies ByAudience<string>,
   narrative: {
-    firm: "Moving operating functions to an MLO can lower operating expense, turn hard-to-fund technology investment into a predictable service cost, and raise profit per partner. Over time, the firm also builds long-term value in the operator network.",
+    firm: "Moving operating functions to an MSO can lower operating expense, turn hard-to-fund technology investment into a predictable service cost, and raise profit per partner. Over time, the firm also builds long-term value in the operator network.",
     corporate:
-      "Moving operations and technology to an MLO lowers the total cost of legal, reduces routine outside counsel spend and gives the department technology it would struggle to buy and run alone.",
+      "Moving operations and technology to an MSO lowers the total cost of legal, reduces routine outside counsel spend and gives the department technology it would struggle to buy and run alone.",
   } satisfies ByAudience<string>,
-  networkValue: "Each MLO that joins adds purchasing power, learning and capability for every member.",
+  networkValue: "Each MSO that joins adds purchasing power, learning and capability for every member.",
   /** Firm view only (design.md 4.6). Factual, no promises. */
   capitalNote:
     "For firms that want it, private capital may be available as a source of growth funding or as an exit option. It is never a requirement.",
@@ -500,13 +501,13 @@ export const approach = {
       steps: {
         firm: [
           "Goals and a baseline of the firm’s current costs",
-          "Choose the services the MLO will deliver",
+          "Choose the services the MSO will deliver",
           "Fix the fee method on an independent benchmark",
           "Ethics and regulatory review",
         ],
         corporate: [
           "Goals and a baseline of spend, matters and outside counsel use",
-          "Choose the services the MLO will deliver",
+          "Choose the services the MSO will deliver",
           "Agree service levels and the fee method",
           "Privilege, data and procurement review",
         ],
@@ -519,22 +520,22 @@ export const approach = {
     {
       id: "implement",
       name: "Implement",
-      summary: "Stand up the MLO and move people and technology across.",
+      summary: "Stand up the MSO and move people and technology across.",
       steps: {
         firm: [
-          "Set up the MLO",
+          "Set up the MSO",
           "Transition people and technology",
           "Run old and new side by side before cutover",
         ],
         corporate: [
-          "Set up the MLO and connect it to company systems",
+          "Set up the MSO and connect it to company systems",
           "Move operations and technology work across",
           "Run old and new side by side before cutover",
         ],
       },
       outcome: {
-        firm: "The MLO running the chosen functions, with no break in client service.",
-        corporate: "The MLO running the chosen functions, with no break in service to the business.",
+        firm: "The MSO running the chosen functions, with no break in client service.",
+        corporate: "The MSO running the chosen functions, with no break in service to the business.",
       },
     },
     {
@@ -576,8 +577,8 @@ export const faq = {
       a: "A managed service that runs the business side of legal, including technology, operations, finance and administration, so lawyers can concentrate on the practice of law. It is delivered through a separate company, a Managed Services Organization, under a services agreement.",
     },
     {
-      q: "Does the MLO practice law?",
-      a: "No. The MLO does not practice law, does not give legal advice and does not direct legal judgment. Lawyers, clients and legal decisions stay with the firm or the legal department.",
+      q: "Does the MSO practice law?",
+      a: "No. The MSO does not practice law, does not give legal advice and does not direct legal judgment. Lawyers, clients and legal decisions stay with the firm or the legal department.",
     },
     {
       q: "How are fees set?",
@@ -585,7 +586,7 @@ export const faq = {
     },
     {
       q: "Who owns what?",
-      a: "The firm or department keeps its lawyers, its clients, its data and its revenue. The MLO owns the operating functions it delivers and the people it employs to deliver them.",
+      a: "The firm or department keeps its lawyers, its clients, its data and its revenue. The MSO owns the operating functions it delivers and the people it employs to deliver them.",
     },
     {
       q: "How long does it take?",
@@ -593,7 +594,7 @@ export const faq = {
     },
     {
       q: "How is data protected?",
-      a: "Privilege and confidentiality shape the design from the start: which data and systems the MLO can reach, under what controls, and with what audit trail. Client and company data stay under the owner’s governance.",
+      a: "Privilege and confidentiality shape the design from the start: which data and systems the MSO can reach, under what controls, and with what audit trail. Client and company data stay under the owner’s governance.",
     },
   ],
 };
@@ -601,8 +602,8 @@ export const faq = {
 export const closing = {
   title: "Practice law. We’ll run the business.",
   body: {
-    firm: "Talk to us about what an MLO would look like for your firm.",
-    corporate: "Talk to us about what an MLO would look like for your legal department.",
+    firm: "Talk to us about what Managed Legal Operations would look like for your firm.",
+    corporate: "Talk to us about what Managed Legal Operations would look like for your legal department.",
   } satisfies ByAudience<string>,
 };
 

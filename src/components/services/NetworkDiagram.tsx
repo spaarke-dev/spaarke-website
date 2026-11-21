@@ -109,7 +109,7 @@ export function NetworkDiagram() {
           viewBox={`0 0 ${W} ${H}`}
           className="block h-auto w-full"
           role="img"
-          aria-label={`Spaarke, the operating company, at the center with ${network.hub.capabilities.join(", ")}. Around it, ${PAIRS.length} pairs of ${labels.client} and ${labels.mlo}, each joined by a services agreement, and each ${labels.mlo} connected to Spaarke by operator services.`}
+          aria-label={`Spaarke, the MSO operator, at the center with ${network.hub.capabilities.join(", ")}. Around it, ${PAIRS.length} pairs of ${labels.client} and ${labels.mlo}, each joined by a services agreement, and each ${labels.mlo} connected to Spaarke by operator services.`}
         >
           <defs>
             <radialGradient id="svc-hub" cx="50%" cy="45%" r="60%">
@@ -168,7 +168,7 @@ export function NetworkDiagram() {
             {network.hub.subtitle.toUpperCase()}
           </text>
           {network.hub.capabilities.map((c, i) => (
-            <text key={c} x={CX} y={CY - 34 + i * 24} textAnchor="middle" fill="rgba(255,255,255,0.78)" fontSize={15} className="font-body">
+            <text key={c} x={CX} y={CY - 40 + i * 22} textAnchor="middle" fill="rgba(255,255,255,0.78)" fontSize={15} className="font-body">
               {c}
             </text>
           ))}

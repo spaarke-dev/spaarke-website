@@ -159,7 +159,7 @@ function FirmCalculator() {
           />
           <Slider
             id="f-adv"
-            label="MLO unit price below your internal cost"
+            label="MSO unit price below your internal cost"
             value={inp.priceAdvantage}
             min={0}
             max={0.4}
@@ -177,10 +177,10 @@ function FirmCalculator() {
             step={0.01}
             display={inp.feePressure === 0 ? "None" : `-${pct(inp.feePressure)} revenue`}
             onChange={(v) => set("feePressure", v)}
-            hint="Applied equally with and without the MLO."
+            hint="Applied equally with and without the MSO."
           />
           <Chips
-            legend="Functions delivered by the MLO"
+            legend="Functions delivered by the MSO"
             options={FIRM_FUNCTIONS}
             labels={FIRM_LABELS}
             value={inp.moved}
@@ -188,7 +188,7 @@ function FirmCalculator() {
           />
         </>
       }
-      sankey={<Sankey data={data} ariaLabel="Where revenue goes, with the selected functions delivered by an MLO" />}
+      sankey={<Sankey data={data} ariaLabel="Where revenue goes, with the selected functions delivered by an MSO" />}
       kpis={
         <>
           <Kpi label="Revenue" value={money(r.withMlo.revenue)} />
@@ -256,7 +256,7 @@ function CorporateCalculator() {
           />
           <Slider
             id="c-shift"
-            label="Routine outside counsel work the MLO can handle"
+            label="Routine outside counsel work the MSO can handle"
             value={inp.shiftedShare}
             min={0}
             max={0.3}
@@ -266,7 +266,7 @@ function CorporateCalculator() {
           />
           <Slider
             id="c-adv"
-            label="MLO unit price below your internal cost"
+            label="MSO unit price below your internal cost"
             value={inp.priceAdvantage}
             min={0}
             max={0.4}
@@ -286,7 +286,7 @@ function CorporateCalculator() {
             onChange={(v) => set("matterCount", v)}
           />
           <Chips
-            legend="Functions delivered by the MLO"
+            legend="Functions delivered by the MSO"
             options={CORP_FUNCTIONS}
             labels={CORP_LABELS}
             value={inp.moved}
@@ -295,7 +295,7 @@ function CorporateCalculator() {
         </>
       }
       sankey={
-        <Sankey data={data} ariaLabel="Where the legal budget goes, with the selected functions delivered by an MLO" />
+        <Sankey data={data} ariaLabel="Where the legal budget goes, with the selected functions delivered by an MSO" />
       }
       kpis={
         <>

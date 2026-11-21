@@ -5,7 +5,7 @@ import { isAudience } from "@/components/services/audience-types";
 const siteUrl = process.env.SITE_URL ?? "https://www.spaarke.com";
 
 const description =
-  "Spaarke Managed Legal Operations (MLO): a legal MSO that runs the business side of legal, including technology, AI, operations and finance, for law firms and corporate legal departments.";
+  "Spaarke Managed Legal Operations (MLO): the service an MSO delivers to run the business side of legal, including technology, AI, operations and finance, for law firms and corporate legal departments.";
 
 export const metadata: Metadata = {
   title: "Managed Legal Operations",

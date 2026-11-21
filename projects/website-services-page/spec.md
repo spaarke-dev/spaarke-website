@@ -98,6 +98,10 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 |-------|----------|--------|--------|
 | Process | Pause at each pipeline gate? | Owner asked to set up the project and proceed to a first draft for joint review (2026-11-21) | Gates run without stops; open items carried as assumptions below |
 | Nav label | What is the tab called? | "Services" (2026-11-19) | Nav link label |
+| Terms | How are MSO and MLO used? | MSO is the entity (the client's MSO, and Spaarke as MSO operator); MLO is the service package the MSO delivers (2026-11-21) | All copy, diagram and calculator labels |
+| AI and transformation | One hub capability or two? | Two: AI is a technology and functional capability; transformation is process and business model reengineering (2026-11-21) | Network hub list |
+| Nav timing | When does the nav link ship? | At first merge (2026-11-21) | FR-12 ships with the page |
+| Value lines | Keep the firm-view value and capital lines? | Keep as written for counsel review (2026-11-21) | Section 2 benefits, section 6 narrative and capital note |
 
 ## Assumptions
 
@@ -107,7 +111,6 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 - **Stats**: the six prototype stats ship with their verification status shown only in code comments, not on the page. Affects section 3.
 - **Calculator defaults and labels**: prototype placeholders. Affects section 6.
 - **Network pairs**: six pairs in the diagram. Affects section 5.
-- **Nav link**: added in the draft branch; the decision to keep it at first merge is open. Affects nav.
 
 ## Unresolved Questions
 

@@ -35,7 +35,9 @@ const LINK_STROKE: Record<NodeKind, { color: string; opacity: number }> = {
 export const money = (v: number) => {
   const a = Math.abs(v);
   const s =
-    a >= 1_000_000 ? `$${(a / 1_000_000).toFixed(a >= 10_000_000 ? 1 : 2)}M` : `$${Math.round(a / 1000)}K`;
+    a >= 1_000_000 ? `$${(a / 1_000_000).toFixed(a >= 10_000_000 ? 1 : 2)}M` : a < 500
+        ? "$0"
+        : `$${Math.round(a / 1000)}K`;
   return v < 0 ? `-${s}` : s;
 };
 

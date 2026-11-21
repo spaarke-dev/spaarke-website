@@ -14,8 +14,10 @@ Run the dev server in the worktree and open `/services`; add `?audience=corporat
 | 2 | Hero image | Labeled placeholder frame | |
 | 3 | "Start a conversation" destination | `/meet` | |
 | 4 | "Request an assessment" and "Discuss your numbers" | `/contact` (no scenario attached) | |
-| 5 | Nav link timing | "Services" added in this branch, between Platform and Why Spaarke | |
-| 6 | Hub capability label "AI and transformation" | Kept from the design; the voice guide lists "transformation" as a word to avoid | |
+| 5 | Nav link timing | "Services" added in this branch, between Platform and Why Spaarke | Ship the nav link at first merge (2026-11-21) |
+| 6 | Hub capability label "AI and transformation" | Kept from the design; the voice guide lists "transformation" as a word to avoid | Split into two capabilities: "AI capabilities" (a technology and functional capability) and "Business transformation" (reengineering process and the business model). "Transformation" stays, used in that specific sense (2026-11-21) |
+| 9 | MSO and MLO terms | Mixed: right panel "MSO", caption "MLO takes on", network pairs "MLO" | MSO is the entity (the firm's or department's MSO, and Spaarke as MSO operator); MLO is the service package the MSO delivers. Applied across diagrams, calculator, FAQ and boundary line (2026-11-21) |
+| 10 | Value and capital lines in the firm view ("Lasting value", "long-term value in the operator network", private capital note) | As drafted | Keep as written; counsel rules on them in task 051 (2026-11-21) |
 | 7 | Link to the Spaarke Method services message | Not linked | |
 | 8 | Network pairs | Six pairs | |
 

@@ -33,7 +33,8 @@ This section records how the design maps onto the existing Spaarke site, so the 
 
 - **MSO** (Managed Services Organization) is the *type of entity*. It runs the non-legal side of a practice under a services agreement.
 - **MLO** (Managed Legal Operations) is the *service the MSO provides*. It is the operating model, the technology and the shared expertise.
-- Do not get formal about the distinction. One plain sentence on the page, then use "MLO" as the product name and "MSO" as the bridge term people already search for.
+- Use each term in its own context (owner decision, 2026-11-21). "MSO" names the entity wherever the page means an organization: the firm's or department's MSO, and Spaarke as the MSO operator. "MLO" names the service package the MSO uses to deliver legal operations. Diagrams, calculator labels, the boundary line and the FAQ refer to the MSO; the offer, the section names and the closing refer to Managed Legal Operations.
+- AI and transformation are separate capabilities. AI is a technology and functional capability; transformation is the reengineering of business processes and of the firm's or department's business model. AI can help bring transformation about, but the page never merges the two.
 
 **The unique requirements** (the "why legal is different" block, used in section 2 and revisited in 4):
 - Professional independence: legal judgment stays with lawyers.
@@ -169,7 +170,7 @@ Sticky page bar (under the site header): section anchors, the audience switch, p
 
 **Copy points.**
 - "Every structure is tailored." Show a small service-menu graphic: three different firms with different checked items.
-- "The MLO is operated by Spaarke." Link to section 5.
+- "Every MSO is operated by Spaarke." Link to section 5.
 - Restate the boundary in one line: the MLO does not practice law or direct legal judgment, and its fee is never tied to legal fees.
 
 ### 4.5 The operating company and the MLO partner network
@@ -177,7 +178,7 @@ Sticky page bar (under the site header): section anchors, the audience switch, p
 
 **Diagram** (based on the network sketch supplied).
 - Large central circle: "Spaarke: operating company".
-- Capability labels inside, draft: Technology platform, AI and transformation, Shared services, Employment services (PEO), Best practices and playbooks, Vendor and partner agreements.
+- Capability labels inside: Technology platform, AI capabilities, Business transformation, Shared services, Employment services (PEO), Best practices and playbooks, Vendor and partner agreements.
 - Around it, pairs of boxes: Firm | MLO (and in Corporate view: Legal department | MLO). Gray thin line = governed services agreement. Blue line = operator services to the MLO.
 - Animation: pairs enter one by one and connect; a subtle pulse travels along blue lines to show shared services flowing out. Pairs gently re-balance as new ones join ("the network grows" interaction on scroll).
 - Legend to explain line colors.

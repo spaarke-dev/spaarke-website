@@ -40,7 +40,7 @@ export function firmSankey(r: FirmResult): SankeyData {
     links.push({ source: 'revenue', target: item.id, value: item.value });
   }
   if (r.fee > EPS) {
-    nodes.push({ id: 'fee', label: 'MLO service fee', kind: 'mlo', layer: 1 });
+    nodes.push({ id: 'fee', label: 'MSO service fee', kind: 'mlo', layer: 1 });
     links.push({ source: 'revenue', target: 'fee', value: r.fee });
     for (const m of r.mloLane) {
       const id = `mlo-${m.id}`;
@@ -62,7 +62,7 @@ export function corporateSankey(r: CorpResult): SankeyData {
     links.push({ source: 'budget', target: item.id, value: item.value });
   }
   if (r.fee > EPS) {
-    nodes.push({ id: 'fee', label: 'MLO service fee', kind: 'mlo', layer: 1 });
+    nodes.push({ id: 'fee', label: 'MSO service fee', kind: 'mlo', layer: 1 });
     links.push({ source: 'budget', target: 'fee', value: r.fee });
     for (const m of r.mloLane) {
       const id = `mlo-${m.id}`;

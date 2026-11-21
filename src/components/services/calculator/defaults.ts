@@ -51,8 +51,8 @@ export const CORP_LABELS: Record<string, string> = {
   technology: 'Technology and tools',
   other: 'Other',
   capex: 'Technology capex',
-  shifted: 'Routine work handled by MLO',
+  shifted: 'Routine work handled by the MSO',
 };
 
 export const ILLUSTRATIVE_NOTE =
-  'Illustrative only. These figures use placeholder assumptions, are not a projection, forecast or offer, and will differ for every organization. The MLO fee is based on the cost of the services delivered, never on legal fees or revenue.';
+  'Illustrative only. These figures use placeholder assumptions, are not a projection, forecast or offer, and will differ for every organization. The MSO fee is based on the cost of the services delivered, never on legal fees or revenue.';
