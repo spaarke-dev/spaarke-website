@@ -416,14 +416,16 @@ export const howItWorks = {
 /* 5. The operating company and the MLO partner network                */
 /* ------------------------------------------------------------------ */
 
+export type NetworkClient = "firm" | "department";
+
 export const network = {
   id: "network",
   eyebrow: "The operating company and the MLO partner network",
   title: "One operator. A network that gets stronger with every member.",
   intro: {
-    firm: "Spaarke is the MSO operator behind every firm’s MSO. Each firm works with its own MSO, and every MSO draws on the same platform, playbooks and shared services to deliver Managed Legal Operations.",
+    firm: "Spaarke is the MSO operator behind every MSO in the network. Each firm works with its own MSO, as does each corporate legal department, and every MSO draws on the same platform, playbooks and shared services to deliver Managed Legal Operations.",
     corporate:
-      "Spaarke is the MSO operator behind every department’s MSO. Each legal department works with its own MSO, and every MSO draws on the same platform, playbooks and shared services to deliver Managed Legal Operations.",
+      "Spaarke is the MSO operator behind every MSO in the network. Each legal department works with its own MSO, as does each law firm, and every MSO draws on the same platform, playbooks and shared services to deliver Managed Legal Operations.",
   } satisfies ByAudience<string>,
   hub: {
     title: "Spaarke",
@@ -438,12 +440,17 @@ export const network = {
       "Vendor and partner agreements",
     ],
   },
-  /** Six pairs in the diagram; labels flip with the audience. */
-  pairCount: 6,
-  pairLabel: {
-    firm: { client: "Law firm", mlo: "MSO" },
-    corporate: { client: "Legal department", mlo: "MSO" },
-  } satisfies ByAudience<{ client: string; mlo: string }>,
+  /**
+   * Owner decisions 2026-11-21: six pairs, generic labels, and both client
+   * types in both views. Each list is the order pairs join the network as the
+   * visitor scrolls; the visitor's own type comes first and is emphasized.
+   */
+  pairs: {
+    firm: ["firm", "department", "firm", "firm", "department", "firm"],
+    corporate: ["department", "firm", "department", "department", "firm", "department"],
+  } satisfies ByAudience<NetworkClient[]>,
+  clientLabel: { firm: "Law firm", department: "Legal department" } satisfies Record<NetworkClient, string>,
+  msoLabel: "MSO",
   legend: {
     agreement: "Services agreement between a client and its MSO",
     operator: "Operator services from Spaarke to each MSO",

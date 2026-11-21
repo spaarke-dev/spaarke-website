@@ -1,17 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { network } from "@/app/services/content";
-import { useAudience, useInView } from "./audience";
+import { useEffect, useRef, useState } from "react";
+import { network, type NetworkClient } from "@/app/services/content";
+import { useAudience } from "./audience";
 
 /**
- * Operator network diagram (design.md 4.5 and 6.2). Spaarke, the operating
- * company, sits in the center with its capabilities; client and MLO pairs sit
- * around it. Gray lines are the services agreement between a client and its
- * MLO; blue lines are operator services from Spaarke to each MLO. Pairs enter
- * one by one, lines draw in, then a pulse travels along the blue lines. Under
- * reduced motion the final state shows with no pulse. Below md the SVG is
- * replaced by a stacked version, because its labels would be too small.
+ * Operator network diagram (design.md 4.5 and 6.2). Spaarke, the MSO
+ * operator, sits in the center with its capabilities; client and MSO pairs
+ * sit around it, law firms and legal departments together, with the
+ * visitor's own type emphasized. Gray lines are the services agreement
+ * between a client and its MSO; blue lines are operator services from
+ * Spaarke to each MSO, with a pulse traveling outward.
+ *
+ * "The network grows": as the visitor scrolls through the section, pairs
+ * join one at a time and the ring re-balances so the pairs stay evenly
+ * spaced. Each pair sits on a line out from the hub (MSO nearer the hub,
+ * client further out), so a pair can glide to any angle without its boxes
+ * swapping sides. The server renders the full network; the browser starts
+ * it small only when the diagram is still below the fold. Under reduced
+ * motion the full network shows with no pulse. Below md the SVG is replaced
+ * by a stacked list, because its labels would be too small.
  */
 
 const W = 1000;
@@ -19,81 +27,114 @@ const H = 660;
 const CX = W / 2;
 const CY = H / 2;
 const HUB_R = 168;
-const RX = 380;
-const RY = 255;
-const CLIENT_W = 128;
-const MLO_W = 72;
-const GAP = 14;
+/** Ellipse the MSO boxes sit on. */
+const RXM = 296;
+const RYM = 240;
+/** Offset from an MSO box to its client box, outward from the hub. */
+const OUT_X = 128;
+const OUT_Y = 60;
+const CLIENT_W = 140;
+const MSO_W = 72;
 const BOX_H = 40;
+const TWEEN_MS = 700;
 
 const BLUE = "#5078DC";
 const BLUE_SOFT = "#82A5EB";
 const GRAY = "rgba(255,255,255,0.32)";
 
-type Pair = {
-  key: number;
-  clientX: number;
-  mloX: number;
-  y: number;
-  /** Operator line, MLO box edge to the hub's rim. */
-  line: { x1: number; y1: number; x2: number; y2: number; length: number };
-};
+/** Evenly spaced angles for n pairs, rotated so every count looks balanced. */
+const slot = (i: number, n: number) => -Math.PI / 2 + Math.PI / n + (i * 2 * Math.PI) / n;
+const slots = (n: number) => Array.from({ length: n }, (_, i) => slot(i, n));
 
-function layout(count: number): Pair[] {
-  return Array.from({ length: count }, (_, i) => {
-    const angle = (i / count) * Math.PI * 2;
-    const px = CX + RX * Math.cos(angle);
-    const py = CY + RY * Math.sin(angle);
-    const groupW = CLIENT_W + GAP + MLO_W;
-    const left = px - groupW / 2;
-    // The MLO box sits on the side nearer the hub.
-    const onLeft = px < CX;
-    const clientX = onLeft ? left : left + MLO_W + GAP;
-    const mloX = onLeft ? left + CLIENT_W + GAP : left;
-    const mx = mloX + MLO_W / 2;
-    const my = py;
-    const startX = onLeft ? mloX + MLO_W : mloX;
-    const dx = CX - mx;
-    const dy = CY - my;
-    const d = Math.hypot(dx, dy);
-    const x2 = CX - (dx / d) * HUB_R;
-    const y2 = CY - (dy / d) * HUB_R;
-    // Rounded so the server and the browser print identical attributes
-    // (their trig results can differ in the last digits).
-    const r = (v: number) => Math.round(v * 100) / 100;
-    return {
-      key: i,
-      clientX: r(clientX),
-      mloX: r(mloX),
-      y: r(py - BOX_H / 2),
-      line: { x1: r(startX), y1: r(my), x2: r(x2), y2: r(y2), length: r(Math.hypot(x2 - startX, y2 - my)) },
-    };
-  });
+// Rounded so the server and the browser print identical attributes (their
+// trig results can differ in the last digits).
+const r2 = (v: number) => Math.round(v * 100) / 100;
+
+function place(a: number) {
+  const c = Math.cos(a);
+  const s = Math.sin(a);
+  const mx = CX + RXM * c;
+  const my = CY + RYM * s;
+  const d = Math.hypot(mx - CX, my - CY);
+  return {
+    mso: { x: r2(mx), y: r2(my) },
+    client: { x: r2(mx + OUT_X * c), y: r2(my + OUT_Y * s) },
+    rim: { x: r2(CX + ((mx - CX) / d) * HUB_R), y: r2(CY + ((my - CY) / d) * HUB_R) },
+  };
 }
 
-const PAIRS = layout(network.pairCount);
-const STAGGER = 260;
+const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export function NetworkDiagram() {
   const { audience } = useAudience();
-  const labels = network.pairLabel[audience];
-  const { ref, inView } = useInView<HTMLDivElement>(0.25);
-  const [built, setBuilt] = useState(false);
+  const kinds = network.pairs[audience];
+  const own: NetworkClient = audience === "firm" ? "firm" : "department";
+  const total = kinds.length;
+
+  const ref = useRef<HTMLDivElement>(null);
   const [reduced, setReduced] = useState(false);
+  const [count, setCount] = useState(total);
+  const [angles, setAngles] = useState(() => slots(total));
+  const anglesRef = useRef(angles);
+  const instant = useRef(false);
+
+  // How many pairs have joined, from how far the diagram has scrolled up.
+  const targetCount = () => {
+    const el = ref.current;
+    if (!el) return total;
+    const top = el.getBoundingClientRect().top;
+    const vh = window.innerHeight;
+    const progress = (vh * 0.85 - top) / (vh * 0.55);
+    return Math.min(total, Math.max(1, 1 + Math.floor(progress * total)));
+  };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const isReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setReduced(isReduced);
+    if (isReduced) return;
+    instant.current = true;
+    setCount(targetCount());
+    const onScroll = () => setCount((c) => Math.max(c, targetCount()));
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+    // targetCount reads only the ref and the window.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Re-balance the ring whenever a pair joins.
   useEffect(() => {
-    if (!inView) return;
-    const id = requestAnimationFrame(() => setBuilt(true));
+    const to = slots(count);
+    if (instant.current) {
+      instant.current = false;
+      anglesRef.current = to;
+      setAngles(to);
+      return;
+    }
+    const from = to.map((t, i) => anglesRef.current[i] ?? t);
+    const start = performance.now();
+    let id = 0;
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / TWEEN_MS);
+      const k = ease(t);
+      const next = to.map((target, i) => from[i] + (target - from[i]) * k);
+      anglesRef.current = next;
+      setAngles(next);
+      if (t < 1) id = requestAnimationFrame(step);
+    };
+    id = requestAnimationFrame(step);
     return () => cancelAnimationFrame(id);
-  }, [inView]);
+  }, [count]);
 
-  const show = built || reduced;
-  const pulseDelay = PAIRS.length * STAGGER + 600;
+  const pairs = kinds.slice(0, count).map((kind, i) => ({
+    kind,
+    emphasized: kind === own,
+    ...place(angles[i] ?? slot(i, count)),
+  }));
+  const firms = kinds.filter((k) => k === "firm").length;
 
   return (
     <div ref={ref}>
@@ -109,7 +150,7 @@ export function NetworkDiagram() {
           viewBox={`0 0 ${W} ${H}`}
           className="block h-auto w-full"
           role="img"
-          aria-label={`Spaarke, the MSO operator, at the center with ${network.hub.capabilities.join(", ")}. Around it, ${PAIRS.length} pairs of ${labels.client} and ${labels.mlo}, each joined by a services agreement, and each ${labels.mlo} connected to Spaarke by operator services.`}
+          aria-label={`Spaarke, the MSO operator, at the center with ${network.hub.capabilities.join(", ")}. Around it, ${total} client and MSO pairs, ${firms} law firms and ${total - firms} legal departments, each joined to its own MSO by a services agreement, and each MSO connected to Spaarke by operator services.`}
         >
           <defs>
             <radialGradient id="svc-hub" cx="50%" cy="45%" r="60%">
@@ -118,34 +159,24 @@ export function NetworkDiagram() {
             </radialGradient>
           </defs>
 
-          {/* Operator lines (blue), drawn in after their pair appears. */}
-          {PAIRS.map((p, i) => (
-            <g key={`op-${p.key}`}>
-              <line
-                x1={p.line.x1}
-                y1={p.line.y1}
-                x2={p.line.x2}
-                y2={p.line.y2}
-                stroke={BLUE}
-                strokeWidth={2}
-                strokeDasharray={p.line.length}
-                strokeDashoffset={show ? 0 : p.line.length}
-                style={{
-                  transition: reduced ? "none" : `stroke-dashoffset 600ms ease-out ${i * STAGGER + 200}ms`,
-                }}
-              />
-              {!reduced && show && (
+          {/* Lines sit under the boxes: operator lines (blue) from the hub's
+              rim to each MSO, agreement lines (gray) from MSO to client. */}
+          {pairs.map((p, i) => (
+            <g key={`lines-${i}`} className="motion-safe:animate-[services-fade_450ms_ease-out]">
+              <line x1={p.mso.x} y1={p.mso.y} x2={p.client.x} y2={p.client.y} stroke={GRAY} strokeWidth={1.5} />
+              <line x1={p.rim.x} y1={p.rim.y} x2={p.mso.x} y2={p.mso.y} stroke={BLUE} strokeWidth={2} />
+              {!reduced && (
                 <line
-                  x1={p.line.x1}
-                y1={p.line.y1}
-                x2={p.line.x2}
-                y2={p.line.y2}
+                  x1={p.rim.x}
+                  y1={p.rim.y}
+                  x2={p.mso.x}
+                  y2={p.mso.y}
                   stroke={BLUE_SOFT}
                   strokeWidth={4}
                   strokeLinecap="round"
                   strokeDasharray="6 114"
                   className="motion-safe:animate-[services-pulse_2.4s_linear_infinite]"
-                  style={{ animationDelay: `${pulseDelay + i * 180}ms`, opacity: 0.9 }}
+                  style={{ animationDelay: `${600 + i * 180}ms`, opacity: 0.9 }}
                 />
               )}
             </g>
@@ -174,30 +205,39 @@ export function NetworkDiagram() {
           ))}
 
           {/* Pairs */}
-          {PAIRS.map((p, i) => (
-            <g
-              key={`pair-${p.key}`}
-              style={{
-                opacity: show ? 1 : 0,
-                transition: reduced ? "none" : `opacity 400ms ease-out ${i * STAGGER}ms`,
-              }}
-            >
-              {/* Agreement line (gray) between client and MLO */}
-              <line
-                x1={Math.min(p.clientX, p.mloX) + (p.clientX < p.mloX ? CLIENT_W : MLO_W)}
-                x2={Math.max(p.clientX, p.mloX)}
-                y1={p.y + BOX_H / 2}
-                y2={p.y + BOX_H / 2}
-                stroke={GRAY}
-                strokeWidth={1.5}
+          {pairs.map((p, i) => (
+            <g key={`pair-${i}`} className="motion-safe:animate-[services-fade_450ms_ease-out]">
+              <rect
+                x={r2(p.client.x - CLIENT_W / 2)}
+                y={r2(p.client.y - BOX_H / 2)}
+                width={CLIENT_W}
+                height={BOX_H}
+                rx={10}
+                fill={p.emphasized ? "#1f1f1f" : "#151515"}
+                stroke={p.emphasized ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.18)"}
               />
-              <rect x={p.clientX} y={p.y} width={CLIENT_W} height={BOX_H} rx={10} fill="#1a1a1a" stroke={GRAY} />
-              <text x={p.clientX + CLIENT_W / 2} y={p.y + BOX_H / 2} dy="0.35em" textAnchor="middle" fill="#ffffff" fontSize={14} className="font-body">
-                {labels.client}
+              <text
+                x={p.client.x}
+                y={p.client.y}
+                dy="0.35em"
+                textAnchor="middle"
+                fill={p.emphasized ? "#ffffff" : "rgba(255,255,255,0.6)"}
+                fontSize={14}
+                className="font-body"
+              >
+                {network.clientLabel[p.kind]}
               </text>
-              <rect x={p.mloX} y={p.y} width={MLO_W} height={BOX_H} rx={10} fill={BLUE} />
-              <text x={p.mloX + MLO_W / 2} y={p.y + BOX_H / 2} dy="0.35em" textAnchor="middle" fill="#ffffff" fontSize={14} fontWeight={600} className="font-body">
-                {labels.mlo}
+              <rect
+                x={r2(p.mso.x - MSO_W / 2)}
+                y={r2(p.mso.y - BOX_H / 2)}
+                width={MSO_W}
+                height={BOX_H}
+                rx={10}
+                fill={BLUE}
+                fillOpacity={p.emphasized ? 1 : 0.6}
+              />
+              <text x={p.mso.x} y={p.mso.y} dy="0.35em" textAnchor="middle" fill="#ffffff" fontSize={14} fontWeight={600} className="font-body">
+                {network.msoLabel}
               </text>
             </g>
           ))}
@@ -219,22 +259,36 @@ export function NetworkDiagram() {
         </div>
         <div className="mx-auto h-6 w-0.5" style={{ background: BLUE }} aria-hidden="true" />
         <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {PAIRS.map((p) => (
-            <li key={p.key} className="flex items-center gap-2 rounded-xl border border-[rgba(255,255,255,0.1)] p-2">
-              <span className="text-fg flex-1 rounded-lg border border-[rgba(255,255,255,0.3)] px-3 py-2 text-center text-[14px]">{labels.client}</span>
-              <span className="h-px w-3" style={{ background: GRAY }} aria-hidden="true" />
-              <span className="rounded-lg px-3 py-2 text-[14px] font-semibold text-white" style={{ background: BLUE }}>
-                {labels.mlo}
-              </span>
-            </li>
-          ))}
+          {kinds.map((kind, i) => {
+            const emphasized = kind === own;
+            return (
+              <li key={i} className="flex items-center gap-2 rounded-xl border border-[rgba(255,255,255,0.1)] p-2">
+                <span
+                  className="flex-1 rounded-lg border px-3 py-2 text-center text-[14px]"
+                  style={{
+                    borderColor: emphasized ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.15)",
+                    color: emphasized ? "#ffffff" : "rgba(255,255,255,0.6)",
+                  }}
+                >
+                  {network.clientLabel[kind]}
+                </span>
+                <span className="h-px w-3" style={{ background: GRAY }} aria-hidden="true" />
+                <span
+                  className="rounded-lg px-3 py-2 text-[14px] font-semibold text-white"
+                  style={{ background: BLUE, opacity: emphasized ? 1 : 0.6 }}
+                >
+                  {network.msoLabel}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </div>
 
       {/* Legend */}
       <ul className="text-fg-mid mt-6 flex flex-col gap-3 text-[14px] sm:flex-row sm:gap-8">
         <li className="flex items-center gap-3">
-          <span className="inline-block h-px w-8" style={{ background: GRAY, height: 2 }} aria-hidden="true" />
+          <span className="inline-block w-8" style={{ background: GRAY, height: 2 }} aria-hidden="true" />
           {network.legend.agreement}
         </li>
         <li className="flex items-center gap-3">

@@ -101,6 +101,7 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 | Terms | How are MSO and MLO used? | MSO is the entity (the client's MSO, and Spaarke as MSO operator); MLO is the service package the MSO delivers (2026-11-21) | All copy, diagram and calculator labels |
 | AI and transformation | One hub capability or two? | Two: AI is a technology and functional capability; transformation is process and business model reengineering (2026-11-21) | Network hub list |
 | CTAs | Where does each button go? | "Start a conversation" and "Discuss your numbers" to `/meet`; "Request an assessment" to `/contact?reason=mlo` with a new "Managed Legal Operations" contact reason (2026-11-21) | All CTAs; `src/lib/contact.ts` and `/contact` gain the reason and the `?reason=` preselect |
+| Network pairs | How many, which clients, what labels, grow on scroll? | Six; law firms and legal departments in both views, own type emphasized; generic labels; build "the network grows" (2026-11-21) | FR-07 diagram and its phone list |
 | Nav timing | When does the nav link ship? | At first merge (2026-11-21) | FR-12 ships with the page |
 | Value lines | Keep the firm-view value and capital lines? | Keep as written for counsel review (2026-11-21) | Section 2 benefits, section 6 narrative and capital note |
 
@@ -109,7 +110,6 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 - **Hero image**: interim Unsplash photo tagged "Interim image" until the licensed photo is chosen. Affects hero.
 - **Stats**: the six prototype stats ship with their verification status shown only in code comments, not on the page. Affects section 3.
 - **Calculator defaults and labels**: prototype placeholders. Affects section 6.
-- **Network pairs**: six pairs in the diagram. Affects section 5.
 
 ## Unresolved Questions
 

@@ -171,13 +171,13 @@ Sticky page bar (under the site header): section anchors, the audience switch, p
 - Restate the boundary in one line: the MLO does not practice law or direct legal judgment, and its fee is never tied to legal fees.
 
 ### 4.5 The operating company and the MLO partner network
-**Goal.** Show Spaarke as the central center of excellence serving many MLOs.
+**Goal.** Show Spaarke as the central center of excellence serving many MSOs.
 
 **Diagram** (based on the network sketch supplied).
-- Large central circle: "Spaarke: operating company".
+- Large central circle: "Spaarke: MSO operator".
 - Capability labels inside: Technology platform, AI capabilities, Business transformation, Shared services, Employment services (PEO), Best practices and playbooks, Vendor and partner agreements.
-- Around it, pairs of boxes: Firm | MLO (and in Corporate view: Legal department | MLO). Gray thin line = governed services agreement. Blue line = operator services to the MLO.
-- Animation: pairs enter one by one and connect; a subtle pulse travels along blue lines to show shared services flowing out. Pairs gently re-balance as new ones join ("the network grows" interaction on scroll).
+- Around it, six pairs of boxes: client | MSO, each pair on a line out from the hub (MSO nearer the hub). Both views show law firms and legal departments together, generically labeled "Law firm" and "Legal department"; the visitor's own type comes first and is emphasized (owner decisions 2026-11-21). Gray thin line = governed services agreement. Blue line = operator services to the MSO.
+- Animation: "the network grows" on scroll (owner decision 2026-11-21: build it). Pairs join one at a time as the visitor scrolls through the section and the ring re-balances to stay evenly spaced; a subtle pulse travels outward along the blue lines. Under reduced motion the full network shows with no pulse.
 - Legend to explain line colors.
 
 **Copy blocks.**
