@@ -42,7 +42,7 @@ Owner feedback items 1 to 15, applied on the same branch.
 
 Open from round 2:
 
-- The diagram spells out the MSO as "Managed Services Organization" to match the definition on the page. The feedback said "Managed Service Organization", and the industry term is often "Management Services Organization". Pick one; it is a one-line change in `content.ts`.
+- Decided 2026-11-21: MSO is spelled out as "Managed Services Organization" everywhere, matching the definition on the page (not "Managed Service Organization" or "Management Services Organization").
 - The video needs a license (or a different clip) before launch; task 052 covers it.
 
 ## Known gaps in the draft
