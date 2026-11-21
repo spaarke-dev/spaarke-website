@@ -1,7 +1,6 @@
 "use client";
 
 import type { CSSProperties, ReactNode } from "react";
-import Image from "next/image";
 import {
   ArrowTrendingDown24Regular,
   Briefcase24Regular,
@@ -12,7 +11,6 @@ import {
 } from "@fluentui/react-icons";
 import { Button, Eyebrow, Heading, Lede, Shell } from "@/components/primitives";
 import {
-  anchors,
   approach,
   closing,
   ctas,
@@ -26,10 +24,10 @@ import {
   whatIsMlo,
   whyNow,
 } from "@/app/services/content";
-import { AudienceProvider, Flip, useAudience, type Audience } from "./audience";
-import { PageBar } from "./PageBar";
+import { AudienceProvider, AudienceSwitch, Flip, useAudience, type Audience } from "./audience";
+import { HeroMedia } from "./HeroMedia";
 import { StatTile } from "./StatTile";
-import { AllocationDiagram, ServiceMenu } from "./AllocationDiagram";
+import { AllocationDiagram } from "./AllocationDiagram";
 import { NetworkDiagram } from "./NetworkDiagram";
 import { Phases } from "./Phases";
 import { Calculator } from "./calculator/Calculator";
@@ -39,12 +37,24 @@ import { Calculator } from "./calculator/Calculator";
  * because the audience switch flips content in every section; the copy
  * itself is static and comes from src/app/services/content.ts.
  *
- * Section bands follow design.md section 0: hero dark, cream, dark, soft
- * blue, dark, cream, dark, cream, black closing.
+ * Section order and bands after review round 2 (2026-11-21): hero dark, why
+ * now white, highlight dark with glow, what is MLO soft blue, financial
+ * cream, network dark, approach white, black closing.
  */
 
 const SECTION_Y = "py-[clamp(80px,12vh,150px)]";
 const CREAM: CSSProperties = { backgroundColor: "#f6f6f4" };
+const WHITE: CSSProperties = { backgroundColor: "#ffffff" };
+/** The site's dark glow (contact, design partners). */
+const GLOW =
+  "radial-gradient(ellipse 75% 60% at 30% 50%, rgba(130,165,235,0.18) 0%, rgba(80,120,220,0.08) 35%, rgba(130,165,235,0.03) 60%, transparent 78%)";
+
+/**
+ * Hidden in review round 2 until the owner decides where they go (task 060).
+ * The content stays in content.ts.
+ */
+const SHOW_BENEFITS = false;
+const SHOW_FAQ = false;
 const SOFT_BLUE: CSSProperties = {
   backgroundColor: "#ebf2ff",
   backgroundImage:
@@ -122,15 +132,14 @@ function BoundaryLine({ dark }: { dark?: boolean }) {
 export function ServicesPage({ initialAudience, fromUrl }: { initialAudience: Audience; fromUrl: boolean }) {
   return (
     <AudienceProvider initial={initialAudience} fromUrl={fromUrl}>
-      <PageBar anchors={anchors} cta={ctas.conversation} />
       <Hero />
-      <WhatIsMlo />
       <WhyNow />
-      <HowItWorks />
-      <Network />
+      <Highlight />
+      <WhatIsMlo />
       <Financial />
+      <Network />
       <Approach />
-      <Faq />
+      {SHOW_FAQ ? <Faq /> : null}
       <Closing />
     </AudienceProvider>
   );
@@ -141,108 +150,139 @@ export function ServicesPage({ initialAudience, fromUrl }: { initialAudience: Au
 function Hero() {
   const { audience } = useAudience();
   return (
-    <section data-tone="dark" className="bg-bg text-fg relative overflow-hidden">
+    <section
+      data-tone="dark"
+      className="bg-bg text-fg relative isolate overflow-hidden"
+      style={{ minHeight: "92vh" }}
+    >
+      {/* Backdrop: video on the right, washed into the dark page with the
+          site's blue glow, like the Platform hero's backdrop. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+        <HeroMedia />
+        {/* Phones and tablets: the video sits behind the text, so dim it evenly. */}
+        <div className="absolute inset-0 bg-[rgba(10,10,10,0.72)] lg:hidden" />
+        {/* Desktop: dissolve the video's left edge into the page. */}
+        <div
+          className="absolute inset-0 hidden lg:block"
+          style={{
+            background:
+              "linear-gradient(90deg, #0a0a0a 0%, rgba(10,10,10,0.96) 32%, rgba(10,10,10,0.72) 46%, rgba(10,10,10,0.38) 62%, rgba(10,10,10,0.22) 80%, rgba(10,10,10,0.22) 100%)",
+          }}
+        />
+        {/* Top and bottom fades so the hero meets the header and the next band softly. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0) 18%, rgba(10,10,10,0) 70%, #0a0a0a 100%)",
+          }}
+        />
+        <div className="absolute inset-0" style={{ background: GLOW }} />
+      </div>
+
+      <div
+        className="relative z-10 mx-auto flex max-w-[1440px] items-center px-[var(--spacing-shell-x)]"
+        style={{ minHeight: "inherit" }}
+      >
+        <div className="max-w-3xl py-[clamp(56px,9vh,110px)]">
+          <Eyebrow>{hero.eyebrow}</Eyebrow>
+          {/* Title type matches the Platform hero; the subhead uses the home hero's Lede. */}
+          <h1
+            className="font-display text-fg mt-6"
+            style={{ fontSize: "clamp(56px, 7vw, 112px)", lineHeight: 0.98, letterSpacing: "-0.025em", fontWeight: 600 }}
+          >
+            {hero.headline[0]}
+            <br />
+            <span className="text-fg-mid">{hero.headline[1]}</span>
+          </h1>
+          <Flip className="mt-8 max-w-xl">
+            <Lede>{hero.subhead[audience]}</Lede>
+          </Flip>
+          <AudienceSwitch className="mt-10" />
+          <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
+            <Button variant="text" href={hero.primaryCta[audience].href} arrow>
+              {hero.primaryCta[audience].label}
+            </Button>
+            <Button variant="text" href={hero.secondaryCta.href}>
+              {hero.secondaryCta.label}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* 2. Why now --------------------------------------------------------- */
+
+function WhyNow() {
+  const { audience } = useAudience();
+  const stats = orderedStats(audience);
+  return (
+    <Band id={whyNow.id} tone="light" style={WHITE}>
+      <Shell>
+        <SectionHead
+          center
+          eyebrow={whyNow.eyebrow}
+          title={whyNow.title}
+          intro={<Flip as="span">{whyNow.intro[audience]}</Flip>}
+        />
+        {/* Two columns, three rows (review round 2). */}
+        <Flip className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-x-14 gap-y-14 md:grid-cols-2">
+          {stats.map((s) => (
+            <StatTile key={s.id} stat={s} tone="light" />
+          ))}
+        </Flip>
+      </Shell>
+    </Band>
+  );
+}
+
+/* 3. Highlight: the profit pool and the bridge ----------------------- */
+
+function Highlight() {
+  return (
+    <section
+      data-tone="dark"
+      className="relative overflow-hidden"
+      style={{ backgroundColor: "#000000", paddingTop: "clamp(96px, 14vh, 170px)", paddingBottom: "clamp(96px, 14vh, 170px)" }}
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            "radial-gradient(ellipse 60% 70% at 20% 40%, rgba(130,165,235,0.14) 0%, rgba(80,120,220,0.05) 40%, rgba(0,0,0,0) 70%)",
+          backgroundImage:
+            "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(130,165,235,0.20) 0%, rgba(80,120,220,0.08) 38%, rgba(130,165,235,0.03) 62%, transparent 80%)",
         }}
       />
       <Shell className="relative">
-        <div className="grid grid-cols-1 items-center gap-12 py-[clamp(56px,9vh,110px)] lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          <div>
-            <Eyebrow>{hero.eyebrow}</Eyebrow>
-            <h1
-              className="font-display text-fg mt-6 font-semibold"
-              style={{ fontSize: "clamp(48px, 6.4vw, 100px)", lineHeight: 0.98, letterSpacing: "-0.03em" }}
-            >
-              {hero.headline[0]}
-              <br />
-              <span className="text-fg-mid">{hero.headline[1]}</span>
-            </h1>
-            <Flip className="mt-8 max-w-xl">
-              <Lede>{hero.subhead[audience]}</Lede>
-            </Flip>
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <Button variant="primary" href={hero.primaryCta[audience].href} arrow>
-                {hero.primaryCta[audience].label}
-              </Button>
-              <Button variant="text" href={hero.secondaryCta.href}>
-                {hero.secondaryCta.label}
-              </Button>
-            </div>
-          </div>
-          <HeroImage />
+        <div className="mx-auto max-w-4xl text-center">
+          <p
+            className="font-display text-fg font-medium tracking-[-0.025em] text-balance"
+            style={{ fontSize: "clamp(32px, 4.2vw, 60px)", lineHeight: 1.06 }}
+          >
+            {whyNow.nuance.title}
+          </p>
+          <p className="text-fg-mid mx-auto mt-6 max-w-3xl text-[clamp(17px,1.3vw,20px)] leading-relaxed">
+            {whyNow.nuance.body}
+          </p>
+          <p className="font-mono-display text-fg-low mt-5 text-[11px] uppercase tracking-wider">
+            Source: {whyNow.nuance.source.name}
+          </p>
+          <div aria-hidden="true" className="mx-auto my-14 h-px w-24 bg-[#5078DC]" />
+          <p
+            className="font-display font-medium tracking-[-0.02em] text-balance"
+            style={{ fontSize: "clamp(24px, 2.6vw, 38px)", lineHeight: 1.2, color: "#82A5EB" }}
+          >
+            {whyNow.bridge}
+          </p>
         </div>
       </Shell>
     </section>
   );
 }
 
-function HeroImage() {
-  const frame = "relative aspect-[4/5] w-full overflow-hidden rounded-3xl border sm:aspect-[16/11] lg:aspect-[4/5]";
-  if (hero.image.src) {
-    return (
-      <div className={frame} style={{ borderColor: "rgba(255,255,255,0.10)" }}>
-        <Image
-          src={hero.image.src}
-          alt={hero.image.alt}
-          fill
-          priority
-          sizes="(min-width: 1024px) 45vw, 100vw"
-          className="object-cover"
-          style={{ objectPosition: hero.image.focus }}
-        />
-        {/* Soft fade into the dark band so the photo sits in the page. */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0"
-          style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 55%, rgba(10,10,10,0.35) 100%)" }}
-        />
-        {hero.image.interim ? (
-          <span className="font-mono-display absolute left-4 top-4 rounded-full bg-[rgba(10,10,10,0.7)] px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[rgba(255,255,255,0.8)]">
-            Interim image
-          </span>
-        ) : null}
-      </div>
-    );
-  }
-  // Placeholder frame until an image is set (design.md section 8).
-  return (
-    <div
-      role="img"
-      aria-label={hero.image.alt}
-      className={frame}
-      style={{
-        borderColor: "rgba(255,255,255,0.10)",
-        background:
-          "linear-gradient(160deg, #2a2724 0%, #1b1a18 45%, #101010 100%), radial-gradient(ellipse at 30% 30%, rgba(255,214,170,0.20), transparent 60%)",
-      }}
-    >
-      <div
-        aria-hidden="true"
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 55% 45% at 35% 30%, rgba(255,220,180,0.22) 0%, transparent 70%), radial-gradient(ellipse 50% 40% at 70% 75%, rgba(130,165,235,0.16) 0%, transparent 70%)",
-        }}
-      />
-      <div className="absolute inset-x-0 bottom-0 p-6">
-        <p className="font-mono-display text-[11px] uppercase tracking-[0.16em] text-[rgba(255,255,255,0.6)]">
-          Placeholder: hero photograph
-        </p>
-        <p className="font-body mt-2 max-w-sm text-[14px] leading-relaxed text-[rgba(255,255,255,0.72)]">
-          A lawyer and an operations teammate at work together, in natural light, in a real office. Commissioned or
-          exclusively licensed.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* 2. What is MLO ----------------------------------------------------- */
+/* 4. What is MLO (with how it works) --------------------------------- */
 
 const REQUIREMENT_ICONS: Record<string, ReactNode> = {
   independence: <Gavel24Regular />,
@@ -256,17 +296,25 @@ const REQUIREMENT_ICONS: Record<string, ReactNode> = {
 function WhatIsMlo() {
   const { audience } = useAudience();
   return (
-    <Band id={whatIsMlo.id} tone="light" style={CREAM}>
+    <Band id={whatIsMlo.id} tone="light" style={SOFT_BLUE}>
       <Shell>
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <SectionHead eyebrow={whatIsMlo.eyebrow} title={whatIsMlo.title} />
             <p className="font-body text-fg mt-8 max-w-2xl text-[clamp(19px,1.5vw,24px)] leading-[1.5]">
               {whatIsMlo.definition}
             </p>
             <p className="text-fg-mid mt-5 max-w-2xl text-[16px] leading-relaxed">{whatIsMlo.msoNote}</p>
+            <Flip className="mt-5 max-w-2xl">
+              <p className="text-fg-mid text-[16px] leading-relaxed">{howItWorks.intro[audience]}</p>
+            </Flip>
+            <div className="mt-10">
+              <BoundaryLine />
+            </div>
           </div>
-          <SplitGraphic />
+          <Flip>
+            <AllocationDiagram />
+          </Flip>
         </div>
 
         {/* Why legal is different */}
@@ -290,163 +338,48 @@ function WhatIsMlo() {
           </ul>
         </div>
 
-        {/* Benefits (flip) */}
-        <div className="mt-24 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
-          <div>
-            <Flip>
-              <h3 className="font-display text-fg text-[clamp(24px,2.2vw,34px)] font-medium tracking-[-0.02em]">
-                {whatIsMlo.benefitsTitle[audience]}
-              </h3>
-            </Flip>
-            <p className="font-mono-display text-fg-low mt-8 text-[11px] uppercase tracking-[0.16em]">Why Spaarke</p>
-            <ul className="text-fg-mid mt-3 space-y-2 text-[14px] leading-relaxed">
-              {whatIsMlo.differentiators.map((d) => (
-                <li key={d} className="flex gap-3">
-                  <span aria-hidden="true" className="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#5078DC]" />
-                  {d}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <Flip>
-            <ul className="grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2">
-              {whatIsMlo.benefits[audience].map((b) => (
-                <li key={b.title}>
-                  <p className="text-fg text-[17px] font-medium">{b.title}</p>
-                  <p className="text-fg-mid mt-1 text-[15px] leading-relaxed">{b.body}</p>
-                </li>
-              ))}
-            </ul>
-          </Flip>
-        </div>
-
-        <div className="mt-16">
-          <BoundaryLine />
-        </div>
+        {SHOW_BENEFITS ? <Benefits /> : null}
       </Shell>
     </Band>
   );
 }
 
-function SplitGraphic() {
-  const { practice, business, connector } = whatIsMlo.split;
+/** "What firms gain" / "What legal departments gain" with the "Why Spaarke" list. Hidden (task 060). */
+function Benefits() {
+  const { audience } = useAudience();
   return (
-    <div className="flex flex-col justify-center" aria-label="The practice of law and the business of law, joined by a services agreement" role="group">
-      <div className="rounded-3xl border border-[rgba(10,10,10,0.12)] bg-white p-6">
-        <p className="font-display text-fg text-[20px] font-medium">{practice.title}</p>
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {practice.items.map((i) => (
-            <li key={i} className="rounded-full border border-[rgba(10,10,10,0.14)] bg-[#f6f6f4] px-3 py-1.5 text-[14px]">
-              {i}
+    <div className="mt-24 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
+      <div>
+        <Flip>
+          <h3 className="font-display text-fg text-[clamp(24px,2.2vw,34px)] font-medium tracking-[-0.02em]">
+            {whatIsMlo.benefitsTitle[audience]}
+          </h3>
+        </Flip>
+        <p className="font-mono-display text-fg-low mt-8 text-[11px] uppercase tracking-[0.16em]">Why Spaarke</p>
+        <ul className="text-fg-mid mt-3 space-y-2 text-[14px] leading-relaxed">
+          {whatIsMlo.differentiators.map((d) => (
+            <li key={d} className="flex gap-3">
+              <span aria-hidden="true" className="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#5078DC]" />
+              {d}
             </li>
           ))}
         </ul>
       </div>
-      <div className="relative flex h-16 items-center justify-center" aria-hidden="false">
-        <div aria-hidden="true" className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[rgba(10,10,10,0.25)]" />
-        <span className="font-mono-display relative rounded-full border border-[rgba(10,10,10,0.18)] bg-[#f6f6f4] px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-[rgba(10,10,10,0.7)]">
-          {connector}
-        </span>
-      </div>
-      <div className="rounded-3xl border p-6" style={{ borderColor: "rgba(80,120,220,0.45)", backgroundColor: "rgba(80,120,220,0.08)" }}>
-        <p className="font-display text-fg text-[20px] font-medium">{business.title}</p>
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {business.items.map((i) => (
-            <li key={i} className="rounded-full bg-[#5078DC] px-3 py-1.5 text-[14px] text-white">
-              {i}
+      <Flip>
+        <ul className="grid grid-cols-1 gap-x-10 gap-y-7 sm:grid-cols-2">
+          {whatIsMlo.benefits[audience].map((b) => (
+            <li key={b.title}>
+              <p className="text-fg text-[17px] font-medium">{b.title}</p>
+              <p className="text-fg-mid mt-1 text-[15px] leading-relaxed">{b.body}</p>
             </li>
           ))}
         </ul>
-      </div>
+      </Flip>
     </div>
   );
 }
 
-/* 3. Why now --------------------------------------------------------- */
-
-function WhyNow() {
-  const { audience } = useAudience();
-  const stats = orderedStats(audience);
-  return (
-    <Band id={whyNow.id} tone="dark">
-      <Shell>
-        <SectionHead
-          eyebrow={whyNow.eyebrow}
-          title={whyNow.title}
-          intro={<Flip as="span">{whyNow.intro[audience]}</Flip>}
-        />
-        <Flip className="mt-16 grid grid-cols-1 gap-x-10 gap-y-14 md:grid-cols-2 xl:grid-cols-3">
-          {stats.map((s) => (
-            <StatTile key={s.id} stat={s} />
-          ))}
-        </Flip>
-
-        <aside
-          className="mt-16 rounded-3xl border p-8 md:p-10"
-          style={{ backgroundColor: "#111111", borderColor: "rgba(255,255,255,0.08)" }}
-        >
-          <p className="font-display text-fg text-[clamp(22px,2vw,30px)] font-medium tracking-[-0.015em]">
-            {whyNow.nuance.title}
-          </p>
-          <p className="text-fg-mid mt-4 max-w-3xl text-[16px] leading-relaxed">{whyNow.nuance.body}</p>
-          <p className="font-mono-display text-fg-low mt-5 text-[11px] uppercase tracking-wider">
-            Source: {whyNow.nuance.source.name}
-          </p>
-        </aside>
-
-        <p
-          className="font-display text-fg mx-auto mt-20 max-w-4xl text-center font-medium tracking-[-0.02em] text-balance"
-          style={{ fontSize: "clamp(26px, 3vw, 44px)", lineHeight: 1.15 }}
-        >
-          {whyNow.bridge}
-        </p>
-      </Shell>
-    </Band>
-  );
-}
-
-/* 4. How it works ---------------------------------------------------- */
-
-function HowItWorks() {
-  const { audience } = useAudience();
-  return (
-    <Band id={howItWorks.id} tone="light" style={SOFT_BLUE}>
-      <Shell>
-        <SectionHead
-          eyebrow={howItWorks.eyebrow}
-          title={howItWorks.title}
-          intro={<Flip as="span">{howItWorks.intro[audience]}</Flip>}
-        />
-        <Flip className="mt-14">
-          <AllocationDiagram />
-        </Flip>
-        <div className="mt-10">
-          <BoundaryLine />
-        </div>
-
-        <div className="mt-20 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
-          <div>
-            <h3 className="font-display text-fg text-[clamp(24px,2.2vw,34px)] font-medium tracking-[-0.02em]">
-              {howItWorks.tailored.title}
-            </h3>
-            <p className="text-fg-mid mt-3 max-w-md text-[16px] leading-relaxed">{howItWorks.tailored.body}</p>
-            <p className="text-fg mt-6 text-[16px]">
-              {howItWorks.operatorNote}{" "}
-              <a href={`#${network.id}`} className="font-medium text-[#3F5FD9] underline underline-offset-4">
-                How the network works
-              </a>
-            </p>
-          </div>
-          <Flip className="rounded-3xl border border-[rgba(10,10,10,0.1)] bg-white p-6">
-            <ServiceMenu />
-          </Flip>
-        </div>
-      </Shell>
-    </Band>
-  );
-}
-
-/* 5. Operating company and network ---------------------------------- */
+/* 6. Operating company and network ---------------------------------- */
 
 function Network() {
   const { audience } = useAudience();
@@ -485,7 +418,7 @@ function Network() {
   );
 }
 
-/* 6. Financial opportunity ------------------------------------------ */
+/* 5. Financial opportunity ------------------------------------------ */
 
 function Financial() {
   const { audience } = useAudience();
@@ -519,11 +452,11 @@ function Financial() {
 
 function Approach() {
   return (
-    <Band id={approach.id} tone="dark">
+    <Band id={approach.id} tone="light" style={WHITE}>
       <Shell>
         <SectionHead eyebrow={approach.eyebrow} title={approach.title} />
         <div className="mt-16">
-          <Phases />
+          <Phases tone="light" />
         </div>
         <div className="mt-12 max-w-2xl">
           <p className="text-fg-mid text-[16px] leading-relaxed">{approach.method.text}</p>
@@ -543,7 +476,7 @@ function Approach() {
   );
 }
 
-/* 8. FAQ, closing, disclaimers -------------------------------------- */
+/* 8. FAQ (hidden), closing, disclaimers -------------------------------------- */
 
 function Faq() {
   return (

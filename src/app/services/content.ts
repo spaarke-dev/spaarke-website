@@ -19,20 +19,6 @@
  */
 import type { ByAudience } from "@/components/services/audience-types";
 
-/* ------------------------------------------------------------------ */
-/* Page bar                                                            */
-/* ------------------------------------------------------------------ */
-
-export const anchors = [
-  { id: "what-is-mlo", label: "What is MLO" },
-  { id: "why-now", label: "Why now" },
-  { id: "how-it-works", label: "How it works" },
-  { id: "network", label: "Network" },
-  { id: "financial-opportunity", label: "Economics" },
-  { id: "approach", label: "Approach" },
-  { id: "faq", label: "FAQ" },
-];
-
 /** Owner decisions 2026-11-21: conversations and numbers go to booking; assessments to the contact form with the MLO reason preselected. */
 export const ctas = {
   conversation: { label: "Start a conversation", href: "/meet" },
@@ -57,20 +43,23 @@ export const hero = {
     firm: { label: "Start a conversation", href: "/meet" },
     corporate: { label: "Start a conversation", href: "/meet" },
   } satisfies ByAudience<{ label: string; href: string }>,
-  secondaryCta: { label: "See how it works", href: "#how-it-works" },
-  image: {
+  secondaryCta: { label: "See how it works", href: "#what-is-mlo" },
+  media: {
     /**
-     * Owner decision 2026-11-21: the launch photo comes from an exclusive stock
-     * license. Until it is chosen, an interim image stands in so the page can be
-     * built; `interim: true` shows a small label on it, and the page must not go
-     * live while it is set. Null shows the placeholder frame.
+     * Review round 2 (2026-11-21): a background video behind the hero, like
+     * the Platform hero. The clip is an unlicensed, watermarked Stocksy comp
+     * (5947226) on trial: it lives only in the local worktree at
+     * public/services/hero-comp.mp4, is gitignored, and must never be
+     * committed. Where the file is missing (any deployed build) the hero
+     * shows the fallback photo instead. License the clip, or pick another,
+     * before launch; `interim: true` shows a small label.
      */
+    video: "/services/hero-comp.mp4" as string | null,
     // Interim: Unsplash XjJmfN7QJj4, Vitaly Gariev, Unsplash License. Replace before launch.
-    src: "/services/hero-interim.jpg" as string | null,
-    /** CSS object-position for the crop; keeps both people in the portrait frame. */
-    focus: "60% 50%",
+    fallbackImage: "/services/hero-interim.jpg",
+    /** CSS object-position: keeps the subject in the visible right side of the hero. */
+    focus: "70% 50%",
     interim: true,
-    alt: "A lawyer and an operations professional working side by side in a real office.",
   },
 };
 
@@ -81,7 +70,7 @@ export const hero = {
 export const whatIsMlo = {
   id: "what-is-mlo",
   eyebrow: "What is Managed Legal Operations",
-  title: "The operating model built for how legal actually works",
+  title: "The operating model built for how legal works",
   definition:
     "Managed Legal Operations (MLO) is a managed service that runs the business side of legal (technology, operations, finance and administration) so lawyers can concentrate on the practice of law.",
   msoNote:
@@ -173,7 +162,7 @@ export interface WhyNowStat {
 
 export const whyNow = {
   id: "why-now",
-  eyebrow: "Why MLO, why now",
+  eyebrow: "Why Managed Legal Operations, why now",
   title: "The economics of legal are being rewritten",
   intro: {
     firm: "Technology, pricing and client expectations are changing at the same time. Firms are expected to adopt AI and to charge less for it, while carrying the cost of the technology and the competition from new AI-native firms.",
@@ -366,10 +355,11 @@ export const howItWorks = {
       ],
     },
   } satisfies ByAudience<{ title: string; items: AllocationItem[] }>,
+  /** Diagram panels: the client on top, the MSO (spelled out) below. */
   sideLabel: {
-    firm: { left: "Law firm", right: "MSO" },
-    corporate: { left: "Legal department", right: "MSO" },
-  } satisfies ByAudience<{ left: string; right: string }>,
+    firm: { client: "Law firm", mso: "Managed Services Organization" },
+    corporate: { client: "Legal department", mso: "Managed Services Organization" },
+  } satisfies ByAudience<{ client: string; mso: string }>,
   tailored: {
     title: "Every structure is tailored",
     body: "No two organizations move the same functions. The service menu is chosen to fit each client’s goals and requirements.",

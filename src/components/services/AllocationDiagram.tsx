@@ -5,9 +5,10 @@ import { howItWorks, type AllocationItem } from "@/app/services/content";
 import { useAudience, useInView } from "./audience";
 
 /**
- * Functional allocation diagram (design.md 4.4 and 6.1). Two panels joined by
- * a services-agreement connector. Items build in one at a time (120 ms
- * stagger, left panel first) when the diagram scrolls into view; hovering,
+ * Functional allocation diagram (design.md 4.4 and 6.1). Two stacked panels,
+ * the client on top and the Managed Services Organization below, joined by a
+ * services-agreement connector (review round 2). Items build in one at a time
+ * (120 ms stagger, top panel first) when the diagram scrolls into view; hovering,
  * focusing or tapping an item shows its one-line explanation. Under reduced
  * motion everything is shown at once and Replay is hidden.
  */
@@ -53,9 +54,9 @@ export function AllocationDiagram() {
 
   return (
     <div ref={ref}>
-      <div className="grid grid-cols-1 items-stretch gap-0 md:grid-cols-[1fr_120px_1fr]">
+      <div className="flex flex-col">
         <Panel
-          title={sides.left}
+          title={sides.client}
           subtitle={keeps.title}
           items={keeps.items}
           tone="client"
@@ -64,18 +65,16 @@ export function AllocationDiagram() {
           onDetail={setDetail}
         />
 
-        {/* Connector: horizontal on desktop, vertical on phones. */}
-        <div className="relative flex items-center justify-center py-6 md:py-0" aria-hidden="true">
-          <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[rgba(10,10,10,0.25)] md:left-0 md:top-1/2 md:h-px md:w-full md:translate-x-0 md:-translate-y-1/2" />
+        {/* Vertical connector between the two panels. */}
+        <div className="relative flex items-center justify-center py-6" aria-hidden="true">
+          <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[rgba(10,10,10,0.25)]" />
           <span className="font-mono-display relative rounded-full border border-[rgba(10,10,10,0.18)] bg-white px-3 py-1.5 text-center text-[10px] uppercase leading-tight tracking-[0.14em] text-[rgba(10,10,10,0.7)]">
-            Services
-            <br />
-            agreement
+            Services agreement
           </span>
         </div>
 
         <Panel
-          title={sides.right}
+          title={sides.mso}
           subtitle={takes.title}
           items={takes.items}
           tone="operator"
@@ -85,7 +84,7 @@ export function AllocationDiagram() {
         />
       </div>
 
-      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <p className="text-fg-mid min-h-[1.5em] text-[15px]" aria-live="polite">
           {detail ? (
             <>
@@ -173,7 +172,10 @@ function Panel({
   );
 }
 
-/** "Every structure is tailored": three illustrative clients and the services each chose. */
+/**
+ * "Every structure is tailored": three illustrative clients and the services
+ * each chose. Hidden from the page in review round 2; kept for task 060.
+ */
 export function ServiceMenu() {
   const { audience } = useAudience();
   const services = howItWorks.takes[audience].items.map((i) => i.label);

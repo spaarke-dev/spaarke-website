@@ -15,6 +15,7 @@
 | 050 | [First-draft review with the owner](050-draft-review.md) | 5 | 011, 012, 020, 021, 031, 040, 041 | complete |
 | 051 | [Counsel, finance and photo inputs](051-content-inputs.md) | 5 | 050 | not-started |
 | 052 | [Launch: indexing and merge](052-launch.md) | 5 | 051 | not-started |
+| 060 | [Deferred extras (backlog)](060-deferred-extras.md) | 6 | 050 | backlog |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | Wrap-up | 052 | not-started |
 
 "complete (draft)" means built for the first-draft review; the content inputs in task 051 may change it.

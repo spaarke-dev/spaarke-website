@@ -270,8 +270,7 @@ html::-webkit-scrollbar {
   from { stroke-dashoffset: 0; }
   to { stroke-dashoffset: -120; }
 }
-/* Sections sit under two sticky bars (site header + page bar); the page
-   bar writes the combined height to this variable. */
+/* Anchored sections sit under the sticky site header. */
 [data-services-section] {
-  scroll-margin-top: var(--services-offset, 160px);
+  scroll-margin-top: 96px;
 }

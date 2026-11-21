@@ -11,11 +11,31 @@ import { useInView } from "./audience";
  * at full length.
  */
 
-const ACCENT = "#82A5EB";
-const CONTEXT = "rgba(255, 255, 255, 0.22)";
+type Tone = "dark" | "light";
 
-export function StatTile({ stat }: { stat: WhyNowStat }) {
+/** Chart colors per band tone; text colors come from the band's data-tone tokens. */
+const PALETTE: Record<Tone, { accent: string; context: string; track: string; underline: string; hover: string }> = {
+  dark: {
+    accent: "#82A5EB",
+    context: "rgba(255, 255, 255, 0.22)",
+    track: "rgba(255, 255, 255, 0.06)",
+    underline: "rgba(255,255,255,0.25)",
+    hover: "#82A5EB",
+  },
+  light: {
+    accent: "#5078DC",
+    context: "rgba(10, 10, 10, 0.24)",
+    track: "rgba(10, 10, 10, 0.06)",
+    underline: "rgba(10,10,10,0.25)",
+    hover: "#3F5FD9",
+  },
+};
+
+type Palette = (typeof PALETTE)[Tone];
+
+export function StatTile({ stat, tone = "dark" }: { stat: WhyNowStat; tone?: Tone }) {
   const { ref, inView } = useInView<HTMLDivElement>(0.3);
+  const c = PALETTE[tone];
 
   return (
     <article className="border-line-strong flex flex-col border-t pt-6">
@@ -30,7 +50,7 @@ export function StatTile({ stat }: { stat: WhyNowStat }) {
         >
           {stat.figure}
         </p>
-        <Chart stat={stat} grow={inView} />
+        <Chart stat={stat} grow={inView} c={c} />
       </div>
       <p className="text-fg-mid mt-4 text-[15px] leading-relaxed">{stat.caption}</p>
       <p className="font-mono-display text-fg-low mt-auto pt-5 text-[11px] uppercase leading-relaxed tracking-wider">
@@ -39,7 +59,8 @@ export function StatTile({ stat }: { stat: WhyNowStat }) {
           href={stat.source.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="underline decoration-[rgba(255,255,255,0.25)] underline-offset-2 hover:text-[#82A5EB]"
+          className="underline underline-offset-2 hover:text-[var(--stat-hover)]"
+          style={{ textDecorationColor: c.underline, ["--stat-hover" as string]: c.hover }}
         >
           {stat.source.name}
         </a>
@@ -53,16 +74,18 @@ export function StatTile({ stat }: { stat: WhyNowStat }) {
 function Bar({
   pct,
   color,
+  track,
   grow,
   delay = 0,
 }: {
   pct: number;
   color: string;
+  track: string;
   grow: boolean;
   delay?: number;
 }) {
   return (
-    <div className="h-2 w-full overflow-hidden rounded-full bg-[rgba(255,255,255,0.06)]">
+    <div className="h-2 w-full overflow-hidden rounded-full" style={{ backgroundColor: track }}>
       <div
         className="h-full rounded-full motion-safe:transition-[width] motion-safe:duration-700 motion-safe:ease-out"
         style={{ width: grow ? `${pct}%` : "0%", backgroundColor: color, transitionDelay: `${delay}ms` }}
@@ -71,11 +94,11 @@ function Bar({
   );
 }
 
-function Chart({ stat, grow }: { stat: WhyNowStat; grow: boolean }) {
+function Chart({ stat, grow, c }: { stat: WhyNowStat; grow: boolean; c: Palette }) {
   if (stat.chart === "bigNumber") {
     return stat.bar != null ? (
       <div className="mt-4" aria-hidden="true">
-        <Bar pct={stat.bar} color={ACCENT} grow={grow} />
+        <Bar pct={stat.bar} color={c.accent} track={c.track} grow={grow} />
       </div>
     ) : null;
   }
@@ -98,7 +121,7 @@ function Chart({ stat, grow }: { stat: WhyNowStat; grow: boolean }) {
                 className="w-full max-w-[56px] rounded-t-[3px] motion-safe:transition-[height] motion-safe:duration-700 motion-safe:ease-out"
                 style={{
                   height: grow ? `${(d.value / max) * 70}%` : "0%",
-                  backgroundColor: last ? ACCENT : CONTEXT,
+                  backgroundColor: last ? c.accent : c.context,
                   transitionDelay: `${i * 120}ms`,
                 }}
               />
@@ -125,7 +148,13 @@ function Chart({ stat, grow }: { stat: WhyNowStat; grow: boolean }) {
               {d.value}%
             </span>
           </div>
-          <Bar pct={(d.value / 100) * 100} color={i === highlight ? ACCENT : CONTEXT} grow={grow} delay={i * 120} />
+          <Bar
+            pct={(d.value / 100) * 100}
+            color={i === highlight ? c.accent : c.context}
+            track={c.track}
+            grow={grow}
+            delay={i * 120}
+          />
         </div>
       ))}
     </div>
