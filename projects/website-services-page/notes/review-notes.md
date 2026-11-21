@@ -82,9 +82,7 @@ Owner feedback items 1 to 4, applied on the same branch.
 | 3 | Corporate stat: "experimenting" becomes "POC" | "Legal departments have moved from POC to deploying AI" |
 | 4 | The calculator chart was hard to follow; use stacked bars that show costs moving to the MSO and the total improving through its efficiencies | The shift chart is replaced by three stacked bars on one scale: 01 Today (every cost inside the firm or department), 02 Move functions to the MSO (the chosen functions turn blue at today’s cost, so the total is unchanged), 03 The MSO runs them at scale (the blue part shrinks by the price advantage and a dashed green segment shows the saving). Each bar shows its total and a split line. The function tick boxes sit above the bars, and a result line under them shows profit (firm) or total cost of legal (department), today against with the MSO |
 
-Open from round 4:
-
-- Owner: the corporate sixth item ("Business partnership") and the POC wording.
+Decided in round 4: the owner kept "Business partnership" as the legal department sixth item (2026-11-21).
 
 ## Known gaps in the draft
 
