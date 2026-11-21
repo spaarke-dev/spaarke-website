@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 and 031).
+// tasks 002, 010 to 013, 020 to 022, 030, 031 and 033).
 //
 //   npm run market:check
 //
@@ -228,6 +228,67 @@ console.log("Pure checks");
   assert.equal(sameSite(h({ origin: "https://spaarke.com", host: "spaarke.com" })), true);
   assert.equal(sameSite(h({ origin: "https://evil.test", host: "spaarke.com" })), false);
   ok("contact edits accept only known fields; admin changes refuse cross-site requests (task 031)");
+}
+
+{
+  const results = await import("@/lib/market/results");
+  const t = (iso: string) => `${iso}T12:00:00.000Z`;
+  const act = (type: string, day: string, campaignSlug?: string) =>
+    ({ id: day + type, contactId: "c", type, source: "check", sourceId: day + type, occurredAt: t(day), recordedAt: t(day), visibility: "general", campaignSlug }) as never;
+  const campaign = { slug: "spring", startDate: "2026-03-01", endDate: "2026-03-31" };
+  const member = { contactId: "c", createdAt: "2026-04-15T00:00:00.000Z" };
+
+  const acts = [
+    act("email.sent", "2026-02-20"), // before the window
+    act("email.sent", "2026-03-02"),
+    act("brief.read", "2026-03-03"), // untagged brief read: not this campaign's
+    act("brief.read", "2026-03-04", "spring"),
+    act("email.received", "2026-03-05", "other"), // another campaign's reply
+    act("note", "2026-03-06"),
+    act("email.received", "2026-05-20"), // inside 60 days after the end
+    act("meeting.booked", "2026-06-15"), // after the window
+  ];
+  const counted = results.memberActivities(campaign, member, acts);
+  assert.deepEqual(
+    counted.map((a: { type: string }) => a.type),
+    ["email.sent", "brief.read", "email.received"],
+  );
+  const d = results.deriveMemberStatus(member, counted);
+  assert.equal(d.status, "replied", "the furthest stage reached");
+  assert.deepEqual(d.reached, ["sent", "engaged", "replied"]);
+  assert.equal(d.lastActivityAt, t("2026-05-20"));
+  assert.equal(results.deriveMemberStatus(member, []).status, "planned");
+  assert.equal(
+    results.deriveMemberStatus(member, [act("email.sent", "2026-03-02"), act("email.bounced", "2026-03-02")]).status,
+    "bounced",
+  );
+  // No start date: the window opens when the member was added.
+  assert.equal(results.campaignWindow({}, member).from, member.createdAt);
+
+  const f = results.funnelOf([
+    { status: "replied", reached: ["sent", "engaged", "replied"] },
+    { status: "bounced", reached: ["sent", "bounced"] },
+    { status: "bounced", statusOverride: "meeting", reached: ["sent", "bounced"] },
+    { status: "planned", statusOverride: "done", reached: [] },
+    { status: "planned", reached: [] },
+  ] as never);
+  assert.deepEqual(f, { members: 5, sent: 4, delivered: 3, engaged: 1, replied: 1, meeting: 1 });
+
+  const admin = await import("@/lib/market/campaign-admin");
+  assert.deepEqual(admin.parseCampaign({ slug: "tltf-2026", name: " TLTF  2026 ", startDate: "2026-11-01", notes: "" }), {
+    slug: "tltf-2026",
+    name: "TLTF 2026",
+    startDate: "2026-11-01",
+    notes: null,
+  });
+  for (const bad of [{ slug: "code" }, { slug: "Bad Slug" }, { startDate: "11/01/2026" }, { kind: "ad" }, { name: "" }, { owner: "x" }]) {
+    assert.throws(() => admin.parseCampaign(bad), admin.CampaignError, JSON.stringify(bad));
+  }
+  assert.equal(admin.parseOverride({ status: null }), null);
+  assert.equal(admin.parseOverride({ status: "meeting" }), "meeting");
+  assert.throws(() => admin.parseOverride({ status: "won" }), admin.CampaignError);
+  assert.deepEqual(admin.parseAddMembers({ contacts: "a@x.test\n b@x.test, a@x.test" }).contacts, ["a@x.test", "b@x.test"]);
+  ok("member status is the furthest stage in the campaign's window; the funnel counts what the log shows (task 033)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -716,6 +777,114 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.ok(del);
   assert.ok(!JSON.stringify(del.changes).includes("@"), "no email in the audit");
   ok("a delete removes the contact, activities, memberships and lookups, and nothing brings it back (FR-17, task 031)");
+}
+
+{
+  const results = await import("@/lib/market/results");
+  const admin = await import("@/lib/market/campaign-admin");
+  const who = "admin@example.test";
+  const roles = ["admin", "investor"];
+  const slug = `results-${run}`;
+  const day = (d: string) => `${d}T15:00:00.000Z`;
+
+  const created = await admin.createCampaign(
+    admin.parseCampaign({ slug, name: "Results check", startDate: "2026-10-01", endDate: "2026-10-31" }),
+    who,
+  );
+  assert.equal(created.visibility, "general", "the admin form defaults to all admins");
+  await assert.rejects(admin.createCampaign({ slug, name: "Again" }, who), admin.CampaignError);
+
+  const people = ["ann", "bob", "cat", "dan", "eve"].map((n) => addr(`res-${n}`));
+  for (const email of people) await contacts.resolveContact({ email }, { source: "check" });
+  const added = await admin.addMembers(
+    slug,
+    admin.parseAddMembers({ contacts: [...people, addr("nobody")].join("\n"), group: "Wave 1" }),
+    roles,
+    who,
+  );
+  assert.deepEqual(added, { added: 5, updated: 0, notFound: [addr("nobody")] }, "a typo never creates a contact");
+  await camp.addMember({ campaignSlug: slug, contactId: (await contacts.findContactByEmail(people[2]))!.id, code: `rc${run}` });
+
+  const rec = (type: string, email: string, when: string, extra: Record<string, unknown> = {}) =>
+    activity.recordActivity({ type: type as never, source: "check", sourceId: `${run}-${type}-${email}-${when}`, occurredAt: day(when), email, ...extra });
+  // Hand count: ann sent and replied; bob sent and bounced; cat sent and read the brief; dan met; eve nothing in window.
+  await rec("email.sent", people[0], "2026-10-02");
+  await rec("email.received", people[0], "2026-10-04");
+  await rec("email.sent", people[1], "2026-10-02");
+  await rec("email.bounced", people[1], "2026-10-02");
+  await rec("email.sent", people[2], "2026-10-02");
+  await rec("brief.read", people[2], "2026-10-03", { email: undefined, memberCode: `rc${run}` });
+  await rec("meeting.booked", people[3], "2026-11-10");
+  await rec("email.sent", people[4], "2026-09-15"); // before the start
+  await rec("email.received", people[4], "2026-10-05", { campaignSlug: "another" }); // another campaign's
+
+  const first = await results.campaignResults(slug, roles, { now: new Date(day("2026-11-21")) });
+  assert.ok(first);
+  assert.deepEqual(first.funnel, { members: 5, sent: 3, delivered: 2, engaged: 1, replied: 1, meeting: 1 });
+  const status = (email: string) => first.rows.find((r) => r.contactEmail === email)?.effective;
+  assert.deepEqual(people.map(status), ["replied", "bounced", "engaged", "meeting", "planned"]);
+  assert.equal(first.groups.join(), "Wave 1");
+  ok("a made-up campaign's funnel matches the hand-counted activities (task 033)");
+
+  // Override: kept through a recompute and shown; audited; clearing goes back to the derived status.
+  const bob = (await contacts.findContactByEmail(people[1]))!.id;
+  await admin.overrideStatus(slug, bob, "replied", who);
+  await results.recomputeCampaign(slug);
+  await rec("email.sent", people[1], "2026-10-09"); // new activity, then another recompute
+  await results.recomputeCampaign(slug);
+  const second = (await results.campaignResults(slug, roles, { recompute: false }))!;
+  const bobRow = second.rows.find((r) => r.contactId === bob)!;
+  assert.equal(bobRow.statusOverride, "replied");
+  assert.equal(bobRow.effective, "replied");
+  assert.equal(bobRow.status, "bounced", "the derived status is kept beside the override");
+  assert.equal(second.funnel.replied, 2);
+  assert.equal(second.funnel.delivered, 3, "an override past bounced counts as delivered");
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.entityId === `${slug}/${bob}`);
+  assert.equal(audits.length, 1);
+  assert.equal(audits[0].action, "member.status_override");
+  assert.deepEqual(audits[0].changes, [{ field: "statusOverride", to: "replied" }]);
+  await admin.overrideStatus(slug, bob, null, who);
+  assert.equal((await camp.getMember(slug, bob))?.statusOverride, undefined);
+  ok("a manual override is kept through recomputes, shown beside the derived status, and audited (task 033)");
+
+  // Edit: dates change the window and force a recompute.
+  const edited = await admin.updateCampaign(slug, admin.parseCampaign({ startDate: "2026-09-01", notes: "Moved" }), who);
+  assert.equal(edited?.resultsAt, undefined);
+  await assert.rejects(admin.updateCampaign(slug, { endDate: "2026-08-01" }, who), admin.CampaignError);
+  const third = (await results.campaignResults(slug, roles))!;
+  assert.equal(third.rows.find((r) => r.contactEmail === people[4])?.effective, "sent", "an earlier start takes in eve's email");
+  // Members of a general campaign whose contact is investor stay hidden without the role.
+  const hidden = await contacts.resolveContact({ email: addr("res-lp", `fund-${run}.example.test`) }, { visibility: "investor", source: "check" });
+  assert.ok(hidden.status === "created");
+  await camp.addMember({ campaignSlug: slug, contactId: hidden.contact.id });
+  const general = (await results.campaignResults(slug, ["admin"]))!;
+  assert.equal(general.funnel.members, 5);
+  assert.equal((await results.campaignResults(slug, roles))!.funnel.members, 6);
+  ok("campaign edits are checked and audited; hidden contacts are not counted without the investor role (task 033)");
+}
+
+{
+  // NFR-04: a campaign of 500 members loads in under 2 seconds.
+  const results = await import("@/lib/market/results");
+  const slug = `big-${run}`;
+  await camp.upsertCampaign({ slug, name: "Big", visibility: "general", startDate: "2026-10-01" });
+  const emails = Array.from({ length: 500 }, (_, i) => addr(`big-${i}`));
+  await results.mapLimit(emails, 16, async (email) => {
+    const r = await activity.recordActivity({ type: "email.sent", source: "check", sourceId: `big-${run}-${email}`, occurredAt: "2026-10-02T15:00:00Z", email });
+    assert.ok(r.status === "recorded");
+    await camp.addMember({ campaignSlug: slug, contactId: r.contactId, group: `G${email.length % 3}` });
+  });
+  let t0 = performance.now();
+  const cold = await results.campaignResults(slug, ["admin"]);
+  const coldMs = performance.now() - t0;
+  t0 = performance.now();
+  const warm = await results.campaignResults(slug, ["admin"]);
+  const warmMs = performance.now() - t0;
+  assert.equal(cold?.funnel.sent, 500);
+  assert.equal(warm?.rows.length, 500);
+  assert.ok(coldMs < 2000, `with a recompute: ${coldMs.toFixed(0)} ms`);
+  assert.ok(warmMs < 2000, `stored statuses: ${warmMs.toFixed(0)} ms`);
+  ok(`a 500-member campaign loads in ${warmMs.toFixed(0)} ms, ${coldMs.toFixed(0)} ms when it derives statuses first (NFR-04, task 033)`);
 }
 
 {

@@ -37,5 +37,7 @@ FR-12 and FR-09 acceptance (81 sent, the bounces and replies in the private `ind
 
 ## Notes
 
+- Set the campaign's start and end dates, or tag the imported emails with the campaign slug: untagged email counts toward a campaign only inside its date window (task 033, `results.ts`). Then run `recomputeCampaign` and compare the funnel with `index.csv`.
+
 - The spec names `STORAGE_CS`; the script reads `STORAGE_ACCOUNT_CONNECTION` like the rest of the site and accepts `STORAGE_CS` as an alias.
 - Spec references: FR-09, FR-12, NFR-01.

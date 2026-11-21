@@ -40,4 +40,6 @@ FR-07, FR-09, FR-11. Route shape and workflow shape follow `src/app/api/reports/
 
 ## Notes
 
+- After each sync, call `recomputeAllCampaigns()` from `src/lib/market/results.ts` so member statuses follow new mail (task 033). It writes only member rows whose status changed.
+
 - Spec references: FR-07, FR-09, FR-11, NFR-02, NFR-05.
