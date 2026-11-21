@@ -292,7 +292,7 @@ See section 7. The prototype's model (`prototype/src/components/MloCalculator/mo
 - Every number is labeled **Illustrative**, with a one-line assumptions note and a "not a projection or offer" disclaimer.
 - Show ranges where possible.
 - Defaults and ranges come from finance and counsel, not from marketing copy.
-- No collection of personal data inside the calculator. A "Discuss your numbers" CTA opens the contact form with the scenario pre-attached (opt-in).
+- No collection of personal data inside the calculator. A "Discuss your numbers" CTA goes to the `/meet` booking page (owner decision 2026-11-21; no scenario is carried over).
 
 ### 7.5 Technical notes
 - Pure client-side calculation, deterministic function, unit tests for the model.
@@ -382,7 +382,7 @@ Moved to the private archive (`spaarke-research/2026-11-services-page/README.md`
 4. Which stats to feature; verify primaries for items marked R, D and P.
 5. ~~Brand tokens for color and type.~~ Resolved in section 0: the site's v2 tokens.
 6. Decision on a hero video loop versus still image.
-7. CTA destination: assessment form, scheduler or both. The first draft sends "Start a conversation" to `/meet` and "Request an assessment" and "Discuss your numbers" to `/contact`.
+7. CTA destination: decided 2026-11-21. "Start a conversation" and "Discuss your numbers" go to `/meet`; "Request an assessment" goes to `/contact?reason=mlo`, which preselects the new "Managed Legal Operations" reason on the site's contact form.
 8. Headline: decided 2026-11-21. "Practice law. We'll run the operations." for both audiences ("the business" read to in-house teams as their company).
 9. How this page relates to the existing services message on the site (legal engineers and managed services delivered one decision-focused use case at a time, as in the Spaarke Method article). Decide whether section 5 or 7 should link to it.
 10. When to add the nav link to production: with the first merge, or after counsel review.

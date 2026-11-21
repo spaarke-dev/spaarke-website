@@ -33,10 +33,11 @@ export const anchors = [
   { id: "faq", label: "FAQ" },
 ];
 
+/** Owner decisions 2026-11-21: conversations and numbers go to booking; assessments to the contact form with the MLO reason preselected. */
 export const ctas = {
   conversation: { label: "Start a conversation", href: "/meet" },
-  assessment: { label: "Request an assessment", href: "/contact" },
-  numbers: { label: "Discuss your numbers", href: "/contact" },
+  assessment: { label: "Request an assessment", href: "/contact?reason=mlo" },
+  numbers: { label: "Discuss your numbers", href: "/meet" },
 };
 
 /* ------------------------------------------------------------------ */

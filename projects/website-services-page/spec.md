@@ -27,7 +27,7 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 - Final calculator defaults (finance) and final function labels (counsel).
 - Primary-source verification of statistics marked R, D or P.
 - Drag-to-move between Sankey lanes, smooth path morphing, the "add a firm" interaction.
-- Scenario pre-attachment to the contact form (the CTA links to `/contact` without it in the draft).
+- Scenario pre-attachment (dropped 2026-11-21: "Discuss your numbers" goes to `/meet`).
 - Ethics, regulatory and entity strategy.
 
 ### Affected Areas
@@ -100,13 +100,13 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 | Nav label | What is the tab called? | "Services" (2026-11-19) | Nav link label |
 | Terms | How are MSO and MLO used? | MSO is the entity (the client's MSO, and Spaarke as MSO operator); MLO is the service package the MSO delivers (2026-11-21) | All copy, diagram and calculator labels |
 | AI and transformation | One hub capability or two? | Two: AI is a technology and functional capability; transformation is process and business model reengineering (2026-11-21) | Network hub list |
+| CTAs | Where does each button go? | "Start a conversation" and "Discuss your numbers" to `/meet`; "Request an assessment" to `/contact?reason=mlo` with a new "Managed Legal Operations" contact reason (2026-11-21) | All CTAs; `src/lib/contact.ts` and `/contact` gain the reason and the `?reason=` preselect |
 | Nav timing | When does the nav link ship? | At first merge (2026-11-21) | FR-12 ships with the page |
 | Value lines | Keep the firm-view value and capital lines? | Keep as written for counsel review (2026-11-21) | Section 2 benefits, section 6 narrative and capital note |
 
 ## Assumptions
 
 - **Hero image**: interim Unsplash photo tagged "Interim image" until the licensed photo is chosen. Affects hero.
-- **CTAs**: "Start a conversation" to `/meet`; "Request an assessment" and "Discuss your numbers" to `/contact`. Affects all CTAs.
 - **Stats**: the six prototype stats ship with their verification status shown only in code comments, not on the page. Affects section 3.
 - **Calculator defaults and labels**: prototype placeholders. Affects section 6.
 - **Network pairs**: six pairs in the diagram. Affects section 5.

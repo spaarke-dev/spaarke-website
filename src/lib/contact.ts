@@ -16,15 +16,33 @@ export interface ContactFormData {
  * is one list and drift is not possible.
  */
 export const DESIGN_PARTNER_REASON = "Join the design partner program";
+export const MLO_REASON = "Managed Legal Operations";
 
 export const VALID_REASONS = [
   "See a working session",
   "Book an accelerator scoping session",
   DESIGN_PARTNER_REASON,
+  MLO_REASON,
   "Partnership",
   "Press / media",
   "Something else",
 ] as const;
+
+export type ContactReason = (typeof VALID_REASONS)[number];
+
+/**
+ * Short URL keys for linking to /contact with a reason preselected, e.g.
+ * `/contact?reason=mlo`. Keys keep the full reason text out of URLs; an
+ * unknown key is ignored.
+ */
+export const REASON_KEYS: Record<string, ContactReason> = {
+  mlo: MLO_REASON,
+  "design-partner": DESIGN_PARTNER_REASON,
+};
+
+export function reasonFromKey(key: string | string[] | undefined): ContactReason | "" {
+  return typeof key === "string" ? (REASON_KEYS[key] ?? "") : "";
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
