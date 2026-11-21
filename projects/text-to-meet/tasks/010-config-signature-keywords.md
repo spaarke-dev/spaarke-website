@@ -1,7 +1,7 @@
 # Task 010: Config, signature check, keywords
 
 **Phase:** 1 (Core library)
-**Status:** not-started
+**Status:** completed (2026-11-21)
 **Estimated:** 3 hours
 **Dependencies:** none
 **Tags:** typescript, api, config
@@ -58,13 +58,37 @@ Spec FR-01, FR-04, FR-07 to FR-10, FR-17. Keeping Twilio's specifics in
 
 ## Acceptance Criteria
 
-- [ ] No new runtime packages
-- [ ] `getSmsConfig()` is `null` with `SMS_MODE` unset
-- [ ] The signature check never reads `request.url`
-- [ ] "meet", " Meet! ", "MEET card2" classify as meet (code `CARD2` for the
+- [x] No new runtime packages
+- [x] `getSmsConfig()` is `null` with `SMS_MODE` unset
+- [x] The signature check never reads `request.url`
+- [x] "meet", " Meet! ", "MEET card2" classify as meet (code `CARD2` for the
       last); "please stop texting me" classifies as stop
 
 ## Notes
 
 Take the signature test vector (URL, parameters, token, expected value) from
 Twilio's webhook security page when writing task 012, not from memory.
+
+### Done (2026-11-21)
+
+- `src/lib/sms/config.ts`: `smsModeOn()`, `getSmsConfig()` (null unless
+  `SMS_MODE=twilio` and every setting is valid; secrets must be 32
+  characters or more, as `MEET_LINK_SECRET` must), `toE164()`,
+  `PLACEMENT_CODES` (`CARD2`, `SIG` from the spec's Placement section,
+  pending the owner's list in task 001), `resolvePlacement()`,
+  `placementLabel()`.
+- `src/lib/sms/twilio-signature.ts`: `signaturePayload()`,
+  `computeSignature()`, `isValidSignature()` (any of the given tokens),
+  `parseFormBody()`. Sorts by code unit, not locale.
+- `src/lib/sms/keywords.ts`: `classify(body, optOutType)`.
+- Cross-checked against Twilio's own library (`twilio@5.4.0`, installed in a
+  scratch folder, not in the project): identical signatures for the docs
+  example and for a form-encoded SMS body; 25 cases passed. Twilio's docs
+  page gives the example's URL and parameters but no auth token, so the
+  vector for task 012 is the library's output (see task 012 notes).
+- **Decision, stop wins:** a stop word or plain-language revocation anywhere
+  in a message makes it a stop, even after MEET, as FR-08 says. The cost is
+  false positives: "Can we meet at the end of the week" contains END, so it
+  gets no reply and the sender is marked opted out until START. Flagged for
+  counsel with the FR-08 checklist item; narrowing the word list for longer
+  messages is a one-line change in `keywords.ts`.

@@ -54,3 +54,11 @@ FR-04, FR-07, FR-15 and success criterion 8 name this script.
 A curly apostrophe is not GSM-7 and would turn the whole message into UCS-2
 (70 characters a segment). This check is what keeps the reply at two
 segments.
+
+Signature vector (from task 010). Twilio's page shows the example URL
+`https://mycompany.com/myapp` and parameters `CallSid=CA1234567890ABCDE`,
+`Caller=+12349013030`, `Digits=1234`, `From=+12349013030`,
+`To=+18005551212`, but no auth token. With the token `12345`, Twilio's own
+library (`twilio@5.4.0`, `getExpectedTwilioSignature`) gives
+`3KI2uRuYyAdhZIJXcpU0izDUzWI=`, and `computeSignature` matches it. Use that as
+the fixed vector.
