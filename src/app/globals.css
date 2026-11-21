@@ -257,3 +257,20 @@ html::-webkit-scrollbar {
     justify-content: space-around;
   }
 }
+
+/* ===== /services (Managed Legal Operations) =====
+   Cross-fade when the Law Firm | Corporate switch flips content, and the
+   traveling pulse on the network diagram's operator lines. Both are only
+   used under `motion-safe`, so reduced-motion visitors get the final state. */
+@keyframes services-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes services-pulse {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -120; }
+}
+/* Anchored sections sit under the sticky site header. */
+[data-services-section] {
+  scroll-margin-top: 96px;
+}

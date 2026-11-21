@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button, Shell, Slab } from "@/components/primitives";
 import ContactForm from "@/components/ContactForm";
 import { SocialIcon } from "@/components/SocialIcons";
+import { reasonFromKey } from "@/lib/contact";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +44,12 @@ const SOCIAL_OPTIONS: {
 const SPECTRAL_GRADIENT =
   "linear-gradient(90deg, #000BFF 0%, #00F7FF 14%, #1AFF00 28%, #8CFF00 42%, #DBFF00 56%, #FFD200 70%, #FF9400 85%, #FF4600 100%)";
 
-export default function Contact() {
+export default async function Contact({
+  searchParams,
+}: {
+  searchParams: Promise<{ reason?: string | string[] }>;
+}) {
+  const defaultReason = reasonFromKey((await searchParams).reason);
   return (
     <Slab tone="light" className="relative overflow-hidden">
       {/* Back-glow — same radial-spotlight pattern as the platform
@@ -172,6 +178,7 @@ export default function Contact() {
           <div className="md:flex-1 md:pt-2">
             <ContactForm
               recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
+              defaultReason={defaultReason}
             />
           </div>
         </div>

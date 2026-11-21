@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "test:services": "node --import tsx --test src/components/services/calculator/model.test.ts",
     "linkedin:auth": "tsx scripts/linkedin-auth.ts",
     "linkedin:publish": "tsx scripts/linkedin-publish.ts",
     "linkedin:refresh": "tsx scripts/linkedin-refresh-token.ts",
@@ -42,6 +43,7 @@
     "@sendgrid/mail": "^8.1.6",
     "@tailwindcss/typography": "^0.5.19",
     "applicationinsights": "^3.13.0",
+    "d3-sankey": "^0.12.3",
     "geist": "1.9.2",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
@@ -56,6 +58,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/d3-sankey": "^0.12.5",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
