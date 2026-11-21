@@ -1,20 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { money } from "./format";
 import type { ShiftData, ShiftRow } from "./shiftData";
 
 /**
- * The calculator's chart (review round 4, 2026-11-21; replaces the shift
- * chart, which replaced the Sankey). Three stacked bars, drawn to one scale,
+ * The calculator's chart (review round 5, 2026-11-21: vertical columns; it
+ * replaces round 4's horizontal stacked bars, which replaced the round 3
+ * shift chart and the Sankey). Three stacked columns, drawn to one scale,
  * tell the story in steps:
  *  1. Today: every cost line is carried by the firm or department.
  *  2. Move: the chosen functions move to the MSO at today's cost, so the
  *     total does not change yet.
  *  3. Efficiencies: the MSO delivers them for less, so its part shrinks and
- *     the gap (the saving) shows how far the total falls.
- * Segments keep their place from bar to bar, so the eye follows each
- * function across. Widths animate as the assumptions change.
+ *     the dashed gap (the saving) shows how far the total falls.
+ * The cost lines are named on the left, level with their band in the first
+ * column. Lines that stay sit at the bottom and the lines that move sit
+ * above them, so each band keeps its place from column to column. Heights
+ * animate as the assumptions change. Phones list the lines under the chart.
  */
 
 const KEEP = ["#6F6F6B", "#8B8B87"];
@@ -22,7 +25,13 @@ const KEEP_MOVING = ["#B9B9B4", "#C9C9C4"];
 const MSO_LIGHT = ["#A9BCEF", "#BCCBF3"];
 const MSO = ["#3F5FD9", "#5078DC"];
 const SAVING = "#2E9E6A";
-const MOVE = "motion-safe:transition-[width] motion-safe:duration-500 motion-safe:ease-out";
+const MOVE = "motion-safe:transition-[height] motion-safe:duration-500 motion-safe:ease-out";
+
+/** Column height on wider screens, and on phones (used to decide when a value fits in its band). */
+const H = 420;
+const H_PHONE = 300;
+/** Minimum vertical spacing between labels on the left. */
+const LABEL_GAP = 22;
 
 interface Seg {
   key: string;
@@ -31,6 +40,7 @@ interface Seg {
   fill: string;
   text: string;
   dashed?: string;
+  moves?: boolean;
 }
 
 export function StackedShift({
@@ -51,16 +61,6 @@ export function StackedShift({
   result: ReactNode;
 }) {
   const { rows } = data;
-  // Bar width in pixels, so a segment shows its text only when the text fits.
-  const barRef = useRef<HTMLDivElement>(null);
-  const [barPx, setBarPx] = useState(0);
-  useEffect(() => {
-    const el = barRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(() => setBarPx(el.clientWidth));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
   const sum = (f: (r: ShiftRow) => number) => rows.reduce((a, r) => a + f(r), 0);
   const today = sum((r) => r.before);
   const kept = sum((r) => r.keep);
@@ -69,13 +69,29 @@ export function StackedShift({
   const saving = Math.max(0, movedToday - fee);
   const max = Math.max(1, today);
 
-  // Lines that stay (or the part of a line that stays) first, then what moves.
+  // Lines that stay (or the part of a line that stays) at the bottom, then what moves.
   const stay = rows.filter((r) => r.keep > 0);
   const go = rows.filter((r) => r.before - r.keep > 0);
   const goLabel = (r: ShiftRow) => (r.keep > 0 && r.msoLabel ? r.msoLabel : r.label);
 
-  const staySegs = (): Seg[] =>
-    stay.map((r, i) => ({ key: `k-${r.id}`, label: r.label, value: r.keep, fill: KEEP[i % 2], text: "#fff" }));
+  const staySegs: Seg[] = stay.map((r, i) => ({
+    key: `k-${r.id}`,
+    label: r.label,
+    value: r.keep,
+    fill: KEEP[i % 2],
+    text: "#fff",
+  }));
+  const todaySegs: Seg[] = [
+    ...staySegs,
+    ...go.map((r, i) => ({
+      key: `m-${r.id}`,
+      label: goLabel(r),
+      value: r.before - r.keep,
+      fill: KEEP_MOVING[i % 2],
+      text: "#3a3a38",
+      moves: true,
+    })),
+  ];
 
   const stages: { n: number; title: string; body: string; total: number; segs: Seg[]; caption: ReactNode }[] = [
     {
@@ -83,16 +99,7 @@ export function StackedShift({
       title: "Today",
       body: `Every function runs ${clientPlace}.`,
       total: today,
-      segs: [
-        ...staySegs(),
-        ...go.map((r, i) => ({
-          key: `m-${r.id}`,
-          label: goLabel(r),
-          value: r.before - r.keep,
-          fill: KEEP_MOVING[i % 2],
-          text: "#3a3a38",
-        })),
-      ],
+      segs: todaySegs,
       caption: (
         <>
           {client} {money(today)}
@@ -105,7 +112,7 @@ export function StackedShift({
       body: "The chosen functions move at today’s cost. The total does not change yet.",
       total: today,
       segs: [
-        ...staySegs(),
+        ...staySegs,
         ...go.map((r, i) => ({
           key: `m-${r.id}`,
           label: goLabel(r),
@@ -116,7 +123,9 @@ export function StackedShift({
       ],
       caption: (
         <>
-          {client} {money(kept)} <Dot /> <span className="text-[#3F5FD9]">MSO {money(movedToday)}</span>
+          {client} {money(kept)}
+          <br />
+          <span className="text-[#3F5FD9]">MSO {money(movedToday)}</span>
         </>
       ),
     },
@@ -126,27 +135,25 @@ export function StackedShift({
       body: "Shared people, platforms and purchasing lower the cost of each function, so the total falls.",
       total: kept + fee,
       segs: [
-        ...staySegs(),
+        ...staySegs,
         ...go.map((r, i) => ({ key: `m-${r.id}`, label: goLabel(r), value: r.mso, fill: MSO[i % 2], text: "#fff" })),
-        {
-          key: "saving",
-          label: "Saving",
-          value: saving,
-          fill: "rgba(46,158,106,0.14)",
-          text: "#1F7A50",
-          dashed: SAVING,
-        },
+        { key: "saving", label: "Saving", value: saving, fill: "rgba(46,158,106,0.14)", text: "#1F7A50", dashed: SAVING },
       ],
       caption: (
         <>
-          {client} {money(kept)} <Dot /> <span className="text-[#3F5FD9]">MSO fee {money(fee)}</span> <Dot />{" "}
+          {client} {money(kept)}
+          <br />
+          <span className="text-[#3F5FD9]">MSO fee {money(fee)}</span>
+          <br />
           <span className="font-semibold text-[#1F7A50]">Saving {money(saving)}</span>
         </>
       ),
     },
   ];
 
+  const labels = placeLabels(todaySegs, max);
   const toggles = rows.filter((r) => r.toggle);
+  const cols = "grid grid-cols-3 gap-x-3 sm:grid-cols-[minmax(150px,230px)_repeat(3,minmax(0,1fr))] sm:gap-x-6 lg:gap-x-10";
 
   return (
     <figure className="m-0">
@@ -177,44 +184,76 @@ export function StackedShift({
         ) : null}
       </fieldset>
 
-      <ol className="mt-2">
+      <div className={`${cols} mt-8`}>
+        {/* Row 1: column totals. */}
+        <div className="hidden sm:block" />
         {stages.map((s) => (
-          <li
+          <p key={s.n} className="font-display text-fg text-center text-[clamp(17px,1.6vw,22px)] font-medium tabular-nums">
+            {money(s.total)}
+          </p>
+        ))}
+
+        {/* Row 2: the cost-line names on the left, then the three columns. */}
+        <div className="relative mt-3 hidden sm:block" style={{ height: H }}>
+          {labels.map((l) => (
+            <div
+              key={l.seg.key}
+              className="absolute inset-x-0 flex -translate-y-1/2 items-center justify-end gap-2 whitespace-nowrap text-[13px] leading-none"
+              style={{ top: l.top }}
+            >
+              <span className="text-fg min-w-0 truncate">{l.seg.label}</span>
+              <span className="text-fg-low tabular-nums">{money(l.seg.value)}</span>
+              {l.seg.moves ? <span className="text-[11px] font-medium text-[#3F5FD9]">moves</span> : null}
+              <span aria-hidden="true" className="inline-block h-2.5 w-2.5 shrink-0 rounded-[2px]" style={{ backgroundColor: l.seg.fill }} />
+            </div>
+          ))}
+        </div>
+        {stages.map((s) => (
+          <div
             key={s.n}
-            className="border-line grid grid-cols-1 gap-x-8 gap-y-3 border-b py-6 last:border-b-0 md:grid-cols-[230px_1fr]"
+            role="presentation"
+            className="border-line-strong mt-3 flex h-[300px] flex-col-reverse gap-[2px] border-b sm:h-[420px]"
           >
-            <div>
-              <p className="flex items-baseline gap-2.5">
-                <span className="font-mono-display text-[12px] text-[#3F5FD9]">0{s.n}</span>
-                <span className="font-display text-fg text-[18px] font-medium leading-tight">{s.title}</span>
-              </p>
-              <p className="text-fg-mid mt-1.5 text-[13px] leading-relaxed">{s.body}</p>
-            </div>
-            <div className="min-w-0">
-              <div className="flex items-baseline justify-between gap-3">
-                <p className="text-fg-mid text-[13px] tabular-nums">{s.caption}</p>
-                <p className="font-display text-fg shrink-0 text-[18px] font-medium tabular-nums">
-                  {money(s.total)}
-                </p>
-              </div>
-              <div ref={s.n === 1 ? barRef : undefined} className="mt-2 flex h-14 w-full gap-[2px]" role="presentation">
-                {s.segs.map((g) => (
-                  <Segment key={g.key} seg={g} share={g.value / max} barPx={barPx} />
-                ))}
-              </div>
-            </div>
+            {s.segs.map((g) => (
+              <Band key={g.key} seg={g} share={g.value / max} />
+            ))}
+          </div>
+        ))}
+
+        {/* Row 3: what each column shows. */}
+        <div className="hidden sm:block" />
+        {stages.map((s) => (
+          <div key={s.n} className="mt-4 min-w-0">
+            <p className="flex items-baseline gap-2">
+              <span className="font-mono-display text-[12px] text-[#3F5FD9]">0{s.n}</span>
+              <span className="font-display text-fg text-[15px] font-medium leading-tight sm:text-[17px]">{s.title}</span>
+            </p>
+            <p className="text-fg-mid mt-1.5 hidden text-[13px] leading-relaxed sm:block">{s.body}</p>
+            <p className="text-fg-mid mt-2 text-[12px] leading-relaxed tabular-nums sm:text-[13px]">{s.caption}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Phones: the cost lines as a list, since there is no room beside the columns. */}
+      <ul className="text-fg-mid mt-6 space-y-1.5 text-[13px] sm:hidden">
+        {[...todaySegs].reverse().map((g) => (
+          <li key={g.key} className="flex items-center gap-2">
+            <span aria-hidden="true" className="inline-block h-2.5 w-2.5 shrink-0 rounded-[2px]" style={{ backgroundColor: g.fill }} />
+            <span className="text-fg">{g.label}</span>
+            <span className="tabular-nums">{money(g.value)}</span>
+            {g.moves ? <span className="text-[11px] font-medium text-[#3F5FD9]">moves</span> : null}
           </li>
         ))}
-      </ol>
+      </ul>
 
-      <div className="text-fg-mid flex flex-wrap gap-x-6 gap-y-2 pb-5 text-[12px]">
+      <div className="text-fg-mid mt-8 flex flex-wrap gap-x-6 gap-y-2 pb-5 text-[12px]">
         <Key fill={KEEP[0]}>Stays with the {client.toLowerCase()}</Key>
-        <Key fill={MSO_LIGHT[0]}>Moved to the MSO at today&rsquo;s cost</Key>
+        <Key fill={KEEP_MOVING[0]}>Will move to the MSO</Key>
+        <Key fill={MSO_LIGHT[0]}>Moved, at today&rsquo;s cost</Key>
         <Key fill={MSO[0]}>MSO service fee</Key>
         <Key fill="rgba(46,158,106,0.14)" dashed={SAVING}>
           Saving
         </Key>
-        <span>Hover a segment for its name and cost.</span>
       </div>
 
       <div className="border-line-strong border-t-2 pt-5">{result}</div>
@@ -222,31 +261,53 @@ export function StackedShift({
   );
 }
 
-function Segment({ seg, share, barPx }: { seg: Seg; share: number; barPx: number }) {
+/**
+ * Places each cost-line name level with the middle of its band in the first
+ * column, then nudges names apart so none overlap, keeping them inside the
+ * column's height. Positions are in pixels from the top.
+ */
+function placeLabels(segs: Seg[], max: number): { seg: Seg; top: number }[] {
+  let below = 0;
+  const placed = segs
+    .filter((s) => s.value > 0)
+    .map((seg) => {
+      const mid = below + seg.value / 2;
+      below += seg.value;
+      return { seg, top: H - (mid / max) * H };
+    })
+    .sort((a, b) => a.top - b.top);
+  for (let i = 1; i < placed.length; i++) {
+    placed[i].top = Math.max(placed[i].top, placed[i - 1].top + LABEL_GAP);
+  }
+  for (let i = placed.length - 1; i >= 0; i--) {
+    const limit = i === placed.length - 1 ? H - LABEL_GAP / 2 : placed[i + 1].top - LABEL_GAP;
+    placed[i].top = Math.max(LABEL_GAP / 2, Math.min(placed[i].top, limit));
+  }
+  return placed;
+}
+
+function Band({ seg, share }: { seg: Seg; share: number }) {
   const pct = Math.max(0, share) * 100;
-  const px = (pct / 100) * barPx;
-  const valueText = money(seg.value);
-  // Rough text widths at 13 px semibold and 11 px, plus the side padding.
-  const showValue = px >= valueText.length * 8 + 22;
-  const showLabel = showValue && px >= seg.label.length * 6 + 22;
+  const showValue = (pct / 100) * H_PHONE >= 20;
   return (
     <div
       title={`${seg.label}: ${money(seg.value)}`}
-      className={`relative h-full min-w-0 overflow-hidden rounded-[4px] ${MOVE}`}
+      className={`relative w-full shrink-0 overflow-hidden rounded-[4px] ${MOVE}`}
       style={{
-        // Every bar sums to today's total, so the 2 px gaps come out of each segment.
-        width: `max(0px, calc(${pct}% - 2px))`,
-        flex: "none",
+        // Every column sums to today's total, so the 2 px gaps come out of each band.
+        height: `max(0px, calc(${pct}% - 2px))`,
         backgroundColor: seg.fill,
         border: seg.dashed ? `1.5px dashed ${seg.dashed}` : undefined,
         display: pct <= 0.05 ? "none" : undefined,
       }}
     >
       {showValue ? (
-        <div className="absolute inset-0 flex flex-col justify-center px-2.5" style={{ color: seg.text }}>
-          {showLabel ? <span className="whitespace-nowrap text-[11px] leading-tight opacity-90">{seg.label}</span> : null}
-          <span className="whitespace-nowrap text-[13px] font-semibold leading-tight tabular-nums">{valueText}</span>
-        </div>
+        <span
+          className="absolute inset-0 flex items-center justify-center whitespace-nowrap text-[12px] font-semibold tabular-nums sm:text-[13px]"
+          style={{ color: seg.text }}
+        >
+          {money(seg.value)}
+        </span>
       ) : null}
     </div>
   );
@@ -263,8 +324,4 @@ function Key({ fill, dashed, children }: { fill: string; dashed?: string; childr
       {children}
     </span>
   );
-}
-
-function Dot() {
-  return <span className="text-fg-low">·</span>;
 }

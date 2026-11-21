@@ -568,7 +568,7 @@ export interface Phase {
 export const approach = {
   id: "approach",
   eyebrow: "Designing, implementing and operating MLO",
-  title: "Designed in weeks. Judged over years.",
+  title: "Designed in weeks. Value delivered over years.",
   /**
    * Owner decision 2026-11-21: link the Spaarke Method under the phases. The
    * sentence explains how the two sets of phases fit: these three stand up and

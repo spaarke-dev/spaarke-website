@@ -416,7 +416,14 @@ function Approach() {
   return (
     <Band id={approach.id} tone="light" style={WHITE}>
       <Shell>
-        <SectionHead eyebrow={approach.eyebrow} title={approach.title} />
+        <SectionHead
+          eyebrow={approach.eyebrow}
+          title={approach.title.split(". ").map((t, i, all) => (
+            <span key={t} className="block">
+              {i < all.length - 1 ? `${t}.` : t}
+            </span>
+          ))}
+        />
         <div className="mt-16">
           <Phases tone="light" />
         </div>

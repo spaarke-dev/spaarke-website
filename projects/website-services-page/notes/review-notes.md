@@ -84,6 +84,16 @@ Owner feedback items 1 to 4, applied on the same branch.
 
 Decided in round 4: the owner kept "Business partnership" as the legal department sixth item (2026-11-21).
 
+## Review round 5 (2026-11-21)
+
+Owner feedback items 1 to 3 (item 4 arrived empty).
+
+| # | Feedback | Applied |
+|---|---|---|
+| 1 | Calculator: vertical bars, so the category labels can sit on the left | The three stages are now stacked columns on one scale: lines that stay at the bottom, lines that move above them, the saving as a dashed band on top of the third column. Each cost line is named on the left, level with its band in the first column, with its cost and "moves" if it moves; names are nudged apart so none overlap. Totals sit above the columns and each stage is described below its column. Phones drop the left names and list the lines under the chart |
+| 2 | Headline: "Designed in weeks. Value delivered over years." | Changed; each sentence sits on its own line |
+| 3 | Phase detail was hard to read; remove show and hide, open one phase at a time, highlighted in light blue | Each phase is a tab. The selected phase is highlighted light blue and its detail opens in a light-blue panel below, with numbered steps in larger type and the outcome beside them; the others are hidden. Arrow keys move between phases. On phones the panel opens under the selected phase |
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
