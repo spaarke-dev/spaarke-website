@@ -12,7 +12,7 @@
 | 031 | [Calculator UI and Sankey](031-calculator-ui.md) | 3 | 030, 010 | complete (draft) |
 | 040 | [Timeline, FAQ, closing and disclaimers](040-timeline-faq-closing.md) | 4 | 010 | complete (draft) |
 | 041 | [Nav link, metadata and noindex](041-nav-metadata.md) | 4 | 010 | complete (draft) |
-| 050 | [First-draft review with the owner](050-draft-review.md) | 5 | 011, 012, 020, 021, 031, 040, 041 | not-started |
+| 050 | [First-draft review with the owner](050-draft-review.md) | 5 | 011, 012, 020, 021, 031, 040, 041 | complete |
 | 051 | [Counsel, finance and photo inputs](051-content-inputs.md) | 5 | 050 | not-started |
 | 052 | [Launch: indexing and merge](052-launch.md) | 5 | 051 | not-started |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | Wrap-up | 052 | not-started |

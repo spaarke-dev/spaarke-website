@@ -7,9 +7,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 050 First-draft review with the owner |
-| **Status** | First draft built on `feature/website-services-page` (worktree `c:\code_files\spaarke-website-wt-services-page`); not pushed |
-| **Next Action** | Walk the owner through the draft in the preview; record decisions in `notes/review-notes.md` and in `spec.md` Owner Clarifications |
+| **Task** | 051 Counsel, finance and photo inputs |
+| **Status** | Owner review (050) complete 2026-11-21; all ten decisions in `notes/review-notes.md`. Branch `feature/website-services-page` (worktree `c:\code_files\spaarke-website-wt-services-page`) is open as PR spaarke-dev/spaarke-website#179, not merged. Merging puts the page and its nav link live (noindex). |
+| **Next Action** | Gather counsel review of the copy (function labels, boundary and fee language, FAQ, firm-view value and capital lines), finance-set calculator defaults, primary sources for the stats, and the exclusively licensed hero photo; then task 052 |
 
 ## Where things are
 
