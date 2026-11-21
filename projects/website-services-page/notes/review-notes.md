@@ -10,8 +10,8 @@ Run the dev server in the worktree and open `/services`; add `?audience=corporat
 
 | # | Topic | Draft choice | Decision |
 |---|---|---|---|
-| 1 | Headline | "Practice law. We'll run the business." | |
-| 2 | Hero image | Labeled placeholder frame | |
+| 1 | Headline | "Practice law. We'll run the business." | "Practice law. We'll run the operations." for both audiences, hero and closing (2026-11-21) |
+| 2 | Hero image | Labeled placeholder frame | Exclusive stock license, picked before launch. Interim: Unsplash XjJmfN7QJj4 (Vitaly Gariev, Unsplash License) at `public/services/hero-interim.jpg`, tagged "Interim image"; task 052 swaps it out (2026-11-21) |
 | 3 | "Start a conversation" destination | `/meet` | |
 | 4 | "Request an assessment" and "Discuss your numbers" | `/contact` (no scenario attached) | |
 | 5 | Nav link timing | "Services" added in this branch, between Platform and Why Spaarke | Ship the nav link at first merge (2026-11-21) |

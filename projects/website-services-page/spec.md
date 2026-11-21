@@ -105,8 +105,7 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 
 ## Assumptions
 
-- **Headline**: "Practice law. We'll run the business." (first candidate). Affects hero.
-- **Hero image**: labeled placeholder frame. Affects hero.
+- **Hero image**: interim Unsplash photo tagged "Interim image" until the licensed photo is chosen. Affects hero.
 - **CTAs**: "Start a conversation" to `/meet`; "Request an assessment" and "Discuss your numbers" to `/contact`. Affects all CTAs.
 - **Stats**: the six prototype stats ship with their verification status shown only in code comments, not on the page. Affects section 3.
 - **Calculator defaults and labels**: prototype placeholders. Affects section 6.
@@ -114,8 +113,8 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 
 ## Unresolved Questions
 
-- [ ] Final headline. Blocks: launch
-- [ ] Hero photograph source. Blocks: launch
+- [x] Final headline: "Practice law. We'll run the operations." for both audiences (2026-11-21)
+- [ ] Hero photograph: exclusive stock license chosen as the route (2026-11-21); the image itself is still to be picked. An interim Unsplash photo stands in. Blocks: launch
 - [ ] Counsel review of function labels, boundary and fee language, FAQ answers. Blocks: launch and indexing
 - [ ] Finance-set calculator defaults and ranges. Blocks: launch
 - [ ] Primary sources for stats marked R, D, P. Blocks: launch

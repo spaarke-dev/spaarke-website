@@ -100,10 +100,7 @@ Sticky page bar (under the site header): section anchors, the audience switch, p
 
 **Visual.** One large, full-bleed photograph of real people working in a relationship: a lawyer with a client, and an operations teammate working alongside them, clearly sharing the load. Warm natural light, candid framing, working environment (not a stock boardroom). No robots, glowing networks or handshakes. See section 8 for sourcing. Until the photograph exists the page shows a clearly labeled placeholder frame.
 
-**Headline candidates.**
-- "Practice law. We'll run the business."
-- "Run legal like a business."
-- "Legal, operated."
+**Headline.** "Practice law. We'll run the operations." (owner decision 2026-11-21, both audiences). Candidates considered: "Practice law. We'll run the business.", "Run legal like a business.", "Legal, operated."
 
 **Subhead by audience.**
 - Firm: "Managed Legal Operations that gives your lawyers the technology, team and economics of a much larger firm, and leaves your clients, your judgment and your practice yours."
@@ -308,6 +305,8 @@ See section 7. The prototype's model (`prototype/src/components/MloCalculator/mo
 
 **Goal.** A distinctive image that competitors will not also use, and that does not look like AI.
 
+**Decision (2026-11-21).** Option 2, an exclusive or buyout stock license, picked before launch. Until then an interim Unsplash photo (XjJmfN7QJj4, Vitaly Gariev, Unsplash License) stands in with an "Interim image" tag; task 052 removes it.
+
 **Options, in order of recommendation.**
 1. **Commissioned photoshoot.** Hire a documentary-style photographer, cast real professionals (or your own team), shoot in a real office. You own or exclusively license the result, which is the best way to avoid a lookalike. Budget more than stock, less than a major campaign.
 2. **Exclusive or buyout license from a curated library.** Curated agencies such as Stocksy and the premium tiers of Getty offer extended or exclusive licenses that take the image out of circulation. Ask for the exclusive or buyout license in writing and confirm the model releases cover commercial web use for the term.
@@ -384,6 +383,6 @@ Moved to the private archive (`spaarke-research/2026-11-services-page/README.md`
 5. ~~Brand tokens for color and type.~~ Resolved in section 0: the site's v2 tokens.
 6. Decision on a hero video loop versus still image.
 7. CTA destination: assessment form, scheduler or both. The first draft sends "Start a conversation" to `/meet` and "Request an assessment" and "Discuss your numbers" to `/contact`.
-8. Headline: pick one of the three candidates in 4.1. The first draft uses "Practice law. We'll run the business."
+8. Headline: decided 2026-11-21. "Practice law. We'll run the operations." for both audiences ("the business" read to in-house teams as their company).
 9. How this page relates to the existing services message on the site (legal engineers and managed services delivered one decision-focused use case at a time, as in the Spaarke Method article). Decide whether section 5 or 7 should link to it.
 10. When to add the nav link to production: with the first merge, or after counsel review.

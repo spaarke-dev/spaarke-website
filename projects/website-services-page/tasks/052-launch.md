@@ -16,10 +16,11 @@ See `../spec.md` and the design sections named in the goal.
 
 ## Steps
 
-1. Remove noindex; add /services to sitemap.ts; add FAQPage JSON-LD
-2. Open the PR and merge after review
-3. Verify the acceptance criteria are met
-4. Update TASK-INDEX.md: mark this task complete
+1. Replace the interim hero photo with the exclusively licensed one: set `hero.image.src`, adjust `focus`, set `interim: false`, and delete `public/services/hero-interim.jpg`
+2. Remove noindex; add /services to sitemap.ts; add FAQPage JSON-LD
+3. Open the PR and merge after review
+4. Verify the acceptance criteria are met
+5. Update TASK-INDEX.md: mark this task complete
 
 ## Expected Outputs
 
@@ -27,4 +28,5 @@ See `../spec.md` and the design sections named in the goal.
 
 ## Acceptance Criteria
 
+- [ ] No "Interim image" tag on the hero; the interim Unsplash file is removed
 - [ ] Page in the sitemap and indexable

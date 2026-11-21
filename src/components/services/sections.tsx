@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties, ReactNode } from "react";
+import Image from "next/image";
 import {
   ArrowTrendingDown24Regular,
   Briefcase24Regular,
@@ -181,12 +182,39 @@ function Hero() {
 }
 
 function HeroImage() {
-  // Placeholder frame until the commissioned photograph exists (design.md section 8).
+  const frame = "relative aspect-[4/5] w-full overflow-hidden rounded-3xl border sm:aspect-[16/11] lg:aspect-[4/5]";
+  if (hero.image.src) {
+    return (
+      <div className={frame} style={{ borderColor: "rgba(255,255,255,0.10)" }}>
+        <Image
+          src={hero.image.src}
+          alt={hero.image.alt}
+          fill
+          priority
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          className="object-cover"
+          style={{ objectPosition: hero.image.focus }}
+        />
+        {/* Soft fade into the dark band so the photo sits in the page. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(180deg, rgba(10,10,10,0) 55%, rgba(10,10,10,0.35) 100%)" }}
+        />
+        {hero.image.interim ? (
+          <span className="font-mono-display absolute left-4 top-4 rounded-full bg-[rgba(10,10,10,0.7)] px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[rgba(255,255,255,0.8)]">
+            Interim image
+          </span>
+        ) : null}
+      </div>
+    );
+  }
+  // Placeholder frame until an image is set (design.md section 8).
   return (
     <div
       role="img"
       aria-label={hero.image.alt}
-      className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border sm:aspect-[16/11] lg:aspect-[4/5]"
+      className={frame}
       style={{
         borderColor: "rgba(255,255,255,0.10)",
         background:

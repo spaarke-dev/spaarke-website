@@ -45,9 +45,8 @@ export const ctas = {
 
 export const hero = {
   eyebrow: "Spaarke Managed Legal Operations",
-  /** First candidate from design.md 4.1; the alternates are kept for review. */
-  headline: ["Practice law.", "We’ll run the business."],
-  headlineAlternates: ["Run legal like a business.", "Legal, operated."],
+  /** Owner decision 2026-11-21: one headline for both audiences. */
+  headline: ["Practice law.", "We’ll run the operations."],
   subhead: {
     firm: "Managed Legal Operations gives your lawyers the technology, team and economics of a much larger firm, and leaves your clients, your judgment and your practice yours.",
     corporate:
@@ -59,8 +58,17 @@ export const hero = {
   } satisfies ByAudience<{ label: string; href: string }>,
   secondaryCta: { label: "See how it works", href: "#how-it-works" },
   image: {
-    // Placeholder until the commissioned or exclusively licensed photograph is ready (design.md section 8).
-    src: null as string | null,
+    /**
+     * Owner decision 2026-11-21: the launch photo comes from an exclusive stock
+     * license. Until it is chosen, an interim image stands in so the page can be
+     * built; `interim: true` shows a small label on it, and the page must not go
+     * live while it is set. Null shows the placeholder frame.
+     */
+    // Interim: Unsplash XjJmfN7QJj4, Vitaly Gariev, Unsplash License. Replace before launch.
+    src: "/services/hero-interim.jpg" as string | null,
+    /** CSS object-position for the crop; keeps both people in the portrait frame. */
+    focus: "60% 50%",
+    interim: true,
     alt: "A lawyer and an operations professional working side by side in a real office.",
   },
 };
@@ -600,7 +608,7 @@ export const faq = {
 };
 
 export const closing = {
-  title: "Practice law. We’ll run the business.",
+  title: "Practice law. We’ll run the operations.",
   body: {
     firm: "Talk to us about what Managed Legal Operations would look like for your firm.",
     corporate: "Talk to us about what Managed Legal Operations would look like for your legal department.",
