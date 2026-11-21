@@ -16,7 +16,7 @@ See `../spec.md` and the design sections named in the goal.
 
 ## Steps
 
-1. Replace the hero media with licensed files: license the trial video (or pick another) and commit it under `public/services/` with a new name (the `hero-comp.*` name is gitignored), set `hero.media.video`, set `fallbackImage` to a licensed still, adjust `focus`, set `interim: false`, and delete `public/services/hero-interim.jpg`
+1. Replace the hero media with licensed files: license the trial videos (Stocksy 5947230 and 5947223, or others) and commit them under `public/services/` with new names (the `hero-comp*` names are gitignored), set `hero.media.videos`, set `fallbackImage` to a licensed still, adjust each `focus` and `fallbackFocus`, set `interim: false`, and delete `public/services/hero-interim.jpg`
 2. Remove noindex; add /services to sitemap.ts; add FAQPage JSON-LD
 3. Open the PR and merge after review
 4. Verify the acceptance criteria are met
@@ -28,5 +28,5 @@ See `../spec.md` and the design sections named in the goal.
 
 ## Acceptance Criteria
 
-- [ ] No interim tag on the hero; the interim Unsplash file is removed and the hero video is licensed and committed
+- [ ] No interim tag on the hero; the interim Unsplash file is removed and the hero videos are licensed and committed
 - [ ] Page in the sitemap and indexable

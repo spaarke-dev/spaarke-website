@@ -10,16 +10,15 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { CORP_DEFAULTS, FIRM_DEFAULTS } from "./defaults";
 import { computeCorporate, computeFirm, type CorpInputs, type FirmInputs } from "./model";
-import { corporateSankey, firmSankey } from "./sankeyData";
+import { corporateShift, firmShift } from "./shiftData";
 
 const noMoves = { staff: false, technology: false, facilities: false, finance: false, marketing: false };
 /** Equivalent of Vitest's toBeCloseTo(b, 4). */
 const approx = (a: number, b: number, digits = 4) =>
   assert.ok(Math.abs(a - b) < 10 ** -digits / 2, `expected ${a} to be close to ${b}`);
 
-type Links = { links: { source: string; target: string; value: number }[] };
-const outflow = (d: Links, id: string) => d.links.filter((l) => l.source === id).reduce((a, l) => a + l.value, 0);
-const inflow = (d: Links, id: string) => d.links.filter((l) => l.target === id).reduce((a, l) => a + l.value, 0);
+type Rows = { rows: { before: number; keep: number; mso: number }[] };
+const total = (d: Rows, k: "before" | "keep" | "mso") => d.rows.reduce((a, r) => a + r[k], 0);
 
 describe("firm model", () => {
   it("with nothing moved, results equal today", () => {
@@ -90,12 +89,16 @@ describe("firm model", () => {
     assert.equal(computeFirm(inputs).underwater, true);
   });
 
-  it("Sankey flows conserve value", () => {
-    const r = computeFirm({ ...FIRM_DEFAULTS, feePressure: 0.1 });
-    const d = firmSankey(r);
-    approx(outflow(d, "revenue"), r.withMlo.revenue);
-    approx(inflow(d, "fee"), outflow(d, "fee"));
-    approx(inflow(d, "fee"), r.fee);
+  it("shift chart rows match the model", () => {
+    for (const moved of [FIRM_DEFAULTS.moved, noMoves, { ...noMoves, technology: true, staff: true }]) {
+      const inp = { ...FIRM_DEFAULTS, feePressure: 0.1, moved };
+      const r = computeFirm(inp);
+      const d = firmShift(inp, r);
+      approx(total(d, "mso"), r.fee, 2);
+      approx(total(d, "keep") + total(d, "mso"), r.withMlo.opex + r.withMlo.capex, 2);
+      approx(total(d, "before"), r.baseline.opex + r.baseline.capex, 2);
+      approx(d.result.after, r.withMlo.profit, 2);
+    }
   });
 });
 
@@ -133,11 +136,16 @@ describe("corporate model", () => {
     assert.ok(r.capexBaseline > 0);
   });
 
-  it("Sankey flows conserve value", () => {
-    const r = computeCorporate(CORP_DEFAULTS);
-    const d = corporateSankey(r);
-    approx(outflow(d, "budget"), r.baselineTotal);
-    approx(inflow(d, "fee"), outflow(d, "fee"));
+  it("shift chart rows match the model", () => {
+    for (const moved of [CORP_DEFAULTS.moved, { ops: false, technology: false }, { ops: true, technology: false }]) {
+      const inp = { ...CORP_DEFAULTS, moved };
+      const r = computeCorporate(inp);
+      const d = corporateShift(inp, r);
+      approx(total(d, "mso"), r.fee, 2);
+      approx(total(d, "keep") + total(d, "mso"), r.withMloTotal, 2);
+      approx(total(d, "before"), r.baselineTotal, 2);
+      approx(d.result.after, r.savings, 2);
+    }
   });
 
   it("cost per matter falls when savings are positive", () => {

@@ -42,15 +42,41 @@ Owner feedback items 1 to 15, applied on the same branch.
 
 Open from round 2:
 
-- Decided 2026-11-21: MSO is spelled out as "Managed Services Organization" everywhere, matching the definition on the page (not "Managed Service Organization" or "Management Services Organization").
+- Superseded in round 3: MSO was first spelled out as "Managed Services Organization". The owner corrected it to "Management Services Organization" (see round 3, item 1).
 - The video needs a license (or a different clip) before launch; task 052 covers it.
+
+## Review round 3: section by section (2026-11-21)
+
+Owner feedback items 1 to 12, applied on the same branch.
+
+| # | Feedback | Applied |
+|---|---|---|
+| 1 | MSO stands for "Management Services Organization"; MLO is Managed Legal Operations | Corrected in the diagram, the definitions band, the FAQ answer and the content comments. Decision: MSO is spelled out as "Management Services Organization" everywhere |
+| 2 | Hero video: Stocksy 5947230 | Copied locally to `public/services/hero-comp-1.mp4` (gitignored) |
+| 3 | Random hero video on each load; second clip 5947223 | `hero.media.videos` holds both clips (the second is `hero-comp-2.mp4`); one is picked after mount, so server and client markup match. The gitignore now covers `hero-comp*` |
+| 4 | Law firm intro for why now | Owner copy used as written |
+| 5 | Legal department intro for why now | Owner copy used as written |
+| 6 | Four stats in a 2 x 2 grid, more graphical, text left and chart right | Law firm: AI use (ten figures, seven filled), fee pressure (donut), insourcing (columns), AI-native capital (columns). Legal department: deployment (donut), redesign (columns), insourcing with a department headline, AI use with a department headline ("Seven in ten of your outside counsel now use AI every week"). The other two stats per audience are hidden; content kept |
+| 7 | Replace the profit-pool band with a light-blue band defining MSO and MLO, per the mockup | Two term cards with the large acronym tile, the term and its definition. The MSO text is the owner's. The legal department version drops the ownership clause, since corporate arrangements have no ownership element. The MLO text is new, because the mockup repeated the MSO text: "The managed service an MSO delivers to a law firm: the technology, AI, operations, finance and administration that run the business side of legal, so lawyers can concentrate on the practice of law." Counsel reviews both. The profit-pool statement and bridge line are kept in content (task 060) |
+| 8 | What is MLO: dark band; equal-size law firm and MSO blocks; no animation; functions not shown as tags; bigger services agreement; drop the hover definitions | Dark band with the site glow. The diagram runs full width under the heading, intro and boundary line. Both panels have the same height (equal grid rows). Each function is shown with an icon, its name and its one-line explanation, all visible. The build animation, Replay and hover line are removed. The services agreement is a labeled block on the spine, with "Services to the law firm" (up) and "Cost-based fee to the MSO" (down). The definition and MSO note paragraphs moved to the new definitions band |
+| 9 | Remove "Legal is a business with unusual requirements" | Removed from the page; content kept (task 060) |
+| 10 | Financial: law firm on the left, MSO on the right, costs shift across | The Sankey is replaced by a shift chart. Each cost line is a row; client bars grow left from the middle, MSO bars grow right. Ticking a function in the chart moves its bar across: the dashed outline is today's cost and the solid bar is the MSO fee, so the gap is the saving. Profit (firm) or savings (department) is in the bottom row |
+| 11 | Bars should change size as the parameters change | All bars share one scale, so they resize with the price advantage, fee pressure, routine work shifted and the functions moved. The revenue or budget slider scales every line together, so it changes the dollar figures and the bars keep their proportions |
+| 12 | Parameters on a top row, full-width chart | Sliders sit in a row across the top (three for firms, four for departments), then the chart runs full width, then the KPI cards. The function chips are gone; the tick boxes in the chart replace them |
+
+Removed as a result: `Sankey.tsx`, `sankeyData.ts`, and the `d3-sankey` and `@types/d3-sankey` dependencies. The model tests now check that the chart rows add up to the model's fee, totals, profit and savings.
+
+Open from round 3:
+
+- Counsel: the MSO definition's "enable non-lawyer ownership" clause, and the new MLO and legal department definitions.
+- Owner: the stat headlines rewritten in the legal department's voice (AI use and insourcing).
 
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
 - Fixed 2026-11-21: the economics section heading now leads the section, like the others.
-- Sankey transitions are not animated; the diagram redraws on each input change.
-- The stat tiles use plain bars; the "illustrative line" chart form in design.md 4.3 is not built.
+- Superseded in round 3: the Sankey was replaced by the shift chart, whose bars animate as inputs change.
+- The stat tiles use a donut, ten figures or two columns (round 3); the "illustrative line" chart form in design.md 4.3 is not built.
 - No analytics events on the switch, calculator or CTAs yet.
 - Copy for sections 4 to 8 and the FAQ answers are first drafts for counsel review.
 - The page is `noindex` and not in the sitemap.

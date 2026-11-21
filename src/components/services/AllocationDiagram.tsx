@@ -1,19 +1,76 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import {
+  ArrowDown16Regular,
+  ArrowUp16Regular,
+  Briefcase24Regular,
+  Building24Regular,
+  Calculator24Regular,
+  DataBarVertical24Regular,
+  DataPie24Regular,
+  DocumentSignature28Regular,
+  DocumentText24Regular,
+  Flow24Regular,
+  Gavel24Regular,
+  Handshake24Regular,
+  LockClosed24Regular,
+  Megaphone24Regular,
+  People24Regular,
+  PeopleTeam24Regular,
+  PersonAdd24Regular,
+  PersonSupport24Regular,
+  Receipt24Regular,
+  Server24Regular,
+  Signature24Regular,
+  Sparkle24Regular,
+  Wallet24Regular,
+} from "@fluentui/react-icons";
 import { howItWorks, type AllocationItem } from "@/app/services/content";
-import { useAudience, useInView } from "./audience";
+import { useAudience } from "./audience";
 
 /**
- * Functional allocation diagram (design.md 4.4 and 6.1). Two stacked panels,
- * the client on top and the Managed Services Organization below, joined by a
- * services-agreement connector (review round 2). Items build in one at a time
- * (120 ms stagger, top panel first) when the diagram scrolls into view; hovering,
- * focusing or tapping an item shows its one-line explanation. Under reduced
- * motion everything is shown at once and Replay is hidden.
+ * Functional allocation diagram (design.md 4.4 and 6.1), reworked in review
+ * round 3 (2026-11-21) for a dark band:
+ *  - the client panel on top and the Management Services Organization below,
+ *    the same size (equal grid rows);
+ *  - each function is a row with an icon, its name and a one-line
+ *    explanation, instead of pill tags that read like buttons;
+ *  - the services agreement between them is a labeled block, with services
+ *    flowing up to the client and a cost-based fee flowing down to the MSO;
+ *  - no build animation and no hover state: everything is visible at once.
  */
 
-const STAGGER = 120;
+const ICONS: Record<string, ReactNode> = {
+  // Law firm keeps
+  "Partners and associates": <Briefcase24Regular />,
+  "Client relationships": <Handshake24Regular />,
+  "Client data": <LockClosed24Regular />,
+  "Billings and revenue": <Receipt24Regular />,
+  "Partner and professional compensation": <Wallet24Regular />,
+  // Legal department keeps
+  "Lawyers and privileged work": <Briefcase24Regular />,
+  "Legal strategy": <Gavel24Regular />,
+  "Outside counsel relationships": <Handshake24Regular />,
+  "Company data": <LockClosed24Regular />,
+  "Decisions and sign-off": <Signature24Regular />,
+  // MSO takes on (law firm)
+  "Non-attorney staff": <People24Regular />,
+  "Technical staff": <PersonSupport24Regular />,
+  "IT systems": <Server24Regular />,
+  "Accounting and finance": <Calculator24Regular />,
+  Marketing: <Megaphone24Regular />,
+  "HR and talent": <PersonAdd24Regular />,
+  "Facilities and vendors": <Building24Regular />,
+  "Legal technology and AI": <Sparkle24Regular />,
+  // MSO takes on (legal department)
+  "Legal operations": <Flow24Regular />,
+  "Matter and spend management": <DataBarVertical24Regular />,
+  "Contract operations": <DocumentText24Regular />,
+  "Vendor and panel management": <PeopleTeam24Regular />,
+  "Technology and AI platform": <Sparkle24Regular />,
+  "Reporting and benchmarking": <DataPie24Regular />,
+};
 
 export function AllocationDiagram() {
   const { audience } = useAudience();
@@ -21,89 +78,41 @@ export function AllocationDiagram() {
   const takes = howItWorks.takes[audience];
   const sides = howItWorks.sideLabel[audience];
 
-  const { ref, inView } = useInView<HTMLDivElement>(0.2);
-  const [built, setBuilt] = useState(false);
-  const [reduced, setReduced] = useState(false);
-  const [detail, setDetail] = useState<AllocationItem | null>(null);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  }, []);
-
-  // Start the build one frame after the diagram enters the viewport, so the
-  // items' initial hidden state is painted and the transition runs.
-  useEffect(() => {
-    if (!inView) return;
-    const id = requestAnimationFrame(() => setBuilt(true));
-    return () => cancelAnimationFrame(id);
-  }, [inView]);
-
-  // Rebuild when the audience flips, so the new labels build in too.
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setDetail(null);
-  }, [audience]);
-
-  const replay = () => {
-    setBuilt(false);
-    window.setTimeout(() => setBuilt(true), 60);
-  };
-
-  const show = built || reduced;
-
   return (
-    <div ref={ref}>
-      <div className="flex flex-col">
-        <Panel
-          title={sides.client}
-          subtitle={keeps.title}
-          items={keeps.items}
-          tone="client"
-          show={show}
-          offset={0}
-          onDetail={setDetail}
-        />
+    // Equal 1fr rows keep both panels the height of the taller one.
+    <div className="grid" style={{ gridTemplateRows: "1fr auto 1fr" }}>
+      <Panel title={sides.client} subtitle={keeps.title} items={keeps.items} tone="client" />
+      <Agreement client={sides.client} />
+      <Panel title={sides.mso} subtitle={takes.title} items={takes.items} tone="operator" />
+    </div>
+  );
+}
 
-        {/* Vertical connector between the two panels. */}
-        <div className="relative flex items-center justify-center py-6" aria-hidden="true">
-          <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[rgba(10,10,10,0.25)]" />
-          <span className="font-mono-display relative rounded-full border border-[rgba(10,10,10,0.18)] bg-white px-3 py-1.5 text-center text-[10px] uppercase leading-tight tracking-[0.14em] text-[rgba(10,10,10,0.7)]">
+function Agreement({ client }: { client: string }) {
+  const side = "font-mono-display hidden items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-[rgba(255,255,255,0.7)] md:flex";
+  return (
+    <div className="relative grid grid-cols-1 items-center py-8 md:grid-cols-[1fr_auto_1fr] md:gap-8">
+      {/* The spine joining the two panels. */}
+      <div aria-hidden="true" className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[rgba(130,165,235,0.5)]" />
+      <p className={`${side} justify-end`}>
+        <ArrowUp16Regular aria-hidden="true" className="text-[#82A5EB]" />
+        Services to the {client.toLowerCase()}
+      </p>
+      <div className="relative mx-auto flex items-center gap-4 rounded-2xl border border-[rgba(130,165,235,0.55)] bg-[#0f1424] px-6 py-4 shadow-[0_0_40px_rgba(80,120,220,0.25)]">
+        <span aria-hidden="true" className="text-[#82A5EB]">
+          <DocumentSignature28Regular />
+        </span>
+        <div>
+          <p className="font-display text-fg text-[clamp(20px,1.8vw,26px)] font-medium leading-tight tracking-[-0.01em]">
             Services agreement
-          </span>
+          </p>
+          <p className="text-fg-mid mt-0.5 text-[13px]">Fee set by the cost of the services, never by legal fees</p>
         </div>
-
-        <Panel
-          title={sides.mso}
-          subtitle={takes.title}
-          items={takes.items}
-          tone="operator"
-          show={show}
-          offset={keeps.items.length}
-          onDetail={setDetail}
-        />
       </div>
-
-      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <p className="text-fg-mid min-h-[1.5em] text-[15px]" aria-live="polite">
-          {detail ? (
-            <>
-              <span className="text-fg font-medium">{detail.label}.</span> {detail.detail}
-            </>
-          ) : (
-            <span className="text-fg-low">Hover over or select an item to see what it covers.</span>
-          )}
-        </p>
-        {!reduced && (
-          <button
-            type="button"
-            onClick={replay}
-            className="font-body text-fg-mid hover:text-fg self-start rounded-full border border-[rgba(10,10,10,0.18)] px-4 py-1.5 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC] sm:self-auto"
-          >
-            Replay
-          </button>
-        )}
-      </div>
+      <p className={side}>
+        <ArrowDown16Regular aria-hidden="true" className="text-[#82A5EB]" />
+        Cost-based fee to the MSO
+      </p>
     </div>
   );
 }
@@ -113,58 +122,40 @@ function Panel({
   subtitle,
   items,
   tone,
-  show,
-  offset,
-  onDetail,
 }: {
   title: string;
   subtitle: string;
   items: AllocationItem[];
   tone: "client" | "operator";
-  show: boolean;
-  offset: number;
-  onDetail: (i: AllocationItem | null) => void;
 }) {
   const operator = tone === "operator";
   return (
     <div
       className="rounded-3xl border p-6 md:p-8"
       style={{
-        backgroundColor: operator ? "rgba(80, 120, 220, 0.08)" : "#ffffff",
-        borderColor: operator ? "rgba(80, 120, 220, 0.45)" : "rgba(10, 10, 10, 0.12)",
+        backgroundColor: operator ? "rgba(80, 120, 220, 0.14)" : "rgba(255, 255, 255, 0.04)",
+        borderColor: operator ? "rgba(130, 165, 235, 0.5)" : "rgba(255, 255, 255, 0.16)",
       }}
     >
-      <p className="font-display text-fg text-[22px] font-medium tracking-[-0.01em]">{title}</p>
-      <p
-        className="font-mono-display mt-1 text-[11px] uppercase tracking-[0.16em]"
-        style={{ color: operator ? "#3F5FD9" : "rgba(10,10,10,0.55)" }}
-      >
-        {subtitle}
-      </p>
-      <ul className="mt-6 flex flex-wrap gap-2">
-        {items.map((item, i) => (
-          <li
-            key={item.label}
-            className={`motion-safe:transition-all motion-safe:duration-300 motion-safe:ease-out ${
-              show ? "translate-y-0 opacity-100" : "translate-y-1.5 opacity-0"
-            }`}
-            style={{ transitionDelay: show ? `${(offset + i) * STAGGER}ms` : "0ms" }}
-          >
-            <button
-              type="button"
-              onMouseEnter={() => onDetail(item)}
-              onFocus={() => onDetail(item)}
-              onClick={() => onDetail(item)}
-              title={item.detail}
-              className="font-body rounded-full border px-3.5 py-2 text-left text-[14px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC]"
-              style={
-                operator
-                  ? { backgroundColor: "#5078DC", borderColor: "#5078DC", color: "#ffffff" }
-                  : { backgroundColor: "#f6f6f4", borderColor: "rgba(10,10,10,0.14)", color: "#0a0a0a" }
-              }
-            >
-              {item.label}
-            </button>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+        <p className="font-display text-fg text-[clamp(22px,2vw,28px)] font-medium tracking-[-0.01em]">{title}</p>
+        <p
+          className="font-mono-display text-[11px] uppercase tracking-[0.16em]"
+          style={{ color: operator ? "#82A5EB" : "rgba(255,255,255,0.55)" }}
+        >
+          {subtitle}
+        </p>
+      </div>
+      <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((item) => (
+          <li key={item.label} className="flex gap-3 border-t border-[rgba(255,255,255,0.1)] pt-4">
+            <span aria-hidden="true" className="mt-0.5 shrink-0" style={{ color: operator ? "#82A5EB" : "rgba(255,255,255,0.7)" }}>
+              {ICONS[item.label] ?? <Briefcase24Regular />}
+            </span>
+            <div className="min-w-0">
+              <p className="text-fg text-[15px] font-medium leading-snug">{item.label}</p>
+              <p className="text-fg-mid mt-1 text-[13px] leading-relaxed">{item.detail}</p>
+            </div>
           </li>
         ))}
       </ul>

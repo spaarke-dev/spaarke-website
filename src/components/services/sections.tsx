@@ -1,19 +1,12 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
-import {
-  ArrowTrendingDown24Regular,
-  Briefcase24Regular,
-  Gavel24Regular,
-  LockClosed24Regular,
-  PeopleTeam24Regular,
-  Receipt24Regular,
-} from "@fluentui/react-icons";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 import { Button, Eyebrow, Heading, Lede, Shell } from "@/components/primitives";
 import {
   approach,
   closing,
   ctas,
+  definitions,
   disclaimers,
   faq,
   financial,
@@ -37,8 +30,8 @@ import { Calculator } from "./calculator/Calculator";
  * because the audience switch flips content in every section; the copy
  * itself is static and comes from src/app/services/content.ts.
  *
- * Section order and bands after review round 2 (2026-11-21): hero dark, why
- * now white, highlight dark with glow, what is MLO soft blue, financial
+ * Section order and bands after review round 3 (2026-11-21): hero dark, why
+ * now white, MSO and MLO definitions soft blue, what is MLO dark, financial
  * cream, network dark, approach white, black closing.
  */
 
@@ -134,7 +127,7 @@ export function ServicesPage({ initialAudience, fromUrl }: { initialAudience: Au
     <AudienceProvider initial={initialAudience} fromUrl={fromUrl}>
       <Hero />
       <WhyNow />
-      <Highlight />
+      <Definitions />
       <WhatIsMlo />
       <Financial />
       <Network />
@@ -227,8 +220,8 @@ function WhyNow() {
           title={whyNow.title}
           intro={<Flip as="span">{whyNow.intro[audience]}</Flip>}
         />
-        {/* Two columns, three rows (review round 2). */}
-        <Flip className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-x-14 gap-y-14 md:grid-cols-2">
+        {/* Two by two, four stats per audience (review round 3). */}
+        <Flip className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-2">
           {stats.map((s) => (
             <StatTile key={s.id} stat={s} tone="light" />
           ))}
@@ -238,45 +231,47 @@ function WhyNow() {
   );
 }
 
-/* 3. Highlight: the profit pool and the bridge ----------------------- */
+/* 3. Definitions: MSO and MLO --------------------------------------- */
 
-function Highlight() {
+/** Review round 3 (2026-11-21): replaces the profit-pool highlight band (owner mockup). */
+function Definitions() {
+  const { audience } = useAudience();
+  const terms = [definitions.mso, definitions.mlo];
   return (
     <section
-      data-tone="dark"
-      className="relative overflow-hidden"
-      style={{ backgroundColor: "#000000", paddingTop: "clamp(96px, 14vh, 170px)", paddingBottom: "clamp(96px, 14vh, 170px)" }}
+      id={definitions.id}
+      data-tone="light"
+      data-services-section=""
+      className="bg-bg text-fg relative overflow-hidden py-[clamp(64px,9vh,110px)]"
+      style={SOFT_BLUE}
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(130,165,235,0.20) 0%, rgba(80,120,220,0.08) 38%, rgba(130,165,235,0.03) 62%, transparent 80%)",
-        }}
-      />
-      <Shell className="relative">
-        <div className="mx-auto max-w-4xl text-center">
-          <p
-            className="font-display text-fg font-medium tracking-[-0.025em] text-balance"
-            style={{ fontSize: "clamp(32px, 4.2vw, 60px)", lineHeight: 1.06 }}
-          >
-            {whyNow.nuance.title}
-          </p>
-          <p className="text-fg-mid mx-auto mt-6 max-w-3xl text-[clamp(17px,1.3vw,20px)] leading-relaxed">
-            {whyNow.nuance.body}
-          </p>
-          <p className="font-mono-display text-fg-low mt-5 text-[11px] uppercase tracking-wider">
-            Source: {whyNow.nuance.source.name}
-          </p>
-          <div aria-hidden="true" className="mx-auto my-14 h-px w-24 bg-[#5078DC]" />
-          <p
-            className="font-display font-medium tracking-[-0.02em] text-balance"
-            style={{ fontSize: "clamp(24px, 2.6vw, 38px)", lineHeight: 1.2, color: "#82A5EB" }}
-          >
-            {whyNow.bridge}
-          </p>
-        </div>
+      <Shell>
+        <h2 className="sr-only">{definitions.title}</h2>
+        <Flip>
+          <dl className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_auto_1fr] lg:gap-14">
+            {terms.map((t, i) => (
+              <Fragment key={t.abbr}>
+                {i === 1 ? (
+                  <div aria-hidden="true" className="hidden w-px self-stretch bg-[rgba(63,95,217,0.45)] lg:block" />
+                ) : null}
+                <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+                  <span
+                    aria-hidden="true"
+                    className="font-display text-fg flex h-[120px] w-[120px] shrink-0 items-center justify-center rounded-3xl border border-[rgba(10,10,10,0.12)] bg-white text-[40px] font-semibold tracking-[-0.02em] shadow-[0_8px_30px_rgba(63,95,217,0.10)] md:h-[148px] md:w-[148px] md:text-[48px]"
+                  >
+                    {t.abbr}
+                  </span>
+                  <div>
+                    <dt className="font-display text-fg text-[clamp(20px,1.6vw,24px)] font-medium tracking-[-0.01em]">
+                      {t.term} <span className="sr-only">({t.abbr})</span>
+                    </dt>
+                    <dd className="text-fg-mid mt-3 text-[16px] leading-relaxed">{t.body[audience]}</dd>
+                  </div>
+                </div>
+              </Fragment>
+            ))}
+          </dl>
+        </Flip>
       </Shell>
     </section>
   );
@@ -284,59 +279,26 @@ function Highlight() {
 
 /* 4. What is MLO (with how it works) --------------------------------- */
 
-const REQUIREMENT_ICONS: Record<string, ReactNode> = {
-  independence: <Gavel24Regular />,
-  privilege: <LockClosed24Regular />,
-  matters: <Briefcase24Regular />,
-  fees: <Receipt24Regular />,
-  compensation: <PeopleTeam24Regular />,
-  billing: <ArrowTrendingDown24Regular />,
-};
-
 function WhatIsMlo() {
   const { audience } = useAudience();
   return (
-    <Band id={whatIsMlo.id} tone="light" style={SOFT_BLUE}>
-      <Shell>
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <SectionHead eyebrow={whatIsMlo.eyebrow} title={whatIsMlo.title} />
-            <p className="font-body text-fg mt-8 max-w-2xl text-[clamp(19px,1.5vw,24px)] leading-[1.5]">
-              {whatIsMlo.definition}
-            </p>
-            <p className="text-fg-mid mt-5 max-w-2xl text-[16px] leading-relaxed">{whatIsMlo.msoNote}</p>
-            <Flip className="mt-5 max-w-2xl">
-              <p className="text-fg-mid text-[16px] leading-relaxed">{howItWorks.intro[audience]}</p>
+    <Band id={whatIsMlo.id} tone="dark">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: GLOW }} />
+      <Shell className="relative">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+          <SectionHead eyebrow={whatIsMlo.eyebrow} title={whatIsMlo.title} />
+          <div className="lg:pt-12">
+            <Flip>
+              <Lede>{howItWorks.intro[audience]}</Lede>
             </Flip>
-            <div className="mt-10">
-              <BoundaryLine />
+            <div className="mt-8">
+              <BoundaryLine dark />
             </div>
           </div>
-          <Flip>
-            <AllocationDiagram />
-          </Flip>
         </div>
-
-        {/* Why legal is different */}
-        <div className="mt-24">
-          <h3 className="font-display text-fg text-[clamp(24px,2.2vw,34px)] font-medium tracking-[-0.02em]">
-            {whatIsMlo.whyLegalIsDifferent.title}
-          </h3>
-          <p className="text-fg-mid mt-3 max-w-2xl text-[16px] leading-relaxed">{whatIsMlo.whyLegalIsDifferent.intro}</p>
-          <ul className="mt-10 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-            {whatIsMlo.whyLegalIsDifferent.items.map((item) => (
-              <li key={item.id} className="border-line-strong flex gap-4 border-t pt-5">
-                <span className="mt-0.5 shrink-0 text-[#3F5FD9]" aria-hidden="true">
-                  {REQUIREMENT_ICONS[item.id]}
-                </span>
-                <div>
-                  <p className="text-fg text-[17px] font-medium">{item.title}</p>
-                  <p className="text-fg-mid mt-1 text-[15px] leading-relaxed">{item.caption}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Flip className="mt-16">
+          <AllocationDiagram />
+        </Flip>
 
         {SHOW_BENEFITS ? <Benefits /> : null}
       </Shell>

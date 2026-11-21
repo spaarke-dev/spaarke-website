@@ -46,25 +46,29 @@ export const hero = {
   secondaryCta: { label: "See how it works", href: "#what-is-mlo" },
   media: {
     /**
-     * Review round 2 (2026-11-21): a background video behind the hero, like
-     * the Platform hero. The clip is an unlicensed, watermarked Stocksy comp
-     * (5947226) on trial: it lives only in the local worktree at
-     * public/services/hero-comp.mp4, is gitignored, and must never be
-     * committed. Where the file is missing (any deployed build) the hero
-     * shows the fallback photo instead. License the clip, or pick another,
-     * before launch; `interim: true` shows a small label.
+     * Background video behind the hero, like the Platform hero. Review round 3
+     * (2026-11-21): one clip is picked at random on each page load, for some
+     * variation. The clips are unlicensed, watermarked Stocksy comps on trial
+     * (5947230 and 5947223): they live only in the local worktree at
+     * public/services/hero-comp-*.mp4, are gitignored, and must never be
+     * committed. Where a file is missing (any deployed build) the hero shows
+     * the fallback photo instead. License the clips, or pick others, before
+     * launch; `interim: true` shows a small label.
      */
-    video: "/services/hero-comp.mp4" as string | null,
+    videos: [
+      // `focus` is the CSS object-position that keeps the subject in the visible right side.
+      { src: "/services/hero-comp-1.mp4", focus: "60% 50%" },
+      { src: "/services/hero-comp-2.mp4", focus: "60% 50%" },
+    ] as { src: string; focus: string }[],
     // Interim: Unsplash XjJmfN7QJj4, Vitaly Gariev, Unsplash License. Replace before launch.
     fallbackImage: "/services/hero-interim.jpg",
-    /** CSS object-position: keeps the subject in the visible right side of the hero. */
-    focus: "70% 50%",
+    fallbackFocus: "70% 50%",
     interim: true,
   },
 };
 
 /* ------------------------------------------------------------------ */
-/* 2. What is Managed Legal Operations                                 */
+/* 4. What is Managed Legal Operations                                 */
 /* ------------------------------------------------------------------ */
 
 export const whatIsMlo = {
@@ -74,7 +78,7 @@ export const whatIsMlo = {
   definition:
     "Managed Legal Operations (MLO) is a managed service that runs the business side of legal (technology, operations, finance and administration) so lawyers can concentrate on the practice of law.",
   msoNote:
-    "MLO is delivered through a Managed Services Organization, or MSO: a separate company that provides non-legal services under a services agreement. The MSO is the structure. MLO is the service it provides.",
+    "MLO is delivered through a Management Services Organization, or MSO: a separate company that provides non-legal services under a services agreement. The MSO is the structure. MLO is the service it provides.",
   split: {
     practice: {
       title: "The practice of law",
@@ -131,10 +135,49 @@ export const whatIsMlo = {
 };
 
 /* ------------------------------------------------------------------ */
-/* 3. Why MLO, why now                                                 */
+/* 3. Definitions: MSO and MLO                                         */
 /* ------------------------------------------------------------------ */
 
-export type StatChart = "bigNumber" | "pairedBars" | "columns" | "comparisonBars";
+/**
+ * Review round 3 (2026-11-21): a light-blue band that defines the two terms,
+ * from the owner's mockup. The MSO text is the owner's; the corporate
+ * variant drops the ownership clause (corporate arrangements have no
+ * ownership element). The MLO text is drafted to pair with it. Counsel
+ * reviews both.
+ */
+export const definitions = {
+  id: "definitions",
+  title: "Two terms",
+  mso: {
+    abbr: "MSO",
+    term: "Management Services Organization",
+    body: {
+      firm: "An operating company separate from the law firm that delivers non-legal business functions under a services agreement. It is organized to enable non-lawyer ownership and facilitate technology and operational transformation to improve legal service performance.",
+      corporate:
+        "An operating company separate from the legal department that delivers non-legal business functions under a services agreement. It is organized to bring technology and operational transformation to the department and improve legal service performance.",
+    } satisfies ByAudience<string>,
+  },
+  mlo: {
+    abbr: "MLO",
+    term: "Managed Legal Operations",
+    body: {
+      firm: "The managed service an MSO delivers to a law firm: the technology, AI, operations, finance and administration that run the business side of legal, so lawyers can concentrate on the practice of law.",
+      corporate:
+        "The managed service an MSO delivers to a legal department: the technology, AI, operations and reporting that run the business side of legal, so lawyers can concentrate on legal work.",
+    } satisfies ByAudience<string>,
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* 2. Why MLO, why now                                                 */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Review round 3 (2026-11-21): each tile is a small chart beside its text.
+ * "donut" = one share of a whole; "waffle" = x in ten; "columns" = two or
+ * three values side by side, the highlighted one in the accent color.
+ */
+export type StatChart = "donut" | "waffle" | "columns";
 /**
  * "retrieved-snippet" = seen in a search result during research; confirm in the primary report.
  * "secondary-verify"  = taken from a secondary citation; find and confirm the primary before publishing.
@@ -144,52 +187,66 @@ export type Verification = "retrieved-snippet" | "secondary-verify";
 export interface WhyNowStat {
   id: string;
   theme: string;
-  /** Action title: states the takeaway, not the topic. */
-  title: string;
-  figure: string;
+  /** Action title: states the takeaway, not the topic. Written in each audience's voice. */
+  title: ByAudience<string>;
+  /** The headline number, for "donut" and "waffle". */
+  figure?: string;
   caption: string;
   chart: StatChart;
-  /** Data for the small chart. Values are in the units named in `unit`. */
-  data?: { label: string; value: number }[];
-  unit?: string;
-  /** Share for the thin bar under a big-number tile (0 to 100). */
-  bar?: number;
+  /** Share for "donut" (0 to 100) or count in ten for "waffle". */
+  value?: number;
+  /** Data for "columns". `display` is the label shown above the column. */
+  data?: { label: string; value: number; display: string }[];
+  /** Index of the highlighted column; defaults to the last. */
+  highlight?: number;
   source: { name: string; url: string; date?: string; note?: string };
   verification: Verification;
-  /** Lower rank shows first. */
-  rank: ByAudience<number>;
+  /** Position in each audience's 2 x 2 grid (1 to 4). Leave an audience out to hide the stat there. */
+  rank: Partial<ByAudience<number>>;
 }
 
 export const whyNow = {
   id: "why-now",
   eyebrow: "Why Managed Legal Operations, why now",
   title: "The economics of legal are being rewritten",
+  /** Owner copy, review round 3 (2026-11-21). */
   intro: {
-    firm: "Technology, pricing and client expectations are changing at the same time. Firms are expected to adopt AI and to charge less for it, while carrying the cost of the technology and the competition from new AI-native firms.",
+    firm: "Law firms face rising client demands for pricing tied to value and outcomes, while new service models reshape how legal work is staffed, delivered and priced.",
     corporate:
-      "Legal departments are being asked to do more, keep more work in-house and spend less. AI makes that look possible, but building and running it alone is complex, and the savings depend on redesigning the work.",
+      "Legal departments face increased pressure to deliver more value, improve responsiveness and better align to business priorities.",
   } satisfies ByAudience<string>,
+  /**
+   * Owner picks, review round 3: four stats per audience in a 2 x 2 grid.
+   * Law firm: AI use, fee pressure, insourcing, AI-native capital.
+   * Legal department: deployment, redesign, insourcing, AI use (department voice).
+   */
   stats: [
     {
       id: "tech-adoption",
       theme: "Technology is transforming practice",
-      title: "Seven in ten law-firm attorneys now use AI every week",
+      title: {
+        firm: "Seven in ten law-firm attorneys now use AI every week",
+        corporate: "Seven in ten of your outside counsel now use AI every week",
+      },
       figure: "70%",
       caption: "of attorneys at law firms use AI at least once a week, a sharp increase from the year before.",
-      chart: "bigNumber",
-      bar: 70,
+      chart: "waffle",
+      value: 7,
       source: { name: "Law360 Pulse, 2026 AI Survey", url: "https://www.law360.com/legalindustry/articles/2454764", date: "March 2026" },
       verification: "retrieved-snippet",
-      rank: { firm: 1, corporate: 3 },
+      rank: { firm: 1, corporate: 4 },
     },
     {
       id: "delivery-dynamics",
       theme: "New service delivery dynamics",
-      title: "Legal departments have moved from experimenting to deploying AI",
+      title: {
+        firm: "Legal departments have moved from experimenting to deploying AI",
+        corporate: "Legal departments have moved from experimenting to deploying AI",
+      },
       figure: "61%",
       caption: "of legal departments are in AI deployment phases, and 10% say AI is fully embedded in daily workflows.",
-      chart: "bigNumber",
-      bar: 61,
+      chart: "donut",
+      value: 61,
       source: {
         name: "Deloitte Legal, The AI Imperative",
         url: "https://www.deloitte.com/uk/en/about/press-room/ai-set-to-reshape-legal-work-law-firm-pricing-and-legal-careers.html",
@@ -197,82 +254,91 @@ export const whyNow = {
         note: "Survey of 121 senior legal leaders, April to May 2026",
       },
       verification: "retrieved-snippet",
-      rank: { firm: 4, corporate: 2 },
+      rank: { corporate: 1 },
     },
     {
       id: "fee-pressure",
       theme: "Downward pressure on effort-based fees",
-      title: "Clients expect AI savings to show up in the bill",
+      title: {
+        firm: "Clients expect AI savings to show up in the bill",
+        corporate: "Departments expect AI savings to show up in the bill",
+      },
       figure: "92%",
       caption: "of legal departments expect, or are negotiating, AI-related rate cuts from their law firms.",
-      chart: "bigNumber",
-      bar: 92,
+      chart: "donut",
+      value: 92,
       source: {
         name: "Axiom survey (vendor-sourced)",
         url: "https://www.llms-for-lawyers.com/practice-areas/ai-for-in-house-counsel/",
       },
       verification: "secondary-verify",
-      rank: { firm: 2, corporate: 5 },
+      rank: { firm: 2 },
     },
     {
       id: "tech-cost-complexity",
       theme: "Cost and complexity of new technology",
-      title: "Technology only pays off when the work is redesigned around it",
-      figure: "~60% vs <20%",
+      title: {
+        firm: "Technology only pays off when the work is redesigned around it",
+        corporate: "Technology only pays off when the work is redesigned around it",
+      },
       caption:
         "Cost reduction reported with end-to-end workflow redesign versus without it. Only 37% of organizations report a positive EBIT impact from AI.",
-      chart: "comparisonBars",
+      chart: "columns",
       data: [
-        { label: "Without redesign", value: 20 },
-        { label: "End-to-end redesign", value: 60 },
+        { label: "Without redesign", value: 20, display: "<20%" },
+        { label: "With redesign", value: 60, display: "~60%" },
       ],
-      unit: "% cost reduction",
       source: {
         name: "BCG; McKinsey",
         url: "https://www.bcg.com/publications/2026/reinventing-the-operating-system-of-work-with-ai",
       },
       verification: "secondary-verify",
-      rank: { firm: 3, corporate: 3 },
+      rank: { corporate: 2 },
     },
     {
       id: "ai-native-competition",
       theme: "Competition from AI-native firms",
-      title: "Capital is flowing to AI-native competitors",
-      figure: "$1B → $4B+",
+      title: {
+        firm: "Capital is flowing to AI-native competitors",
+        corporate: "Capital is flowing to AI-native legal providers",
+      },
       caption: "Legal tech venture funding, 2023 to 2025.",
       chart: "columns",
       data: [
-        { label: "2023", value: 1 },
-        { label: "2025", value: 4 },
+        { label: "2023", value: 1, display: "$1B" },
+        { label: "2025", value: 4, display: "$4B+" },
       ],
-      unit: "$B",
       source: { name: "Gavel", url: "https://www.gavel.io/resources/ai-native-law-firms-how-to-respond" },
       verification: "secondary-verify",
-      rank: { firm: 5, corporate: 4 },
+      rank: { firm: 4 },
     },
     {
       id: "insourcing",
-      theme: "Clients bringing work back in-house",
-      title: "Clients are keeping more work in-house",
-      figure: "58% → 37%",
+      theme: "Work moving back in-house",
+      title: {
+        firm: "Clients are keeping more work in-house",
+        corporate: "Legal departments are keeping more work in-house",
+      },
       caption:
         "Share of legal departments expecting to increase outside counsel spend, last year versus this year, in a survey of 135 corporate law departments.",
-      chart: "pairedBars",
+      chart: "columns",
       data: [
-        { label: "Last year", value: 58 },
-        { label: "This year", value: 37 },
+        { label: "Last year", value: 58, display: "58%" },
+        { label: "This year", value: 37, display: "37%" },
       ],
-      unit: "% of departments",
       source: {
         name: "Above the Law, reporting a corporate law department survey",
         url: "https://abovethelaw.com/2025/12/biglaws-worst-enemy-isnt-ai-its-clients-using-ai-to-stop-paying-them/",
         date: "December 2025",
       },
       verification: "retrieved-snippet",
-      rank: { firm: 6, corporate: 1 },
+      rank: { firm: 3, corporate: 3 },
     },
   ] as WhyNowStat[],
-  /** Keeps the section credible rather than alarmist. */
+  /**
+   * Shown in review round 2's highlight band; that band was replaced by the
+   * MSO and MLO definitions in round 3. Kept for task 060.
+   */
   nuance: {
     title: "AI reallocates the profit pool. It does not shrink it evenly.",
     body: "Practices that combine high automation with durable pricing power can expand margins, while commoditized, substitutable work faces the most pressure. The question is not whether AI reduces hours, but who keeps pricing and client control.",
@@ -282,13 +348,15 @@ export const whyNow = {
   bridge: "The firms and teams that win will not just buy AI tools. They will redesign how legal is operated.",
 };
 
-/** The six stats ordered for the chosen audience. */
+/** The stats shown to an audience, in its order. */
 export function orderedStats(audience: keyof ByAudience<unknown>): WhyNowStat[] {
-  return [...whyNow.stats].sort((a, b) => a.rank[audience] - b.rank[audience]);
+  return whyNow.stats
+    .filter((s) => s.rank[audience] != null)
+    .sort((a, b) => (a.rank[audience] ?? 0) - (b.rank[audience] ?? 0));
 }
 
 /* ------------------------------------------------------------------ */
-/* 4. How MLO works: the functional structure                          */
+/* 4b. How MLO works: the functional structure                         */
 /* ------------------------------------------------------------------ */
 
 export interface AllocationItem {
@@ -357,8 +425,8 @@ export const howItWorks = {
   } satisfies ByAudience<{ title: string; items: AllocationItem[] }>,
   /** Diagram panels: the client on top, the MSO (spelled out) below. */
   sideLabel: {
-    firm: { client: "Law firm", mso: "Managed Services Organization" },
-    corporate: { client: "Legal department", mso: "Managed Services Organization" },
+    firm: { client: "Law firm", mso: "Management Services Organization" },
+    corporate: { client: "Legal department", mso: "Management Services Organization" },
   } satisfies ByAudience<{ client: string; mso: string }>,
   tailored: {
     title: "Every structure is tailored",
@@ -589,7 +657,7 @@ export const faq = {
   items: [
     {
       q: "What is Managed Legal Operations?",
-      a: "A managed service that runs the business side of legal, including technology, operations, finance and administration, so lawyers can concentrate on the practice of law. It is delivered through a separate company, a Managed Services Organization, under a services agreement.",
+      a: "A managed service that runs the business side of legal, including technology, operations, finance and administration, so lawyers can concentrate on the practice of law. It is delivered through a separate company, a Management Services Organization, under a services agreement.",
     },
     {
       q: "Does the MSO practice law?",

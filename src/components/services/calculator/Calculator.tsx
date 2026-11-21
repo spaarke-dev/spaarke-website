@@ -3,22 +3,19 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { Button } from "@/components/primitives";
 import { useAudience } from "../audience";
-import { CORP_DEFAULTS, CORP_LABELS, FIRM_DEFAULTS, FIRM_LABELS, ILLUSTRATIVE_NOTE } from "./defaults";
-import {
-  CORP_FUNCTIONS,
-  FIRM_FUNCTIONS,
-  computeCorporate,
-  computeFirm,
-  type CorpInputs,
-  type FirmInputs,
-} from "./model";
-import { Sankey, money } from "./Sankey";
-import { corporateSankey, firmSankey } from "./sankeyData";
+import { CORP_DEFAULTS, FIRM_DEFAULTS, ILLUSTRATIVE_NOTE } from "./defaults";
+import { computeCorporate, computeFirm, type CorpInputs, type FirmInputs } from "./model";
+import { money } from "./format";
+import { ShiftChart } from "./ShiftChart";
+import { corporateShift, firmShift } from "./shiftData";
 
 /**
  * The financial opportunity calculator (design.md section 7), ported from
- * the prototype. The model, defaults and Sankey mapping are unchanged; this
- * file only restyles the controls and results for the site.
+ * the prototype. The model and defaults are unchanged. Review round 3
+ * (2026-11-21): the assumptions sit in a row across the top, the chart runs
+ * full width below with the client on the left and the MSO on the right, and
+ * the functions are moved by ticking them in the chart (replacing the Sankey
+ * and the function chips).
  *
  * Guardrails kept from the prototype: there is no input for a fee as a share
  * of revenue, legal fees or profit, and the illustrative note sits beside the
@@ -62,44 +59,6 @@ function Slider(props: {
   );
 }
 
-function Chips<T extends string>(props: {
-  legend: string;
-  options: readonly T[];
-  labels: Record<string, string>;
-  value: Record<T, boolean>;
-  onChange: (v: Record<T, boolean>) => void;
-}) {
-  return (
-    <fieldset>
-      <legend className="text-fg mb-2 text-[14px] font-medium">{props.legend}</legend>
-      <div className="flex flex-wrap gap-2">
-        {props.options.map((f) => {
-          const on = props.value[f];
-          return (
-            <label
-              key={f}
-              className="font-body inline-flex cursor-pointer items-center rounded-full border px-3 py-1.5 text-[13px] transition-colors focus-within:ring-2 focus-within:ring-[#5078DC] focus-within:ring-offset-1"
-              style={
-                on
-                  ? { backgroundColor: "#5078DC", borderColor: "#5078DC", color: "#ffffff" }
-                  : { backgroundColor: "#ffffff", borderColor: "rgba(10,10,10,0.16)", color: "#0a0a0a" }
-              }
-            >
-              <input
-                type="checkbox"
-                className="sr-only"
-                checked={on}
-                onChange={(e) => props.onChange({ ...props.value, [f]: e.target.checked })}
-              />
-              {props.labels[f]}
-            </label>
-          );
-        })}
-      </div>
-    </fieldset>
-  );
-}
-
 function Kpi(props: { label: string; value: string; was?: string; delta?: string; good?: boolean | null }) {
   const deltaColor = props.good === true ? "#1F7A50" : props.good === false ? "#B3412E" : "rgba(10,10,10,0.6)";
   return (
@@ -118,21 +77,22 @@ function Kpi(props: { label: string; value: string; was?: string; delta?: string
   );
 }
 
-function Layout(props: { controls: ReactNode; sankey: ReactNode; kpis: ReactNode; note: ReactNode }) {
+function Layout(props: { controls: ReactNode; columns: string; chart: ReactNode; kpis: ReactNode; note: ReactNode }) {
   return (
-    <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[320px_1fr] lg:gap-8">
-      <div className="border-line space-y-6 rounded-3xl border bg-white p-6">
-        <p className="font-mono-display inline-block rounded-full bg-[rgba(80,120,220,0.12)] px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-[#3F5FD9]">
-          Illustrative
-        </p>
-        {props.controls}
+    <div className="space-y-4">
+      <div className="border-line rounded-3xl border bg-white p-6">
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="font-mono-display rounded-full bg-[rgba(80,120,220,0.12)] px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-[#3F5FD9]">
+            Illustrative
+          </p>
+          <p className="text-fg-low text-[13px]">Adjust the assumptions, then tick the functions to move in the chart below.</p>
+        </div>
+        <div className={`mt-6 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 ${props.columns}`}>{props.controls}</div>
       </div>
-      <div className="min-w-0">
-        <div className="border-line rounded-3xl border bg-white p-4 md:p-6">{props.sankey}</div>
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fit,minmax(150px,1fr))]">{props.kpis}</div>
-        <div className="text-fg-mid mt-4 space-y-2 text-[14px] leading-relaxed">{props.note}</div>
-        <p className="text-fg-low mt-3 text-[12px] leading-relaxed">{ILLUSTRATIVE_NOTE}</p>
-      </div>
+      <div className="border-line rounded-3xl border bg-white p-4 md:p-8">{props.chart}</div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fit,minmax(170px,1fr))]">{props.kpis}</div>
+      <div className="text-fg-mid space-y-2 text-[14px] leading-relaxed">{props.note}</div>
+      <p className="text-fg-low text-[12px] leading-relaxed">{ILLUSTRATIVE_NOTE}</p>
     </div>
   );
 }
@@ -140,7 +100,7 @@ function Layout(props: { controls: ReactNode; sankey: ReactNode; kpis: ReactNode
 function FirmCalculator() {
   const [inp, setInp] = useState<FirmInputs>(FIRM_DEFAULTS);
   const r = useMemo(() => computeFirm(inp), [inp]);
-  const data = useMemo(() => firmSankey(r), [r]);
+  const data = useMemo(() => firmShift(inp, r), [inp, r]);
   const set = <K extends keyof FirmInputs>(k: K, v: FirmInputs[K]) => setInp((p) => ({ ...p, [k]: v }));
 
   return (
@@ -179,16 +139,19 @@ function FirmCalculator() {
             onChange={(v) => set("feePressure", v)}
             hint="Applied equally with and without the MSO."
           />
-          <Chips
-            legend="Functions delivered by the MSO"
-            options={FIRM_FUNCTIONS}
-            labels={FIRM_LABELS}
-            value={inp.moved}
-            onChange={(v) => set("moved", v)}
-          />
         </>
       }
-      sankey={<Sankey data={data} ariaLabel="Where revenue goes, with the selected functions delivered by an MSO" />}
+      columns="lg:grid-cols-3"
+      chart={
+        <ShiftChart
+          data={data}
+          client="Law firm"
+          clientSub={`Revenue ${money(r.withMlo.revenue)}`}
+          msoSub={`Service fee ${money(r.fee)}`}
+          moved={inp.moved}
+          onToggle={(fn, on) => set("moved", { ...inp.moved, [fn]: on })}
+        />
+      }
       kpis={
         <>
           <Kpi label="Revenue" value={money(r.withMlo.revenue)} />
@@ -237,7 +200,7 @@ function FirmCalculator() {
 function CorporateCalculator() {
   const [inp, setInp] = useState<CorpInputs>(CORP_DEFAULTS);
   const r = useMemo(() => computeCorporate(inp), [inp]);
-  const data = useMemo(() => corporateSankey(r), [r]);
+  const data = useMemo(() => corporateShift(inp, r), [inp, r]);
   const set = <K extends keyof CorpInputs>(k: K, v: CorpInputs[K]) => setInp((p) => ({ ...p, [k]: v }));
 
   return (
@@ -285,17 +248,18 @@ function CorporateCalculator() {
             display={inp.matterCount.toLocaleString("en-US")}
             onChange={(v) => set("matterCount", v)}
           />
-          <Chips
-            legend="Functions delivered by the MSO"
-            options={CORP_FUNCTIONS}
-            labels={CORP_LABELS}
-            value={inp.moved}
-            onChange={(v) => set("moved", v)}
-          />
         </>
       }
-      sankey={
-        <Sankey data={data} ariaLabel="Where the legal budget goes, with the selected functions delivered by an MSO" />
+      columns="lg:grid-cols-4"
+      chart={
+        <ShiftChart
+          data={data}
+          client="Legal department"
+          clientSub={`Total cost of legal ${money(r.withMloTotal)}`}
+          msoSub={`Service fee ${money(r.fee)}`}
+          moved={inp.moved}
+          onToggle={(fn, on) => set("moved", { ...inp.moved, [fn]: on })}
+        />
       }
       kpis={
         <>

@@ -72,4 +72,4 @@ src/generated/
 projects/article-insights-assistant/eval/last-run.json
 
 # Unlicensed stock comps used for local review only. Never commit.
-/public/services/hero-comp.*
+/public/services/hero-comp*
