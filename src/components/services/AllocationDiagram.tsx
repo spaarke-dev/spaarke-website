@@ -20,7 +20,9 @@ import {
   PeopleTeam24Regular,
   PersonAdd24Regular,
   PersonSupport24Regular,
+  Organization24Regular,
   Receipt24Regular,
+  Ribbon24Regular,
   Server24Regular,
   Signature24Regular,
   Sparkle24Regular,
@@ -39,6 +41,8 @@ import { useAudience } from "./audience";
  *  - the services agreement between them is a labeled block, with services
  *    flowing up to the client and a cost-based fee flowing down to the MSO;
  *  - no build animation and no hover state: everything is visible at once.
+ * Review round 4: six items per panel sit three across (3 x 2); the law
+ * firm MSO panel, with eight, stays four across.
  */
 
 const ICONS: Record<string, ReactNode> = {
@@ -48,12 +52,14 @@ const ICONS: Record<string, ReactNode> = {
   "Client data": <LockClosed24Regular />,
   "Billings and revenue": <Receipt24Regular />,
   "Partner and professional compensation": <Wallet24Regular />,
+  "Firm name and brand": <Ribbon24Regular />,
   // Legal department keeps
   "Lawyers and privileged work": <Briefcase24Regular />,
   "Legal strategy": <Gavel24Regular />,
   "Outside counsel relationships": <Handshake24Regular />,
   "Company data": <LockClosed24Regular />,
   "Decisions and sign-off": <Signature24Regular />,
+  "Business partnership": <Organization24Regular />,
   // MSO takes on (law firm)
   "Non-attorney staff": <People24Regular />,
   "Technical staff": <PersonSupport24Regular />,
@@ -146,7 +152,7 @@ function Panel({
           {subtitle}
         </p>
       </div>
-      <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className={`mt-6 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 ${items.length % 3 === 0 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}>
         {items.map((item) => (
           <li key={item.label} className="flex gap-3 border-t border-[rgba(255,255,255,0.1)] pt-4">
             <span aria-hidden="true" className="mt-0.5 shrink-0" style={{ color: operator ? "#82A5EB" : "rgba(255,255,255,0.7)" }}>

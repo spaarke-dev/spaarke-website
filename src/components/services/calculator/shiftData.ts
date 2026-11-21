@@ -1,8 +1,8 @@
 /**
- * Turns calculator inputs and model results into the rows of the shift chart
- * (review round 3, 2026-11-21): the client on the left, the MSO on the right.
- * Each row is one cost line. When a function moves, its cost leaves the
- * client's side and reappears on the MSO's side as the service fee for it,
+ * Turns calculator inputs and model results into the cost rows behind the
+ * stacked-bar chart (review round 4, 2026-11-21; first built for the round 3
+ * shift chart). Each row is one cost line: what it costs today, what the
+ * client still carries, and the MSO service fee for the part that moved,
  * smaller by the price advantage. The fee math matches model.ts exactly
  * (tests check the sums).
  */

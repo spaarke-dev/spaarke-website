@@ -6,16 +6,16 @@ import { useAudience } from "../audience";
 import { CORP_DEFAULTS, FIRM_DEFAULTS, ILLUSTRATIVE_NOTE } from "./defaults";
 import { computeCorporate, computeFirm, type CorpInputs, type FirmInputs } from "./model";
 import { money } from "./format";
-import { ShiftChart } from "./ShiftChart";
+import { StackedShift } from "./StackedShift";
 import { corporateShift, firmShift } from "./shiftData";
 
 /**
  * The financial opportunity calculator (design.md section 7), ported from
  * the prototype. The model and defaults are unchanged. Review round 3
- * (2026-11-21): the assumptions sit in a row across the top, the chart runs
- * full width below with the client on the left and the MSO on the right, and
- * the functions are moved by ticking them in the chart (replacing the Sankey
- * and the function chips).
+ * (2026-11-21): the assumptions sit in a row across the top and the chart runs
+ * full width below. Review round 4: the chart is three stacked bars (today,
+ * moved to the MSO, after the MSO’s efficiencies), with the functions chosen
+ * by tick boxes above them.
  *
  * Guardrails kept from the prototype: there is no input for a fee as a share
  * of revenue, legal fees or profit, and the illustrative note sits beside the
@@ -77,6 +77,20 @@ function Kpi(props: { label: string; value: string; was?: string; delta?: string
   );
 }
 
+function Result(props: { label: string; from: string; to: string; delta: string }) {
+  return (
+    <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+      <p className="text-fg text-[15px] font-semibold">{props.label}</p>
+      <p className="text-fg-mid flex flex-wrap items-baseline gap-x-3 text-[14px] tabular-nums">
+        <span>Today {props.from}</span>
+        <span aria-hidden="true">&rarr;</span>
+        <span className="font-display text-fg text-[22px] font-medium">With the MSO {props.to}</span>
+        <span className="font-semibold text-[#1F7A50]">{props.delta}</span>
+      </p>
+    </div>
+  );
+}
+
 function Layout(props: { controls: ReactNode; columns: string; chart: ReactNode; kpis: ReactNode; note: ReactNode }) {
   return (
     <div className="space-y-4">
@@ -85,7 +99,7 @@ function Layout(props: { controls: ReactNode; columns: string; chart: ReactNode;
           <p className="font-mono-display rounded-full bg-[rgba(80,120,220,0.12)] px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-[#3F5FD9]">
             Illustrative
           </p>
-          <p className="text-fg-low text-[13px]">Adjust the assumptions, then tick the functions to move in the chart below.</p>
+          <p className="text-fg-low text-[13px]">Adjust the assumptions, then choose the functions the MSO delivers.</p>
         </div>
         <div className={`mt-6 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 ${props.columns}`}>{props.controls}</div>
       </div>
@@ -143,13 +157,20 @@ function FirmCalculator() {
       }
       columns="lg:grid-cols-3"
       chart={
-        <ShiftChart
+        <StackedShift
           data={data}
           client="Law firm"
-          clientSub={`Revenue ${money(r.withMlo.revenue)}`}
-          msoSub={`Service fee ${money(r.fee)}`}
+          clientPlace="inside the firm"
           moved={inp.moved}
           onToggle={(fn, on) => set("moved", { ...inp.moved, [fn]: on })}
+          result={
+            <Result
+              label="The saving goes to distributable profit"
+              from={money(r.baseline.profit)}
+              to={money(r.withMlo.profit)}
+              delta={`${signed(r.delta.profit)} a year`}
+            />
+          }
         />
       }
       kpis={
@@ -252,13 +273,20 @@ function CorporateCalculator() {
       }
       columns="lg:grid-cols-4"
       chart={
-        <ShiftChart
+        <StackedShift
           data={data}
           client="Legal department"
-          clientSub={`Total cost of legal ${money(r.withMloTotal)}`}
-          msoSub={`Service fee ${money(r.fee)}`}
+          clientPlace="inside the legal department"
           moved={inp.moved}
           onToggle={(fn, on) => set("moved", { ...inp.moved, [fn]: on })}
+          result={
+            <Result
+              label="Total cost of legal"
+              from={money(r.baselineTotal)}
+              to={money(r.withMloTotal)}
+              delta={`${signed(-r.savings)} a year (${pct(-r.savingsPct, 1)})`}
+            />
+          }
         />
       }
       kpis={

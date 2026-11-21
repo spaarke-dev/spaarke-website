@@ -71,11 +71,26 @@ Open from round 3:
 - Counsel: the MSO definition's "enable non-lawyer ownership" clause, and the new MLO and legal department definitions.
 - Owner: the stat headlines rewritten in the legal department's voice (AI use and insourcing).
 
+## Review round 4 (2026-11-21)
+
+Owner feedback items 1 to 4, applied on the same branch.
+
+| # | Feedback | Applied |
+|---|---|---|
+| 1 | The operating-model diagram: the fifth "keeps" item sat alone on its own line; add a sixth and lay them out 3 x 2. Firm sixth: "Firm name and brand"; suggest a corporate sixth | Firm: "Firm name and brand" ("The firm’s name, reputation and standing with clients stay its own."). Legal department: "Business partnership" ("The department stays the trusted legal advisor to the company’s leaders and business units."). Panels with six items sit three across |
+| 2 | Corporate MSO panel 3 x 2 | Done by the same rule (six items, three across). The law firm MSO panel has eight items and stays four across |
+| 3 | Corporate stat: "experimenting" becomes "POC" | "Legal departments have moved from POC to deploying AI" |
+| 4 | The calculator chart was hard to follow; use stacked bars that show costs moving to the MSO and the total improving through its efficiencies | The shift chart is replaced by three stacked bars on one scale: 01 Today (every cost inside the firm or department), 02 Move functions to the MSO (the chosen functions turn blue at today’s cost, so the total is unchanged), 03 The MSO runs them at scale (the blue part shrinks by the price advantage and a dashed green segment shows the saving). Each bar shows its total and a split line. The function tick boxes sit above the bars, and a result line under them shows profit (firm) or total cost of legal (department), today against with the MSO |
+
+Open from round 4:
+
+- Owner: the corporate sixth item ("Business partnership") and the POC wording.
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
 - Fixed 2026-11-21: the economics section heading now leads the section, like the others.
-- Superseded in round 3: the Sankey was replaced by the shift chart, whose bars animate as inputs change.
+- Superseded in round 3: the Sankey was replaced by the shift chart, whose bars animate as inputs change. Superseded in round 4 by the stacked bars.
 - The stat tiles use a donut, ten figures or two columns (round 3); the "illustrative line" chart form in design.md 4.3 is not built.
 - No analytics events on the switch, calculator or CTAs yet.
 - Copy for sections 4 to 8 and the FAQ answers are first drafts for counsel review.

@@ -240,8 +240,8 @@ export const whyNow = {
       id: "delivery-dynamics",
       theme: "New service delivery dynamics",
       title: {
-        firm: "Legal departments have moved from experimenting to deploying AI",
-        corporate: "Legal departments have moved from experimenting to deploying AI",
+        firm: "Legal departments have moved from POC to deploying AI",
+        corporate: "Legal departments have moved from POC to deploying AI",
       },
       figure: "61%",
       caption: "of legal departments are in AI deployment phases, and 10% say AI is fully embedded in daily workflows.",
@@ -384,6 +384,7 @@ export const howItWorks = {
         { label: "Client data", detail: "Client files remain the firm’s, under its privilege and confidentiality obligations." },
         { label: "Billings and revenue", detail: "Legal fees are billed and collected by the firm." },
         { label: "Partner and professional compensation", detail: "The firm sets and pays all lawyer compensation." },
+        { label: "Firm name and brand", detail: "The firm’s name, reputation and standing with clients stay its own." },
       ],
     },
     corporate: {
@@ -394,6 +395,7 @@ export const howItWorks = {
         { label: "Outside counsel relationships", detail: "The department chooses and instructs its law firms." },
         { label: "Company data", detail: "Company and matter data stay under the company’s governance." },
         { label: "Decisions and sign-off", detail: "Every legal decision and approval stays with the department." },
+        { label: "Business partnership", detail: "The department stays the trusted legal advisor to the company’s leaders and business units." },
       ],
     },
   } satisfies ByAudience<{ title: string; items: AllocationItem[] }>,
