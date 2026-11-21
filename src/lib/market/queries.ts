@@ -1,6 +1,8 @@
 import { getTable } from "@/lib/market/tables";
-import { listActivitiesInMonth } from "@/lib/market/activity";
-import { listCampaigns, listMembers, type Campaign } from "@/lib/market/campaigns";
+import { activityFromEntity, listActivitiesInMonth } from "@/lib/market/activity";
+import { getMember, listCampaigns, listMembers, type Campaign, type Member } from "@/lib/market/campaigns";
+import { getContact } from "@/lib/market/contacts";
+import { getOrganization } from "@/lib/market/organizations";
 import { monthKey } from "@/lib/market/keys";
 import { canSeeInvestor, filterVisible, isVisibleTo, visibilityFilter } from "@/lib/market/visibility";
 import {
@@ -265,4 +267,61 @@ export async function newContacts(
   return contacts
     .filter((c) => c.createdAt >= since)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
+/** A contact the user may see, with its organization when that is visible too. */
+export async function visibleContact(contactId: string, roles: readonly string[]): Promise<ContactRow | null> {
+  const c = await getContact(contactId);
+  if (!c || !isVisibleTo(c, roles)) return null;
+  const org = c.organizationId ? await getOrganization(c.organizationId) : null;
+  const shown = org && isVisibleTo(org, roles) ? org : null;
+  return { ...c, organizationName: shown?.name, organizationDomain: shown?.domain };
+}
+
+export type TimelinePage = { rows: Activity[]; next?: string };
+
+/**
+ * One page of a contact's timeline, newest first. `after` is the last row key
+ * of the previous page. Activities the user may not see are left out.
+ */
+export async function contactTimeline(
+  contactId: string,
+  roles: readonly string[],
+  opts: { after?: string; limit?: number } = {},
+): Promise<TimelinePage> {
+  const table = await getTable("activities");
+  if (!table || !/^[0-9a-f]{64}$/.test(contactId)) return { rows: [] };
+  const limit = opts.limit ?? 50;
+  const parts = [`PartitionKey eq '${contactId}'`];
+  if (opts.after && /^[0-9]{13}-[0-9a-f]{12}$/.test(opts.after)) parts.push(`RowKey gt '${opts.after}'`);
+  const rows: Activity[] = [];
+  let lastKey: string | undefined;
+  let more = false;
+  for await (const e of table.listEntities<Parameters<typeof activityFromEntity>[0]>({
+    queryOptions: { filter: parts.join(" and ") },
+  })) {
+    if (rows.length >= limit) {
+      more = true;
+      break;
+    }
+    lastKey = e.rowKey;
+    const a = activityFromEntity(e);
+    if (isVisibleTo(a, roles)) rows.push(a);
+  }
+  return { rows, next: more ? lastKey : undefined };
+}
+
+export type MembershipRow = Member & { campaignName: string };
+
+/** The campaigns a contact belongs to, among those the user may see. */
+export async function contactMemberships(contactId: string, roles: readonly string[]): Promise<MembershipRow[]> {
+  const table = await getTable("members");
+  if (!table || !/^[0-9a-f]{64}$/.test(contactId)) return [];
+  const campaigns = new Map((await visibleCampaigns(roles)).map((c) => [c.slug, c]));
+  const out: MembershipRow[] = [];
+  for (const c of campaigns.values()) {
+    const m = await getMember(c.slug, contactId);
+    if (m) out.push({ ...m, campaignName: c.name });
+  }
+  return out;
 }

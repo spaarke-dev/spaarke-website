@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { requireAdmin } from "@/lib/market/auth";
 import { isMarketConfigured } from "@/lib/market/tables";
 import {
@@ -40,7 +41,9 @@ const COLUMNS: Column<ContactRow>[] = [
     cell: (c) => (
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-medium">{c.name || c.email}</span>
+          <Link href={`/admin/contacts/${c.id}`} className="font-medium hover:underline">
+            {c.name || c.email}
+          </Link>
           {c.visibility === "investor" ? <Badge tone="amber">Investor only</Badge> : null}
         </div>
         {c.name ? <div className="break-all text-xs text-fg-mid">{c.email}</div> : null}

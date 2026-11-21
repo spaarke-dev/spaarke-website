@@ -35,4 +35,6 @@ FR-11 and FR-15. The first real use is "Thank-you after the Summit." Automatic m
 
 ## Notes
 
+- Task 031's merge and delete already move or remove rows in `MaFollowUps` partitioned by contact ID, and any index row in that table with a `contactId` property. Keep both shapes so merge and delete stay complete.
+
 - Spec references: FR-11, FR-15.
