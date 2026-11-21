@@ -23,7 +23,8 @@ Run the dev server in the worktree and open `/services`; add `?audience=corporat
 
 ## Known gaps in the draft
 
-- Sankey labels in the middle column overlap link ribbons in some configurations (carried over from the prototype).
+- Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
+- Fixed 2026-11-21: the economics section heading now leads the section, like the others.
 - Sankey transitions are not animated; the diagram redraws on each input change.
 - The stat tiles use plain bars; the "illustrative line" chart form in design.md 4.3 is not built.
 - No analytics events on the switch, calculator or CTAs yet.

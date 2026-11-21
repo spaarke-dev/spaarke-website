@@ -464,21 +464,19 @@ function Financial() {
   return (
     <Band id={financial.id} tone="light" style={CREAM}>
       <Shell>
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-16">
-          <div className="max-w-4xl">
-            <Eyebrow>{financial.eyebrow}</Eyebrow>
-            <Flip>
-              <Heading level={2} className="mt-5 text-balance">
-                {financial.title[audience]}
-              </Heading>
-            </Flip>
-          </div>
+        <div className="max-w-4xl">
+          <Eyebrow>{financial.eyebrow}</Eyebrow>
           <Flip>
-            <p className="text-fg-mid text-[16px] leading-relaxed">{financial.narrative[audience]}</p>
-            <p className="text-fg-mid mt-3 text-[16px] leading-relaxed">{financial.networkValue}</p>
-            {audience === "firm" ? (
-              <p className="text-fg-low mt-3 text-[14px] leading-relaxed">{financial.capitalNote}</p>
-            ) : null}
+            <Heading level={2} className="mt-5 text-balance">
+              {financial.title[audience]}
+            </Heading>
+            <div className="mt-6 max-w-3xl">
+              <Lede>{financial.narrative[audience]}</Lede>
+              <p className="text-fg-mid mt-4 text-[16px] leading-relaxed">{financial.networkValue}</p>
+              {audience === "firm" ? (
+                <p className="text-fg-low mt-3 text-[14px] leading-relaxed">{financial.capitalNote}</p>
+              ) : null}
+            </div>
           </Flip>
         </div>
         <div className="mt-14">
