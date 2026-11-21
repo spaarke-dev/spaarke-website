@@ -384,5 +384,5 @@ Moved to the private archive (`spaarke-research/2026-11-services-page/README.md`
 6. Decision on a hero video loop versus still image.
 7. CTA destination: decided 2026-11-21. "Start a conversation" and "Discuss your numbers" go to `/meet`; "Request an assessment" goes to `/contact?reason=mlo`, which preselects the new "Managed Legal Operations" reason on the site's contact form.
 8. Headline: decided 2026-11-21. "Practice law. We'll run the operations." for both audiences ("the business" read to in-house teams as their company).
-9. How this page relates to the existing services message on the site (legal engineers and managed services delivered one decision-focused use case at a time, as in the Spaarke Method article). Decide whether section 5 or 7 should link to it.
+9. How this page relates to the Spaarke Method article: decided 2026-11-21. Section 7 links to it under the phases, with one sentence that places the two: these three phases stand up and run the MSO, and inside the MSO the technology and AI work follows the Method's five phases with legal engineers.
 10. When to add the nav link to production: with the first merge, or after counsel review.

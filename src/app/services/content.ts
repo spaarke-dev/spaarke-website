@@ -509,6 +509,15 @@ export const approach = {
   id: "approach",
   eyebrow: "Designing, implementing and operating MLO",
   title: "Designed in weeks. Judged over years.",
+  /**
+   * Owner decision 2026-11-21: link the Spaarke Method under the phases. The
+   * sentence explains how the two sets of phases fit: these three stand up and
+   * run the MSO; the Method's five deliver the technology and AI work inside it.
+   */
+  method: {
+    text: "Inside the MSO, technology and AI work follows the Spaarke Method: one decision at a time, with legal engineers working alongside your team.",
+    link: { label: "Read the Spaarke Method", href: "/why-spaarke/the-spaarke-method" },
+  },
   phases: [
     {
       id: "design",

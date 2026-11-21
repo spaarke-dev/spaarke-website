@@ -118,7 +118,7 @@ Add a `/services` page, labeled "Services" in the site nav, that presents Spaark
 - [ ] Counsel review of function labels, boundary and fee language, FAQ answers. Blocks: launch and indexing
 - [ ] Finance-set calculator defaults and ranges. Blocks: launch
 - [ ] Primary sources for stats marked R, D, P. Blocks: launch
-- [ ] Link to the Spaarke Method services message (design.md open item 9). Blocks: final copy
+- [x] Link to the Spaarke Method: under the section 7 phases, with a bridging sentence (2026-11-21)
 
 ---
 

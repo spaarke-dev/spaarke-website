@@ -525,7 +525,15 @@ function Approach() {
         <div className="mt-16">
           <Phases />
         </div>
-        <div className="mt-14">
+        <div className="mt-12 max-w-2xl">
+          <p className="text-fg-mid text-[16px] leading-relaxed">{approach.method.text}</p>
+          <div className="mt-3">
+            <Button variant="text" href={approach.method.link.href} arrow>
+              {approach.method.link.label}
+            </Button>
+          </div>
+        </div>
+        <div className="mt-10">
           <Button variant="primary" href={ctas.assessment.href} arrow>
             {ctas.assessment.label}
           </Button>
