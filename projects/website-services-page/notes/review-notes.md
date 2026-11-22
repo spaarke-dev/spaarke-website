@@ -146,7 +146,7 @@ Open, for the owner and counsel:
 | Network: the two panels | Removed "What your firm can offer" and "What your firm owns" (and the department's "Working with your outside firms"). The network section now shows no equity pie |
 | Hydration warning | `suppressHydrationWarning` on `<body>` in the root layout, so browser extensions that add body attributes (ColorZilla's `cz-shortcut-listen`) no longer raise the dev overlay |
 
-Still on the page and worth a look: the "What is MLO" lede and the network intro still mention equity in the law firm view, and the network's "more members" line ends with "More value in every firm's equity".
+Equity wording removed from both sections at the owner's request (2026-11-22): the "What is MLO" lede now ends "The firm puts in no cash and lowers its operating cost.", the network intro ends "each firm gets more from its MSO and can offer more to its clients", and the "more members" line ends "More to offer every client". The financial section (the MSO value estimate) still shows equity, as before.
 
 ## Known gaps in the draft
 

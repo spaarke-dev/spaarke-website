@@ -160,7 +160,7 @@ export const structure = {
     corporate: "Your department keeps the legal work. Spaarke runs the operations.",
   } satisfies ByAudience<string>,
   lede: {
-    firm: "The law firm stays 100% lawyer-owned. Its back office moves into a dedicated MSO that Spaarke owns and runs on its platform, and Spaarke pays for the move. The firm puts in no cash, lowers its operating cost and receives equity in Spaarke.",
+    firm: "The law firm stays 100% lawyer-owned. Its back office moves into a dedicated MSO that Spaarke owns and runs on its platform, and Spaarke pays for the move. The firm puts in no cash and lowers its operating cost.",
     corporate:
       "The legal department stays part of the company, with its lawyers, judgment and decisions. Its operations and technology move into a dedicated MSO that Spaarke owns and runs on its platform, and Spaarke pays for the move. The department invests no capital and lowers the total cost of legal.",
   } satisfies ByAudience<string>,
@@ -570,9 +570,9 @@ export const network = {
   id: "network",
   eyebrow: "The operating company and the MLO partner network",
   title: "One operator. A network that gets stronger with every member.",
-  /** Handoff 2026-11-22 (notes/mso-operator-network); the department copy has no equity. */
+  /** Handoff 2026-11-22 (notes/mso-operator-network). No equity in either view (owner, 2026-11-22). */
   intro: {
-    firm: "Your firm joins a network, not just a vendor. Every member has its own dedicated MSO, and every MSO is owned and run by Spaarke on the same platform. As the network grows, each firm can offer more to its clients, and the equity each firm holds in Spaarke grows with it.",
+    firm: "Your firm joins a network, not just a vendor. Every member has its own dedicated MSO, and every MSO is owned and run by Spaarke on the same platform. As the network grows, each firm gets more from its MSO and can offer more to its clients.",
     corporate:
       "Your department joins a network, not just a vendor. Every member has its own dedicated MSO, and every MSO is owned and run by Spaarke on the same platform. As the network grows, each department and firm gets more from its MSO: more specialists, better playbooks and better terms.",
   } satisfies ByAudience<string>,
@@ -608,7 +608,7 @@ export const network = {
     { ring: ["Vendor and", "partner deals"], title: "Vendor and partner agreements" },
   ],
   flywheel: {
-    firm: ["More members", "More scale and shared learning", "Better capabilities for every firm", "More value in every firm’s equity"],
+    firm: ["More members", "More scale and shared learning", "Better capabilities for every firm", "More to offer every client"],
     corporate: ["More members", "More scale and shared learning", "Better capabilities for every member", "Lower cost of legal for every department"],
   } satisfies ByAudience<string[]>,
   hub: {
