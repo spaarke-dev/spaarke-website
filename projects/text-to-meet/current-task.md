@@ -7,12 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 020, table storage (not started) |
+| **Task** | 021, inbound webhook route (not started) |
 | **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Phase 1 (tasks 010 to 012) complete 2026-11-22; task 001 waits on the owner |
-| **Next Action** | Begin task 020 |
+| **Status** | Phase 1 and task 020 complete 2026-11-22; task 001 waits on the owner |
+| **Next Action** | Begin task 021 |
 
 ## Last completed
+
+Task 020: `src/lib/sms/store.ts`, checked against the dev mock (17 cases in
+`npm run sms:check`, 116 in all). Real Table Storage is not yet exercised.
 
 Task 012: `npm run sms:check`, 99 offline cases, all pass. `NUDGE_REPLY`
 added to `messages.ts` early so the check covers it.

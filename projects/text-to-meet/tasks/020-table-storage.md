@@ -1,7 +1,7 @@
 # Task 020: Table storage
 
 **Phase:** 2 (Storage and webhook)
-**Status:** not-started
+**Status:** completed (2026-11-22)
 **Estimated:** 3 hours
 **Dependencies:** 011
 **Tags:** azure, storage, typescript
@@ -50,11 +50,43 @@ already handled).
 
 ## Acceptance Criteria
 
-- [ ] No field anywhere holds a readable phone number or message text
-- [ ] A second `claimInbound` with the same SID returns `false`
-- [ ] Concurrent counter increments do not lose counts (ETag retry)
+- [x] No field anywhere holds a readable phone number or message text
+- [x] A second `claimInbound` with the same SID returns `false`
+- [x] Concurrent counter increments do not lose counts (ETag retry)
 
 ## Notes
 
 Exercise these against local table names from the check script in task 022
 rather than writing a separate harness.
+
+### Done (2026-11-22)
+
+- `src/lib/sms/store.ts`: `claimInbound`, `classifyInbound`; `getSender`,
+  `updateSender`, `newSender`; `createConversation`, `getConversation`,
+  `recordLinkOpen`, `markConversationBooked`; `counterWindow`,
+  `incrementCounter`; `isSmsStorageConfigured`.
+- **One write path.** Every change to a sender, conversation, or counter
+  goes through a read, change, write loop guarded by the ETag, with three
+  tries and a short random pause between them. If all three lose a race it
+  throws, and the route answers without a reply, the safe side of every
+  limit. `updateSender` takes a function, so the route makes its rate limit
+  decision inside the guarded write (task 022) and two texts at once cannot
+  both take the last reply.
+- **Cap alert once per window.** At the cap, the first refused request marks
+  the counter row (`alertedAt`) and gets `alert: true`; later ones do not.
+  The hour and day counters are separate rows, so a reply refused by one may
+  already have been counted by the other: a small overcount, which errs
+  toward replying less.
+- **Row keys are checked** (MessageSid, phone hash, conversation ID) before
+  any call, so no request value can carry `/`, `#`, or `?` into a key.
+- Every call has a 5 second timeout (the SDK's abort signal).
+- With `MEET_DEV_MOCK=1` under `next dev`, rows go to the in-memory tables
+  the /meet mock uses, so the route can run locally without storage.
+- **Checked against the dev mock only.** There is no local storage
+  connection (no `STORAGE_ACCOUNT_CONNECTION` in `.env.local`, no Azurite),
+  so 17 store cases were added to `npm run sms:check` under the dev mock:
+  duplicate SID refused, unsafe key refused, sender create and update, six
+  concurrent sender updates lose nothing, conversation opens and booking,
+  twelve concurrent increments against a cap of 5 allow exactly 5, one alert
+  per window, a new window starts fresh. 116 cases pass; 20 repeated runs
+  all passed. The same code against real Table Storage is task 022.

@@ -296,5 +296,104 @@ check("GSM-7 check catches a curly apostrophe", gsm7("We’ll reply").bad.length
 check("GSM-7 counts the euro sign as two", gsm7("€").septets === 2);
 
 // ---------------------------------------------------------------------------
+section("Store (in-memory dev mock)");
+
+// The same in-memory tables `next dev` uses with MEET_DEV_MOCK=1, so these
+// cases need no storage account. Task 022 runs the route against real tables.
+const savedMock = { NODE_ENV: process.env.NODE_ENV, MEET_DEV_MOCK: process.env.MEET_DEV_MOCK };
+Object.assign(process.env, { NODE_ENV: "development", MEET_DEV_MOCK: "1" });
+try {
+  const store = await import("@/lib/sms/store");
+  const at = new Date(Date.UTC(2026, 10, 22, 14, 5));
+  const sid = `SM${"0".repeat(31)}1`;
+
+  check("inbound: first claim", await store.claimInbound(sid, at));
+  check("inbound: second claim with the same SID refused", !(await store.claimInbound(sid, at)));
+  await store.classifyInbound(sid, at, "meet", id);
+  let refused = false;
+  try {
+    await store.claimInbound("SM/../x", at);
+  } catch {
+    refused = true;
+  }
+  check("inbound: unsafe row key refused", refused);
+
+  check("sender: none yet", (await store.getSender(hash)) === null);
+  const created = await store.updateSender(hash, (c) => c ?? store.newSender(at));
+  check("sender: created", created?.optedOut === false && created.firstSeenAt === at.toISOString());
+  await store.updateSender(hash, () => ({ optedOut: true, optedOutAt: at.toISOString() }));
+  const sender = await store.getSender(hash);
+  check(
+    "sender: updated, metadata stripped",
+    sender?.optedOut === true && !("etag" in sender) && sender.firstSeenAt === at.toISOString(),
+  );
+  check("sender: no readable number stored", !JSON.stringify(sender).includes("5550199"));
+  const racing = await Promise.allSettled(
+    Array.from({ length: 6 }, () =>
+      store.updateSender(hash, (c) => ({ meetReplyCount: (c?.meetReplyCount ?? 0) + 1 })),
+    ),
+  );
+  const written = racing.filter((r) => r.status === "fulfilled").length;
+  check(
+    `sender: concurrent updates lose nothing (${written} of 6 written)`,
+    (await store.getSender(hash))?.meetReplyCount === written,
+  );
+
+  const conv = newConversationId();
+  const base = {
+    phoneHash: hash,
+    keyword: "MEET",
+    placement: NO_PLACEMENT,
+    createdAt: at.toISOString(),
+    linkExpiresAt: at.toISOString(),
+  };
+  await store.createConversation(conv, base);
+  refused = false;
+  try {
+    await store.createConversation(conv, base);
+  } catch {
+    refused = true;
+  }
+  check("conversation: duplicate ID refused", refused);
+  await store.recordLinkOpen(conv, at);
+  const opened = await store.recordLinkOpen(conv, new Date(at.getTime() + 60_000));
+  check(
+    "conversation: opens counted, first time kept",
+    opened?.status === "opened" && opened.linkOpenCount === 2 && opened.linkOpenedAt === at.toISOString(),
+  );
+  const booked = await store.markConversationBooked(conv, "1790000000000-0123abcd", at);
+  check("conversation: booked", booked?.status === "booked" && booked.bookingId === "1790000000000-0123abcd");
+  check("conversation: an open after booking keeps booked", (await store.recordLinkOpen(conv, at))?.status === "booked");
+  check(
+    "conversation: unknown ID",
+    (await store.recordLinkOpen("zzzzzzzzzzzz", at)) === null && (await store.getConversation("bad")) === null,
+  );
+
+  check(
+    "counter: windows",
+    store.counterWindow("hour", at) === "2026-11-22T14" && store.counterWindow("day", at) === "2026-11-22",
+  );
+  const runs = await Promise.allSettled(Array.from({ length: 12 }, () => store.incrementCounter("hour", at, 5)));
+  const settled = runs.flatMap((r) => (r.status === "fulfilled" ? [r.value] : []));
+  const allowed = settled.filter((v) => v.allowed).length;
+  let alerts = settled.filter((v) => v.alert).length;
+  const atCap = await store.incrementCounter("hour", at, 5);
+  alerts += atCap.alert ? 1 : 0;
+  check(
+    `counter: 12 at once against a cap of 5 allow ${allowed}, count ${atCap.count}`,
+    allowed === 5 && atCap.count === 5 && !atCap.allowed,
+  );
+  alerts += (await store.incrementCounter("hour", at, 5)).alert ? 1 : 0;
+  check("counter: one alert per window", alerts === 1);
+  const fresh = await store.incrementCounter("hour", new Date(at.getTime() + 3_600_000), 5);
+  check("counter: next window starts fresh", fresh.allowed && fresh.count === 1);
+} finally {
+  for (const [k, v] of Object.entries(savedMock)) {
+    if (v === undefined) delete process.env[k];
+    else Object.assign(process.env, { [k]: v });
+  }
+}
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) process.exit(1);

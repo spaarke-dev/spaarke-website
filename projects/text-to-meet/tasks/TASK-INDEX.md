@@ -14,7 +14,7 @@
 | 010 | [Config, signature check, keywords](010-config-signature-keywords.md) | 1 | none | 3h | **complete** |
 | 011 | [SMS link token and phone hash](011-token-and-phone-hash.md) | 1 | 010 | 2h | complete |
 | 012 | [Check script, offline cases](012-check-script.md) | 1 | 010, 011 | 2h | complete |
-| 020 | [Table storage](020-table-storage.md) | 2 | 011 | 3h | not-started |
+| 020 | [Table storage](020-table-storage.md) | 2 | 011 | 3h | complete |
 | 021 | [Inbound webhook route](021-inbound-route.md) | 2 | 012, 020 | 4h | not-started |
 | 022 | [Rate limits, caps, route checks](022-rate-limits-and-route-checks.md) | 2 | 021 | 3h | not-started |
 | 030 | [/meet with a token](030-meet-link-open.md) | 3 | 020 | 3h | not-started |

@@ -65,3 +65,8 @@ real limits live in Table Storage.
 
 Use a fictional test number in the reserved 555-0100 to 555-0199 range (for example +1 202 555 0199) in the script; never a
 real person's number.
+
+Note from task 020: the store has only been run against the in-memory dev
+mock. The `--server` cases need a storage connection with test table names
+(`SMS_*_TABLE`), either Azurite or a connection string in `.env.local`;
+neither exists on this machine today, so that is an owner decision.
