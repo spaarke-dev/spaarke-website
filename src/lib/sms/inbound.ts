@@ -1,4 +1,5 @@
 import { siteUrl } from "@/lib/ask-ai";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { createSmsToken, newConversationId } from "@/lib/meet/tokens";
 import { resolvePlacement, type SmsConfig } from "@/lib/sms/config";
 import { classify, type SmsKind } from "@/lib/sms/keywords";
@@ -10,8 +11,10 @@ import {
   createConversation,
   getConversation,
   getSender,
+  incrementCounter,
   newSender,
   updateSender,
+  type CounterKind,
   type SenderRecord,
 } from "@/lib/sms/store";
 import type { FormParams } from "@/lib/sms/twilio-signature";
@@ -30,6 +33,8 @@ export const MEET_REPLIES_PER_DAY = 3;
 export const NUDGES_PER_DAY = 1;
 /** How long a link works (FR-15). */
 const LINK_DAYS = 30;
+/** The in-memory guard: texts per number per minute on one instance, before any storage call. */
+export const GUARD_PER_MINUTE = 5;
 
 export type InboundOutcome = {
   /** The text to send, or null for an empty <Response/>. */
@@ -39,7 +44,16 @@ export type InboundOutcome = {
   /** The placement code after MEET, when known. */
   code?: string;
   /** Why there is no reply, for telemetry. */
-  reason?: "duplicate" | "no_message_sid" | "region_blocked" | "opted_out" | "rate_limited" | "handled_by_twilio";
+  reason?:
+    | "duplicate"
+    | "no_message_sid"
+    | "region_blocked"
+    | "opted_out"
+    | "rate_limited"
+    | "cap_reached"
+    | "handled_by_twilio";
+  /** Set when a site-wide cap refused the reply; `alert` is true once per window. */
+  cap?: { kind: CounterKind; cap: number; alert: boolean };
 };
 
 function param(params: FormParams, name: string): string {
@@ -66,12 +80,40 @@ export async function handleInbound(params: FormParams, config: SmsConfig, now =
   const hash = phoneHash(e164, config.phoneHashSecret);
 
   const { kind, code } = classify(param(params, "Body"), param(params, "OptOutType"));
-  const outcome = await decide(kind, code, hash, config, now);
+
+  // A cheap per-instance guard for texts that could get a reply. STOP, START
+  // and HELP are never guarded: a consent change is always recorded.
+  if ((kind === "meet" || kind === "other") && !checkRateLimit(hash, { bucket: "sms", max: GUARD_PER_MINUTE }).allowed) {
+    await classifyInbound(messageSid, now, kind);
+    return { reply: null, classification: kind, code, reason: "rate_limited" };
+  }
+
+  let outcome = await decide(kind, code, hash, config, now);
+
+  // Site-wide caps, taken only for a reply that is about to go: a single
+  // number at its own limit never uses up the site's allowance. The day is
+  // checked first; a reply the hour cap then refuses has used one of the
+  // day's, which errs toward replying less.
+  if (outcome.reply) {
+    for (const [counter, cap] of [["day", config.dailyCap], ["hour", config.hourlyCap]] as const) {
+      const taken = await incrementCounter(counter, now, cap);
+      if (!taken.allowed) {
+        outcome = { reply: null, conversationId: outcome.conversationId, reason: "cap_reached", cap: { kind: counter, cap, alert: taken.alert } };
+        break;
+      }
+    }
+  }
+
   await classifyInbound(messageSid, now, kind, outcome.conversationId ?? "");
-  return { reply: outcome.reply, classification: kind, code, reason: outcome.reason };
+  return { reply: outcome.reply, classification: kind, code, reason: outcome.reason, cap: outcome.cap };
 }
 
-type Decision = { reply: string | null; conversationId?: string; reason?: InboundOutcome["reason"] };
+type Decision = {
+  reply: string | null;
+  conversationId?: string;
+  reason?: InboundOutcome["reason"];
+  cap?: InboundOutcome["cap"];
+};
 
 async function decide(kind: SmsKind, code: string | undefined, hash: string, config: SmsConfig, now: Date): Promise<Decision> {
   const at = now.toISOString();

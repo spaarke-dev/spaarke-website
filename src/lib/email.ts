@@ -354,6 +354,48 @@ export async function sendDailyReport(data: {
 }
 
 /**
+ * Text MEET reached a site-wide reply cap (spec FR-12). Sent once per window.
+ * Carries the cap and the window only: no number, no hash, no message text.
+ */
+export async function sendSmsCapAlert(data: {
+  kind: "hour" | "day";
+  cap: number;
+  at: Date;
+}): Promise<{ sent: true } | { sent: false; error: string }> {
+  if (!ensureInit()) return { sent: false, error: "SendGrid not configured." };
+  const to = process.env.CONTACT_EMAIL_TO;
+  const from = process.env.SENDGRID_FROM_EMAIL;
+  if (!to || !from) {
+    console.warn("[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set - skipping.");
+    return { sent: false, error: "Email recipients not configured." };
+  }
+
+  const period = data.kind === "hour" ? "hour" : "day";
+  const window =
+    data.kind === "hour"
+      ? `the hour starting ${data.at.toISOString().slice(0, 13)}:00 UTC`
+      : `${data.at.toISOString().slice(0, 10)} (UTC)`;
+  const setting = data.kind === "hour" ? "SMS_REPLY_HOURLY_CAP" : "SMS_REPLY_DAILY_CAP";
+  const text = [
+    `Text MEET reached its cap of ${data.cap} replies for ${window}.`,
+    "",
+    `Until the next ${period} starts, texts to the number get no reply. STOP, START, and HELP still work, because Twilio answers those itself.`,
+    "",
+    `If this is real demand, raise ${setting} in the app settings. If it looks like abuse, the sms.received events in App Insights show the mix of texts.`,
+  ].join("\n");
+  const subject = `[Spaarke] Text MEET: ${data.kind === "hour" ? "hourly" : "daily"} reply cap reached`;
+
+  try {
+    await sgMail.send({ to, from, subject, text });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send the SMS cap alert:", message);
+    return { sent: false, error: message };
+  }
+}
+
+/**
  * A meeting booked, moved, or cancelled through the Graph flow on /meet. The
  * calendar event is on the host's calendar already; this mail is what puts it
  * in front of the team (CONTACT_EMAIL_TO) and the host (MEET_HOST), alongside

@@ -1,3 +1,4 @@
+import { sendSmsCapAlert } from "@/lib/email";
 import { flushTelemetry, trackEvent, trackException } from "@/lib/logger";
 import { getSmsConfig } from "@/lib/sms/config";
 import { handleInbound, type InboundOutcome } from "@/lib/sms/inbound";
@@ -55,7 +56,10 @@ export async function POST(request: Request) {
   try {
     outcome = await handleInbound(params, config);
   } catch (err) {
-    trackException(err instanceof Error ? err : new Error(String(err)), { step: "sms.inbound" });
+    const error = err instanceof Error ? err : new Error(String(err));
+    // The message only: storage and token errors carry no number or text.
+    console.error("[sms] inbound failed:", error.message);
+    trackException(error, { step: "sms.inbound" });
     return done(twiml(null));
   }
 
@@ -67,6 +71,17 @@ export async function POST(request: Request) {
   if (outcome.reason === "region_blocked") trackEvent("sms.region_blocked");
   if (outcome.reason === "rate_limited") trackEvent("sms.rate_limited", { classification: outcome.classification });
   if (outcome.reply) trackEvent("sms.replied", { classification: outcome.classification });
+  if (outcome.cap) {
+    trackEvent("sms.cap_reached", { window: outcome.cap.kind, cap: String(outcome.cap.cap) });
+    // Once per window: the store marks the row, so only one request sees alert.
+    if (outcome.cap.alert) {
+      try {
+        await sendSmsCapAlert({ kind: outcome.cap.kind, cap: outcome.cap.cap, at: new Date() });
+      } catch (err) {
+        trackException(err instanceof Error ? err : new Error(String(err)), { step: "sms.cap_alert" });
+      }
+    }
+  }
 
   return done(twiml(outcome.reply));
 }

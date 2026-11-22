@@ -1,7 +1,7 @@
 # Task 022: Rate limits, caps, route checks
 
 **Phase:** 2 (Storage and webhook)
-**Status:** not-started
+**Status:** completed (2026-11-22)
 **Estimated:** 3 hours
 **Dependencies:** 021
 **Tags:** api, testing, security
@@ -59,7 +59,7 @@ real limits live in Table Storage.
 
 ## Acceptance Criteria
 
-- [ ] Every case above passes locally
+- [x] Every case above passes locally
 - [ ] The cap alert is sent once per window, not per request
 - [ ] No readable number in the local tables or logs
 
@@ -77,3 +77,26 @@ Note from task 021: most route cases above already run offline in
 `npm run sms:check` by calling the route's `POST` directly with the dev mock
 store. The `--server` mode adds what that cannot show: real Table Storage,
 real timings, and the hourly cap.
+
+### Done (2026-11-22)
+
+- `src/lib/sms/inbound.ts`: the in-memory guard (5 texts per number per
+  minute, MEET and other text only; STOP, START and HELP are always
+  recorded), then the per-sender limits (task 021), then the site-wide day
+  and hour caps, taken only for a reply about to go. A single number at its
+  own limit never uses up the site's allowance.
+- `src/lib/email.ts`: `sendSmsCapAlert()`, one email per window to
+  `CONTACT_EMAIL_TO` with the cap and the window, no number or hash. Put in
+  `email.ts` beside the other notifications rather than a new `notify.ts`.
+- `src/app/api/sms/inbound/route.ts`: `sms.cap_reached`, the alert when the
+  store says this request is the first refusal in the window, and a console
+  line with the error message on a failure (locally there is no App
+  Insights, which hid the first server run's failure).
+- `src/lib/sms/store.ts`: plain http allowed only for a local emulator.
+  The first server run failed every storage call: the SDK refuses an http
+  endpoint unless `allowInsecureConnection` is set.
+- `scripts/check-sms.mts`: `--server` and `--env-file`, 22 server cases.
+- Azurite installed outside the project, run, and stopped; the test env file
+  deleted. Setup and results: [notes/route-checks.md](../notes/route-checks.md).
+- **Results:** offline 144 pass; with the server 166 pass, twice. p95 39 ms
+  against the local emulator; real latency is confirmed in Azure (task 041).

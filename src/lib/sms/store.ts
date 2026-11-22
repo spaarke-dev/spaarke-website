@@ -69,7 +69,12 @@ async function client(kind: TableKind): Promise<TableClient> {
   const table = tableName(kind);
   let c = clients.get(table);
   if (!c) {
-    c = TableClient.fromConnectionString(connectionString, table);
+    // Plain http is allowed only for a local emulator (Azurite), which the
+    // route checks use; Azure endpoints are always https.
+    const local = /(EndpointSuffix|TableEndpoint)=http:\/\/(127\.0\.0\.1|localhost)[:/]|UseDevelopmentStorage=true/i.test(
+      connectionString,
+    );
+    c = TableClient.fromConnectionString(connectionString, table, { allowInsecureConnection: local });
     clients.set(table, c);
   }
   if (!ensured.has(table)) {

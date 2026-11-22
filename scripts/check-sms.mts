@@ -1,21 +1,44 @@
-// Offline checks for Text MEET (projects/text-to-meet/spec.md): the Twilio
-// signature check, keyword handling, the SMS link token, the phone hash, the
-// settings, and the reply texts (length and GSM-7).
+// Checks for Text MEET (projects/text-to-meet/spec.md): the Twilio signature
+// check, keyword handling, the SMS link token, the phone hash, the settings,
+// the reply texts (length and GSM-7), the store, and the inbound route.
 //
 //   npm run sms:check
+//       Offline: no network, storage, or real secrets. Every key is a fixed
+//       test value; the store and route run against the in-memory dev mock.
 //
-// Needs no network, storage, or real secrets: every key here is a fixed test
-// value. Reads SITE_URL from the environment or .env.local. Prints no secrets.
-// Exits 1 when any case fails.
+//   npm run sms:check -- --server http://localhost:3124 --env-file .env.production.local
+//       Also drives a running server (`next start`) whose storage is a local
+//       emulator (Azurite), signing each request with that server's settings,
+//       read from --env-file. Refuses to run unless the four SMS_*_TABLE
+//       settings name test tables. Setup: projects/text-to-meet/notes/route-checks.md.
+//
+// Reads SITE_URL from the environment or .env.local. Prints no secrets.
+// Exits 1 when any case fails, 2 when the server settings are unusable.
 
 import { existsSync, readFileSync } from "node:fs";
 
-if (existsSync(".env.local")) {
-  for (const line of readFileSync(".env.local", "utf8").split(/\r?\n/)) {
+function argValue(name: string): string | null {
+  const i = process.argv.indexOf(name);
+  return i > 0 && process.argv[i + 1] ? process.argv[i + 1] : null;
+}
+const SERVER = argValue("--server")?.replace(/\/$/, "") ?? null;
+const ENV_FILE = argValue("--env-file");
+if (ENV_FILE && !existsSync(ENV_FILE)) {
+  console.error(`--env-file ${ENV_FILE} not found.`);
+  process.exit(2);
+}
+
+for (const file of [ENV_FILE, ".env.local"]) {
+  if (!file || !existsSync(file)) continue;
+  for (const line of readFileSync(file, "utf8").split(/\r?\n/)) {
     const m = /^([A-Z_]+)=(.*)$/.exec(line.trim());
     if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
   }
 }
+
+// The offline sections set and restore their own settings; the server
+// section needs the file's values as they were read.
+const SERVER_ENV = { ...process.env };
 
 // The library modules compile as CommonJS under tsx, so named imports are
 // taken from dynamic imports, as the other check scripts do.
@@ -24,7 +47,7 @@ const { classify } = await import("@/lib/sms/keywords");
 const { createManageToken, verifyManageToken, createSmsToken, verifySmsToken, newConversationId, SMS_TOKEN_LENGTH } =
   await import("@/lib/meet/tokens");
 const { normalizeE164, phoneHash } = await import("@/lib/sms/phone-hash");
-const { getSmsConfig, resolvePlacement, placementLabel, NO_PLACEMENT } = await import("@/lib/sms/config");
+const { getSmsConfig, resolvePlacement, placementLabel, toE164, NO_PLACEMENT } = await import("@/lib/sms/config");
 const { meetReply, HELP_REPLY, NUDGE_REPLY } = await import("@/lib/sms/messages");
 const { siteUrl } = await import("@/lib/ask-ai");
 
@@ -552,5 +575,170 @@ try {
 }
 
 // ---------------------------------------------------------------------------
+if (SERVER) await serverChecks(SERVER);
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) process.exit(1);
+
+// ---------------------------------------------------------------------------
+// Server mode
+// ---------------------------------------------------------------------------
+
+async function serverChecks(server: string) {
+  section(`Server (${server}, local storage)`);
+  const env = SERVER_ENV;
+  const TABLE_SETTINGS = {
+    SMS_SENDERS_TABLE: "SmsSenders",
+    SMS_CONVERSATIONS_TABLE: "SmsConversations",
+    SMS_INBOUND_TABLE: "SmsInbound",
+    SMS_COUNTERS_TABLE: "SmsCounters",
+  } as const;
+  const needed = [
+    "TWILIO_ACCOUNT_SID",
+    "TWILIO_AUTH_TOKEN",
+    "SMS_WEBHOOK_URL",
+    "SMS_PUBLIC_NUMBER",
+    "SMS_LINK_SECRET",
+    "STORAGE_ACCOUNT_CONNECTION",
+    ...Object.keys(TABLE_SETTINGS),
+  ];
+  const missing = needed.filter((k) => !env[k]?.trim());
+  if (missing.length > 0) {
+    console.error(`Server mode needs these settings (from --env-file): ${missing.join(", ")}.`);
+    process.exit(2);
+  }
+  const live = Object.entries(TABLE_SETTINGS).filter(([k, v]) => env[k]!.trim() === v);
+  if (live.length > 0) {
+    console.error(`Refusing: ${live.map(([k]) => k).join(", ")} still set to the production table names. Use test table names.`);
+    process.exit(2);
+  }
+  const connection = env.STORAGE_ACCOUNT_CONNECTION!;
+  if (!/127\.0\.0\.1|localhost|UseDevelopmentStorage=true/i.test(connection)) {
+    console.error("Refusing: STORAGE_ACCOUNT_CONNECTION does not point at a local emulator.");
+    process.exit(2);
+  }
+
+  const { TableClient } = await import("@azure/data-tables");
+  const table = (setting: keyof typeof TABLE_SETTINGS) =>
+    TableClient.fromConnectionString(connection, env[setting]!.trim(), { allowInsecureConnection: true });
+
+  const webhookUrl = env.SMS_WEBHOOK_URL!.trim();
+  const authToken = env.TWILIO_AUTH_TOKEN!.trim();
+  const accountSid = env.TWILIO_ACCOUNT_SID!.trim();
+  const publicNumber = toE164(env.SMS_PUBLIC_NUMBER) ?? "";
+  const linkSecret = env.SMS_LINK_SECRET!.trim();
+  const hourlyCap = Number.parseInt(env.SMS_REPLY_HOURLY_CAP ?? "30", 10);
+
+  // Start each run with empty counters, so a run in the same hour as the
+  // last one is not already at the cap. Test tables only (checked above).
+  const counters = table("SMS_COUNTERS_TABLE");
+  try {
+    for await (const e of counters.listEntities()) await counters.deleteEntity(e.partitionKey!, e.rowKey!);
+  } catch (err) {
+    if ((err as { statusCode?: number }).statusCode !== 404) {
+      console.error(`Cannot reach local storage: ${(err as Error).message}`);
+      process.exit(2);
+    }
+  }
+
+  // Fictional numbers (555-0100 to 555-0199), a fresh area code each run so
+  // senders from earlier runs do not carry over.
+  const area = 200 + Math.floor(Math.random() * 700);
+  let last = 99;
+  const usedNumbers: string[] = [];
+  const freshNumber = () => {
+    last += 1;
+    const n = `+1${area}5550${last.toString().padStart(3, "0")}`;
+    usedNumbers.push(n);
+    return n;
+  };
+  let sid = Math.floor(Math.random() * 1e9);
+  const nextSid = () => `SM${(++sid).toString(16).padStart(32, "0")}`;
+
+  const timings: number[] = [];
+  type Send = { sid?: string; from: string; body?: string; to?: string; account?: string; optOut?: string; token?: string; unsigned?: boolean };
+  const post = async (s: Send) => {
+    const fields: [string, string][] = [
+      ["AccountSid", s.account ?? accountSid],
+      ["MessageSid", s.sid ?? nextSid()],
+      ["From", s.from],
+      ["To", s.to ?? publicNumber],
+      ["Body", s.body ?? "MEET"],
+      ["NumMedia", "0"],
+    ];
+    if (s.optOut) fields.push(["OptOutType", s.optOut]);
+    const headers: Record<string, string> = { "content-type": "application/x-www-form-urlencoded" };
+    if (!s.unsigned) headers["x-twilio-signature"] = computeSignature(s.token ?? authToken, webhookUrl, fields);
+    const started = performance.now();
+    const res = await fetch(`${server}/api/sms/inbound`, {
+      method: "POST",
+      headers,
+      body: new URLSearchParams(fields).toString(),
+      signal: AbortSignal.timeout(15_000),
+    });
+    const text = await res.text();
+    timings.push(performance.now() - started);
+    const message = /<Message>([\s\S]*)<\/Message>/.exec(text)?.[1]?.replaceAll("&amp;", "&") ?? null;
+    return { status: res.status, text, message };
+  };
+  const isEmpty = (r: { status: number; text: string }) => r.status === 200 && r.text.endsWith("<Response/>");
+
+  const a = freshNumber();
+  check("server: 403 unsigned", (await post({ from: a, unsigned: true })).status === 403);
+  check("server: 403 wrong token", (await post({ from: a, token: "wrong" })).status === 403);
+  check("server: 403 wrong AccountSid", (await post({ from: a, account: "ACother" })).status === 403);
+  check("server: 403 wrong To", (await post({ from: a, to: "+18005550101" })).status === 403);
+
+  const sidA = nextSid();
+  const first = await post({ from: a, sid: sidA, body: "MEET CARD2" });
+  const token = /\/meet\?c=(\S+?)\s/.exec(first.message ?? "")?.[1] ?? "";
+  check("server: MEET gets one message", first.status === 200 && first.message !== null, first.text.slice(0, 80));
+  check("server: link uses SITE_URL", (first.message ?? "").includes(`${siteUrl()}/meet?c=`));
+  check("server: link verifies", verifySmsToken(token, linkSecret).ok);
+  check("server: same MessageSid again gets nothing", isEmpty(await post({ from: a, sid: sidA, body: "MEET CARD2" })));
+  await post({ from: a });
+  await post({ from: a });
+  check("server: fourth MEET in a day gets nothing", isEmpty(await post({ from: a })));
+
+  check("server: sender outside +1 gets nothing", isEmpty(await post({ from: "+442071234567" })));
+
+  const b = freshNumber();
+  check("server: OptOutType=HELP gets nothing", isEmpty(await post({ from: b, body: "HELP", optOut: "HELP" })));
+  check("server: STOP gets nothing", isEmpty(await post({ from: b, body: "STOP", optOut: "STOP" })));
+  check("server: MEET after STOP gets nothing", isEmpty(await post({ from: b })));
+  check("server: START gets nothing", isEmpty(await post({ from: b, body: "START", optOut: "START" })));
+  check("server: MEET after START gets a link", (await post({ from: b })).message !== null);
+
+  const c = freshNumber();
+  check("server: unrecognized text gets the nudge", (await post({ from: c, body: "hello there" })).message === NUDGE_REPLY);
+  check("server: second unrecognized text gets nothing", isEmpty(await post({ from: c, body: "anyone?" })));
+
+  // Hourly cap: fill what is left of this hour from fresh numbers.
+  const hourKey = new Date().toISOString().slice(0, 13);
+  const before = await counters.getEntity<{ count: number }>("hour", hourKey).catch(() => ({ count: 0 }));
+  const remaining = hourlyCap - before.count;
+  let replies = 0;
+  for (let i = 0; i < remaining; i++) if ((await post({ from: freshNumber() })).message) replies++;
+  const over = await post({ from: freshNumber() });
+  check(`server: hourly cap of ${hourlyCap} holds (${replies} of ${remaining} remaining sent)`, replies === remaining && isEmpty(over));
+  const capRow = await counters.getEntity<{ count: number; alertedAt: string }>("hour", hourKey).catch(() => null);
+  check("server: cap row marked for one alert", capRow?.count === hourlyCap && Boolean(capRow?.alertedAt));
+  check("server: next text after the cap gets nothing too", isEmpty(await post({ from: freshNumber() })));
+
+  // Nothing readable in the tables
+  let dump = "";
+  for (const setting of Object.keys(TABLE_SETTINGS) as (keyof typeof TABLE_SETTINGS)[]) {
+    for await (const e of table(setting).listEntities()) dump += JSON.stringify(e);
+  }
+  const leaked = usedNumbers.filter((n) => dump.includes(n.slice(2)) || dump.includes(n.slice(5)));
+  check(
+    "server: no test number or message text in any table",
+    dump.length > 200 && leaked.length === 0 && !/2071234567|hello there|anyone\?/.test(dump),
+  );
+
+  const sorted = [...timings].sort((x, y) => x - y);
+  const p95 = sorted[Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1)];
+  const max = sorted[sorted.length - 1];
+  console.log(`  ${timings.length} requests: p95 ${p95.toFixed(0)} ms, max ${max.toFixed(0)} ms`);
+  check("server: p95 under 3 seconds", p95 < 3000);
+}

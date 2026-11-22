@@ -7,12 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 022, rate limits, caps, route checks (not started) |
+| **Task** | 030, /meet with a token (not started) |
 | **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Tasks 010 to 021 complete 2026-11-22; task 001 waits on the owner |
-| **Next Action** | Begin task 022 (needs a storage connection for --server) |
+| **Status** | Phases 1 and 2 complete 2026-11-22; task 001 waits on the owner |
+| **Next Action** | Begin task 030 |
 
 ## Last completed
+
+Task 022: site-wide caps, cap alert email, in-memory guard, and
+`sms:check --server` against Azurite (166 pass). Phase 2 complete.
 
 Task 021: `POST /api/sms/inbound`, `src/lib/sms/inbound.ts`, `replies.ts`.
 Per-sender limits done here; 144 offline cases pass; build passes.
