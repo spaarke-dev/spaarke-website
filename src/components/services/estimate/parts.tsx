@@ -17,9 +17,12 @@ export type Fact = [value: string, text: string];
 export interface Objective {
   title: string;
   question: string;
-  big: string;
-  cap: string;
-  facts: Fact[];
+  /** Headline figure; left out for a card with no figures (the equity card). */
+  big?: string;
+  cap?: string;
+  facts?: Fact[];
+  bullets?: string[];
+  link?: { label: string; href: string };
 }
 
 export function InputsCard({
@@ -114,20 +117,44 @@ export function Objectives({ items, label }: { items: Objective[]; label: string
             <h3 className="font-display text-fg text-[22px] font-medium tracking-[-0.01em]">{o.title}</h3>
           </div>
           <p className="text-fg-mid mt-2 text-[15px] leading-snug">{o.question}</p>
-          <div className="border-line mt-5 border-b pb-5">
-            <p className="font-display text-[clamp(34px,4vw,44px)] font-medium leading-none tracking-[-0.02em] text-[#3F5FD9] tabular-nums">
-              {o.big}
-            </p>
-            <p className="text-fg-mid mt-2 text-[14px]">{o.cap}</p>
-          </div>
-          <ul className="mt-5 space-y-3">
-            {o.facts.map(([v, t]) => (
-              <li key={t} className="text-[14px] leading-snug">
-                <b className="text-fg block font-semibold tabular-nums">{v}</b>
-                <span className="text-fg-mid">{t}</span>
-              </li>
-            ))}
-          </ul>
+          {o.big ? (
+            <div className="border-line mt-5 border-b pb-5">
+              <p className="font-display text-[clamp(34px,4vw,44px)] font-medium leading-none tracking-[-0.02em] text-[#3F5FD9] tabular-nums">
+                {o.big}
+              </p>
+              {o.cap ? <p className="text-fg-mid mt-2 text-[14px]">{o.cap}</p> : null}
+            </div>
+          ) : null}
+          {o.facts ? (
+            <ul className="mt-5 space-y-3">
+              {o.facts.map(([v, t]) => (
+                <li key={t} className="text-[14px] leading-snug">
+                  <b className="text-fg block font-semibold tabular-nums">{v}</b>
+                  <span className="text-fg-mid">{t}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {o.bullets ? (
+            <ul className="border-line mt-5 space-y-3 border-t pt-5">
+              {o.bullets.map((b) => (
+                <li key={b} className="text-fg flex gap-3 text-[15px] leading-snug">
+                  <span aria-hidden="true" className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#5078DC]" />
+                  {b}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {o.link ? (
+            <div className="mt-auto pt-6">
+              <Link
+                href={o.link.href}
+                className="text-[15px] font-medium text-[#3F5FD9] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC]"
+              >
+                {o.link.label} <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          ) : null}
         </article>
       ))}
     </section>
@@ -158,7 +185,8 @@ export function SummaryBar({
 }
 
 export function Disclaimer({ children }: { children: ReactNode }) {
-  return <p className="text-fg-low text-[12px] leading-relaxed">{children}</p>;
+  // Change list row 34: larger, directly under the summary.
+  return <p className="text-fg-mid px-1 text-[14px] leading-relaxed">{children}</p>;
 }
 
 /* How the estimate works ------------------------------------------- */

@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { estimate as copy } from "@/app/services/content";
 import { ASSUMPTIONS as A, INPUT_RANGES, PRESETS, compute, matchPreset, revenueBounds, type EstimateInputs, type PresetKey } from "./model";
-import { chg, money, num, pct } from "./format";
+import { money, num, pct } from "./format";
 import { Disclaimer, InputsCard, Objectives, Slider, SummaryBar, type Objective } from "./parts";
 
 /**
@@ -34,38 +34,30 @@ export function EstimateCalculator({
     onChange(next);
   };
 
+  // Change list 2026-11-22, rows 27 to 32. Card 1 leads with dollars saved;
+  // margin and profit per partner are out. The formulas are the current
+  // model's until the rebuilt calculator lands (rows 28 and 33).
   const [o1, o2, o3] = copy.objectives;
   const objectives: Objective[] = [
     {
       ...o1,
-      big: `${pct(m.margin)} → ${pct(m.margin2)}`,
-      cap: "profit margin",
+      big: money(m.feeSaving),
+      cap: "saved a year on the work that moves to the MSO",
       facts: [
         [pct(m.msoCostReduction), "lower cost to run the back office"],
-        [`${money(m.feeSaving)} a year`, "saved on day one through a fixed fee below today’s cost"],
-        [chg(m.ppp2, m.ppp), `profit per partner, ${money(m.ppp)} to ${money(m.ppp2)}`],
+        [`${pct(A.feeDiscount)} below today’s cost`, "a fixed or per-unit fee, benchmarked to fair market value"],
       ],
     },
     {
       ...o2,
       big: num(m.hoursFreed),
-      cap: "lawyer hours freed a year",
+      cap: `lawyer hours freed a year (assumes ${num(A.hoursPerLawyer * A.timeFreed)} hours per lawyer)`,
       facts: [
         [money(m.deploymentFunded), "AI platform and migration funded by Spaarke, not the firm"],
-        [`${chg(m.revenue2, m.revenue)} revenue`, `${money(m.revenue2 - m.revenue)} from new matters and new client services`],
-        ["Kept current", "platform upgrades included, with a market-parity commitment"],
+        ["Kept current", "Technology upgrades included at no extra charge"],
       ],
     },
-    {
-      ...o3,
-      big: money(m.firmValue),
-      cap: "equity stake in your MSO",
-      facts: [
-        [`${money(m.share)} a year`, `the firm’s ${pct(A.own)} share of MSO profit`],
-        [`Up to ${money(m.firmValuePlatform)}`, `if the stake rolls into the Spaarke platform at ${A.platformMultiple}x`],
-        ["$0", "cash invested by the firm"],
-      ],
-    },
+    { ...o3, bullets: copy.equity.bullets, link: copy.equity.link },
   ];
 
   return (
@@ -107,10 +99,9 @@ export function EstimateCalculator({
 
       <Objectives items={objectives} label="What the MSO means for this firm" />
 
+      {/* Row 33: no equity figure. */}
       <SummaryBar cta={copy.detailsCta} href={detailsHref} scroll={detailsScroll}>
-        For a firm like this, partner profit rises by about{" "}
-        <b className="font-semibold">{money(m.profit2 - m.profit)} a year</b>, and the firm builds an equity stake worth
-        about <b className="font-semibold">{money(m.firmValue)}</b> without putting in any cash.
+        About <b className="font-semibold">{money(m.feeSaving)} a year</b> {copy.summary}
       </SummaryBar>
 
       <Disclaimer>{copy.disclaimer}</Disclaimer>

@@ -172,6 +172,27 @@ Equity wording removed from both sections at the owner's request (2026-11-22): t
 
 Still saying "independent study" or "fair-market-value study" elsewhere, not changed in this pass: the (hidden) FAQ answer, the estimate disclaimers and assumptions, and the Design phase step "Set the fee with an independent fair-market-value study" (a future step, so it may stand).
 
+## Change list, Financial opportunity rows 24 to 35 (2026-11-22)
+
+Source: the owner's `spaarke-website-change-list.md` (Downloads). Applied to the law firm estimate on /services and /services/estimate.
+
+| Row | Applied |
+|---|---|
+| 24 Subhead | "Your firm moves its back office and technology into a dedicated MSO that Spaarke owns and runs. Spaarke funds the transition, and the firm stays fully lawyer-owned." |
+| 25 Inputs | "Other lawyers and professionals" |
+| 26 Presets | Small firm, Mid-size firm, Large firm |
+| 27, 28 Card 1 | "Lower operating cost": leads with dollars saved a year, then the % lower back-office cost and the fee basis. Margin and profit per partner are out. Formulas are the current model's until the rebuilt calculator arrives |
+| 29 to 31 Card 2 | Hours freed shows its assumption (170 hours per lawyer); the revenue line is out; "Technology upgrades included at no extra charge" |
+| 32 Card 3 | "Share in the network's growth", "Member equity in Spaarke, earned through use", the three bullets, and "Request the equity model", which goes to the contact form (`/contact?reason=mlo`) until a dedicated gate exists. No dollar amounts, profit share or multiples |
+| 33 Summary | "About $X a year in lower operating cost, plus a technology and capacity advantage." X is the fee saving from the current model. No equity figure |
+| 34 Disclaimer | Larger (14 px, mid gray) under the summary, in both views. The row's "fair-market-value study that sets the MSO fee" became "the MSO fee, benchmarked to fair market value", per the owner's no-study rule. Counsel to approve |
+| 35 Department calculator | Not started; copy to follow |
+
+Open:
+
+- "How the estimate works" (behind "See the details") still shows profit per partner, margin, the firm's 75% stake in its MSO and equity dollar figures, including the equity bar added earlier the same day. That conflicts with rows 28, 32 and 33 and with the structure section (Spaarke owns the MSO). Waits on the owner's call and the rebuilt calculator.
+- Card 1's fee saving and card 2's Spaarke-funded deployment are both 10% of the MSO scope, so they show the same figure ($257k for the mid-size firm).
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.

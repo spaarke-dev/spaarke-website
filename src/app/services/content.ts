@@ -706,26 +706,42 @@ export const financial = {
  */
 export const estimate = {
   title: "Run leaner, compete on technology, and build equity",
-  lede: "Your firm moves its back office and technology into an MSO it owns. Spaarke funds and runs the platform. The firm puts in no cash and stays fully lawyer-owned.",
+  /** Change list 2026-11-22, rows 24 to 34 (rows 32 to 34 need securities counsel). */
+  lede: "Your firm moves its back office and technology into a dedicated MSO that Spaarke owns and runs. Spaarke funds the transition, and the firm stays fully lawyer-owned.",
   presetsLabel: "Start from a typical firm",
   presets: [
-    { key: "small", label: "Small boutique" },
-    { key: "mid", label: "Mid-size boutique" },
-    { key: "large", label: "Large boutique" },
+    { key: "small", label: "Small firm" },
+    { key: "mid", label: "Mid-size firm" },
+    { key: "large", label: "Large firm" },
   ] as const,
   fields: {
     partners: "Equity partners",
-    attorneys: "Other attorneys and patent agents",
+    attorneys: "Other lawyers and professionals",
     revenue: "Annual revenue",
   },
   objectives: [
-    { title: "Higher margins", question: "Run the firm for less" },
+    { title: "Lower operating cost", question: "Run the firm for less" },
     { title: "Technology edge", question: "Compete with larger firms and AI-first rivals" },
-    { title: "Long-term value", question: "Own equity the partnership never had" },
+    { title: "Share in the network’s growth", question: "Member equity in Spaarke, earned through use" },
   ],
+  /** Card 3 is public: no dollar amounts, profit share or multiples (row 32). */
+  equity: {
+    bullets: [
+      "Vested equity is kept if you leave or close",
+      "Your own lawyers and staff can share in it",
+      "It grows as more firms join",
+    ],
+    /** Gated: the contact form, until a dedicated request gate exists. */
+    link: { label: "Request the equity model", href: "/contact?reason=mlo" },
+  },
+  summary: "in lower operating cost, plus a technology and capacity advantage.",
   detailsCta: "See the details",
+  /**
+   * Row 34, without its "fair-market-value study" (no study exists yet, owner
+   * 2026-11-22). Counsel to approve.
+   */
   disclaimer:
-    "Illustrative estimate using representative assumptions for US IP boutiques, not a forecast or an offer. Actual results depend on the firm, the MSO fee as benchmarked to fair market value, and the final legal and tax structure.",
+    "Illustrative estimate based on representative assumptions, not a forecast or an offer of securities. Results depend on the firm and on the MSO fee, benchmarked to fair market value. Availability varies by state.",
   details: {
     title: "How the estimate works",
     bridgeTitle: "Where the extra profit and equity per partner come from",
