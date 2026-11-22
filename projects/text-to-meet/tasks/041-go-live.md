@@ -21,10 +21,12 @@ Test texts and bookings are production data, so the owner sends them.
 
 1. Confirm in the Twilio Console that the number is Verified and the
    account is paid; confirm counsel's checklist is ticked in spec.md.
-2. Set `SMS_MODE=twilio` on `swa-spaarke-website`; wait about 3 minutes for
-   the site to pick it up.
-3. In Twilio, set the number's incoming message webhook (or the Messaging
-   Service's integration) to exactly the `SMS_WEBHOOK_URL` value, HTTP POST.
+2. Put the secrets in Key Vault and every app setting except `SMS_MODE` on
+   `swa-spaarke-website`, as in `docs/text-to-meet.md`. In Twilio, set the
+   Messaging Service's incoming webhook to exactly the `SMS_WEBHOOK_URL`
+   value, HTTP POST. The route still answers 404, so nothing replies yet.
+3. Set `SMS_MODE=twilio`; wait about 3 minutes for the site to pick it up.
+   The "Prefer to text?" line appears on /meet at the same time.
 4. Owner texts MEET from their phone. Expect one reply worded as in FR-07.
    Check App Insights for `sms.received` and `sms.replied`, and no
    `sms.bad_signature`. If the signature fails, compare the URL Twilio shows

@@ -1,7 +1,7 @@
 # Task 040: Pull request and preview checks
 
 **Phase:** 4 (Ship and go live)
-**Status:** not-started
+**Status:** in-progress
 **Estimated:** 2 hours
 **Dependencies:** 022, 031, 032
 **Tags:** deploy, ci-cd, testing
@@ -46,3 +46,21 @@ and counsel is working. Going live is task 041.
 
 If the deploy fails on fonts or a canceled concurrent run, rerun it with
 `gh run rerun`; the fonts are bundled since PR #158.
+
+### Progress (2026-11-22)
+
+- Step 1: main merged into the branch (10 commits, no shared files).
+  Typecheck, build, `sms:check` (177), and `meet:check` (30) pass; ESLint is
+  clean on every changed file. The repo-wide `npm run lint` has 11 errors,
+  all in files this PR does not touch, so CI's lint state is unchanged.
+- Step 2: the diff has no real number, no account or service SID, and no
+  key. The only phone number is the example from Twilio's signature docs;
+  the only SID is an all-zeros fixture.
+- Step 3: PR #178 retitled, description rewritten (what ships, ships dark,
+  go-live order), marked ready for review.
+- Task 041 reordered: the Twilio webhook is set before `SMS_MODE`, so the
+  number is never live without the route ready, and the /meet line never
+  shows before Twilio points at the site.
+- Next: step 4 on the preview once its deploy finishes, then the owner's
+  review and merge.
+

@@ -7,10 +7,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 040, Pull request and preview checks (not started) |
+| **Task** | 040, Pull request and preview checks (in progress) |
 | **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
 | **Status** | Phases 1 to 3 complete 2026-11-22; task 001 waits on the owner |
-| **Next Action** | Begin task 040 |
+| **Next Action** | Task 040 step 4: check the PR #178 preview once its deploy finishes |
 
 ## Last completed
 
