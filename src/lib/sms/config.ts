@@ -111,6 +111,16 @@ export function getSmsConfig(): SmsConfig | null {
 }
 
 /**
+ * The secret that signs the link in a MEET reply, read apart from
+ * getSmsConfig: /meet honors a link already sent even when the webhook is
+ * off, and in Bookings mode (FR-15, FR-16). Null when unset or too short.
+ */
+export function smsLinkSecret(): string | null {
+  const secret = process.env.SMS_LINK_SECRET?.trim();
+  return secret && secret.length >= MIN_SECRET_LENGTH ? secret : null;
+}
+
+/**
  * Placement codes: the optional second word after MEET, which says where the
  * person saw the call to action ("Text MEET CARD2"). Codes are not secret.
  * The two below are the ones the spec's Placement section names; the owner

@@ -49,6 +49,8 @@ export function MeetBookingFlow({
   compact?: boolean;
   /** Prefix for element IDs, so two flows can share a page. */
   idPrefix?: string;
+  /** The verified token from a text link (FR-16); task 031 sends it with the booking. */
+  smsToken?: string;
 }) {
   const top = compact ? "mt-6" : "mt-12";
   const [timeZone, setTimeZone] = useVisitorTimeZone();

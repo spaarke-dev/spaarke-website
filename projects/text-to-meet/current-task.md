@@ -7,12 +7,17 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 030, /meet with a token (not started) |
+| **Task** | 031, Booking linked to the text (not started) |
 | **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Phases 1 and 2 complete 2026-11-22; task 001 waits on the owner |
-| **Next Action** | Begin task 030 |
+| **Status** | Phases 1 and 2 and task 030 complete 2026-11-22; task 001 waits on the owner |
+| **Next Action** | Begin task 031 |
 
 ## Last completed
+
+Task 030: `/meet?c=` verifies the token, records the open, shows the
+welcome line in Graph and Bookings mode, drops `c`, and sends `Meeting Link
+Opened`. `MeetBookingFlow` has an `smsToken` prop, not yet sent (task 031).
+159 offline cases pass.
 
 Task 022: site-wide caps, cap alert email, in-memory guard, and
 `sms:check --server` against Azurite (166 pass). Phase 2 complete.

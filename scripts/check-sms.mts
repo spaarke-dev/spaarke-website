@@ -575,6 +575,88 @@ try {
 }
 
 // ---------------------------------------------------------------------------
+section("/meet link open (dev mock store)");
+
+// openSmsLink is what /meet runs on `c`; the page itself is checked in a
+// browser (projects/text-to-meet/notes/link-open-checks.md).
+const LINK_ENV = ["NODE_ENV", "MEET_DEV_MOCK", "SMS_LINK_SECRET", "STORAGE_ACCOUNT_CONNECTION"];
+const savedLink = Object.fromEntries(LINK_ENV.map((k) => [k, process.env[k]]));
+const linkWarn = console.warn;
+const linkError = console.error;
+console.warn = () => {};
+console.error = () => {};
+try {
+  Object.assign(process.env, { NODE_ENV: "development", MEET_DEV_MOCK: "1", SMS_LINK_SECRET: SECRET });
+  const { openSmsLink } = await import("@/lib/sms/link-open");
+  const store = await import("@/lib/sms/store");
+  const opened = new Date();
+  const convId = newConversationId();
+  await store.createConversation(convId, {
+    phoneHash: phoneHash("+12025550133", HASH_SECRET),
+    keyword: "MEET",
+    placement: "CARD2",
+    createdAt: opened.toISOString(),
+    linkExpiresAt: new Date(opened.getTime() + 30 * day).toISOString(),
+  });
+  const good = createSmsToken(convId, SECRET, opened.getTime());
+
+  const first = await openSmsLink(good, opened);
+  check("link: a valid token opens, with the code", first?.token === good && first?.code === "CARD2");
+  const afterFirst = await store.getConversation(convId);
+  check(
+    "link: the first open sets the time, count 1, status opened",
+    afterFirst?.linkOpenCount === 1 && afterFirst.linkOpenedAt === opened.toISOString() && afterFirst.status === "opened",
+  );
+  await openSmsLink([good, "ignored"], new Date(opened.getTime() + 60_000));
+  const afterSecond = await store.getConversation(convId);
+  check(
+    "link: a second open counts, keeps the first time (first value of a repeated c)",
+    afterSecond?.linkOpenCount === 2 && afterSecond.linkOpenedAt === opened.toISOString(),
+  );
+
+  check("link: no c is nothing", (await openSmsLink(undefined, opened)) === null);
+  check("link: an empty c is nothing", (await openSmsLink("", opened)) === null);
+  const [gId, gExp, gSig] = good.split(".");
+  const tampered = `${gId}.${gExp}.${swap(gSig[0])}${gSig.slice(1)}`;
+  check("link: a tampered token is nothing", (await openSmsLink(tampered, opened)) === null);
+  check("link: a token signed with another secret is nothing", (await openSmsLink(createSmsToken(convId, OTHER, opened.getTime()), opened)) === null);
+  check("link: an expired token is nothing", (await openSmsLink(good, new Date(opened.getTime() + 31 * day))) === null);
+  check(
+    "link: a signed token for an unknown conversation is nothing",
+    (await openSmsLink(createSmsToken(newConversationId(), SECRET, opened.getTime()), opened)) === null,
+  );
+  check("link: refused tokens recorded no open", (await store.getConversation(convId))?.linkOpenCount === 2);
+
+  delete process.env.SMS_LINK_SECRET;
+  check("link: SMS_LINK_SECRET unset ignores the token", (await openSmsLink(good, opened)) === null);
+  process.env.SMS_LINK_SECRET = "too-short";
+  check("link: a short SMS_LINK_SECRET ignores the token", (await openSmsLink(good, opened)) === null);
+  process.env.SMS_LINK_SECRET = SECRET;
+
+  delete process.env.MEET_DEV_MOCK;
+  delete process.env.STORAGE_ACCOUNT_CONNECTION;
+  const unset = await openSmsLink(good, opened);
+  check("link: storage unset still welcomes, no code", unset?.token === good && unset.code === null);
+
+  // Nothing listens on port 9; the call fails and must not throw.
+  process.env.STORAGE_ACCOUNT_CONNECTION =
+    "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=" +
+    Buffer.from("not-a-real-key").toString("base64") +
+    ";TableEndpoint=http://127.0.0.1:9/devstoreaccount1;";
+  const t0 = Date.now();
+  const down = await openSmsLink(good, opened);
+  check("link: storage that throws still welcomes, no code", down?.token === good && down.code === null);
+  check("link: storage that throws gives up within 6 seconds", Date.now() - t0 < 6000, `${Date.now() - t0} ms`);
+} finally {
+  console.warn = linkWarn;
+  console.error = linkError;
+  for (const [k, v] of Object.entries(savedLink)) {
+    if (v === undefined) delete process.env[k];
+    else Object.assign(process.env, { [k]: v });
+  }
+}
+
+// ---------------------------------------------------------------------------
 if (SERVER) await serverChecks(SERVER);
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
