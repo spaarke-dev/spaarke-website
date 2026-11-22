@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030, 031, 033, 034 and 053).
+// tasks 002, 010 to 013, 020 to 022, 030, 031, 033, 034, 053 and 060).
 //
 //   npm run market:check
 //
@@ -1205,6 +1205,44 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   await cadmin.deleteContact(ids[2], who);
   assert.equal((await fu.dueFollowUps("2026-11-30")).filter((d) => d.contactId === ids[2]).length, 0);
   ok("bulk follow-ups: one per selected member, none added on a second run; merge and delete keep them consistent (FR-11, task 034)");
+}
+
+{
+  // FR-16: the morning report lists follow-ups due and new contacts, and names no investor record.
+  const fa = await import("@/lib/market/followup-admin");
+  const daily = await import("@/lib/reports/daily");
+  const { clearQueryCache } = await import("@/lib/market/queries");
+  const who = "admin@example.test";
+  const both = ["admin", "investor"];
+
+  const g = await contacts.resolveContact({ email: addr("rep-gen"), name: "Gale General" }, { source: "form.contact" });
+  const i = await contacts.resolveContact(
+    { email: addr("rep-lp", `fund-${run}.example.test`), name: "Ivy Investor" },
+    { visibility: "investor", source: "form.investor_overview" },
+  );
+  assert.ok(g.status === "created" && i.status === "created");
+  await fa.addFollowUp(g.contact, fa.parseNewFollowUp({ title: "Report check overdue", dueDate: "2026-01-02" }), both, who);
+  await fa.addFollowUp(i.contact, fa.parseNewFollowUp({ title: "Report check LP", dueDate: "2026-01-02" }), both, who);
+  clearQueryCache();
+
+  const fus = await daily.followUpsSection();
+  assert.equal(fus.problem, undefined);
+  const fuText = fus.lines.join("\n");
+  assert.match(fuText, /\[overdue, due Jan 2\] Report check overdue: Gale General </);
+  assert.match(fuText, /investor follow-ups? \(hidden\)/);
+  assert.ok(!fuText.includes("Report check LP"), "an investor follow-up's title is not shown");
+
+  const nc = await daily.newContactsSection(1);
+  assert.equal(nc.problem, undefined);
+  const ncText = nc.lines.join("\n");
+  assert.match(ncText, new RegExp(`Gale General <rep-gen@co-${run}\\.example\\.test>, [^\\n]* \\(Contact form\\)`));
+  assert.match(ncText, /investor contacts? \(hidden\)/);
+
+  const text = daily.renderDailyReport({ date: "2026-11-22", sections: [fus, nc], quiet: false }, 1);
+  for (const secret of ["Ivy Investor", `rep-lp@fund-${run}`, `fund-${run}`, "Report check LP"]) {
+    assert.ok(!text.includes(secret), `the report must not show ${secret}`);
+  }
+  ok("the morning report lists due follow-ups and new contacts, and counts investor records without naming them (FR-16, task 060)");
 }
 
 {
