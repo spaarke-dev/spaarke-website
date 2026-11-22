@@ -42,7 +42,7 @@ test("dept estimate GUARDRAIL: no equity, ownership or profit share for legal de
   for (const k of aKeys) assert.doesNotMatch(k, /equity|stake|own|multiple/i, `unexpected assumption ${k}`);
 });
 
-test("dept estimate GUARDRAIL: the MSO fee is cost-based, never a share of the budget or legal fees", () => {
+test("dept estimate GUARDRAIL: the MSO fee is fixed below today's cost, never a share of the budget or legal fees", () => {
   const a = computeDept(DEPT_PRESETS.mid);
   assert.ok(Math.abs(a.fee - a.scope * (1 - DEPT_ASSUMPTIONS.feeDiscount)) < 1e-6);
   // Changing outside counsel economics leaves the operations fee unchanged.

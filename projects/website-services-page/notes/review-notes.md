@@ -133,7 +133,7 @@ The owner supplied two design handoffs: the MSO structure visual (`notes/mso-str
 
 Open, for the owner and counsel:
 
-- Fee basis. The structure visual says the MSO fee is "set by a fair-market-value study"; the boundary line and the estimate say it is fixed and cost-based. Pick one and align the copy.
+- Fee basis: **decided 2026-11-22, fair market value.** The boundary line, the money captions, the department estimate lede and details, the disclaimer, the Design phase steps and the (hidden) FAQ now say the fee is fixed and set at fair market value by an independent study, never tied to legal fees. "Below today's cost" stays as the outcome the study is expected to show. spec.md is updated to match.
 - Equity copy in the law firm view ("receives equity in Spaarke", the illustrative pie) goes beyond design.md section 9, as the firm estimate does. Counsel to confirm.
 - The department copy in both sections is new and needs the owner's read.
 

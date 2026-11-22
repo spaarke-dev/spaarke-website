@@ -11,7 +11,8 @@
  *  - No equity numbers, percentages, vesting terms or return claims anywhere.
  *  - Practice-agnostic wording (no IP-specific headlines).
  *  - The boundary line stays visible wherever the structure is explained.
- *  - Fees are fixed, per-unit or cost-plus; never tied to legal fees.
+ *  - Fees are fixed and set at fair market value by an independent study;
+ *    never tied to legal fees (owner decision 2026-11-22).
  *  - Every statistic carries a source. `verification` records what must be
  *    checked against the primary report before launch.
  * Counsel reviews final copy, function labels and FAQ answers before the
@@ -131,7 +132,7 @@ export const whatIsMlo = {
   ],
   /** Keep visible wherever the structure is explained (design.md section 9). */
   boundaryLine:
-    "The MSO does not practice law, does not share in legal fees, and does not direct legal judgment. Its fee is set on a fixed or per-unit method and is never tied to legal fees.",
+    "The MSO does not practice law, does not share in legal fees, and does not direct legal judgment. Its fee is fixed, set at fair market value by an independent study, and never tied to legal fees.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -349,7 +350,7 @@ export const structure = {
         ["Shared governance", "A joint operating committee, agreed service levels, and department approval over key staff and any change that affects legal work. Spaarke runs the operations; the department directs the work."],
       ],
       money: [
-        ["A fixed fee", "The department pays its MSO a fixed fee, agreed in advance and priced below today’s cost of the same work, so the legal budget is predictable."],
+        ["A fixed fee", "The department pays its MSO a fixed fee, set by a fair-market-value study and priced below today’s cost of the same work, so the legal budget is predictable."],
         ["Less outside spend", "Time the MSO frees up brings routine outside counsel work back in-house, and the MSO handles routine work at lower cost, with lawyers reviewing it."],
         ["License and profit", "The MSO pays Spaarke a fixed platform license, and as owner Spaarke receives the MSO’s profit. The department sees open-book reporting."],
       ],
@@ -599,7 +600,7 @@ export const howItWorks = {
   eyebrow: "How Managed Legal Operations works",
   title: "What stays with the lawyers, and what the MSO takes on",
   intro: {
-    firm: "The firm keeps everything that is the practice of law. The MSO runs the operating functions under a services agreement, at a fee set by the cost of the services delivered.",
+    firm: "The firm keeps everything that is the practice of law. The MSO runs the operating functions under a services agreement, for a fixed fee set at fair market value.",
     corporate:
       "The legal department keeps its lawyers, its judgment and its decisions. The MSO runs the operations, technology and reporting that support them, under a services agreement with clear service levels.",
   } satisfies ByAudience<string>,
@@ -933,7 +934,7 @@ export const estimate = {
  */
 export const deptEstimate = {
   title: "Run leaner, work like a much larger team, and lock in the savings",
-  lede: "Your department moves legal operations and technology into an MSO that Spaarke funds and runs. The department pays a fixed fee below today’s cost, invests no capital and keeps every legal decision.",
+  lede: "Your department moves legal operations and technology into an MSO that Spaarke funds and runs. The department pays a fixed fee, set at fair market value and below today’s cost, invests no capital and keeps every legal decision.",
   presetsLabel: "Start from a typical department",
   presets: [
     { key: "small", label: "Small department" },
@@ -952,7 +953,7 @@ export const deptEstimate = {
   ],
   detailsCta: "See the details",
   disclaimer:
-    "Illustrative estimate using representative assumptions for US corporate legal departments, not a forecast or an offer. Actual results depend on the department, its outside counsel mix, the scope of the services agreement and the fee set for it.",
+    "Illustrative estimate using representative assumptions for US corporate legal departments, not a forecast or an offer. Actual results depend on the department, its outside counsel mix, the scope of the services agreement and the fair-market-value study that sets the MSO fee.",
   details: {
     title: "How the estimate works",
     bridgeTitle: "Where the savings come from",
@@ -1004,13 +1005,13 @@ export const approach = {
         firm: [
           "Goals and a baseline of the firm’s current costs",
           "Choose the services the MSO will deliver",
-          "Fix the fee method on an independent benchmark",
+          "Set the fee with an independent fair-market-value study",
           "Ethics and regulatory review",
         ],
         corporate: [
           "Goals and a baseline of spend, matters and outside counsel use",
           "Choose the services the MSO will deliver",
-          "Agree service levels and the fee method",
+          "Agree service levels and a fair-market-value fee",
           "Privilege, data and procurement review",
         ],
       },
@@ -1084,7 +1085,7 @@ export const faq = {
     },
     {
       q: "How are fees set?",
-      a: "Fees are fixed, per unit of service or cost-plus, set against an independent benchmark of fair market value. They are never a share of legal fees, revenue or profit.",
+      a: "Fees are fixed and set at fair market value by an independent study. They are never a share of legal fees, revenue or profit.",
     },
     {
       q: "Who owns what?",

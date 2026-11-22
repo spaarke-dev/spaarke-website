@@ -51,7 +51,7 @@ export function DeptDetails({ inputs }: { inputs: DeptInputs }) {
     ["Outside counsel", `What the budget leaves after the team and operations spend, kept between ${pct(A.outsideMin)} and ${pct(A.outsideMax)} of the budget`],
     ["Moves to the MSO", `${pct(A.msoScope)} of operations spend and support staff cost`],
     ["MSO efficiency", `${pct(A.efficiency)} lower running cost, plus a Spaarke platform license of ${pct(A.platform)} of that cost`],
-    ["MSO fee", `Fixed, ${pct(A.feeDiscount)} below today’s cost of the services that move. Never a share of legal spend or savings.`],
+    ["MSO fee", `Fixed, ${pct(A.feeDiscount)} below today’s cost of the services that move, set by a fair-market-value study. Never a share of legal spend or savings.`],
     ["Deployment", `Platform deployment and standard migration worth about ${pct(A.deployment)} of the MSO’s cost base, funded by Spaarke`],
     ["Freed lawyer time", `${pct(A.timeFreed)} of ${num(A.hoursPerLawyer)} hours a year per lawyer, with ${pct(A.redeploy)} used on routine outside counsel work at a blended $${A.outsideRate} an hour, up to ${pct(A.insourceCap)} of outside counsel spend`],
     ["Routine work", `${pct(A.routineShare)} of outside counsel spend handled by the MSO at ${pct(A.routineCost)} of its cost`],

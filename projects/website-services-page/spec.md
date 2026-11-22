@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-Add a `/services` page, labeled "Services" in the site nav, that presents Spaarke Managed Legal Operations (MLO) to law firms and to corporate legal departments. A page-wide audience switch (Law Firm | Corporate) changes the copy, the diagrams and an interactive cost calculator so each visitor sees the offer in their own terms. The page follows the site's existing design system and keeps the compliance guardrails set in the design (no equity figures, cost-based fees, illustrative labeling, boundary language).
+Add a `/services` page, labeled "Services" in the site nav, that presents Spaarke Managed Legal Operations (MLO) to law firms and to corporate legal departments. A page-wide audience switch (Law Firm | Corporate) changes the copy, the diagrams and an interactive cost calculator so each visitor sees the offer in their own terms. The page follows the site's existing design system and keeps the compliance guardrails set in the design (no equity figures, fixed fees set at fair market value (owner decision 2026-11-22; the draft said cost-based), illustrative labeling, boundary language).
 
 ## Scope
 

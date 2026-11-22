@@ -39,7 +39,7 @@ import { useAudience } from "./audience";
  *  - each function is a row with an icon, its name and a one-line
  *    explanation, instead of pill tags that read like buttons;
  *  - the services agreement between them is a labeled block, with services
- *    flowing up to the client and a cost-based fee flowing down to the MSO;
+ *    flowing up to the client and a fair-market-value fee flowing down to the MSO;
  *  - no build animation and no hover state: everything is visible at once.
  * Review round 4: six items per panel sit three across (3 x 2); the law
  * firm MSO panel, with eight, stays four across.
@@ -112,12 +112,12 @@ function Agreement({ client }: { client: string }) {
           <p className="font-display text-fg text-[clamp(20px,1.8vw,26px)] font-medium leading-tight tracking-[-0.01em]">
             Services agreement
           </p>
-          <p className="text-fg-mid mt-0.5 text-[13px]">Fee set by the cost of the services, never by legal fees</p>
+          <p className="text-fg-mid mt-0.5 text-[13px]">Fixed fee at fair market value, never tied to legal fees</p>
         </div>
       </div>
       <p className={side}>
         <ArrowDown16Regular aria-hidden="true" className="text-[#82A5EB]" />
-        Cost-based fee to the MSO
+        Fair-market-value fee to the MSO
       </p>
     </div>
   );

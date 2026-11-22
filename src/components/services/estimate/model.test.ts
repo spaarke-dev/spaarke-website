@@ -26,7 +26,7 @@ test("estimate GUARDRAIL: revenue and profit per partner are clamped", () => {
   assert.equal(edge.ppp, 1_500_000);
 });
 
-test("estimate GUARDRAIL: the MSO fee is cost-based, never a share of revenue or legal fees", () => {
+test("estimate GUARDRAIL: the MSO fee is fixed below today's cost, never a share of revenue or legal fees", () => {
   for (const k of Object.keys(PRESETS) as PresetKey[]) {
     const m = compute(PRESETS[k]);
     assert.ok(Math.abs(m.fee - m.scope * (1 - ASSUMPTIONS.feeDiscount)) < 1e-6);

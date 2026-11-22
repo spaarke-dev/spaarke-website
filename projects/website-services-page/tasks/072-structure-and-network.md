@@ -27,6 +27,6 @@ Build the two design handoffs the owner supplied on 2026-11-22, matched to the r
 
 ## Open
 
-- Fee basis wording: "fair-market-value study" in the structure visual against "cost-based" elsewhere.
+- ~~Fee basis wording~~: decided 2026-11-22, fair market value, applied across the page.
 - Counsel on the law firm equity copy; owner read of the department copy.
 - Remove `AllocationDiagram.tsx` and `NetworkDiagram.tsx` after sign-off (task 060).
