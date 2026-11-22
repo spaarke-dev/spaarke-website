@@ -22,7 +22,7 @@ export const DEPT_ASSUMPTIONS = {
   msoScope: 0.6, // share of operating spend and support staff cost that moves to the MSO
   efficiency: 0.3, // MSO running-cost reduction on that scope
   platform: 0.08, // Spaarke platform license, as share of scope cost
-  feeDiscount: 0.1, // MSO fee set 10% below today's cost (FMV study)
+  feeDiscount: 0.1, // MSO fee set 10% below today's cost (benchmarked to fair market value)
   deployment: 0.1, // Spaarke-funded deployment and migration, as share of scope
   hoursPerLawyer: 1700, // annual working hours per lawyer, for "hours freed"
   timeFreed: 0.1, // lawyer time freed by automation and AI

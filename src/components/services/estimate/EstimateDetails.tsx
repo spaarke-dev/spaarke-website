@@ -61,7 +61,7 @@ export function EstimateDetails({ inputs }: { inputs: EstimateInputs }) {
     ["Operating cost", "Revenue less partner profit and attorney pay. Covers staff, docketing, IT, finance, occupancy and insurance."],
     ["Moves to the MSO", `${pct(A.msoScope)} of operating cost. Occupancy, insurance and similar costs stay with the firm.`],
     ["MSO efficiency", `${pct(A.efficiency)} lower running cost, plus a Spaarke platform license of ${pct(A.platform)} of that cost`],
-    ["MSO fee", `Fixed, ${pct(A.feeDiscount)} below today’s cost, set by a fair-market-value study. Never a share of legal fees.`],
+    ["MSO fee", `Fixed, ${pct(A.feeDiscount)} below today’s cost, benchmarked to fair market value. Never a share of legal fees.`],
     ["Deployment", `Platform deployment and standard migration worth about ${pct(A.deployment)} of the MSO’s cost base, funded by Spaarke in return for its ${pct(1 - A.own)} stake`],
     ["Freed lawyer time", `${pct(A.timeFreed)} of ${num(A.hoursPerLawyer)} hours a year per lawyer, with ${pct(A.redeploy)} used for new matters at ${pct(A.growthFlow)} profit flow-through`],
     ["New client services", `${pct(A.newSvc)} of revenue at a ${pct(A.newSvcMargin)} margin`],

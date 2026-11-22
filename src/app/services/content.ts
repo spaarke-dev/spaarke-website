@@ -478,7 +478,7 @@ export const howItWorks = {
   eyebrow: "How Managed Legal Operations works",
   title: "What stays with the lawyers, and what the MSO takes on",
   intro: {
-    firm: "The firm keeps everything that is the practice of law. The MSO runs the operating functions under a services agreement, for a fixed fee set at fair market value.",
+    firm: "The firm keeps everything that is the practice of law. The MSO runs the operating functions under a services agreement, for a fixed or per-unit fee benchmarked to fair market value.",
     corporate:
       "The legal department keeps its lawyers, its judgment and its decisions. The MSO runs the operations, technology and reporting that support them, under a services agreement with clear service levels.",
   } satisfies ByAudience<string>,
@@ -725,7 +725,7 @@ export const estimate = {
   ],
   detailsCta: "See the details",
   disclaimer:
-    "Illustrative estimate using representative assumptions for US IP boutiques, not a forecast or an offer. Actual results depend on the firm, the fair-market-value study that sets the MSO fee, and the final legal and tax structure.",
+    "Illustrative estimate using representative assumptions for US IP boutiques, not a forecast or an offer. Actual results depend on the firm, the MSO fee as benchmarked to fair market value, and the final legal and tax structure.",
   details: {
     title: "How the estimate works",
     bridgeTitle: "Where the extra profit and equity per partner come from",
@@ -739,7 +739,7 @@ export const estimate = {
       "Lawyers keep full ownership of the law firm. The MSO handles everything that is not legal advice.",
     assumptionsTitle: "Our assumptions",
     assumptionsCaption:
-      "Representative figures for US IP boutiques. Your own numbers come from a fair-market-value study.",
+      "Representative figures for US IP boutiques. Your own numbers come from your firm’s costs and a fee benchmarked to fair market value.",
   },
 };
 
@@ -751,7 +751,7 @@ export const estimate = {
  */
 export const deptEstimate = {
   title: "Run leaner, work like a much larger team, and lock in the savings",
-  lede: "Your department moves legal operations and technology into an MSO that Spaarke funds and runs. The department pays a fixed fee, set at fair market value and below today’s cost, invests no capital and keeps every legal decision.",
+  lede: "Your department moves legal operations and technology into an MSO that Spaarke funds and runs. The department pays a fixed or per-unit fee, benchmarked to fair market value and below today’s cost, invests no capital and keeps every legal decision.",
   presetsLabel: "Start from a typical department",
   presets: [
     { key: "small", label: "Small department" },
@@ -770,7 +770,7 @@ export const deptEstimate = {
   ],
   detailsCta: "See the details",
   disclaimer:
-    "Illustrative estimate using representative assumptions for US corporate legal departments, not a forecast or an offer. Actual results depend on the department, its outside counsel mix, the scope of the services agreement and the fair-market-value study that sets the MSO fee.",
+    "Illustrative estimate using representative assumptions for US corporate legal departments, not a forecast or an offer. Actual results depend on the department, its outside counsel mix, the scope of the services agreement and the MSO fee as benchmarked to fair market value.",
   details: {
     title: "How the estimate works",
     bridgeTitle: "Where the savings come from",
@@ -902,7 +902,7 @@ export const faq = {
     },
     {
       q: "How are fees set?",
-      a: "Fees are fixed and set at fair market value by an independent study. They are never a share of legal fees, revenue or profit.",
+      a: "Fees are fixed or per-unit and benchmarked to fair market value. They are never a share of legal fees, revenue or profit.",
     },
     {
       q: "Who owns what?",
