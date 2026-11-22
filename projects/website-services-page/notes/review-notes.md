@@ -161,6 +161,17 @@ Equity wording removed from both sections at the owner's request (2026-11-22): t
 | Network | Capability cards and the "See the platform" link removed. The ring keeps its labels above md; phones get a one-line list of the six capabilities under the diagram, and screen readers get the same list |
 | Estimate details chart | The profit-per-partner bridge now adds the firm's MSO equity per partner (hatched violet, as in the earlier five-year chart) and a final "Profit and equity" bar, with brackets over the annual profit steps and the equity step and a two-item legend. Annual profit and a one-time stake share one axis, so the bar labels and caption say which is which. Counsel to confirm with the other equity copy |
 
+## Owner review of "What is Managed Legal Operations" (2026-11-22, second pass)
+
+| Item | Applied |
+|---|---|
+| Body (law firm) | Owner copy: non-legal operations move into a dedicated management services organization (MSO); Spaarke funds the transition, so the firm makes no upfront investment; pricing is designed to cost less per unit than doing the same work in-house. The department body follows the same wording |
+| Callout (both views) | "The MSO does not practice law, share in legal fees or direct legal judgment. Its fee is fixed or per-unit, benchmarked to fair market value, and never tied to legal fees. Attorneys review all AI output." No "independent study" until one exists |
+| Diagram copy | MSO subhead "Your operations, run to your standards" (both views). Law firm items: "Partners and associates" and "Paralegals and other legal professionals" replace "Lawyers and legal professionals". MSO item "Administrative support and other non-legal staff" replaces "Paralegals, assistants and docketing". Arrows: "Fixed or per-unit fee" and "Operations and technology" |
+| Spaarke MSO Operator | New green box under the MSO in both views: technology and AI platform, shared services, business process transformation. No arrow. The client block now runs the full height of the MSO and operator together. Block heights follow their items, and long items wrap to a second line |
+
+Still saying "independent study" or "fair-market-value study" elsewhere, not changed in this pass: the (hidden) FAQ answer, the estimate disclaimers and assumptions, and the Design phase step "Set the fee with an independent fair-market-value study" (a future step, so it may stand).
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.

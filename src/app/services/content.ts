@@ -11,7 +11,8 @@
  *  - No equity numbers, percentages, vesting terms or return claims anywhere.
  *  - Practice-agnostic wording (no IP-specific headlines).
  *  - The boundary line stays visible wherever the structure is explained.
- *  - Fees are fixed and set at fair market value by an independent study;
+ *  - Fees are fixed or per-unit and benchmarked to fair market value (say
+ *    "independent study" only once one exists);
  *    never tied to legal fees (owner decision 2026-11-22).
  *  - Every statistic carries a source. `verification` records what must be
  *    checked against the primary report before launch.
@@ -131,9 +132,12 @@ export const whatIsMlo = {
     "Every structure designed around the client’s goals and requirements",
     "Part of a network that grows in capability as it grows in members",
   ],
-  /** Keep visible wherever the structure is explained (design.md section 9). */
+  /**
+   * Keep visible wherever the structure is explained (design.md section 9).
+   * Owner copy 2026-11-22. Say "independent study" only once one exists.
+   */
   boundaryLine:
-    "The MSO does not practice law, does not share in legal fees, and does not direct legal judgment. Its fee is fixed, set at fair market value by an independent study, and never tied to legal fees.",
+    "The MSO does not practice law, share in legal fees or direct legal judgment. Its fee is fixed or per-unit, benchmarked to fair market value, and never tied to legal fees. Attorneys review all AI output.",
 };
 
 /* ------------------------------------------------------------------ */
@@ -150,10 +154,11 @@ export interface StructureBlock {
 /**
  * "What is Managed Legal Operations" diagram. Built from the structure visual
  * handoff (notes/mso-structure-visual), then simplified at the owner's
- * request (2026-11-22): only the client block and its MSO, with the fixed
- * fee flowing to the MSO and captive services flowing back. The operator,
- * the other members, equity and the "what the firm owns" outline are out
- * for now; other points may come back later.
+ * request (2026-11-22): only the client block and its MSO, with the fee
+ * flowing to the MSO and operations and technology flowing back. Second
+ * review the same day: the Spaarke MSO operator returns as a green box under
+ * the MSO, supporting it, with no flow of its own. The other members, equity
+ * and the "what the firm owns" outline stay out.
  */
 export const structure = {
   title: {
@@ -161,11 +166,19 @@ export const structure = {
     corporate: "Your department keeps the legal work. Spaarke runs the operations.",
   } satisfies ByAudience<string>,
   lede: {
-    firm: "The law firm stays 100% lawyer-owned. Its back office moves into a dedicated MSO that Spaarke owns and runs on its platform, and Spaarke pays for the move. The firm puts in no cash and lowers its operating cost.",
+    /** Owner copy 2026-11-22; the department text follows it. */
+    firm: "The law firm stays 100% lawyer-owned. Its non-legal operations move into a dedicated management services organization (MSO) that Spaarke owns and runs on its platform. Spaarke funds the transition, so the firm makes no upfront investment, and pricing is designed to cost less per unit than doing the same work in-house.",
     corporate:
-      "The legal department stays part of the company, with its lawyers, judgment and decisions. Its operations and technology move into a dedicated MSO that Spaarke owns and runs on its platform, and Spaarke pays for the move. The department invests no capital and lowers the total cost of legal.",
+      "The legal department stays part of the company, with its lawyers, judgment and decisions. Its legal operations and technology move into a dedicated management services organization (MSO) that Spaarke owns and runs on its platform. Spaarke funds the transition, so the department makes no upfront investment, and pricing is designed to cost less per unit than doing the same work in-house.",
   } satisfies ByAudience<string>,
-  flows: { fee: "Fixed fee", services: "Captive services" },
+  flows: { fee: "Fixed or per-unit fee", services: "Operations and technology" },
+  /** Shown under the MSO in both views: supports it, with no flow of its own. */
+  operator: {
+    eyebrow: "MSO operator · Spaarke",
+    title: "Spaarke MSO Operator",
+    sub: "Supports your MSO",
+    items: ["Technology and AI platform", "Shared services", "Business process transformation"],
+  } satisfies StructureBlock,
   blocks: {
     firm: {
       client: {
@@ -173,7 +186,8 @@ export const structure = {
         title: "Your law firm",
         sub: "Keeps the practice of law",
         items: [
-          "Lawyers and legal professionals",
+          "Partners and associates",
+          "Paralegals and other legal professionals",
           "Clients and matters",
           "Legal fees and billing rates",
           "Client data and privilege",
@@ -183,10 +197,10 @@ export const structure = {
       mso: {
         eyebrow: "Dedicated MSO · Spaarke-owned",
         title: "Your firm’s MSO",
-        sub: "Your operations, run to your direction",
+        sub: "Your operations, run to your standards",
         items: [
           "Your same staff, now in the MSO",
-          "Paralegals, assistants and docketing",
+          "Administrative support and other non-legal staff",
           "IT, security and systems",
           "Finance, billing and collections",
           "HR, facilities and vendors",
@@ -209,7 +223,7 @@ export const structure = {
       mso: {
         eyebrow: "Dedicated MSO · Spaarke-owned",
         title: "Your department’s MSO",
-        sub: "Your operations, run to your direction",
+        sub: "Your operations, run to your standards",
         items: [
           "Your legal ops staff, now in the MSO",
           "Matter and spend management",
