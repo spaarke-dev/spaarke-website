@@ -4,6 +4,8 @@ import { visibleContact, clearQueryCache, type ContactRow } from "@/lib/market/q
 import { isMarketConfigured } from "@/lib/market/tables";
 import { getCampaign, type Campaign } from "@/lib/market/campaigns";
 import { isVisibleTo } from "@/lib/market/visibility";
+import { visibleOrganization } from "@/lib/market/org-admin";
+import type { Organization } from "@/lib/market/types";
 
 /**
  * Shared steps for the admin API routes: the role check, a same-site check
@@ -93,6 +95,19 @@ export async function campaignRequest(
   const campaign = await getCampaign(slug);
   if (!campaign || !isVisibleTo(campaign, ctx.principal.roles)) return fail(404, "No such campaign");
   return { ...ctx, campaign };
+}
+
+/** adminRequest, plus an organization the user may see (or 404). */
+export async function organizationRequest(
+  request: Request,
+  id: string,
+  opts: { body: boolean },
+): Promise<(AdminRequest & { organization: Organization }) | NextResponse> {
+  const ctx = await adminRequest(request, opts);
+  if (ctx instanceof NextResponse) return ctx;
+  const organization = await visibleOrganization(id, ctx.principal.roles);
+  if (!organization) return fail(404, "No such organization");
+  return { ...ctx, organization };
 }
 
 /** The audit's `who`: the signed-in address. */
