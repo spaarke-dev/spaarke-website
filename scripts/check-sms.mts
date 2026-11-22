@@ -657,6 +657,120 @@ try {
 }
 
 // ---------------------------------------------------------------------------
+section("Booking linked to the text (dev mock store)");
+
+// The book route's pieces: the route itself needs a request context (IP
+// hash, captcha), so it is checked in a browser instead
+// (projects/text-to-meet/notes/booking-link-checks.md).
+const BOOK_ENV = ["NODE_ENV", "MEET_DEV_MOCK", "SMS_LINK_SECRET", "STORAGE_ACCOUNT_CONNECTION"];
+const savedBook = Object.fromEntries(BOOK_ENV.map((k) => [k, process.env[k]]));
+const bookWarn = console.warn;
+const bookError = console.error;
+console.warn = () => {};
+console.error = () => {};
+try {
+  Object.assign(process.env, { NODE_ENV: "development", MEET_DEV_MOCK: "1", SMS_LINK_SECRET: SECRET });
+  const { smsBookingSource, markSmsBooked, smsSourceLine } = await import("@/lib/sms/link-open");
+  const store = await import("@/lib/sms/store");
+  const meetStore = await import("@/lib/meet/store");
+  const { meetingNotificationText } = await import("@/lib/email");
+  const at = new Date();
+  const convId = newConversationId();
+  await store.createConversation(convId, {
+    phoneHash: phoneHash("+12025550122", HASH_SECRET),
+    keyword: "MEET",
+    placement: "CARD2",
+    createdAt: at.toISOString(),
+    linkExpiresAt: new Date(at.getTime() + 30 * day).toISOString(),
+  });
+  const good = createSmsToken(convId, SECRET, at.getTime());
+
+  const source = await smsBookingSource(good, at);
+  check("book: a valid token gives the conversation and code", source?.conversationId === convId && source.placement === "CARD2");
+  check("book: no token is no link", (await smsBookingSource(undefined, at)) === null);
+  check("book: a non-string token is no link", (await smsBookingSource({ token: good }, at)) === null);
+  const [bId, bExp, bSig] = good.split(".");
+  check("book: a tampered token is no link", (await smsBookingSource(`${bId}.${bExp}.${swap(bSig[0])}${bSig.slice(1)}`, at)) === null);
+  check("book: an expired token is no link", (await smsBookingSource(good, new Date(at.getTime() + 31 * day))) === null);
+  check(
+    "book: a signed token for an unknown conversation is no link",
+    (await smsBookingSource(createSmsToken(newConversationId(), SECRET, at.getTime()), at)) === null,
+  );
+
+  // What the route writes: the source fields on the booking, then the conversation.
+  const bookingId = meetStore.newBookingId();
+  const iso = at.toISOString();
+  await meetStore.createBooking({
+    bookingId,
+    status: "booked",
+    eventId: "mock",
+    start: iso,
+    end: iso,
+    visitorTimeZone: "America/New_York",
+    name: "Check",
+    email: "check@example.com",
+    organization: "Example",
+    role: "",
+    topic: "",
+    ipHash: "x",
+    createdAt: iso,
+    updatedAt: iso,
+    ...meetStore.attributionFields(null),
+    source: "sms",
+    smsConversationId: source!.conversationId,
+  });
+  const linked = await markSmsBooked(source!, bookingId, at);
+  const conv = await store.getConversation(convId);
+  const booking = await meetStore.getBooking(bookingId);
+  check("book: the conversation is marked booked with the booking ID", linked && conv?.status === "booked" && conv.bookingId === bookingId);
+  check("book: the booking row carries source sms and the conversation", booking?.source === "sms" && booking.smsConversationId === convId);
+  check(
+    "book: marking a conversation that is gone returns false",
+    (await markSmsBooked({ conversationId: newConversationId(), placement: "none" }, bookingId, at)) === false,
+  );
+
+  check("book: the email line names code and label", smsSourceLine("CARD2") === "Came from a text (MEET, CARD2: Postcard, second print)");
+  check("book: the email line with no code", smsSourceLine("none") === "Came from a text (MEET, none)");
+  const notice = {
+    kind: "booked" as const,
+    bookingId,
+    stored: true,
+    start: at.getTime(),
+    hostTimeZone: "America/New_York",
+    visitorTimeZone: "America/New_York",
+    name: "Check",
+    email: "check@example.com",
+    organization: "Example",
+  };
+  const withLine = meetingNotificationText({ ...notice, sourceLine: smsSourceLine("SIG") }).text;
+  check("book: the team email has the line", withLine.split("\n")[2] === "Came from a text (MEET, SIG: Email signature).");
+  check("book: the team email without a link has no line", !meetingNotificationText(notice).text.includes("Came from a text"));
+
+  delete process.env.SMS_LINK_SECRET;
+  check("book: SMS_LINK_SECRET unset is no link", (await smsBookingSource(good, at)) === null);
+  process.env.SMS_LINK_SECRET = SECRET;
+  delete process.env.MEET_DEV_MOCK;
+  process.env.STORAGE_ACCOUNT_CONNECTION =
+    "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=" +
+    Buffer.from("not-a-real-key").toString("base64") +
+    ";TableEndpoint=http://127.0.0.1:9/devstoreaccount1;";
+  const t0 = Date.now();
+  check("book: storage that throws is no link, not an error", (await smsBookingSource(good, at)) === null);
+  check("book: storage that throws gives up within 6 seconds", Date.now() - t0 < 6000, `${Date.now() - t0} ms`);
+  check(
+    "book: marking booked with storage down returns false, not an error",
+    (await markSmsBooked(source!, bookingId, at)) === false,
+  );
+} finally {
+  console.warn = bookWarn;
+  console.error = bookError;
+  for (const [k, v] of Object.entries(savedBook)) {
+    if (v === undefined) delete process.env[k];
+    else Object.assign(process.env, { [k]: v });
+  }
+}
+
+// ---------------------------------------------------------------------------
 if (SERVER) await serverChecks(SERVER);
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

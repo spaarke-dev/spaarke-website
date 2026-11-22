@@ -150,6 +150,11 @@ export type BookingRecord = {
   guestChanges?: number;
   /** When the meeting was last moved. */
   movedAt?: string;
+  // Added with Text MEET (FR-16). Set only on bookings made through a text link.
+  /** "sms" when the booking came through a text link. */
+  source?: string;
+  /** The SmsConversations row the link came from. */
+  smsConversationId?: string;
 };
 
 /** A booking row with the ETag it was read at, for conditional writes. */

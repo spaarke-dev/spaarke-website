@@ -41,6 +41,7 @@ export function MeetBookingFlow({
   recaptchaSiteKey,
   compact = false,
   idPrefix = "meet",
+  smsToken,
 }: {
   initialSlots: string[];
   durationMinutes: number;
@@ -49,7 +50,7 @@ export function MeetBookingFlow({
   compact?: boolean;
   /** Prefix for element IDs, so two flows can share a page. */
   idPrefix?: string;
-  /** The verified token from a text link (FR-16); task 031 sends it with the booking. */
+  /** The verified token from a text link (FR-16), sent with the booking so the route can link the two. */
   smsToken?: string;
 }) {
   const top = compact ? "mt-6" : "mt-12";
@@ -130,6 +131,7 @@ export function MeetBookingFlow({
           hp,
           captchaToken,
           attribution: readAttribution(),
+          ...(smsToken ? { smsToken } : {}),
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -156,7 +158,11 @@ export function MeetBookingFlow({
         return;
       }
 
-      track("Meeting Booked", { ...submissionProps(), guests: String(guests.length) });
+      track("Meeting Booked", {
+        ...submissionProps(),
+        guests: String(guests.length),
+        ...(smsToken ? { source: "sms" } : {}),
+      });
       setBooked({
         start: data.start ?? selected,
         email: values.email.trim(),

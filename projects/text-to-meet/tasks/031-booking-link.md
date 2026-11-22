@@ -1,7 +1,7 @@
 # Task 031: Booking linked to the text
 
 **Phase:** 3 (The link into /meet)
-**Status:** not-started
+**Status:** completed
 **Estimated:** 3 hours
 **Dependencies:** 030
 **Tags:** api, react, storage
@@ -44,11 +44,41 @@ is the path real visitors take.
 
 ## Acceptance Criteria
 
-- [ ] Linked booking: both rows updated, email line present
-- [ ] Bad or expired token: booking succeeds, no link, logged
-- [ ] The visitor's confirmation email is unchanged
+- [x] Linked booking: both rows updated, email line present
+- [x] Bad or expired token: booking succeeds, no link, logged
+- [x] The visitor's confirmation email is unchanged
 
 ## Notes
 
 The form is not pre-filled: the text carries only a phone number, which is
 neither stored nor shown.
+
+### Done (2026-11-22)
+
+- `MeetBookingFlow`: sends `smsToken` with the booking when it has one, and
+  adds `source: sms` to the `Meeting Booked` event. `LetsMeetPanel` passes
+  nothing.
+- `src/lib/sms/link-open.ts`: `smsBookingSource()` verifies the token again
+  and loads the conversation; `markSmsBooked()` sets `bookingId`, `bookedAt`
+  and status `booked`; `smsSourceLine()` builds the email line. Neither can
+  throw. Failures log `sms.booking_unlinked` with a reason (`invalid`,
+  `expired`, `unknown_conversation`, `storage`, `no_secret`,
+  `conversation_gone`); success logs `sms.booking_linked`.
+- `src/app/api/meet/book/route.ts`: the check runs after validation and
+  before the slot lock. The booking row gets `source: "sms"` and
+  `smsConversationId` when it is created, so a failed booking never marks
+  the conversation; the conversation is marked once the meeting exists.
+  `meet.booked` carries `source`.
+- `src/lib/meet/store.ts`: `source` and `smsConversationId` on
+  `BookingRecord`, both optional.
+- `src/lib/email.ts`: the team notice's text is now built by
+  `meetingNotificationText()`, so the check script can read it. The line is
+  "Came from a text (MEET, SIG: Email signature)." under the storage line,
+  or "(MEET, none)" when the text had no code. In dev mock mode the notice is
+  logged and not sent, as the visitor emails already were.
+- **Decision:** a second booking through the same link replaces the
+  conversation's `bookingId`; both bookings carry the conversation ID, so
+  neither is lost.
+- The visitor's confirmation email code is unchanged.
+- `scripts/check-sms.mts`: 17 cases; 176 offline pass. `meet:check` 30 pass.
+- Browser checks: [notes/booking-link-checks.md](../notes/booking-link-checks.md).

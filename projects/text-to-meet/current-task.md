@@ -7,12 +7,17 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 031, Booking linked to the text (not started) |
+| **Task** | 032, Footer line, setup guide, env example (not started) |
 | **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Phases 1 and 2 and task 030 complete 2026-11-22; task 001 waits on the owner |
-| **Next Action** | Begin task 031 |
+| **Status** | Phases 1 and 2, tasks 030 and 031 complete 2026-11-22; task 001 waits on the owner |
+| **Next Action** | Begin task 032 |
 
 ## Last completed
+
+Task 031: a booking through a text link carries `source: sms` and
+`smsConversationId`, the conversation is marked `booked`, and the team email
+says "Came from a text (MEET, <code>)". A bad token never blocks a booking,
+and all 176 offline cases pass.
 
 Task 030: `/meet?c=` verifies the token, records the open, shows the
 welcome line in Graph and Bookings mode, drops `c`, and sends `Meeting Link

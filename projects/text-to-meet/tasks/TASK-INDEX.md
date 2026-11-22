@@ -18,7 +18,7 @@
 | 021 | [Inbound webhook route](021-inbound-route.md) | 2 | 012, 020 | 4h | complete |
 | 022 | [Rate limits, caps, route checks](022-rate-limits-and-route-checks.md) | 2 | 021 | 3h | complete |
 | 030 | [/meet with a token](030-meet-link-open.md) | 3 | 020 | 3h | complete |
-| 031 | [Booking linked to the text](031-booking-link.md) | 3 | 030 | 3h | not-started |
+| 031 | [Booking linked to the text](031-booking-link.md) | 3 | 030 | 3h | complete |
 | 032 | [Footer line, setup guide, env example](032-footer-and-setup-guide.md) | 3 | 021 | 2h | not-started |
 | 040 | [Pull request and preview checks](040-pull-request.md) | 4 | 022, 031, 032 | 2h | not-started |
 | 041 | [Go live](041-go-live.md) | 4 | 040, 002, 003, 004 | 2h | blocked (Verified number, counsel) |

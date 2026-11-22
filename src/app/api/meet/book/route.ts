@@ -32,12 +32,15 @@ import {
 import { createManageToken } from "@/lib/meet/tokens";
 import { sendBookingEmails } from "@/lib/meet/notify";
 import { recordMeeting } from "@/lib/market/writers";
+import { markSmsBooked, smsBookingSource, smsSourceLine } from "@/lib/sms/link-open";
 
 export const dynamic = "force-dynamic";
 
 type Body = Partial<Record<keyof MeetDetails | "start" | "captchaToken" | "hp", string>> & {
   attribution?: Attribution | null;
   guests?: unknown;
+  /** The token from a Text MEET link (FR-16); verified again here. */
+  smsToken?: unknown;
 };
 
 const str = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -94,6 +97,9 @@ export async function POST(request: NextRequest) {
     return json({ ok: false, error: "UNAVAILABLE" }, 503);
   }
 
+  // Never blocks: a bad or expired token books the meeting without a link.
+  const sms = await smsBookingSource(body.smsToken);
+
   const bookingId = newBookingId();
   const end = slotEnd(config, start);
   let locked = false;
@@ -141,6 +147,7 @@ export async function POST(request: NextRequest) {
       updatedAt: now,
       guests: JSON.stringify(guests),
       ...attributionFields(body.attribution),
+      ...(sms ? { source: "sms", smsConversationId: sms.conversationId } : {}),
     });
   } catch (err) {
     if (locked) await releaseSlotLock(config.host, start, bookingId);
@@ -188,6 +195,8 @@ export async function POST(request: NextRequest) {
     trackException(errorOf(err), { step: "meet.book.store", bookingId });
   }
 
+  if (sms) await markSmsBooked(sms, bookingId);
+
   const sent = await sendMeetingNotification({
     kind: "booked",
     bookingId,
@@ -202,6 +211,7 @@ export async function POST(request: NextRequest) {
     topic: details.topic,
     guests,
     attribution: attributionFields(body.attribution),
+    sourceLine: sms ? smsSourceLine(sms.placement) : undefined,
   });
   if (!sent.sent) trackEvent("meet.email_failed", { kind: "booked" });
 
@@ -232,6 +242,7 @@ export async function POST(request: NextRequest) {
   trackEvent("meet.booked", {
     stored: String(stored),
     guests: String(guests.length),
+    source: sms ? "sms" : "",
     entry_referrer: body.attribution?.entry_referrer ?? "",
     ai_source: body.attribution?.ai_source ?? "",
   });
