@@ -29,4 +29,10 @@ npm run dev
 
 Open `/services`, and `/services?audience=corporate` for the legal department view.
 
-The hero video clips are unlicensed Stocksy comps (5947230 and 5947223). They are gitignored and never committed, because the repo is public. Without them the hero shows the interim photo. To see the video locally, copy the comps from the original handoff folder into `public/services/hero-comp-1.mp4` and `public/services/hero-comp-2.mp4`.
+The hero video clips are unlicensed Stocksy comps (5947230 and 5947223), cleared for development use only. They are gitignored and never committed, because the repo is public. Without them the hero shows the interim photo. They are kept in the Spaarke OneDrive at `marketing/creative/website/services-hero-comps/`, already renamed. To show the video locally, copy them into the repo from the repo root:
+
+```
+Copy-Item "$env:OneDriveCommercial\marketing\creative\website\services-hero-comps\hero-comp-*.mp4" public\services\
+```
+
+The comps are 1280 x 720 and watermarked. License each clip at 1080p (1920 x 1080) before launch; 4K is not needed for a background video under a dark wash.
