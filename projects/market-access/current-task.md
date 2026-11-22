@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 032: Organizations |
+| **Task** | 040: Graph mail client |
 | **Step** | PR open |
 | **Status** | done; PR pending Ralph's go-ahead to merge |
-| **Next action** | After merge: the mail sync, 040 (Graph mail client) and 041 (mailbox registry), then 042 and 043; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
+| **Next action** | After merge: 041 (mailbox registry), then 042 (sync engine) and 043 (triage); confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
@@ -52,3 +52,4 @@
 - 2026-11-22: PR #181 merged (task 053). Task 034 built: follow-ups on contacts, bulk follow-ups on campaigns, due and overdue on `/admin`, all audited; 43 checks pass.
 - 2026-11-22: PR #182 merged (task 034) and live. Task 060 built: the morning report lists follow-ups due and new contacts, investor records as counts only; 44 checks pass.
 - 2026-11-22: PR #183 merged (task 060) and live. Task 032 built: organization list and page with edits and domain overrides, all audited; the contacts cache is now shared between pages and API routes; 46 checks pass.
+- 2026-11-22: PR #184 merged (task 032) and live. Task 040 built: Graph mail client and `npm run market:mail`; read both synced mailboxes live (counts only); 47 checks pass.

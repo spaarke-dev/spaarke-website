@@ -1,7 +1,7 @@
 # Task 040: Graph mail client
 
 **Phase:** 4 (Mailbox sync)
-**Status:** not-started
+**Status:** done
 **Estimated:** 3 hours
 **Dependencies:** 003 (run by Ralph in the tenant)
 **Tags:** typescript, azure, api
@@ -29,10 +29,23 @@ FR-07, NFR-02, NFR-05. The fetch pattern, token cache and retry are those of `sr
 
 ## Acceptance criteria
 
-- [ ] Against an in-scope mailbox the check script prints counts per folder.
+- [x] Against an in-scope mailbox the check script prints counts per folder.
 - [ ] Against an out-of-scope mailbox it reports `NoMailboxAccess` and exits cleanly.
-- [ ] No message body is kept anywhere except during bounce parsing.
+- [x] No message body is kept anywhere except during bounce parsing.
 
 ## Notes
 
 - Spec references: FR-07, NFR-02, NFR-05.
+
+## As built
+
+- `src/lib/market/graph-mail.ts`: `getMailSettings` (the three `MEET_GRAPH_*` values, or null), `listMessagesSince` (an async generator over one folder, oldest first, following Graph's next links and stopping at `max`, 2,000 by default), `isBounce`, `bounceRecipientFromText` and `bounceRecipient`, `NoMailboxAccess` and `MailGraphError`.
+- Its own token cache, not the one in `src/lib/meet/graph.ts`: sharing it would have meant changing the live booking code, and nothing here needs `MEET_HOST`.
+- `$select` names only metadata fields. Addresses are normalized; Exchange-internal (X.500) addresses are left out; Graph's zone-less times are read as UTC.
+- Throttling (429, 503, 504) is retried twice, waiting up to 10 seconds each time. Only links on graph.microsoft.com are followed.
+- Errors: 403 `ErrorAccessDenied` becomes `NoMailboxAccess` ("This mailbox is not in the Exchange access scope yet."); 404 `ErrorInvalidUser` becomes "No mailbox with this address was found in the tenant." Error messages name the call as `/users/{mailbox}/...`, never the address.
+- Bounces: an Inbox message from postmaster or mailer-daemon, or with a failure subject ("Undeliverable:", "Delivery Status Notification (Failure)", "Mail delivery failed" and similar; delay notices excluded). Only then is the text body fetched, the first 20,000 characters searched for the failed address (Exchange, Gmail, Postfix and DSN wordings, then a single remaining address), and the body dropped.
+- `npm run market:mail -- <mailbox> [hours]` (`scripts/check-market-mail.mts`) prints counts per folder, distinct addresses, bounces and how many failed addresses were read. No subjects, addresses or content.
+- Checks: one pure check against canned Graph responses (paging, the query, no body field, a foreign next link ignored, the cap, 403 and 404 mapping, throttling, bounce detection and five report wordings, the text body requested only for a bounce). 47 pass.
+- Live, 2026-11-22, with the settings read from the app settings for the run only: the meet host mailbox (24 hours: 7 inbox, 0 sent; 30 days: 663 inbox, 222 sent, 13 bounces with the failed address read for all 13) and contactus@spaarke.com (7 days: 15 inbox). Both are in the scope.
+- Not yet run: a real mailbox outside the scope. A made-up address answers 404, not 403, so it does not test the scope; the 403 mapping is covered by the canned check only. Run `npm run market:mail -- <a mailbox outside the group>` and expect `NoMailboxAccess`.
