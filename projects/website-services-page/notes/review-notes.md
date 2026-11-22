@@ -190,7 +190,7 @@ Source: the owner's `spaarke-website-change-list.md` (Downloads). Applied to the
 
 Open:
 
-- "How the estimate works" (behind "See the details") still shows profit per partner, margin, the firm's 75% stake in its MSO and equity dollar figures, including the equity bar added earlier the same day. That conflicts with rows 28, 32 and 33 and with the structure section (Spaarke owns the MSO). Waits on the owner's call and the rebuilt calculator.
+- "How the estimate works" (behind "See the details") still shows profit per partner, margin, the firm's 75% stake in its MSO and equity dollar figures, including the equity bar added earlier the same day. That conflicts with rows 28, 32 and 33 and with the structure section (Spaarke owns the MSO). Owner decision 2026-11-22: leave it as is until the rebuilt calculator's formulas arrive.
 - Card 1's fee saving and card 2's Spaarke-funded deployment are both 10% of the MSO scope, so they show the same figure ($257k for the mid-size firm).
 
 ## Known gaps in the draft
