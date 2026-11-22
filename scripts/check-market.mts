@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030, 031, 033 and 053).
+// tasks 002, 010 to 013, 020 to 022, 030, 031, 033, 034 and 053).
 //
 //   npm run market:check
 //
@@ -369,6 +369,49 @@ console.log("Pure checks");
   assert.throws(() => lead.parseImportRequest({ csv: "x".repeat(lead.MAX_CSV_CHARS + 1) }), csvLib.CsvError);
   assert.equal(lead.parseImportRequest({ csv: "a" }).confirm, false);
   ok("the CSV reader handles quotes, line breaks and delimiters; LinkedIn headers map by default; bad rows are named (task 053)");
+}
+
+{
+  const fu = await import("@/lib/market/followups");
+  const fa = await import("@/lib/market/followup-admin");
+  const sel = await import("@/lib/market/followup-select");
+
+  const id = "a".repeat(64);
+  assert.equal(fu.bulkFollowUpId("tltf-2026", "Thank-you after the Summit", id), fu.bulkFollowUpId("tltf-2026", "  thank-you  after the summit ", id));
+  assert.notEqual(fu.bulkFollowUpId("tltf-2026", "Thank-you", id), fu.bulkFollowUpId("other", "Thank-you", id));
+  assert.match(fu.bulkFollowUpId("x", "y", id), /^[0-9a-f]{32}$/);
+  assert.match(fu.newFollowUpId(), /^[0-9a-f]{32}$/);
+  assert.match(fu.todayKey(), /^\d{4}-\d{2}-\d{2}$/);
+  // 03:00 UTC is still the previous day in New York.
+  const prevTz = process.env.MEET_HOST_TIME_ZONE;
+  process.env.MEET_HOST_TIME_ZONE = "America/New_York";
+  assert.equal(fu.todayKey(new Date("2026-12-02T03:00:00Z")), "2026-12-01");
+  if (prevTz === undefined) delete process.env.MEET_HOST_TIME_ZONE;
+  else process.env.MEET_HOST_TIME_ZONE = prevTz;
+
+  assert.deepEqual(fa.parseNewFollowUp({ title: "  Thank-you ", dueDate: "2026-12-01", notes: "", campaignSlug: "" }), {
+    title: "Thank-you",
+    dueDate: "2026-12-01",
+    notes: undefined,
+    campaignSlug: undefined,
+  });
+  for (const bad of [{ dueDate: "2026-12-01" }, { title: "x" }, { title: "x", dueDate: "12/01/2026" }, { title: "x", dueDate: "2026-12-01", owner: "y" }]) {
+    assert.throws(() => fa.parseNewFollowUp(bad), fa.FollowUpError);
+  }
+  assert.deepEqual(fa.parseFollowUpPatch({ status: "sent" }), { status: "sent" });
+  assert.deepEqual(fa.parseFollowUpPatch({ notes: "" }), { notes: null });
+  assert.throws(() => fa.parseFollowUpPatch({ status: "done" }), fa.FollowUpError);
+  assert.throws(() => fa.parseFollowUpPatch({}), fa.FollowUpError);
+  assert.throws(() => fa.parseBulk({ title: "x", dueDate: "2026-12-01", statuses: ["nope"] }), fa.FollowUpError);
+  assert.deepEqual(fa.parseBulk({ title: "x", dueDate: "2026-12-01", statuses: ["sent", "sent"] }).statuses, ["sent"]);
+
+  const m = { status: "meeting" as const, group: "A", tags: ["Summit", "GC"] };
+  assert.ok(sel.matchesSelection(m, { statuses: [] }));
+  assert.ok(sel.matchesSelection(m, { statuses: ["meeting", "replied"], group: "A", tag: "summit" }));
+  assert.ok(!sel.matchesSelection(m, { statuses: ["sent"] }));
+  assert.ok(!sel.matchesSelection(m, { statuses: [], group: "B" }));
+  assert.ok(!sel.matchesSelection(m, { statuses: [], tag: "press" }));
+  ok("follow-up input is checked; bulk IDs are stable per campaign, title and contact; selection by status, group and tag (task 034)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -1050,6 +1093,118 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.equal(r.imported, 500);
   assert.equal(r.membersAdded, 500);
   ok(`500 leads import in ${(ms / 1000).toFixed(1)} s against the emulator (task 053)`);
+}
+
+{
+  // FR-11: one follow-up on a contact through its statuses, and the due list on /admin.
+  const fu = await import("@/lib/market/followups");
+  const fa = await import("@/lib/market/followup-admin");
+  const who = "admin@example.test";
+  const roles = ["admin"];
+  const today = fu.todayKey();
+  const r = await contacts.resolveContact({ email: addr("fu-one"), name: "Finn Followup" }, { source: "check" });
+  assert.ok(r.status === "created");
+  const c = r.contact;
+
+  const past = "2026-01-05";
+  const f = await fa.addFollowUp(c, fa.parseNewFollowUp({ title: "Send the deck", dueDate: past, notes: "Line one\nLine two" }), roles, who);
+  assert.equal(f.status, "todo");
+  assert.equal(f.notes, "Line one\nLine two");
+  const later = await fa.addFollowUp(c, fa.parseNewFollowUp({ title: "Check in", dueDate: "2099-01-01" }), roles, who);
+  let due = (await fa.dueForHome(roles)).filter((d) => d.contactId === c.id);
+  assert.deepEqual(due.map((d) => [d.title, d.overdue]), [["Send the deck", past < today]], "only what is due by today");
+  assert.equal(due[0].contactName, "Finn Followup");
+
+  // Moving the due date moves the index row to the new month.
+  await fa.changeFollowUp(c.id, f.id, { dueDate: today }, who);
+  due = (await fa.dueForHome(roles)).filter((d) => d.contactId === c.id);
+  assert.deepEqual(due.map((d) => [d.dueDate, d.overdue]), [[today, false]]);
+  const table = (await getTable("followUps"))!;
+  await assert.rejects(table.getEntity(`due:${past.slice(0, 7)}`, f.id), "the old index row is gone");
+
+  // Sent closes it: off the due list, closed time set, one timeline entry.
+  const sent = await fa.changeFollowUp(c.id, f.id, fa.parseFollowUpPatch({ status: "sent" }), who);
+  assert.ok(sent?.closedAt);
+  assert.equal((await fa.dueForHome(roles)).filter((d) => d.contactId === c.id).length, 0);
+  await fa.changeFollowUp(c.id, f.id, { status: "drafted" }, who);
+  assert.equal((await fa.dueForHome(roles)).filter((d) => d.contactId === c.id).length, 1, "reopened, it is due again");
+  await fa.changeFollowUp(c.id, f.id, { status: "sent" }, who);
+  const done = (await activity.listContactActivities(c.id)).filter((a) => a.type === "followup.done");
+  assert.equal(done.length, 1, "sent twice, logged once");
+  assert.equal(done[0].summary, "Send the deck (sent)");
+
+  const list = await fu.listContactFollowUps(c.id);
+  assert.deepEqual(list.map((x) => x.title), ["Check in", "Send the deck"], "open first");
+  assert.ok(await fa.removeFollowUp(c.id, later.id, who));
+  assert.equal(await fu.getFollowUp(c.id, later.id), null);
+  await assert.rejects(table.getEntity("due:2099-01", later.id));
+
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.entityId.startsWith(`${c.id}/`));
+  assert.deepEqual(
+    [...new Set(audits.map((e) => e.action))].sort(),
+    ["followup.create", "followup.delete", "followup.edit", "followup.status"],
+  );
+
+  // Investor contacts' follow-ups stay off the list without the role.
+  const lp = await contacts.resolveContact({ email: addr("fu-lp", `fund-${run}.example.test`) }, { visibility: "investor", source: "check" });
+  assert.ok(lp.status === "created");
+  await fa.addFollowUp(lp.contact, fa.parseNewFollowUp({ title: "LP update", dueDate: past }), ["admin", "investor"], who);
+  assert.equal((await fa.dueForHome(roles)).filter((d) => d.contactId === lp.contact.id).length, 0);
+  assert.equal((await fa.dueForHome(["admin", "investor"])).filter((d) => d.contactId === lp.contact.id).length, 1);
+  ok("a follow-up moves through its statuses, shows on the due list until closed, and every change is audited (task 034)");
+}
+
+{
+  // FR-11 acceptance: bulk create adds exactly one per selected member, and a second run adds none.
+  const fu = await import("@/lib/market/followups");
+  const fa = await import("@/lib/market/followup-admin");
+  const cadmin = await import("@/lib/market/contact-admin");
+  const who = "admin@example.test";
+  const roles = ["admin"];
+  const slug = `fu-${run}`;
+  await camp.upsertCampaign({ slug, name: "Follow-up check", visibility: "general", startDate: "2026-11-01" });
+  const people = ["met-a", "met-b", "met-c", "quiet-d"].map((p) => addr(p));
+  const ids: string[] = [];
+  for (const [i, email] of people.entries()) {
+    const rec = await activity.recordActivity({
+      type: i < 3 ? "meeting.in_person" : "email.sent",
+      source: "check",
+      sourceId: `fu-${run}-${i}`,
+      occurredAt: "2026-11-12T15:00:00Z",
+      email,
+      campaignSlug: slug,
+    });
+    assert.ok(rec.status === "recorded");
+    ids.push(rec.contactId);
+    await camp.addMember({ campaignSlug: slug, contactId: rec.contactId, group: i === 2 ? "Speakers" : "Attendees" });
+  }
+  await cadmin.editContact(ids[0], cadmin.parsePatch({ tags: ["Summit"] }), who);
+  const { clearQueryCache } = await import("@/lib/market/queries");
+  clearQueryCache();
+
+  const input = fa.parseBulk({ title: "Thank-you after the Summit", dueDate: "2026-11-25", statuses: ["meeting"] });
+  const first = await fa.bulkCreate(slug, input, roles, who);
+  assert.deepEqual(first, { matched: 3, created: 3, existing: 0 });
+  const second = await fa.bulkCreate(slug, fa.parseBulk({ title: "thank-you after the summit", dueDate: "2026-11-26", statuses: ["meeting"] }), roles, who);
+  assert.deepEqual(second, { matched: 3, created: 0, existing: 3 });
+  for (const id of ids.slice(0, 3)) assert.equal((await fu.listContactFollowUps(id)).length, 1, "exactly one each");
+  assert.equal((await fu.listContactFollowUps(ids[3])).length, 0, "a member not selected gets none");
+  assert.equal((await fu.listContactFollowUps(ids[0]))[0].dueDate, "2026-11-25", "the second run changed nothing");
+
+  assert.deepEqual(await fa.bulkCreate(slug, fa.parseBulk({ title: "Speaker note", dueDate: "2026-11-25", group: "Speakers" }), roles, who), { matched: 1, created: 1, existing: 0 });
+  assert.deepEqual(await fa.bulkCreate(slug, fa.parseBulk({ title: "Tagged", dueDate: "2026-11-25", tag: "summit" }), roles, who), { matched: 1, created: 1, existing: 0 });
+  const bulkAudit = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.action === "followup.bulk_create" && e.entityId === slug);
+  assert.equal(bulkAudit.length, 4);
+
+  // A merge carries follow-ups and their due rows to the survivor; a delete removes them.
+  const thanks = fu.bulkFollowUpId(slug, "Thank-you after the Summit", ids[1]);
+  await cadmin.mergeContacts(ids[0], ids[1], who);
+  assert.ok(await fu.getFollowUp(ids[0], thanks), "moved to the survivor");
+  const due = await fu.dueFollowUps("2026-11-30");
+  assert.equal(due.find((d) => d.id === thanks)?.contactId, ids[0], "the due row follows");
+  await cadmin.deleteContact(ids[2], who);
+  assert.equal((await fu.dueFollowUps("2026-11-30")).filter((d) => d.contactId === ids[2]).length, 0);
+  ok("bulk follow-ups: one per selected member, none added on a second run; merge and delete keep them consistent (FR-11, task 034)");
 }
 
 {

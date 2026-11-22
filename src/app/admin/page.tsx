@@ -6,6 +6,8 @@ import { Badge } from "@/components/admin/Badge";
 import { DataTable, type Column } from "@/components/admin/DataTable";
 import { EmptyState } from "@/components/admin/EmptyState";
 import { activityLabel, formatDay, formatWhen, label } from "@/components/admin/format";
+import { FollowUpStatus } from "@/components/admin/FollowUpStatus";
+import { dueForHome, type DueRow } from "@/lib/market/followup-admin";
 
 export const dynamic = "force-dynamic";
 
@@ -51,6 +53,46 @@ const ACTIVITY_COLUMNS: Column<ActivityRow>[] = [
   },
 ];
 
+const FOLLOWUPS_SHOWN = 50;
+
+function dueDay(d: string): string {
+  return formatDay(`${d}T12:00:00Z`);
+}
+
+const FOLLOWUP_COLUMNS: Column<DueRow>[] = [
+  {
+    key: "due",
+    header: "Due",
+    cell: (f) => (
+      <span className="flex flex-wrap items-center gap-1 whitespace-nowrap">
+        {dueDay(f.dueDate)}
+        {f.overdue ? <Badge tone="amber">Overdue</Badge> : null}
+      </span>
+    ),
+  },
+  {
+    key: "what",
+    header: "Follow-up",
+    cell: (f) => (
+      <div className="min-w-0 [overflow-wrap:anywhere]">
+        <div className="font-medium">{f.title}</div>
+        <div className="text-xs text-fg-mid">
+          <Link href={`/admin/contacts/${f.contactId}`} className="hover:underline">
+            {f.contactName || f.contactEmail}
+          </Link>
+          {f.campaignSlug ? <span className="md:hidden"> · {f.campaignSlug}</span> : null}
+        </div>
+      </div>
+    ),
+  },
+  { key: "campaign", header: "Campaign", className: "hidden md:table-cell", cell: (f) => f.campaignSlug ?? "" },
+  {
+    key: "status",
+    header: "Status",
+    cell: (f) => <FollowUpStatus key={f.status} contactId={f.contactId} id={f.id} status={f.status} title={f.title} />,
+  },
+];
+
 const CONTACT_COLUMNS: Column<ContactRow>[] = [
   { key: "contact", header: "Contact", cell: (c) => <ContactCell id={c.id} name={c.name} email={c.email} /> },
   { key: "org", header: "Organization", className: "hidden sm:table-cell", cell: (c) => c.organizationName ?? "" },
@@ -82,17 +124,37 @@ export default async function AdminHome() {
     );
   }
 
-  const [activity, fresh] = await Promise.all([recentActivity(roles), newContacts(roles)]);
+  const [activity, fresh, due] = await Promise.all([recentActivity(roles), newContacts(roles), dueForHome(roles)]);
+  const overdue = due.filter((f) => f.overdue).length;
 
   return (
     <section className="space-y-10">
       <h1 className="text-2xl font-semibold">Market access</h1>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-lg border border-line bg-surface p-4">
-          <h2 className="font-medium">Follow-ups</h2>
-          <p className="mt-1 text-sm text-fg-mid">Due and overdue follow-ups will show here.</p>
+      <div>
+        <h2 className="text-lg font-semibold">
+          Follow-ups due
+          {due.length ? (
+            <span className="font-normal text-fg-mid">
+              {" "}
+              ({due.length}
+              {overdue ? `, ${overdue} overdue` : ""})
+            </span>
+          ) : null}
+        </h2>
+        <div className="mt-3">
+          {due.length ? (
+            <DataTable rows={due.slice(0, FOLLOWUPS_SHOWN)} columns={FOLLOWUP_COLUMNS} rowKey={(f) => f.id} caption="Follow-ups due" />
+          ) : (
+            <EmptyState title="Nothing due today or overdue" />
+          )}
+          {due.length > FOLLOWUPS_SHOWN ? (
+            <p className="mt-2 text-xs text-fg-mid">Showing the oldest {FOLLOWUPS_SHOWN}.</p>
+          ) : null}
         </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-lg border border-line bg-surface p-4">
           <h2 className="font-medium">Triage</h2>
           <p className="mt-1 text-sm text-fg-mid">New senders from the shared inbox will show here.</p>
