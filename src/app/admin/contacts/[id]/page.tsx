@@ -157,7 +157,13 @@ export default async function ContactPage({
             <dl className="space-y-2">
               <Field name="Email">{contact.email}</Field>
               <Field name="Title">{contact.title}</Field>
-              <Field name="Organization">{contact.organizationName}</Field>
+              <Field name="Organization">
+                {contact.organizationName && contact.organizationId ? (
+                  <Link href={`/admin/organizations/${encodeURIComponent(contact.organizationId)}`} className="hover:underline">
+                    {contact.organizationName}
+                  </Link>
+                ) : null}
+              </Field>
               <Field name="LinkedIn">
                 {contact.linkedinUrl ? (
                   <a href={contact.linkedinUrl} target="_blank" rel="noreferrer noopener" className="hover:underline">

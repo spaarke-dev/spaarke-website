@@ -51,7 +51,19 @@ const COLUMNS: Column<ContactRow>[] = [
       </div>
     ),
   },
-  { key: "org", header: "Organization", className: "hidden sm:table-cell", cell: (c) => c.organizationName ?? "" },
+  {
+    key: "org",
+    header: "Organization",
+    className: "hidden sm:table-cell",
+    cell: (c) =>
+      c.organizationName && c.organizationId ? (
+        <Link href={`/admin/organizations/${encodeURIComponent(c.organizationId)}`} className="hover:underline">
+          {c.organizationName}
+        </Link>
+      ) : (
+        ""
+      ),
+  },
   { key: "kind", header: "Kind", className: "hidden md:table-cell", cell: (c) => <Badge>{label(c.kind)}</Badge> },
   { key: "stage", header: "Stage", cell: (c) => <Badge tone="blue">{label(c.stage)}</Badge> },
   {

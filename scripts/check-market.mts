@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030, 031, 033, 034, 053 and 060).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 053 and 060).
 //
 //   npm run market:check
 //
@@ -412,6 +412,41 @@ console.log("Pure checks");
   assert.ok(!sel.matchesSelection(m, { statuses: [], group: "B" }));
   assert.ok(!sel.matchesSelection(m, { statuses: [], tag: "press" }));
   ok("follow-up input is checked; bulk IDs are stable per campaign, title and contact; selection by status, group and tag (task 034)");
+}
+
+{
+  const oa = await import("@/lib/market/org-admin");
+  for (const [raw, want] of [
+    ["Acme.com", "acme.com"],
+    ["@acme.com", "acme.com"],
+    ["https://www.acme.com/about", "acme.com"],
+    ["jane@sub.acme.co.uk", "sub.acme.co.uk"],
+  ] as const) {
+    assert.equal(oa.parseDomain(raw), want, raw);
+  }
+  for (const bad of ["", "acme", "gmail.com", "Outlook.com", "a b.com", "-x.com", 7, null]) {
+    assert.throws(() => oa.parseDomain(bad), oa.OrgError, String(bad));
+  }
+  assert.deepEqual(oa.parseOrgPatch({ name: "  Acme   Widgets ", website: "", kind: "customer", notes: " Met at TLTF " }), {
+    name: "Acme Widgets",
+    website: null,
+    kind: "customer",
+    notes: "Met at TLTF",
+  });
+  for (const bad of [{ name: "" }, { domain: "x.test" }, { kind: "boss" }, { website: "javascript:alert(1)" }, { visibility: "all" }, []]) {
+    assert.throws(() => oa.parseOrgPatch(bad), oa.OrgError, JSON.stringify(bad));
+  }
+  const base = { visibility: "general" as const, createdAt: "", updatedAt: "", contactCount: 0 };
+  const rows = [
+    { ...base, id: "acme.test", name: "Acme Widgets", domain: "acme.test", otherDomains: ["acme-mail.test"] },
+    { ...base, id: "other.test", name: "Other Co", domain: "other.test", otherDomains: [], website: "https://other.test" },
+  ];
+  const ids = (r: { rows: { id: string }[] }) => r.rows.map((x) => x.id);
+  assert.deepEqual(ids(oa.filterOrganizations(rows, { q: "widg" })), ["acme.test"], "part of a name");
+  assert.deepEqual(ids(oa.filterOrganizations(rows, { q: "acme-mail" })), ["acme.test"], "an override domain");
+  assert.deepEqual(ids(oa.filterOrganizations(rows, {})), ["acme.test", "other.test"]);
+  assert.equal(oa.filterOrganizations(rows, { pageSize: 1, page: 9 }).page, 2);
+  ok("organization domains are read from what people type; edits are checked; search covers names and domains (task 032)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -1243,6 +1278,117 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
     assert.ok(!text.includes(secret), `the report must not show ${secret}`);
   }
   ok("the morning report lists due follow-ups and new contacts, and counts investor records without naming them (FR-16, task 060)");
+}
+
+{
+  // FR-04 and task 032: organizations by domain, counts, edits and domain overrides.
+  const oa = await import("@/lib/market/org-admin");
+  const { clearQueryCache } = await import("@/lib/market/queries");
+  const who = "admin@example.test";
+  const both = ["admin", "investor"];
+  const main = `org-${run}.example.test`;
+  const alt = `orgalt-${run}.example.test`;
+
+  const a = await contacts.resolveContact(
+    { email: addr("ann", main), name: "Ann Main", organizationName: "Main Co" },
+    { source: "form.contact" },
+  );
+  const b = await contacts.resolveContact({ email: addr("bo", main), name: "Bo Main" }, { source: "form.demo" });
+  const c = await contacts.resolveContact({ email: addr("cy", alt), name: "Cy Alt" }, { source: "form.contact" });
+  const lp = await contacts.resolveContact(
+    { email: addr("lp", alt), name: "Lee Partner" },
+    { visibility: "investor", source: "form.investor_overview" },
+  );
+  assert.ok(a.status === "created" && b.status === "created" && c.status === "created" && lp.status === "created");
+  assert.equal(a.contact.organizationId, main);
+  assert.equal(b.contact.organizationId, main);
+  for (const x of [a, b, c, lp]) {
+    await activity.recordActivity({
+      type: "note",
+      source: "check",
+      sourceId: `org-${run}-${x.contact.id.slice(0, 8)}`,
+      occurredAt: new Date(),
+      contactId: x.contact.id,
+      summary: "Org check note",
+    });
+  }
+  clearQueryCache();
+
+  let list = await oa.loadOrganizations(both);
+  assert.equal(list.find((o) => o.id === main)?.contactCount, 2, "two contacts at one domain list under one organization");
+  assert.equal(list.find((o) => o.id === main)?.name, "Main Co");
+  assert.equal(list.find((o) => o.id === alt)?.contactCount, 2);
+  const general = await oa.loadOrganizations(["admin"]);
+  assert.equal(general.find((o) => o.id === alt)?.contactCount, 1, "an investor contact is not counted without the role");
+
+  const edited = await oa.editOrganization(
+    main,
+    oa.parseOrgPatch({ website: "https://main.example.test", notes: "Met at TLTF" }),
+    who,
+  );
+  assert.equal(edited?.website, "https://main.example.test");
+  assert.equal((await orgs.getOrganization(main))?.notes, "Met at TLTF");
+  await oa.editOrganization(alt, oa.parseOrgPatch({ kind: "customer" }), who);
+
+  // Point the alternate domain at Main Co: its contacts move and its own organization folds in.
+  const added = await oa.addDomain(main, `@${alt.toUpperCase()}`, both, who);
+  assert.equal(added.domain, alt);
+  assert.equal(added.moved, 2);
+  assert.ok(added.removedOrganization);
+  assert.equal(await orgs.getOrganization(alt), null, "the emptied organization is removed");
+  assert.equal((await contacts.getContact(c.contact.id))?.organizationId, main);
+  assert.equal((await contacts.getContact(lp.contact.id))?.organizationId, main);
+  assert.equal((await orgs.getOrganization(main))?.kind, "customer", "an empty field is filled from the folded organization");
+  const later = await contacts.resolveContact({ email: addr("di", alt), name: "Di Alt" }, { source: "form.contact" });
+  assert.equal(later.contact.organizationId, main, "a new contact at the domain joins the chosen organization");
+  await assert.rejects(oa.addDomain(main, alt, both, who), oa.OrgError, "adding it again is refused");
+  await assert.rejects(oa.addDomain(main, main, both, who), oa.OrgError, "its own domain is refused");
+  clearQueryCache();
+  list = await oa.loadOrganizations(both);
+  const row = list.find((o) => o.id === main);
+  assert.equal(row?.contactCount, 5);
+  assert.deepEqual(row?.otherDomains, [alt]);
+  const detail = await oa.organizationDetail(main, both);
+  assert.equal(detail?.contacts.length, 5);
+  assert.ok(detail!.activity.length >= 4, "recent activity spans the organization's contacts");
+  assert.equal(
+    (await oa.organizationDetail(main, ["admin"]))?.contacts.length,
+    4,
+    "the investor contact is left out without the role",
+  );
+
+  // Removing the override sends the domain's contacts back to an organization of their own.
+  const removed = await oa.removeDomain(main, alt, both, who);
+  assert.equal(removed.moved, 3);
+  for (const id of [c.contact.id, lp.contact.id, later.contact.id]) {
+    assert.equal((await contacts.getContact(id))?.organizationId, alt);
+  }
+  assert.equal((await contacts.getContact(a.contact.id))?.organizationId, main, "the main domain's contacts stay");
+  assert.equal(
+    (await orgs.getOrganization(alt))?.visibility,
+    "general",
+    "the recreated organization is general once a general contact joins",
+  );
+  await assert.rejects(oa.removeDomain(main, alt, both, who), oa.OrgError);
+
+  // An investor organization is hidden, and an admin without the role cannot move its domain.
+  const fund = `vc-${run}.example.test`;
+  await contacts.resolveContact(
+    { email: addr("gp", fund), name: "Gil Fund" },
+    { visibility: "investor", source: "form.investor_overview" },
+  );
+  assert.ok(await oa.visibleOrganization(fund, both));
+  assert.equal(await oa.visibleOrganization(fund, ["admin"]), null);
+  await assert.rejects(oa.addDomain(main, fund, ["admin"], who), oa.OrgError);
+  await assert.rejects(oa.addDomain(fund, alt, ["admin"], who), oa.OrgError, "an organization the user cannot see");
+
+  const log = await auditLog.listAudit(keys.monthKey(Date.now()), 10_000);
+  const actions = log.filter((e) => e.entityId === main || e.entityId === alt).map((e) => e.action);
+  for (const want of ["organization.edit", "organization.domain_add", "organization.merged_into", "organization.domain_remove"]) {
+    assert.ok(actions.includes(want), `audited: ${want}`);
+  }
+  assert.ok(!log.some((e) => JSON.stringify(e).includes(`ann@${main}`)), "the audit holds no email address");
+  ok("contacts at one domain list under one organization; an override moves a domain's contacts and can be undone, audited (FR-04, task 032)");
 }
 
 {
