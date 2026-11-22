@@ -293,3 +293,33 @@ export async function dueForHome(roles: readonly string[], now = new Date()): Pr
   });
   return rows.filter((r): r is DueRow => r !== null);
 }
+
+/**
+ * Open follow-ups due today or earlier for the morning report (FR-16), which
+ * goes to a list: general rows in full, investor ones only as a count.
+ */
+export async function dueForReport(now = new Date()): Promise<{ rows: DueRow[]; hidden: number }> {
+  const today = todayKey(now);
+  const due = await dueFollowUps(today);
+  let hidden = 0;
+  const rows = await mapLimit(due, 16, async (f): Promise<DueRow | null> => {
+    const c = await getContact(f.contactId);
+    if (!c) return null;
+    if (f.visibility === "investor" || c.visibility === "investor") {
+      hidden += 1;
+      return null;
+    }
+    return {
+      id: f.id,
+      contactId: f.contactId,
+      contactName: c.name,
+      contactEmail: c.email,
+      title: f.title,
+      dueDate: f.dueDate,
+      status: f.status,
+      campaignSlug: f.campaignSlug,
+      overdue: f.dueDate < today,
+    };
+  });
+  return { rows: rows.filter((r): r is DueRow => r !== null), hidden };
+}
