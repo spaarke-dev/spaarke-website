@@ -1,7 +1,7 @@
 # Task 040: Pull request and preview checks
 
 **Phase:** 4 (Ship and go live)
-**Status:** in-progress
+**Status:** completed
 **Estimated:** 2 hours
 **Dependencies:** 022, 031, 032
 **Tags:** deploy, ci-cd, testing
@@ -38,9 +38,9 @@ and counsel is working. Going live is task 041.
 
 ## Acceptance Criteria
 
-- [ ] All checks pass in CI and locally
-- [ ] Production: inbound route 404, `/meet` unchanged
-- [ ] No secret or number in the diff
+- [x] All checks pass in CI and locally
+- [x] Production: inbound route 404, `/meet` unchanged
+- [x] No secret or number in the diff
 
 ## Notes
 
@@ -61,6 +61,24 @@ If the deploy fails on fonts or a canceled concurrent run, rerun it with
 - Task 041 reordered: the Twilio webhook is set before `SMS_MODE`, so the
   number is never live without the route ready, and the /meet line never
   shows before Twilio points at the site.
-- Next: step 4 on the preview once its deploy finishes, then the owner's
-  review and merge.
+- Step 4: skipped on the preview. The owner merged while the preview build
+  for the last commit was still running, so the checks ran on production
+  instead (step 5).
+- Step 5: PR #178 merged 2026-11-22 as `da3dc77`. Its first production run
+  was canceled by the concurrency group (PR #184 deployed a few seconds
+  earlier); rerun with `gh run rerun`, it succeeded at 18:03 UTC. That
+  build was also the first build of the branch combined with #184.
+
+### Done (2026-11-22)
+
+Production checks on www.spaarke.com after the deploy:
+
+- `POST /api/sms/inbound` returns 404. `GET` returns 405, because the route
+  exports only `POST`; that shows a route exists but answers nothing.
+- `/meet` returns 200 with no "Prefer to text?" line and no welcome line.
+- `/meet?c=junk` and `/meet?c=` render the normal page. In the browser the
+  address bar drops `c` and keeps the other parameters
+  (`/meet?utm_source=check`).
+- `/sms` is unchanged: the merge did not touch `src/app/sms`. The "Thanks
+  for texting MEET" text there is the sample reply the page already showed.
 

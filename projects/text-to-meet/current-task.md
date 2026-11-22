@@ -7,12 +7,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 040, Pull request and preview checks (in progress) |
-| **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Phases 1 to 3 complete 2026-11-22; task 001 waits on the owner |
-| **Next Action** | Task 040 step 4: check the PR #178 preview once its deploy finishes |
+| **Task** | 041, Go live (blocked) |
+| **Branch** | Code merged to `main` (PR #178, `da3dc77`); task 041 needs no code change |
+| **Status** | Shipped dark 2026-11-22: `SMS_MODE` unset in production |
+| **Next Action** | Task 041 once the number is Verified, the Twilio account is paid (002), and counsel has signed off (004) |
 
 ## Last completed
+
+Task 040: PR #178 merged and deployed. On spaarke.com the inbound route
+answers 404, `/meet` shows no text line, a junk `c` renders the normal page,
+and `/sms` is unchanged.
 
 Task 032: the "Prefer to text?" line on /meet (shown only with a full SMS
 configuration), `docs/text-to-meet.md`, and the SMS settings in
