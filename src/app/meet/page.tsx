@@ -9,7 +9,9 @@ import { flushTelemetry, trackException } from "@/lib/logger";
 import { getMeetConfig, wantsGraphMode } from "@/lib/meet/config";
 import { getOpenSlots } from "@/lib/meet/service";
 import { isStorageConfigured } from "@/lib/meet/store";
+import { getSmsConfig } from "@/lib/sms/config";
 import { openSmsLink } from "@/lib/sms/link-open";
+import { displayNumber, meetPageLine } from "@/lib/sms/messages";
 
 // Dynamic because the booking mode, the Bookings URL, the open slots, and the
 // text link token (`c`) are all read at request time.
@@ -68,6 +70,25 @@ const CONTACT_LINE = (
   </p>
 );
 
+/**
+ * "Prefer to text?" (spec Placement). Shown only while the Text MEET program
+ * is on and fully configured, so the page never offers a number that would
+ * not answer.
+ */
+function TextLine() {
+  const number = getSmsConfig()?.publicNumber;
+  if (!number) return null;
+  return (
+    <p>
+      {meetPageLine(displayNumber(number))}{" "}
+      <Link href="/sms" className="text-cta-blue underline">
+        Text message terms
+      </Link>
+      .
+    </p>
+  );
+}
+
 // Spec FR-16: plain text in the page flow, not an alert (NFR-06).
 const SMS_WELCOME = "Thanks for texting. Choose a time below.";
 
@@ -104,7 +125,10 @@ export default async function Meet({ searchParams }: { searchParams: Promise<{ c
                 recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
                 smsToken={smsLink?.token}
               />
-              <div className="text-fg-low mt-10 space-y-3 text-sm">{CONTACT_LINE}</div>
+              <div className="text-fg-low mt-10 space-y-3 text-sm">
+                {CONTACT_LINE}
+                <TextLine />
+              </div>
             </>
           ) : bookingsUrl ? (
             <>
@@ -126,6 +150,7 @@ export default async function Meet({ searchParams }: { searchParams: Promise<{ c
                   <BookingsNewTabLink href={bookingsUrl} />.
                 </p>
                 {CONTACT_LINE}
+                <TextLine />
               </div>
             </>
           ) : (

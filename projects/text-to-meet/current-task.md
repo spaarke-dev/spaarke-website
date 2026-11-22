@@ -7,12 +7,16 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 032, Footer line, setup guide, env example (not started) |
+| **Task** | 040, Pull request and preview checks (not started) |
 | **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Phases 1 and 2, tasks 030 and 031 complete 2026-11-22; task 001 waits on the owner |
-| **Next Action** | Begin task 032 |
+| **Status** | Phases 1 to 3 complete 2026-11-22; task 001 waits on the owner |
+| **Next Action** | Begin task 040 |
 
 ## Last completed
+
+Task 032: the "Prefer to text?" line on /meet (shown only with a full SMS
+configuration), `docs/text-to-meet.md`, and the SMS settings in
+`.env.local.example`. Phase 3 complete; 177 offline cases pass.
 
 Task 031: a booking through a text link carries `source: sms` and
 `smsConversationId`, the conversation is marked `booked`, and the team email

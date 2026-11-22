@@ -48,7 +48,7 @@ const { createManageToken, verifyManageToken, createSmsToken, verifySmsToken, ne
   await import("@/lib/meet/tokens");
 const { normalizeE164, phoneHash } = await import("@/lib/sms/phone-hash");
 const { getSmsConfig, resolvePlacement, placementLabel, toE164, NO_PLACEMENT } = await import("@/lib/sms/config");
-const { meetReply, HELP_REPLY, NUDGE_REPLY } = await import("@/lib/sms/messages");
+const { meetReply, HELP_REPLY, NUDGE_REPLY, meetPageLine, displayNumber } = await import("@/lib/sms/messages");
 const { siteUrl } = await import("@/lib/ask-ai");
 
 let passed = 0;
@@ -317,6 +317,13 @@ check("Nudge is 103 characters (FR-12)", NUDGE_REPLY.length === 103, `got ${NUDG
 check("GSM-7 check catches an em dash", gsm7("Book a time — today").bad.length === 1);
 check("GSM-7 check catches a curly apostrophe", gsm7("We’ll reply").bad.length === 1);
 check("GSM-7 counts the euro sign as two", gsm7("€").septets === 2);
+
+const pageLine = meetPageLine(displayNumber("+18005550100"));
+check(
+  "/meet line: keyword, formatted number, rates",
+  pageLine === "Prefer to text? Text MEET to (800) 555-0100 for a link on your phone. Msg & data rates may apply.",
+  pageLine,
+);
 
 // ---------------------------------------------------------------------------
 section("Store (in-memory dev mock)");

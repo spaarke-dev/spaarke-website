@@ -25,6 +25,15 @@ export function callToAction(number: string): string {
 }
 
 /**
+ * The /meet line beside "Prefer to write first?" (spec Placement), for a
+ * reader on a computer who wants the link on their phone. The page follows it
+ * with a link to the program terms on /sms.
+ */
+export function meetPageLine(number: string): string {
+  return `Prefer to text? Text ${KEYWORD} to ${number} for a link on your phone. Msg & data rates may apply.`;
+}
+
+/**
  * The consent statement shown with every call to action. It names the sender,
  * says that the person is agreeing to receive text messages, and says what
  * those messages are and how often they come, which is what error 30513
