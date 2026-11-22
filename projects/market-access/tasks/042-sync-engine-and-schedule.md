@@ -40,6 +40,7 @@ FR-07, FR-09, FR-11. Route shape and workflow shape follow `src/app/api/reports/
 
 ## Notes
 
+- Follow-up auto-close (FR-11): for an `email.sent` to a contact after a follow-up's `createdAt`, call `changeFollowUp(contactId, id, { status: "sent" }, "system")` from `src/lib/market/followup-admin.ts` on each of that contact's open follow-ups (`listContactFollowUps` in `followups.ts`); on `email.received`, move `sent` ones to `replied`. That keeps the audit row and the due index in step.
 - After each sync, call `recomputeAllCampaigns()` from `src/lib/market/results.ts` so member statuses follow new mail (task 033). It writes only member rows whose status changed.
 
 - Spec references: FR-07, FR-09, FR-11, NFR-02, NFR-05.

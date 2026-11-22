@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 053: LinkedIn Lead Gen CSV import |
+| **Task** | 034: Follow-ups |
 | **Step** | PR open |
 | **Status** | done; PR pending Ralph's go-ahead to merge |
-| **Next action** | After merge: task 034 (follow-ups); try the import with the first real export after 2026-12-19 |
+| **Next action** | After merge: task 060 (morning report) or 032 (organizations); 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
@@ -49,3 +49,4 @@
 - 2026-11-20: PR #176 merged (task 030) and live. Task 031 built: contact page with edit, log, merge and delete, all audited; deleted contacts are tombstoned; 32 checks pass.
 - 2026-11-21: PR #177 merged (task 031) and live. Task 033 built: campaign list and page with funnel, member table, add members and status overrides, all audited; 37 checks pass; 500 members load in about 100 ms in the emulator.
 - 2026-11-22: PR #180 merged (task 033) and live. Task 053 built: `/admin/import` previews and imports a Lead Gen Form CSV into a campaign; a second import adds nothing; 40 checks pass.
+- 2026-11-22: PR #181 merged (task 053). Task 034 built: follow-ups on contacts, bulk follow-ups on campaigns, due and overdue on `/admin`, all audited; 43 checks pass.

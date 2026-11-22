@@ -32,4 +32,6 @@ FR-16. `src/lib/reports/daily.ts` builds the digest and `/api/reports/daily` sen
 
 ## Notes
 
+- Due and overdue follow-ups: `dueFollowUps(todayKey())` in `src/lib/market/followups.ts` reads the due index; `dueForHome` in `followup-admin.ts` adds contact names and the visibility check, so pass no investor role and report investor rows as a count only.
+
 - Spec references: FR-16.

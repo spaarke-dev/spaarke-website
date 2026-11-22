@@ -7,6 +7,9 @@ import { MEMBER_STATUSES, type MemberStatus } from "@/lib/market/campaigns";
 import { campaignResults, filterResults, type Funnel, type ResultRow } from "@/lib/market/results";
 import { Badge } from "@/components/admin/Badge";
 import { AddMembersForm } from "@/components/admin/AddMembersForm";
+import { BulkFollowUpForm } from "@/components/admin/BulkFollowUpForm";
+import { todayKey } from "@/lib/market/followups";
+import { loadContacts } from "@/lib/market/queries";
 import { CampaignForm } from "@/components/admin/CampaignForm";
 import { DataTable, type Column } from "@/components/admin/DataTable";
 import { EmptyState } from "@/components/admin/EmptyState";
@@ -135,6 +138,10 @@ export default async function CampaignPage({
   const results = await campaignResults(slug, principal.roles);
   if (!results) notFound();
   const { campaign, funnel, rows, groups } = results;
+  // Contact tags, for picking members for bulk follow-ups.
+  const tagsOf = new Map((await loadContacts(principal.roles)).map((c) => [c.id, c.tags]));
+  const bulkMembers = rows.map((r) => ({ status: r.effective, group: r.group, tags: tagsOf.get(r.contactId) ?? [] }));
+  const memberTags = [...new Set(bulkMembers.flatMap((m) => m.tags))].sort((a, b) => a.localeCompare(b));
 
   const sp = await searchParams;
   const q = one(sp, "q", 200);
@@ -207,7 +214,16 @@ export default async function CampaignPage({
           </h2>
           <p className="text-sm text-fg-mid">{filtered ? `${shown.length} of ${rows.length}` : rows.length}</p>
         </div>
-        <AddMembersForm slug={campaign.slug} />
+        <div className="space-y-2">
+          <div>
+            <AddMembersForm slug={campaign.slug} />
+          </div>
+          {rows.length ? (
+            <div>
+              <BulkFollowUpForm slug={campaign.slug} members={bulkMembers} groups={groups} tags={memberTags} today={todayKey()} />
+            </div>
+          ) : null}
+        </div>
         {rows.length ? (
           <FilterBar
             action={base}
