@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030, 031 and 033).
+// tasks 002, 010 to 013, 020 to 022, 030, 031, 033 and 053).
 //
 //   npm run market:check
 //
@@ -289,6 +289,86 @@ console.log("Pure checks");
   assert.throws(() => admin.parseOverride({ status: "won" }), admin.CampaignError);
   assert.deepEqual(admin.parseAddMembers({ contacts: "a@x.test\n b@x.test, a@x.test" }).contacts, ["a@x.test", "b@x.test"]);
   ok("member status is the furthest stage in the campaign's window; the funnel counts what the log shows (task 033)");
+}
+
+{
+  const csvLib = await import("@/lib/market/csv");
+  const lead = await import("@/lib/market/linkedin-import");
+  const { readFileSync } = await import("node:fs");
+
+  // Quoting, doubled quotes, a line break inside quotes, CRLF and a byte order mark.
+  const p = csvLib.parseCsv('﻿a,b,c\r\n"x, y","say ""hi""","two\r\nlines"\r\n\r\n 1 ,2,3\r\n');
+  assert.deepEqual(p.headers, ["a", "b", "c"]);
+  assert.deepEqual(p.rows, [["x, y", 'say "hi"', "two\r\nlines"], ["1", "2", "3"]]);
+  assert.deepEqual(p.lines, [2, 5]);
+  assert.deepEqual(csvLib.parseCsv("a\tb\n1\t2").rows, [["1", "2"]], "tab-separated");
+  assert.deepEqual(csvLib.parseCsv("a;b\n1;2").rows, [["1", "2"]], "semicolon-separated");
+  assert.throws(() => csvLib.parseCsv('a,b\n"open,2'), csvLib.CsvError);
+  assert.throws(() => csvLib.parseCsv("  \n\n"), csvLib.CsvError);
+  assert.throws(() => csvLib.parseCsv("a\n1\n2\n3", { maxRows: 2 }), csvLib.CsvError);
+
+  // Times: Campaign Manager's export has no zone and is read as UTC.
+  const t = csvLib.parseLeadTime;
+  assert.equal(t("2026-12-19 15:02:11"), "2026-12-19T15:02:11.000Z");
+  assert.equal(t("2026-12-19T15:02:11Z"), "2026-12-19T15:02:11.000Z");
+  assert.equal(t("2026-12-19T10:02:11-05:00"), "2026-12-19T15:02:11.000Z");
+  assert.equal(t("2026-12-19"), "2026-12-19T00:00:00.000Z");
+  assert.equal(t("12/20/2026 9:15 AM"), "2026-12-20T09:15:00.000Z");
+  assert.equal(t("12/20/2026 12:05 AM"), "2026-12-20T00:05:00.000Z");
+  assert.equal(t("12/20/2026, 21:15"), "2026-12-20T21:15:00.000Z");
+  assert.equal(t("Dec 20, 2026 2:03 PM"), "2026-12-20T14:03:00.000Z");
+  assert.equal(t("1797800000"), new Date(1797800000 * 1000).toISOString());
+  for (const bad of ["sometime next week", "2026-02-30", "13/01/2026", "12/20/2026 13:00 PM", ""]) {
+    assert.equal(t(bad), null, `should not read ${bad}`);
+  }
+
+  // Default mapping from LinkedIn's headers; extra columns are left alone.
+  const fixture = readFileSync("scripts/market/fixtures/linkedin-leads-sample.csv", "utf8");
+  const parsed = csvLib.parseCsv(fixture);
+  const map = csvLib.defaultMapping(parsed.headers);
+  assert.deepEqual(map, {
+    email: "Email Address",
+    firstName: "First Name",
+    lastName: "Last Name",
+    company: "Company Name",
+    title: "Job Title",
+    linkedinUrl: "LinkedIn Profile URL",
+    phone: "Phone Number",
+    submittedAt: "Submitted At",
+    leadId: "Lead ID",
+    formName: "Form Name",
+  });
+  assert.deepEqual(csvLib.defaultMapping(["E-mail", "Email"]), { email: "E-mail" }, "punctuation and case are ignored; the first match wins");
+  assert.throws(() => csvLib.checkMapping({ email: "Nope" }, parsed.headers), csvLib.CsvError);
+  assert.throws(() => csvLib.checkMapping({ firstName: "First Name" }, parsed.headers), csvLib.CsvError, "email is required");
+  assert.throws(() => csvLib.checkMapping({ email: "Email Address", country: "Country" }, parsed.headers), csvLib.CsvError);
+
+  const leads = lead.checkLeads(csvLib.mapRows(parsed, map));
+  assert.equal(leads.length, 8);
+  assert.deepEqual(
+    leads.filter((l) => l.skip).map((l) => [l.line, l.skip]),
+    [
+      [6, "No email"],
+      [7, "Not an email address"],
+      [8, "Repeats an earlier row"],
+      [10, "Submitted time not understood"],
+    ],
+  );
+  const riley = leads.find((l) => l.leadId === "FAKE-0003")!;
+  assert.equal(riley.name, 'Riley O"Test');
+  assert.equal(riley.title, "Head of Legal Ops (EMEA)");
+  assert.equal(riley.submittedAt, "2026-12-20T09:15:00.000Z");
+  // Without a Lead ID, the email and time are the key, so a re-import still matches.
+  const noId = lead.checkLeads(csvLib.mapRows(parsed, { ...map, leadId: undefined }));
+  assert.equal(noId[1].sourceId, lead.checkLeads(csvLib.mapRows(parsed, { ...map, leadId: undefined }))[1].sourceId);
+  assert.match(noId[1].sourceId!, /^h:[0-9a-f]{64}$/);
+  assert.ok(!noId[1].sourceId!.includes("@"));
+
+  assert.throws(() => lead.parseImportRequest({ csv: "a" , extra: 1 }), csvLib.CsvError);
+  assert.throws(() => lead.parseImportRequest({ csv: "" }), csvLib.CsvError);
+  assert.throws(() => lead.parseImportRequest({ csv: "x".repeat(lead.MAX_CSV_CHARS + 1) }), csvLib.CsvError);
+  assert.equal(lead.parseImportRequest({ csv: "a" }).confirm, false);
+  ok("the CSV reader handles quotes, line breaks and delimiters; LinkedIn headers map by default; bad rows are named (task 053)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -885,6 +965,91 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.ok(coldMs < 2000, `with a recompute: ${coldMs.toFixed(0)} ms`);
   assert.ok(warmMs < 2000, `stored statuses: ${warmMs.toFixed(0)} ms`);
   ok(`a 500-member campaign loads in ${warmMs.toFixed(0)} ms, ${coldMs.toFixed(0)} ms when it derives statuses first (NFR-04, task 033)`);
+}
+
+{
+  // FR-14 and success criterion 5: a lead export imports cleanly, and a second import adds nothing.
+  const lead = await import("@/lib/market/linkedin-import");
+  const results = await import("@/lib/market/results");
+  const { readFileSync } = await import("node:fs");
+  const csv = readFileSync("scripts/market/fixtures/linkedin-leads-sample.csv", "utf8")
+    .replaceAll(".example.test", `-${run}.example.test`)
+    .replaceAll("FAKE-", `FAKE-${run}-`);
+  const slug = `li-${run}`;
+  const campaign = (await camp.upsertCampaign({ slug, name: "LinkedIn leads", kind: "linkedin", visibility: "general", utmCampaign: "dpp" }))!;
+  const roles = ["admin"];
+  const who = "check@example.test";
+
+  const before = await lead.previewImport(lead.parseImportRequest({ csv }));
+  assert.deepEqual(
+    { total: before.total, ready: before.ready, alreadyImported: before.alreadyImported, skipped: before.skipped },
+    { total: 8, ready: 4, alreadyImported: 0, skipped: 4 },
+  );
+  assert.equal(before.sample.length, 8);
+
+  const first = await lead.runImport(lead.parseImportRequest({ csv, campaign: slug, confirm: true }), campaign, roles, who);
+  assert.deepEqual(
+    { imported: first.imported, newContacts: first.newContacts, alreadyImported: first.alreadyImported, skipped: first.skipped, membersAdded: first.membersAdded },
+    { imported: 4, newContacts: 3, alreadyImported: 0, skipped: 4, membersAdded: 3 },
+  );
+  assert.deepEqual(first.skippedRows.map((r) => r.line), [6, 7, 8, 10]);
+
+  const jordan = (await contacts.findContactByEmail(`jordan.placeholder@contoso-${run}.example.test`))!;
+  assert.equal(jordan.name, "Jordan Placeholder");
+  assert.equal(jordan.title, "Director, Legal Operations");
+  assert.equal(jordan.kind, "prospect");
+  assert.equal(jordan.source, "linkedin.lead");
+  assert.equal((await orgs.getOrganization(jordan.organizationId!))?.name, "Contoso");
+  const avery = (await contacts.findContactByEmail(`avery.sample@northwind-${run}.example.test`))!;
+  const averyLog = await activity.listContactActivities(avery.id);
+  assert.equal(averyLog.length, 2, "two submissions, one contact");
+  assert.ok(averyLog.every((a) => a.type === "linkedin.lead" && a.campaignSlug === slug && a.source === "linkedin-csv"));
+  assert.deepEqual(averyLog[0].utm, { source: "linkedin", medium: "paid", campaign: "dpp", term: undefined, content: undefined });
+  assert.equal(averyLog[1].occurredAt, "2026-12-19T15:02:11.000Z");
+  assert.equal(averyLog[1].summary, "LinkedIn lead form: Design Partner Program");
+
+  const res = (await results.campaignResults(slug, roles))!;
+  assert.equal(res.funnel.members, 3);
+  assert.equal(res.funnel.engaged, 3);
+
+  // Second run: nothing new.
+  const again = await lead.previewImport(lead.parseImportRequest({ csv }));
+  assert.equal(again.ready, 0);
+  assert.equal(again.alreadyImported, 4);
+  const second = await lead.runImport(lead.parseImportRequest({ csv, campaign: slug, confirm: true }), campaign, roles, who);
+  assert.deepEqual(
+    { imported: second.imported, newContacts: second.newContacts, alreadyImported: second.alreadyImported, membersAdded: second.membersAdded },
+    { imported: 0, newContacts: 0, alreadyImported: 4, membersAdded: 0 },
+  );
+  assert.equal((await activity.listContactActivities(avery.id)).length, 2);
+  assert.equal((await camp.listMembers(slug)).length, 3);
+
+  // Nothing from the file is stored beyond the mapped fields: an unmapped column's value appears in no table.
+  for (const name of ["contacts", "organizations", "activities", "activityByMonth", "members", "campaigns", "audit"] as const) {
+    const table = await getTable(name);
+    for await (const e of table!.listEntities()) {
+      assert.ok(!JSON.stringify(e).includes("Made-up Country"), `${name} holds an unmapped value`);
+    }
+  }
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.action === "import.linkedin" && e.entityId === slug);
+  assert.equal(audits.length, 2);
+  assert.ok(!JSON.stringify(audits).includes(`-${run}.example.test`), "the audit holds counts, not lead addresses");
+  ok("a LinkedIn lead export imports contacts, activities and members, and a second import adds nothing (FR-14, task 053)");
+}
+
+{
+  // Timing: 500 leads in one import, as a ceiling for the request time on the live site.
+  const lead = await import("@/lib/market/linkedin-import");
+  const slug = `li-big-${run}`;
+  const campaign = (await camp.upsertCampaign({ slug, name: "Many leads", kind: "linkedin", visibility: "general" }))!;
+  const lines = ["Lead ID,Submitted At,First Name,Last Name,Email Address,Company Name"];
+  for (let i = 0; i < 500; i++) lines.push(`BIG-${run}-${i},2026-12-2${i % 9} 10:00:00,Lead,${i},lead${i}@big${i % 40}-${run}.example.test,Big ${i % 40}`);
+  const t0 = performance.now();
+  const r = await lead.runImport(lead.parseImportRequest({ csv: lines.join("\n"), campaign: slug, confirm: true }), campaign, ["admin"], "check@example.test");
+  const ms = performance.now() - t0;
+  assert.equal(r.imported, 500);
+  assert.equal(r.membersAdded, 500);
+  ok(`500 leads import in ${(ms / 1000).toFixed(1)} s against the emulator (task 053)`);
 }
 
 {

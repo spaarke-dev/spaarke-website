@@ -54,6 +54,8 @@ const STAGE_OF: Partial<Record<ActivityType, MemberStage>> = {
   "email.bounced": "bounced",
   "brief.read": "engaged",
   "ask_ai.click": "engaged",
+  // A Lead Gen Form submission tagged with the campaign (task 053).
+  "linkedin.lead": "engaged",
   "email.received": "replied",
   "meeting.booked": "meeting",
   "meeting.rescheduled": "meeting",

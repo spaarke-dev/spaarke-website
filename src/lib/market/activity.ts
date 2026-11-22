@@ -106,6 +106,20 @@ function markerKeys(hash: string) {
   return { partitionKey: `idem-${hashPartition(hash)}`, rowKey: hash };
 }
 
+/** Whether an event from this source is already in the log (an import's preview). */
+export async function hasActivity(source: string, sourceId: string): Promise<boolean> {
+  const activities = await getTable("activities");
+  if (!activities) return false;
+  const mk = markerKeys(idempotencyKey(source, sourceId));
+  try {
+    await activities.getEntity<MarkerEntity>(mk.partitionKey, mk.rowKey);
+    return true;
+  } catch (err) {
+    if (statusOf(err) === 404) return false;
+    throw err;
+  }
+}
+
 /**
  * Append one activity, once. Throws on storage errors; public routes call
  * recordActivitySafe instead.
