@@ -14,7 +14,7 @@ const NAV: { label: string; href: string; ready: boolean }[] = [
   { label: "Home", href: "/admin", ready: true },
   { label: "Contacts", href: "/admin/contacts", ready: true },
   { label: "Organizations", href: "/admin/organizations", ready: false },
-  { label: "Campaigns", href: "/admin/campaigns", ready: false },
+  { label: "Campaigns", href: "/admin/campaigns", ready: true },
   { label: "Triage", href: "/admin/triage", ready: false },
   { label: "Mailboxes", href: "/admin/mailboxes", ready: false },
   { label: "Import", href: "/admin/import", ready: false },

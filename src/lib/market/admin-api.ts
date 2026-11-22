@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { requireAdminApi, type Principal } from "@/lib/market/auth";
 import { visibleContact, clearQueryCache, type ContactRow } from "@/lib/market/queries";
 import { isMarketConfigured } from "@/lib/market/tables";
+import { getCampaign, type Campaign } from "@/lib/market/campaigns";
+import { isVisibleTo } from "@/lib/market/visibility";
 
 /**
  * Shared steps for the admin API routes: the role check, a same-site check
@@ -39,17 +41,15 @@ export function sameSite(headers: Headers): boolean {
   }
 }
 
-export type AdminContext = { principal: Principal; contact: ContactRow; body: unknown };
+export type AdminRequest = { principal: Principal; body: unknown };
+export type AdminContext = AdminRequest & { contact: ContactRow };
 
 /**
- * Run the checks for a route on one contact. Returns the context, or the
- * response to send when a check fails.
+ * The checks every admin route runs: role, same site for a change, storage,
+ * and a JSON body when one is expected. Returns the context, or the response
+ * to send when a check fails.
  */
-export async function contactRequest(
-  request: Request,
-  contactId: string,
-  opts: { body: boolean },
-): Promise<AdminContext | NextResponse> {
+export async function adminRequest(request: Request, opts: { body: boolean }): Promise<AdminRequest | NextResponse> {
   const auth = requireAdminApi(request);
   if (!auth.ok) return auth.response;
   if (request.method !== "GET" && !sameSite(request.headers)) return fail(403, "Cross-site request refused");
@@ -66,10 +66,33 @@ export async function contactRequest(
       return fail(400, "The body is not valid JSON");
     }
   }
+  return { principal: auth.principal, body };
+}
 
-  const contact = await visibleContact(contactId, auth.principal.roles);
+/** adminRequest, plus a contact the user may see (or 404). */
+export async function contactRequest(
+  request: Request,
+  contactId: string,
+  opts: { body: boolean },
+): Promise<AdminContext | NextResponse> {
+  const ctx = await adminRequest(request, opts);
+  if (ctx instanceof NextResponse) return ctx;
+  const contact = await visibleContact(contactId, ctx.principal.roles);
   if (!contact) return fail(404, "No such contact");
-  return { principal: auth.principal, contact, body };
+  return { ...ctx, contact };
+}
+
+/** adminRequest, plus a campaign the user may see (or 404). */
+export async function campaignRequest(
+  request: Request,
+  slug: string,
+  opts: { body: boolean },
+): Promise<(AdminRequest & { campaign: Campaign }) | NextResponse> {
+  const ctx = await adminRequest(request, opts);
+  if (ctx instanceof NextResponse) return ctx;
+  const campaign = await getCampaign(slug);
+  if (!campaign || !isVisibleTo(campaign, ctx.principal.roles)) return fail(404, "No such campaign");
+  return { ...ctx, campaign };
 }
 
 /** The audit's `who`: the signed-in address. */
