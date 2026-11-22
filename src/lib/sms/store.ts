@@ -174,7 +174,8 @@ function withoutMeta<T>(row: Row<T> | T): T {
 // Inbound messages: one row per MessageSid, which deduplicates Twilio retries
 // ---------------------------------------------------------------------------
 
-export type InboundClassification = "pending" | "meet" | "stop" | "start" | "help" | "other";
+/** "blocked": a sender outside +1, never classified or hashed (FR-06). */
+export type InboundClassification = "pending" | "meet" | "stop" | "start" | "help" | "other" | "blocked";
 
 const dayKey = (at: Date) => at.toISOString().slice(0, 10);
 
@@ -216,6 +217,8 @@ export type SenderRecord = {
   optedOutAt: string;
   /** Empty until the first MEET. */
   latestConversationId: string;
+  /** When that conversation was created; a MEET within 24 hours reuses it. */
+  latestConversationAt: string;
   /** MEET replies sent in the window that began at meetWindowStart. */
   meetReplyCount: number;
   meetWindowStart: string;
@@ -232,6 +235,7 @@ export function newSender(now: Date): SenderRecord {
     optedOut: false,
     optedOutAt: "",
     latestConversationId: "",
+    latestConversationAt: "",
     meetReplyCount: 0,
     meetWindowStart: "",
     otherReplyCount: 0,

@@ -22,8 +22,10 @@ real limits live in Table Storage.
 
 1. In the route, before any reply:
    - `checkRateLimit("sms", phoneHash)` first, as a cheap guard.
-   - MEET: at most 3 replies per sender in 24 hours.
-   - Other text: at most 1 nudge per sender in 24 hours.
+   - MEET: at most 3 replies per sender in 24 hours. (Done in task 021,
+     in `src/lib/sms/inbound.ts`.)
+   - Other text: at most 1 nudge per sender in 24 hours. (Done in task
+     021.)
    - Site-wide: `incrementCounter` for the hour and the day against
      `SMS_REPLY_HOURLY_CAP` and `SMS_REPLY_DAILY_CAP`. Past a cap: empty
      response, `sms.cap_reached`, and, when this request crossed it, one
@@ -70,3 +72,8 @@ Note from task 020: the store has only been run against the in-memory dev
 mock. The `--server` cases need a storage connection with test table names
 (`SMS_*_TABLE`), either Azurite or a connection string in `.env.local`;
 neither exists on this machine today, so that is an owner decision.
+
+Note from task 021: most route cases above already run offline in
+`npm run sms:check` by calling the route's `POST` directly with the dev mock
+store. The `--server` mode adds what that cannot show: real Table Storage,
+real timings, and the hourly cap.

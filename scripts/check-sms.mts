@@ -395,5 +395,162 @@ try {
 }
 
 // ---------------------------------------------------------------------------
+section("Inbound route (called directly, dev mock store)");
+
+// The route's POST handler, given built requests: no server, no network, no
+// storage account. Task 022 adds the same cases against a running server.
+const ROUTE_ENV = {
+  NODE_ENV: "development",
+  MEET_DEV_MOCK: "1",
+  SMS_MODE: "twilio",
+  TWILIO_ACCOUNT_SID: "ACtest0000000000000000000000000000",
+  TWILIO_AUTH_TOKEN: "route-check-token",
+  SMS_WEBHOOK_URL: "https://example.test/api/sms/inbound",
+  SMS_PUBLIC_NUMBER: "+18005550100",
+  SMS_LINK_SECRET: SECRET,
+  SMS_PHONE_HASH_SECRET: HASH_SECRET,
+};
+const savedRoute = Object.fromEntries(
+  [...Object.keys(ROUTE_ENV), "STORAGE_ACCOUNT_CONNECTION", "TWILIO_AUTH_TOKEN_PREVIOUS"].map((k) => [k, process.env[k]]),
+);
+const quietWarn = console.warn;
+console.warn = () => {};
+try {
+  Object.assign(process.env, ROUTE_ENV);
+  delete process.env.TWILIO_AUTH_TOKEN_PREVIOUS;
+  const { POST } = await import("@/app/api/sms/inbound/route");
+  const { MEET_REPLIES_PER_DAY } = await import("@/lib/sms/inbound");
+  // Its own number: the store section above opted TEST_NUMBER out in the same mock tables.
+  const ROUTE_NUMBER = "+12025550155";
+
+  let sidCounter = 0;
+  const nextSid = () => `SM${(++sidCounter).toString().padStart(32, "0")}`;
+  type Send = { sid?: string; from?: string; body?: string; to?: string; account?: string; optOut?: string };
+  const fieldsFor = (s: Send): [string, string][] => {
+    const f: [string, string][] = [
+      ["AccountSid", s.account ?? ROUTE_ENV.TWILIO_ACCOUNT_SID],
+      ["MessageSid", s.sid ?? nextSid()],
+      ["From", s.from ?? ROUTE_NUMBER],
+      ["To", s.to ?? ROUTE_ENV.SMS_PUBLIC_NUMBER],
+      ["Body", s.body ?? "MEET"],
+      ["NumMedia", "0"],
+    ];
+    if (s.optOut) f.push(["OptOutType", s.optOut]);
+    return f;
+  };
+  const request = (
+    fields: [string, string][],
+    o: { url?: string; token?: string; type?: string; signature?: string | null; body?: string } = {},
+  ) => {
+    const headers: Record<string, string> = { "content-type": o.type ?? "application/x-www-form-urlencoded" };
+    const signature =
+      o.signature === undefined
+        ? computeSignature(o.token ?? ROUTE_ENV.TWILIO_AUTH_TOKEN, o.url ?? ROUTE_ENV.SMS_WEBHOOK_URL, fields)
+        : o.signature;
+    if (signature !== null) headers["x-twilio-signature"] = signature;
+    return new Request("http://localhost:8080/api/sms/inbound", {
+      method: "POST",
+      headers,
+      body: o.body ?? new URLSearchParams(fields).toString(),
+    });
+  };
+  const send = async (s: Send) => {
+    const res = await POST(request(fieldsFor(s)));
+    const text = await res.text();
+    const message = /<Message>([\s\S]*)<\/Message>/.exec(text)?.[1] ?? null;
+    return { status: res.status, text, message };
+  };
+  const isEmpty = (r: { status: number; text: string }) => r.status === 200 && r.text.endsWith("<Response/>");
+
+  // Before the signature
+  delete process.env.SMS_MODE;
+  check("route: 404 with SMS_MODE unset", (await POST(request(fieldsFor({})))).status === 404);
+  process.env.SMS_MODE = "twilio";
+  check("route: 400 for JSON", (await POST(request(fieldsFor({}), { type: "application/json" }))).status === 400);
+  check("route: 400 over 16 KB", (await POST(request(fieldsFor({ body: "x".repeat(17_000) })))).status === 400);
+  const preSid = nextSid();
+  check("route: 403 with no signature", (await POST(request(fieldsFor({ sid: preSid }), { signature: null }))).status === 403);
+  check("route: 403 with the wrong token", (await POST(request(fieldsFor({ sid: preSid }), { token: "nope" }))).status === 403);
+  check(
+    "route: 403 when signed over the request's own URL",
+    (await POST(request(fieldsFor({ sid: preSid }), { url: "http://localhost:8080/api/sms/inbound" }))).status === 403,
+  );
+  {
+    const f = fieldsFor({ sid: preSid });
+    const tampered = new URLSearchParams(f.map(([k, v]) => [k, k === "Body" ? "MEET SIG" : v])).toString();
+    check("route: 403 when the body changed after signing", (await POST(request(f, { body: tampered }))).status === 403);
+  }
+  check("route: 403 for another account", (await send({ sid: preSid, account: "ACother" })).status === 403);
+  check("route: 403 for another number", (await send({ sid: preSid, to: "+18005550101" })).status === 403);
+
+  // MEET
+  const first = await send({ sid: preSid, body: "Meet card2" });
+  check("route: nothing stored before the signature passed (SID still free)", first.status === 200 && first.message !== null);
+  check("route: reply is XML escaped", first.text.includes("Msg &amp; data rates"));
+  const link = /(https?:\/\/\S+\/meet\?c=)(\S+?)\s/.exec(first.message?.replaceAll("&amp;", "&") ?? "");
+  check("route: link uses siteUrl()", link?.[1] === `${siteUrl()}/meet?c=`, link?.[1]);
+  const firstToken = verifySmsToken(link?.[2] ?? "", SECRET);
+  check("route: link token verifies", firstToken.ok);
+  check("route: same MessageSid again gets nothing", isEmpty(await send({ sid: preSid, body: "Meet card2" })));
+  const second = await send({ body: "meet" });
+  const secondToken = verifySmsToken(/c=(\S+?)\s/.exec(second.message ?? "")?.[1] ?? "", SECRET);
+  check(
+    "route: a second MEET reuses the conversation",
+    firstToken.ok && secondToken.ok && firstToken.conversationId === secondToken.conversationId,
+  );
+  for (let i = 2; i < MEET_REPLIES_PER_DAY; i++) await send({ body: "MEET" });
+  check(`route: MEET number ${MEET_REPLIES_PER_DAY + 1} in a day gets nothing`, isEmpty(await send({ body: "MEET" })));
+
+  // Other text
+  const other = "+12025550188";
+  const nudge = await send({ from: other, body: "hello?" });
+  check("route: unrecognized text gets the nudge", nudge.message === NUDGE_REPLY);
+  check("route: a second one that day gets nothing", isEmpty(await send({ from: other, body: "anyone there" })));
+
+  // STOP, START, HELP
+  const stopper = "+12025550177";
+  check("route: HELP gets nothing from the route", isEmpty(await send({ from: stopper, body: "HELP", optOut: "HELP" })));
+  check("route: STOP gets nothing from the route", isEmpty(await send({ from: stopper, body: "STOP", optOut: "STOP" })));
+  check("route: MEET after STOP gets nothing", isEmpty(await send({ from: stopper, body: "MEET" })));
+  check("route: text after STOP gets no nudge", isEmpty(await send({ from: stopper, body: "hi" })));
+  check("route: START gets nothing from the route", isEmpty(await send({ from: stopper, body: "START", optOut: "START" })));
+  check("route: MEET after START gets a link", (await send({ from: stopper, body: "MEET" })).message !== null);
+  check(
+    "route: plain-language stop gets nothing and opts out",
+    isEmpty(await send({ from: "+12025550166", body: "please stop texting me" })) &&
+      isEmpty(await send({ from: "+12025550166", body: "MEET" })),
+  );
+
+  // Region
+  check("route: a sender outside +1 gets nothing", isEmpty(await send({ from: "+442071234567", body: "MEET" })));
+
+  // Nothing readable stored
+  const mockTables = (globalThis as unknown as { __meetDevMock?: { tables: Map<string, Map<string, unknown>> } })
+    .__meetDevMock?.tables;
+  const dump = JSON.stringify(
+    [...(mockTables?.entries() ?? [])].filter(([name]) => name.startsWith("Sms")).map(([n, t]) => [n, [...t.entries()]]),
+  );
+  check(
+    "route: no number or message text in any SMS table",
+    dump.length > 100 && !/5550155|5550188|5550177|5550166|2071234567|hello|anyone there|stop texting/i.test(dump),
+  );
+
+  // Errors after the signature
+  delete process.env.MEET_DEV_MOCK;
+  delete process.env.STORAGE_ACCOUNT_CONNECTION;
+  const quietError = console.error;
+  console.error = () => {};
+  const failed = await send({ from: "+12025550144", body: "MEET" });
+  console.error = quietError;
+  check("route: a storage failure answers 200 with an empty Response", isEmpty(failed));
+} finally {
+  console.warn = quietWarn;
+  for (const [k, v] of Object.entries(savedRoute)) {
+    if (v === undefined) delete process.env[k];
+    else Object.assign(process.env, { [k]: v });
+  }
+}
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) process.exit(1);

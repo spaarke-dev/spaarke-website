@@ -7,12 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 021, inbound webhook route (not started) |
+| **Task** | 022, rate limits, caps, route checks (not started) |
 | **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Phase 1 and task 020 complete 2026-11-22; task 001 waits on the owner |
-| **Next Action** | Begin task 021 |
+| **Status** | Tasks 010 to 021 complete 2026-11-22; task 001 waits on the owner |
+| **Next Action** | Begin task 022 (needs a storage connection for --server) |
 
 ## Last completed
+
+Task 021: `POST /api/sms/inbound`, `src/lib/sms/inbound.ts`, `replies.ts`.
+Per-sender limits done here; 144 offline cases pass; build passes.
 
 Task 020: `src/lib/sms/store.ts`, checked against the dev mock (17 cases in
 `npm run sms:check`, 116 in all). Real Table Storage is not yet exercised.
