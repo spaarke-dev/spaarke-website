@@ -101,11 +101,22 @@ The owner supplied a new calculator (`notes/calculator-sample/`, with `HANDOFF.m
 | Topic | Applied |
 |---|---|
 | Law firm view | The financial section shows the MSO value estimate: the headline "Run leaner, compete on technology, and build equity", the lede, firm-size presets (mid-size by default), three sliders, three objective cards, a summary line and the disclaimer. The model is ported unchanged and matches the handoff's golden values. The old firm cost calculator, the network-value line and the private capital note no longer show in the firm view (content kept) |
-| Legal department view | Unchanged: the round 5 cost calculator. The new model is about partners and firm equity, and the design keeps equity out of the corporate view |
+| Legal department view | Superseded the same day by the department estimate (task 071, below) |
 | Details | `/services/estimate`, a page of its own with the calculator and "How the estimate works" (profit-per-partner waterfall, today against with the MSO, how it works, the structure, the assumptions). The inputs travel in the query string. From /services it opens as a modal over the page, scrolled to "How the estimate works"; reloading shows the full page. Esc, the close button and the backdrop close it. The modal and the section share the inputs, so a change in one shows in the other |
 | Copy | As in the handoff, in US spelling ("license") |
 
 **Needs counsel before launch (task 051):** the estimate shows equity figures (an equity stake value, the firm's 75% share of MSO profit, a 10x platform roll-up value, Spaarke's 25% stake). The design's guardrail (design.md section 9) says no equity numbers anywhere. The owner chose this calculator, so it is built as specified, and the page stays noindex. It also names the audience as US IP boutiques.
+
+## Legal department estimate (2026-11-22)
+
+The owner asked for the legal department equivalent of the MSO value estimate. Built as task 071.
+
+| Topic | Applied |
+|---|---|
+| Legal department view | The financial section now shows the department estimate in place of the round 5 cost calculator: "Run leaner, work like a much larger team, and lock in the savings", department-size presets, three sliders (in-house lawyers, legal operations and support staff, annual legal budget), three cards (lower cost of legal, technology edge, lasting value), a summary line and a disclaimer |
+| Model | New, with the same MSO levers as the law firm model. Savings come from the lower MSO fee, routine outside counsel work brought in-house with freed lawyer time, and routine work the MSO handles at half its outside cost. Mid-size: $25.0M to $23.5M, $1.47M a year (6%). Assumptions in task 071; finance to set them |
+| No equity | The department owns no part of the MSO and gets no profit share. The third card is the three-year saving, Spaarke-funded deployment, the fixed fee and $0 capital. A guardrail test enforces it |
+| Details | The same page and modal as the law firm estimate, with `?audience=corporate`: a savings bridge stepping down from today to with the MSO, the comparison table, how it works, the structure and the assumptions |
 
 ## Known gaps in the draft
 

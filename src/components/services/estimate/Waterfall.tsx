@@ -14,44 +14,56 @@ const COLORS = { base: "#8B8B87", step: "#5078DC", total: "#2E9E6A" };
 
 /** A tick step that gives four to six gridlines over the range. */
 function tickStep(range: number) {
-  for (const s of [25_000, 50_000, 100_000, 200_000, 250_000, 500_000, 1_000_000, 2_000_000]) {
+  for (const s of [25_000, 50_000, 100_000, 200_000, 250_000, 500_000, 1_000_000, 2_000_000, 2_500_000, 5_000_000, 10_000_000]) {
     if (range / s <= 6) return s;
   }
-  return 5_000_000;
+  return 25_000_000;
 }
 
-/** Bar extents: the base and total stand on the axis; each step floats on the running total. */
+/**
+ * Bar extents: the base and total stand on the axis; each step floats on the
+ * running total, rising for a gain and falling for a saving (a negative value).
+ */
 function placeBars(steps: WaterfallStep[], yMin: number) {
   const out: (WaterfallStep & { lo: number; hi: number; text: string })[] = [];
   let run = 0;
   for (const s of steps) {
-    const lo = s.kind === "step" ? run : yMin;
-    const hi = s.kind === "step" ? run + s.value : s.value;
-    if (s.kind !== "total") run = s.kind === "base" ? s.value : hi;
-    out.push({ ...s, lo, hi, text: s.kind === "step" ? `+${money(s.value)}` : money(s.value) });
+    if (s.kind === "step") {
+      const next = run + s.value;
+      out.push({ ...s, lo: Math.min(run, next), hi: Math.max(run, next), text: `${s.value >= 0 ? "+" : "-"}${money(Math.abs(s.value))}` });
+      run = next;
+    } else {
+      out.push({ ...s, lo: yMin, hi: s.value, text: money(s.value) });
+      if (s.kind === "base") run = s.value;
+    }
   }
   return out;
 }
 
 /**
- * Profit-per-partner bridge (handoff section 3, details 1): today, each
- * source of extra profit floating on the running total, then the total with
- * the MSO. The y-axis starts near 70% of today's figure, as in the
- * reference. Values sit above the bars. Plain HTML so it reflows with the
- * page; bars animate as the inputs change.
+ * A bridge from today to with the MSO (handoff section 3, details 1): today,
+ * each source of change floating on the running total, then the total with
+ * the MSO. Law firms bridge profit per partner upward; legal departments
+ * bridge the total cost of legal downward. The y-axis starts at `floor` times
+ * the lower of the two ends (0.7 for firms, as in the reference). Values sit
+ * above the bars. Plain HTML so it reflows with the page; bars animate as
+ * the inputs change.
  */
-export function Waterfall({ steps, label }: { steps: WaterfallStep[]; label: string }) {
+export function Waterfall({ steps, label, floor = 0.7 }: { steps: WaterfallStep[]; label: string; floor?: number }) {
   const base = steps[0].value;
   const total = steps[steps.length - 1].value;
-  const yMin = Math.floor((base * 0.7) / 50_000) * 50_000;
-  const st = tickStep(total * 1.08 - yMin);
-  const yMax = Math.ceil((total * 1.08) / st) * st;
+  const top = Math.max(base, total) * 1.08;
+  const roughMin = Math.min(base, total) * floor;
+  const st = tickStep(top - roughMin);
+  const yMin = Math.floor(roughMin / Math.min(st, 50_000)) * Math.min(st, 50_000);
+  const yMax = Math.ceil(top / st) * st;
   const range = yMax - yMin;
   const ticks: number[] = [];
   for (let v = Math.ceil(yMin / st) * st; v <= yMax; v += st) ticks.push(v);
   const at = (v: number) => ((v - yMin) / range) * 100;
 
   const bars = placeBars(steps, yMin);
+  const cols = { gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` };
 
   return (
     <figure aria-label={label}>
@@ -78,7 +90,7 @@ export function Waterfall({ steps, label }: { steps: WaterfallStep[]; label: str
               style={{ bottom: `${at(t)}%` }}
             />
           ))}
-          <div className="absolute inset-0 grid grid-cols-6 gap-1 sm:gap-4">
+          <div className="absolute inset-0 grid gap-1 sm:gap-4" style={cols}>
             {bars.map((b) => (
               <div key={b.label.join(" ")} className="relative">
                 <div
@@ -101,7 +113,7 @@ export function Waterfall({ steps, label }: { steps: WaterfallStep[]; label: str
         </div>
         {/* X labels */}
         <div />
-        <div className="border-line grid grid-cols-6 gap-1 border-t pt-2 sm:gap-4">
+        <div className="border-line grid gap-1 border-t pt-2 sm:gap-4" style={cols}>
           {bars.map((b) => (
             <span key={b.label.join(" ")} className="text-fg-mid text-center text-[10px] leading-tight sm:text-[12px]">
               <span className="hidden sm:inline">

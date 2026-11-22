@@ -599,6 +599,51 @@ export const estimate = {
   },
 };
 
+/**
+ * The legal department equivalent (task 071, 2026-11-22). Same structure as
+ * the law firm estimate. No equity, ownership or profit share anywhere: the
+ * department contracts with an MSO that Spaarke runs (design.md section 9).
+ * Figures come from src/components/services/estimate/dept-model.ts.
+ */
+export const deptEstimate = {
+  title: "Run leaner, work like a much larger team, and lock in the savings",
+  lede: "Your department moves legal operations and technology into an MSO that Spaarke funds and runs. The department pays a fixed fee below today’s cost, invests no capital and keeps every legal decision.",
+  presetsLabel: "Start from a typical department",
+  presets: [
+    { key: "small", label: "Small department" },
+    { key: "mid", label: "Mid-size department" },
+    { key: "large", label: "Large department" },
+  ] as const,
+  fields: {
+    lawyers: "In-house lawyers",
+    staff: "Legal operations and support staff",
+    budget: "Annual legal budget, including outside counsel",
+  },
+  objectives: [
+    { title: "Lower cost of legal", question: "Run the department for less" },
+    { title: "Technology edge", question: "Give a lean team the tools of a large firm" },
+    { title: "Lasting value", question: "Lock in the savings without spending capital" },
+  ],
+  detailsCta: "See the details",
+  disclaimer:
+    "Illustrative estimate using representative assumptions for US corporate legal departments, not a forecast or an offer. Actual results depend on the department, its outside counsel mix, the scope of the services agreement and the fee set for it.",
+  details: {
+    title: "How the estimate works",
+    bridgeTitle: "Where the savings come from",
+    tableTitle: "Today vs with the MSO",
+    tableCaption: "Annual figures for the whole department.",
+    stepsTitle: "How it works",
+    stepsCaption: "Three changes, no capital from the department.",
+    steps: ["Run legal operations for less", "Bring routine work back in-house", "Send routine matters to the MSO"],
+    structureTitle: "The structure",
+    structureCaption:
+      "The department keeps every legal decision and all privileged work. The MSO runs operations and technology under a services agreement. The department owns no part of it.",
+    assumptionsTitle: "Our assumptions",
+    assumptionsCaption:
+      "Representative figures for US corporate legal departments. Your own numbers come from an assessment of your spend.",
+  },
+};
+
 /* ------------------------------------------------------------------ */
 /* 7. Designing, implementing and operating MLO                        */
 /* ------------------------------------------------------------------ */

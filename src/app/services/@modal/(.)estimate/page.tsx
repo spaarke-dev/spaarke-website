@@ -1,5 +1,5 @@
 import { EstimateModal } from "@/components/services/estimate/EstimateModal";
-import { fromQuery } from "@/components/services/estimate/query";
+import { parseEstimateQuery } from "@/components/services/estimate/query";
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
@@ -9,5 +9,5 @@ type Props = { searchParams: Promise<Record<string, string | string[] | undefine
  * src/app/services/estimate/page.tsx instead.
  */
 export default async function EstimateIntercepted({ searchParams }: Props) {
-  return <EstimateModal initial={fromQuery(await searchParams)} />;
+  return <EstimateModal {...parseEstimateQuery(await searchParams)} />;
 }

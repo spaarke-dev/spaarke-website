@@ -2,10 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { estimate as copy } from "@/app/services/content";
+import { deptEstimate, estimate } from "@/app/services/content";
 import type { EstimateInputs } from "./model";
+import type { DeptInputs } from "./dept-model";
 import { EstimateView } from "./EstimateView";
-import { DETAILS_ANCHOR } from "./query";
+import { DETAILS_ANCHOR, type EstimateAudience } from "./query";
 
 /**
  * /services/estimate shown over /services (the intercepting route in
@@ -15,7 +16,16 @@ import { DETAILS_ANCHOR } from "./query";
  * estimate works"; the calculator sits above, so the page works on its own.
  * Full screen below 900 px (handoff section 6).
  */
-export function EstimateModal({ initial }: { initial: EstimateInputs | null }) {
+export function EstimateModal({
+  audience,
+  firm,
+  dept,
+}: {
+  audience: EstimateAudience;
+  firm: EstimateInputs | null;
+  dept: DeptInputs | null;
+}) {
+  const copy = audience === "corporate" ? deptEstimate : estimate;
   const router = useRouter();
   const ref = useRef<HTMLDialogElement>(null);
   const body = useRef<HTMLDivElement>(null);
@@ -89,7 +99,7 @@ export function EstimateModal({ initial }: { initial: EstimateInputs | null }) {
           </h2>
           <p className="text-fg-mid mt-3 max-w-3xl text-[16px] leading-relaxed">{copy.lede}</p>
           <div className="mt-8">
-            <EstimateView initial={initial} />
+            <EstimateView audience={audience} firm={firm} dept={dept} />
           </div>
         </div>
       </div>

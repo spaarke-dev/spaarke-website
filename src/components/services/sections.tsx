@@ -7,6 +7,7 @@ import {
   closing,
   ctas,
   definitions,
+  deptEstimate,
   disclaimers,
   estimate,
   faq,
@@ -24,10 +25,10 @@ import { StatTile } from "./StatTile";
 import { AllocationDiagram } from "./AllocationDiagram";
 import { NetworkDiagram } from "./NetworkDiagram";
 import { Phases } from "./Phases";
-import { Calculator } from "./calculator/Calculator";
 import { EstimateCalculator } from "./estimate/EstimateCalculator";
 import { useEstimateInputs } from "./estimate/state";
-import { estimateHref } from "./estimate/query";
+import { deptEstimateHref, estimateHref } from "./estimate/query";
+import { DeptCalculator } from "./estimate/DeptCalculator";
 
 /**
  * The /services page body. Everything below the site header is client-side
@@ -390,7 +391,7 @@ function Financial() {
   const { audience } = useAudience();
   return (
     <Band id={financial.id} tone="light" style={CREAM}>
-      <Shell>{audience === "firm" ? <FirmEstimate /> : <CorporateEconomics />}</Shell>
+      <Shell>{audience === "firm" ? <FirmEstimate /> : <DeptEstimate />}</Shell>
     </Band>
   );
 }
@@ -400,7 +401,7 @@ function Financial() {
  * details" opens /services/estimate as a modal over this page.
  */
 function FirmEstimate() {
-  const { inputs, setInputs } = useEstimateInputs();
+  const { firm, setFirm } = useEstimateInputs();
   return (
     <>
       <div className="max-w-4xl">
@@ -416,9 +417,9 @@ function FirmEstimate() {
       </div>
       <div className="mt-14">
         <EstimateCalculator
-          inputs={inputs}
-          onChange={setInputs}
-          detailsHref={estimateHref(inputs)}
+          inputs={firm}
+          onChange={setFirm}
+          detailsHref={estimateHref(firm)}
           detailsScroll={false}
         />
       </div>
@@ -426,25 +427,28 @@ function FirmEstimate() {
   );
 }
 
-/** Legal department view: the round 5 cost calculator. */
-function CorporateEconomics() {
-  const { audience } = useAudience();
+/**
+ * Legal department view (task 071, 2026-11-22): the department equivalent of
+ * the MSO value estimate. No equity figures. "See the details" opens
+ * /services/estimate?audience=corporate as a modal over this page.
+ */
+function DeptEstimate() {
+  const { dept, setDept } = useEstimateInputs();
   return (
     <>
       <div className="max-w-4xl">
         <Eyebrow>{financial.eyebrow}</Eyebrow>
         <Flip>
           <Heading level={2} className="mt-5 text-balance">
-            {financial.title[audience]}
+            {deptEstimate.title}
           </Heading>
           <div className="mt-6 max-w-3xl">
-            <Lede>{financial.narrative[audience]}</Lede>
-            <p className="text-fg-mid mt-4 text-[16px] leading-relaxed">{financial.networkValue}</p>
+            <Lede>{deptEstimate.lede}</Lede>
           </div>
         </Flip>
       </div>
       <div className="mt-14">
-        <Calculator cta={ctas.numbers} />
+        <DeptCalculator inputs={dept} onChange={setDept} detailsHref={deptEstimateHref(dept)} detailsScroll={false} />
       </div>
     </>
   );

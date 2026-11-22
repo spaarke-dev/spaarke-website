@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Eyebrow, Heading, Lede, Shell } from "@/components/primitives";
-import { estimate } from "@/app/services/content";
+import { deptEstimate, estimate } from "@/app/services/content";
 import { EstimateView } from "@/components/services/estimate/EstimateView";
-import { fromQuery } from "@/components/services/estimate/query";
+import { parseEstimateQuery } from "@/components/services/estimate/query";
 
 export const metadata: Metadata = {
   title: "MSO value estimate",
@@ -15,12 +15,14 @@ type Props = { searchParams: Promise<Record<string, string | string[] | undefine
 
 /**
  * /services/estimate: the MSO value estimate as a page of its own, with the
- * calculator and "How the estimate works". Inputs come from the query string
- * (`?partners=5&attorneys=7&revenue=9000000`); the mid-size preset otherwise.
+ * calculator and "How the estimate works", for a law firm or, with
+ * `?audience=corporate`, a legal department (task 071). Inputs come from the
+ * query string (see query.ts); the mid-size preset otherwise.
  * From /services the same route opens as a modal (src/app/services/@modal).
  */
 export default async function EstimatePage({ searchParams }: Props) {
-  const initial = fromQuery(await searchParams);
+  const q = parseEstimateQuery(await searchParams);
+  const copy = q.audience === "corporate" ? deptEstimate : estimate;
   return (
     <>
       <section data-tone="dark" className="bg-bg text-fg relative overflow-hidden pb-16 pt-[clamp(120px,16vh,180px)]">
@@ -35,16 +37,16 @@ export default async function EstimatePage({ searchParams }: Props) {
         <Shell className="relative">
           <Eyebrow>MSO value estimate</Eyebrow>
           <Heading level={1} className="mt-5 max-w-4xl text-balance">
-            {estimate.title}
+            {copy.title}
           </Heading>
           <div className="mt-6 max-w-3xl">
-            <Lede>{estimate.lede}</Lede>
+            <Lede>{copy.lede}</Lede>
           </div>
         </Shell>
       </section>
       <section data-tone="light" className="bg-bg text-fg py-[clamp(56px,8vh,96px)]" style={{ backgroundColor: "#f6f6f4" }}>
         <Shell>
-          <EstimateView initial={initial} />
+          <EstimateView {...q} />
         </Shell>
       </section>
     </>
