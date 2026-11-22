@@ -83,7 +83,7 @@ unset TOKEN
 
 The route and the schedule arrive with task 042. Until then the token sits unused, and without it the route answers 503.
 
-For a local test, put the same three `MEET_GRAPH_*` values in `.env.local`. The check script from task 040 (`npm run market:mail`, once it lands) prints message counts per folder for one mailbox, never content.
+For a local test, put the same three `MEET_GRAPH_*` values in `.env.local`. Then `npm run market:mail -- <mailbox> [hours]` prints message counts per folder for one mailbox, never content. A mailbox outside the scope prints `NoMailboxAccess`.
 
 ## 4. Adding a mailbox later
 

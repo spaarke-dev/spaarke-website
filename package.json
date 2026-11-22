@@ -28,6 +28,7 @@
     "meet:check": "tsx scripts/check-meet-slots.mts",
     "meet:graph": "tsx scripts/check-meet-graph.mts",
     "market:check": "tsx scripts/check-market.mts",
+    "market:mail": "tsx scripts/check-market-mail.mts",
     "sms:check": "tsx scripts/check-sms.mts"
   },
   "dependencies": {

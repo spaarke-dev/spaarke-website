@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 to 034, 053 and 060).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040, 053 and 060).
 //
 //   npm run market:check
 //
@@ -447,6 +447,146 @@ console.log("Pure checks");
   assert.deepEqual(ids(oa.filterOrganizations(rows, {})), ["acme.test", "other.test"]);
   assert.equal(oa.filterOrganizations(rows, { pageSize: 1, page: 9 }).page, 2);
   ok("organization domains are read from what people type; edits are checked; search covers names and domains (task 032)");
+}
+
+{
+  // Task 040: the Graph mail client, against canned responses (no network).
+  const mail = await import("@/lib/market/graph-mail");
+  const box = "Owner@Example.test";
+  const settings = { tenantId: "t", clientId: "c", clientSecret: "s" };
+  const graph = "https://graph.microsoft.com/v1.0";
+
+  const msg = (id: string, at: string, extra: Record<string, unknown> = {}) => ({
+    id,
+    internetMessageId: `<${id}@mail.example.test>`,
+    from: { emailAddress: { address: "Jane.Doe@Acme.test", name: "Jane Doe" } },
+    toRecipients: [{ emailAddress: { address: "owner@example.test", name: "owner@example.test" } }],
+    ccRecipients: [{ emailAddress: { address: "/O=EXCHANGELABS/OU=X/CN=RECIPIENTS/CN=ABC" } }],
+    subject: "  Hello  ",
+    receivedDateTime: at,
+    sentDateTime: at,
+    webLink: "https://outlook.office365.com/owa/?ItemID=x",
+    ...extra,
+  });
+
+  const calls: { url: string; headers: Record<string, string> }[] = [];
+  const pages: Record<string, unknown> = {};
+  const fake = (async (input: string | URL | Request, init?: RequestInit) => {
+    const url = String(input);
+    calls.push({ url, headers: (init?.headers ?? {}) as Record<string, string> });
+    const body = Object.entries(pages).find(([k]) => url.includes(k))?.[1];
+    if (body === undefined) return new Response(JSON.stringify({ error: { code: "ErrorItemNotFound" } }), { status: 404 });
+    if (body instanceof Response) return body;
+    return new Response(JSON.stringify(body), { status: 200 });
+  }) as typeof fetch;
+  const deps = { fetch: fake, token: async () => "token" };
+
+  pages["/mailFolders/inbox/messages?$filter"] = {
+    value: [msg("m1", "2026-11-22T10:00:00Z"), { id: "bad" }],
+    "@odata.nextLink": `${graph}/users/owner%40example.test/mailFolders/inbox/messages?$skiptoken=p2`,
+  };
+  pages["$skiptoken=p2"] = { value: [msg("m2", "2026-11-22T11:00:00.0000000")] };
+
+  const got = [];
+  for await (const m of mail.listMessagesSince(settings, box, "inbox", "2026-11-22T00:00:00Z", deps)) got.push(m);
+  assert.deepEqual(
+    got.map((m) => [m.id, m.receivedAt]),
+    [
+      ["m1", "2026-11-22T10:00:00.000Z"],
+      ["m2", "2026-11-22T11:00:00.000Z"],
+    ],
+    "follows the next link; a message without a time is skipped; Graph's zone-less times read as UTC",
+  );
+  assert.deepEqual(got[0].from, { address: "jane.doe@acme.test", name: "Jane Doe" });
+  assert.deepEqual(got[0].to, [{ address: "owner@example.test" }], "a name that only repeats the address is dropped");
+  assert.deepEqual(got[0].cc, [], "an Exchange-internal address is left out");
+  assert.equal(got[0].subject, "Hello");
+  const first = decodeURIComponent(calls[0].url);
+  assert.ok(first.startsWith(`${graph}/users/owner@example.test/mailFolders/inbox/messages?`), first);
+  assert.ok(first.includes("$filter=receivedDateTime ge 2026-11-22T00:00:00.000Z"));
+  assert.ok(first.includes("$orderby=receivedDateTime asc"));
+  assert.ok(!calls[0].url.includes("+"), "spaces are sent as %20");
+  const select = /\$select=([^&]+)/.exec(first)![1].split(",");
+  assert.ok(!select.includes("body") && !select.includes("bodyPreview") && !select.includes("uniqueBody"), "no body is asked for");
+
+  // A link to anywhere but Graph is not followed.
+  calls.length = 0;
+  pages["/mailFolders/sentitems/messages?$filter"] = { value: [msg("s1", "2026-11-22T09:00:00Z")], "@odata.nextLink": "https://evil.test/next" };
+  let n = 0;
+  for await (const _ of mail.listMessagesSince(settings, box, "sentitems", "2026-11-22T00:00:00Z", deps)) n++;
+  assert.equal(n, 1);
+  assert.equal(calls.length, 1);
+
+  // The cap stops a run early.
+  n = 0;
+  for await (const _ of mail.listMessagesSince(settings, box, "inbox", "2026-11-22T00:00:00Z", { ...deps, max: 1 })) n++;
+  assert.equal(n, 1);
+
+  // A mailbox outside the scope is NoMailboxAccess; other failures keep their status.
+  const denied = (async () =>
+    new Response(JSON.stringify({ error: { code: "ErrorAccessDenied", message: "Access is denied." } }), { status: 403 })) as typeof fetch;
+  await assert.rejects(
+    (async () => {
+      for await (const _ of mail.listMessagesSince(settings, "other@example.test", "inbox", "2026-11-22T00:00:00Z", { fetch: denied, token: deps.token })) void _;
+    })(),
+    (err: unknown) => err instanceof mail.NoMailboxAccess && err.mailbox === "other@example.test",
+  );
+  const missing = mail.graphErrorFor(404, "ErrorInvalidUser", "x", box);
+  assert.ok(!(missing instanceof mail.NoMailboxAccess));
+  assert.match(missing.message, /No mailbox with this address/);
+  const notFound = (async () => new Response(JSON.stringify({ error: { code: "ErrorItemNotFound" } }), { status: 404 })) as typeof fetch;
+  await assert.rejects(mail.bounceRecipient(settings, box, "gone", { fetch: notFound, token: deps.token }), (err: unknown) => {
+    const m = (err as Error).message;
+    return m.includes("/users/{mailbox}/messages/{id}") && !m.includes("example.test");
+  });
+  assert.equal(mail.graphErrorFor(500, undefined, "x", box).status, 500);
+
+  // One throttled answer is waited out.
+  let tries = 0;
+  const throttled = (async () => {
+    tries++;
+    return tries === 1
+      ? new Response("", { status: 429, headers: { "Retry-After": "1" } })
+      : new Response(JSON.stringify({ value: [msg("t1", "2026-11-22T08:00:00Z")] }), { status: 200 });
+  }) as typeof fetch;
+  n = 0;
+  for await (const _ of mail.listMessagesSince(settings, box, "inbox", "2026-11-22T00:00:00Z", { fetch: throttled, token: deps.token })) n++;
+  assert.equal(n, 1);
+  assert.equal(tries, 2);
+
+  // Non-delivery reports.
+  const inbox = (from: string, subject: string) => ({ folder: "inbox" as const, from: { address: from }, subject });
+  assert.ok(mail.isBounce(inbox("postmaster@example.onmicrosoft.com", "Undeliverable: Hello")));
+  assert.ok(mail.isBounce(inbox("mailer-daemon@googlemail.com", "Delivery Status Notification (Failure)")));
+  assert.ok(mail.isBounce(inbox("someone@acme.test", "Mail delivery failed: returning message to sender")));
+  assert.ok(!mail.isBounce(inbox("mailer-daemon@googlemail.com", "Delivery Status Notification (Delay)")), "a delay is not a failure");
+  assert.ok(!mail.isBounce(inbox("jane@acme.test", "Re: Undeliverable items in our warehouse")));
+  assert.ok(!mail.isBounce({ folder: "sentitems", from: { address: "postmaster@example.test" }, subject: "Undeliverable: x" }));
+
+  const own = "owner@example.test";
+  const exchange =
+    "Your message to jane.doe@acme.test couldn't be delivered.\n jane.doe wasn't found at acme.test.\n owner Office 365 jane.doe\n Action Required\n postmaster@example.onmicrosoft.com";
+  assert.equal(mail.bounceRecipientFromText(exchange, own), "jane.doe@acme.test");
+  const gmail = "Address not found\nYour message wasn't delivered to Sam.Lee@Other.test because the address couldn't be found.";
+  assert.equal(mail.bounceRecipientFromText(gmail, own), "sam.lee@other.test");
+  const postfix = "This is the mail system at host mx.example.test.\n\n<pat@gone.test>: host mx.gone.test[1.2.3.4] said: 550 5.1.1 User unknown";
+  assert.equal(mail.bounceRecipientFromText(postfix, own), "pat@gone.test");
+  const dsn = "Reporting-MTA: dns; mx.example.test\nFinal-Recipient: rfc822; lee@far.test\nAction: failed";
+  assert.equal(mail.bounceRecipientFromText(dsn, own), "lee@far.test");
+  assert.equal(
+    mail.bounceRecipientFromText("Delivery failed. Contact owner@example.test or postmaster@example.test.", own),
+    null,
+    "only the mailbox and the reporting system: nothing to report",
+  );
+  assert.equal(mail.bounceRecipientFromText("Failed for a@one.test and b@two.test", own), null, "two candidates: not sure, so none");
+
+  // The body is fetched as text for a bounce only, and only the address comes back.
+  calls.length = 0;
+  pages["/messages/nd1?$select=body"] = { body: { contentType: "text", content: exchange } };
+  assert.equal(await mail.bounceRecipient(settings, box, "nd1", deps), "jane.doe@acme.test");
+  assert.match(calls[0].headers.Prefer, /outlook\.body-content-type="text"/);
+
+  ok("the Graph mail client reads metadata only, pages, waits out throttling, names out-of-scope mailboxes and reads failed addresses from bounces (task 040)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
