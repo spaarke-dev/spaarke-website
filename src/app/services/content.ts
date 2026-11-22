@@ -136,46 +136,23 @@ export const whatIsMlo = {
 };
 
 /* ------------------------------------------------------------------ */
-/* 4a. The MSO structure visual (handoff 2026-11-22)                   */
+/* 4a. The MSO structure visual (handoff 2026-11-22, simplified)       */
 /* ------------------------------------------------------------------ */
 
-export type StructureView = "all" | "own" | "ctrl" | "money" | "value";
-export type StructureEdgeType = "own" | "money" | "svc" | "ctrl" | "value";
-export type StructureNodeKey = "clients" | "partners" | "firm" | "mso" | "spaarke" | "network";
-export type StructureEdgeKey =
-  | "fees"
-  | "ownFirm"
-  | "fee"
-  | "svc"
-  | "direct"
-  | "ownMso"
-  | "lic"
-  | "plat"
-  | "deploy"
-  | "equity"
-  | "net";
-
-export interface StructureNode {
+export interface StructureBlock {
+  eyebrow: string;
   title: string;
   sub: string;
-  eyebrow?: string;
-  items?: string[];
-}
-export interface StructureEdge {
-  t: StructureEdgeType;
-  /** A second view the edge also lights up in. */
-  also?: StructureEdgeType;
-  label: string;
-  /** Shorter label for the phone layout. */
-  short?: string;
+  items: string[];
 }
 
 /**
- * Replaces the law firm / MSO allocation diagram in "What is Managed Legal
- * Operations" (handoff: notes/mso-structure-visual). The law firm copy is the
- * handoff's, in US spelling. The legal department copy is a draft written for
- * the audience switch (2026-11-22): no equity, the company keeps the legal
- * function, and the value flow is upgrades and network learning.
+ * "What is Managed Legal Operations" diagram. Built from the structure visual
+ * handoff (notes/mso-structure-visual), then simplified at the owner's
+ * request (2026-11-22): only the client block and its MSO, with the fixed
+ * fee flowing to the MSO and captive services flowing back. The operator,
+ * the other members, equity and the "what the firm owns" outline are out
+ * for now; other points may come back later.
  */
 export const structure = {
   title: {
@@ -187,29 +164,10 @@ export const structure = {
     corporate:
       "The legal department stays part of the company, with its lawyers, judgment and decisions. Its operations and technology move into a dedicated MSO that Spaarke owns and runs on its platform, and Spaarke pays for the move. The department invests no capital and lowers the total cost of legal.",
   } satisfies ByAudience<string>,
-  views: [
-    { id: "all", label: "The full picture" },
-    { id: "own", label: "Who owns what" },
-    { id: "ctrl", label: "Who directs the work" },
-    { id: "money", label: "How money moves" },
-    { id: "value", label: "Where value builds" },
-  ] as { id: StructureView; label: string }[],
-  legend: {
-    firm: { own: "Ownership", money: "Money", svc: "Services", ctrl: "Firm direction", value: "Value to the firm" },
-    corporate: {
-      own: "Ownership",
-      money: "Money",
-      svc: "Services",
-      ctrl: "Department direction",
-      value: "Value to the department",
-    },
-  } satisfies ByAudience<Record<StructureEdgeType, string>>,
-  brace: { firm: "What the firm owns", corporate: "What the department keeps" } satisfies ByAudience<string>,
-  nodes: {
+  flows: { fee: "Fixed fee", services: "Captive services" },
+  blocks: {
     firm: {
-      clients: { title: "Clients", sub: "Engage the firm" },
-      partners: { title: "Firm partners", sub: "Licensed lawyers" },
-      firm: {
+      client: {
         eyebrow: "Law firm · 100% lawyer-owned",
         title: "Your law firm",
         sub: "Keeps the practice of law",
@@ -233,18 +191,9 @@ export const structure = {
           "HR, facilities and vendors",
         ],
       },
-      spaarke: {
-        eyebrow: "MSO operator",
-        title: "Spaarke",
-        sub: "Owns and runs your MSO",
-        items: ["Legal platform and AI", "Funds the deployment", "Migrates legacy systems", "Operations and upgrades"],
-      },
-      network: { title: "Other member firms", sub: "Each with its own MSO" },
     },
     corporate: {
-      clients: { title: "Business units", sub: "Bring legal work" },
-      partners: { title: "The company", sub: "Funds the legal budget" },
-      firm: {
+      client: {
         eyebrow: "Legal department · in-house",
         title: "Your legal department",
         sub: "Keeps legal judgment",
@@ -268,99 +217,8 @@ export const structure = {
           "Reporting and benchmarking",
         ],
       },
-      spaarke: {
-        eyebrow: "MSO operator",
-        title: "Spaarke",
-        sub: "Owns and runs your MSO",
-        items: ["Legal platform and AI", "Funds the deployment", "Migrates legacy systems", "Operations and upgrades"],
-      },
-      network: { title: "Other members", sub: "Each with its own MSO" },
     },
-  } satisfies ByAudience<Record<StructureNodeKey, StructureNode>>,
-  edges: {
-    firm: {
-      fees: { t: "money", label: "Legal fees" },
-      ownFirm: { t: "own", label: "Own 100%" },
-      fee: { t: "money", label: "Fixed fee" },
-      svc: { t: "svc", also: "ctrl", label: "Back-office services", short: "Services" },
-      direct: { t: "ctrl", label: "Directs day-to-day", short: "Directs work" },
-      ownMso: { t: "own", label: "Owns 100%" },
-      lic: { t: "money", label: "Fee + profit", short: "License" },
-      plat: { t: "svc", label: "Platform + ops", short: "Platform" },
-      deploy: { t: "money", label: "Funds setup" },
-      equity: { t: "value", also: "own", label: "Spaarke equity to the firm", short: "Spaarke equity" },
-      net: { t: "svc", also: "value", label: "Same platform" },
-    },
-    corporate: {
-      fees: { t: "svc", label: "Legal work" },
-      ownFirm: { t: "money", label: "Budget" },
-      fee: { t: "money", label: "Fixed fee" },
-      svc: { t: "svc", also: "ctrl", label: "Operations services", short: "Services" },
-      direct: { t: "ctrl", label: "Directs day-to-day", short: "Directs work" },
-      ownMso: { t: "own", label: "Owns 100%" },
-      lic: { t: "money", label: "Fee + profit", short: "License" },
-      plat: { t: "svc", label: "Platform + ops", short: "Platform" },
-      deploy: { t: "money", label: "Funds setup" },
-      equity: { t: "value", label: "Upgrades and network learning", short: "Upgrades" },
-      net: { t: "svc", also: "value", label: "Same platform" },
-    },
-  } satisfies ByAudience<Record<StructureEdgeKey, StructureEdge>>,
-  captions: {
-    firm: {
-      all: [
-        ["The practice", "The law firm stays 100% owned by its lawyers. Clients, legal fees, legal judgment and the firm name do not move."],
-        ["The back office", "Your same staff, systems and operations move into a dedicated MSO owned and run by Spaarke. Your firm directs the day-to-day work."],
-        ["The operator", "Spaarke owns and runs the MSO on its platform, and pays for the deployment. The firm puts in no cash and receives equity in Spaarke."],
-      ],
-      own: [
-        ["Law firm", "Partners own 100% of the law firm, as they do today. Ownership of the practice does not change."],
-        ["Your MSO", "Spaarke owns 100% of each firm’s dedicated MSO, as operators and investors do in most legal MSOs. Ownership sits with Spaarke; direction of the work sits with the firm."],
-        ["Spaarke equity", "Instead of a stake in one MSO, the firm receives equity in Spaarke, which owns every MSO on the network. There is no private equity, no outside investor and no cash in."],
-      ],
-      ctrl: [
-        ["The same people", "Your staff move to the MSO as employees, but they keep working with the same lawyers, on the same matters, in the same offices."],
-        ["Firm direction", "The firm sets priorities and directs the day-to-day work. Lawyers supervise staff on client matters, as the professional rules require."],
-        ["Shared governance", "A joint operating committee, agreed service levels, and firm approval over key staff and any change that affects clients. Spaarke runs the business; the firm directs the work."],
-      ],
-      money: [
-        ["Legal fees stay", "Clients pay the law firm. Legal fees stay with the firm and are never shared with the MSO or Spaarke."],
-        ["A lower, fixed fee", "The firm pays its MSO a fixed fee, set by a fair-market-value study and priced below today’s back-office cost. The savings are the firm’s from day one."],
-        ["License and profit", "The MSO pays Spaarke a fixed platform license, and as owner Spaarke receives the MSO’s profit. The firm sees open-book reporting, and Spaarke earns its return by running the MSO well."],
-      ],
-      value: [
-        ["Better margins now", "A lower operating cost and modern technology lift the firm’s margin and competitiveness straight away."],
-        ["A shared network", "Every member firm runs on the same Spaarke platform, so improvements and benchmarks are shared across the network."],
-        ["Long-term value", "The firm’s Spaarke equity shares in the whole network, not one firm’s back office. Liquidity comes at the Spaarke level, on terms members helped build."],
-      ],
-    },
-    corporate: {
-      all: [
-        ["The legal function", "The legal department stays part of the company. Its lawyers, legal judgment, outside counsel choices and decisions do not move."],
-        ["The operations", "Legal operations, technology and support move into a dedicated MSO owned and run by Spaarke. The department directs the day-to-day work."],
-        ["The operator", "Spaarke owns and runs the MSO on its platform, and pays for the deployment. The department invests no capital."],
-      ],
-      own: [
-        ["Legal department", "The company employs its lawyers and keeps its legal function, as it does today. That does not change."],
-        ["Your MSO", "Spaarke owns 100% of each department’s dedicated MSO. Ownership sits with Spaarke; direction of the work sits with the department."],
-        ["No stake required", "The department takes no ownership in the MSO or in Spaarke and invests no capital. It buys a service at a fixed fee."],
-      ],
-      ctrl: [
-        ["The same people", "Operations staff who move to the MSO keep working with the same lawyers, on the same matters, to the same standards."],
-        ["Department direction", "The department sets priorities and directs the day-to-day work. Lawyers review and sign off legal work, as the professional rules require."],
-        ["Shared governance", "A joint operating committee, agreed service levels, and department approval over key staff and any change that affects legal work. Spaarke runs the operations; the department directs the work."],
-      ],
-      money: [
-        ["A fixed fee", "The department pays its MSO a fixed fee, set by a fair-market-value study and priced below today’s cost of the same work, so the legal budget is predictable."],
-        ["Less outside spend", "Time the MSO frees up brings routine outside counsel work back in-house, and the MSO handles routine work at lower cost, with lawyers reviewing it."],
-        ["License and profit", "The MSO pays Spaarke a fixed platform license, and as owner Spaarke receives the MSO’s profit. The department sees open-book reporting."],
-      ],
-      value: [
-        ["Lower cost now", "A lower operating cost and modern technology reduce the total cost of legal straight away."],
-        ["A shared network", "Every member runs on the same Spaarke platform, so improvements and benchmarks are shared, and outside firms on the network can work on the same platform."],
-        ["Kept current", "Platform upgrades and new AI capabilities are included, so the department does not fall behind or fund the next upgrade itself."],
-      ],
-    },
-  } satisfies ByAudience<Record<StructureView, [string, string][]>>,
+  } satisfies ByAudience<{ client: StructureBlock; mso: StructureBlock }>,
 };
 
 /* ------------------------------------------------------------------ */
@@ -740,80 +598,19 @@ export const network = {
     firm: { long: "Your law firm", short: "Your firm" },
     corporate: { long: "Your legal department", short: "Your department" },
   } satisfies ByAudience<{ long: string; short: string }>,
-  /** Ring segments (two lines each) and their matching cards, in the same order. */
+  /** Ring segments (two lines each) and their matching cards, in the same order. Titles only (2026-11-22). */
   capabilities: [
-    { ring: ["Technology", "platform"], title: "Technology platform", body: "One modern legal platform in place of a dozen separate tools, kept current for every member." },
-    { ring: ["AI", "capabilities"], title: "AI capabilities", body: "AI workflows for legal operations, built, tested and supported, and improved across the network." },
-    { ring: ["Shared", "services"], title: "Shared services", body: "Finance, billing, collections, IT and security, run at a scale no single member reaches alone." },
-    { ring: ["Employment", "services (PEO)"], title: "Employment services (PEO)", body: "Your staff employed through the MSO, with stronger benefits, payroll and HR support." },
-    { ring: ["Playbooks and", "transformation"], title: "Playbooks and transformation", body: "Proven practices from across the network, and hands-on help redesigning how work gets done." },
-    { ring: ["Vendor and", "partner deals"], title: "Vendor and partner agreements", body: "Network pricing on software, insurance, research and outside services." },
+    { ring: ["Technology", "platform"], title: "Technology platform" },
+    { ring: ["AI", "capabilities"], title: "AI capabilities" },
+    { ring: ["Shared", "services"], title: "Shared services" },
+    { ring: ["Employment", "services (PEO)"], title: "Employment services (PEO)" },
+    { ring: ["Playbooks and", "transformation"], title: "Playbooks and transformation" },
+    { ring: ["Vendor and", "partner deals"], title: "Vendor and partner agreements" },
   ],
   flywheel: {
     firm: ["More members", "More scale and shared learning", "Better capabilities for every firm", "More value in every firm’s equity"],
     corporate: ["More members", "More scale and shared learning", "Better capabilities for every member", "Lower cost of legal for every department"],
   } satisfies ByAudience<string[]>,
-  offer: {
-    title: { firm: "What your firm can offer", corporate: "What your department gets" } satisfies ByAudience<string>,
-    step: {
-      firm: {
-        1: "On day one, your firm runs on a platform and operating team built for a much larger firm.",
-        3: "As members join, shared teams and proven playbooks give your firm capabilities it could not build alone.",
-        8: "At network scale, your firm gets buying power and peer benchmarks, so it can compete for work that goes to larger firms.",
-      },
-      corporate: {
-        1: "On day one, your department runs on a platform and operating team built for a much larger legal function.",
-        3: "As members join, shared teams and proven playbooks give your department capabilities it could not build alone.",
-        8: "At network scale, your department gets buying power and peer benchmarks, and keeps more routine work away from outside counsel.",
-      },
-    } satisfies ByAudience<Record<NetworkSize, string>>,
-    items: {
-      firm: [
-        { at: 1, title: "Modern platform and AI from day one", body: "Compete on technology with firms many times your size." },
-        { at: 1, title: "A lower, fixed operating cost", body: "Back office run by Spaarke, priced below today’s cost." },
-        { at: 3, title: "Specialists you could not hire alone", body: "Shared finance, billing, HR and security teams across members." },
-        { at: 3, title: "Proven playbooks and AI workflows", body: "What works at one member is rolled out to all." },
-        { at: 8, title: "Network buying power", body: "Better terms on vendors, insurance and benefits through employment services." },
-        { at: 8, title: "Benchmarks against peers", body: "See how your operations compare, shared only in aggregate." },
-      ],
-      corporate: [
-        { at: 1, title: "Modern platform and AI from day one", body: "The technology of a much larger legal team, without building it." },
-        { at: 1, title: "A lower, fixed operating cost", body: "Operations run by Spaarke, priced below today’s cost." },
-        { at: 3, title: "Specialists you could not hire alone", body: "Shared legal operations, data, finance and security teams across members." },
-        { at: 3, title: "Proven playbooks and AI workflows", body: "What works at one member is rolled out to all." },
-        { at: 8, title: "Network buying power", body: "Better terms on software, research and outside services." },
-        { at: 8, title: "Benchmarks against peers", body: "See how your spend and operations compare, shared only in aggregate." },
-      ],
-    } satisfies ByAudience<{ at: NetworkSize; title: string; body: string }[]>,
-  },
-  /** Firm view only: the illustrative equity panel. Pie radius and slice are not data. */
-  owns: {
-    title: "What your firm owns",
-    step: {
-      1: { text: "Your firm receives equity in Spaarke when it signs. It is a share of an early-stage operator.", r: 46, pct: 0.3 },
-      3: { text: "Each new member adds operator revenue and platform value. Your share is a smaller slice of a larger company.", r: 88, pct: 0.14 },
-      8: { text: "Your stake is a share of the whole network, valued as a platform rather than as one firm’s back office.", r: 132, pct: 0.09 },
-    } satisfies Record<NetworkSize, { text: string; r: number; pct: number }>,
-    keyAll: "Spaarke: the operator of every MSO on the network",
-    keyYou: "Your firm’s equity in Spaarke",
-    growLabel: "Size of your slice, in value terms",
-    note: "Illustrative. Your percentage can fall as members join, but it is a share of a much larger company. Equity terms are set at signing.",
-  },
-  /** Department view only, in place of the equity panel. */
-  outsideFirms: {
-    title: "Working with your outside firms",
-    step: {
-      1: "Your department and its MSO run on the Spaarke platform from day one, with one view of matters, spend and outside firms.",
-      3: "As law firms join, outside firms on your panel can work with you on the same platform, with less re-keying.",
-      8: "At scale, more of your panel works on the network, so matters, budgets and invoices move between you without re-entry.",
-    } satisfies Record<NetworkSize, string>,
-    items: [
-      { at: 1, title: "One view of matters and spend", body: "Matters, budgets and outside firm performance in one place from day one." },
-      { at: 3, title: "Outside firms on the same platform", body: "Firms on your panel that join the network work with you without re-keying." },
-      { at: 8, title: "Budgets and invoices without re-entry", body: "Matter data moves between the department and its firms as the work happens." },
-    ] satisfies { at: NetworkSize; title: string; body: string }[],
-    note: "Network membership never changes which firms the department instructs.",
-  },
   hub: {
     title: "Spaarke",
     subtitle: "MSO operator",

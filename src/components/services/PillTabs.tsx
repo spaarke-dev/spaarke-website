@@ -3,9 +3,9 @@
 import { useRef, type KeyboardEvent } from "react";
 
 /**
- * Numbered pill tabs for the structure and network visuals, on a dark band.
- * Colors follow the Phases tabs (selected: soft blue fill and blue border;
- * number in light blue) and the Law Firm | Corporate switch (rounded-full,
+ * Pill tabs for the network visual, on a dark band. Colors follow the
+ * Phases tabs (selected: soft blue fill and blue border) and the
+ * Law Firm | Corporate switch (rounded-full,
  * Inter 13 to 14 px). Arrow keys move between tabs, as in any tab set.
  * On phones an odd number of tabs sits two across with the last one full
  * width.
@@ -29,7 +29,12 @@ export function PillTabs<T extends string | number>({
 
   const onKey = (e: KeyboardEvent, i: number) => {
     const n = items.length;
-    const next = e.key === "ArrowRight" ? (i + 1) % n : e.key === "ArrowLeft" ? (i + n - 1) % n : -1;
+    const next =
+      e.key === "ArrowRight"
+        ? (i + 1) % n
+        : e.key === "ArrowLeft"
+          ? (i + n - 1) % n
+          : -1;
     if (next < 0) return;
     e.preventDefault();
     onChange(items[next].id);
@@ -37,7 +42,11 @@ export function PillTabs<T extends string | number>({
   };
 
   return (
-    <div role="tablist" aria-label={label} className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+    <div
+      role="tablist"
+      aria-label={label}
+      className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
+    >
       {items.map((it, i) => {
         const selected = it.id === value;
         return (
@@ -54,20 +63,13 @@ export function PillTabs<T extends string | number>({
             onClick={() => onChange(it.id)}
             onKeyDown={(e) => onKey(e, i)}
             className={[
-              "font-body inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border px-4 py-2 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#82A5EB] sm:justify-start sm:text-[14px]",
+              "font-body inline-flex cursor-pointer items-center justify-center rounded-full border px-4 py-2 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#82A5EB] sm:justify-start sm:text-[14px]",
               selected
                 ? "text-fg border-[rgba(130,165,235,0.55)] bg-[rgba(80,120,220,0.18)]"
                 : "text-fg-mid border-line-strong hover:text-fg",
               odd && i === items.length - 1 ? "col-span-2" : "",
             ].join(" ")}
           >
-            <span
-              aria-hidden="true"
-              className="font-mono-display text-[11px]"
-              style={{ color: selected ? "#82A5EB" : "rgba(245,245,245,0.45)" }}
-            >
-              {String(i + 1).padStart(2, "0")}
-            </span>
             {it.label}
           </button>
         );

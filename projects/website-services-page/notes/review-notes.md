@@ -137,6 +137,17 @@ Open, for the owner and counsel:
 - Equity copy in the law firm view ("receives equity in Spaarke", the illustrative pie) goes beyond design.md section 9, as the firm estimate does. Counsel to confirm.
 - The department copy in both sections is new and needs the owner's read.
 
+## Owner review of the structure and network (2026-11-22)
+
+| Item | Applied |
+|---|---|
+| Structure diagram doing too much | Cut to the two blocks: your law firm (or legal department) and its MSO, with "Fixed fee" flowing to the MSO and "Captive services" flowing back. Removed the Spaarke operator, the other members, the equity flow, the "what the firm owns" outline, clients and partners, the direction arrow, the five view tabs, the legend and the caption cards. Other points to be reintroduced later |
+| Network: numbers and descriptions | Removed the numbers (step tabs, ring and cards) and the card descriptions; the cards are capability titles only. On phones the ring is unlabeled, because the labels would be too small and the cards name each capability |
+| Network: the two panels | Removed "What your firm can offer" and "What your firm owns" (and the department's "Working with your outside firms"). The network section now shows no equity pie |
+| Hydration warning | `suppressHydrationWarning` on `<body>` in the root layout, so browser extensions that add body attributes (ColorZilla's `cz-shortcut-listen`) no longer raise the dev overlay |
+
+Still on the page and worth a look: the "What is MLO" lede and the network intro still mention equity in the law firm view, and the network's "more members" line ends with "More value in every firm's equity".
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.

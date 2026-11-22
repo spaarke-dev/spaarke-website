@@ -25,6 +25,11 @@ Build the two design handoffs the owner supplied on 2026-11-22, matched to the r
 - The five edge colors and teal stay, because they carry meaning.
 - The legal department copy is new: no equity, the company keeps the legal function, and outside firms on the same platform in place of the equity panel.
 
+## Owner review (2026-11-22)
+
+- Structure diagram cut to the client block and its MSO, with a fixed fee and captive services. Tabs, legend, captions, operator, members, equity and the ownership outline removed.
+- Network: no numbers, capability titles only, and both panels removed.
+
 ## Open
 
 - ~~Fee basis wording~~: decided 2026-11-22, fair market value, applied across the page.

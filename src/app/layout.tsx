@@ -105,7 +105,10 @@ export default function RootLayout({
           }}
         />
       </head>
+      {/* Browser extensions (e.g. ColorZilla's cz-shortcut-listen) add body
+          attributes before React hydrates; ignore those attribute mismatches. */}
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} ${interTight.variable} ${inter.variable} ${jetbrainsMono.variable} flex min-h-screen flex-col antialiased`}
       >
         <PlausibleScript />
