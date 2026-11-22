@@ -13,17 +13,17 @@ import {
   faq,
   financial,
   hero,
-  howItWorks,
   network,
   orderedStats,
+  structure,
   whatIsMlo,
   whyNow,
 } from "@/app/services/content";
 import { AudienceProvider, AudienceSwitch, Flip, useAudience, type Audience } from "./audience";
 import { HeroMedia } from "./HeroMedia";
 import { StatTile } from "./StatTile";
-import { AllocationDiagram } from "./AllocationDiagram";
-import { NetworkDiagram } from "./NetworkDiagram";
+import { StructureDiagram } from "./StructureDiagram";
+import { OperatorNetwork } from "./OperatorNetwork";
 import { Phases } from "./Phases";
 import { EstimateCalculator } from "./estimate/EstimateCalculator";
 import { useEstimateInputs } from "./estimate/state";
@@ -291,18 +291,19 @@ function WhatIsMlo() {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: GLOW }} />
       <Shell className="relative">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
-          <SectionHead eyebrow={whatIsMlo.eyebrow} title={whatIsMlo.title} />
+          <SectionHead eyebrow={whatIsMlo.eyebrow} title={<Flip as="span">{structure.title[audience]}</Flip>} />
           <div className="lg:pt-12">
             <Flip>
-              <Lede>{howItWorks.intro[audience]}</Lede>
+              <Lede>{structure.lede[audience]}</Lede>
             </Flip>
             <div className="mt-8">
               <BoundaryLine dark />
             </div>
           </div>
         </div>
-        <Flip className="mt-16">
-          <AllocationDiagram />
+        {/* The MSO structure visual (handoff 2026-11-22) replaces the allocation diagram. */}
+        <Flip className="mt-14">
+          <StructureDiagram />
         </Flip>
 
         {SHOW_BENEFITS ? <Benefits /> : null}
@@ -352,29 +353,17 @@ function Network() {
   const { audience } = useAudience();
   return (
     <Band id={network.id} tone="dark">
-      <Shell>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0" style={{ background: GLOW }} />
+      <Shell className="relative">
         <SectionHead
           eyebrow={network.eyebrow}
           title={network.title}
           intro={<Flip as="span">{network.intro[audience]}</Flip>}
         />
+        {/* The operator network (handoff 2026-11-22), converted to the dark band. */}
         <Flip className="mt-14">
-          <NetworkDiagram />
+          <OperatorNetwork />
         </Flip>
-        <ul className="mt-16 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-          {network.blocks.map((b) => (
-            <li key={b.title} className="border-line-strong border-t pt-5">
-              <p className="text-fg text-[17px] font-medium">{b.title}</p>
-              <p className="text-fg-mid mt-2 text-[15px] leading-relaxed">{b.body}</p>
-            </li>
-          ))}
-        </ul>
-        {audience === "corporate" ? (
-          <Flip className="mt-10 max-w-3xl rounded-2xl border border-[rgba(80,120,220,0.45)] bg-[rgba(80,120,220,0.08)] p-6">
-            <p className="text-fg text-[17px] font-medium">{network.corporateBlock.title}</p>
-            <p className="text-fg-mid mt-2 text-[15px] leading-relaxed">{network.corporateBlock.body}</p>
-          </Flip>
-        ) : null}
         <div className="mt-10">
           <Button variant="text" href={network.platformLink.href} arrow>
             {network.platformLink.label}

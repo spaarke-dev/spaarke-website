@@ -118,6 +118,25 @@ The owner asked for the legal department equivalent of the MSO value estimate. B
 | No equity | The department owns no part of the MSO and gets no profit share. The third card is the three-year saving, Spaarke-funded deployment, the fixed fee and $0 capital. A guardrail test enforces it |
 | Details | The same page and modal as the law firm estimate, with `?audience=corporate`: a savings bridge stepping down from today to with the MSO, the comparison table, how it works, the structure and the assumptions |
 
+## Structure visual and operator network (2026-11-22)
+
+The owner supplied two design handoffs: the MSO structure visual (`notes/mso-structure-visual/`) and the operator network section (`notes/mso-operator-network/`), the second to be converted to a dark background. Built as task 072.
+
+| Topic | Applied |
+|---|---|
+| What is Managed Legal Operations | The structure visual replaces the allocation diagram: five tabs (the full picture, who owns what, who directs the work, how money moves, where value builds), a wide diagram above md and a tall one on phones, a legend and three caption cards per view. The title and lede are the handoff's ("Your firm keeps the practice. Spaarke runs the operations."); the eyebrow and the boundary line stay |
+| Operator network | The handoff's hub replaces NetworkDiagram and the four blocks, on the dark band: three step tabs (1, 3, 8 members), a ring of six capabilities linked to six cards, a flywheel line and two panels. Pulses run along the spokes at full size |
+| Legal department view | Both handoffs are law firm only, so the department copy is a draft: the company keeps the legal function, Spaarke owns the MSO, a fixed fee, and "upgrades and network learning" as the value flow. No equity in either section; the network's second panel is "Working with your outside firms" |
+| Matched to the site | Site fonts (Inter Tight titles, Inter body, JetBrains Mono eyebrows), dark band tokens for surfaces, lines and text, the site blue for the MSO accent in place of the handoff's indigo, rounded-2xl cards, left-aligned section heads, and pill tabs styled like the Phases tabs and the audience switch. Every MSO pill is blue (the handoff's gray for department MSOs read as second-class) |
+| Kept from the handoffs | The five edge colors (ownership violet, money amber, services slate, direction pink, value teal), because each is a meaning in the legend, and teal for "you" and value |
+| Retired | `AllocationDiagram.tsx` and `NetworkDiagram.tsx` are no longer on the page; their content stays in `content.ts` until the owner signs off (task 060) |
+
+Open, for the owner and counsel:
+
+- Fee basis. The structure visual says the MSO fee is "set by a fair-market-value study"; the boundary line and the estimate say it is fixed and cost-based. Pick one and align the copy.
+- Equity copy in the law firm view ("receives equity in Spaarke", the illustrative pie) goes beyond design.md section 9, as the firm estimate does. Counsel to confirm.
+- The department copy in both sections is new and needs the owner's read.
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
