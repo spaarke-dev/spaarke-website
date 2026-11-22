@@ -1,4 +1,8 @@
 import { TableClient, odata } from "@azure/data-tables";
+import { dueForReport } from "@/lib/market/followup-admin";
+import { newContacts } from "@/lib/market/queries";
+import { INVESTOR_ROLE } from "@/lib/market/visibility";
+import { activityLabel, formatDay } from "@/components/admin/format";
 
 /**
  * The daily digest.
@@ -262,6 +266,66 @@ async function leadsSection(
 }
 
 // ---------------------------------------------------------------------------
+// Market access: follow-ups due and new contacts (FR-16)
+// ---------------------------------------------------------------------------
+
+/**
+ * Both sections read the market access tables through their own module, which
+ * uses the same storage setting. The mail goes to a list, so investor records
+ * appear only as a count: no name, email, firm or title.
+ */
+const LISTED_MAX = 25;
+
+function dueDay(d: string): string {
+  return formatDay(`${d}T12:00:00Z`);
+}
+
+export async function followUpsSection(now = new Date()): Promise<ReportSection> {
+  try {
+    const { rows, hidden } = await dueForReport(now);
+    if (rows.length === 0 && hidden === 0) return { title: "Follow-ups", lines: ["No follow-ups due."] };
+
+    const lines = [`${plural(rows.length + hidden, "follow-up")} due today or overdue, oldest first.`];
+    for (const r of rows.slice(0, LISTED_MAX)) {
+      const when = r.overdue ? `overdue, due ${dueDay(r.dueDate)}` : "today";
+      const who = r.contactName ? `${r.contactName} <${r.contactEmail}>` : `<${r.contactEmail}>`;
+      const campaign = r.campaignSlug ? ` (${r.campaignSlug})` : "";
+      lines.push(`  [${when}] ${r.title}: ${who}${campaign}`);
+    }
+    if (rows.length > LISTED_MAX) lines.push(`  and ${rows.length - LISTED_MAX} more.`);
+    if (hidden) lines.push(`  ${plural(hidden, "investor follow-up")} (hidden).`);
+    lines.push("");
+    lines.push("Update them at https://spaarke.com/admin");
+    return { title: "Follow-ups", lines };
+  } catch (err) {
+    return { title: "Follow-ups", lines: [], problem: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+export async function newContactsSection(days: number, now = new Date()): Promise<ReportSection> {
+  try {
+    // Every contact, so investor ones can be counted; only general ones are named.
+    const all = await newContacts(["admin", INVESTOR_ROLE], { now, days });
+    const shown = all.filter((c) => c.visibility !== "investor");
+    const hidden = all.length - shown.length;
+    if (all.length === 0) return { title: "New contacts", lines: ["No new contacts."] };
+
+    const lines = [`${plural(all.length, "new contact")}.`];
+    for (const c of shown.slice(0, LISTED_MAX)) {
+      const who = c.name ? `${c.name} <${c.email}>` : `<${c.email}>`;
+      const org = c.organizationName ? `, ${c.organizationName}` : "";
+      const from = c.source ? ` (${activityLabel(c.source)})` : "";
+      lines.push(`  ${who}${org}${from}`);
+    }
+    if (shown.length > LISTED_MAX) lines.push(`  and ${shown.length - LISTED_MAX} more.`);
+    if (hidden) lines.push(`  ${plural(hidden, "investor contact")} (hidden).`);
+    return { title: "New contacts", lines };
+  } catch (err) {
+    return { title: "New contacts", lines: [], problem: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Who visited, from Microsoft Clarity
 // ---------------------------------------------------------------------------
 
@@ -414,6 +478,8 @@ export async function buildDailyReport(options: {
   } else {
     sections.push(await assistantSection(options.connectionString, since));
     sections.push(await leadsSection(options.connectionString, since));
+    sections.push(await followUpsSection());
+    sections.push(await newContactsSection(days));
   }
 
   sections.push(await claritySection(options.clarityToken, days));
@@ -449,6 +515,7 @@ export function renderDailyReport(report: DailyReport, days: number): string {
 
   out.push("---");
   out.push("Questions come from the conversation record, leads from Table Storage,");
-  out.push("traffic from Microsoft Clarity. Alerts cover failures separately.");
+  out.push("follow-ups and contacts from the admin records, traffic from Microsoft");
+  out.push("Clarity. Investor records are counted, never named. Alerts cover failures separately.");
   return out.join("\n");
 }

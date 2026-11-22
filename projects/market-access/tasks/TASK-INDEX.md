@@ -33,10 +33,10 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 | Task | Title | Depends on | Status |
 |---|---|---|---|
 | [030](030-admin-home-and-contacts-list.md) | Admin home and contacts list | 002, 012 | done |
-| [031](031-contact-detail-and-edits.md) | Contact detail and edits | 030, 013 | not-started |
+| [031](031-contact-detail-and-edits.md) | Contact detail and edits | 030, 013 | done |
 | [032](032-organizations.md) | Organizations | 030 | not-started |
-| [033](033-campaigns-and-results.md) | Campaigns and results | 030, 013 | not-started |
-| [034](034-follow-ups.md) | Follow-ups | 031, 033 | not-started |
+| [033](033-campaigns-and-results.md) | Campaigns and results | 030, 013 | done |
+| [034](034-follow-ups.md) | Follow-ups | 031, 033 | done |
 
 ## Phase 4: Mailbox sync
 
@@ -54,13 +54,13 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 | [050](050-tltf-import-cli.md) | TLTF import CLI | 013, 033, open question 2 | not-started |
 | [051](051-engagement-filter.md) | Engagement filter | 033 | not-started |
 | [052](052-backfill-cli.md) | Backfill CLI (before 2027-02-11) | 020, 021, 022, 004 | not-started |
-| [053](053-linkedin-csv-import.md) | LinkedIn Lead Gen CSV import (before 2026-12-19) | 033, 002 | not-started |
+| [053](053-linkedin-csv-import.md) | LinkedIn Lead Gen CSV import (before 2026-12-19) | 033, 002 | done |
 
 ## Phase 6: Reporting and privacy
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [060](060-morning-report.md) | Morning report sections | 034 | not-started |
+| [060](060-morning-report.md) | Morning report sections | 034 | done |
 | [061](061-privacy-page.md) | Privacy page | 031 | not-started |
 | [090](090-project-wrap-up.md) | Project wrap-up | all | not-started |
 

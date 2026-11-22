@@ -22,6 +22,10 @@ export type CampaignKind = (typeof CAMPAIGN_KINDS)[number];
 export const MEMBER_STATUSES = ["planned", "sent", "bounced", "replied", "engaged", "meeting", "done"] as const;
 export type MemberStatus = (typeof MEMBER_STATUSES)[number];
 
+/** The stages the activity log can show a member reaching (task 033). */
+export const MEMBER_STAGES = ["sent", "bounced", "engaged", "replied", "meeting"] as const;
+export type MemberStage = (typeof MEMBER_STAGES)[number];
+
 export type Campaign = {
   slug: string;
   name: string;
@@ -34,6 +38,8 @@ export type Campaign = {
   notes?: string;
   createdAt: string;
   updatedAt: string;
+  /** When member statuses were last derived from the log (task 033). */
+  resultsAt?: string;
 };
 
 export type Member = {
@@ -48,6 +54,8 @@ export type Member = {
   status: MemberStatus;
   /** Set by hand; shown and kept over the derived status. */
   statusOverride?: MemberStatus;
+  /** Every stage the log shows, for the funnel (task 033). */
+  reached: MemberStage[];
   lastActivityAt?: string;
   createdAt: string;
   updatedAt: string;
@@ -85,7 +93,7 @@ function isBriefLabel(value: unknown): value is string {
   return typeof value === "string" && value.length <= 100 && isSafeKey(value);
 }
 
-function isMemberStatus(value: unknown): value is MemberStatus {
+export function isMemberStatus(value: unknown): value is MemberStatus {
   return typeof value === "string" && (MEMBER_STATUSES as readonly string[]).includes(value);
 }
 
@@ -99,7 +107,12 @@ function stripUndefined<T extends object>(o: T): T {
 }
 
 type CampaignEntity = Omit<Campaign, "slug"> & { partitionKey: string; rowKey: string };
-type MemberEntity = Omit<Member, "campaignSlug" | "contactId"> & { partitionKey: string; rowKey: string };
+type MemberEntity = Omit<Member, "campaignSlug" | "contactId" | "reached"> & {
+  partitionKey: string;
+  rowKey: string;
+  /** Comma-separated stages. */
+  reached?: string;
+};
 type IndexEntity = { partitionKey: string; rowKey: string; campaignSlug: string; contactId?: string; shared?: boolean };
 
 function campaignFromEntity(e: CampaignEntity): Campaign {
@@ -115,7 +128,14 @@ function campaignFromEntity(e: CampaignEntity): Campaign {
     notes: e.notes,
     createdAt: e.createdAt,
     updatedAt: e.updatedAt,
+    resultsAt: e.resultsAt,
   };
+}
+
+export function parseStages(value: unknown): MemberStage[] {
+  if (typeof value !== "string" || !value) return [];
+  const set = new Set(value.split(","));
+  return MEMBER_STAGES.filter((s) => set.has(s));
 }
 
 function memberFromEntity(e: MemberEntity): Member {
@@ -129,7 +149,8 @@ function memberFromEntity(e: MemberEntity): Member {
     templateLabel: e.templateLabel,
     status: isMemberStatus(e.status) ? e.status : "planned",
     statusOverride: isMemberStatus(e.statusOverride) ? e.statusOverride : undefined,
-    lastActivityAt: e.lastActivityAt,
+    reached: parseStages(e.reached),
+    lastActivityAt: e.lastActivityAt || undefined,
     createdAt: e.createdAt,
     updatedAt: e.updatedAt,
   };
@@ -177,6 +198,108 @@ export async function upsertCampaign(input: CampaignInput, now = new Date()): Pr
   });
   await table.upsertEntity(entity, "Replace");
   return campaignFromEntity(entity);
+}
+
+type CampaignText = "name" | "utmCampaign" | "startDate" | "endDate" | "owner" | "notes";
+const CAMPAIGN_TEXT_MAX: Record<CampaignText, number> = {
+  name: 200,
+  utmCampaign: 100,
+  startDate: 10,
+  endDate: 10,
+  owner: 200,
+  notes: 2000,
+};
+
+/** A change to a campaign's details. `null` clears a field; a name cannot be cleared. */
+export type CampaignPatch = Partial<Record<CampaignText, string | null>> & {
+  kind?: CampaignKind;
+  visibility?: Visibility;
+};
+
+/**
+ * Apply a patch to an existing campaign. Changing its dates drops the results
+ * time, so the next view derives member statuses again for the new window.
+ * Returns the versions before and after, or null when there is no campaign.
+ */
+export async function editCampaign(
+  slug: string,
+  patch: CampaignPatch,
+  now = new Date(),
+): Promise<{ before: Campaign; after: Campaign } | null> {
+  const table = await getTable("campaigns");
+  const before = await getCampaign(slug);
+  if (!table || !before) return null;
+  if (patch.kind && !(CAMPAIGN_KINDS as readonly string[]).includes(patch.kind)) {
+    throw new Error(`Unknown campaign kind: ${patch.kind}`);
+  }
+  const next: Campaign = { ...before, updatedAt: now.toISOString() };
+  for (const field of Object.keys(CAMPAIGN_TEXT_MAX) as CampaignText[]) {
+    if (!(field in patch)) continue;
+    const value = patch[field] === null ? undefined : clean(patch[field] ?? undefined, CAMPAIGN_TEXT_MAX[field]);
+    if (field === "name") {
+      if (!value) throw new Error("A campaign needs a name");
+      next.name = value;
+    } else {
+      next[field] = value;
+    }
+  }
+  if (patch.kind) next.kind = patch.kind;
+  if (patch.visibility) next.visibility = patch.visibility;
+  if (next.startDate !== before.startDate || next.endDate !== before.endDate) next.resultsAt = undefined;
+
+  const { slug: _slug, ...fields } = next;
+  void _slug;
+  await table.upsertEntity(
+    stripUndefined({ partitionKey: CAMPAIGN_PARTITION, rowKey: slug, ...fields }) as CampaignEntity,
+    "Replace",
+  );
+  return { before, after: next };
+}
+
+/** Record when member statuses were last derived (task 033). */
+export async function markResults(slug: string, at: string): Promise<void> {
+  const table = await getTable("campaigns");
+  if (!table) return;
+  await table.updateEntity({ partitionKey: CAMPAIGN_PARTITION, rowKey: slug, resultsAt: at }, "Merge");
+}
+
+/** Write the derived fields of one member, leaving the rest of the row alone. */
+export async function saveDerived(
+  slug: string,
+  contactId: string,
+  derived: { status: MemberStatus; reached: readonly MemberStage[]; lastActivityAt?: string },
+): Promise<void> {
+  const table = await getTable("members");
+  if (!table) return;
+  await table.updateEntity(
+    {
+      partitionKey: slug,
+      rowKey: contactId,
+      status: derived.status,
+      reached: derived.reached.join(","),
+      lastActivityAt: derived.lastActivityAt ?? "",
+    },
+    "Merge",
+  );
+}
+
+/** Set or clear a member's status override. Returns the member before and after, or null. */
+export async function setStatusOverride(
+  slug: string,
+  contactId: string,
+  override: MemberStatus | null,
+  now = new Date(),
+): Promise<{ before: Member; after: Member } | null> {
+  if (override !== null && !isMemberStatus(override)) throw new Error(`Unknown status: ${String(override)}`);
+  const table = await getTable("members");
+  const before = await getMember(slug, contactId);
+  if (!table || !before) return null;
+  // Merge cannot remove a property; an empty string reads back as no override.
+  await table.updateEntity(
+    { partitionKey: slug, rowKey: contactId, statusOverride: override ?? "", updatedAt: now.toISOString() },
+    "Merge",
+  );
+  return { before, after: { ...before, statusOverride: override ?? undefined, updatedAt: now.toISOString() } };
 }
 
 export async function getCampaign(slug: string): Promise<Campaign | null> {
@@ -276,6 +399,7 @@ export async function addMember(input: MemberInput, now = new Date()): Promise<M
     templateLabel: clean(input.templateLabel, 100) ?? existing?.templateLabel,
     status: existing?.status ?? input.status ?? "planned",
     statusOverride: existing?.statusOverride,
+    reached: existing?.reached.length ? existing.reached.join(",") : undefined,
     lastActivityAt: existing?.lastActivityAt,
     createdAt: existing?.createdAt ?? at,
     updatedAt: at,
