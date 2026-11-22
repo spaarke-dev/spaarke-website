@@ -11,6 +11,9 @@ import { useAudience, useInView } from "./audience";
  * two columns for a before and after. One accent for the highlighted value,
  * gray for context, direct labels, no gridlines. Charts draw once on
  * scroll-in (700 ms); reduced motion shows them complete.
+ *
+ * Owner review 2026-11-22: text and chart sit at the top of the card and the
+ * source is a one-line footer across its full width, at the bottom.
  */
 
 type Tone = "dark" | "light";
@@ -49,16 +52,28 @@ export function StatTile({ stat, tone = "dark" }: { stat: WhyNowStat; tone?: Ton
 
   return (
     <article
-      className="grid grid-cols-1 gap-6 rounded-3xl border p-6 sm:grid-cols-[1fr_auto] sm:items-center md:p-8"
+      className="flex h-full flex-col rounded-3xl border p-6 md:p-8"
       style={{ backgroundColor: c.card, borderColor: c.border }}
     >
-      <div className="flex min-w-0 flex-col">
-        <p className="font-mono-display text-fg-low text-[11px] uppercase tracking-[0.16em]">{stat.theme}</p>
-        <h3 className="font-display text-fg mt-3 text-[clamp(19px,1.5vw,22px)] font-medium leading-snug tracking-[-0.01em]">
-          {stat.title[audience]}
-        </h3>
-        <p className="text-fg-mid mt-3 text-[15px] leading-relaxed">{stat.caption}</p>
-        <p className="font-mono-display text-fg-low mt-5 text-[11px] uppercase leading-relaxed tracking-wider">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_auto] sm:items-start">
+        <div className="min-w-0">
+          <p className="font-mono-display text-fg-low text-[11px] uppercase tracking-[0.16em]">{stat.theme}</p>
+          <h3 className="font-display text-fg mt-3 text-[clamp(19px,1.5vw,22px)] font-medium leading-snug tracking-[-0.01em]">
+            {stat.title[audience]}
+          </h3>
+          <p className="text-fg-mid mt-3 text-[15px] leading-relaxed">{stat.caption}</p>
+        </div>
+        <div ref={ref} className="flex justify-center sm:w-[168px]">
+          <Chart stat={stat} draw={inView} c={c} label={`${stat.title[audience]}. ${describe(stat)}`} />
+        </div>
+      </div>
+      {/* Owner review 2026-11-22: the source is a one-line footer across the card. */}
+      <div className="mt-auto pt-6">
+        <p
+          className="font-mono-display text-fg-low border-t pt-4 text-[11px] uppercase leading-relaxed tracking-wider sm:truncate"
+          style={{ borderColor: c.border }}
+          title={stat.source.note}
+        >
           Source:{" "}
           <a
             href={stat.source.url}
@@ -70,11 +85,7 @@ export function StatTile({ stat, tone = "dark" }: { stat: WhyNowStat; tone?: Ton
             {stat.source.name}
           </a>
           {stat.source.date ? `, ${stat.source.date}` : ""}
-          {stat.source.note ? `. ${stat.source.note}` : ""}
         </p>
-      </div>
-      <div ref={ref} className="flex justify-center sm:w-[168px]">
-        <Chart stat={stat} draw={inView} c={c} label={`${stat.title[audience]}. ${describe(stat)}`} />
       </div>
     </article>
   );

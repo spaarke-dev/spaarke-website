@@ -364,11 +364,6 @@ function Network() {
         <Flip className="mt-14">
           <OperatorNetwork />
         </Flip>
-        <div className="mt-10">
-          <Button variant="text" href={network.platformLink.href} arrow>
-            {network.platformLink.label}
-          </Button>
-        </div>
       </Shell>
     </Band>
   );

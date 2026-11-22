@@ -36,9 +36,10 @@ export const hero = {
   /** Owner decision 2026-11-21: one headline for both audiences. */
   headline: ["Practice law.", "We’ll run the operations."],
   subhead: {
-    firm: "Managed Legal Operations gives your lawyers the technology, team and economics of a much larger firm, and leaves your clients, your judgment and your practice yours.",
+    /** Owner copy, 2026-11-22. */
+    firm: "Spaarke provides the technology, team and back-office operations, at a fixed, per-unit price. Your clients, your legal judgment and your ownership stay yours.",
     corporate:
-      "Managed Legal Operations gives your legal team the AI, technology and operating discipline to do more, at lower cost, with privilege and control intact.",
+      "Spaarke gives your legal team the technology, process and capacity to meet the demands of stakeholders and deliver results the business can see and measure.",
   } satisfies ByAudience<string>,
   primaryCta: {
     firm: { label: "Start a conversation", href: "/meet" },
@@ -345,13 +346,13 @@ export const whyNow = {
     },
     {
       id: "fee-pressure",
-      theme: "Downward pressure on effort-based fees",
+      theme: "Pressure on effort-based fees",
       title: {
         firm: "Clients expect AI savings to show up in the bill",
         corporate: "Departments expect AI savings to show up in the bill",
       },
       figure: "92%",
-      caption: "of legal departments expect, or are negotiating, AI-related rate cuts from their law firms.",
+      caption: "of legal departments expect AI-related rate cuts from their firms.",
       chart: "donut",
       value: 92,
       source: {
@@ -363,13 +364,13 @@ export const whyNow = {
     },
     {
       id: "tech-cost-complexity",
-      theme: "Cost and complexity of new technology",
+      theme: "Technology cost and complexity",
       title: {
         firm: "Technology only pays off when the work is redesigned around it",
         corporate: "Technology only pays off when the work is redesigned around it",
       },
-      caption:
-        "Cost reduction reported with end-to-end workflow redesign versus without it. Only 37% of organizations report a positive EBIT impact from AI.",
+      /** Owner review 2026-11-22: 100 characters at most. */
+      caption: "Cost reduction with workflow redesign versus without. Only 37% see a positive EBIT impact from AI.",
       chart: "columns",
       data: [
         { label: "Without redesign", value: 20, display: "<20%" },
@@ -389,7 +390,7 @@ export const whyNow = {
         firm: "Capital is flowing to AI-native competitors",
         corporate: "Capital is flowing to AI-native legal providers",
       },
-      caption: "Legal tech venture funding, 2023 to 2025.",
+      caption: "Legal tech venture funding quadrupled, from $1B in 2023 to more than $4B in 2025.",
       chart: "columns",
       data: [
         { label: "2023", value: 1, display: "$1B" },
@@ -406,15 +407,20 @@ export const whyNow = {
         firm: "Clients are keeping more work in-house",
         corporate: "Legal departments are keeping more work in-house",
       },
-      caption:
-        "Share of legal departments expecting to increase outside counsel spend, last year versus this year, in a survey of 135 corporate law departments.",
+      /**
+       * Owner copy, 2026-11-22. The survey of 135 corporate law departments
+       * asked who expects to increase outside counsel spend: 58% last year,
+       * 37% this year. The columns show the rest, who expect to keep it level
+       * or reduce it (42% and 63%).
+       */
+      caption: "63% of legal departments expect to keep level or reduce outside counsel spend.",
       chart: "columns",
       data: [
-        { label: "Last year", value: 58, display: "58%" },
-        { label: "This year", value: 37, display: "37%" },
+        { label: "Last year", value: 42, display: "42%" },
+        { label: "This year", value: 63, display: "63%" },
       ],
       source: {
-        name: "Above the Law, reporting a corporate law department survey",
+        name: "Above the Law",
         url: "https://abovethelaw.com/2025/12/biglaws-worst-enemy-isnt-ai-its-clients-using-ai-to-stop-paying-them/",
         date: "December 2025",
       },
@@ -708,7 +714,7 @@ export const estimate = {
     "Illustrative estimate using representative assumptions for US IP boutiques, not a forecast or an offer. Actual results depend on the firm, the fair-market-value study that sets the MSO fee, and the final legal and tax structure.",
   details: {
     title: "How the estimate works",
-    bridgeTitle: "Where the extra profit per partner comes from",
+    bridgeTitle: "Where the extra profit and equity per partner come from",
     tableTitle: "Today vs with the MSO",
     tableCaption: "Annual figures for the whole firm.",
     stepsTitle: "How it works",

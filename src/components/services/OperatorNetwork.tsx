@@ -14,12 +14,13 @@ import { PillTabs } from "./PillTabs";
  * Spaarke sits at the hub inside a ring of six capabilities; members sit
  * around it, each with its own MSO. Three step tabs set the network size
  * (1, 3 or 8 members; phones show at most six). Hovering a ring segment
- * highlights its card and the other way round. At full size pulses run
+ * highlights it. At full size pulses run
  * along the operator spokes (not under reduced motion). Every MSO pill is
  * the site blue.
  *
  * Owner review 2026-11-22: no numbers, capability titles only, and the two
- * panels (what your firm can offer, what your firm owns) removed.
+ * panels (what your firm can offer, what your firm owns) removed. Second
+ * review the same day: the capability cards and the platform link removed.
  */
 
 const BLUE = "#5078DC";
@@ -90,7 +91,6 @@ const r2 = (v: number) => Math.round(v * 100) / 100;
 export function OperatorNetwork() {
   const { audience } = useAudience();
   const [size, setSize] = useState<NetworkSize>(1);
-  const [hot, setHot] = useState<number | null>(null);
   const flywheel = network.flywheel[audience];
 
   return (
@@ -107,10 +107,10 @@ export function OperatorNetwork() {
 
       <div className="border-line-strong mt-6 rounded-2xl border bg-[rgba(255,255,255,0.02)] p-3 sm:p-5 lg:p-7">
         <div aria-hidden="true" className="hidden md:block">
-          <Hub cfg={WIDE} size={size} hot={hot} setHot={setHot} />
+          <Hub cfg={WIDE} size={size} />
         </div>
         <div aria-hidden="true" className="mx-auto max-w-[420px] md:hidden">
-          <Hub cfg={TALL} size={size} hot={hot} setHot={setHot} />
+          <Hub cfg={TALL} size={size} />
         </div>
         <ul className="text-fg-mid mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[13px]">
           <li className="flex items-center gap-2">
@@ -131,24 +131,14 @@ export function OperatorNetwork() {
         </ul>
       </div>
 
-      <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {network.capabilities.map((c, i) => (
-          <li
-            key={c.title}
-            onMouseEnter={() => setHot(i)}
-            onMouseLeave={() => setHot(null)}
-            className="rounded-2xl border px-5 py-4 transition-[border-color,box-shadow] duration-200"
-            style={{
-              backgroundColor: "rgba(255,255,255,0.03)",
-              borderColor: hot === i ? BLUE : "rgba(255,255,255,0.18)",
-              boxShadow:
-                hot === i ? "0 0 0 3px rgba(80,120,220,0.25)" : undefined,
-            }}
-          >
-            <h3 className="text-fg text-[16px] font-medium">{c.title}</h3>
-          </li>
-        ))}
-      </ul>
+      {/*
+        Owner review 2026-11-22: the capability cards are gone. The ring names
+        the capabilities above md; phones and screen readers get them here.
+      */}
+      <p className="text-fg-low mt-4 text-center text-[13px] leading-relaxed md:sr-only">
+        <span className="sr-only">Spaarke capabilities: </span>
+        {network.capabilities.map((c) => c.title).join(" · ")}
+      </p>
 
       <p className="mt-8 flex flex-col items-center gap-2 text-[14px] md:flex-row md:flex-wrap md:justify-center md:gap-x-3">
         {flywheel.map((f, i) => (
@@ -188,18 +178,9 @@ function arc(
   return `M${pt(r1, a0)} A${r1} ${r1} 0 ${big} 1 ${pt(r1, a1)} L${pt(r0, a1)} A${r0} ${r0} 0 ${big} 0 ${pt(r0, a0)} Z`;
 }
 
-function Hub({
-  cfg,
-  size,
-  hot,
-  setHot,
-}: {
-  cfg: Cfg;
-  size: NetworkSize;
-  hot: number | null;
-  setHot: (i: number | null) => void;
-}) {
+function Hub({ cfg, size }: { cfg: Cfg; size: NetworkSize }) {
   const { audience } = useAudience();
+  const [hot, setHot] = useState<number | null>(null);
   const members = network.members[audience];
   const you = network.you[audience];
   const caps = network.capabilities;
@@ -440,7 +421,7 @@ function Hub({
               strokeWidth="3"
               style={{ transition: "fill 300ms" }}
             />
-            {/* Phones: no ring labels; they would be too small, and the cards below name each one. */}
+            {/* Phones: no ring labels; they would be too small. The line below the diagram names each one. */}
             {!cfg.inline &&
               cfg.ring.map((line, j) => (
                 <text

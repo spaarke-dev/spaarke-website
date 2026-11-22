@@ -7,10 +7,32 @@ export interface WaterfallStep {
   /** Short labels for narrow screens (handoff acceptance 4). */
   short: [string, string];
   value: number;
-  kind: "base" | "step" | "total";
+  /**
+   * "equity" is a step drawn hatched (a one-time value, not annual profit);
+   * "grand" is a total after the equity step.
+   */
+  kind: WaterfallKind;
 }
 
-const COLORS = { base: "#8B8B87", step: "#5078DC", total: "#2E9E6A" };
+export type WaterfallKind = "base" | "step" | "total" | "equity" | "grand";
+
+const EQUITY = "#7F6FE0";
+
+/** Bar fill per kind; equity is hatched, as in the earlier five-year chart. */
+const FILL: Record<WaterfallKind, string> = {
+  base: "#8B8B87",
+  step: "#5078DC",
+  total: "#2E9E6A",
+  equity: `repeating-linear-gradient(135deg, ${EQUITY} 0 5px, rgba(127,111,224,0.45) 5px 9px)`,
+  grand: "#4A4A46",
+};
+
+/** A bracket over a run of columns (indices into the steps, inclusive). */
+export interface WaterfallGroup {
+  label: string;
+  from: number;
+  to: number;
+}
 
 /** A tick step that gives four to six gridlines over the range. */
 function tickStep(range: number) {
@@ -28,13 +50,13 @@ function placeBars(steps: WaterfallStep[], yMin: number) {
   const out: (WaterfallStep & { lo: number; hi: number; text: string })[] = [];
   let run = 0;
   for (const s of steps) {
-    if (s.kind === "step") {
+    if (s.kind === "step" || s.kind === "equity") {
       const next = run + s.value;
       out.push({ ...s, lo: Math.min(run, next), hi: Math.max(run, next), text: `${s.value >= 0 ? "+" : "-"}${money(Math.abs(s.value))}` });
       run = next;
     } else {
       out.push({ ...s, lo: yMin, hi: s.value, text: money(s.value) });
-      if (s.kind === "base") run = s.value;
+      run = s.value;
     }
   }
   return out;
@@ -47,9 +69,23 @@ function placeBars(steps: WaterfallStep[], yMin: number) {
  * bridge the total cost of legal downward. The y-axis starts at `floor` times
  * the lower of the two ends (0.7 for firms, as in the reference). Values sit
  * above the bars. Plain HTML so it reflows with the page; bars animate as
- * the inputs change.
+ * the inputs change. Optional brackets over runs of columns and a legend
+ * (the law firm bridge uses both for its equity step, owner review
+ * 2026-11-22).
  */
-export function Waterfall({ steps, label, floor = 0.7 }: { steps: WaterfallStep[]; label: string; floor?: number }) {
+export function Waterfall({
+  steps,
+  label,
+  floor = 0.7,
+  groups,
+  legend,
+}: {
+  steps: WaterfallStep[];
+  label: string;
+  floor?: number;
+  groups?: WaterfallGroup[];
+  legend?: { kind: WaterfallKind; label: string }[];
+}) {
   const base = steps[0].value;
   const total = steps[steps.length - 1].value;
   const top = Math.max(base, total) * 1.08;
@@ -68,6 +104,25 @@ export function Waterfall({ steps, label, floor = 0.7 }: { steps: WaterfallStep[
   return (
     <figure aria-label={label}>
       <div className="grid grid-cols-[38px_1fr] sm:grid-cols-[56px_1fr]">
+        {groups ? (
+          <>
+            <div />
+            <div aria-hidden="true" className="mb-4 grid gap-1 sm:gap-4" style={cols}>
+              {groups.map((g) => (
+                <div
+                  key={g.label}
+                  className="flex flex-col items-center"
+                  style={{ gridColumn: `${g.from + 1} / ${g.to + 2}` }}
+                >
+                  <span className="font-mono-display text-fg-mid whitespace-nowrap text-[9px] uppercase tracking-[0.12em] sm:text-[11px]">
+                    {g.label}
+                  </span>
+                  <span className="mt-1.5 h-2 w-[calc(100%-8px)] border-x border-t border-[rgba(10,10,10,0.35)]" />
+                </div>
+              ))}
+            </div>
+          </>
+        ) : null}
         {/* Y axis labels */}
         <div aria-hidden="true" className="relative h-[240px] sm:h-[340px]">
           {ticks.map((t) => (
@@ -98,11 +153,12 @@ export function Waterfall({ steps, label, floor = 0.7 }: { steps: WaterfallStep[
                   style={{
                     bottom: `${at(b.lo)}%`,
                     height: `max(2px, ${at(b.hi) - at(b.lo)}%)`,
-                    backgroundColor: COLORS[b.kind],
+                    background: FILL[b.kind],
                   }}
                 />
+                {/* Phones: the equity step ends level with the total beside it, so its value sits one line higher. */}
                 <span
-                  className="text-fg absolute left-1/2 -translate-x-1/2 whitespace-nowrap pb-1 text-[10px] font-bold tabular-nums transition-all duration-500 ease-out sm:text-[12px]"
+                  className={`text-fg absolute left-1/2 -translate-x-1/2 whitespace-nowrap pb-1 text-[10px] font-bold tabular-nums transition-all duration-500 ease-out sm:text-[12px] ${b.kind === "equity" ? "-translate-y-[18px] sm:translate-y-0" : ""}`}
                   style={{ bottom: `${at(b.hi)}%` }}
                 >
                   {b.text}
@@ -130,6 +186,16 @@ export function Waterfall({ steps, label, floor = 0.7 }: { steps: WaterfallStep[
           ))}
         </div>
       </div>
+      {legend ? (
+        <ul className="text-fg-mid mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[12px] sm:text-[13px]">
+          {legend.map((l) => (
+            <li key={l.label} className="flex items-center gap-2">
+              <span aria-hidden="true" className="h-3 w-3 shrink-0 rounded-[3px]" style={{ background: FILL[l.kind] }} />
+              {l.label}
+            </li>
+          ))}
+        </ul>
+      ) : null}
       {/* Screen readers get the figures as a list. */}
       <ul className="sr-only">
         {bars.map((b) => (

@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { estimate as copy } from "@/app/services/content";
 import { ASSUMPTIONS as A, compute, type EstimateInputs } from "./model";
 import { money, num, pct } from "./format";
-import { Waterfall, type WaterfallStep } from "./Waterfall";
+import { Waterfall, type WaterfallGroup, type WaterfallStep } from "./Waterfall";
 import { DETAILS_ANCHOR } from "./query";
 import { Assumptions, Card, CompareTable, DetailsHeading, Muted, Steps, Structure, type Row } from "./parts";
 
@@ -23,9 +23,17 @@ export function EstimateDetails({ inputs }: { inputs: EstimateInputs }) {
     { label: ["Today", ""], short: ["Today", ""], value: m.ppp, kind: "base" },
     { label: ["Lower", "MSO fee"], short: ["Lower", "fee"], value: m.feeSaving / P, kind: "step" },
     { label: ["MSO profit", "share"], short: ["MSO", "share"], value: m.share / P, kind: "step" },
-    { label: ["New matters", "(freed time)"], short: ["New", "matters"], value: m.growthProfit / P, kind: "step" },
-    { label: ["New client", "services"], short: ["New", "services"], value: m.svcProfit / P, kind: "step" },
+    { label: ["New matters", "(freed time)"], short: ["Freed", "time"], value: m.growthProfit / P, kind: "step" },
+    { label: ["New client", "services"], short: ["New", "svcs"], value: m.svcProfit / P, kind: "step" },
     { label: ["With", "the MSO"], short: ["With", "MSO"], value: m.ppp2, kind: "total" },
+    // Owner review 2026-11-22: the equity stake joins the chart, per partner, as in the earlier five-year chart.
+    { label: ["MSO equity", "per partner"], short: ["MSO", "equity"], value: m.firmValue / P, kind: "equity" },
+    { label: ["Profit and", "equity"], short: ["Plus", "equity"], value: m.ppp2 + m.firmValue / P, kind: "grand" },
+  ];
+
+  const groups: WaterfallGroup[] = [
+    { label: `Annual profit · +${money(m.ppp2 - m.ppp)}`, from: 1, to: 4 },
+    { label: "Equity", from: 6, to: 6 },
   ];
 
   const rows: Row[] = [
@@ -67,10 +75,18 @@ export function EstimateDetails({ inputs }: { inputs: EstimateInputs }) {
         <Card
           tight
           title={d.bridgeTitle}
-          caption={`Annual profit per partner, once the MSO is running. Up ${money(m.ppp2 - m.ppp)} per partner, or ${money(m.profit2 - m.profit)} for the firm.`}
+          caption={`Annual profit per partner once the MSO is running, then the firm’s equity stake in its MSO, per partner. Profit is up ${money(m.ppp2 - m.ppp)} per partner a year, or ${money(m.profit2 - m.profit)} for the firm, and the stake is worth about ${money(m.firmValue / P)} per partner.`}
         >
           <div className="mt-8">
-            <Waterfall steps={steps} label="Profit per partner bridge" />
+            <Waterfall
+              steps={steps}
+              label="Profit per partner and equity bridge"
+              groups={groups}
+              legend={[
+                { kind: "step", label: "Added profit each year" },
+                { kind: "equity", label: "Equity stake, illustrative" },
+              ]}
+            />
           </div>
         </Card>
 

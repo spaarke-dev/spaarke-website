@@ -148,6 +148,19 @@ Open, for the owner and counsel:
 
 Equity wording removed from both sections at the owner's request (2026-11-22): the "What is MLO" lede now ends "The firm puts in no cash and lowers its operating cost.", the network intro ends "each firm gets more from its MSO and can offer more to its clients", and the "more members" line ends "More to offer every client". The financial section (the MSO value estimate) still shows equity, as before.
 
+## Owner review of the hero, stats, network and estimate (2026-11-22)
+
+| Item | Applied |
+|---|---|
+| Hero subhead | Owner copy for both audiences. Law firm: "Spaarke provides the technology, team and back-office operations, at a fixed, per-unit price. Your clients, your legal judgment and your ownership stay yours." Legal department: "Spaarke gives your legal team the technology, process and capacity to meet the demands of stakeholders and deliver results the business can see and measure." |
+| Fee pressure stat | Eyebrow "Pressure on effort-based fees"; caption "of legal departments expect AI-related rate cuts from their firms." |
+| Insourcing stat (both views) | Caption "63% of legal departments expect to keep level or reduce outside counsel spend." The columns now show the same measure, 42% last year and 63% this year (the survey's 58% and 37% expecting an increase, inverted), so chart and caption agree |
+| AI-native capital stat | Caption "Legal tech venture funding quadrupled, from $1B in 2023 to more than $4B in 2025." (two lines at desktop width) |
+| Technology stat (department view) | Eyebrow "Technology cost and complexity"; caption cut to 98 characters |
+| All stat tiles | Text and chart sit at the top of the card; the source is a footer across the card's full width, one line on tablet and desktop. Applied to every tile so the grid reads as one system. Shortened two source names to fit ("Above the Law"; Deloitte's survey note moved to the link's tooltip) |
+| Network | Capability cards and the "See the platform" link removed. The ring keeps its labels above md; phones get a one-line list of the six capabilities under the diagram, and screen readers get the same list |
+| Estimate details chart | The profit-per-partner bridge now adds the firm's MSO equity per partner (hatched violet, as in the earlier five-year chart) and a final "Profit and equity" bar, with brackets over the annual profit steps and the equity step and a two-item legend. Annual profit and a one-time stake share one axis, so the bar labels and caption say which is which. Counsel to confirm with the other equity copy |
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
