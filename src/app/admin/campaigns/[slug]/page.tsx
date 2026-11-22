@@ -32,7 +32,7 @@ const STAGES: { key: keyof Funnel; label: string; hint?: string }[] = [
   { key: "members", label: "Members" },
   { key: "sent", label: "Sent" },
   { key: "delivered", label: "Delivered", hint: "Sent, less bounces" },
-  { key: "engaged", label: "Engaged", hint: "Read the brief or clicked" },
+  { key: "engaged", label: "Engaged", hint: "Read the brief, clicked or sent a lead form" },
   { key: "replied", label: "Replied" },
   { key: "meeting", label: "Meeting" },
 ];

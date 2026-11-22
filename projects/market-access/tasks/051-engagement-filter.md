@@ -31,6 +31,7 @@ FR-10: ignore the first 15 minutes after a recipient's first hit, multi-hit burs
 
 ## Notes
 
+- Task 053 also counts a `linkedin.lead` tagged with the campaign as engaged. The filter is for link scanners, so leave lead submissions out of it.
 - Task 033 counts every `brief.read` and `ask_ai.click` tagged with the campaign as engaged (`STAGE_OF` in `results.ts`). Apply the filter in `memberActivities` or `deriveMemberStatus`, then remove the note on the campaign page that says engaged counts every read.
 
 - The quiet window is a constant (15 minutes) with a comment pointing to the spec assumption.

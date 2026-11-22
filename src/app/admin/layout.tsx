@@ -17,7 +17,7 @@ const NAV: { label: string; href: string; ready: boolean }[] = [
   { label: "Campaigns", href: "/admin/campaigns", ready: true },
   { label: "Triage", href: "/admin/triage", ready: false },
   { label: "Mailboxes", href: "/admin/mailboxes", ready: false },
-  { label: "Import", href: "/admin/import", ready: false },
+  { label: "Import", href: "/admin/import", ready: true },
 ];
 
 export default async function AdminLayout({
