@@ -7,12 +7,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 012, check script, offline cases (not started) |
+| **Task** | 020, table storage (not started) |
 | **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Tasks 010 and 011 complete 2026-11-21; task 001 waits on the owner |
-| **Next Action** | Begin task 012 |
+| **Status** | Phase 1 (tasks 010 to 012) complete 2026-11-22; task 001 waits on the owner |
+| **Next Action** | Begin task 020 |
 
 ## Last completed
+
+Task 012: `npm run sms:check`, 99 offline cases, all pass. `NUDGE_REPLY`
+added to `messages.ts` early so the check covers it.
 
 Task 011: `createSmsToken`, `verifySmsToken`, `newConversationId` in
 `src/lib/meet/tokens.ts`; `normalizeE164` and `phoneHash` in

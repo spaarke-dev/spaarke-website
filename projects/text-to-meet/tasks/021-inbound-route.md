@@ -55,7 +55,8 @@ replies.
 
 - `src/app/api/sms/inbound/route.ts`
 - `src/lib/sms/replies.ts`
-- `src/lib/sms/messages.ts`: the nudge text (FR-12) added
+- `src/lib/sms/messages.ts`: the nudge text (FR-12), already added as
+  `NUDGE_REPLY` in task 012
 
 ## Acceptance Criteria
 

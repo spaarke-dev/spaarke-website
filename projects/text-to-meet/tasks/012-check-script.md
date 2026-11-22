@@ -1,7 +1,7 @@
 # Task 012: Check script, offline cases
 
 **Phase:** 1 (Core library)
-**Status:** not-started
+**Status:** completed (2026-11-22)
 **Estimated:** 2 hours
 **Dependencies:** 010, 011
 **Tags:** testing, typescript
@@ -44,10 +44,10 @@ FR-04, FR-07, FR-15 and success criterion 8 name this script.
 
 ## Acceptance Criteria
 
-- [ ] All offline cases pass
-- [ ] A deliberately broken reply (an em dash or a curly quote in
+- [x] All offline cases pass
+- [x] A deliberately broken reply (an em dash or a curly quote in
       `meetReply`) fails the GSM-7 case
-- [ ] The script prints no secret values
+- [x] The script prints no secret values
 
 ## Notes
 
@@ -62,3 +62,26 @@ Signature vector (from task 010). Twilio's page shows the example URL
 library (`twilio@5.4.0`, `getExpectedTwilioSignature`) gives
 `3KI2uRuYyAdhZIJXcpU0izDUzWI=`, and `computeSignature` matches it. Use that as
 the fixed vector.
+
+### Done (2026-11-22)
+
+- `scripts/check-sms.mts` and `npm run sms:check`: 99 cases, all pass.
+  Sections: signature (docs vector, order, changed parameter, added
+  parameter, changed URL, internal host URL, wrong token, previous token,
+  missing and overlong header, form body round trip, repeated names);
+  keywords (every word list, punctuation, case, codes, free-text stops,
+  full-width letters, `OptOutType` precedence, placement codes); SMS token
+  (the task 011 cases); phone hash; settings (off when unset, on when
+  complete, previous token, short secret, plain http URL); reply texts.
+- Reply texts: the MEET reply is 220 characters on `https://www.spaarke.com`
+  (the default `SITE_URL`) and 216 on `https://spaarke.com`, both two
+  segments; HELP is 162 (two segments); the nudge is 103 (one segment). The
+  script carries its own GSM-7 basic set and extension table and names any
+  character outside them by code point.
+- Broken reply proof: an em dash, then a curly apostrophe, put into
+  `meetReply` each made the run fail (exit 1) on the GSM-7 case; the file was
+  restored after each.
+- Moved forward from task 021: `NUDGE_REPLY` added to `messages.ts` now,
+  with the spec's FR-12 wording, so this check covers it. Task 021 uses it.
+- The script uses fixed test keys only, prints names and lengths, never a
+  setting's value, and puts back every SMS setting it changes.

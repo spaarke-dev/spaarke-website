@@ -52,5 +52,8 @@ export const HELP_REPLY =
   `Spaarke meeting links: text ${KEYWORD} for a link to book a meeting. One reply per text. ` +
   `Msg & data rates may apply. Help: ${HELP_EMAIL}. Reply STOP to opt out.`;
 
+/** The reply to a text the webhook does not recognize, at most once a day per sender (spec FR-12). */
+export const NUDGE_REPLY = `Spaarke: text ${KEYWORD} for a link to book a meeting with our team, or HELP for help. Reply STOP to opt out.`;
+
 /** What a link in a sample message looks like; real links carry a signed code. */
 export const SAMPLE_LINK = "https://spaarke.com/meet?c=Xk3Q9pLm2v7A";
