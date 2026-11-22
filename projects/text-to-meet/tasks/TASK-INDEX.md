@@ -12,7 +12,7 @@
 | 003 | [Secrets and app settings](003-secrets-and-settings.md) | 0 | none | 1h | not-started |
 | 004 | [Counsel review](004-counsel-review.md) | 0 | none | external | not-started (owner) |
 | 010 | [Config, signature check, keywords](010-config-signature-keywords.md) | 1 | none | 3h | **complete** |
-| 011 | [SMS link token and phone hash](011-token-and-phone-hash.md) | 1 | 010 | 2h | not-started |
+| 011 | [SMS link token and phone hash](011-token-and-phone-hash.md) | 1 | 010 | 2h | complete |
 | 012 | [Check script, offline cases](012-check-script.md) | 1 | 010, 011 | 2h | not-started |
 | 020 | [Table storage](020-table-storage.md) | 2 | 011 | 3h | not-started |
 | 021 | [Inbound webhook route](021-inbound-route.md) | 2 | 012, 020 | 4h | not-started |

@@ -7,17 +7,20 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 011, SMS link token and phone hash (not started) |
+| **Task** | 012, check script, offline cases (not started) |
 | **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Task 010 complete 2026-11-21; task 001 waits on the owner |
-| **Next Action** | Begin task 011 |
+| **Status** | Tasks 010 and 011 complete 2026-11-21; task 001 waits on the owner |
+| **Next Action** | Begin task 012 |
 
 ## Last completed
 
+Task 011: `createSmsToken`, `verifySmsToken`, `newConversationId` in
+`src/lib/meet/tokens.ts`; `normalizeE164` and `phoneHash` in
+`src/lib/sms/phone-hash.ts`. Token is 42 characters; the MEET reply is 216.
+
 Task 010: `src/lib/sms/config.ts`, `twilio-signature.ts`, `keywords.ts`.
-Signatures match Twilio's own library. Decision recorded in the task file:
-a stop word anywhere in a message wins over MEET (FR-08), flagged for
-counsel.
+Decision recorded in the task file: a stop word anywhere in a message wins
+over MEET (FR-08), flagged for counsel.
 
 ## Outside approvals
 

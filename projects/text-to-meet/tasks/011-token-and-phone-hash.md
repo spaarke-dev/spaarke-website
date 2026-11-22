@@ -1,7 +1,7 @@
 # Task 011: SMS link token and phone hash
 
 **Phase:** 1 (Core library)
-**Status:** not-started
+**Status:** completed (2026-11-21)
 **Estimated:** 2 hours
 **Dependencies:** 010
 **Tags:** typescript, security
@@ -46,12 +46,28 @@ reversed by trying every number.
 
 ## Acceptance Criteria
 
-- [ ] Round trip, tampered signature, tampered ID, expired, and manage token
+- [x] Round trip, tampered signature, tampered ID, expired, and manage token
       presented as SMS token (and the reverse) all behave as specified
-- [ ] Token length is 42
-- [ ] `phoneHash` output never contains the input digits in readable form
+- [x] Token length is 42
+- [x] `phoneHash` output never contains the input digits in readable form
 
 ## Notes
 
 `SMS_LINK_SECRET` is separate from `MEET_LINK_SECRET` so the flow works in
 Bookings mode, where the Graph settings are absent.
+
+### Done (2026-11-21)
+
+- `src/lib/meet/tokens.ts`: `newConversationId()`, `createSmsToken()`,
+  `verifySmsToken()` (returns `SmsTokenCheck` with `conversationId`),
+  `SMS_TOKEN_LENGTH` (42). The verifier requires exactly 42 characters, a
+  12 character ID and a 6 character expiry before it computes anything.
+- `src/lib/sms/phone-hash.ts`: `normalizeE164()` (only `+1` and ten digits,
+  so one number always gives one hash) and `phoneHash()`.
+- Checked in a throwaway script (the cases move into task 012): round trip,
+  wrong secret, tampered signature, ID and expiry, expired at 31 days and
+  valid at 29, manage token as SMS token and the reverse, E.164 accept and
+  reject, hash shape, keying and no readable digits. All passed. The MEET
+  reply with a real token on `https://spaarke.com` is 216 characters.
+- The six character expiry lasts until late 2038; after that the token would
+  grow to 43 characters and fail verification. Noted here, nothing to do now.
