@@ -94,6 +94,19 @@ Owner feedback items 1 to 3 (item 4 arrived empty).
 | 2 | Headline: "Designed in weeks. Value delivered over years." | Changed; each sentence sits on its own line |
 | 3 | Phase detail was hard to read; remove show and hide, open one phase at a time, highlighted in light blue | Each phase is a tab. The selected phase is highlighted light blue and its detail opens in a light-blue panel below, with numbered steps in larger type and the outcome beside them; the others are hidden. Arrow keys move between phases. On phones the panel opens under the selected phase |
 
+## New firm calculator: the MSO value estimate (2026-11-22)
+
+The owner supplied a new calculator (`notes/calculator-sample/`, with `HANDOFF.md`) and asked for "See the details" to be a separate page that opens as a modal, carrying the calculator too so it works on its own, and opening at "How the estimate works" when reached from the link. Built as task 070.
+
+| Topic | Applied |
+|---|---|
+| Law firm view | The financial section shows the MSO value estimate: the headline "Run leaner, compete on technology, and build equity", the lede, firm-size presets (mid-size by default), three sliders, three objective cards, a summary line and the disclaimer. The model is ported unchanged and matches the handoff's golden values. The old firm cost calculator, the network-value line and the private capital note no longer show in the firm view (content kept) |
+| Legal department view | Unchanged: the round 5 cost calculator. The new model is about partners and firm equity, and the design keeps equity out of the corporate view |
+| Details | `/services/estimate`, a page of its own with the calculator and "How the estimate works" (profit-per-partner waterfall, today against with the MSO, how it works, the structure, the assumptions). The inputs travel in the query string. From /services it opens as a modal over the page, scrolled to "How the estimate works"; reloading shows the full page. Esc, the close button and the backdrop close it. The modal and the section share the inputs, so a change in one shows in the other |
+| Copy | As in the handoff, in US spelling ("license") |
+
+**Needs counsel before launch (task 051):** the estimate shows equity figures (an equity stake value, the firm's 75% share of MSO profit, a 10x platform roll-up value, Spaarke's 25% stake). The design's guardrail (design.md section 9) says no equity numbers anywhere. The owner chose this calculator, so it is built as specified, and the page stays noindex. It also names the audience as US IP boutiques.
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.

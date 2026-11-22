@@ -16,6 +16,7 @@
 | 051 | [Counsel, finance and photo inputs](051-content-inputs.md) | 5 | 050 | not-started |
 | 052 | [Launch: indexing and merge](052-launch.md) | 5 | 051 | not-started |
 | 060 | [Deferred extras (backlog)](060-deferred-extras.md) | 6 | 050 | backlog |
+| 070 | [MSO value estimate (new firm calculator)](070-mso-value-estimate.md) | 3 | 031 | complete (draft) |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | Wrap-up | 052 | not-started |
 
 "complete (draft)" means built for the first-draft review; the content inputs in task 051 may change it.

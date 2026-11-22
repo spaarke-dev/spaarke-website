@@ -553,6 +553,52 @@ export const financial = {
     "For firms that want it, private capital may be available as a source of growth funding or as an exit option. It is never a requirement.",
 };
 
+/**
+ * The MSO value estimate (task 070, handoff 2026-11-22): the law firm view of
+ * the financial section and the /services/estimate details page. Copy as in
+ * the handoff, in US spelling. Figures are computed in
+ * src/components/services/estimate/. Equity figures appear here by the
+ * owner's decision and need counsel sign-off before launch (task 051).
+ */
+export const estimate = {
+  title: "Run leaner, compete on technology, and build equity",
+  lede: "Your firm moves its back office and technology into an MSO it owns. Spaarke funds and runs the platform. The firm puts in no cash and stays fully lawyer-owned.",
+  presetsLabel: "Start from a typical firm",
+  presets: [
+    { key: "small", label: "Small boutique" },
+    { key: "mid", label: "Mid-size boutique" },
+    { key: "large", label: "Large boutique" },
+  ] as const,
+  fields: {
+    partners: "Equity partners",
+    attorneys: "Other attorneys and patent agents",
+    revenue: "Annual revenue",
+  },
+  objectives: [
+    { title: "Higher margins", question: "Run the firm for less" },
+    { title: "Technology edge", question: "Compete with larger firms and AI-first rivals" },
+    { title: "Long-term value", question: "Own equity the partnership never had" },
+  ],
+  detailsCta: "See the details",
+  disclaimer:
+    "Illustrative estimate using representative assumptions for US IP boutiques, not a forecast or an offer. Actual results depend on the firm, the fair-market-value study that sets the MSO fee, and the final legal and tax structure.",
+  details: {
+    title: "How the estimate works",
+    bridgeTitle: "Where the extra profit per partner comes from",
+    tableTitle: "Today vs with the MSO",
+    tableCaption: "Annual figures for the whole firm.",
+    stepsTitle: "How it works",
+    stepsCaption: "Three changes, no cash from the firm.",
+    steps: ["Run the back office for less", "Turn freed time into new work", "Own the profit and the equity"],
+    structureTitle: "The structure",
+    structureCaption:
+      "Lawyers keep full ownership of the law firm. The MSO handles everything that is not legal advice.",
+    assumptionsTitle: "Our assumptions",
+    assumptionsCaption:
+      "Representative figures for US IP boutiques. Your own numbers come from a fair-market-value study.",
+  },
+};
+
 /* ------------------------------------------------------------------ */
 /* 7. Designing, implementing and operating MLO                        */
 /* ------------------------------------------------------------------ */

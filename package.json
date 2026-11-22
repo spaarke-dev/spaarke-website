@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test:services": "node --import tsx --test src/components/services/calculator/model.test.ts",
+    "test:services": "node --import tsx --test src/components/services/calculator/model.test.ts src/components/services/estimate/model.test.ts",
     "linkedin:auth": "tsx scripts/linkedin-auth.ts",
     "linkedin:publish": "tsx scripts/linkedin-publish.ts",
     "linkedin:refresh": "tsx scripts/linkedin-refresh-token.ts",

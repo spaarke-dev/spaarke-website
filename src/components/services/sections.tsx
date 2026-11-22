@@ -8,6 +8,7 @@ import {
   ctas,
   definitions,
   disclaimers,
+  estimate,
   faq,
   financial,
   hero,
@@ -24,6 +25,9 @@ import { AllocationDiagram } from "./AllocationDiagram";
 import { NetworkDiagram } from "./NetworkDiagram";
 import { Phases } from "./Phases";
 import { Calculator } from "./calculator/Calculator";
+import { EstimateCalculator } from "./estimate/EstimateCalculator";
+import { useEstimateInputs } from "./estimate/state";
+import { estimateHref } from "./estimate/query";
 
 /**
  * The /services page body. Everything below the site header is client-side
@@ -386,27 +390,63 @@ function Financial() {
   const { audience } = useAudience();
   return (
     <Band id={financial.id} tone="light" style={CREAM}>
-      <Shell>
-        <div className="max-w-4xl">
-          <Eyebrow>{financial.eyebrow}</Eyebrow>
-          <Flip>
-            <Heading level={2} className="mt-5 text-balance">
-              {financial.title[audience]}
-            </Heading>
-            <div className="mt-6 max-w-3xl">
-              <Lede>{financial.narrative[audience]}</Lede>
-              <p className="text-fg-mid mt-4 text-[16px] leading-relaxed">{financial.networkValue}</p>
-              {audience === "firm" ? (
-                <p className="text-fg-low mt-3 text-[14px] leading-relaxed">{financial.capitalNote}</p>
-              ) : null}
-            </div>
-          </Flip>
-        </div>
-        <div className="mt-14">
-          <Calculator cta={ctas.numbers} />
-        </div>
-      </Shell>
+      <Shell>{audience === "firm" ? <FirmEstimate /> : <CorporateEconomics />}</Shell>
     </Band>
+  );
+}
+
+/**
+ * Law firm view (task 070, 2026-11-22): the MSO value estimate. "See the
+ * details" opens /services/estimate as a modal over this page.
+ */
+function FirmEstimate() {
+  const { inputs, setInputs } = useEstimateInputs();
+  return (
+    <>
+      <div className="max-w-4xl">
+        <Eyebrow>{financial.eyebrow}</Eyebrow>
+        <Flip>
+          <Heading level={2} className="mt-5 text-balance">
+            {estimate.title}
+          </Heading>
+          <div className="mt-6 max-w-3xl">
+            <Lede>{estimate.lede}</Lede>
+          </div>
+        </Flip>
+      </div>
+      <div className="mt-14">
+        <EstimateCalculator
+          inputs={inputs}
+          onChange={setInputs}
+          detailsHref={estimateHref(inputs)}
+          detailsScroll={false}
+        />
+      </div>
+    </>
+  );
+}
+
+/** Legal department view: the round 5 cost calculator. */
+function CorporateEconomics() {
+  const { audience } = useAudience();
+  return (
+    <>
+      <div className="max-w-4xl">
+        <Eyebrow>{financial.eyebrow}</Eyebrow>
+        <Flip>
+          <Heading level={2} className="mt-5 text-balance">
+            {financial.title[audience]}
+          </Heading>
+          <div className="mt-6 max-w-3xl">
+            <Lede>{financial.narrative[audience]}</Lede>
+            <p className="text-fg-mid mt-4 text-[16px] leading-relaxed">{financial.networkValue}</p>
+          </div>
+        </Flip>
+      </div>
+      <div className="mt-14">
+        <Calculator cta={ctas.numbers} />
+      </div>
+    </>
   );
 }
 
