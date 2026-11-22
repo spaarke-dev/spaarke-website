@@ -25,6 +25,15 @@ export function callToAction(number: string): string {
 }
 
 /**
+ * The /meet line beside "Prefer to write first?" (spec Placement), for a
+ * reader on a computer who wants the link on their phone. The page follows it
+ * with a link to the program terms on /sms.
+ */
+export function meetPageLine(number: string): string {
+  return `Prefer to text? Text ${KEYWORD} to ${number} for a link on your phone. Msg & data rates may apply.`;
+}
+
+/**
  * The consent statement shown with every call to action. It names the sender,
  * says that the person is agreeing to receive text messages, and says what
  * those messages are and how often they come, which is what error 30513
@@ -51,6 +60,9 @@ export function meetReply(link: string): string {
 export const HELP_REPLY =
   `Spaarke meeting links: text ${KEYWORD} for a link to book a meeting. One reply per text. ` +
   `Msg & data rates may apply. Help: ${HELP_EMAIL}. Reply STOP to opt out.`;
+
+/** The reply to a text the webhook does not recognize, at most once a day per sender (spec FR-12). */
+export const NUDGE_REPLY = `Spaarke: text ${KEYWORD} for a link to book a meeting with our team, or HELP for help. Reply STOP to opt out.`;
 
 /** What a link in a sample message looks like; real links carry a signed code. */
 export const SAMPLE_LINK = "https://spaarke.com/meet?c=Xk3Q9pLm2v7A";

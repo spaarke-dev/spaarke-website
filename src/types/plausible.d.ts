@@ -33,6 +33,9 @@ export type PlausibleEventName =
   | "Meeting Cancelled"
   | "Meeting Slot Taken"
   | "Meeting Guests Updated"
+  // /meet opened from the link in a Text MEET reply. Carries `source: sms`
+  // and `code`, the placement code ("none" when the text had none).
+  | "Meeting Link Opened"
   // LetsMeetPanel. `src` is the page, `where` is "rail" (wide screens) or
   // "sheet" (the phone bar).
   | "Lets Meet Opened"
