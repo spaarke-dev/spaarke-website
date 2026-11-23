@@ -224,12 +224,12 @@ Source: the owner's `spaarke-value-page-change-list.md` (Downloads). Applied to 
 | 9, 10 | Card 1 drops the 22% (the MSO's own cost reduction) and adds the five-year saving; card 2 says "Funded by Spaarke: AI platform and migration", with no dollar figure |
 | 11 | "Capacity upside" switch, off by default, labeled as an assumption. It drives card 2, the summary, the table and the URL (`upside=1`) |
 | 13 | "The fee over five years": the fee falls by the glide path each year (3% default, 3% to 5%), with an FMV review marker after year three. "Fixed fee" is now "fixed or per-unit fee" on the department estimate too |
-| 14 | Every assumption is tagged "To validate in pilot". Basis added for the 30% efficiency gain (the BCG and McKinsey figures already cited on /services) and for the 170 hours (a planning figure) |
+| 14 | Every assumption was tagged "To validate in pilot" (removed in round 2). Basis added for the 30% efficiency gain (the BCG and McKinsey figures already cited on /services) and for the 170 hours (a planning figure) |
 | 15 | "Edit the assumptions": fee discount, MSO efficiency gain, freed time used for new matters, and the fee reduction each year. Changed values go into the URL |
 | 16 | Page order: hero, calculator, structure, How the estimate works (savings, fee over five years, today vs with the MSO, how it works, assumptions), closing call to action |
 | 17 | Every figure comes from the model; the copy holds none |
 | 18 | One light theme: the estimate page hero is light. Small gray text on the estimate surfaces is darker (72% black) |
-| 19 | Closing card: "Get an estimate for your firm" and "Request the equity model", both to `/contact?reason=mlo` until a dedicated gate exists |
+| 19 | Closing card: "Get an estimate for your firm" to `/contact?reason=mlo` (the "Request the equity model" link was removed in round 2) |
 | 20 | The short disclaimer sits under the savings chart, the fee chart and the table, and the full one under the calculator |
 | 21, 22 | "Lawyer or other legal professional", "representative US law firms"; "can sell", "own the profit" and "roll-up" are gone |
 | 23 | Not started; copy to follow |
@@ -241,6 +241,20 @@ Decisions and open points:
 - The five-year view treats the three-year FMV reset as a review that confirms the glide path. It does not model a fee change at the reset. Confirm the reset mechanics against the fee study (row 13, section D).
 - The 170 hours still needs a cited source; the basis given is a planning figure to be measured in the pilot.
 - Securities counsel: rows 1 to 8, 19 and 20.
+
+## Value page round 2 (2026-11-22)
+
+Source: the owner's `spaarke-value-page-round2-change-list.md` (Downloads). It supersedes the "Request the equity model" link (value page row 19 and the diagram spec's SHARES IN link), which is now gone everywhere: card 3, the diagram and the closing card.
+
+| Row | Applied |
+|---|---|
+| 1 to 3 | Card 3: no link; third bullet "Its value can grow as the network grows"; the formula line "Value = vested awards × (Spaarke's value per share at exit − award price)" at the card's foot |
+| 4 | SHARES IN keeps "Share in network value". On the estimate page it links to the new card (mouse only, as the diagram is hidden from assistive tech; the step 3 link is the keyboard route). On /services it is plain text, as the card is not on that page |
+| 5, 6 | How it works: "Three changes, no upfront investment."; step 3 keeps its text and adds "How equity value is calculated", which scrolls to the card (also inside the modal) |
+| 7, 8 | New card "How partner equity value is calculated", after "How it works" and before "Our assumptions": the formula, the two drivers, the footer and the linked Attorney at Work source. No dollar figure, example stake or multiple above 10x |
+| 9 | The "To validate in pilot" tags are gone; each assumption keeps its text and basis, and the disclaimers stay |
+
+Before launch: securities counsel on the card, rows 3, 4 and 6; re-verify the 4x to 10x EBITDA range and the link against the Attorney at Work article.
 
 ## Known gaps in the draft
 

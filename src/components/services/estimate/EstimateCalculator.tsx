@@ -76,7 +76,7 @@ export function EstimateCalculator({
           : []),
       ],
     },
-    { ...o3, bullets: copy.equity.bullets, link: copy.equity.link },
+    { ...o3, bullets: copy.equity.bullets, foot: copy.equity.formula },
   ];
 
   const fmt = (k: AdjustableKey, v: number) => pct(v, k === "glide" ? 1 : 0);

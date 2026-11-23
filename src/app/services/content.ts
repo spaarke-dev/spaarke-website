@@ -150,7 +150,6 @@ export interface StructureGroup {
   id: "decides" | "say" | "shares";
   label: string;
   items: string[];
-  link?: { label: string; href: string };
 }
 
 export interface StructureBlock {
@@ -247,9 +246,8 @@ export const structure = {
                 {
                   id: "shares" as const,
                   label: "Shares in",
+                  /** Round 2 (2026-11-22): no "Request the equity model" link. */
                   items: ["Share in network value"],
-                  /** Gated: the contact form, until a dedicated request gate exists. */
-                  link: { label: "Request the equity model", href: "/contact?reason=mlo" },
                 },
               ]
             : []),
@@ -803,15 +801,18 @@ export const estimate = {
     { title: "Technology edge", question: "Compete with larger firms and AI-first rivals" },
     { title: "Share in the network’s growth", question: "Member equity in Spaarke, earned through use" },
   ],
-  /** Card 3 is public: no dollar amounts, profit share or multiples (row 32). */
+  /**
+   * Card 3 is public: no dollar amounts, profit share or multiples (row 32).
+   * Round 2 (2026-11-22): the "Request the equity model" link is gone
+   * everywhere; the formula line takes its place. Counsel to approve.
+   */
   equity: {
     bullets: [
       "Vested equity is kept if you leave or close",
       "Your own lawyers and staff can share in it",
-      "It grows as more firms join",
+      "Its value can grow as the network grows",
     ],
-    /** Gated: the contact form, until a dedicated request gate exists. */
-    link: { label: "Request the equity model", href: "/contact?reason=mlo" },
+    formula: "Value = vested awards × (Spaarke’s value per share at exit − award price)",
   },
   summary: {
     base: "in lower operating cost, plus a technology and capacity advantage.",
@@ -840,22 +841,52 @@ export const estimate = {
       upside: "Annual figures for the whole firm, with the capacity upside on.",
     },
     stepsTitle: "How it works",
-    stepsCaption: "Three changes, no cash from the firm.",
+    stepsCaption: "Three changes, no upfront investment.",
     steps: ["Run the back office for less", "Turn freed time into new work", "Share in the network’s growth"],
     /** Value page row 4: no dollars, percentages or multiples. */
     equityStep: "Member equity in Spaarke, earned through use. Vested equity is kept if you leave or close.",
+    /** Round 2, row 6: scrolls to the equity card. */
+    equityStepLink: "How equity value is calculated",
+    /**
+     * Round 2, rows 7 and 8: after "How it works", before "Our assumptions".
+     * "Spaarke's value", never "MSO value" or "MSO equity"; no dollar figure,
+     * example stake or multiple above 10x; dilution is not discussed. Counsel
+     * to review the formula, the range and the wording, and the 4x to 10x
+     * range is to be re-verified against the source before launch.
+     */
+    equityCard: {
+      id: "how-equity-value-is-calculated",
+      title: "How partner equity value is calculated",
+      caption: "A framework, not a forecast. No dollar figure is promised or implied.",
+      formula: "Partner equity value = vested awards × (Spaarke’s value per share at exit − award price)",
+      drivers: [
+        {
+          title: "Awards.",
+          body: "Earned as your firm uses MSO services, measured in units of work at fixed baseline prices, and vested over about three years.",
+        },
+        {
+          title: "Spaarke’s value at exit.",
+          body: "Set by a market valuation at an exit or financing. For reference, legal MSO transactions have been reported at roughly 4 to 10 times EBITDA. Spaarke’s own multiple depends on its performance and market conditions.",
+        },
+      ],
+      footer:
+        "Vested equity is kept if you leave or close. Whether and when liquidity is available depends on an exit or other liquidity event. Illustrative, not an offer of securities.",
+      source: {
+        before: "Source: Attorney at Work,",
+        label: "“Seven pillars of legal MSO deals”",
+        href: "https://www.attorneyatwork.com/seven-pillars-of-legal-mso-deals/",
+        after: ", which reports legal MSO deals at about 4x to 10x EBITDA, with 6x to 8x typical.",
+      },
+    },
     assumptionsTitle: "Our assumptions",
     assumptionsCaption:
       "Representative figures for US law firms. Your own numbers come from your firm’s costs and a fee benchmarked to fair market value.",
-    /** Value page row 14. */
-    validate: "To validate in pilot",
   },
   /** Value page row 19. */
   closing: {
     title: "Your firm’s own numbers",
     body: "We build the estimate from your firm’s actual costs, in a confidential conversation.",
     primary: { label: "Get an estimate for your firm", href: "/contact?reason=mlo" },
-    secondary: { label: "Request the equity model", href: "/contact?reason=mlo" },
   },
 };
 

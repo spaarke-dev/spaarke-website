@@ -7,7 +7,7 @@ import { money, num, pct } from "./format";
 import { Waterfall, type WaterfallGroup, type WaterfallStep } from "./Waterfall";
 import { FeeYears } from "./FeeYears";
 import { DETAILS_ANCHOR } from "./query";
-import { Assumptions, Card, CompareTable, DetailsHeading, Muted, Steps, type Row } from "./parts";
+import { Assumptions, Card, CompareTable, DetailsHeading, EquityCard, Muted, Steps, type Row } from "./parts";
 
 /**
  * Law firm "How the estimate works" (behind "See the details"), reworked to
@@ -52,7 +52,16 @@ export function EstimateDetails({ inputs }: { inputs: EstimateInputs }) {
   const howItWorks = [
     `About ${money(m.scope)} of back office, docketing, IT and finance moves to the MSO. Automation and a shared platform cut its running cost by about ${pct(inputs.efficiency)}, and the firm pays a fixed or per-unit fee, benchmarked to fair market value, about ${pct(m.feeDiscount)} below today’s cost.`,
     `Lawyers get back about ${pct(A.timeFreed)} of their time, or ${num(m.hoursPerLawyerFreed)} hours each a year. If the firm uses ${pct(inputs.redeploy)} of it for new matters and adds new client services, revenue could grow by about ${money(m.upsideRev)}. That is the optional capacity upside: an assumption, not a result.`,
-    d.equityStep,
+    <>
+      <p>{d.equityStep}</p>
+      {/* Round 2, row 6. */}
+      <a
+        href={`#${d.equityCard.id}`}
+        className="mt-1.5 inline-block font-medium text-[#3F5FD9] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC]"
+      >
+        {d.equityStepLink} <span aria-hidden="true">↓</span>
+      </a>
+    </>,
   ];
 
   // Rows 7, 8, 13, 14 and 21.
@@ -131,8 +140,11 @@ export function EstimateDetails({ inputs }: { inputs: EstimateInputs }) {
           </Card>
         </div>
 
+        {/* Round 2, row 8: after "How it works", before "Our assumptions". */}
+        <EquityCard {...d.equityCard} />
+
         <Card title={d.assumptionsTitle} caption={d.assumptionsCaption}>
-          <Assumptions items={assumptions} tag={d.validate} />
+          <Assumptions items={assumptions} />
         </Card>
       </div>
     </section>

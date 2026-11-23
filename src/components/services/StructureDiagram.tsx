@@ -104,7 +104,6 @@ interface GroupPlan {
   labelY: number;
   sepY?: number;
   rows: Row[];
-  link?: { label: string; href: string; y: number };
 }
 interface BlockPlan {
   subLines: string[];
@@ -134,7 +133,6 @@ const LABEL_PAD = 26; // divider to the first group label
 const LABEL_TO_ITEM = 24; // group label to its first item
 const ITEM_GAP = 24; // baseline to baseline between items
 const WRAP_GAP = 18; // baseline to baseline inside a wrapped item
-const LINK_GAP = 21; // item to its link
 const GROUP_GAP = 40; // last baseline of a group to the next label
 const GROUP_GAP_MAX_EXTRA = 32; // spare height each group gap may take
 const PAD_BOTTOM = 28; // last baseline to the block bottom
@@ -191,12 +189,7 @@ function planBlock(b: StructureBlock, top: number, wrap: number, slack = 0): Blo
       last = y + (lines.length - 1) * WRAP_GAP;
       y = last + ITEM_GAP;
     }
-    let link: GroupPlan["link"];
-    if (g.link) {
-      link = { ...g.link, y: last + LINK_GAP };
-      last = link.y;
-    }
-    return { id: g.id, label, labelY, sepY, rows, link };
+    return { id: g.id, label, labelY, sepY, rows };
   });
   return { subLines, divY, groups: plans, h: last + PAD_BOTTOM - top };
 }
@@ -312,9 +305,14 @@ function tall(c: StructureBlock, m: StructureBlock, o: StructureBlock, show: Sho
 
 /**
  * `audience` is for pages outside the /services audience switch (the estimate
- * page); `tone` picks the dark or light palette.
+ * page); `tone` picks the dark or light palette; `sharesHref` links the
+ * SHARES IN item to the equity card where the page has one (round 2, row 4).
  */
-export function StructureDiagram({ audience: forced, tone = "dark" }: { audience?: Audience; tone?: Tone } = {}) {
+export function StructureDiagram({
+  audience: forced,
+  tone = "dark",
+  sharesHref,
+}: { audience?: Audience; tone?: Tone; sharesHref?: string } = {}) {
   const fromPage = useAudienceMaybe();
   const audience = forced ?? fromPage ?? "firm";
   const pal = PALETTES[tone];
@@ -325,17 +323,16 @@ export function StructureDiagram({ audience: forced, tone = "dark" }: { audience
   ) as Record<keyof typeof structure.flows, string>;
   const firm = audience === "firm";
   const show: Show = { input: firm, share: firm && SHOW_NETWORK_VALUE };
-  const equityLink = show.share ? groupsOf(client).find((g) => g.link)?.link : undefined;
 
   return (
     <div
       className={`border-line-strong rounded-2xl border p-3 sm:p-5 lg:p-8 ${tone === "light" ? "bg-white" : "bg-[rgba(255,255,255,0.02)]"}`}
     >
       <div aria-hidden="true" className="mx-auto hidden max-w-[1060px] md:block">
-        <Diagram layout={wide(client, mso, op, show)} audience={audience} pal={pal} />
+        <Diagram layout={wide(client, mso, op, show)} audience={audience} pal={pal} sharesHref={sharesHref} />
       </div>
       <div aria-hidden="true" className="mx-auto max-w-[420px] md:hidden">
-        <Diagram layout={tall(client, mso, op, show)} audience={audience} pal={pal} />
+        <Diagram layout={tall(client, mso, op, show)} audience={audience} pal={pal} sharesHref={sharesHref} />
       </div>
       <div className="sr-only">
         <p>
@@ -362,21 +359,21 @@ export function StructureDiagram({ audience: forced, tone = "dark" }: { audience
           </div>
         ))}
       </div>
-      {/* The diagram's link is mouse-only (the SVG is hidden from assistive tech); this one appears on focus. */}
-      {equityLink ? (
-        <a
-          href={equityLink.href}
-          style={{ color: pal.link }}
-          className="sr-only focus:not-sr-only focus:mt-4 focus:inline-block focus:rounded focus:text-[14px] focus:underline focus:outline-none focus:ring-2 focus:ring-[#5078DC]"
-        >
-          {equityLink.label}
-        </a>
-      ) : null}
     </div>
   );
 }
 
-function Diagram({ layout: L, audience, pal }: { layout: Layout; audience: Audience; pal: Palette }) {
+function Diagram({
+  layout: L,
+  audience,
+  pal,
+  sharesHref,
+}: {
+  layout: Layout;
+  audience: Audience;
+  pal: Palette;
+  sharesHref?: string;
+}) {
   const { client, mso } = structure.blocks[audience];
   const id = useId().replace(/:/g, "");
 
@@ -399,7 +396,7 @@ function Diagram({ layout: L, audience, pal }: { layout: Layout; audience: Audie
         ))}
       </defs>
 
-      <Block rect={L.client} b={client} plan={L.plans.client} colors={pal.client} pal={pal} />
+      <Block rect={L.client} b={client} plan={L.plans.client} colors={pal.client} pal={pal} sharesHref={sharesHref} />
       <Block rect={L.mso} b={mso} plan={L.plans.mso} colors={pal.mso} pal={pal} />
       <Block rect={L.operator} b={structure.operator} plan={L.plans.operator} colors={pal.operator} pal={pal} />
 
@@ -438,12 +435,14 @@ function Block({
   plan,
   colors: { stroke, fill, accent },
   pal,
+  sharesHref,
 }: {
   rect: Rect;
   b: StructureBlock;
   plan: BlockPlan;
   colors: BlockColors;
   pal: Palette;
+  sharesHref?: string;
 }) {
   const dot = accent;
   return (
@@ -494,15 +493,17 @@ function Block({
                 </text>
               </>
             ) : null}
-            {g.rows.map(({ s, lines, y: first }) => (
-              <g key={s}>
-                <circle cx={x + 26} cy={first - 4} r="2.5" fill={strong ? pal.fgMid : dot} />
+            {g.rows.map(({ s, lines, y: first }) => {
+              // Mouse-only (the SVG is hidden from assistive tech); the page's
+              // "How equity value is calculated" link is the keyboard route.
+              const href = g.id === "shares" ? sharesHref : undefined;
+              const text = (
                 <text
                   x={x + 38}
                   y={first}
-                  className="font-body"
+                  className={`font-body ${href ? "underline-offset-2 hover:underline" : ""}`}
                   fontSize="13.5"
-                  fill={strong ? pal.itemStrong : pal.item}
+                  fill={href ? pal.link : strong ? pal.itemStrong : pal.item}
                 >
                   {lines.map((l, i) => (
                     <tspan key={l} x={x + 38} dy={i === 0 ? 0 : WRAP_GAP}>
@@ -510,22 +511,20 @@ function Block({
                     </tspan>
                   ))}
                 </text>
-              </g>
-            ))}
-            {g.link ? (
-              <a href={g.link.href} tabIndex={-1}>
-                <text
-                  x={x + 38}
-                  y={g.link.y}
-                  className="font-body hover:underline"
-                  fontSize="12.5"
-                  fontWeight="500"
-                  fill={pal.link}
-                >
-                  {g.link.label} →
-                </text>
-              </a>
-            ) : null}
+              );
+              return (
+                <g key={s}>
+                  <circle cx={x + 26} cy={first - 4} r="2.5" fill={strong ? pal.fgMid : dot} />
+                  {href ? (
+                    <a href={href} tabIndex={-1}>
+                      {text}
+                    </a>
+                  ) : (
+                    text
+                  )}
+                </g>
+              );
+            })}
           </g>
         );
       })}

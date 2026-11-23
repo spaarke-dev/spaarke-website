@@ -28,7 +28,8 @@ export interface Objective {
   cap?: string;
   facts?: Fact[];
   bullets?: string[];
-  link?: { label: string; href: string };
+  /** A line pinned to the card's foot (the equity card's formula). */
+  foot?: string;
 }
 
 export function InputsCard({
@@ -199,14 +200,9 @@ export function Objectives({ items, label }: { items: Objective[]; label: string
               ))}
             </ul>
           ) : null}
-          {o.link ? (
+          {o.foot ? (
             <div className="mt-auto pt-6">
-              <Link
-                href={o.link.href}
-                className="text-[15px] font-medium text-[#3F5FD9] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC]"
-              >
-                {o.link.label} <span aria-hidden="true">→</span>
-              </Link>
+              <p className="rounded-xl bg-[#EBF2FF] px-4 py-3 text-[14px] font-medium leading-snug text-[#2B45A8]">{o.foot}</p>
             </div>
           ) : null}
         </article>
@@ -253,7 +249,7 @@ export function ClosingCta({
   title: string;
   body: string;
   primary: { label: string; href: string };
-  secondary: { label: string; href: string };
+  secondary?: { label: string; href: string };
 }) {
   return (
     <section className="rounded-3xl border border-[rgba(80,120,220,0.35)] bg-[#EBF2FF] p-6 md:p-10">
@@ -264,12 +260,14 @@ export function ClosingCta({
           {primary.label}
           <span aria-hidden="true">→</span>
         </Link>
-        <Link
-          href={secondary.href}
-          className="text-[15px] font-medium text-[#3F5FD9] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC]"
-        >
-          {secondary.label} <span aria-hidden="true">→</span>
-        </Link>
+        {secondary ? (
+          <Link
+            href={secondary.href}
+            className="text-[15px] font-medium text-[#3F5FD9] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC]"
+          >
+            {secondary.label} <span aria-hidden="true">→</span>
+          </Link>
+        ) : null}
       </div>
     </section>
   );
@@ -353,7 +351,7 @@ export function CompareTable({ rows }: { rows: Row[] }) {
   );
 }
 
-export function Steps({ titles, bodies }: { titles: readonly string[]; bodies: string[] }) {
+export function Steps({ titles, bodies }: { titles: readonly string[]; bodies: ReactNode[] }) {
   return (
     <ol className="mt-5 space-y-5">
       {titles.map((s, i) => (
@@ -366,7 +364,7 @@ export function Steps({ titles, bodies }: { titles: readonly string[]; bodies: s
           </span>
           <div>
             <p className="text-fg text-[16px] font-semibold">{s}</p>
-            <p className={`${MUTED} mt-1 text-[15px] leading-relaxed`}>{bodies[i]}</p>
+            <div className={`${MUTED} mt-1 text-[15px] leading-relaxed`}>{bodies[i]}</div>
           </div>
         </li>
       ))}
@@ -386,21 +384,77 @@ export function Structure({ boxes, arrows }: { boxes: [Box, Box, Box]; arrows: [
   );
 }
 
-export function Assumptions({ items, tag }: { items: [string, string][]; tag?: string }) {
+export function Assumptions({ items }: { items: [string, string][] }) {
   return (
-    <ul className="mt-5 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2">
+    <ul className="mt-5 grid grid-cols-1 gap-x-10 gap-y-3 md:grid-cols-2">
       {items.map(([k, v]) => (
         <li key={k} className={`${MUTED} text-[14px] leading-relaxed`}>
           <strong className="text-fg font-semibold">{k}:</strong> {v}
-          {/* Value page row 14: every assumption is marked for the pilot. */}
-          {tag ? (
-            <span className="font-mono-display ml-2 inline-block whitespace-nowrap rounded-full border border-[rgba(199,122,30,0.45)] bg-[#FFF6EA] px-2 py-0.5 align-[1px] text-[10px] uppercase tracking-[0.1em] text-[#8A5410]">
-              {tag}
-            </span>
-          ) : null}
         </li>
       ))}
     </ul>
+  );
+}
+
+/**
+ * How partner equity value is calculated (round 2, row 7): the formula, the
+ * two drivers, the footer and the source. A framework with no figures.
+ */
+export function EquityCard({
+  id,
+  title,
+  caption,
+  formula,
+  drivers,
+  footer,
+  source,
+}: {
+  id: string;
+  title: string;
+  caption: string;
+  formula: string;
+  drivers: readonly { title: string; body: string }[];
+  footer: string;
+  source: { before: string; label: string; href: string; after: string };
+}) {
+  return (
+    <section id={id} aria-labelledby={`${id}-title`} className="border-line scroll-mt-24 rounded-3xl border bg-white p-6 md:p-8">
+      <h3 id={`${id}-title`} className="font-display text-fg text-[21px] font-medium tracking-[-0.01em]">
+        {title}
+      </h3>
+      <p className={`${MUTED} mt-1.5 text-[14px] leading-relaxed`}>{caption}</p>
+      <p className="font-display mt-6 rounded-2xl border border-[rgba(80,120,220,0.35)] bg-[#EBF2FF] px-5 py-5 text-center text-[clamp(18px,2.2vw,24px)] font-medium leading-snug tracking-[-0.01em] text-[#2B45A8] md:px-8">
+        {formula}
+      </p>
+      <ol className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-8">
+        {drivers.map((d, i) => (
+          <li key={d.title} className="grid grid-cols-[32px_1fr] gap-3">
+            <span
+              aria-hidden="true"
+              className="font-mono-display flex h-8 w-8 items-center justify-center rounded-full bg-[#5078DC] text-[13px] text-white"
+            >
+              {i + 1}
+            </span>
+            <p className={`${MUTED} text-[15px] leading-relaxed`}>
+              <b className="text-fg font-semibold">{d.title}</b> {d.body}
+            </p>
+          </li>
+        ))}
+      </ol>
+      <p className="text-fg border-line mt-6 border-t pt-5 text-[14px] leading-relaxed">{footer}</p>
+      <p className={`${MUTED} mt-3 text-[12.5px] leading-relaxed`}>
+        {source.before}{" "}
+        <a
+          href={source.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#3F5FD9] underline underline-offset-2 hover:no-underline"
+        >
+          {source.label}
+        </a>
+        {source.after}
+      </p>
+    </section>
   );
 }
 

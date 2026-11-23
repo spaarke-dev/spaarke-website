@@ -70,7 +70,7 @@ function FirmView({ initial }: { initial: EstimateInputs | null }) {
         </h2>
         <p className={`${MUTED} mt-3 max-w-3xl text-[16px] leading-relaxed`}>{copy.structure.caption}</p>
         <div className="mt-6">
-          <StructureDiagram audience="firm" tone="light" />
+          <StructureDiagram audience="firm" tone="light" sharesHref={`#${copy.details.equityCard.id}`} />
         </div>
       </section>
       <EstimateDetails inputs={current} />
