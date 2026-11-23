@@ -37,7 +37,8 @@ import { DeptCalculator } from "./estimate/DeptCalculator";
  *
  * Section order and bands after review round 3 (2026-11-21): hero dark, why
  * now white, MSO and MLO definitions soft blue, what is MLO dark, financial
- * cream, network dark, approach white, black closing.
+ * cream, network dark, approach tinted (raised cards and a dark panel, process
+ * change list 2026-11-22), black closing.
  */
 
 const SECTION_Y = "py-[clamp(80px,12vh,150px)]";
@@ -53,6 +54,12 @@ const GLOW =
  */
 const SHOW_BENEFITS = false;
 const SHOW_FAQ = false;
+/** Approach: a cool tint so the raised phase cards read as lifted. */
+const TINT: CSSProperties = {
+  backgroundColor: "#f3f5fa",
+  backgroundImage:
+    "radial-gradient(ellipse 70% 55% at 80% 0%, rgba(130,165,235,0.16) 0%, transparent 70%), linear-gradient(180deg, #f6f7fb 0%, #eef1f8 100%)",
+};
 const SOFT_BLUE: CSSProperties = {
   backgroundColor: "#ebf2ff",
   backgroundImage:
@@ -90,15 +97,18 @@ function SectionHead({
   title,
   intro,
   center,
+  eyebrowClassName,
 }: {
   eyebrow: string;
+  /** Process change list row 14: a darker eyebrow where the band needs more contrast. */
+  eyebrowClassName?: string;
   title: ReactNode;
   intro?: ReactNode;
   center?: boolean;
 }) {
   return (
     <div className={center ? "mx-auto max-w-4xl text-center" : "max-w-4xl"}>
-      <Eyebrow>{eyebrow}</Eyebrow>
+      <Eyebrow className={eyebrowClassName}>{eyebrow}</Eyebrow>
       <Heading level={2} className="mt-5 text-balance">
         {title}
       </Heading>
@@ -442,9 +452,10 @@ function DeptEstimate() {
 
 function Approach() {
   return (
-    <Band id={approach.id} tone="light" style={WHITE}>
+    <Band id={approach.id} tone="light" style={TINT}>
       <Shell>
         <SectionHead
+          eyebrowClassName="text-[rgba(10,10,10,0.72)]!"
           eyebrow={approach.eyebrow}
           title={approach.title.split(". ").map((t, i, all) => (
             <span key={t} className="block">
@@ -453,10 +464,10 @@ function Approach() {
           ))}
         />
         <div className="mt-16">
-          <Phases tone="light" />
+          <Phases />
         </div>
         <div className="mt-12 max-w-2xl">
-          <p className="text-fg-mid text-[16px] leading-relaxed">{approach.method.text}</p>
+          <p className="text-[16px] leading-relaxed text-[rgba(10,10,10,0.78)]">{approach.method.text}</p>
           <div className="mt-3">
             <Button variant="text" href={approach.method.link.href} arrow>
               {approach.method.link.label}

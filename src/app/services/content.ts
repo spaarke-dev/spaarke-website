@@ -24,7 +24,7 @@ import type { ByAudience } from "@/components/services/audience-types";
 /** Owner decisions 2026-11-21: conversations and numbers go to booking; assessments to the contact form with the MLO reason preselected. */
 export const ctas = {
   conversation: { label: "Start a conversation", href: "/meet" },
-  assessment: { label: "Request an assessment", href: "/contact?reason=mlo" },
+  assessment: { label: "Request a confidential assessment", href: "/contact?reason=mlo" },
   numbers: { label: "Discuss your numbers", href: "/meet" },
 };
 
@@ -932,12 +932,14 @@ export const deptEstimate = {
 };
 
 /* ------------------------------------------------------------------ */
-/* 7. Designing, implementing and operating MLO                        */
+/* 7. Designing, implementing and operating Managed Legal Operations  */
 /* ------------------------------------------------------------------ */
 
 export interface Phase {
   id: string;
   name: string;
+  /** Process change list row 2: a rough duration, no hard numbers until the pilot confirms timing. */
+  duration: string;
   summary: string;
   steps: ByAudience<string[]>;
   outcome: ByAudience<string>;
@@ -945,7 +947,7 @@ export interface Phase {
 
 export const approach = {
   id: "approach",
-  eyebrow: "Designing, implementing and operating MLO",
+  eyebrow: "Designing, implementing and operating Managed Legal Operations",
   title: "Designed in weeks. Value delivered over years.",
   /**
    * Owner decision 2026-11-21: link the Spaarke Method under the phases. The
@@ -953,20 +955,22 @@ export const approach = {
    * run the MSO; the Method's five deliver the technology and AI work inside it.
    */
   method: {
-    text: "Inside the MSO, technology and AI work follows the Spaarke Method: one decision at a time, with legal engineers working alongside your team.",
+    text: "Inside the MSO, technology and AI work follows the Spaarke Method: one decision at a time, with legal engineers working alongside your team. Your attorneys review all AI output.",
     link: { label: "Read the Spaarke Method", href: "/why-spaarke/the-spaarke-method" },
   },
   phases: [
     {
       id: "design",
       name: "Design",
+      duration: "Weeks",
       summary: "Set the goals, choose the services and fix how fees are set.",
       steps: {
         firm: [
           "Goals and a baseline of the firm’s current costs",
           "Choose the services the MSO will deliver",
           "Set the fee with an independent fair-market-value study",
-          "Ethics and regulatory review",
+          "Ethics and regulatory review with your counsel",
+          "Agree the deployment plan and what Spaarke funds",
         ],
         corporate: [
           "Goals and a baseline of spend, matters and outside counsel use",
@@ -976,18 +980,20 @@ export const approach = {
         ],
       },
       outcome: {
-        firm: "A signed design: services, fee method and governance.",
+        firm: "An agreed design, ready to sign: services, service levels, fee method and governance.",
         corporate: "A signed design: services, service levels and governance.",
       },
     },
     {
       id: "implement",
       name: "Implement",
+      duration: "Months",
       summary: "Stand up the MSO and move people and technology across.",
       steps: {
         firm: [
           "Set up the MSO",
-          "Transition people and technology",
+          "Agree the staff transition plan with you",
+          "Migrate data and legacy systems",
           "Run old and new side by side before cutover",
         ],
         corporate: [
@@ -997,19 +1003,24 @@ export const approach = {
         ],
       },
       outcome: {
-        firm: "The MSO running the chosen functions, with no break in client service.",
-        corporate: "The MSO running the chosen functions, with no break in service to the business.",
+        firm: "The MSO running the chosen functions, with a cutover planned to avoid any break in client service.",
+        corporate: "The MSO running the chosen functions, with a cutover planned to avoid any break in service to the business.",
       },
     },
     {
       id: "operate",
       name: "Operate",
+      duration: "Ongoing",
       summary: "Run to service levels and improve every year.",
       steps: {
         firm: [
           "Service levels and regular reporting",
           "Continuous improvement from the operator’s center of excellence",
           "Annual governance review",
+          "Fee re-benchmarked to fair market value every three years",
+          "Technology upgrades included",
+          // Process change list row 10 (optional): qualitative only; counsel to review before publishing.
+          ...(SHOW_NETWORK_VALUE ? ["Partner equity awards accrue and vest as you use services"] : []),
         ],
         corporate: [
           "Service levels and regular reporting to the general counsel",
@@ -1018,7 +1029,7 @@ export const approach = {
         ],
       },
       outcome: {
-        firm: "Lower cost per matter and technology that keeps pace, year after year.",
+        firm: "A lower unit cost and technology that keeps pace, year after year.",
         corporate: "Lower cost per matter and stronger control, year after year.",
       },
     },

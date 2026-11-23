@@ -256,6 +256,28 @@ Source: the owner's `spaarke-value-page-round2-change-list.md` (Downloads). It s
 
 Before launch: securities counsel on the card, rows 3, 4 and 6; re-verify the 4x to 10x EBITDA range and the link against the Attorney at Work article.
 
+## Process section change list (2026-11-22)
+
+Source: the owner's `spaarke-process-section-change-list.md` (Downloads), for "Designed in weeks. Value delivered over years.", plus "make it a little more interesting with some of our dark or elevation".
+
+| Row | Applied |
+|---|---|
+| 1 | Eyebrow spells out Managed Legal Operations |
+| 2 | Each phase card carries a duration chip: Weeks, Months, Ongoing |
+| 3, 4 | Design: "Ethics and regulatory review with your counsel"; new step "Agree the deployment plan and what Spaarke funds" |
+| 5 | Design outcome: "An agreed design, ready to sign: services, service levels, fee method and governance." |
+| 6, 7 | Implement: four steps (set up, staff transition plan, migrate data and legacy systems, run side by side); outcome "with a cutover planned to avoid any break in client service". The legal department outcome uses the same "planned to avoid" wording, per the flag on row 7 |
+| 8, 9 | Operate adds "Fee re-benchmarked to fair market value every three years" and "Technology upgrades included"; outcome "A lower unit cost and technology that keeps pace, year after year." |
+| 10 | Applied, law firm view only and behind `SHOW_NETWORK_VALUE`: "Partner equity awards accrue and vest as you use services". Counsel to review before publishing |
+| 11 | The Spaarke Method sentence ends "Your attorneys review all AI output." (both audiences) |
+| 12 | `ctas.assessment` is now "Request a confidential assessment", so the closing section's text link changes too |
+| 13 | Legal department steps unchanged, copy to follow |
+| 14 | Darker eyebrow (0.72), phase summaries and the Method line (0.78) |
+
+Visual: the band is a cool tint between the dark network band and the black closing (a dark band here would put three dark sections in a row). The phases are raised white cards; the selected one lifts, gets a blue border and top rule. Its steps and outcome open in a dark panel with the site's blue glow and a pointer under the selected card (desktop). Kept: headline, three-stage layout, outcome box.
+
+Open: "Designed in weeks" holds for later partners; the first firm's foundations are about three months (owner's flag). "Member" still appears in the network section (title, "Next member", MEMBER labels), the estimate's "Member equity" step and the MSO structure text; the change list says "partner" on the public site. Not changed here: "partner" also names the firm's equity partners, so the rename needs an owner decision.
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
