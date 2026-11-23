@@ -193,6 +193,23 @@ Open:
 - "How the estimate works" (behind "See the details") still shows profit per partner, margin, the firm's 75% stake in its MSO and equity dollar figures, including the equity bar added earlier the same day. That conflicts with rows 28, 32 and 33 and with the structure section (Spaarke owns the MSO). Owner decision 2026-11-22: leave it as is until the rebuilt calculator's formulas arrive.
 - Card 1's fee saving and card 2's Spaarke-funded deployment are both 10% of the MSO scope, so they show the same figure ($257k for the mid-size firm).
 
+## Structure diagram spec (2026-11-22)
+
+Source: the owner's `spaarke-structure-diagram-spec.md` (Downloads). Applied to the "What is Managed Legal Operations" diagram.
+
+- Law firm box: subtitle "Your lawyers and legal professionals. Keeps the practice of law."; items grouped under DECIDES (six items, brighter label with a lock), HAS A SAY (three) and SHARES IN ("Share in network value", with "Request the equity model", which goes to `/contact?reason=mlo` until a dedicated gate exists). The box matches the MSO plus the operator in height, and the spare height goes evenly between the groups.
+- Operator subtitle: "Owns and runs your MSO".
+- New connectors: "Owns and runs" (operator up to the MSO, both views); "Input on staff, culture and standards" (firm to MSO, under the fee, law firm view); "Share in network value" (dashed green, operator to the firm's SHARES IN group, law firm view). On phones the dashed arrow runs up a channel on the left.
+- Footnote under the diagram, law firm view: "Availability and structure vary by state."
+- The department view keeps its plain lists and gets only the operator subtitle and the "Owns and runs" connector.
+
+This settles three of the change-list conflicts: row 17 stays "run to your standards" (the spec lists it as unchanged), row 18 stays "Administrative support and other non-legal staff", and row 22 is the green operator box with an "Owns and runs" connector rather than a thin band. Row 19 ("Client confidences and privilege") is in, as "Clients, client confidences and privilege".
+
+Before launch (counsel):
+
+- The SHARES IN group and the "Share in network value" arrow (securities). Both sit behind `SHOW_NETWORK_VALUE` in `content.ts`; set it to `false` to drop them without other edits.
+- The supervision and paralegal wording in the firm box (varies by state).
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.

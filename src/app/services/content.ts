@@ -144,12 +144,30 @@ export const whatIsMlo = {
 /* 4a. The MSO structure visual (handoff 2026-11-22, simplified)       */
 /* ------------------------------------------------------------------ */
 
+/** A labeled group of items inside a block (the law firm box). */
+export interface StructureGroup {
+  /** "decides" gets the most weight: a brighter label and a lock icon. "shares" anchors the network value arrow. */
+  id: "decides" | "say" | "shares";
+  label: string;
+  items: string[];
+  link?: { label: string; href: string };
+}
+
 export interface StructureBlock {
   eyebrow: string;
   title: string;
   sub: string;
-  items: string[];
+  /** A plain list, or labeled groups in its place. */
+  items?: string[];
+  groups?: StructureGroup[];
 }
+
+/**
+ * Securities counsel must approve the SHARES IN group and the "Share in
+ * network value" arrow before launch (diagram spec 2026-11-22, section 5).
+ * false hides both.
+ */
+export const SHOW_NETWORK_VALUE = true;
 
 /**
  * "What is Managed Legal Operations" diagram. Built from the structure visual
@@ -157,8 +175,14 @@ export interface StructureBlock {
  * request (2026-11-22): only the client block and its MSO, with the fee
  * flowing to the MSO and operations and technology flowing back. Second
  * review the same day: the Spaarke MSO operator returns as a green box under
- * the MSO, supporting it, with no flow of its own. The other members, equity
- * and the "what the firm owns" outline stay out.
+ * the MSO. The other members and equity figures stay out.
+ *
+ * Diagram spec 2026-11-22 (owner's spaarke-structure-diagram-spec.md): the
+ * firm box splits into DECIDES, HAS A SAY and SHARES IN; the operator "owns
+ * and runs" the MSO, with a connector; the firm gives the MSO input on staff,
+ * culture and standards; and a dashed arrow carries network value from the
+ * operator back to the firm (behind SHOW_NETWORK_VALUE). No dollar amounts,
+ * percentages or multiples anywhere in the diagram.
  */
 export const structure = {
   title: {
@@ -171,12 +195,21 @@ export const structure = {
     corporate:
       "The legal department stays part of the company, with its lawyers, judgment and decisions. Its legal operations and technology move into a dedicated management services organization (MSO) that Spaarke owns and runs on its platform. Spaarke funds the transition, so the department makes no upfront investment, and pricing is designed to cost less per unit than doing the same work in-house.",
   } satisfies ByAudience<string>,
-  flows: { fee: "Fixed or per-unit fee", services: "Operations and technology" },
-  /** Shown under the MSO in both views: supports it, with no flow of its own. */
+  flows: {
+    fee: "Fixed or per-unit fee",
+    services: "Operations and technology",
+    /** Operator to MSO, both views. */
+    owns: "Owns and runs",
+    /** Law firm view only: firm to MSO, under the fee. */
+    input: "Input on staff, culture and standards",
+    /** Law firm view only, behind SHOW_NETWORK_VALUE: operator to firm, dashed. */
+    share: "Share in network value",
+  },
+  /** Shown under the MSO in both views. */
   operator: {
     eyebrow: "MSO operator · Spaarke",
     title: "Spaarke MSO Operator",
-    sub: "Supports your MSO",
+    sub: "Owns and runs your MSO",
     items: ["Technology and AI platform", "Shared services", "Business process transformation"],
   } satisfies StructureBlock,
   blocks: {
@@ -184,14 +217,41 @@ export const structure = {
       client: {
         eyebrow: "Law firm · 100% lawyer-owned",
         title: "Your law firm",
-        sub: "Keeps the practice of law",
-        items: [
-          "Partners and associates",
-          "Paralegals and other legal professionals",
-          "Clients and matters",
-          "Legal fees and billing rates",
-          "Client data and privilege",
-          "Firm name and brand",
+        sub: "Your lawyers and legal professionals. Keeps the practice of law.",
+        /** Counsel: the supervision wording varies by state (spec section 5). */
+        groups: [
+          {
+            id: "decides",
+            label: "Decides",
+            items: [
+              "Legal judgment and advice",
+              "Client acceptance and conflicts",
+              "Fees, billing rates and trust accounts",
+              "Supervision of all legal work and AI output",
+              "Clients, client confidences and privilege",
+              "Firm name, brand and culture",
+            ],
+          },
+          {
+            id: "say",
+            label: "Has a say",
+            items: [
+              "Input on MSO staff, culture and standards",
+              "Which services it uses from the menu",
+              "Service levels reviewed with the MSO",
+            ],
+          },
+          ...(SHOW_NETWORK_VALUE
+            ? [
+                {
+                  id: "shares" as const,
+                  label: "Shares in",
+                  items: ["Share in network value"],
+                  /** Gated: the contact form, until a dedicated request gate exists. */
+                  link: { label: "Request the equity model", href: "/contact?reason=mlo" },
+                },
+              ]
+            : []),
         ],
       },
       mso: {
@@ -234,6 +294,8 @@ export const structure = {
       },
     },
   } satisfies ByAudience<{ client: StructureBlock; mso: StructureBlock }>,
+  /** Under the diagram, law firm view (spec section 5). */
+  footnote: "Availability and structure vary by state.",
 };
 
 /* ------------------------------------------------------------------ */
