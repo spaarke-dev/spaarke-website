@@ -236,7 +236,7 @@ Source: the owner's `spaarke-value-page-change-list.md` (Downloads). Applied to 
 
 Decisions and open points:
 
-- "Availability varies by state" is left out of every disclaimer, although rows 20 and 34 include it: the owner said the same day that no state restriction applies. Confirm.
+- "Availability varies by state" is left out of every disclaimer, although rows 20 and 34 include it: the owner said the same day that no state restriction applies, and confirmed keeping it out.
 - The efficiency gain changes no firm figure on its own, because the firm's saving is the fee discount. It caps the fee discount instead (the MSO cannot price below its own cost: efficiency less the 8% platform cost). Confirm this is the intended link.
 - The five-year view treats the three-year FMV reset as a review that confirms the glide path. It does not model a fee change at the reset. Confirm the reset mechanics against the fee study (row 13, section D).
 - The 170 hours still needs a cited source; the basis given is a planning figure to be measured in the pilot.
