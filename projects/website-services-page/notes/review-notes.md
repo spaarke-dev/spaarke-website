@@ -1,0 +1,366 @@
+# First-draft review notes
+
+Draft built 2026-11-21 on `feature/website-services-page`. Use this file to record decisions from the review (task 050).
+
+## How to view it
+
+Run the dev server in the worktree and open `/services`; add `?audience=corporate` for the corporate view.
+
+## Decisions to make
+
+| # | Topic | Draft choice | Decision |
+|---|---|---|---|
+| 1 | Headline | "Practice law. We'll run the business." | "Practice law. We'll run the operations." for both audiences, hero and closing (2026-11-21) |
+| 2 | Hero image | Labeled placeholder frame | Exclusive stock license, picked before launch. Interim: Unsplash XjJmfN7QJj4 (Vitaly Gariev, Unsplash License) at `public/services/hero-interim.jpg`, tagged "Interim image"; task 052 swaps it out (2026-11-21) |
+| 3 | "Start a conversation" destination | `/meet` | Keep `/meet` (2026-11-21) |
+| 4 | "Request an assessment" and "Discuss your numbers" | `/contact` (no scenario attached) | Assessment: `/contact?reason=mlo`, preselecting a new "Managed Legal Operations" reason on the site's contact form. Numbers: `/meet` (2026-11-21) |
+| 5 | Nav link timing | "Services" added in this branch, between Platform and Why Spaarke | Ship the nav link at first merge (2026-11-21) |
+| 6 | Hub capability label "AI and transformation" | Kept from the design; the voice guide lists "transformation" as a word to avoid | Split into two capabilities: "AI capabilities" (a technology and functional capability) and "Business transformation" (reengineering process and the business model). "Transformation" stays, used in that specific sense (2026-11-21) |
+| 9 | MSO and MLO terms | Mixed: right panel "MSO", caption "MLO takes on", network pairs "MLO" | MSO is the entity (the firm's or department's MSO, and Spaarke as MSO operator); MLO is the service package the MSO delivers. Applied across diagrams, calculator, FAQ and boundary line (2026-11-21) |
+| 10 | Value and capital lines in the firm view ("Lasting value", "long-term value in the operator network", private capital note) | As drafted | Keep as written; counsel rules on them in task 051 (2026-11-21) |
+| 7 | Link to the Spaarke Method services message | Not linked | Linked under the phases in section 7 with a bridging sentence (2026-11-21) |
+| 8 | Network pairs | Six pairs | Six pairs, generic labels, law firms and legal departments in both views with the visitor's type emphasized; "network grows" scroll interaction built (2026-11-21) |
+
+## Review round 2: section by section (2026-11-21)
+
+Owner feedback items 1 to 15, applied on the same branch.
+
+| # | Feedback | Applied |
+|---|---|---|
+| 1 | Remove the section nav bar and its CTA | Page bar removed (`PageBar.tsx` deleted, `anchors` dropped); sections keep a 96 px scroll margin under the site header |
+| 2 | Move the audience switch below the hero text | Switch sits under the subhead |
+| 3 | "Start a conversation" as a text link to `/meet` | Text link with arrow; "See how it works" now points to `#what-is-mlo` |
+| 4 | Hero background video, placed like the Platform hero, with the dark glowing fade | Video behind the right 68% of the hero, a left wash into the dark page, top and bottom fades and the site's blue glow; phones dim it evenly. The clip is an unlicensed Stocksy comp (5947226): it is copied to `public/services/hero-comp.mp4` in the local worktree only, gitignored and never committed. Deployed builds have no clip, so they show the interim photo. Under reduced motion the video stays paused |
+| 5 | Match title and subhead type to home and Platform | Title now uses the Platform hero spec (clamp 56 to 112 px, weight 600, -0.025em); the subhead uses the home hero's Lede (clamp 18 to 25 px), since it is a full sentence rather than Platform's one-line tagline |
+| 6 to 9 | Why now: move up to section 2, white band, eyebrow spelled out, centered head, 2 x 3 stats | Done; read as two columns by three rows. Stat tiles gained a light-band palette |
+| 10 | Give the profit-pool line and the bridge line their own highlighted section | New black band with a centered blue glow, the profit-pool statement large, its source, then the bridge line in light blue |
+| 11 to 13 | Merge What is MLO with How it works; new title; vertical diagram | One section: "The operating model built for how legal works". Definition, MSO note and the how-it-works intro on the left; the allocation diagram on the right, client on top and the MSO below, spelled out. The boundary line stays in the section |
+| 14 | Remove the "Every structure is tailored" subsection | Removed from the page; content kept (task 060) |
+| 15 | Hide "What firms gain / What legal departments gain" | Hidden behind a flag, with the "Why Spaarke" list beside it; content kept (task 060) |
+| FAQ | Remove or hide | Hidden behind a flag; content kept (task 060) |
+| Order | Financial before network | Hero, why now, highlight, what is MLO, financial, network, approach, closing. Approach moved to a white band so two dark bands do not sit together |
+
+Open from round 2:
+
+- Superseded in round 3: MSO was first spelled out as "Managed Services Organization". The owner corrected it to "Management Services Organization" (see round 3, item 1).
+- The video needs a license (or a different clip) before launch; task 052 covers it.
+
+## Review round 3: section by section (2026-11-21)
+
+Owner feedback items 1 to 12, applied on the same branch.
+
+| # | Feedback | Applied |
+|---|---|---|
+| 1 | MSO stands for "Management Services Organization"; MLO is Managed Legal Operations | Corrected in the diagram, the definitions band, the FAQ answer and the content comments. Decision: MSO is spelled out as "Management Services Organization" everywhere |
+| 2 | Hero video: Stocksy 5947230 | Copied locally to `public/services/hero-comp-1.mp4` (gitignored) |
+| 3 | Random hero video on each load; second clip 5947223 | `hero.media.videos` holds both clips (the second is `hero-comp-2.mp4`); one is picked after mount, so server and client markup match. The gitignore now covers `hero-comp*` |
+| 4 | Law firm intro for why now | Owner copy used as written |
+| 5 | Legal department intro for why now | Owner copy used as written |
+| 6 | Four stats in a 2 x 2 grid, more graphical, text left and chart right | Law firm: AI use (ten figures, seven filled), fee pressure (donut), insourcing (columns), AI-native capital (columns). Legal department: deployment (donut), redesign (columns), insourcing with a department headline, AI use with a department headline ("Seven in ten of your outside counsel now use AI every week"). The other two stats per audience are hidden; content kept |
+| 7 | Replace the profit-pool band with a light-blue band defining MSO and MLO, per the mockup | Two term cards with the large acronym tile, the term and its definition. The MSO text is the owner's. The legal department version drops the ownership clause, since corporate arrangements have no ownership element. The MLO text is new, because the mockup repeated the MSO text: "The managed service an MSO delivers to a law firm: the technology, AI, operations, finance and administration that run the business side of legal, so lawyers can concentrate on the practice of law." Counsel reviews both. The profit-pool statement and bridge line are kept in content (task 060) |
+| 8 | What is MLO: dark band; equal-size law firm and MSO blocks; no animation; functions not shown as tags; bigger services agreement; drop the hover definitions | Dark band with the site glow. The diagram runs full width under the heading, intro and boundary line. Both panels have the same height (equal grid rows). Each function is shown with an icon, its name and its one-line explanation, all visible. The build animation, Replay and hover line are removed. The services agreement is a labeled block on the spine, with "Services to the law firm" (up) and "Cost-based fee to the MSO" (down). The definition and MSO note paragraphs moved to the new definitions band |
+| 9 | Remove "Legal is a business with unusual requirements" | Removed from the page; content kept (task 060) |
+| 10 | Financial: law firm on the left, MSO on the right, costs shift across | The Sankey is replaced by a shift chart. Each cost line is a row; client bars grow left from the middle, MSO bars grow right. Ticking a function in the chart moves its bar across: the dashed outline is today's cost and the solid bar is the MSO fee, so the gap is the saving. Profit (firm) or savings (department) is in the bottom row |
+| 11 | Bars should change size as the parameters change | All bars share one scale, so they resize with the price advantage, fee pressure, routine work shifted and the functions moved. The revenue or budget slider scales every line together, so it changes the dollar figures and the bars keep their proportions |
+| 12 | Parameters on a top row, full-width chart | Sliders sit in a row across the top (three for firms, four for departments), then the chart runs full width, then the KPI cards. The function chips are gone; the tick boxes in the chart replace them |
+
+Removed as a result: `Sankey.tsx`, `sankeyData.ts`, and the `d3-sankey` and `@types/d3-sankey` dependencies. The model tests now check that the chart rows add up to the model's fee, totals, profit and savings.
+
+Open from round 3:
+
+- Counsel: the MSO definition's "enable non-lawyer ownership" clause, and the new MLO and legal department definitions.
+- Owner: the stat headlines rewritten in the legal department's voice (AI use and insourcing).
+
+## Review round 4 (2026-11-21)
+
+Owner feedback items 1 to 4, applied on the same branch.
+
+| # | Feedback | Applied |
+|---|---|---|
+| 1 | The operating-model diagram: the fifth "keeps" item sat alone on its own line; add a sixth and lay them out 3 x 2. Firm sixth: "Firm name and brand"; suggest a corporate sixth | Firm: "Firm name and brand" ("The firm’s name, reputation and standing with clients stay its own."). Legal department: "Business partnership" ("The department stays the trusted legal advisor to the company’s leaders and business units."). Panels with six items sit three across |
+| 2 | Corporate MSO panel 3 x 2 | Done by the same rule (six items, three across). The law firm MSO panel has eight items and stays four across |
+| 3 | Corporate stat: "experimenting" becomes "POC" | "Legal departments have moved from POC to deploying AI" |
+| 4 | The calculator chart was hard to follow; use stacked bars that show costs moving to the MSO and the total improving through its efficiencies | The shift chart is replaced by three stacked bars on one scale: 01 Today (every cost inside the firm or department), 02 Move functions to the MSO (the chosen functions turn blue at today’s cost, so the total is unchanged), 03 The MSO runs them at scale (the blue part shrinks by the price advantage and a dashed green segment shows the saving). Each bar shows its total and a split line. The function tick boxes sit above the bars, and a result line under them shows profit (firm) or total cost of legal (department), today against with the MSO |
+
+Decided in round 4: the owner kept "Business partnership" as the legal department sixth item (2026-11-21).
+
+## Review round 5 (2026-11-21)
+
+Owner feedback items 1 to 3 (item 4 arrived empty).
+
+| # | Feedback | Applied |
+|---|---|---|
+| 1 | Calculator: vertical bars, so the category labels can sit on the left | The three stages are now stacked columns on one scale: lines that stay at the bottom, lines that move above them, the saving as a dashed band on top of the third column. Each cost line is named on the left, level with its band in the first column, with its cost and "moves" if it moves; names are nudged apart so none overlap. Totals sit above the columns and each stage is described below its column. Phones drop the left names and list the lines under the chart |
+| 2 | Headline: "Designed in weeks. Value delivered over years." | Changed; each sentence sits on its own line |
+| 3 | Phase detail was hard to read; remove show and hide, open one phase at a time, highlighted in light blue | Each phase is a tab. The selected phase is highlighted light blue and its detail opens in a light-blue panel below, with numbered steps in larger type and the outcome beside them; the others are hidden. Arrow keys move between phases. On phones the panel opens under the selected phase |
+
+## New firm calculator: the MSO value estimate (2026-11-22)
+
+The owner supplied a new calculator (`notes/calculator-sample/`, with `HANDOFF.md`) and asked for "See the details" to be a separate page that opens as a modal, carrying the calculator too so it works on its own, and opening at "How the estimate works" when reached from the link. Built as task 070.
+
+| Topic | Applied |
+|---|---|
+| Law firm view | The financial section shows the MSO value estimate: the headline "Run leaner, compete on technology, and build equity", the lede, firm-size presets (mid-size by default), three sliders, three objective cards, a summary line and the disclaimer. The model is ported unchanged and matches the handoff's golden values. The old firm cost calculator, the network-value line and the private capital note no longer show in the firm view (content kept) |
+| Legal department view | Superseded the same day by the department estimate (task 071, below) |
+| Details | `/services/estimate`, a page of its own with the calculator and "How the estimate works" (profit-per-partner waterfall, today against with the MSO, how it works, the structure, the assumptions). The inputs travel in the query string. From /services it opens as a modal over the page, scrolled to "How the estimate works"; reloading shows the full page. Esc, the close button and the backdrop close it. The modal and the section share the inputs, so a change in one shows in the other |
+| Copy | As in the handoff, in US spelling ("license") |
+
+**Needs counsel before launch (task 051):** the estimate shows equity figures (an equity stake value, the firm's 75% share of MSO profit, a 10x platform roll-up value, Spaarke's 25% stake). The design's guardrail (design.md section 9) says no equity numbers anywhere. The owner chose this calculator, so it is built as specified, and the page stays noindex. It also names the audience as US IP boutiques.
+
+## Legal department estimate (2026-11-22)
+
+The owner asked for the legal department equivalent of the MSO value estimate. Built as task 071.
+
+| Topic | Applied |
+|---|---|
+| Legal department view | The financial section now shows the department estimate in place of the round 5 cost calculator: "Run leaner, work like a much larger team, and lock in the savings", department-size presets, three sliders (in-house lawyers, legal operations and support staff, annual legal budget), three cards (lower cost of legal, technology edge, lasting value), a summary line and a disclaimer |
+| Model | New, with the same MSO levers as the law firm model. Savings come from the lower MSO fee, routine outside counsel work brought in-house with freed lawyer time, and routine work the MSO handles at half its outside cost. Mid-size: $25.0M to $23.5M, $1.47M a year (6%). Assumptions in task 071; finance to set them |
+| No equity | The department owns no part of the MSO and gets no profit share. The third card is the three-year saving, Spaarke-funded deployment, the fixed fee and $0 capital. A guardrail test enforces it |
+| Details | The same page and modal as the law firm estimate, with `?audience=corporate`: a savings bridge stepping down from today to with the MSO, the comparison table, how it works, the structure and the assumptions |
+
+## Structure visual and operator network (2026-11-22)
+
+The owner supplied two design handoffs: the MSO structure visual (`notes/mso-structure-visual/`) and the operator network section (`notes/mso-operator-network/`), the second to be converted to a dark background. Built as task 072.
+
+| Topic | Applied |
+|---|---|
+| What is Managed Legal Operations | The structure visual replaces the allocation diagram: five tabs (the full picture, who owns what, who directs the work, how money moves, where value builds), a wide diagram above md and a tall one on phones, a legend and three caption cards per view. The title and lede are the handoff's ("Your firm keeps the practice. Spaarke runs the operations."); the eyebrow and the boundary line stay |
+| Operator network | The handoff's hub replaces NetworkDiagram and the four blocks, on the dark band: three step tabs (1, 3, 8 members), a ring of six capabilities linked to six cards, a flywheel line and two panels. Pulses run along the spokes at full size |
+| Legal department view | Both handoffs are law firm only, so the department copy is a draft: the company keeps the legal function, Spaarke owns the MSO, a fixed fee, and "upgrades and network learning" as the value flow. No equity in either section; the network's second panel is "Working with your outside firms" |
+| Matched to the site | Site fonts (Inter Tight titles, Inter body, JetBrains Mono eyebrows), dark band tokens for surfaces, lines and text, the site blue for the MSO accent in place of the handoff's indigo, rounded-2xl cards, left-aligned section heads, and pill tabs styled like the Phases tabs and the audience switch. Every MSO pill is blue (the handoff's gray for department MSOs read as second-class) |
+| Kept from the handoffs | The five edge colors (ownership violet, money amber, services slate, direction pink, value teal), because each is a meaning in the legend, and teal for "you" and value |
+| Retired | `AllocationDiagram.tsx` and `NetworkDiagram.tsx` are no longer on the page; their content stays in `content.ts` until the owner signs off (task 060) |
+
+Open, for the owner and counsel:
+
+- Fee basis: **decided 2026-11-22, fair market value.** The boundary line, the money captions, the department estimate lede and details, the disclaimer, the Design phase steps and the (hidden) FAQ now say the fee is fixed and set at fair market value by an independent study, never tied to legal fees. "Below today's cost" stays as the outcome the study is expected to show. spec.md is updated to match.
+- Equity copy in the law firm view ("receives equity in Spaarke", the illustrative pie) goes beyond design.md section 9, as the firm estimate does. Counsel to confirm.
+- The department copy in both sections is new and needs the owner's read.
+
+## Owner review of the structure and network (2026-11-22)
+
+| Item | Applied |
+|---|---|
+| Structure diagram doing too much | Cut to the two blocks: your law firm (or legal department) and its MSO, with "Fixed fee" flowing to the MSO and "Captive services" flowing back. Removed the Spaarke operator, the other members, the equity flow, the "what the firm owns" outline, clients and partners, the direction arrow, the five view tabs, the legend and the caption cards. Other points to be reintroduced later |
+| Network: numbers and descriptions | Removed the numbers (step tabs, ring and cards) and the card descriptions; the cards are capability titles only. On phones the ring is unlabeled, because the labels would be too small and the cards name each capability |
+| Network: the two panels | Removed "What your firm can offer" and "What your firm owns" (and the department's "Working with your outside firms"). The network section now shows no equity pie |
+| Hydration warning | `suppressHydrationWarning` on `<body>` in the root layout, so browser extensions that add body attributes (ColorZilla's `cz-shortcut-listen`) no longer raise the dev overlay |
+
+Equity wording removed from both sections at the owner's request (2026-11-22): the "What is MLO" lede now ends "The firm puts in no cash and lowers its operating cost.", the network intro ends "each firm gets more from its MSO and can offer more to its clients", and the "more members" line ends "More to offer every client". The financial section (the MSO value estimate) still shows equity, as before.
+
+## Owner review of the hero, stats, network and estimate (2026-11-22)
+
+| Item | Applied |
+|---|---|
+| Hero subhead | Owner copy for both audiences. Law firm: "Spaarke provides the technology, team and back-office operations, at a fixed, per-unit price. Your clients, your legal judgment and your ownership stay yours." Legal department: "Spaarke gives your legal team the technology, process and capacity to meet the demands of stakeholders and deliver results the business can see and measure." |
+| Fee pressure stat | Eyebrow "Pressure on effort-based fees"; caption "of legal departments expect AI-related rate cuts from their firms." |
+| Insourcing stat (both views) | Caption "63% of legal departments expect to keep level or reduce outside counsel spend." The columns now show the same measure, 42% last year and 63% this year (the survey's 58% and 37% expecting an increase, inverted), so chart and caption agree |
+| AI-native capital stat | Caption "Legal tech venture funding quadrupled, from $1B in 2023 to more than $4B in 2025." (two lines at desktop width) |
+| Technology stat (department view) | Eyebrow "Technology cost and complexity"; caption cut to 98 characters |
+| All stat tiles | Text and chart sit at the top of the card; the source is a footer across the card's full width, one line on tablet and desktop. Applied to every tile so the grid reads as one system. Shortened two source names to fit ("Above the Law"; Deloitte's survey note moved to the link's tooltip) |
+| Network | Capability cards and the "See the platform" link removed. The ring keeps its labels above md; phones get a one-line list of the six capabilities under the diagram, and screen readers get the same list |
+| Estimate details chart | The profit-per-partner bridge now adds the firm's MSO equity per partner (hatched violet, as in the earlier five-year chart) and a final "Profit and equity" bar, with brackets over the annual profit steps and the equity step and a two-item legend. Annual profit and a one-time stake share one axis, so the bar labels and caption say which is which. Counsel to confirm with the other equity copy |
+
+## Owner review of "What is Managed Legal Operations" (2026-11-22, second pass)
+
+| Item | Applied |
+|---|---|
+| Body (law firm) | Owner copy: non-legal operations move into a dedicated management services organization (MSO); Spaarke funds the transition, so the firm makes no upfront investment; pricing is designed to cost less per unit than doing the same work in-house. The department body follows the same wording |
+| Callout (both views) | "The MSO does not practice law, share in legal fees or direct legal judgment. Its fee is fixed or per-unit, benchmarked to fair market value, and never tied to legal fees. Attorneys review all AI output." No "independent study" until one exists |
+| Diagram copy | MSO subhead "Your operations, run to your standards" (both views). Law firm items: "Partners and associates" and "Paralegals and other legal professionals" replace "Lawyers and legal professionals". MSO item "Administrative support and other non-legal staff" replaces "Paralegals, assistants and docketing". Arrows: "Fixed or per-unit fee" and "Operations and technology" |
+| Spaarke MSO Operator | New green box under the MSO in both views: technology and AI platform, shared services, business process transformation. No arrow. The client block now runs the full height of the MSO and operator together. Block heights follow their items, and long items wrap to a second line |
+
+Still saying "independent study" or "fair-market-value study" elsewhere, not changed in this pass: the (hidden) FAQ answer, the estimate disclaimers and assumptions, and the Design phase step "Set the fee with an independent fair-market-value study" (a future step, so it may stand).
+
+## Change list, Financial opportunity rows 24 to 35 (2026-11-22)
+
+Source: the owner's `spaarke-website-change-list.md` (Downloads). Applied to the law firm estimate on /services and /services/estimate.
+
+| Row | Applied |
+|---|---|
+| 24 Subhead | "Your firm moves its back office and technology into a dedicated MSO that Spaarke owns and runs. Spaarke funds the transition, and the firm stays fully lawyer-owned." |
+| 25 Inputs | "Other lawyers and professionals" |
+| 26 Presets | Small firm, Mid-size firm, Large firm |
+| 27, 28 Card 1 | "Lower operating cost": leads with dollars saved a year, then the % lower back-office cost and the fee basis. Margin and profit per partner are out. Formulas are the current model's until the rebuilt calculator arrives |
+| 29 to 31 Card 2 | Hours freed shows its assumption (170 hours per lawyer); the revenue line is out; "Technology upgrades included at no extra charge" |
+| 32 Card 3 | "Share in the network's growth", "Member equity in Spaarke, earned through use", the three bullets, and "Request the equity model", which goes to the contact form (`/contact?reason=mlo`) until a dedicated gate exists. No dollar amounts, profit share or multiples |
+| 33 Summary | "About $X a year in lower operating cost, plus a technology and capacity advantage." X is the fee saving from the current model. No equity figure |
+| 34 Disclaimer | Larger (14 px, mid gray) under the summary, in both views. The row's "fair-market-value study that sets the MSO fee" became "the MSO fee, benchmarked to fair market value", per the owner's no-study rule. Counsel to approve |
+| 35 Department calculator | Not started; copy to follow |
+
+Open:
+
+- "How the estimate works" (behind "See the details") still shows profit per partner, margin, the firm's 75% stake in its MSO and equity dollar figures, including the equity bar added earlier the same day. That conflicts with rows 28, 32 and 33 and with the structure section (Spaarke owns the MSO). Owner decision 2026-11-22: leave it as is until the rebuilt calculator's formulas arrive.
+- Card 1's fee saving and card 2's Spaarke-funded deployment are both 10% of the MSO scope, so they show the same figure ($257k for the mid-size firm).
+
+## Structure diagram spec (2026-11-22)
+
+Source: the owner's `spaarke-structure-diagram-spec.md` (Downloads). Applied to the "What is Managed Legal Operations" diagram.
+
+- Law firm box: subtitle "Your lawyers and legal professionals. Keeps the practice of law."; items grouped under DECIDES (six items, brighter label with a lock), HAS A SAY (three) and SHARES IN ("Share in network value", with "Request the equity model", which goes to `/contact?reason=mlo` until a dedicated gate exists). The box matches the MSO plus the operator in height, and the spare height goes evenly between the groups.
+- Operator subtitle: "Owns and runs your MSO".
+- New connectors: "Owns and runs" (operator up to the MSO, both views); "Input on staff, culture and standards" (firm to MSO, under the fee, law firm view); "Share in network value" (dashed green, operator to the firm's SHARES IN group, law firm view). On phones the dashed arrow runs up a channel on the left.
+- Owner follow-up the same day: connector labels on two lines and spread evenly down the MSO; the network value arrow centered on the operator; icons for the three groups (gavel, megaphone, trend) in place of the lock; the "vary by state" footnote removed, as no state restriction applies.
+- The department view keeps its plain lists and gets only the operator subtitle and the "Owns and runs" connector.
+
+This settles three of the change-list conflicts: row 17 stays "run to your standards" (the spec lists it as unchanged), row 18 stays "Administrative support and other non-legal staff", and row 22 is the green operator box with an "Owns and runs" connector rather than a thin band. Row 19 ("Client confidences and privilege") is in, as "Clients, client confidences and privilege".
+
+Before launch (counsel):
+
+- The SHARES IN group and the "Share in network value" arrow (securities). Both sit behind `SHOW_NETWORK_VALUE` in `content.ts`; set it to `false` to drop them without other edits.
+- The supervision and paralegal wording in the firm box (varies by state).
+
+## Value page change list (2026-11-22)
+
+Source: the owner's `spaarke-value-page-change-list.md` (Downloads). Applied to the law firm estimate, on /services/estimate, in the details modal and in the calculator on /services. Model basis: the firm's MSO is a wholly owned Spaarke subsidiary, with no MSO profit share; firm equity sits in Spaarke and is shown only in words.
+
+| Rows | Applied |
+|---|---|
+| 1, 2, 12 | "Where the savings come from": the annual saving for the whole firm, from $0. The lower fee and a "Base case" total, then new matters and new client services hatched under "Upside (assumption)", then "With the upside". No profit share or equity bars |
+| 3 | Table: the MSO profit and equity rows are gone; partner profit, margin and profit per partner follow the remaining rows (mid-size firm: +$257k base, +$707k with the upside, as the change list derives) |
+| 4, 5 | How it works: step 3 is "Share in the network's growth" with no figures; step 1 says "fixed or per-unit fee, benchmarked to fair market value, about 10% below today's cost" |
+| 6 | The estimate page shows the approved three-box diagram, in a light version |
+| 7, 8 | Deployment "funded by Spaarke"; the MSO value item is deleted |
+| 9, 10 | Card 1 drops the 22% (the MSO's own cost reduction) and adds the five-year saving; card 2 says "Funded by Spaarke: AI platform and migration", with no dollar figure |
+| 11 | "Capacity upside" switch, off by default, labeled as an assumption. It drives card 2, the summary, the table and the URL (`upside=1`) |
+| 13 | "The fee over five years": the fee falls by the glide path each year (3% default, 3% to 5%), with an FMV review marker after year three. "Fixed fee" is now "fixed or per-unit fee" on the department estimate too |
+| 14 | Every assumption was tagged "To validate in pilot" (removed in round 2). Basis added for the 30% efficiency gain (the BCG and McKinsey figures already cited on /services) and for the 170 hours (a planning figure) |
+| 15 | "Edit the assumptions": fee discount, MSO efficiency gain, freed time used for new matters, and the fee reduction each year. Changed values go into the URL |
+| 16 | Page order: hero, calculator, structure, How the estimate works (savings, fee over five years, today vs with the MSO, how it works, assumptions), closing call to action |
+| 17 | Every figure comes from the model; the copy holds none |
+| 18 | One light theme: the estimate page hero is light. Small gray text on the estimate surfaces is darker (72% black) |
+| 19 | Closing card: "Get an estimate for your firm" to `/contact?reason=mlo` (the "Request the equity model" link was removed in round 2) |
+| 20 | The short disclaimer sits under the savings chart, the fee chart and the table, and the full one under the calculator |
+| 21, 22 | "Lawyer or other legal professional", "representative US law firms"; "can sell", "own the profit" and "roll-up" are gone |
+| 23 | Not started; copy to follow |
+
+Decisions and open points:
+
+- "Availability varies by state" is left out of every disclaimer, although rows 20 and 34 include it: the owner said the same day that no state restriction applies, and confirmed keeping it out.
+- The efficiency gain changes no firm figure on its own, because the firm's saving is the fee discount. It caps the fee discount instead (the MSO cannot price below its own cost: efficiency less the 8% platform cost). Confirm this is the intended link.
+- The five-year view treats the three-year FMV reset as a review that confirms the glide path. It does not model a fee change at the reset. Confirm the reset mechanics against the fee study (row 13, section D).
+- The 170 hours still needs a cited source; the basis given is a planning figure to be measured in the pilot.
+- Securities counsel: rows 1 to 8, 19 and 20.
+
+## Value page round 2 (2026-11-22)
+
+Source: the owner's `spaarke-value-page-round2-change-list.md` (Downloads). It supersedes the "Request the equity model" link (value page row 19 and the diagram spec's SHARES IN link), which is now gone everywhere: card 3, the diagram and the closing card.
+
+| Row | Applied |
+|---|---|
+| 1 to 3 | Card 3: no link; third bullet "Its value can grow as the network grows"; the formula line "Value = vested awards × (Spaarke's value per share at exit − award price)" at the card's foot |
+| 4 | SHARES IN keeps "Share in network value". On the estimate page it links to the new card (mouse only, as the diagram is hidden from assistive tech; the step 3 link is the keyboard route). On /services it is plain text, as the card is not on that page |
+| 5, 6 | How it works: "Three changes, no upfront investment."; step 3 keeps its text and adds "How equity value is calculated", which scrolls to the card (also inside the modal) |
+| 7, 8 | New card "How member equity value is calculated" (was "partner"; see the terminology decision below), after "How it works" and before "Our assumptions": the formula, the two drivers, the footer and the linked Attorney at Work source. No dollar figure, example stake or multiple above 10x |
+| 9 | The "To validate in pilot" tags are gone; each assumption keeps its text and basis, and the disclaimers stay |
+
+Before launch: securities counsel on the card, rows 3, 4 and 6; re-verify the 4x to 10x EBITDA range and the link against the Attorney at Work article.
+
+## Process section change list (2026-11-22)
+
+Source: the owner's `spaarke-process-section-change-list.md` (Downloads), for "Designed in weeks. Value delivered over years.", plus "make it a little more interesting with some of our dark or elevation".
+
+| Row | Applied |
+|---|---|
+| 1 | Eyebrow spells out Managed Legal Operations |
+| 2 | Each phase card carries a duration chip: Weeks, Months, Ongoing |
+| 3, 4 | Design: "Ethics and regulatory review with your counsel"; new step "Agree the deployment plan and what Spaarke funds" |
+| 5 | Design outcome: "An agreed design, ready to sign: services, service levels, fee method and governance." |
+| 6, 7 | Implement: four steps (set up, staff transition plan, migrate data and legacy systems, run side by side); outcome "with a cutover planned to avoid any break in client service". The legal department outcome uses the same "planned to avoid" wording, per the flag on row 7 |
+| 8, 9 | Operate adds "Fee re-benchmarked to fair market value every three years" and "Technology upgrades included"; outcome "A lower unit cost and technology that keeps pace, year after year." |
+| 10 | Applied, law firm view only and behind `SHOW_NETWORK_VALUE`: "Member equity awards accrue and vest as you use services". Counsel to review before publishing |
+| 11 | The Spaarke Method sentence ends "Your attorneys review all AI output." (both audiences) |
+| 12 | `ctas.assessment` is now "Request a confidential assessment", so the closing section's text link changes too |
+| 13 | Legal department steps unchanged, copy to follow |
+| 14 | Darker eyebrow (0.72), phase summaries and the Method line (0.78) |
+
+Visual: the band is a cool tint between the dark network band and the black closing (a dark band here would put three dark sections in a row). The phases are raised white cards; the selected one lifts, gets a blue border and top rule. Its steps and outcome open in a dark panel with the site's blue glow and a pointer under the selected card (desktop). Kept: headline, three-stage layout, outcome box.
+
+Open: "Designed in weeks" holds for later members; the first firm's foundations are about three months (owner's flag). "Member" still appears in the network section (title, "Next member", MEMBER labels), the estimate's "Member equity" step and the MSO structure text; the change list says "partner" on the public site. Owner decision 2026-11-22: standardize on "member" for firms and departments in the network, overriding the change list's "partner, never member". "Partner" now means only the firm's own (equity) partners, plus vendor and business partners. Changed: the network eyebrow ("MLO member network"), the equity card title and formula ("Member equity value") and the Operate equity step.
+
+## Spaarke Method modal and the closing disclaimers (2026-11-22)
+
+- "Read the Spaarke Method" under the phases opens the article in a modal over /services. It's an intercepting route, `src/app/services/@modal/(..)why-spaarke/the-spaarke-method`, built like the estimate modal (`ArticleModal`). Esc, the close button or the backdrop return to /services, and "Open as a page" reloads the full article. A reload or a direct link still shows the normal article page. The header's "Back to Why Spaarke" link is hidden in the modal (`ArticleHeader backLink={false}`). Other article links on the site still navigate.
+- The "Important information" block under the closing is removed at the owner's request (`SHOW_DISCLAIMERS = false` in sections.tsx). The text stays in `disclaimers` in content.ts. The estimate keeps its own disclaimer. Before launch, counsel to confirm where the general, securities and practice-of-law statements should live (for example the footer or the terms page).
+
+## Terms, process button, and the legal department view (2026-11-22)
+
+1. **Terms page.** The /services disclaimers are now section 18 of /terms, "Managed Legal Operations information" (`#managed-legal-operations`), worded for that page; Contact becomes 19 and "Last updated" is 2026-11-22. The `disclaimers` array in content.ts stays as the source and is still hidden on /services. Counsel to review the section, as the terms page is otherwise about the platform subscription.
+2. **Process section.** The "Request a confidential assessment" button is gone from the process section. The closing section keeps its "Request a confidential assessment" text link next to "Start a conversation".
+3. **What is MLO, legal department.** The department box now matches the law firm box: DECIDES (strategy and advice, outside counsel choices and spend, supervision of legal work and AI output, company data and privilege, priorities, budget and sign-off) and HAS A SAY (same three items as the firm), with icons, and the "Input on staff, culture and standards" connector. No SHARES IN group and no network value arrow, as a department has no ownership element.
+4. **Financial opportunity, legal department.** Reworked to the law firm pattern:
+   - The model's base case is the lower fee alone ($258k a year for the mid-size preset). Work brought in-house with freed time and routine matters sent to the MSO are the capacity upside, off by default ($1.21M a year more for the mid-size preset, $1.47M in all).
+   - The same four editable assumptions and ranges as the law firm estimate (the efficiency gain caps the fee discount), and the same five-year fee view. Both go into the URL.
+   - Cards: lower cost of legal (fee saving, % below cost, five-year saving); technology edge (hours freed, funded by Spaarke, kept current, upside when on); lasting value (no capital, a predictable fee, fair market value re-benchmarking). No deployment figure and no equity.
+   - Details: the structure diagram (light), a bridge from $0 (base case, then the hatched upside), the fee over five years, today vs with the MSO (base or upside), how it works, and the assumptions with the same basis text as the firm. Then a closing card, "Get an estimate for your department". The old three-box structure card is gone.
+   - The department horizon is now five years (was three), to match the fee view.
+
+## Licensed hero videos (2026-11-22)
+
+The owner licensed five Stocksy clips: 3047935, 4621290, 5947223, 5947230 and 7533577. All are 1280x720, 20 to 27 seconds, with no audio. The originals sit in `projects/website-services-page/hero-images` in the main checkout (about 107 MB).
+
+- **Encoded with ffmpeg** (from the `imageio-ffmpeg` pip package) into `public/services/`:
+  - `hero-N.mp4`: 1280x720, H.264, CRF 25 (28 for the two grainier clips 1 and 2), no audio, fast start. 2.0 to 3.6 MB each.
+  - `hero-N-sm.mp4`: 640x360 for phones, 0.4 to 1.2 MB. Picked with `<source media="(max-width: 767px)">`.
+  - `hero-N.jpg`: the first frame, used as the poster.
+- **In the hero:** one clip is picked at random on each load, with a crop set per clip so faces clear the headline (clip 2 at 10%, clip 3 at 35%). The "unlicensed comp" label is gone. The interim label shows only on the fallback photo, which still appears when the clips are missing.
+- **Hosted in Azure blob storage** (owner, 2026-11-22). The files are in the existing public-read container `videos` in storage account `stspaarkewebsite` (resource group `rg-spaarke-website`), under `services/hero/v1/`, at `https://stspaarkewebsite.blob.core.windows.net/videos/services/hero/v1/hero-N.mp4`. They carry `Cache-Control: public, max-age=31536000, immutable`, so to change a clip, upload to a new folder (`v2`) and update `HERO_MEDIA` in content.ts. Range requests work (Safari needs them). Blob access uses the account key; the signed-in user has no blob data role. The files are never committed (`/public/services/hero-[0-9]*` stays in .gitignore), and neither are the originals in the main checkout's `hero-images` folder. If the files can't load, the hero shows the fallback photo.
+- The 720p sources are a little soft on Retina and large monitors, where the clip is enlarged 1.4x to 2.3x. The right side of the hero shows the video at near full brightness.
+
+## Process section, legal department copy (2026-11-22, draft)
+
+Drafted at the owner's request from change list row 13 ("goals, baseline of cost and response times, services, stakeholder service levels; no fee study or ethics review") and the law firm revisions. For owner review.
+
+| Phase | Steps | Outcome |
+|---|---|---|
+| Design | Goals and a baseline of cost and response times; Choose the services the MSO will deliver; Agree service levels with your stakeholders in the business; Privilege, data security and procurement review; Agree the deployment plan and what Spaarke funds | An agreed design, ready to sign: services, service levels, fee method and governance. |
+| Implement | Set up the MSO and connect it to company systems; Agree the staff transition plan with you; Migrate data and legacy systems; Run old and new side by side before cutover | Unchanged: a cutover planned to avoid any break in service to the business. |
+| Operate | Service levels and regular reporting to the general counsel; Continuous improvement from the operator's center of excellence; Annual governance review; Fee re-benchmarked to fair market value every three years; Technology upgrades included | A lower unit cost, faster responses to the business and technology that keeps pace, year after year. |
+
+No equity step for departments. "Faster responses" rests on the response-time baseline set in Design.
+
+## Diagram title (2026-11-22)
+
+The structure diagram on /services is headed "Management Services Organization Structure" (owner), centered over the diagram, in both audience views (`structure.diagramTitle`, the `title` prop of StructureDiagram). The estimate page keeps its own "The structure" heading above the card, without the in-card title.
+
+## Next version: hero video with the Spaarke screen (deferred 2026-11-22)
+
+Not part of the current services update. The owner wants to pick this up after that update deploys.
+
+**The idea.** Stocksy clip 5864216 (Oleksii Syrotkin) shows a man over the shoulder at a monitor. We replace the trading screen on the monitor with the Spaarke Legal Operations Workspace and use the result as a hero video.
+
+**What exists**
+- A review comp made from the unlicensed, watermarked comp: 9.3 s, 1280x720, 25 fps.
+  - It is kept outside the repository, in the session notes folder and in a local gitignored copy (`public/services/hero-comp-5864216.mp4`). Neither may be committed or published.
+- `projects/website-services-page/tools/screen-composite.py` builds the comp:
+  - It tracks the camera drift (about 19 px left and 44 px up over the clip) with OpenCV ECC.
+  - It places `public/images/hero/workspace-dark-mode.png` on the display in light perspective, padded at the top and left so the logo and nav stay in frame.
+  - It mattes the man back in front of the screen and keeps a faint reflection of him on the glass.
+  - It encodes with the bundled ffmpeg.
+
+**To do in the next version**
+1. **License.** The owner licenses the clean clip, ideally at 1080p; at 720p the small UI text on screen is soft.
+2. **Re-run.** Run the script on the clean file. If the resolution changes, check the geometry constants; they were measured at 1280x720 and the script scales them.
+3. **Fix the known flaws:**
+   - A faint gray streak from the original trading UI's red and green bars shows in the reflection, near the middle of the screen.
+   - The left edge restore for the Stocksy credit can be removed; the licensed file has no credit.
+4. **Choose the screenshot.** The dark workspace is used now. A screenshot made for the purpose, with no personal names and with larger text, would read better.
+5. **Publish.** Encode `hero-N.mp4`, `-sm.mp4` and `.jpg` as for the other hero clips, upload them to the `videos` blob container, and add an entry to `hero.videos` in content.ts with its own `focus`.
+
+## Known gaps in the draft
+
+- Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
+- Fixed 2026-11-21: the economics section heading now leads the section, like the others.
+- Superseded in round 3: the Sankey was replaced by the shift chart, whose bars animate as inputs change. Superseded in round 4 by the stacked bars.
+- The stat tiles use a donut, ten figures or two columns (round 3); the "illustrative line" chart form in design.md 4.3 is not built.
+- No analytics events on the switch, calculator or CTAs yet.
+- Copy for sections 4 to 8 and the FAQ answers are first drafts for counsel review.
+- The page is `noindex` and not in the sitemap.
+
+## Checked in the draft
+
+- Both audiences render all eight sections; `?audience=corporate` renders the corporate view on first paint.
+- The switch updates the URL and remembers the choice.
+- Corporate calculator defaults show savings of $1.50M on $25.75M, matching the prototype.
+- No horizontal scroll at 375 px; the network diagram switches to a stacked version on phones.
+- `npm run test:services`: 18 of 18 pass, including the GUARDRAIL tests.

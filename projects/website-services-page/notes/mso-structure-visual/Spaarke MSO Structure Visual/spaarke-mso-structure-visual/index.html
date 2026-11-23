@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the Spaarke MSO structure works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="structure.css">
+</head>
+<body>
+<section class="mso-structure" id="mso-structure" data-view="all">
+  <div class="ms-head">
+    <p class="ms-eyebrow">How the structure works</p>
+    <h2 class="ms-title">Your firm keeps the practice. Spaarke runs the operations.</h2>
+    <p class="ms-lede">The law firm stays 100% lawyer-owned. Its back office moves into a dedicated MSO that Spaarke owns and runs on its platform, and Spaarke pays for the move. The firm puts in no cash, lowers its operating cost and receives equity in Spaarke.</p>
+  </div>
+
+  <div class="ms-tabs" role="tablist" aria-label="Structure views">
+    <button role="tab" aria-selected="true" data-view="all"><span class="ms-num">01</span>The full picture</button>
+    <button role="tab" aria-selected="false" data-view="own"><span class="ms-num">02</span>Who owns what</button>
+    <button role="tab" aria-selected="false" data-view="ctrl"><span class="ms-num">03</span>Who directs the work</button>
+    <button role="tab" aria-selected="false" data-view="money"><span class="ms-num">04</span>How money moves</button>
+    <button role="tab" aria-selected="false" data-view="value"><span class="ms-num">05</span>Where value builds</button>
+  </div>
+
+  <div class="ms-stage">
+    <div class="ms-diagram ms-wide" aria-hidden="true"></div>
+    <div class="ms-diagram ms-tall" aria-hidden="true"></div>
+    <div class="ms-legend">
+      <span class="lg lg-own">Ownership</span>
+      <span class="lg lg-money">Money</span>
+      <span class="lg lg-svc">Services</span>
+      <span class="lg lg-ctrl">Firm direction</span>
+      <span class="lg lg-value">Value to the firm</span>
+    </div>
+  </div>
+
+  <div class="ms-caption" aria-live="polite"></div>
+
+  <p class="ms-guardrail">The MSO does not practise law, does not share in legal fees and does not direct legal judgment. Its fee is fixed and set by an independent fair-market-value study, never tied to legal fees.</p>
+</section>
+<script src="structure.js"></script>
+</body>
+</html>

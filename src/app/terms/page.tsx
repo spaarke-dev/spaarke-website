@@ -18,7 +18,7 @@ export default function Terms() {
         />
 
         <div className="text-fg-mid mt-12 max-w-2xl space-y-6 text-base leading-relaxed">
-          <p className="text-fg-low text-sm">Last updated: 2026-05-07</p>
+          <p className="text-fg-low text-sm">Last updated: 2026-11-22</p>
 
           <p>
             These Terms of Service (the &ldquo;Terms&rdquo;) are a binding
@@ -427,8 +427,44 @@ export default function Terms() {
             beyond reasonable control.
           </p>
 
+          <h2
+            id="managed-legal-operations"
+            className="text-fg font-display scroll-mt-28 text-2xl font-medium tracking-tight"
+          >
+            18. Managed Legal Operations information
+          </h2>
+          <p>
+            Our Managed Legal Operations pages, including the services page
+            and the MSO value estimate, describe a service. The following
+            applies to them:
+          </p>
+          <ul className="list-disc space-y-2 pl-6">
+            <li>
+              They are general information about a service. They are not
+              legal, tax or financial advice.
+            </li>
+            <li>
+              Nothing on them is an offer to sell, or a solicitation of an
+              offer to buy, any security or interest in any entity.
+            </li>
+            <li>
+              Calculator and estimate figures are illustrative, use placeholder
+              assumptions and are not a projection, forecast or offer. Results
+              will differ for every organization.
+            </li>
+            <li>
+              Statistics are cited to their published sources and dates.
+              Vendor-sourced figures are labeled as such.
+            </li>
+            <li>
+              Managed Legal Operations does not include the practice of law.
+              Each structure is subject to the rules of the jurisdictions in
+              which the client practices.
+            </li>
+          </ul>
+
           <h2 className="text-fg font-display text-2xl font-medium tracking-tight">
-            18. Contact
+            19. Contact
           </h2>
           <p>
             Questions about these Terms? Email{" "}

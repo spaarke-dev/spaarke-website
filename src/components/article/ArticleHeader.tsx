@@ -5,6 +5,8 @@ import type { BlogPostMeta } from "@/lib/blog";
 type Props = {
   post: BlogPostMeta;
   readingTimeMin: number;
+  /** False where the article opens over another page (the /services modal). */
+  backLink?: boolean;
 };
 
 /**
@@ -16,7 +18,7 @@ type Props = {
  *  - Optional hero image / brand gradient
  *  - "Why this matters" summary block (if summary present in frontmatter)
  */
-export function ArticleHeader({ post, readingTimeMin }: Props) {
+export function ArticleHeader({ post, readingTimeMin, backLink = true }: Props) {
   const formattedDate = new Date(post.date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -27,6 +29,7 @@ export function ArticleHeader({ post, readingTimeMin }: Props) {
 
   return (
     <header className="mb-10">
+      {backLink ? (
       <Link
         href="/why-spaarke"
         className="text-fg-mid hover:text-fg focus-visible:ring-spaarke-blue inline-flex items-center gap-1.5 rounded-sm text-sm transition-colors focus-visible:outline-none focus-visible:ring-2"
@@ -47,9 +50,10 @@ export function ArticleHeader({ post, readingTimeMin }: Props) {
         </svg>
         Back to Why Spaarke
       </Link>
+      ) : null}
 
       {eyebrow && (
-        <p className="text-fg-low mt-8 font-mono text-[11px] font-medium uppercase tracking-[0.18em]">
+        <p className={`text-fg-low ${backLink ? "mt-8" : ""} font-mono text-[11px] font-medium uppercase tracking-[0.18em]`}>
           {formatLabel(eyebrow)}
         </p>
       )}
