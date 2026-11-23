@@ -91,7 +91,6 @@ const r2 = (v: number) => Math.round(v * 100) / 100;
 export function OperatorNetwork() {
   const { audience } = useAudience();
   const [size, setSize] = useState<NetworkSize>(1);
-  const flywheel = network.flywheel[audience];
 
   return (
     <div>
@@ -140,24 +139,7 @@ export function OperatorNetwork() {
         {network.capabilities.map((c) => c.title).join(" · ")}
       </p>
 
-      <p className="mt-8 flex flex-col items-center gap-2 text-[14px] md:flex-row md:flex-wrap md:justify-center md:gap-x-3">
-        {flywheel.map((f, i) => (
-          <span key={f} className="contents">
-            {i > 0 ? (
-              <span
-                aria-hidden="true"
-                className="rotate-90 md:rotate-0"
-                style={{ color: BLUE_LT }}
-              >
-                →
-              </span>
-            ) : null}
-            <span className="border-line-strong text-fg rounded-full border px-3.5 py-1.5 text-center">
-              {f}
-            </span>
-          </span>
-        ))}
-      </p>
+      {/* Owner review 2026-11-22: the "More members → ..." chain under the visual is gone. */}
     </div>
   );
 }

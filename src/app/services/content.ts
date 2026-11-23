@@ -686,10 +686,6 @@ export const network = {
     { ring: ["Playbooks and", "transformation"], title: "Playbooks and transformation" },
     { ring: ["Vendor and", "partner deals"], title: "Vendor and partner agreements" },
   ],
-  flywheel: {
-    firm: ["More members", "More scale and shared learning", "Better capabilities for every firm", "More to offer every client"],
-    corporate: ["More members", "More scale and shared learning", "Better capabilities for every member", "Lower cost of legal for every department"],
-  } satisfies ByAudience<string[]>,
   hub: {
     title: "Spaarke",
     subtitle: "MSO operator",
