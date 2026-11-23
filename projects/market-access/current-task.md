@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 043: Triage |
+| **Task** | 050: TLTF import CLI |
 | **Step** | PR open |
-| **Status** | done; PR pending Ralph's go-ahead to merge |
-| **Next action** | After merge: Ralph works through the 4 waiting senders at `/admin/triage`; then 050 (TLTF import; raise open question 2 first), 051, 061; confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
+| **Status** | built; PR pending Ralph's go-ahead to merge; live run waits for Ralph |
+| **Next action** | With Ralph's go-ahead: run `npm run market:import-tltf` against live storage (dry-run counts: 81 sent, 10 bounced, 11 replies, 19 Summit meeting entries), then Ralph corrects Summit meetings that did not happen on `/admin/campaigns/tltf-2026`; Ralph works through the waiting senders at `/admin/triage`; then 051, 061; confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
@@ -22,7 +22,7 @@
 | # | Question | Status |
 |---|---|---|
 | 1 | Reuse the `/meet` Graph app for mail read? | Answered 2026-11-19: reuse it |
-| 2 | Confirm which Summit meetings took place? | Open; raise at task 050 |
+| 2 | Confirm which Summit meetings took place? | Answered 2026-11-23: import every calendar meeting as held; Ralph corrects the ones that did not happen with the status override |
 | 3 | Default visibility for form-submitted investors? | Answered 2026-11-20: `general`, except the investor overview form (`investor`) |
 
 ## Decisions made
@@ -56,3 +56,4 @@
 - 2026-11-22: PR #185 merged (task 040) and live. Task 041 built: `/admin/mailboxes` adds, edits, pauses, removes and checks access, all audited; the last sync error shows on the page; 49 checks pass.
 - 2026-11-23: PR #187 merged (task 041) and live; Ralph registered both mailboxes and Check access passed on each. Task 042 built: `/api/market/sync` and the 30-minute workflow; known-contact mail, bounces, triage queue, follow-up auto-close; 51 checks pass.
 - 2026-11-23: PR #190 merged (task 042) and live after a re-run (a concurrent deploy canceled the first). Two runs by hand caught up both mailboxes: 63 contactus messages, 4 queued for triage; 891 personal messages, none with a contact yet. Task 043 built: `/admin/triage` accepts, links or dismisses senders, all audited; 53 checks pass.
+- 2026-11-23: PR #192 merged (task 043). Open question 2 answered: import every Summit meeting, confirm later. Task 050 built: `npm run market:import-tltf`; the dry run matches `index.csv` (81 sent, 10 bounced, 11 replies); 55 checks pass.

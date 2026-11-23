@@ -305,6 +305,7 @@ Every site writer feeds the log, and so does Ralph's mailbox through Microsoft G
 | Graph app for mail read | Reuse the `/meet` Graph app, or register a separate app? | Reuse the `/meet` app (decided 2026-11-19) | Mail sync reads `MEET_GRAPH_TENANT_ID`, `MEET_GRAPH_CLIENT_ID` and `MEET_GRAPH_CLIENT_SECRET`; no new app or secret. Mail read is its own Exchange scope ("Market access sync") beside the meet hosts scope. The `/meet` secret now also opens mail read on synced mailboxes, so its rotation covers both |
 | Form visibility | Should contacts from the website forms start as `general` even when they are investors? | `general` for every form except the investor overview form, whose contacts start as `investor` (decided 2026-11-20) | Task 020 sets visibility per form; Ralph reclassifies by hand when needed |
 | Personal mail with contacts | Should mail between Ralph and a market contact be logged when it is personal? | Yes, all mail with a known contact is logged (decided 2026-11-20) | No per-contact exclusion from mail sync; `known-only` still ignores everyone who is not a contact |
+| Summit meetings | Should Summit `meeting.in_person` entries come from the calendar import only, or should Ralph confirm which took place? | Import every Summit meeting from the calendar as held; Ralph corrects the ones that did not happen in one pass on the campaign page (decided 2026-11-23) | Task 050 writes a `meeting.in_person` activity per outside attendee, marked as from the calendar; corrections use the member status override |
 | Purpose | Is this for repeatable outreach like TLTF? | Yes | Campaigns are outreach projects with members and results (FR-09, FR-10) |
 
 ## Assumptions
@@ -319,7 +320,7 @@ Every site writer feeds the log, and so does Ralph's mailbox through Microsoft G
 ## Unresolved Questions
 
 - [x] Reuse the `/meet` Graph app for mail read, or register a separate app? Answered: reuse it (see Owner Clarifications).
-- [ ] Should `meeting.in_person` entries for the Summit come from the calendar import only, or should Ralph also confirm which meetings took place? Blocks: FR-11 detail.
+- [x] Should `meeting.in_person` entries for the Summit come from the calendar import only, or should Ralph also confirm which meetings took place? Answered: import them all, confirm later (see Owner Clarifications).
 - [x] Should contacts collected through the website forms (FR-06) start as `general` even when they're investors, with Ralph reclassifying them? Answered: yes, except the investor overview form (see Owner Clarifications).
 
 ---
