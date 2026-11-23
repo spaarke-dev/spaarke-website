@@ -79,8 +79,12 @@ export const hero = {
     // Interim: Unsplash XjJmfN7QJj4, Vitaly Gariev, Unsplash License. Shown only when the videos are missing.
     fallbackImage: "/services/hero-interim.jpg",
     fallbackFocus: "70% 50%",
-    /** Labels the fallback photo as interim. The licensed videos carry no label. */
-    interim: true,
+    /**
+     * Labels the fallback photo as interim. Off since the page went public
+     * (2026-11-22): visitors whose browser cannot play the video should see
+     * the photo without a tag.
+     */
+    interim: false,
   },
 };
 
