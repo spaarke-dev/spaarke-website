@@ -32,6 +32,9 @@ export const ctas = {
 /* 1. Hero                                                             */
 /* ------------------------------------------------------------------ */
 
+/** Licensed hero clips in Azure blob storage (see hero.media). */
+const HERO_MEDIA = "https://stspaarkewebsite.blob.core.windows.net/videos/services/hero/v1";
+
 export const hero = {
   eyebrow: "Spaarke Managed Legal Operations",
   /** Owner decision 2026-11-21: one headline for both audiences. */
@@ -58,17 +61,20 @@ export const hero = {
      * projects/website-services-page/hero-images in the main checkout, 720p).
      * Each is encoded for the web as hero-N.mp4 (1280x720), hero-N-sm.mp4
      * (640x360, for phones, where the video sits under a dark wash) and
-     * hero-N.jpg (first frame, the poster). They are gitignored until the
-     * owner decides where to host them, as this repository is public. Where a
-     * file is missing (any deployed build) the hero shows the fallback photo.
+     * hero-N.jpg (first frame, the poster). They are served from Azure blob
+     * storage (storage account stspaarkewebsite, public-read container
+     * "videos"), not this public repository, under a versioned folder with a
+     * one-year immutable cache: to change a clip, upload to a new folder (v2)
+     * and change HERO_MEDIA. If the files cannot load, the hero shows the
+     * fallback photo.
      */
     videos: [
       // `focus` is the CSS object-position that keeps the subjects in the visible right side.
-      { src: "/services/hero-1.mp4", small: "/services/hero-1-sm.mp4", poster: "/services/hero-1.jpg", focus: "60% 50%" },
-      { src: "/services/hero-2.mp4", small: "/services/hero-2-sm.mp4", poster: "/services/hero-2.jpg", focus: "10% 50%" },
-      { src: "/services/hero-3.mp4", small: "/services/hero-3-sm.mp4", poster: "/services/hero-3.jpg", focus: "35% 50%" },
-      { src: "/services/hero-4.mp4", small: "/services/hero-4-sm.mp4", poster: "/services/hero-4.jpg", focus: "35% 50%" },
-      { src: "/services/hero-5.mp4", small: "/services/hero-5-sm.mp4", poster: "/services/hero-5.jpg", focus: "60% 50%" },
+      { src: `${HERO_MEDIA}/hero-1.mp4`, small: `${HERO_MEDIA}/hero-1-sm.mp4`, poster: `${HERO_MEDIA}/hero-1.jpg`, focus: "60% 50%" },
+      { src: `${HERO_MEDIA}/hero-2.mp4`, small: `${HERO_MEDIA}/hero-2-sm.mp4`, poster: `${HERO_MEDIA}/hero-2.jpg`, focus: "10% 50%" },
+      { src: `${HERO_MEDIA}/hero-3.mp4`, small: `${HERO_MEDIA}/hero-3-sm.mp4`, poster: `${HERO_MEDIA}/hero-3.jpg`, focus: "35% 50%" },
+      { src: `${HERO_MEDIA}/hero-4.mp4`, small: `${HERO_MEDIA}/hero-4-sm.mp4`, poster: `${HERO_MEDIA}/hero-4.jpg`, focus: "35% 50%" },
+      { src: `${HERO_MEDIA}/hero-5.mp4`, small: `${HERO_MEDIA}/hero-5-sm.mp4`, poster: `${HERO_MEDIA}/hero-5.jpg`, focus: "60% 50%" },
     ] as { src: string; small: string; poster: string; focus: string }[],
     // Interim: Unsplash XjJmfN7QJj4, Vitaly Gariev, Unsplash License. Shown only when the videos are missing.
     fallbackImage: "/services/hero-interim.jpg",

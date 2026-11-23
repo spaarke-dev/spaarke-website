@@ -15,9 +15,9 @@ import { hero } from "@/app/services/content";
  *
  * Phones get a 640x360 copy (the video sits under a dark wash there); wider
  * screens get the 1280x720 file. The poster is the clip's first frame. The
- * clips are gitignored until the owner decides where to host them, so on a
- * deployed build without them the component shows the fallback photo. Under
- * reduced motion the video stays paused on its first frame.
+ * clips come from Azure blob storage (HERO_MEDIA in content.ts); if none can
+ * load, the component shows the fallback photo. Under reduced motion the
+ * video stays paused on its first frame.
  */
 export function HeroMedia() {
   const { videos, fallbackImage, fallbackFocus, interim } = hero.media;
