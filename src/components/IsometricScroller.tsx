@@ -30,10 +30,8 @@ const LIGHT_SCREENS = [
   "/brand/platform-hero/screen-document-intelligence.png",
   "/brand/platform-hero/screen-ai-workflows.png",
   "/brand/platform-hero/screen-performance.png",
-  "/brand/platform-hero/screen-outside-counsel.png",
   "/brand/platform-hero/screen-workspace-v2.png",
   "/brand/platform-hero/screen-corporate-workspace.png",
-  "/brand/platform-hero/screen-external-access.png",
   "/brand/platform-hero/screen-ai-playbook.png",
 ];
 

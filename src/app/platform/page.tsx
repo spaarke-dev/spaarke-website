@@ -281,11 +281,13 @@ function PlatformClosing() {
           className="font-display text-fg mx-auto mt-8 max-w-5xl font-medium leading-tight tracking-tight"
           style={{ fontSize: "clamp(22px, 3vw, 40px)" }}
         >
-          <span className="whitespace-nowrap">
+          {/* Each sentence keeps to one line from md up. On phones the
+              sentences stack and wrap, so neither runs off the screen. */}
+          <span className="block text-balance md:inline md:whitespace-nowrap">
             A single system for legal work, data, and decisions.
           </span>
-          <br />
-          <span className="whitespace-nowrap">
+          <br className="hidden md:inline" />
+          <span className="block text-balance md:inline md:whitespace-nowrap">
             Not another tool. A new way to run legal.
           </span>
         </p>
