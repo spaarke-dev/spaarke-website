@@ -8,8 +8,8 @@
 |-------|-------|
 | **Task** | 050: TLTF import CLI |
 | **Step** | PR open |
-| **Status** | built; PR pending Ralph's go-ahead to merge; live run waits for Ralph |
-| **Next action** | With Ralph's go-ahead: run `npm run market:import-tltf` against live storage (dry-run counts: 81 sent, 10 bounced, 11 replies, 19 Summit meeting entries), then Ralph corrects Summit meetings that did not happen on `/admin/campaigns/tltf-2026`; Ralph works through the waiting senders at `/admin/triage`; then 051, 061; confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
+| **Status** | done; run live 2026-11-23 |
+| **Next action** | Ralph corrects Summit meetings that did not happen on `/admin/campaigns/tltf-2026` (status override); Ralph works through the waiting senders at `/admin/triage`; then 051, 061; confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
@@ -57,3 +57,4 @@
 - 2026-11-23: PR #187 merged (task 041) and live; Ralph registered both mailboxes and Check access passed on each. Task 042 built: `/api/market/sync` and the 30-minute workflow; known-contact mail, bounces, triage queue, follow-up auto-close; 51 checks pass.
 - 2026-11-23: PR #190 merged (task 042) and live after a re-run (a concurrent deploy canceled the first). Two runs by hand caught up both mailboxes: 63 contactus messages, 4 queued for triage; 891 personal messages, none with a contact yet. Task 043 built: `/admin/triage` accepts, links or dismisses senders, all audited; 53 checks pass.
 - 2026-11-23: PR #192 merged (task 043). Open question 2 answered: import every Summit meeting, confirm later. Task 050 built: `npm run market:import-tltf`; the dry run matches `index.csv` (81 sent, 10 bounced, 11 replies); 55 checks pass.
+- 2026-11-23: PR #193 merged (task 050) and live. Import run against live storage: 95 contacts, 95 members, 134 activities; sent 81, bounced 10, replied 11, matching `index.csv`; a second run added nothing.

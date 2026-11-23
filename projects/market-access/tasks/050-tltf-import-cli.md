@@ -1,7 +1,7 @@
 # Task 050: TLTF import CLI
 
 **Phase:** 5 (Imports and backfill)
-**Status:** built; the live run waits for Ralph
+**Status:** done (run live 2026-11-23)
 **Estimated:** 4 hours
 **Dependencies:** 013, 033
 **Tags:** typescript, storage
@@ -31,9 +31,9 @@ FR-12 and FR-09 acceptance (81 sent, the bounces and replies in the private `ind
 
 ## Acceptance criteria
 
-- [ ] Run from a local shell with the storage connection set, no file under the repo changes.
-- [ ] The campaign shows 81 sent and the same bounces and replies as `index.csv`.
-- [ ] A second run changes no counts.
+- [x] Run from a local shell with the storage connection set, no file under the repo changes.
+- [x] The campaign shows 81 sent and the same bounces and replies as `index.csv`.
+- [x] A second run changes no counts.
 
 ## Notes
 
@@ -59,3 +59,5 @@ FR-12 and FR-09 acceptance (81 sent, the bounces and replies in the private `ind
 - Dry run against the private files, 2026-11-23: 82 rows; 81 sent, 10 bounced, 11 replies, 3 auto-replies, 1 not sent, no missing brief keys; 14 meetings with 19 outside attendees (5 also on the outreach list, 14 Summit only); 14 Summit people matched, 13 context notes; 95 members and 134 activities.
 - Checks: one pure check (mapping, file names, time zones, the plan and its stable IDs) and one storage check (two runs: contacts, members, groups, codes, brief key hash, timeline, funnel, an override kept, nothing added the second time). 55 pass.
 - Known overlap: the import's reply entries come from the list. If the mail sync or a later backfill reads the same replies from the mailbox, the timeline shows both (different sources); the funnel counts each member once.
+- Live run, 2026-11-23, after PR #193 merged: campaign created; 95 contacts and 95 members created; 134 activities recorded. Funnel: 95 members, 81 sent, 71 delivered, 11 replied, 19 with a Summit meeting, 0 engaged. Against `index.csv`: sent 81/81, bounced 10/10, replied 11/11. A second run found all 95 contacts, updated the 95 members in place, recorded nothing new (134 duplicates) and left the funnel unchanged. No file under the repo changed.
+- Engaged is 0 because brief reads and Ask AI clicks from before the import were logged without a member to link to. The backfill (task 052) brings the App Insights events in, resolved through the member codes and brief labels the import created.
