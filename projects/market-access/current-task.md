@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 041: Mailbox registry |
+| **Task** | 042: Sync engine and schedule |
 | **Step** | PR open |
 | **Status** | done; PR pending Ralph's go-ahead to merge |
-| **Next action** | After merge: Ralph adds his mailbox (personal) and contactus@spaarke.com (shared, triage) at `/admin/mailboxes` and runs Check access on each; then 042 (sync engine) and 043 (triage); confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
+| **Next action** | After merge: run the Mail sync workflow by hand and check `/admin/mailboxes`; then 043 (triage page; the queue is already filling); confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
@@ -54,3 +54,4 @@
 - 2026-11-22: PR #183 merged (task 060) and live. Task 032 built: organization list and page with edits and domain overrides, all audited; the contacts cache is now shared between pages and API routes; 46 checks pass.
 - 2026-11-22: PR #184 merged (task 032) and live. Task 040 built: Graph mail client and `npm run market:mail`; read both synced mailboxes live (counts only); 47 checks pass.
 - 2026-11-22: PR #185 merged (task 040) and live. Task 041 built: `/admin/mailboxes` adds, edits, pauses, removes and checks access, all audited; the last sync error shows on the page; 49 checks pass.
+- 2026-11-23: PR #187 merged (task 041) and live; Ralph registered both mailboxes and Check access passed on each. Task 042 built: `/api/market/sync` and the 30-minute workflow; known-contact mail, bounces, triage queue, follow-up auto-close; 51 checks pass.

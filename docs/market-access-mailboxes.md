@@ -81,7 +81,7 @@ printf '%s' "$TOKEN" | gh secret set MA_SYNC_TOKEN --repo spaarke-dev/spaarke-we
 unset TOKEN
 ```
 
-The route and the schedule arrive with task 042. Until then the token sits unused, and without it the route answers 503.
+The schedule is `.github/workflows/mail-sync.yml`; run it by hand from the Actions tab to sync at once. Without the token the route answers 503. A run stops starting new messages after 25 seconds and the next run continues from its checkpoint, so a first catch-up can take more than one run.
 
 For a local test, put the same three `MEET_GRAPH_*` values in `.env.local`. Then `npm run market:mail -- <mailbox> [hours]` prints message counts per folder for one mailbox, never content. A mailbox outside the scope prints `NoMailboxAccess`.
 
@@ -128,5 +128,6 @@ Get-ManagementRoleAssignment -RoleAssignee <APP_ID> |
 | A mailbox shows "not in the Exchange access scope yet" | It is not in the group, or the change has not applied (up to two hours for a new assignment, about an hour for a group change) |
 | Graph 401 for every mailbox | The `/meet` client secret expired or was rotated without updating `MEET_GRAPH_CLIENT_SECRET`; `/meet` would show the fallback too |
 | The sync run fails with 401 | `MA_SYNC_TOKEN` differs between the app settings and the GitHub secret |
-| The sync run fails with 503 | `MA_SYNC_TOKEN` is not set in the app settings |
+| The sync run fails with 503 | `MA_SYNC_TOKEN` is not set in the app settings, or the Graph or storage settings are missing |
+| The run warns that a mailbox failed | The mailbox shows its error on `/admin/mailboxes`; the other mailboxes synced |
 | A mailbox outside the group can be read | The app has an Entra Graph permission; check step 1 |

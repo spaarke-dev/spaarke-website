@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040, 041, 053 and 060).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 042, 053 and 060).
 //
 //   npm run market:check
 //
@@ -607,6 +607,29 @@ console.log("Pure checks");
   assert.throws(() => mb.parseMailboxPatch({}), /Nothing to change/);
   assert.ok(!mb.isMailboxId("team@example.test") && mb.isMailboxId(keys.emailHash("team@example.test")));
   ok("mailbox input: one address, known kinds and modes, kind-based defaults, the address fixed after adding (task 041)");
+}
+
+{
+  // Task 042: the mail sync's pure rules.
+  const sync = await import("@/lib/market/sync");
+  const box = "owner@spaarke.example.test";
+  const sent = { folder: "sentitems" as const, from: { address: box }, to: [{ address: "a@x.test" }, { address: box }], cc: [{ address: "b@y.test" }, { address: "a@x.test" }] };
+  assert.deepEqual(sync.counterparts(sent, box), ["a@x.test", "b@y.test"], "recipients of sent mail, once each, never the mailbox");
+  const got = { folder: "inbox" as const, from: { address: "a@x.test" }, to: [{ address: box }, { address: "c@z.test" }], cc: [] };
+  assert.deepEqual(sync.counterparts(got, box), ["a@x.test"], "the sender of received mail only");
+  assert.deepEqual(sync.counterparts({ ...got, from: { address: box } }, box), []);
+  assert.ok(sync.triageable("jane@acme.test", box));
+  assert.ok(!sync.triageable("noreply@acme.test", box) && !sync.triageable("no-reply+x@acme.test", box) && !sync.triageable("notifications@acme.test", box));
+  assert.ok(!sync.triageable("colleague@spaarke.example.test", box), "mail from the mailbox's own domain is internal");
+  const now = new Date("2026-11-23T12:00:00Z");
+  assert.equal(sync.startFrom(null, now), "2026-10-24T12:00:00.000Z", "no checkpoint: 30 days back");
+  assert.equal(sync.startFrom("2026-11-23T11:00:00.000Z", now), "2026-11-23T10:55:00.000Z", "five minutes of overlap");
+  const sid = sync.emailSourceId("email.sent", "k", "a@x.test");
+  assert.ok(sid.startsWith("email.sent:k:") && !sid.includes("@"), "no address in a source ID");
+  const tri = await import("@/lib/market/triage");
+  assert.equal(tri.messageKey("<m@x>", "box1", "g1"), tri.messageKey("<m@x>", "box2", "g2"), "one message in two mailboxes is one key");
+  assert.notEqual(tri.messageKey(undefined, "box1", "g1"), tri.messageKey(undefined, "box2", "g1"));
+  ok("mail sync: counterparts by direction, triage skips automated and internal senders, overlap and first lookback (task 042)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -1613,6 +1636,112 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   const actions = (await auditLog.listAudit(keys.monthKey(Date.now()), 2000)).filter((e) => e.entityId === m.id).map((e) => e.action);
   for (const a of ["mailbox.add", "mailbox.pause", "mailbox.resume", "mailbox.edit", "mailbox.remove"]) assert.ok(actions.includes(a), a);
   ok("mailboxes add, pause, resume, edit and remove with an audit entry each; sync and access-check outcomes are kept apart (task 041)");
+}
+
+{
+  // Task 042: one sync run against canned Graph answers.
+  const mb = await import("@/lib/market/mailboxes");
+  const sync = await import("@/lib/market/sync");
+  const fu = await import("@/lib/market/followups");
+  const tri = await import("@/lib/market/triage");
+  const who = "admin@example.test";
+  const dom = `sync-${run}.example.test`;
+  const own = `ralph@own-${run}.example.test`;
+  const team = `team@own-${run}.example.test`;
+  const denied = `nobody@own-${run}.example.test`;
+
+  const known = await contacts.resolveContact({ email: addr("known", dom), name: "Known Person" }, { source: "form.contact" });
+  assert.ok(known.status === "created");
+  const kid = known.contact.id;
+  const now = new Date();
+  const ago = (min: number) => new Date(now.getTime() - min * 60_000).toISOString();
+  const f = await fu.createFollowUp({ contactId: kid, title: "Write back", dueDate: "2026-12-01", visibility: "general" }, new Date(ago(48 * 60)));
+  assert.ok(f?.created);
+
+  const personal = await mb.addMailbox(mb.parseNewMailbox({ address: own, kind: "personal" }), who);
+  const shared = await mb.addMailbox(mb.parseNewMailbox({ address: team, kind: "shared" }), who);
+  const deniedBox = await mb.addMailbox(mb.parseNewMailbox({ address: denied, kind: "personal" }), who);
+
+  const msg = (id: string, at: string, from: string, to: string[], subject: string) => ({
+    id,
+    internetMessageId: `<${id}-${run}@mail.example.test>`,
+    from: { emailAddress: { address: from } },
+    toRecipients: to.map((a) => ({ emailAddress: { address: a } })),
+    ccRecipients: [],
+    subject,
+    receivedDateTime: at,
+    sentDateTime: at,
+    webLink: "https://outlook.office365.com/owa/?ItemID=x",
+  });
+  const pages: Record<string, unknown[]> = {
+    [`${own}/mailFolders/sentitems`]: [msg("s1", ago(60), own, [addr("known", dom), addr("stranger", dom)], "Hello")],
+    [`${own}/mailFolders/inbox`]: [
+      msg("r1", ago(30), addr("known", dom), [own], "Re: Hello"),
+      msg("u1", ago(25), addr("unknown", dom), [own], "Personal note"),
+      msg("n1", ago(20), "postmaster@own.example.test", [own], "Undeliverable: Hello"),
+    ],
+    [`${team}/mailFolders/inbox`]: [
+      msg("t1", ago(15), addr("newlead", dom), [team], "Question about Spaarke"),
+      msg("t2", ago(14), `noreply@${dom}`, [team], "Your receipt"),
+      msg("t3", ago(13), addr("known", dom), [team], "Also writing here"),
+    ],
+  };
+  const ndr = `Your message to ${addr("known", dom)} could not be delivered to the following recipients: ${addr("known", dom)}.`;
+  const fake = (async (input: string | URL | Request) => {
+    const url = decodeURIComponent(String(input));
+    if (url.includes(denied)) return new Response(JSON.stringify({ error: { code: "ErrorAccessDenied" } }), { status: 403 });
+    if (url.includes("/messages/n1?$select=body")) return new Response(JSON.stringify({ body: { content: ndr } }), { status: 200 });
+    const key = Object.keys(pages).find((k) => url.includes(k));
+    return new Response(JSON.stringify({ value: key ? pages[key] : [] }), { status: 200 });
+  }) as typeof fetch;
+  const settings = { tenantId: "t", clientId: "c", clientSecret: "s" };
+  const opts = { settings, fetch: fake, token: async () => "token", deadline: Date.now() + 60_000, now };
+
+  const first = await sync.syncAll(opts);
+  const p = first.mailboxes.find((m) => m.id === personal.id)!;
+  const s = first.mailboxes.find((m) => m.id === shared.id)!;
+  const d = first.mailboxes.find((m) => m.id === deniedBox.id)!;
+  assert.deepEqual([p.sent, p.received, p.bounced, p.triaged, p.followUpsClosed], [1, 1, 1, 0, 2], JSON.stringify(p));
+  assert.deepEqual([s.received, s.triaged], [1, 1], "the shared inbox logs the known sender and queues only the new, human one");
+  assert.equal(d.ok, false);
+  assert.equal(d.error, "This mailbox is not in the Exchange access scope yet.");
+  assert.equal((await mb.getMailbox(deniedBox.id))?.lastError, "This mailbox is not in the Exchange access scope yet.");
+  assert.ok((await mb.getMailbox(personal.id))?.lastSyncAt, "the others still synced");
+
+  const timeline = await activity.listContactActivities(kid);
+  assert.deepEqual(
+    timeline.map((a) => a.type).sort(),
+    ["email.bounced", "email.received", "email.received", "email.sent", "followup.done"],
+    "one followup.done when it closes as sent; the move to replied is in the audit log",
+  );
+  assert.ok(timeline.filter((a) => a.source === "graph").every((a) => a.mailbox), "each email activity names its mailbox");
+  assert.equal(await contacts.findContactByEmail(addr("stranger", dom)), null, "known-only: an unknown recipient creates nothing");
+  assert.equal(await contacts.findContactByEmail(addr("unknown", dom)), null);
+  assert.equal(await contacts.findContactByEmail(addr("newlead", dom)), null, "triage does not create a contact");
+  assert.equal((await fu.getFollowUp(kid, f!.followUp.id))?.status, "replied", "sent on the outgoing email, replied on the answer");
+
+  const triTable = await getTable("triage");
+  const queued: unknown[] = [];
+  const filter = `PartitionKey eq '${keys.emailHash(addr("newlead", dom))}'`;
+  for await (const e of triTable!.listEntities({ queryOptions: { filter } })) queued.push(e);
+  assert.equal(queued.length, 1);
+  assert.ok(!(await tri.isBlocked(addr("newlead", dom))));
+
+  // A second run over the same messages adds nothing.
+  const again = await sync.syncAll({ ...opts, deadline: Date.now() + 60_000 });
+  const p2 = again.mailboxes.find((m) => m.id === personal.id)!;
+  assert.deepEqual([p2.sent, p2.received, p2.bounced, p2.followUpsClosed], [0, 0, 0, 0]);
+  assert.equal((await activity.listContactActivities(kid)).length, timeline.length, "re-running the sync leaves the count unchanged");
+  assert.equal(again.mailboxes.find((m) => m.id === shared.id)!.triaged, 0);
+  assert.ok(await sync.getCheckpoint(personal.id, "inbox"));
+
+  // A deadline already passed: nothing starts and the mailboxes wait for the next run.
+  const late = await sync.syncAll({ ...opts, deadline: Date.now() - 1 });
+  assert.equal(late.mailboxes.length, 0);
+  assert.ok(late.deferred >= 3);
+
+  for (const m of [personal, shared, deniedBox]) await mb.removeMailbox(m.id, who);
+  ok("mail sync logs known-contact mail once, logs bounces, queues new senders only for a shared inbox, closes follow-ups, and a failing mailbox does not stop the others (task 042)");
 }
 
 {
