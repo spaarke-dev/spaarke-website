@@ -691,17 +691,19 @@ export const network = {
     corporate:
       "Your department joins a network, not just a vendor. Every member has its own dedicated MSO, and every MSO is owned and run by Spaarke on the same platform. As the network grows, each department and firm gets more from its MSO: more specialists, better playbooks and better terms.",
   } satisfies ByAudience<string>,
-  /** Step tabs: how many members show around the hub (phones show at most six). */
+  /** Title in the upper left of the diagram card (owner, 2026-11-22). */
+  diagramTitle: "Spaarke MSO Network",
+  /** Step tabs: how many members show around the hub (phones show at most six). Short labels, owner 2026-11-22. */
   steps: {
     firm: [
-      { size: 1, label: "Your firm joins" },
-      { size: 3, label: "Members join" },
-      { size: 8, label: "The network at scale" },
+      { size: 1, label: "Your firm" },
+      { size: 3, label: "Growth" },
+      { size: 8, label: "At scale" },
     ],
     corporate: [
-      { size: 1, label: "Your department joins" },
-      { size: 3, label: "Members join" },
-      { size: 8, label: "The network at scale" },
+      { size: 1, label: "Your department" },
+      { size: 3, label: "Growth" },
+      { size: 8, label: "At scale" },
     ],
   } satisfies ByAudience<{ size: NetworkSize; label: string }[]>,
   /** Reveal order around the hub. Index 0 is the visitor's own organization. */

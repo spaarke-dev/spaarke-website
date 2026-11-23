@@ -94,21 +94,26 @@ export function OperatorNetwork() {
 
   return (
     <div>
-      <PillTabs
-        items={network.steps[audience].map((s) => ({
-          id: s.size,
-          label: s.label,
-        }))}
-        value={size}
-        onChange={setSize}
-        label="Network size"
-      />
-
-      <div className="border-line-strong mt-6 rounded-2xl border bg-[rgba(255,255,255,0.02)] p-3 sm:p-5 lg:p-7">
-        <div aria-hidden="true" className="hidden md:block">
+      <div className="border-line-strong rounded-2xl border bg-[rgba(255,255,255,0.02)] p-3 sm:p-5 lg:p-7">
+        {/* Title upper left, step tabs on the same line at the right (owner, 2026-11-22). */}
+        <div className="flex flex-col gap-3 px-1 pt-1 md:flex-row md:items-center md:justify-between md:px-0 md:pt-0">
+          <h3 className="font-display text-fg text-[20px] font-medium tracking-[-0.01em] md:text-[24px]">
+            {network.diagramTitle}
+          </h3>
+          <PillTabs
+            items={network.steps[audience].map((s) => ({
+              id: s.size,
+              label: s.label,
+            }))}
+            value={size}
+            onChange={setSize}
+            label="Network size"
+          />
+        </div>
+        <div aria-hidden="true" className="mt-5 hidden md:block">
           <Hub cfg={WIDE} size={size} />
         </div>
-        <div aria-hidden="true" className="mx-auto max-w-[420px] md:hidden">
+        <div aria-hidden="true" className="mx-auto mt-5 max-w-[420px] md:hidden">
           <Hub cfg={TALL} size={size} />
         </div>
         <ul className="text-fg-mid mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[13px]">
