@@ -323,6 +323,30 @@ No equity step for departments. "Faster responses" rests on the response-time ba
 
 The structure diagram on /services is headed "Management Services Organization Structure" (owner), centered over the diagram, in both audience views (`structure.diagramTitle`, the `title` prop of StructureDiagram). The estimate page keeps its own "The structure" heading above the card, without the in-card title.
 
+## Next version: hero video with the Spaarke screen (deferred 2026-11-22)
+
+Not part of the current services update. The owner wants to pick this up after that update deploys.
+
+**The idea.** Stocksy clip 5864216 (Oleksii Syrotkin) shows a man over the shoulder at a monitor. We replace the trading screen on the monitor with the Spaarke Legal Operations Workspace and use the result as a hero video.
+
+**What exists**
+- A review comp made from the unlicensed, watermarked comp: 9.3 s, 1280x720, 25 fps.
+  - It is kept outside the repository, in the session notes folder and in a local gitignored copy (`public/services/hero-comp-5864216.mp4`). Neither may be committed or published.
+- `projects/website-services-page/tools/screen-composite.py` builds the comp:
+  - It tracks the camera drift (about 19 px left and 44 px up over the clip) with OpenCV ECC.
+  - It places `public/images/hero/workspace-dark-mode.png` on the display in light perspective, padded at the top and left so the logo and nav stay in frame.
+  - It mattes the man back in front of the screen and keeps a faint reflection of him on the glass.
+  - It encodes with the bundled ffmpeg.
+
+**To do in the next version**
+1. **License.** The owner licenses the clean clip, ideally at 1080p; at 720p the small UI text on screen is soft.
+2. **Re-run.** Run the script on the clean file. If the resolution changes, check the geometry constants; they were measured at 1280x720 and the script scales them.
+3. **Fix the known flaws:**
+   - A faint gray streak from the original trading UI's red and green bars shows in the reflection, near the middle of the screen.
+   - The left edge restore for the Stocksy credit can be removed; the licensed file has no credit.
+4. **Choose the screenshot.** The dark workspace is used now. A screenshot made for the purpose, with no personal names and with larger text, would read better.
+5. **Publish.** Encode `hero-N.mp4`, `-sm.mp4` and `.jpg` as for the other hero clips, upload them to the `videos` blob container, and add an entry to `hero.videos` in content.ts with its own `focus`.
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
