@@ -276,7 +276,7 @@ Source: the owner's `spaarke-process-section-change-list.md` (Downloads), for "D
 
 Visual: the band is a cool tint between the dark network band and the black closing (a dark band here would put three dark sections in a row). The phases are raised white cards; the selected one lifts, gets a blue border and top rule. Its steps and outcome open in a dark panel with the site's blue glow and a pointer under the selected card (desktop). Kept: headline, three-stage layout, outcome box.
 
-Open: "Designed in weeks" holds for later partners; the first firm's foundations are about three months (owner's flag). "Member" still appears in the network section (title, "Next member", MEMBER labels), the estimate's "Member equity" step and the MSO structure text; the change list says "partner" on the public site. Not changed here: "partner" also names the firm's equity partners, so the rename needs an owner decision.
+Open: "Designed in weeks" holds for later partners; the first firm's foundations are about three months (owner's flag). "Member" still appears in the network section (title, "Next member", MEMBER labels), the estimate's "Member equity" step and the MSO structure text; the change list says "partner" on the public site. Owner decision 2026-11-22: keep "member" for now ("partner" also names the firm's equity partners).
 
 ## Known gaps in the draft
 
