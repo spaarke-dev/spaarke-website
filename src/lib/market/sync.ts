@@ -1,5 +1,5 @@
 import { getTable, statusOf } from "@/lib/market/tables";
-import { emailDomain, emailHash } from "@/lib/market/keys";
+import { emailDomain } from "@/lib/market/keys";
 import { findContactByEmail, isTombstoned } from "@/lib/market/contacts";
 import { hasActivity, recordActivity } from "@/lib/market/activity";
 import { enabledMailboxes, recordSync, type Mailbox } from "@/lib/market/mailboxes";
@@ -16,7 +16,8 @@ import {
 import { listContactFollowUps } from "@/lib/market/followups";
 import { changeFollowUp } from "@/lib/market/followup-admin";
 import { recomputeAllCampaigns } from "@/lib/market/results";
-import { isBlocked, messageKey, queueTriage } from "@/lib/market/triage";
+import { cleanupDismissed, isBlocked, queueTriage } from "@/lib/market/triage";
+import { emailSourceId, messageKey, SYNC_SOURCE } from "@/lib/market/mail-keys";
 import type { Contact } from "@/lib/market/types";
 
 /**
@@ -41,7 +42,6 @@ import type { Contact } from "@/lib/market/types";
  * in two synced mailboxes is logged once.
  */
 
-export const SYNC_SOURCE = "graph";
 /** A mailbox with no checkpoint starts this far back. */
 export const FIRST_LOOKBACK_DAYS = 30;
 const OVERLAP_MS = 5 * 60_000;
@@ -73,6 +73,8 @@ export type SyncSummary = {
   /** Mailboxes not reached before the deadline. */
   deferred: number;
   recomputed?: { members: number; changed: number };
+  /** Dismissed triage entries past 30 days, deleted this run (task 043). */
+  triageCleaned?: number;
 };
 
 export type SyncOptions = MailDeps & {
@@ -133,10 +135,7 @@ export function triageable(sender: string, mailbox: string): boolean {
   return emailDomain(sender) !== emailDomain(mailbox.toLowerCase());
 }
 
-/** The source ID for one email activity. No address in it: the counterpart is a hash slice. */
-export function emailSourceId(type: string, key: string, counterpart?: string): string {
-  return counterpart ? `${type}:${key}:${emailHash(counterpart).slice(0, 16)}` : `${type}:${key}`;
-}
+export { emailSourceId, SYNC_SOURCE };
 
 // ---- Follow-ups (FR-11) ----
 
@@ -330,6 +329,12 @@ export async function syncAll(opts: SyncOptions): Promise<SyncSummary> {
   }
   if (out.mailboxes.some((m) => m.sent + m.received + m.bounced > 0)) {
     out.recomputed = await recomputeAllCampaigns(opts.now);
+  }
+  try {
+    out.triageCleaned = await cleanupDismissed(opts.now);
+  } catch (err) {
+    // Housekeeping never fails the run; the next run tries again.
+    console.error("[sync] triage cleanup failed:", (err as Error).message);
   }
   return out;
 }

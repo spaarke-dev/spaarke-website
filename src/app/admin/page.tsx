@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/admin/EmptyState";
 import { activityLabel, formatDay, formatWhen, label } from "@/components/admin/format";
 import { FollowUpStatus } from "@/components/admin/FollowUpStatus";
 import { dueForHome, type DueRow } from "@/lib/market/followup-admin";
+import { listTriage } from "@/lib/market/triage";
 
 export const dynamic = "force-dynamic";
 
@@ -124,7 +125,13 @@ export default async function AdminHome() {
     );
   }
 
-  const [activity, fresh, due] = await Promise.all([recentActivity(roles), newContacts(roles), dueForHome(roles)]);
+  const [activity, fresh, due, triage] = await Promise.all([
+    recentActivity(roles),
+    newContacts(roles),
+    dueForHome(roles),
+    listTriage(roles),
+  ]);
+  const triageMessages = triage.reduce((n, t) => n + t.messages.length, 0);
   const overdue = due.filter((f) => f.overdue).length;
 
   return (
@@ -156,8 +163,16 @@ export default async function AdminHome() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-lg border border-line bg-surface p-4">
-          <h2 className="font-medium">Triage</h2>
-          <p className="mt-1 text-sm text-fg-mid">New senders from the shared inbox will show here.</p>
+          <h2 className="font-medium">
+            <Link href="/admin/triage" className="hover:underline">
+              Triage
+            </Link>
+          </h2>
+          <p className="mt-1 text-sm text-fg-mid">
+            {triage.length
+              ? `${triage.length} new ${triage.length === 1 ? "sender" : "senders"} waiting, ${triageMessages} ${triageMessages === 1 ? "message" : "messages"}.`
+              : "No new senders waiting."}
+          </p>
         </div>
       </div>
 

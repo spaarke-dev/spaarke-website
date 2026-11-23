@@ -114,6 +114,26 @@ export async function findContactByEmail(raw: string): Promise<Contact | null> {
   }
 }
 
+/**
+ * Point another address at a contact (task 043, linking a triage sender).
+ * Returns "added", "exists" when it already points there, or "taken" when it
+ * belongs to a different contact.
+ */
+export async function addAlternateEmail(contactId: string, raw: string): Promise<"added" | "exists" | "taken"> {
+  const email = normalizeEmail(raw);
+  const table = await getTable("contacts");
+  if (!email || !table) throw new Error("No address or no storage");
+  const owner = await findContactByEmail(email);
+  if (owner) return owner.id === contactId ? "exists" : "taken";
+  try {
+    await table.createEntity<AliasEntity>({ ...aliasKeys(emailHash(email)), rowType: "alias", contactId });
+    return "added";
+  } catch (err) {
+    if (statusOf(err) !== 409) throw err;
+    return (await findContactByEmail(email))?.id === contactId ? "exists" : "taken";
+  }
+}
+
 export async function isTombstoned(normalizedEmail: string): Promise<boolean> {
   const table = await getTable("tombstones");
   if (!table) return false;
