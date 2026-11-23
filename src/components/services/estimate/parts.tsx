@@ -9,6 +9,12 @@ import type { ReactNode } from "react";
  * cards and structure boxes of "How the estimate works".
  */
 
+/**
+ * Secondary text on the light estimate surfaces. Darker than the site's
+ * tertiary gray, for small labels and axis text (value page row 18).
+ */
+export const MUTED = "text-[rgba(10,10,10,0.72)]";
+
 const BTN =
   "inline-flex shrink-0 items-center gap-2 rounded-full bg-[#5078DC] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#3F5FD9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC] focus-visible:ring-offset-2 motion-safe:hover:scale-[1.02]";
 
@@ -32,6 +38,7 @@ export function InputsCard({
   active,
   onPreset,
   children,
+  after,
 }: {
   label: string;
   presetsLabel: string;
@@ -39,11 +46,13 @@ export function InputsCard({
   active: string | null;
   onPreset: (key: string) => void;
   children: ReactNode;
+  /** Below the sliders: the upside toggle and the assumption controls. */
+  after?: ReactNode;
 }) {
   return (
     <section aria-label={label} className="border-line rounded-3xl border bg-white p-6 md:p-8">
       <div role="group" aria-label="Size" className="flex flex-wrap items-center gap-x-4 gap-y-3">
-        <span className="text-fg-low text-[13px]">{presetsLabel}</span>
+        <span className={`${MUTED} text-[13px]`}>{presetsLabel}</span>
         <div className="flex flex-wrap gap-2">
           {presets.map((p) => {
             const on = active === p.key;
@@ -66,7 +75,52 @@ export function InputsCard({
         </div>
       </div>
       <div className="mt-7 grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">{children}</div>
+      {after}
     </section>
+  );
+}
+
+/** An on/off switch with a label and a note under it. */
+export function Toggle({
+  id,
+  label,
+  note,
+  checked,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  note: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <button
+        id={id}
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        aria-describedby={`${id}-note`}
+        onClick={() => onChange(!checked)}
+        className={`relative mt-0.5 h-6 w-11 shrink-0 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC] focus-visible:ring-offset-2 ${
+          checked ? "bg-[#5078DC]" : "bg-[rgba(10,10,10,0.25)]"
+        }`}
+      >
+        <span
+          aria-hidden="true"
+          className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${checked ? "left-[22px]" : "left-0.5"}`}
+        />
+      </button>
+      <div>
+        <label htmlFor={id} className="text-fg cursor-pointer text-[15px] font-medium">
+          {label}
+        </label>
+        <p id={`${id}-note`} className={`${MUTED} mt-0.5 text-[13px] leading-snug`}>
+          {note}
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -186,7 +240,39 @@ export function SummaryBar({
 
 export function Disclaimer({ children }: { children: ReactNode }) {
   // Change list row 34: larger, directly under the summary.
-  return <p className="text-fg-mid px-1 text-[14px] leading-relaxed">{children}</p>;
+  return <p className={`${MUTED} px-1 text-[14px] leading-relaxed`}>{children}</p>;
+}
+
+/** Value page row 19: the closing call to action. */
+export function ClosingCta({
+  title,
+  body,
+  primary,
+  secondary,
+}: {
+  title: string;
+  body: string;
+  primary: { label: string; href: string };
+  secondary: { label: string; href: string };
+}) {
+  return (
+    <section className="rounded-3xl border border-[rgba(80,120,220,0.35)] bg-[#EBF2FF] p-6 md:p-10">
+      <h2 className="font-display text-fg text-[clamp(26px,3vw,34px)] font-medium tracking-[-0.02em]">{title}</h2>
+      <p className={`${MUTED} mt-2 max-w-[60ch] text-[16px] leading-relaxed`}>{body}</p>
+      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-4">
+        <Link href={primary.href} className={BTN}>
+          {primary.label}
+          <span aria-hidden="true">→</span>
+        </Link>
+        <Link
+          href={secondary.href}
+          className="text-[15px] font-medium text-[#3F5FD9] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5078DC]"
+        >
+          {secondary.label} <span aria-hidden="true">→</span>
+        </Link>
+      </div>
+    </section>
+  );
 }
 
 /* How the estimate works ------------------------------------------- */
@@ -203,18 +289,26 @@ export function Card({
   title,
   caption,
   tight,
+  note,
   children,
 }: {
   title: string;
   caption: string;
   tight?: boolean;
+  /** The disclaimer, next to a numeric section (value page row 20). */
+  note?: string;
   children: ReactNode;
 }) {
   return (
     <div className={`border-line rounded-3xl border bg-white md:p-8 ${tight ? "px-3 py-6 sm:p-6" : "p-6"}`}>
-      <h3 className="font-display text-fg text-[21px] font-medium tracking-[-0.01em]">{title}</h3>
-      <p className="text-fg-mid mt-1.5 text-[14px] leading-relaxed">{caption}</p>
+      <h3 className={`font-display text-fg text-[21px] font-medium tracking-[-0.01em] ${tight ? "px-3 sm:px-0" : ""}`}>{title}</h3>
+      <p className={`${MUTED} mt-1.5 text-[14px] leading-relaxed ${tight ? "px-3 sm:px-0" : ""}`}>{caption}</p>
       {children}
+      {note ? (
+        <p className={`border-line ${MUTED} mt-6 border-t pt-4 text-[13px] leading-relaxed ${tight ? "mx-3 sm:mx-0" : ""}`}>
+          {note}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -232,7 +326,7 @@ export function CompareTable({ rows }: { rows: Row[] }) {
   return (
     <table className="mt-5 w-full text-[14px] tabular-nums">
       <thead>
-        <tr className="text-fg-low font-mono-display text-[10px] uppercase tracking-[0.14em]">
+        <tr className={`${MUTED} font-mono-display text-[10px] uppercase tracking-[0.14em]`}>
           <th scope="col" className="pb-2 text-left font-normal">
             <span className="sr-only">Line</span>
           </th>
@@ -250,7 +344,7 @@ export function CompareTable({ rows }: { rows: Row[] }) {
             <th scope="row" className="text-fg py-2.5 pr-3 text-left font-normal">
               {r.total ? <b className="font-semibold">{r.label}</b> : r.label}
             </th>
-            <td className="text-fg-mid py-2.5 text-right">{r.today}</td>
+            <td className={`${MUTED} py-2.5 text-right`}>{r.today}</td>
             <td className={`py-2.5 pl-3 text-right font-medium ${r.better ? "text-[#1F7A50]" : "text-fg"}`}>{r.mso}</td>
           </tr>
         ))}
@@ -272,7 +366,7 @@ export function Steps({ titles, bodies }: { titles: readonly string[]; bodies: s
           </span>
           <div>
             <p className="text-fg text-[16px] font-semibold">{s}</p>
-            <p className="text-fg-mid mt-1 text-[15px] leading-relaxed">{bodies[i]}</p>
+            <p className={`${MUTED} mt-1 text-[15px] leading-relaxed`}>{bodies[i]}</p>
           </div>
         </li>
       ))}
@@ -292,12 +386,18 @@ export function Structure({ boxes, arrows }: { boxes: [Box, Box, Box]; arrows: [
   );
 }
 
-export function Assumptions({ items }: { items: [string, string][] }) {
+export function Assumptions({ items, tag }: { items: [string, string][]; tag?: string }) {
   return (
-    <ul className="mt-5 grid grid-cols-1 gap-x-10 gap-y-3 md:grid-cols-2">
+    <ul className="mt-5 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2">
       {items.map(([k, v]) => (
-        <li key={k} className="text-fg-mid text-[14px] leading-relaxed">
+        <li key={k} className={`${MUTED} text-[14px] leading-relaxed`}>
           <strong className="text-fg font-semibold">{k}:</strong> {v}
+          {/* Value page row 14: every assumption is marked for the pilot. */}
+          {tag ? (
+            <span className="font-mono-display ml-2 inline-block whitespace-nowrap rounded-full border border-[rgba(199,122,30,0.45)] bg-[#FFF6EA] px-2 py-0.5 align-[1px] text-[10px] uppercase tracking-[0.1em] text-[#8A5410]">
+              {tag}
+            </span>
+          ) : null}
         </li>
       ))}
     </ul>
@@ -305,7 +405,7 @@ export function Assumptions({ items }: { items: [string, string][] }) {
 }
 
 export function Muted({ children }: { children: ReactNode }) {
-  return <span className="text-fg-low">{children}</span>;
+  return <span className={MUTED}>{children}</span>;
 }
 
 type Box = { title: string; body: string };

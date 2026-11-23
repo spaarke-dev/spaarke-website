@@ -210,6 +210,38 @@ Before launch (counsel):
 - The SHARES IN group and the "Share in network value" arrow (securities). Both sit behind `SHOW_NETWORK_VALUE` in `content.ts`; set it to `false` to drop them without other edits.
 - The supervision and paralegal wording in the firm box (varies by state).
 
+## Value page change list (2026-11-22)
+
+Source: the owner's `spaarke-value-page-change-list.md` (Downloads). Applied to the law firm estimate, on /services/estimate, in the details modal and in the calculator on /services. Model basis: the firm's MSO is a wholly owned Spaarke subsidiary, with no MSO profit share; firm equity sits in Spaarke and is shown only in words.
+
+| Rows | Applied |
+|---|---|
+| 1, 2, 12 | "Where the savings come from": the annual saving for the whole firm, from $0. The lower fee and a "Base case" total, then new matters and new client services hatched under "Upside (assumption)", then "With the upside". No profit share or equity bars |
+| 3 | Table: the MSO profit and equity rows are gone; partner profit, margin and profit per partner follow the remaining rows (mid-size firm: +$257k base, +$707k with the upside, as the change list derives) |
+| 4, 5 | How it works: step 3 is "Share in the network's growth" with no figures; step 1 says "fixed or per-unit fee, benchmarked to fair market value, about 10% below today's cost" |
+| 6 | The estimate page shows the approved three-box diagram, in a light version |
+| 7, 8 | Deployment "funded by Spaarke"; the MSO value item is deleted |
+| 9, 10 | Card 1 drops the 22% (the MSO's own cost reduction) and adds the five-year saving; card 2 says "Funded by Spaarke: AI platform and migration", with no dollar figure |
+| 11 | "Capacity upside" switch, off by default, labeled as an assumption. It drives card 2, the summary, the table and the URL (`upside=1`) |
+| 13 | "The fee over five years": the fee falls by the glide path each year (3% default, 3% to 5%), with an FMV review marker after year three. "Fixed fee" is now "fixed or per-unit fee" on the department estimate too |
+| 14 | Every assumption is tagged "To validate in pilot". Basis added for the 30% efficiency gain (the BCG and McKinsey figures already cited on /services) and for the 170 hours (a planning figure) |
+| 15 | "Edit the assumptions": fee discount, MSO efficiency gain, freed time used for new matters, and the fee reduction each year. Changed values go into the URL |
+| 16 | Page order: hero, calculator, structure, How the estimate works (savings, fee over five years, today vs with the MSO, how it works, assumptions), closing call to action |
+| 17 | Every figure comes from the model; the copy holds none |
+| 18 | One light theme: the estimate page hero is light. Small gray text on the estimate surfaces is darker (72% black) |
+| 19 | Closing card: "Get an estimate for your firm" and "Request the equity model", both to `/contact?reason=mlo` until a dedicated gate exists |
+| 20 | The short disclaimer sits under the savings chart, the fee chart and the table, and the full one under the calculator |
+| 21, 22 | "Lawyer or other legal professional", "representative US law firms"; "can sell", "own the profit" and "roll-up" are gone |
+| 23 | Not started; copy to follow |
+
+Decisions and open points:
+
+- "Availability varies by state" is left out of every disclaimer, although rows 20 and 34 include it: the owner said the same day that no state restriction applies. Confirm.
+- The efficiency gain changes no firm figure on its own, because the firm's saving is the fee discount. It caps the fee discount instead (the MSO cannot price below its own cost: efficiency less the 8% platform cost). Confirm this is the intended link.
+- The five-year view treats the three-year FMV reset as a review that confirms the glide path. It does not model a fee change at the reset. Confirm the reset mechanics against the fee study (row 13, section D).
+- The 170 hours still needs a cited source; the basis given is a planning figure to be measured in the pilot.
+- Securities counsel: rows 1 to 8, 19 and 20.
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.

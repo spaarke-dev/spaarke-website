@@ -38,7 +38,7 @@ export function DeptDetails({ inputs }: { inputs: DeptInputs }) {
   ];
 
   const howItWorks = [
-    `About ${money(m.scope)} of legal operations, technology, e-billing and support work moves to the MSO. Automation and a shared platform cut its running cost by ${pct(A.efficiency)}, and the department pays a fixed fee of ${money(m.fee)}, ${pct(A.feeDiscount)} less than today.`,
+    `About ${money(m.scope)} of legal operations, technology, e-billing and support work moves to the MSO. Automation and a shared platform cut its running cost by ${pct(A.efficiency)}, and the department pays a fixed or per-unit fee, benchmarked to fair market value, about ${pct(A.feeDiscount)} below today’s cost.`,
     `Lawyers get back about ${pct(A.timeFreed)} of their time. Using half of it on routine work now sent to outside counsel saves about ${money(m.insourced)} a year.`,
     `About ${money(m.routineMoved)} of routine outside counsel work, such as standard contracts and NDAs, goes to the MSO’s AI-enabled team at about ${pct(A.routineCost)} of the cost, saving ${money(m.routineSaving)} a year. Your lawyers review and sign off the work.`,
   ];
@@ -91,7 +91,7 @@ export function DeptDetails({ inputs }: { inputs: DeptInputs }) {
                 body: `Funds the ${money(m.deploymentFunded)} deployment, runs the technology and carries the operating risk.`,
               },
             ]}
-            arrows={[`Fixed fee ${money(m.fee)}`, "Platform license"]}
+            arrows={["Fixed or per-unit fee", "Platform license"]}
           />
         </Card>
 

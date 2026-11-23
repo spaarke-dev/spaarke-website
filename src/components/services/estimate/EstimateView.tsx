@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { estimate as copy } from "@/app/services/content";
+import { StructureDiagram } from "../StructureDiagram";
+import { ClosingCta, MUTED } from "./parts";
 import type { EstimateInputs } from "./model";
 import type { DeptInputs } from "./dept-model";
 import { EstimateCalculator } from "./EstimateCalculator";
@@ -11,8 +14,10 @@ import { useEstimateInputs } from "./state";
 import { DETAILS_ANCHOR, ESTIMATE_PATH, toDeptQuery, toQuery, type EstimateAudience } from "./query";
 
 /**
- * The whole estimate on its own: calculator, then "How the estimate works",
- * for a law firm or a legal department. Rendered by /services/estimate and
+ * The whole estimate on its own, for a law firm or a legal department. The
+ * law firm order follows the value page change list (row 16, 2026-11-22):
+ * calculator, the structure diagram, "How the estimate works" (with today vs
+ * with the MSO and the assumptions), then the closing call to action. Rendered by /services/estimate and
  * by the modal that intercepts it. Inputs from the query string win on
  * arrival; after that, every change is written back to the query string so
  * the page can be reloaded or shared.
@@ -56,7 +61,20 @@ function FirmView({ initial }: { initial: EstimateInputs | null }) {
   return (
     <div className="space-y-16 md:space-y-20">
       <EstimateCalculator inputs={current} onChange={setFirm} detailsHref={`#${DETAILS_ANCHOR}`} />
+      <section aria-labelledby="estimate-structure-title">
+        <h2
+          id="estimate-structure-title"
+          className="font-display text-fg text-[clamp(28px,3.4vw,40px)] font-medium tracking-[-0.02em]"
+        >
+          {copy.structure.title}
+        </h2>
+        <p className={`${MUTED} mt-3 max-w-3xl text-[16px] leading-relaxed`}>{copy.structure.caption}</p>
+        <div className="mt-6">
+          <StructureDiagram audience="firm" tone="light" />
+        </div>
+      </section>
       <EstimateDetails inputs={current} />
+      <ClosingCta {...copy.closing} />
     </div>
   );
 }

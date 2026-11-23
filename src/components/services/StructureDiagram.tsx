@@ -3,7 +3,7 @@
 import { useId, type ComponentType } from "react";
 import { DataTrending16Regular, Gavel16Regular, Megaphone16Regular } from "@fluentui/react-icons";
 import { SHOW_NETWORK_VALUE, structure, type StructureBlock, type StructureGroup } from "@/app/services/content";
-import { useAudience } from "./audience";
+import { useAudienceMaybe, type Audience } from "./audience";
 
 /**
  * "What is Managed Legal Operations" diagram, from the structure visual
@@ -27,26 +27,61 @@ import { useAudience } from "./audience";
  * value arrow runs up a channel on the left. Block heights follow their
  * items, and long items wrap to a second line. The SVG is aria-hidden, so the
  * same content is given to screen readers as text. Site tokens throughout:
- * dark surfaces, site blue for the MSO, green for the operator, amber for
- * money (the handoff's money color), neutral for the firm.
+ * site blue for the MSO, green for the operator, amber for money (the
+ * handoff's money color), neutral for the firm. Dark on /services; light on
+ * the estimate page, which is one light theme (value page row 18).
  */
-
-const FEE = "#F2B56B";
-const SVC = "#82A5EB";
-const INPUT = "#B9B9B4";
-const FG = "#F5F5F5";
-const FG_MID = "rgba(245,245,245,0.66)";
-const FG_LOW = "rgba(245,245,245,0.55)";
-const ITEM = "rgba(245,245,245,0.8)";
-const ITEM_STRONG = "rgba(245,245,245,0.92)";
-const LINE = "rgba(255,255,255,0.14)";
-const SEP = "rgba(255,255,255,0.08)";
-const BG = "#0a0a0a";
-const GREEN = "#5FC79A";
 
 type Rect = [number, number, number, number];
 type FlowKind = "fee" | "input" | "svc" | "owns" | "share";
-const FLOW_COLOR: Record<FlowKind, string> = { fee: FEE, input: INPUT, svc: SVC, owns: GREEN, share: GREEN };
+type Tone = "dark" | "light";
+type BlockColors = { stroke: string; fill: string; accent: string };
+
+interface Palette {
+  fg: string;
+  fgMid: string;
+  item: string;
+  itemStrong: string;
+  line: string;
+  sep: string;
+  pillBg: string;
+  link: string;
+  flow: Record<FlowKind, string>;
+  client: BlockColors;
+  mso: BlockColors;
+  operator: BlockColors;
+}
+
+const PALETTES: Record<Tone, Palette> = {
+  dark: {
+    fg: "#F5F5F5",
+    fgMid: "rgba(245,245,245,0.66)",
+    item: "rgba(245,245,245,0.8)",
+    itemStrong: "rgba(245,245,245,0.92)",
+    line: "rgba(255,255,255,0.14)",
+    sep: "rgba(255,255,255,0.08)",
+    pillBg: "#0a0a0a",
+    link: "#82A5EB",
+    flow: { fee: "#F2B56B", input: "#B9B9B4", svc: "#82A5EB", owns: "#5FC79A", share: "#5FC79A" },
+    client: { stroke: "rgba(255,255,255,0.24)", fill: "#111111", accent: "rgba(245,245,245,0.55)" },
+    mso: { stroke: "rgba(80,120,220,0.75)", fill: "#0f1422", accent: "#82A5EB" },
+    operator: { stroke: "rgba(95,199,154,0.7)", fill: "#0e1a15", accent: "#5FC79A" },
+  },
+  light: {
+    fg: "#0a0a0a",
+    fgMid: "rgba(10,10,10,0.72)",
+    item: "rgba(10,10,10,0.84)",
+    itemStrong: "rgba(10,10,10,0.94)",
+    line: "rgba(10,10,10,0.12)",
+    sep: "rgba(10,10,10,0.08)",
+    pillBg: "#ffffff",
+    link: "#3F5FD9",
+    flow: { fee: "#B86A12", input: "#77776F", svc: "#3F5FD9", owns: "#1F7A50", share: "#1F7A50" },
+    client: { stroke: "rgba(10,10,10,0.22)", fill: "#f6f6f4", accent: "rgba(10,10,10,0.68)" },
+    mso: { stroke: "rgba(80,120,220,0.6)", fill: "#EBF2FF", accent: "#3F5FD9" },
+    operator: { stroke: "rgba(31,122,80,0.5)", fill: "#EAF6EF", accent: "#1F7A50" },
+  },
+};
 
 interface Flow {
   kind: FlowKind;
@@ -275,8 +310,14 @@ function tall(c: StructureBlock, m: StructureBlock, o: StructureBlock, show: Sho
   };
 }
 
-export function StructureDiagram() {
-  const { audience } = useAudience();
+/**
+ * `audience` is for pages outside the /services audience switch (the estimate
+ * page); `tone` picks the dark or light palette.
+ */
+export function StructureDiagram({ audience: forced, tone = "dark" }: { audience?: Audience; tone?: Tone } = {}) {
+  const fromPage = useAudienceMaybe();
+  const audience = forced ?? fromPage ?? "firm";
+  const pal = PALETTES[tone];
   const { client, mso } = structure.blocks[audience];
   const op = structure.operator;
   const f = Object.fromEntries(
@@ -287,12 +328,14 @@ export function StructureDiagram() {
   const equityLink = show.share ? groupsOf(client).find((g) => g.link)?.link : undefined;
 
   return (
-    <div className="border-line-strong rounded-2xl border bg-[rgba(255,255,255,0.02)] p-3 sm:p-5 lg:p-8">
+    <div
+      className={`border-line-strong rounded-2xl border p-3 sm:p-5 lg:p-8 ${tone === "light" ? "bg-white" : "bg-[rgba(255,255,255,0.02)]"}`}
+    >
       <div aria-hidden="true" className="mx-auto hidden max-w-[1060px] md:block">
-        <Diagram layout={wide(client, mso, op, show)} />
+        <Diagram layout={wide(client, mso, op, show)} audience={audience} pal={pal} />
       </div>
       <div aria-hidden="true" className="mx-auto max-w-[420px] md:hidden">
-        <Diagram layout={tall(client, mso, op, show)} />
+        <Diagram layout={tall(client, mso, op, show)} audience={audience} pal={pal} />
       </div>
       <div className="sr-only">
         <p>
@@ -323,7 +366,8 @@ export function StructureDiagram() {
       {equityLink ? (
         <a
           href={equityLink.href}
-          className="sr-only focus:not-sr-only focus:mt-4 focus:inline-block focus:rounded focus:text-[14px] focus:text-[#82A5EB] focus:underline focus:outline-none focus:ring-2 focus:ring-[#5078DC]"
+          style={{ color: pal.link }}
+          className="sr-only focus:not-sr-only focus:mt-4 focus:inline-block focus:rounded focus:text-[14px] focus:underline focus:outline-none focus:ring-2 focus:ring-[#5078DC]"
         >
           {equityLink.label}
         </a>
@@ -332,15 +376,14 @@ export function StructureDiagram() {
   );
 }
 
-function Diagram({ layout: L }: { layout: Layout }) {
-  const { audience } = useAudience();
+function Diagram({ layout: L, audience, pal }: { layout: Layout; audience: Audience; pal: Palette }) {
   const { client, mso } = structure.blocks[audience];
   const id = useId().replace(/:/g, "");
 
   return (
     <svg viewBox={`0 0 ${L.w} ${L.h}`} className="block h-auto w-full">
       <defs>
-        {(Object.keys(FLOW_COLOR) as FlowKind[]).map((k) => (
+        {(Object.keys(pal.flow) as FlowKind[]).map((k) => (
           <marker
             key={k}
             id={`${id}-${k}`}
@@ -351,38 +394,14 @@ function Diagram({ layout: L }: { layout: Layout }) {
             markerHeight="7"
             orient="auto-start-reverse"
           >
-            <path d="M0 0 L10 5 L0 10 z" fill={FLOW_COLOR[k]} />
+            <path d="M0 0 L10 5 L0 10 z" fill={pal.flow[k]} />
           </marker>
         ))}
       </defs>
 
-      <Block
-        rect={L.client}
-        b={client}
-        plan={L.plans.client}
-        stroke="rgba(255,255,255,0.24)"
-        fill="#111111"
-        accent={FG_LOW}
-        dot={FG_LOW}
-      />
-      <Block
-        rect={L.mso}
-        b={mso}
-        plan={L.plans.mso}
-        stroke="rgba(80,120,220,0.75)"
-        fill="#0f1422"
-        accent={SVC}
-        dot={SVC}
-      />
-      <Block
-        rect={L.operator}
-        b={structure.operator}
-        plan={L.plans.operator}
-        stroke="rgba(95,199,154,0.7)"
-        fill="#0e1a15"
-        accent={GREEN}
-        dot={GREEN}
-      />
+      <Block rect={L.client} b={client} plan={L.plans.client} colors={pal.client} pal={pal} />
+      <Block rect={L.mso} b={mso} plan={L.plans.mso} colors={pal.mso} pal={pal} />
+      <Block rect={L.operator} b={structure.operator} plan={L.plans.operator} colors={pal.operator} pal={pal} />
 
       {/* Lines first, then every pill on top, so a pill is never crossed by a line. */}
       {L.flows.map((fl) => (
@@ -390,14 +409,14 @@ function Diagram({ layout: L }: { layout: Layout }) {
           key={fl.kind}
           d={fl.d}
           fill="none"
-          stroke={FLOW_COLOR[fl.kind]}
+          stroke={pal.flow[fl.kind]}
           strokeWidth="2"
           strokeDasharray={fl.kind === "share" ? "6 5" : undefined}
           markerEnd={`url(#${id}-${fl.kind})`}
         />
       ))}
       {L.flows.map((fl) => (
-        <Pill key={fl.kind} flow={fl} width={L.w} />
+        <Pill key={fl.kind} flow={fl} width={L.w} pal={pal} />
       ))}
     </svg>
   );
@@ -417,19 +436,16 @@ function Block({
   rect: [x, y, w, h],
   b,
   plan,
-  stroke,
-  fill,
-  accent,
-  dot,
+  colors: { stroke, fill, accent },
+  pal,
 }: {
   rect: Rect;
   b: StructureBlock;
   plan: BlockPlan;
-  stroke: string;
-  fill: string;
-  accent: string;
-  dot: string;
+  colors: BlockColors;
+  pal: Palette;
 }) {
+  const dot = accent;
   return (
     <g>
       <rect x={x} y={y} width={w} height={h} rx="14" fill={fill} stroke={stroke} />
@@ -444,27 +460,27 @@ function Block({
       >
         {b.eyebrow.toUpperCase()}
       </text>
-      <text x={x + 22} y={y + 60} className="font-display" fontSize="20" fontWeight="500" fill={FG}>
+      <text x={x + 22} y={y + 60} className="font-display" fontSize="20" fontWeight="500" fill={pal.fg}>
         {b.title}
       </text>
-      <text x={x + 22} y={y + SUB_TOP} className="font-body" fontSize="13" fill={FG_MID}>
+      <text x={x + 22} y={y + SUB_TOP} className="font-body" fontSize="13" fill={pal.fgMid}>
         {plan.subLines.map((l, i) => (
           <tspan key={l} x={x + 22} dy={i === 0 ? 0 : SUB_GAP}>
             {l}
           </tspan>
         ))}
       </text>
-      <line x1={x + 22} x2={x + w - 22} y1={plan.divY} y2={plan.divY} stroke={LINE} />
+      <line x1={x + 22} x2={x + w - 22} y1={plan.divY} y2={plan.divY} stroke={pal.line} />
       {plan.groups.map((g, gi) => {
         const strong = g.id === "decides";
         return (
           <g key={g.label ?? gi}>
             {g.sepY !== undefined ? (
-              <line x1={x + 22} x2={x + w - 22} y1={g.sepY} y2={g.sepY} stroke={SEP} />
+              <line x1={x + 22} x2={x + w - 22} y1={g.sepY} y2={g.sepY} stroke={pal.sep} />
             ) : null}
             {g.label ? (
               <>
-                {g.id ? <GroupIcon id={g.id} x={x + 21} y={g.labelY} color={strong ? FG_MID : accent} /> : null}
+                {g.id ? <GroupIcon id={g.id} x={x + 21} y={g.labelY} color={strong ? pal.fgMid : accent} /> : null}
                 <text
                   x={x + (g.id ? 40 : 22)}
                   y={g.labelY}
@@ -472,7 +488,7 @@ function Block({
                   fontSize="10.5"
                   fontWeight="500"
                   letterSpacing="1.3"
-                  fill={strong ? FG : accent}
+                  fill={strong ? pal.fg : accent}
                 >
                   {g.label.toUpperCase()}
                 </text>
@@ -480,13 +496,13 @@ function Block({
             ) : null}
             {g.rows.map(({ s, lines, y: first }) => (
               <g key={s}>
-                <circle cx={x + 26} cy={first - 4} r="2.5" fill={strong ? FG_MID : dot} />
+                <circle cx={x + 26} cy={first - 4} r="2.5" fill={strong ? pal.fgMid : dot} />
                 <text
                   x={x + 38}
                   y={first}
                   className="font-body"
                   fontSize="13.5"
-                  fill={strong ? ITEM_STRONG : ITEM}
+                  fill={strong ? pal.itemStrong : pal.item}
                 >
                   {lines.map((l, i) => (
                     <tspan key={l} x={x + 38} dy={i === 0 ? 0 : WRAP_GAP}>
@@ -504,7 +520,7 @@ function Block({
                   className="font-body hover:underline"
                   fontSize="12.5"
                   fontWeight="500"
-                  fill={SVC}
+                  fill={pal.link}
                 >
                   {g.link.label} →
                 </text>
@@ -517,8 +533,8 @@ function Block({
   );
 }
 
-function Pill({ flow, width }: { flow: Flow; width: number }) {
-  const color = FLOW_COLOR[flow.kind];
+function Pill({ flow, width, pal }: { flow: Flow; width: number; pal: Palette }) {
+  const color = pal.flow[flow.kind];
   const n = flow.lines.length;
   const w = Math.round(Math.max(...flow.lines.map((l) => l.length)) * 6.8 + 22);
   const h = 24 + (n - 1) * 16;
@@ -527,7 +543,7 @@ function Pill({ flow, width }: { flow: Flow; width: number }) {
   const cy = flow.p[1];
   return (
     <g transform={flow.rotate ? `rotate(-90 ${cx} ${cy})` : undefined}>
-      <rect x={cx - w / 2} y={cy - h / 2} width={w} height={h} rx="12" fill={BG} stroke={color} strokeOpacity="0.6" />
+      <rect x={cx - w / 2} y={cy - h / 2} width={w} height={h} rx="12" fill={pal.pillBg} stroke={color} strokeOpacity="0.6" />
       <text
         x={cx}
         y={cy - ((n - 1) * 16) / 2 + 0.5}
@@ -536,7 +552,7 @@ function Pill({ flow, width }: { flow: Flow; width: number }) {
         className="font-body"
         fontSize="12.5"
         fontWeight="500"
-        fill={FG}
+        fill={pal.fg}
       >
         {flow.lines.map((l, i) => (
           <tspan key={l} x={cx} dy={i === 0 ? 0 : 16}>

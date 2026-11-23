@@ -1,6 +1,7 @@
 "use client";
 
 import { money } from "./format";
+import { MUTED } from "./parts";
 
 export interface WaterfallStep {
   label: [string, string];
@@ -8,22 +9,20 @@ export interface WaterfallStep {
   short: [string, string];
   value: number;
   /**
-   * "equity" is a step drawn hatched (a one-time value, not annual profit);
-   * "grand" is a total after the equity step.
+   * "upside" is a step drawn hatched (an assumption, not a result: value page
+   * row 2); "grand" is a total after the upside steps.
    */
   kind: WaterfallKind;
 }
 
-export type WaterfallKind = "base" | "step" | "total" | "equity" | "grand";
+export type WaterfallKind = "base" | "step" | "total" | "upside" | "grand";
 
-const EQUITY = "#7F6FE0";
-
-/** Bar fill per kind; equity is hatched, as in the earlier five-year chart. */
+/** Bar fill per kind; the upside is hatched so it never reads as a result. */
 const FILL: Record<WaterfallKind, string> = {
   base: "#8B8B87",
   step: "#5078DC",
   total: "#2E9E6A",
-  equity: `repeating-linear-gradient(135deg, ${EQUITY} 0 5px, rgba(127,111,224,0.45) 5px 9px)`,
+  upside: "repeating-linear-gradient(135deg, #C77A1E 0 5px, rgba(199,122,30,0.35) 5px 9px)",
   grand: "#4A4A46",
 };
 
@@ -50,7 +49,7 @@ function placeBars(steps: WaterfallStep[], yMin: number) {
   const out: (WaterfallStep & { lo: number; hi: number; text: string })[] = [];
   let run = 0;
   for (const s of steps) {
-    if (s.kind === "step" || s.kind === "equity") {
+    if (s.kind === "step" || s.kind === "upside") {
       const next = run + s.value;
       out.push({ ...s, lo: Math.min(run, next), hi: Math.max(run, next), text: `${s.value >= 0 ? "+" : "-"}${money(Math.abs(s.value))}` });
       run = next;
@@ -65,13 +64,12 @@ function placeBars(steps: WaterfallStep[], yMin: number) {
 /**
  * A bridge from today to with the MSO (handoff section 3, details 1): today,
  * each source of change floating on the running total, then the total with
- * the MSO. Law firms bridge profit per partner upward; legal departments
- * bridge the total cost of legal downward. The y-axis starts at `floor` times
- * the lower of the two ends (0.7 for firms, as in the reference). Values sit
- * above the bars. Plain HTML so it reflows with the page; bars animate as
- * the inputs change. Optional brackets over runs of columns and a legend
- * (the law firm bridge uses both for its equity step, owner review
- * 2026-11-22).
+ * the MSO. Law firms bridge their annual saving upward from $0 (`floor` 0,
+ * value page row 12); legal departments bridge the total cost of legal
+ * downward from `floor` times the lower end. Values sit above the bars. Plain
+ * HTML so it reflows with the page; bars animate as the inputs change.
+ * Optional brackets over runs of columns and a legend (the law firm bridge
+ * uses both to set the capacity upside apart).
  */
 export function Waterfall({
   steps,
@@ -91,7 +89,7 @@ export function Waterfall({
   const top = Math.max(base, total) * 1.08;
   const roughMin = Math.min(base, total) * floor;
   const st = tickStep(top - roughMin);
-  const yMin = Math.floor(roughMin / Math.min(st, 50_000)) * Math.min(st, 50_000);
+  const yMin = floor === 0 ? 0 : Math.floor(roughMin / Math.min(st, 50_000)) * Math.min(st, 50_000);
   const yMax = Math.ceil(top / st) * st;
   const range = yMax - yMin;
   const ticks: number[] = [];
@@ -114,7 +112,7 @@ export function Waterfall({
                   className="flex flex-col items-center"
                   style={{ gridColumn: `${g.from + 1} / ${g.to + 2}` }}
                 >
-                  <span className="font-mono-display text-fg-mid whitespace-nowrap text-[9px] uppercase tracking-[0.12em] sm:text-[11px]">
+                  <span className={`font-mono-display ${MUTED} whitespace-nowrap text-[9px] uppercase tracking-[0.12em] sm:text-[11px]`}>
                     {g.label}
                   </span>
                   <span className="mt-1.5 h-2 w-[calc(100%-8px)] border-x border-t border-[rgba(10,10,10,0.35)]" />
@@ -128,7 +126,7 @@ export function Waterfall({
           {ticks.map((t) => (
             <span
               key={t}
-              className="text-fg-low absolute right-1.5 translate-y-1/2 sm:right-2 text-[10px] tabular-nums sm:text-[12px]"
+              className={`${MUTED} absolute right-1.5 translate-y-1/2 text-[10px] tabular-nums sm:right-2 sm:text-[12px]`}
               style={{ bottom: `${at(t)}%` }}
             >
               {money(t, 1)}
@@ -156,9 +154,8 @@ export function Waterfall({
                     background: FILL[b.kind],
                   }}
                 />
-                {/* Phones: the equity step ends level with the total beside it, so its value sits one line higher. */}
                 <span
-                  className={`text-fg absolute left-1/2 -translate-x-1/2 whitespace-nowrap pb-1 text-[10px] font-bold tabular-nums transition-all duration-500 ease-out sm:text-[12px] ${b.kind === "equity" ? "-translate-y-[18px] sm:translate-y-0" : ""}`}
+                  className="text-fg absolute left-1/2 -translate-x-1/2 whitespace-nowrap pb-1 text-[10px] font-bold tabular-nums transition-all duration-500 ease-out sm:text-[12px]"
                   style={{ bottom: `${at(b.hi)}%` }}
                 >
                   {b.text}
@@ -171,7 +168,7 @@ export function Waterfall({
         <div />
         <div className="border-line grid gap-1 border-t pt-2 sm:gap-4" style={cols}>
           {bars.map((b) => (
-            <span key={b.label.join(" ")} className="text-fg-mid text-center text-[10px] leading-tight sm:text-[12px]">
+            <span key={b.label.join(" ")} className={`${MUTED} text-center text-[10px] leading-tight sm:text-[12px]`}>
               <span className="hidden sm:inline">
                 {b.label[0]}
                 <br />
@@ -187,7 +184,7 @@ export function Waterfall({
         </div>
       </div>
       {legend ? (
-        <ul className="text-fg-mid mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[12px] sm:text-[13px]">
+        <ul className={`${MUTED} mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[12px] sm:text-[13px]`}>
           {legend.map((l) => (
             <li key={l.label} className="flex items-center gap-2">
               <span aria-hidden="true" className="h-3 w-3 shrink-0 rounded-[3px]" style={{ background: FILL[l.kind] }} />

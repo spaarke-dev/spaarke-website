@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { PRESETS, type EstimateInputs } from "./model";
+import { DEFAULT_INPUTS, type EstimateInputs } from "./model";
 import { DEPT_PRESETS, type DeptInputs } from "./dept-model";
 
 /**
@@ -22,7 +22,7 @@ type Ctx = {
 const EstimateContext = createContext<Ctx | null>(null);
 
 export function EstimateProvider({ children }: { children: ReactNode }) {
-  const [firm, setFirm] = useState<EstimateInputs>(PRESETS.mid);
+  const [firm, setFirm] = useState<EstimateInputs>(DEFAULT_INPUTS);
   const [dept, setDept] = useState<DeptInputs>(DEPT_PRESETS.mid);
   return <EstimateContext.Provider value={{ firm, setFirm, dept, setDept }}>{children}</EstimateContext.Provider>;
 }

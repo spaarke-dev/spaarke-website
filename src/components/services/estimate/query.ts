@@ -1,4 +1,4 @@
-import { normalize, type EstimateInputs } from "./model";
+import { ADJUSTABLE, normalize, type AdjustableKey, type EstimateInputs } from "./model";
 import { normalizeDept, type DeptInputs } from "./dept-model";
 
 /**
@@ -6,6 +6,7 @@ import { normalizeDept, type DeptInputs } from "./dept-model";
  * route pages can read the inputs from the query string.
  *
  * Law firm:         /services/estimate?partners=5&attorneys=7&revenue=9000000
+ *                   (plus upside=1, fee, eff, use and glide when changed)
  * Legal department: /services/estimate?audience=corporate&lawyers=15&staff=10&budget=25000000
  */
 
@@ -14,8 +15,16 @@ export const DETAILS_ANCHOR = "how-the-estimate-works";
 
 export type EstimateAudience = "firm" | "corporate";
 
+/** Query keys for the adjustable assumptions, written only when changed. */
+const ADJ_KEYS: Record<AdjustableKey, string> = { feeDiscount: "fee", efficiency: "eff", redeploy: "use", glide: "glide" };
+
 export function toQuery(v: EstimateInputs) {
-  return `partners=${v.partners}&attorneys=${v.attorneys}&revenue=${v.revenue}`;
+  let q = `partners=${v.partners}&attorneys=${v.attorneys}&revenue=${v.revenue}`;
+  if (v.upside) q += "&upside=1";
+  for (const k of Object.keys(ADJ_KEYS) as AdjustableKey[]) {
+    if (v[k] !== ADJUSTABLE[k].def) q += `&${ADJ_KEYS[k]}=${v[k]}`;
+  }
+  return q;
 }
 
 export function toDeptQuery(v: DeptInputs) {
@@ -47,8 +56,13 @@ export function fromQuery(q: Raw): EstimateInputs | null {
   const partners = n(q, "partners");
   const attorneys = n(q, "attorneys");
   const revenue = n(q, "revenue");
-  if (partners === undefined && attorneys === undefined && revenue === undefined) return null;
-  return normalize({ partners, attorneys, revenue });
+  const adj = Object.fromEntries(
+    (Object.keys(ADJ_KEYS) as AdjustableKey[]).map((k) => [k, n(q, ADJ_KEYS[k])]),
+  ) as Partial<Record<AdjustableKey, number>>;
+  const upside = one(q, "upside") === "1";
+  const any = [partners, attorneys, revenue, ...Object.values(adj)].some((v) => v !== undefined) || upside;
+  if (!any) return null;
+  return normalize({ partners, attorneys, revenue, ...adj, upside });
 }
 
 /** Legal department inputs from the query string, clamped; null if none given. */

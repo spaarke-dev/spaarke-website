@@ -25,13 +25,18 @@ export default async function EstimatePage({ searchParams }: Props) {
   const copy = q.audience === "corporate" ? deptEstimate : estimate;
   return (
     <>
-      <section data-tone="dark" className="bg-bg text-fg relative overflow-hidden pb-16 pt-[clamp(120px,16vh,180px)]">
+      {/* One light theme for the whole page (value page row 18). */}
+      <section
+        data-tone="light"
+        className="bg-bg text-fg relative overflow-hidden pb-6 pt-[clamp(72px,10vh,120px)]"
+        style={{ backgroundColor: "#f6f6f4" }}
+      >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
           style={{
             backgroundImage:
-              "radial-gradient(ellipse 75% 60% at 30% 50%, rgba(130,165,235,0.18) 0%, rgba(80,120,220,0.08) 35%, rgba(130,165,235,0.03) 60%, transparent 78%)",
+              "radial-gradient(ellipse 75% 60% at 30% 40%, rgba(80,120,220,0.10) 0%, rgba(80,120,220,0.04) 40%, transparent 75%)",
           }}
         />
         <Shell className="relative">
@@ -44,7 +49,7 @@ export default async function EstimatePage({ searchParams }: Props) {
           </div>
         </Shell>
       </section>
-      <section data-tone="light" className="bg-bg text-fg py-[clamp(56px,8vh,96px)]" style={{ backgroundColor: "#f6f6f4" }}>
+      <section data-tone="light" className="bg-bg text-fg pb-[clamp(56px,8vh,96px)] pt-10" style={{ backgroundColor: "#f6f6f4" }}>
         <Shell>
           <EstimateView {...q} />
         </Shell>

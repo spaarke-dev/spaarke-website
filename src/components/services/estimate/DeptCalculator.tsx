@@ -50,7 +50,7 @@ export function DeptCalculator({
       big: `-${pct(m.savingPct)}`,
       cap: "total cost of legal",
       facts: [
-        [`${money(m.feeSaving)} a year`, "saved on day one through a fixed fee below today’s cost"],
+        [`${money(m.feeSaving)} a year`, "saved on day one through a fixed or per-unit fee below today’s cost"],
         [`${money(m.outside - m.outside2)} a year`, "less spent on outside counsel"],
         [`${money(m.saving)} a year`, `saved in all, ${money(m.budget)} to ${money(m.total2)}`],
       ],
@@ -71,7 +71,7 @@ export function DeptCalculator({
       cap: `saved over ${A.years} years`,
       facts: [
         [money(m.deploymentFunded), "AI platform and migration funded by Spaarke, not the department"],
-        [`${money(m.fee)} a year`, "fixed fee, agreed in advance, so the budget is predictable"],
+        [`${money(m.fee)} a year`, "fixed or per-unit fee, agreed in advance, so the budget is predictable"],
         ["$0", "capital invested by the department"],
       ],
     },

@@ -759,11 +759,15 @@ export const financial = {
 };
 
 /**
- * The MSO value estimate (task 070, handoff 2026-11-22): the law firm view of
- * the financial section and the /services/estimate details page. Copy as in
- * the handoff, in US spelling. Figures are computed in
- * src/components/services/estimate/. Equity figures appear here by the
- * owner's decision and need counsel sign-off before launch (task 051).
+ * The MSO value estimate (task 070): the law firm view of the financial
+ * section and the /services/estimate page. Reworked to the owner's value page
+ * change list (spaarke-value-page-change-list.md, 2026-11-22): the firm's MSO
+ * is a wholly owned Spaarke subsidiary, so there is no MSO profit share and
+ * no equity figure anywhere; the base case is the cost saving alone. Rows 1
+ * to 8, 19 and 20 need securities counsel before launch. "Availability varies
+ * by state" is left out of the disclaimers: the owner confirmed the same day
+ * that no state restriction applies. Figures are computed in
+ * src/components/services/estimate/.
  */
 export const estimate = {
   title: "Run leaner, compete on technology, and build equity",
@@ -780,6 +784,20 @@ export const estimate = {
     attorneys: "Other lawyers and professionals",
     revenue: "Annual revenue",
   },
+  /** Value page row 11: off by default, and labeled as an assumption. */
+  upside: {
+    label: "Capacity upside",
+    note: "An assumption, not a result: new matters from freed lawyer time, plus new client services.",
+  },
+  /** Value page row 15. */
+  assumptionsToggle: { open: "Edit the assumptions", close: "Hide the assumptions", reset: "Reset" },
+  adjustable: {
+    feeDiscount: "MSO fee below today’s cost",
+    efficiency: "MSO efficiency gain",
+    redeploy: "Freed time used for new matters",
+    glide: "Fee reduction each year",
+  },
+  capNote: "The fee discount is capped at what the MSO’s efficiency gain pays for.",
   objectives: [
     { title: "Lower operating cost", question: "Run the firm for less" },
     { title: "Technology edge", question: "Compete with larger firms and AI-first rivals" },
@@ -795,28 +813,49 @@ export const estimate = {
     /** Gated: the contact form, until a dedicated request gate exists. */
     link: { label: "Request the equity model", href: "/contact?reason=mlo" },
   },
-  summary: "in lower operating cost, plus a technology and capacity advantage.",
+  summary: {
+    base: "in lower operating cost, plus a technology and capacity advantage.",
+    /** Shown when the capacity upside is on: "With the capacity upside ... about $X a year in all." */
+    upside: ["With the capacity upside, which is an assumption, about", "a year in all."],
+  },
   detailsCta: "See the details",
-  /**
-   * Row 34, without its "fair-market-value study" (no study exists yet, owner
-   * 2026-11-22). Counsel to approve.
-   */
+  /** Under the calculator. Counsel to approve. */
   disclaimer:
-    "Illustrative estimate based on representative assumptions, not a forecast or an offer of securities. Results depend on the firm and on the MSO fee, benchmarked to fair market value. Availability varies by state.",
+    "Illustrative estimate based on representative assumptions, not a forecast or an offer of securities. Results depend on the firm and on the MSO fee, benchmarked to fair market value.",
+  /** Value page row 20: next to each numeric section. Counsel to approve. */
+  note: "Illustrative estimate based on representative assumptions, not a forecast or an offer of securities.",
+  /** Value page row 6: the approved three-box diagram, right after the calculator (row 16). */
+  structure: {
+    title: "The structure",
+    caption:
+      "The law firm stays 100% lawyer-owned and keeps the practice of law. Spaarke owns and runs the MSO, which handles everything that is not legal advice.",
+  },
   details: {
     title: "How the estimate works",
-    bridgeTitle: "Where the extra profit and equity per partner come from",
+    bridgeTitle: "Where the savings come from",
+    feeTitle: "The fee over five years",
     tableTitle: "Today vs with the MSO",
-    tableCaption: "Annual figures for the whole firm.",
+    tableCaption: {
+      base: "Annual figures for the whole firm, base case: the cost saving alone.",
+      upside: "Annual figures for the whole firm, with the capacity upside on.",
+    },
     stepsTitle: "How it works",
     stepsCaption: "Three changes, no cash from the firm.",
-    steps: ["Run the back office for less", "Turn freed time into new work", "Own the profit and the equity"],
-    structureTitle: "The structure",
-    structureCaption:
-      "Lawyers keep full ownership of the law firm. The MSO handles everything that is not legal advice.",
+    steps: ["Run the back office for less", "Turn freed time into new work", "Share in the network’s growth"],
+    /** Value page row 4: no dollars, percentages or multiples. */
+    equityStep: "Member equity in Spaarke, earned through use. Vested equity is kept if you leave or close.",
     assumptionsTitle: "Our assumptions",
     assumptionsCaption:
-      "Representative figures for US IP boutiques. Your own numbers come from your firm’s costs and a fee benchmarked to fair market value.",
+      "Representative figures for US law firms. Your own numbers come from your firm’s costs and a fee benchmarked to fair market value.",
+    /** Value page row 14. */
+    validate: "To validate in pilot",
+  },
+  /** Value page row 19. */
+  closing: {
+    title: "Your firm’s own numbers",
+    body: "We build the estimate from your firm’s actual costs, in a confidential conversation.",
+    primary: { label: "Get an estimate for your firm", href: "/contact?reason=mlo" },
+    secondary: { label: "Request the equity model", href: "/contact?reason=mlo" },
   },
 };
 

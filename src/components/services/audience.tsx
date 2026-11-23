@@ -77,6 +77,11 @@ export function AudienceProvider({
   return <AudienceContext.Provider value={value}>{children}</AudienceContext.Provider>;
 }
 
+/** The page's audience, or null outside an AudienceProvider (the estimate page). */
+export function useAudienceMaybe(): Audience | null {
+  return useContext(AudienceContext)?.audience ?? null;
+}
+
 export function useAudience(): AudienceValue {
   const ctx = useContext(AudienceContext);
   if (!ctx) throw new Error("useAudience must be used inside <AudienceProvider>");
