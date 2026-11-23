@@ -1,6 +1,7 @@
 "use client";
 
-import { useId } from "react";
+import { useId, type ComponentType } from "react";
+import { DataTrending16Regular, Gavel16Regular, Megaphone16Regular } from "@fluentui/react-icons";
 import { SHOW_NETWORK_VALUE, structure, type StructureBlock, type StructureGroup } from "@/app/services/content";
 import { useAudience } from "./audience";
 
@@ -10,9 +11,13 @@ import { useAudience } from "./audience";
  * 2026-11-22, then rebuilt to the owner's diagram spec the same day
  * (spaarke-structure-diagram-spec.md):
  *
- * - The law firm box groups its items under DECIDES (the most weight, with a
- *   lock), HAS A SAY and SHARES IN, and runs the full height of the MSO and
- *   the operator. Spare height goes between the groups.
+ * - The law firm box groups its items under DECIDES (the most weight), HAS A
+ *   SAY and SHARES IN, each with an icon (gavel, megaphone, trend), and runs
+ *   the full height of the MSO and the operator. Spare height goes between
+ *   the groups.
+ * - Connector labels are two lines, spread evenly down the MSO. The network
+ *   value arrow is centered on the operator. (Owner, 2026-11-22; the "vary by
+ *   state" footnote is out, as no state restriction applies.)
  * - Connectors: the fee and the firm's input go to the MSO, operations and
  *   technology come back, the operator "owns and runs" the MSO, and (law firm
  *   view, behind SHOW_NETWORK_VALUE) a dashed green arrow carries network
@@ -167,8 +172,11 @@ function shareY(p: BlockPlan) {
   return g?.rows[0] ? g.rows[0].y - 4 : null;
 }
 
-/** Pill labels on phones break into two short lines. */
-const pill = (s: string, max?: number) => (max ? wrapItem(s, max) : [s]);
+const GROUP_ICON: Record<StructureGroup["id"], ComponentType<{ className?: string }>> = {
+  decides: Gavel16Regular,
+  say: Megaphone16Regular,
+  shares: DataTrending16Regular,
+};
 
 interface Show {
   input: boolean;
@@ -187,19 +195,21 @@ function wide(c: StructureBlock, m: StructureBlock, o: StructureBlock, show: Sho
   const client = planBlock(c, top, wrap, h - cNatural);
   const operator = planBlock(o, opY, wrap);
   const f = structure.flows;
-  const at = (k: number) => top + Math.round(mso.h * k);
-  const [kFee, kIn, kSvc] = show.input ? [0.3, 0.52, 0.76] : [0.4, 0, 0.68];
+  // Spread evenly down the MSO: quarters with three flows, thirds with two.
+  const n = show.input ? 4 : 3;
+  const at = (i: number) => top + Math.round((mso.h * i) / n);
   const flows: Flow[] = [
-    { kind: "fee", d: `M380 ${at(kFee)} H620`, p: [500, at(kFee)], lines: [f.fee] },
-    { kind: "svc", d: `M620 ${at(kSvc)} H380`, p: [500, at(kSvc)], lines: [f.services] },
-    { kind: "owns", d: `M800 ${opY} V${top + mso.h}`, p: [800, top + mso.h + OWN_GAP / 2], lines: [f.owns] },
+    { kind: "fee", d: `M380 ${at(1)} H620`, p: [500, at(1)], lines: f.fee },
+    { kind: "svc", d: `M620 ${at(n - 1)} H380`, p: [500, at(n - 1)], lines: f.services },
+    { kind: "owns", d: `M800 ${opY} V${top + mso.h}`, p: [800, top + mso.h + OWN_GAP / 2], lines: f.owns },
   ];
   if (show.input) {
-    flows.push({ kind: "input", d: `M380 ${at(kIn)} H620`, p: [500, at(kIn)], lines: pill(f.input, 16) });
+    flows.push({ kind: "input", d: `M380 ${at(2)} H620`, p: [500, at(2)], lines: f.input });
   }
-  const ys = shareY(client);
-  if (show.share && ys !== null) {
-    flows.push({ kind: "share", d: `M620 ${ys} H380`, p: [500, ys], lines: [f.share] });
+  if (show.share) {
+    // Centered on the operator.
+    const ys = opY + Math.round((h - mso.h - OWN_GAP) / 2);
+    flows.push({ kind: "share", d: `M620 ${ys} H380`, p: [500, ys], lines: f.share });
   }
   return {
     w: 1000,
@@ -232,15 +242,15 @@ function tall(c: StructureBlock, m: StructureBlock, o: StructureBlock, show: Sho
   // Staggered so the labels do not overlap.
   const flows: Flow[] = show.input
     ? [
-        { kind: "fee", d: `M${bx + 50} ${a} V${yMso}`, p: [bx + 50, a + 45], lines: pill(f.fee, 16) },
-        { kind: "input", d: `M${mid} ${a} V${yMso}`, p: [mid, a + 105], lines: pill(f.input, 16) },
-        { kind: "svc", d: `M${bx + bw - 50} ${yMso} V${a}`, p: [bx + bw - 50, a + 165], lines: pill(f.services, 16) },
+        { kind: "fee", d: `M${bx + 50} ${a} V${yMso}`, p: [bx + 50, a + 45], lines: f.fee },
+        { kind: "input", d: `M${mid} ${a} V${yMso}`, p: [mid, a + 105], lines: f.input },
+        { kind: "svc", d: `M${bx + bw - 50} ${yMso} V${a}`, p: [bx + bw - 50, a + 165], lines: f.services },
       ]
     : [
-        { kind: "fee", d: `M120 ${a} V${yMso}`, p: [120, a + 60], lines: pill(f.fee, 16) },
-        { kind: "svc", d: `M252 ${yMso} V${a}`, p: [252, a + 120], lines: pill(f.services, 16) },
+        { kind: "fee", d: `M120 ${a} V${yMso}`, p: [120, a + 60], lines: f.fee },
+        { kind: "svc", d: `M252 ${yMso} V${a}`, p: [252, a + 120], lines: f.services },
       ];
-  flows.push({ kind: "owns", d: `M${mid} ${opY} V${msoEnd}`, p: [mid, msoEnd + OWN_GAP / 2], lines: [f.owns] });
+  flows.push({ kind: "owns", d: `M${mid} ${opY} V${msoEnd}`, p: [mid, msoEnd + OWN_GAP / 2], lines: f.owns });
   const ys = shareY(client);
   if (show.share && ys !== null) {
     const cx = bx / 2;
@@ -248,7 +258,8 @@ function tall(c: StructureBlock, m: StructureBlock, o: StructureBlock, show: Sho
       kind: "share",
       d: `M${bx} ${opY + Math.round(operator.h / 2)} H${cx} V${ys} H${bx}`,
       p: [cx, yMso + Math.round(mso.h / 2)],
-      lines: [f.share],
+      // One line here: the channel is too narrow for two.
+      lines: [f.share.join(" ")],
       rotate: true,
     });
   }
@@ -268,7 +279,9 @@ export function StructureDiagram() {
   const { audience } = useAudience();
   const { client, mso } = structure.blocks[audience];
   const op = structure.operator;
-  const f = structure.flows;
+  const f = Object.fromEntries(
+    Object.entries(structure.flows).map(([k, v]) => [k, v.join(" ").toLowerCase()]),
+  ) as Record<keyof typeof structure.flows, string>;
   const firm = audience === "firm";
   const show: Show = { input: firm, share: firm && SHOW_NETWORK_VALUE };
   const equityLink = show.share ? groupsOf(client).find((g) => g.link)?.link : undefined;
@@ -283,9 +296,9 @@ export function StructureDiagram() {
       </div>
       <div className="sr-only">
         <p>
-          {client.title} pays {mso.title} a {f.fee.toLowerCase()}
-          {show.input ? ` and gives it ${f.input.toLowerCase()}` : ""}. {mso.title} provides{" "}
-          {f.services.toLowerCase()} back to {client.title}. {op.title} owns and runs {mso.title}.
+          {client.title} pays {mso.title} a {f.fee}
+          {show.input ? ` and gives it ${f.input}` : ""}. {mso.title} provides {f.services} back to{" "}
+          {client.title}. {op.title} owns and runs {mso.title}.
           {show.share ? ` ${client.title} shares in network value.` : ""}
         </p>
         {[client, mso, op].map((b) => (
@@ -315,7 +328,6 @@ export function StructureDiagram() {
           {equityLink.label}
         </a>
       ) : null}
-      {firm ? <p className="text-fg-low mt-4 text-center text-[13px]">{structure.footnote}</p> : null}
     </div>
   );
 }
@@ -391,17 +403,12 @@ function Diagram({ layout: L }: { layout: Layout }) {
   );
 }
 
-function Lock({ x, y, color }: { x: number; y: number; color: string }) {
-  // A small padlock whose body sits on the label baseline.
+/** A group's icon, 14 units square, sitting on the label baseline. */
+function GroupIcon({ id, x, y, color }: { id: StructureGroup["id"]; x: number; y: number; color: string }) {
+  const Icon = GROUP_ICON[id];
   return (
-    <g>
-      <path
-        d={`M${x + 2} ${y - 6} v-2.5 a2.5 2.5 0 0 1 5 0 v2.5`}
-        fill="none"
-        stroke={color}
-        strokeWidth="1.3"
-      />
-      <rect x={x} y={y - 6.5} width="9" height="7" rx="1.5" fill={color} />
+    <g transform={`translate(${x} ${y - 11}) scale(0.875)`} style={{ color }}>
+      <Icon />
     </g>
   );
 }
@@ -457,9 +464,9 @@ function Block({
             ) : null}
             {g.label ? (
               <>
-                {strong ? <Lock x={x + 22} y={g.labelY} color={FG_MID} /> : null}
+                {g.id ? <GroupIcon id={g.id} x={x + 21} y={g.labelY} color={strong ? FG_MID : accent} /> : null}
                 <text
-                  x={x + (strong ? 37 : 22)}
+                  x={x + (g.id ? 40 : 22)}
                   y={g.labelY}
                   className="font-mono-display"
                   fontSize="10.5"

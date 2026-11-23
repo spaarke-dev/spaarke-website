@@ -200,7 +200,7 @@ Source: the owner's `spaarke-structure-diagram-spec.md` (Downloads). Applied to 
 - Law firm box: subtitle "Your lawyers and legal professionals. Keeps the practice of law."; items grouped under DECIDES (six items, brighter label with a lock), HAS A SAY (three) and SHARES IN ("Share in network value", with "Request the equity model", which goes to `/contact?reason=mlo` until a dedicated gate exists). The box matches the MSO plus the operator in height, and the spare height goes evenly between the groups.
 - Operator subtitle: "Owns and runs your MSO".
 - New connectors: "Owns and runs" (operator up to the MSO, both views); "Input on staff, culture and standards" (firm to MSO, under the fee, law firm view); "Share in network value" (dashed green, operator to the firm's SHARES IN group, law firm view). On phones the dashed arrow runs up a channel on the left.
-- Footnote under the diagram, law firm view: "Availability and structure vary by state."
+- Owner follow-up the same day: connector labels on two lines and spread evenly down the MSO; the network value arrow centered on the operator; icons for the three groups (gavel, megaphone, trend) in place of the lock; the "vary by state" footnote removed, as no state restriction applies.
 - The department view keeps its plain lists and gets only the operator subtitle and the "Owns and runs" connector.
 
 This settles three of the change-list conflicts: row 17 stays "run to your standards" (the spec lists it as unchanged), row 18 stays "Administrative support and other non-legal staff", and row 22 is the green operator box with an "Owns and runs" connector rather than a thin band. Row 19 ("Client confidences and privilege") is in, as "Clients, client confidences and privilege".

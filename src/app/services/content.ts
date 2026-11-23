@@ -195,15 +195,16 @@ export const structure = {
     corporate:
       "The legal department stays part of the company, with its lawyers, judgment and decisions. Its legal operations and technology move into a dedicated management services organization (MSO) that Spaarke owns and runs on its platform. Spaarke funds the transition, so the department makes no upfront investment, and pricing is designed to cost less per unit than doing the same work in-house.",
   } satisfies ByAudience<string>,
+  /** Connector labels, one entry per line of the label (owner, 2026-11-22). */
   flows: {
-    fee: "Fixed or per-unit fee",
-    services: "Operations and technology",
+    fee: ["Fixed or", "per-unit fee"],
+    services: ["Operations and", "technology"],
     /** Operator to MSO, both views. */
-    owns: "Owns and runs",
+    owns: ["Owns and runs"],
     /** Law firm view only: firm to MSO, under the fee. */
-    input: "Input on staff, culture and standards",
-    /** Law firm view only, behind SHOW_NETWORK_VALUE: operator to firm, dashed. */
-    share: "Share in network value",
+    input: ["Input on staff,", "culture and standards"],
+    /** Law firm view only, behind SHOW_NETWORK_VALUE: operator to firm, dashed, centered on the operator. */
+    share: ["Share in", "network value"],
   },
   /** Shown under the MSO in both views. */
   operator: {
@@ -294,8 +295,6 @@ export const structure = {
       },
     },
   } satisfies ByAudience<{ client: StructureBlock; mso: StructureBlock }>,
-  /** Under the diagram, law firm view (spec section 5). */
-  footnote: "Availability and structure vary by state.",
 };
 
 /* ------------------------------------------------------------------ */
