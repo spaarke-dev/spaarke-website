@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040, 053 and 060).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040, 041, 053 and 060).
 //
 //   npm run market:check
 //
@@ -587,6 +587,26 @@ console.log("Pure checks");
   assert.match(calls[0].headers.Prefer, /outlook\.body-content-type="text"/);
 
   ok("the Graph mail client reads metadata only, pages, waits out throttling, names out-of-scope mailboxes and reads failed addresses from bounces (task 040)");
+}
+
+{
+  // Task 041: mailbox registry input.
+  const mb = await import("@/lib/market/mailboxes");
+  const shared = mb.parseNewMailbox({ address: "  Team@Example.test ", kind: "shared" });
+  assert.deepEqual(shared, { address: "team@example.test", label: "team@example.test", kind: "shared", mode: "capture-new", visibility: "general" });
+  const personal = mb.parseNewMailbox({ address: "me@example.test", label: "  My   mailbox ", mode: "" });
+  assert.equal(personal.kind, "personal");
+  assert.equal(personal.mode, "known-only", "a personal mailbox defaults to known contacts only");
+  assert.equal(personal.label, "My mailbox");
+  assert.throws(() => mb.parseNewMailbox({ address: "a@x.test, b@x.test" }), /one mailbox address/);
+  assert.throws(() => mb.parseNewMailbox({ address: "a@x.test", mode: "everything" }), /mode must be one of/);
+  assert.throws(() => mb.parseNewMailbox({ address: "a@x.test", visibility: "public" }), /visibility/);
+  assert.deepEqual(mb.parseMailboxPatch({ enabled: false }), { enabled: false });
+  assert.throws(() => mb.parseMailboxPatch({ address: "other@x.test" }), /Not editable: address/);
+  assert.throws(() => mb.parseMailboxPatch({ enabled: "no" }), /true or false/);
+  assert.throws(() => mb.parseMailboxPatch({}), /Nothing to change/);
+  assert.ok(!mb.isMailboxId("team@example.test") && mb.isMailboxId(keys.emailHash("team@example.test")));
+  ok("mailbox input: one address, known kinds and modes, kind-based defaults, the address fixed after adding (task 041)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -1529,6 +1549,70 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   }
   assert.ok(!log.some((e) => JSON.stringify(e).includes(`ann@${main}`)), "the audit holds no email address");
   ok("contacts at one domain list under one organization; an override moves a domain's contacts and can be undone, audited (FR-04, task 032)");
+}
+
+{
+  // Task 041: the mailbox registry.
+  const mb = await import("@/lib/market/mailboxes");
+  const who = "admin@example.test";
+  const address = addr("inbox", `mb-${run}.example.test`);
+
+  const m = await mb.addMailbox(mb.parseNewMailbox({ address: address.toUpperCase(), kind: "shared", label: "Team" }), who);
+  assert.equal(m.id, keys.emailHash(address), "the row key is the address hash");
+  assert.equal(m.enabled, true);
+  await assert.rejects(mb.addMailbox(mb.parseNewMailbox({ address }), who), (e: unknown) => e instanceof mb.MailboxError && e.status === 409);
+  assert.ok((await mb.listMailboxes()).some((x) => x.id === m.id));
+
+  const paused = await mb.editMailbox(m.id, { enabled: false }, who);
+  assert.equal(paused.enabled, false);
+  assert.ok(!(await mb.enabledMailboxes()).some((x) => x.id === m.id), "a paused mailbox is not synced");
+  await mb.editMailbox(m.id, { enabled: true }, who);
+  const edited = await mb.editMailbox(m.id, { label: "", mode: "known-only" }, who);
+  assert.equal(edited.label, address, "an emptied label falls back to the address");
+  assert.equal(edited.mode, "known-only");
+  await assert.rejects(mb.editMailbox("0".repeat(64), { enabled: false }, who), (e: unknown) => e instanceof mb.MailboxError && e.status === 404);
+
+  // The sync's outcome: an error keeps the last good time; a success clears the error.
+  await mb.recordSync(m.id, {}, new Date("2026-11-22T10:00:00Z"));
+  await mb.recordSync(m.id, { error: "This mailbox is not in the Exchange access scope yet." }, new Date("2026-11-22T10:30:00Z"));
+  let got = await mb.getMailbox(m.id);
+  assert.equal(got?.lastSyncAt, "2026-11-22T10:00:00.000Z");
+  assert.equal(got?.lastError, "This mailbox is not in the Exchange access scope yet.");
+  assert.equal(got?.label, address, "recording a sync keeps the admin's fields");
+  await mb.recordSync(m.id, {}, new Date("2026-11-22T11:00:00Z"));
+  got = await mb.getMailbox(m.id);
+  assert.equal(got?.lastSyncAt, "2026-11-22T11:00:00.000Z");
+  assert.equal(got?.lastError, undefined);
+
+  // Check access, against canned Graph answers.
+  const settings = { tenantId: "t", clientId: "c", clientSecret: "s" };
+  const token = async () => "token";
+  const denied = (async () =>
+    new Response(JSON.stringify({ error: { code: "ErrorAccessDenied", message: "Access is denied." } }), { status: 403 })) as typeof fetch;
+  const fine = (async () => new Response(JSON.stringify({ value: [] }), { status: 200 })) as typeof fetch;
+  const down = (async () => {
+    throw new TypeError("fetch failed");
+  }) as typeof fetch;
+  assert.deepEqual(await mb.checkAccess(got!, { settings, fetch: denied, token }), {
+    ok: false,
+    error: "This mailbox is not in the Exchange access scope yet.",
+  });
+  assert.equal((await mb.getMailbox(m.id))?.checkError, "This mailbox is not in the Exchange access scope yet.");
+  assert.equal((await mb.getMailbox(m.id))?.lastError, undefined, "a check does not touch the sync's error");
+  assert.equal((await mb.checkAccess(got!, { settings, fetch: down, token })).ok, false);
+  assert.deepEqual(await mb.checkAccess(got!, { settings, fetch: fine, token }), { ok: true });
+  got = await mb.getMailbox(m.id);
+  assert.ok(got?.checkedAt && got.checkError === undefined);
+  await assert.rejects(mb.checkAccess(got!, { settings: null }), (e: unknown) => e instanceof mb.MailboxError && e.status === 503);
+
+  await mb.removeMailbox(m.id, who);
+  assert.equal(await mb.getMailbox(m.id), null);
+  await mb.recordSync(m.id, {});
+  assert.equal(await mb.getMailbox(m.id), null, "a sync finishing after a removal does not bring the mailbox back");
+
+  const actions = (await auditLog.listAudit(keys.monthKey(Date.now()), 2000)).filter((e) => e.entityId === m.id).map((e) => e.action);
+  for (const a of ["mailbox.add", "mailbox.pause", "mailbox.resume", "mailbox.edit", "mailbox.remove"]) assert.ok(actions.includes(a), a);
+  ok("mailboxes add, pause, resume, edit and remove with an audit entry each; sync and access-check outcomes are kept apart (task 041)");
 }
 
 {

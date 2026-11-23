@@ -43,7 +43,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 | Task | Title | Depends on | Status |
 |---|---|---|---|
 | [040](040-graph-mail-client.md) | Graph mail client | 003 run in the tenant | done |
-| [041](041-mailbox-registry.md) | Mailbox registry | 002, 010 | not-started |
+| [041](041-mailbox-registry.md) | Mailbox registry | 002, 010 | done |
 | [042](042-sync-engine-and-schedule.md) | Sync engine and schedule | 040, 041, 033, 034 | not-started |
 | [043](043-triage.md) | Triage | 042 | not-started |
 

@@ -96,6 +96,7 @@ For a local test, put the same three `MEET_GRAPH_*` values in `.env.local`. Then
 
 2. Wait until `Application Mail.Read` shows `InScope True`; group changes usually apply within an hour.
 3. Register it at `/admin/mailboxes`. Choose its mode there: `known-only` logs mail only with existing contacts (right for a personal mailbox), and `capture-new` also queues mail from new senders for triage (right for a team inbox).
+4. Press **Check access** on it. "Graph can read it" means the sync will pick it up on its next run.
 
 If you register it before the change applies, the registry shows "This mailbox is not in the Exchange access scope yet," and the sync skips it without affecting the other mailboxes. It picks up on the next run once access applies.
 
