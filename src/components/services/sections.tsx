@@ -319,7 +319,7 @@ function WhatIsMlo() {
         </div>
         {/* The MSO structure visual (handoff 2026-11-22) replaces the allocation diagram. */}
         <Flip className="mt-14">
-          <StructureDiagram />
+          <StructureDiagram title={structure.diagramTitle} />
         </Flip>
 
         {SHOW_BENEFITS ? <Benefits /> : null}

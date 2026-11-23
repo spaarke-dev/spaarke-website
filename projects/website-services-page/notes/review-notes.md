@@ -307,6 +307,22 @@ The owner licensed five Stocksy clips: 3047935, 4621290, 5947223, 5947230 and 75
 - **Hosted in Azure blob storage** (owner, 2026-11-22). The files are in the existing public-read container `videos` in storage account `stspaarkewebsite` (resource group `rg-spaarke-website`), under `services/hero/v1/`, at `https://stspaarkewebsite.blob.core.windows.net/videos/services/hero/v1/hero-N.mp4`. They carry `Cache-Control: public, max-age=31536000, immutable`, so to change a clip, upload to a new folder (`v2`) and update `HERO_MEDIA` in content.ts. Range requests work (Safari needs them). Blob access uses the account key; the signed-in user has no blob data role. The files are never committed (`/public/services/hero-[0-9]*` stays in .gitignore), and neither are the originals in the main checkout's `hero-images` folder. If the files can't load, the hero shows the fallback photo.
 - The 720p sources are a little soft on Retina and large monitors, where the clip is enlarged 1.4x to 2.3x. The right side of the hero shows the video at near full brightness.
 
+## Process section, legal department copy (2026-11-22, draft)
+
+Drafted at the owner's request from change list row 13 ("goals, baseline of cost and response times, services, stakeholder service levels; no fee study or ethics review") and the law firm revisions. For owner review.
+
+| Phase | Steps | Outcome |
+|---|---|---|
+| Design | Goals and a baseline of cost and response times; Choose the services the MSO will deliver; Agree service levels with your stakeholders in the business; Privilege, data security and procurement review; Agree the deployment plan and what Spaarke funds | An agreed design, ready to sign: services, service levels, fee method and governance. |
+| Implement | Set up the MSO and connect it to company systems; Agree the staff transition plan with you; Migrate data and legacy systems; Run old and new side by side before cutover | Unchanged: a cutover planned to avoid any break in service to the business. |
+| Operate | Service levels and regular reporting to the general counsel; Continuous improvement from the operator's center of excellence; Annual governance review; Fee re-benchmarked to fair market value every three years; Technology upgrades included | A lower unit cost, faster responses to the business and technology that keeps pace, year after year. |
+
+No equity step for departments. "Faster responses" rests on the response-time baseline set in Design.
+
+## Diagram title (2026-11-22)
+
+The structure diagram on /services is headed "Management Services Organization Structure" (owner), centered over the diagram, in both audience views (`structure.diagramTitle`, the `title` prop of StructureDiagram). The estimate page keeps its own "The structure" heading above the card, without the in-card title.
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.

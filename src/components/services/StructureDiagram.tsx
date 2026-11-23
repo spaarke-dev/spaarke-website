@@ -306,13 +306,17 @@ function tall(c: StructureBlock, m: StructureBlock, o: StructureBlock, show: Sho
 /**
  * `audience` is for pages outside the /services audience switch (the estimate
  * page); `tone` picks the dark or light palette; `sharesHref` links the
- * SHARES IN item to the equity card where the page has one (round 2, row 4).
+ * SHARES IN item to the equity card where the page has one (round 2, row 4);
+ * `title` heads the card (owner, 2026-11-22: "Management Services
+ * Organization Structure" on /services; the estimate page has its own
+ * heading above the card).
  */
 export function StructureDiagram({
   audience: forced,
   tone = "dark",
   sharesHref,
-}: { audience?: Audience; tone?: Tone; sharesHref?: string } = {}) {
+  title,
+}: { audience?: Audience; tone?: Tone; sharesHref?: string; title?: string } = {}) {
   const fromPage = useAudienceMaybe();
   const audience = forced ?? fromPage ?? "firm";
   const pal = PALETTES[tone];
@@ -330,6 +334,11 @@ export function StructureDiagram({
     <div
       className={`border-line-strong rounded-2xl border p-3 sm:p-5 lg:p-8 ${tone === "light" ? "bg-white" : "bg-[rgba(255,255,255,0.02)]"}`}
     >
+      {title ? (
+        <h3 className="font-display text-fg mx-auto mb-2 max-w-[420px] px-1 pt-3 text-center text-[20px] font-medium tracking-[-0.01em] text-balance md:mb-1 md:max-w-[1060px] md:pt-2 md:text-[24px]">
+          {title}
+        </h3>
+      ) : null}
       <div aria-hidden="true" className="mx-auto hidden max-w-[1060px] md:block">
         <Diagram layout={wide(client, mso, op, show)} audience={audience} pal={pal} sharesHref={sharesHref} />
       </div>

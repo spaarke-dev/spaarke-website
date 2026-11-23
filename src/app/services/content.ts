@@ -198,6 +198,8 @@ export const SHOW_NETWORK_VALUE = true;
  * percentages or multiples anywhere in the diagram.
  */
 export const structure = {
+  /** Heads the diagram's card on /services (owner, 2026-11-22). */
+  diagramTitle: "Management Services Organization Structure",
   title: {
     firm: "Your firm keeps the practice. Spaarke runs the operations.",
     corporate: "Your department keeps the legal work. Spaarke runs the operations.",
@@ -1050,16 +1052,18 @@ export const approach = {
           "Ethics and regulatory review with your counsel",
           "Agree the deployment plan and what Spaarke funds",
         ],
+        // Process change list row 13 (owner's brief, drafted 2026-11-22): no fee study or ethics review.
         corporate: [
-          "Goals and a baseline of spend, matters and outside counsel use",
+          "Goals and a baseline of cost and response times",
           "Choose the services the MSO will deliver",
-          "Agree service levels and a fair-market-value fee",
-          "Privilege, data and procurement review",
+          "Agree service levels with your stakeholders in the business",
+          "Privilege, data security and procurement review",
+          "Agree the deployment plan and what Spaarke funds",
         ],
       },
       outcome: {
         firm: "An agreed design, ready to sign: services, service levels, fee method and governance.",
-        corporate: "A signed design: services, service levels and governance.",
+        corporate: "An agreed design, ready to sign: services, service levels, fee method and governance.",
       },
     },
     {
@@ -1076,7 +1080,8 @@ export const approach = {
         ],
         corporate: [
           "Set up the MSO and connect it to company systems",
-          "Move operations and technology work across",
+          "Agree the staff transition plan with you",
+          "Migrate data and legacy systems",
           "Run old and new side by side before cutover",
         ],
       },
@@ -1104,11 +1109,13 @@ export const approach = {
           "Service levels and regular reporting to the general counsel",
           "Continuous improvement from the operator’s center of excellence",
           "Annual governance review",
+          "Fee re-benchmarked to fair market value every three years",
+          "Technology upgrades included",
         ],
       },
       outcome: {
         firm: "A lower unit cost and technology that keeps pace, year after year.",
-        corporate: "Lower cost per matter and stronger control, year after year.",
+        corporate: "A lower unit cost, faster responses to the business and technology that keeps pace, year after year.",
       },
     },
   ] as Phase[],
