@@ -45,7 +45,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 | [040](040-graph-mail-client.md) | Graph mail client | 003 run in the tenant | done |
 | [041](041-mailbox-registry.md) | Mailbox registry | 002, 010 | done |
 | [042](042-sync-engine-and-schedule.md) | Sync engine and schedule | 040, 041, 033, 034 | done |
-| [043](043-triage.md) | Triage | 042 | not-started |
+| [043](043-triage.md) | Triage | 042 | done |
 
 ## Phase 5: Imports and backfill
 

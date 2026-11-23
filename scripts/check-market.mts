@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 042, 053 and 060).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 053 and 060).
 //
 //   npm run market:check
 //
@@ -630,6 +630,40 @@ console.log("Pure checks");
   assert.equal(tri.messageKey("<m@x>", "box1", "g1"), tri.messageKey("<m@x>", "box2", "g2"), "one message in two mailboxes is one key");
   assert.notEqual(tri.messageKey(undefined, "box1", "g1"), tri.messageKey(undefined, "box2", "g1"));
   ok("mail sync: counterparts by direction, triage skips automated and internal senders, overlap and first lookback (task 042)");
+}
+
+{
+  // Task 043: grouping the triage queue by sender.
+  const tri = await import("@/lib/market/triage");
+  const row = (pk: string, rk: string, sender: string, at: string, mailboxId: string, name?: string) => ({
+    partitionKey: pk,
+    rowKey: rk,
+    sender,
+    name,
+    subject: `Subject ${rk}`,
+    receivedAt: at,
+    mailboxId,
+    mailbox: "team@example.test",
+    state: "new" as const,
+    queuedAt: at,
+  });
+  const vis = new Map([
+    ["general-box", "general" as const],
+    ["investor-box", "investor" as const],
+  ]);
+  const groups = tri.groupBySender(
+    [
+      row("a", "1", "ann@acme.test", "2026-11-20T10:00:00Z", "general-box"),
+      row("a", "2", "ann@acme.test", "2026-11-22T10:00:00Z", "general-box", "Ann Acme"),
+      row("b", "3", "bo@fund.test", "2026-11-21T10:00:00Z", "investor-box"),
+    ],
+    vis,
+  );
+  assert.deepEqual(groups.map((g) => [g.id, g.messages.length, g.visibility]), [["a", 2, "general"], ["b", 1, "investor"]]);
+  assert.equal(groups[0].name, "Ann Acme");
+  assert.equal(groups[0].domain, "acme.test");
+  assert.equal(groups[0].messages[0].key, "2", "newest message first");
+  ok("triage groups queued mail by sender, newest first; a sender from an investor mailbox is investor-only (task 043)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -1742,6 +1776,105 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
 
   for (const m of [personal, shared, deniedBox]) await mb.removeMailbox(m.id, who);
   ok("mail sync logs known-contact mail once, logs bounces, queues new senders only for a shared inbox, closes follow-ups, and a failing mailbox does not stop the others (task 042)");
+}
+
+{
+  // Task 043: accept, link, dismiss and clean up the triage queue.
+  const mb = await import("@/lib/market/mailboxes");
+  const tri = await import("@/lib/market/triage");
+  const mk = await import("@/lib/market/mail-keys");
+  const who = "admin@example.test";
+  const both = ["admin", "investor"];
+  const general = ["admin"];
+  const dom = `tri-${run}.example.test`;
+  const other = `trio-${run}.example.test`;
+
+  const team = await mb.addMailbox(mb.parseNewMailbox({ address: `team@own3-${run}.example.test`, kind: "shared" }), who);
+  const lp = await mb.addMailbox(mb.parseNewMailbox({ address: `lp@own3-${run}.example.test`, kind: "shared", visibility: "investor" }), who);
+  const at = (h: number) => new Date(Date.now() - h * 3_600_000).toISOString();
+  const q = (sender: string, key: string, h: number, box = team, name?: string) =>
+    tri.queueTriage({ sender, name, subject: `About ${key}`, receivedAt: at(h), mailboxId: box.id, mailbox: box.address, messageKey: `${key}-${run}` });
+  const sid = (email: string) => keys.emailHash(email);
+
+  assert.ok(await q(addr("lead", dom), "m1", 5, team, "Lea Lead"));
+  assert.ok(await q(addr("lead", dom), "m2", 4));
+  assert.equal(await q(addr("lead", dom), "m2", 4), false, "a message is queued once");
+  await q(addr("alias", dom), "m3", 3);
+  await q(addr("spam1", other), "m4", 2);
+  await q(addr("spam2", other), "m5", 2);
+  await q(`someone-${run}@gmail.com`, "m6", 1);
+  await q(addr("fund", dom), "m7", 1, lp);
+
+  let list = await tri.listTriage(both);
+  const mine = (l: typeof list) => l.filter((s) => [dom, other].includes(s.domain) || s.sender.endsWith(`-${run}@gmail.com`));
+  assert.equal(mine(list).length, 6);
+  assert.ok(!mine(await tri.listTriage(general)).some((s) => s.sender === addr("fund", dom)), "an investor mailbox's sender is hidden without the role");
+  await assert.rejects(tri.acceptSender(sid(addr("fund", dom)), general, who), (e: unknown) => e instanceof tri.TriageError && e.status === 404);
+
+  // Accept: one contact, one activity per queued message, the queue emptied.
+  const acc = await tri.acceptSender(sid(addr("lead", dom)), both, who);
+  assert.ok(acc.created);
+  assert.equal(acc.activities, 2);
+  const lead = await contacts.findContactByEmail(addr("lead", dom));
+  assert.equal(lead?.name, "Lea Lead");
+  assert.equal(lead?.source, "email.received");
+  const acts = await activity.listContactActivities(acc.contactId);
+  assert.deepEqual(acts.map((a) => a.type), ["email.received", "email.received"]);
+  assert.ok(acts.every((a) => a.mailbox === team.address && a.subject?.startsWith("About")));
+  const again = await activity.recordActivity({
+    type: "email.received",
+    source: mk.SYNC_SOURCE,
+    sourceId: mk.emailSourceId("email.received", `m1-${run}`, addr("lead", dom)),
+    occurredAt: at(5),
+    contactId: acc.contactId,
+  });
+  assert.equal(again.status, "duplicate", "the sync seeing the same message later logs nothing new");
+  await assert.rejects(tri.acceptSender(sid(addr("lead", dom)), both, who), (e: unknown) => e instanceof tri.TriageError && e.status === 404);
+
+  // Investor mailbox: the accepted contact is investor-only.
+  const fund = await tri.acceptSender(sid(addr("fund", dom)), both, who);
+  assert.equal((await contacts.getContact(fund.contactId))?.visibility, "investor");
+
+  // Link: the sender becomes another address of an existing contact.
+  await assert.rejects(tri.linkSender(sid(addr("alias", dom)), addr("nobody", dom), both, who), (e: unknown) => e instanceof tri.TriageError && e.status === 404);
+  const linked = await tri.linkSender(sid(addr("alias", dom)), addr("lead", dom), both, who);
+  assert.equal(linked.contactId, acc.contactId);
+  assert.equal(linked.activities, 1);
+  assert.equal((await contacts.findContactByEmail(addr("alias", dom)))?.id, acc.contactId, "the alias now finds the contact");
+
+  // Dismiss: a sender, then a domain; a free-mail domain only as a sender.
+  await assert.rejects(tri.dismissSender(sid(`someone-${run}@gmail.com`), "domain", both, who), (e: unknown) => e instanceof tri.TriageError && e.status === 400);
+  const ds = await tri.dismissSender(sid(`someone-${run}@gmail.com`), "sender", both, who);
+  assert.equal(ds.dismissed, 1);
+  assert.ok(await tri.isBlocked(`someone-${run}@gmail.com`));
+  assert.ok(!(await tri.isBlocked(`another-${run}@gmail.com`)), "dismissing a sender does not block their provider");
+  const dd = await tri.dismissSender(sid(addr("spam1", other)), "domain", both, who);
+  assert.deepEqual([dd.domain, dd.dismissed], [other, 2], "both waiting senders at the domain are dismissed");
+  assert.ok(await tri.isBlocked(addr("someone-new", other)), "a new sender at a dismissed domain is blocked");
+  assert.equal(mine(await tri.listTriage(both)).length, 0, "nothing of this run is left waiting");
+  assert.equal(await contacts.findContactByEmail(addr("spam1", other)), null, "dismissing creates no contact");
+
+  // Cleanup after 30 days: the dismissed entries go; the blocks stay.
+  const t = await getTable("triage");
+  const dismissedRows = async () => {
+    let n = 0;
+    for (const pk of [sid(addr("spam1", other)), sid(addr("spam2", other)), sid(`someone-${run}@gmail.com`)]) {
+      for await (const _ of t!.listEntities({ queryOptions: { filter: `PartitionKey eq '${pk}'` } })) n++;
+    }
+    return n;
+  };
+  assert.equal(await dismissedRows(), 3);
+  await tri.cleanupDismissed(new Date(Date.now() + 29 * 86_400_000));
+  assert.equal(await dismissedRows(), 3, "kept for 30 days");
+  await tri.cleanupDismissed(new Date(Date.now() + 31 * 86_400_000));
+  assert.equal(await dismissedRows(), 0);
+  assert.ok(await tri.isBlocked(addr("spam2", other)));
+
+  const actions = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).map((e) => e.action);
+  for (const a of ["triage.accept", "triage.link", "triage.dismiss_sender", "triage.dismiss_domain"]) assert.ok(actions.includes(a), a);
+
+  for (const m of [team, lp]) await mb.removeMailbox(m.id, who);
+  ok("triage accepts a sender into one contact with their mail, links one to an existing contact, dismisses a sender or a domain for good, and deletes dismissed entries after 30 days (task 043)");
 }
 
 {
