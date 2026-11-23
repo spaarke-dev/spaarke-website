@@ -10,9 +10,8 @@ const description =
 export const metadata: Metadata = {
   title: "Managed Legal Operations",
   description,
-  // Draft: kept out of search until counsel has reviewed the copy, the
-  // function labels and the FAQ answers (design.md section 0, task 052).
-  robots: { index: false, follow: false },
+  // Indexed from 2026-11-22 at the owner's request (was noindex pending
+  // counsel review of the copy, function labels and FAQ answers, task 052).
   openGraph: {
     title: "Spaarke Managed Legal Operations",
     description,

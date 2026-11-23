@@ -7,6 +7,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     "",
     "/platform",
+    "/services",
+    "/services/estimate",
     "/why-spaarke",
     "/accelerator",
     "/accelerator/brief",
@@ -31,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority:
       path === ""
         ? 1
-        : path === "/platform" || path === "/why-spaarke"
+        : path === "/platform" || path === "/services" || path === "/why-spaarke"
           ? 0.9
           : 0.5,
   }));
