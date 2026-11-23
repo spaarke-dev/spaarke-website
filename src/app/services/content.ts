@@ -16,8 +16,8 @@
  *    never tied to legal fees (owner decision 2026-11-22).
  *  - Every statistic carries a source. `verification` records what must be
  *    checked against the primary report before launch.
- * Counsel reviews final copy, function labels and FAQ answers before the
- * page is indexed. Run `npm run voice:lint -- src/app/services/content.ts`.
+ * The page is indexed from 2026-11-22 (owner's call); counsel review of the
+ * copy, function labels and FAQ answers is still to come. Run `npm run voice:lint -- src/app/services/content.ts`.
  */
 import type { ByAudience } from "@/components/services/audience-types";
 

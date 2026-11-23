@@ -7,8 +7,7 @@ import { parseEstimateQuery } from "@/components/services/estimate/query";
 export const metadata: Metadata = {
   title: "MSO value estimate",
   description: estimate.lede,
-  // Draft, like /services: kept out of search until counsel review (task 051).
-  robots: { index: false, follow: false },
+  // Indexed with /services from 2026-11-22 (owner); was noindex pending counsel review (task 051).
 };
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
