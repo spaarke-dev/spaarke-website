@@ -17,5 +17,5 @@ export const microsoftNativeContent: MicrosoftNativeContent = {
     line2: "Designed for Legal IQ.",
   },
   intro:
-    "Spaarke connects legal work across your Microsoft environment—so Copilot can understand the full context of legal operations.",
+    "Spaarke connects legal work across your Microsoft environment, so Copilot can understand the full context of legal operations.",
 };

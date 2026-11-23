@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { Heading, Lede, Shell } from "@/components/primitives";
+import { Eyebrow, Heading, Lede, Shell } from "@/components/primitives";
 import { ArchitectureCompareSlider } from "@/components/ArchitectureCompareSlider";
 
 // Read the slim diagram SVGs at module load. The slider needs the
@@ -47,7 +47,8 @@ export function DeploymentModels() {
       <Shell>
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12 lg:gap-16">
           <div className="min-w-0 md:col-span-1">
-            <Heading level={2}>
+            <Eyebrow>Deployment options</Eyebrow>
+            <Heading level={2} className="mt-5">
               Your data.
               <br />
               Your content.
@@ -71,7 +72,7 @@ export function DeploymentModels() {
             </Lede>
             <Lede className="w-full">
               Most systems require you to move your data and AI processing into
-              their environment&mdash;with limited visibility or control.
+              their environment, with limited visibility or control.
             </Lede>
             <Lede className="w-full">
               Spaarke is the only legal SaaS solution that offers the option of
@@ -80,10 +81,11 @@ export function DeploymentModels() {
           </div>
         </div>
 
-        {/* Centered subtitle introducing the diagram */}
-        <div className="mt-16 text-center md:mt-24">
+        {/* Subtitle introducing the diagram, left-aligned like the
+            Services diagram titles. */}
+        <div className="mt-16 md:mt-24">
           <h3 className="font-display text-fg text-3xl font-medium leading-tight tracking-tight md:text-4xl lg:text-[44px]">
-            One Platform. Two deployment models.
+            One platform. Two deployment models.
           </h3>
         </div>
 

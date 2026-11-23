@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { Heading, Lede, Shell } from "@/components/primitives";
+import { Eyebrow, Heading, Lede, Shell } from "@/components/primitives";
 import { InlineSvg } from "@/components/InlineSvg";
 import { microsoftNativeContent } from "@/content/home/microsoft-native";
 
@@ -34,7 +34,8 @@ export function MicrosoftNative() {
             right block. */}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12 lg:gap-16">
           <div className="md:col-span-1 min-w-0">
-            <Heading level={2}>
+            <Eyebrow>Legal IQ</Eyebrow>
+            <Heading level={2} className="mt-5">
               {heading.line1}
               <br />
               <span className="text-fg-mid">{heading.line2}</span>

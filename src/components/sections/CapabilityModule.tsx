@@ -73,11 +73,11 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
             <h3 className="font-display text-fg text-3xl font-medium leading-tight tracking-tight md:text-4xl lg:text-[44px]">
               {capability.name}
             </h3>
-            <p className="font-display text-fg-mid mt-4 text-[17px] font-normal leading-relaxed md:whitespace-nowrap md:text-[19px]">
+            <p className="font-display text-fg-mid mt-4 text-[17px] font-normal leading-relaxed text-pretty md:text-[19px]">
               {capability.description}
             </p>
             {capability.tagline && (
-              <p className="font-display text-fg-mid mt-2 text-[17px] font-normal italic leading-relaxed md:whitespace-nowrap md:text-[19px]">
+              <p className="font-display text-fg-mid mt-2 text-[17px] font-normal italic leading-relaxed text-pretty md:text-[19px]">
                 {capability.tagline}
               </p>
             )}
@@ -90,13 +90,15 @@ export function CapabilityModule({ capability }: { capability: Capability }) {
                 bottom of taller screenshots without scaling them up. */}
             <div>
               <div
-                className="relative overflow-hidden rounded-lg"
+                className="relative overflow-hidden rounded-xl"
                 style={{
                   border: "1px solid rgba(10,10,10,0.10)",
                   backgroundColor: "#ffffff",
                   aspectRatio: "4 / 3",
+                  // Screens keep a light shadow so they read as screens;
+                  // lighter than before to match the Services frames.
                   boxShadow:
-                    "0 24px 48px -12px rgba(15, 23, 42, 0.18), 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.06)",
+                    "0 12px 32px -12px rgba(15, 23, 42, 0.14), 0 1px 2px rgba(15, 23, 42, 0.05)",
                 }}
               >
                 <Image

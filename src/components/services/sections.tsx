@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, type CSSProperties, type ReactNode } from "react";
-import { Button, Eyebrow, Heading, Lede, Shell } from "@/components/primitives";
+import { Button, Eyebrow, Heading, Lede, SectionHead, Shell } from "@/components/primitives";
 import {
   approach,
   closing,
@@ -95,35 +95,6 @@ function Band({
     >
       {children}
     </section>
-  );
-}
-
-function SectionHead({
-  eyebrow,
-  title,
-  intro,
-  center,
-  eyebrowClassName,
-}: {
-  eyebrow: string;
-  /** Process change list row 14: a darker eyebrow where the band needs more contrast. */
-  eyebrowClassName?: string;
-  title: ReactNode;
-  intro?: ReactNode;
-  center?: boolean;
-}) {
-  return (
-    <div className={center ? "mx-auto max-w-4xl text-center" : "max-w-4xl"}>
-      <Eyebrow className={eyebrowClassName}>{eyebrow}</Eyebrow>
-      <Heading level={2} className="mt-5 text-balance">
-        {title}
-      </Heading>
-      {intro ? (
-        <div className={center ? "mx-auto mt-6 max-w-3xl" : "mt-6 max-w-3xl"}>
-          <Lede>{intro}</Lede>
-        </div>
-      ) : null}
-    </div>
   );
 }
 

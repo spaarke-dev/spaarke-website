@@ -21,14 +21,14 @@ export type HeroContent = {
 export const heroContent: HeroContent = {
   headline: { line1: "Legal Operations", line2: "Intelligence." },
   subhead:
-    "A unified platform built natively on Microsoft—connecting legal work, data, and AI across matters, documents, spend, and collaboration.",
+    "A unified platform built natively on Microsoft, connecting legal work, data, and AI across matters, documents, spend, and collaboration.",
   kicker: {
     strong: "Built for AI across the entire lifecycle.",
     muted: "Not bolted on.",
   },
   screenshot: {
     src: "/brand/hero/hero-workspace-dark.png",
-    alt: "Spaarke Corporate Counsel workspace — dashboard with matters, projects, and Copilot panel",
+    alt: "Spaarke Corporate Counsel workspace: dashboard with matters, projects, and Copilot panel",
     width: 2400,
     height: 1500,
   },

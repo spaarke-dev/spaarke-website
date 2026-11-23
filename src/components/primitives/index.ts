@@ -16,3 +16,4 @@ export { Shell } from "./Shell";
 export { Slab } from "./Slab";
 export { Button } from "./Button";
 export { PageHeader } from "./PageHeader";
+export { SectionHead } from "./SectionHead";

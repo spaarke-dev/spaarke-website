@@ -1,4 +1,4 @@
-import { Heading, Lede, Shell, Slab } from "@/components/primitives";
+import { SectionHead, Shell, Slab } from "@/components/primitives";
 import { ProductChrome } from "@/components/ProductChrome";
 import { loiContent } from "@/content/home/loi-diagram";
 
@@ -10,23 +10,11 @@ export function LOIDiagram() {
   return (
     <Slab tone="light" className="relative overflow-hidden">
       <Shell>
-        {/* Heading + intro — no max-w wrapper so line 2 doesn't
-            overflow a narrower container; both lines center inside
-            Shell's width. */}
-        <div className="relative text-center">
-          <Heading level={2}>
-            {heading.line1}
-            <br />
-            <span className="md:whitespace-nowrap">{heading.line2}</span>
-          </Heading>
-          <div className="mx-auto mt-6 max-w-5xl">
-            <Lede>
-              <span className="md:whitespace-nowrap">{intro.line1}</span>
-              <br />
-              <span className="md:whitespace-nowrap">{intro.line2}</span>
-            </Lede>
-          </div>
-        </div>
+        <SectionHead
+          eyebrow="One connected platform"
+          title={`${heading.line1} ${heading.line2}`}
+          intro={`${intro.line1} ${intro.line2}`}
+        />
 
         {/* Centered platform mockup — explicit dark colors so it stays
             dark inside this light section (parent's data-tone="light"

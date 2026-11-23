@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { IsometricScroller } from "@/components/IsometricScroller";
 import { TakeTourCTAs } from "@/components/TakeTourCTAs";
-import { Button } from "@/components/primitives";
+import { Button, SectionHead } from "@/components/primitives";
 import { InlineSvg } from "@/components/InlineSvg";
 import {
   Pillars,
@@ -96,7 +96,7 @@ export default function Platform() {
                 color: "rgba(10, 10, 10, 0.66)",
               }}
             >
-              All your legal work—connected.
+              All your legal work, connected.
             </p>
             <TakeTourCTAs
               recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
@@ -109,13 +109,7 @@ export default function Platform() {
       </section>
 
       <Pillars
-        title={
-          <>
-            The Legal IQ system
-            <br />
-            of record
-          </>
-        }
+        title="The Legal IQ system of record"
         subtitle="A single system where legal work, data, and decisions come together."
       />
 
@@ -125,7 +119,7 @@ export default function Platform() {
           visual moment as the modules below. */}
       <Capabilities
         title="Your ultimate system of truth"
-        subtitle="Everything your legal team needs—built into one system."
+        subtitle="Everything your legal team needs, built into one system."
       />
       <SpaarkeAI />
       <DeploymentModels />
@@ -156,27 +150,11 @@ function SpaarkeAI() {
         className="mx-auto max-w-[1440px] px-[var(--spacing-shell-x)]"
         style={SPAARKE_AI_DARK_TOKENS}
       >
-        <div className="mx-auto max-w-5xl text-center">
-          <h2
-            className="font-display text-fg font-medium leading-[1.05] tracking-[-0.025em] text-balance"
-            style={{ fontSize: "clamp(34px, 4.5vw, 64px)" }}
-          >
-            Legal AI built into the system
-            <br />
-            —not bolted on
-          </h2>
-          <p
-            className="font-body text-fg-mid mx-auto mt-8 max-w-3xl"
-            style={{
-              fontSize: "clamp(18px, 1.4vw, 25px)",
-              lineHeight: 1.5,
-            }}
-          >
-            Spaarke AI brings generative, agentic, autonomous capabilities
-            <br />
-            into the legal operations platform.
-          </p>
-        </div>
+        <SectionHead
+          eyebrow="Spaarke AI"
+          title="Legal AI built into the system. Not bolted on."
+          intro="Spaarke AI brings generative, agentic, autonomous capabilities into the legal operations platform."
+        />
 
         {/* Architecture diagram — full-width inside the section's
             shell padding, dark-pane treatment matching the Pillars
@@ -185,15 +163,7 @@ function SpaarkeAI() {
             the diagram is dense reference content with small text
             labels that don't read on phones; a short prose summary
             substitutes there. */}
-        <div
-          className="mt-16 hidden overflow-hidden rounded-3xl border md:mt-20 md:block"
-          style={{
-            backgroundColor: "#111111",
-            borderColor: "rgba(255, 255, 255, 0.08)",
-            boxShadow:
-              "0 30px 80px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.06)",
-          }}
-        >
+        <div className="border-line-strong mt-14 hidden overflow-hidden rounded-2xl border bg-[rgba(255,255,255,0.02)] md:mt-16 md:block">
           <div className="p-3 sm:p-4 md:p-6">
             {/* Inlined via InlineSvg so the slimmed SVG's external
                 <image href> references resolve at the document level —
@@ -212,14 +182,14 @@ function SpaarkeAI() {
         {/* Mobile prose substitute — same content as the diagram,
             optimized for narrow viewports. */}
         <p
-          className="font-body text-fg-mid mx-auto mt-12 max-w-md text-center md:hidden"
+          className="font-body text-fg-mid mt-10 max-w-md md:hidden"
           style={{ fontSize: "16px", lineHeight: 1.6 }}
         >
           Spaarke is built around three core layers: Foundry IQ for
           grounding and operational memory, the Microsoft Agent
           Framework for orchestration and execution, and Microsoft
-          Power Platform and Microsoft 365 for the user
-          experience—surfacing as generative, agentic, and autonomous
+          Power Platform and Microsoft 365 for the user experience.
+          Together they surface as generative, agentic, and autonomous
           capabilities across Teams, Outlook, Word, SharePoint, and
           Microsoft 365 Copilot.
         </p>
