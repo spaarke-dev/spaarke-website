@@ -240,7 +240,7 @@ export function TakeTourCTAs({
               : "rgba(245,245,245,0.45)",
         }}
       >
-        Protected by reCAPTCHA — Google{" "}
+        Protected by reCAPTCHA. Google{" "}
         <a
           href="https://policies.google.com/privacy"
           target="_blank"

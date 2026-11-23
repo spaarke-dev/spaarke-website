@@ -1,10 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
-import { Heading, Lede, Shell } from "@/components/primitives";
+import { SectionHead, Shell } from "@/components/primitives";
 import { InlineSvg } from "@/components/InlineSvg";
 
 type PillarsProps = {
-  /** Centered title displayed above the architecture diagram. */
+  /** Title displayed above the architecture diagram. */
   title?: ReactNode;
+  /** Mono label above the title. */
+  eyebrow?: string;
   /** Optional subtitle / lede beneath the title. */
   subtitle?: string;
 };
@@ -25,39 +27,19 @@ const DARK_ZONE_STYLE = {
   "--v2-fg-mid": "rgba(255, 255, 255, 0.7)",
 } as CSSProperties;
 
-export function Pillars({ title, subtitle }: PillarsProps = {}) {
+export function Pillars({ title, subtitle, eyebrow = "Platform architecture" }: PillarsProps = {}) {
   return (
     <section data-tone="dark" style={SECTION_STYLE}>
       <Shell>
-        {(title || subtitle) && (
-          <div className="text-center" style={DARK_ZONE_STYLE}>
-            {title && <Heading level={2}>{title}</Heading>}
-            {subtitle && (
-              <div className="mt-6">
-                <Lede className="md:whitespace-nowrap">{subtitle}</Lede>
-              </div>
-            )}
+        {title && (
+          <div style={DARK_ZONE_STYLE}>
+            <SectionHead eyebrow={eyebrow} title={title} intro={subtitle} />
           </div>
         )}
 
-        {/*
-          Diagram container — slightly elevated dark surface (#111)
-          with a hairline rim, inset top highlight, and a soft
-          drop-shadow. Same visual language as the home-page LOI
-          mockup container, gives the architecture SVG its own
-          "pane" so the internal elements read as a composed unit
-          instead of floating loose on the section bg. Padded so the
-          SVG has breathing room inside the frame.
-        */}
-        <div
-          className="mx-auto mt-16 max-w-6xl overflow-hidden rounded-3xl border md:mt-20"
-          style={{
-            backgroundColor: "#111111",
-            borderColor: "rgba(255, 255, 255, 0.08)",
-            boxShadow:
-              "0 30px 80px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.06)",
-          }}
-        >
+        {/* Diagram frame: the Services treatment (16px radius, hairline
+            border, faint fill, no drop shadow). */}
+        <div className="border-line-strong mt-14 overflow-hidden rounded-2xl border bg-[rgba(255,255,255,0.02)] md:mt-16">
           <div className="p-6 sm:p-8 md:p-10">
             {/* Inlined SVG — slimmed SVGs reference external <image>
                 files for the Microsoft logos, which only resolve when

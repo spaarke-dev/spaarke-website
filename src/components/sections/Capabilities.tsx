@@ -2,8 +2,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import {
   Eyebrow,
-  Heading,
-  Lede,
+  SectionHead,
   Shell,
   Slab,
 } from "@/components/primitives";
@@ -13,8 +12,10 @@ import { capabilitiesContent } from "@/content/home/capabilities";
 type Foundation = typeof capabilitiesContent.foundation;
 
 type CapabilitiesProps = {
-  /** Centered title displayed above the stacked capability rows. */
+  /** Title displayed above the stacked capability rows. */
   title?: ReactNode;
+  /** Mono label above the title. */
+  eyebrow?: string;
   /** Optional subtitle / lede beneath the title. */
   subtitle?: ReactNode;
 };
@@ -30,7 +31,7 @@ export function Foundation() {
   );
 }
 
-export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
+export function Capabilities({ title, subtitle, eyebrow = "Capabilities" }: CapabilitiesProps = {}) {
   const { capabilities } = capabilitiesContent;
   const hasHeader = Boolean(title || subtitle);
 
@@ -46,13 +47,9 @@ export function Capabilities({ title, subtitle }: CapabilitiesProps = {}) {
     >
       {hasHeader && (
         <Shell>
-          <div className="mx-auto max-w-3xl py-4 text-center md:py-6">
-            {title && <Heading level={2}>{title}</Heading>}
-            {subtitle && (
-              <div className="mt-6">
-                <Lede>{subtitle}</Lede>
-              </div>
-            )}
+          {/* px matches the capability modules below so the left edges line up. */}
+          <div className="px-2 md:px-6">
+            <SectionHead eyebrow={eyebrow} title={title} intro={subtitle} />
           </div>
         </Shell>
       )}

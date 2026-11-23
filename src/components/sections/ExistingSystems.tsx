@@ -2,73 +2,34 @@
 
 import type { CSSProperties } from "react";
 import { useState } from "react";
-import { Eyebrow, Heading, Lede, Shell } from "@/components/primitives";
+import { Eyebrow, SectionHead, Shell, Slab } from "@/components/primitives";
 import {
   existingSystemsContent,
   type ExistingSystemsCard as Card,
 } from "@/content/home/existing-systems";
 
 /**
- * Section bridges the dark stats section above into the light-cream
- * platform section below via a vertical gradient. The heading + lede
- * sit in the dark zone (white text), the cards land in the light zone
- * (white surface, dark text).
- *
- * Top stop is #0a0a0a (matches --v2-bg, the GapStats dark above) so
- * the boundary is invisible — no dark seam. Mid-stops pull from the
- * hero footlight glow palette (rgb(80,120,220) → rgb(210,225,255) →
- * rgb(235,242,255)). Cream is reached at ~70% so it lands roughly
- * at the mid-card line when cards are collapsed; the bottom 30%
- * stays solid cream and blends into the next section's bg.
+ * Solid dark band (design pass R1, 2026-11-23). It used to fade from dark
+ * into cream behind the cards; the bands now alternate tone as on the
+ * Services page (white stats above, cream platform section below), and the
+ * cards use the Services dark-card treatment: hairline border, faint fill,
+ * no shadow.
  */
-const SECTION_GRADIENT =
-  "linear-gradient(to bottom, #0a0a0a 0%, #0a0a0a 35%, #1a1f2e 47%, #b3c4dc 62%, #ebf2ff 72%, #f6f6f4 83%, #f6f6f4 100%)";
-
-const SECTION_STYLE: CSSProperties = {
-  backgroundImage: SECTION_GRADIENT,
-  paddingTop: "clamp(80px, 10vh, 120px)",
-  paddingBottom: "clamp(80px, 10vh, 120px)",
-};
-
-// Override v2 fg tokens within the dark zone so Heading/Lede primitives
-// render in pure white / 70% white per the gradient spec.
-const DARK_ZONE_STYLE = {
-  "--v2-fg": "#ffffff",
-  "--v2-fg-mid": "rgba(255, 255, 255, 0.7)",
-} as CSSProperties;
-
 const CARDS_GAP_STYLE: CSSProperties = {
-  marginTop: "clamp(80px, 9vh, 96px)",
+  marginTop: "clamp(56px, 7vh, 80px)",
 };
 
 export function ExistingSystems() {
   const { heading, subhead, cards } = existingSystemsContent;
 
   return (
-    // -mt-px overlaps the previous (dark) section by 1px so any
-    // compositor-level seam between the GapStats slab and this
-    // gradient section's top stop (both #0a0a0a) is masked. Without
-    // this, browsers occasionally render a 1px hairline at the
-    // boundary.
-    <section className="relative -mt-px" style={SECTION_STYLE}>
+    <Slab tone="dark" className="relative">
       <Shell>
-        <div
-          className="mx-auto max-w-5xl text-center"
-          style={DARK_ZONE_STYLE}
-        >
-          <Heading level={2}>
-            <span className="md:whitespace-nowrap">{heading.line1}</span>
-            <br />
-            <span className="md:whitespace-nowrap">{heading.line2}</span>
-          </Heading>
-          <div className="mx-auto mt-6 max-w-3xl">
-            <Lede>
-              <span className="md:whitespace-nowrap">{subhead.line1}</span>
-              <br />
-              <span className="md:whitespace-nowrap">{subhead.line2}</span>
-            </Lede>
-          </div>
-        </div>
+        <SectionHead
+          eyebrow="Why legal systems fall short"
+          title={`${heading.line1} ${heading.line2}`}
+          intro={`${subhead.line1} ${subhead.line2}`}
+        />
 
         {/*
           Subgrid wires every card's internal rows (title, summary,
@@ -77,7 +38,6 @@ export function ExistingSystems() {
           button line up across all three cards.
         */}
         <div
-          data-tone="light"
           className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-x-8 md:gap-y-0 md:grid-rows-[auto_auto_auto_1fr_auto]"
           style={CARDS_GAP_STYLE}
         >
@@ -86,7 +46,7 @@ export function ExistingSystems() {
           ))}
         </div>
       </Shell>
-    </section>
+    </Slab>
   );
 }
 
@@ -101,9 +61,9 @@ function ExpandableCard({ card }: { card: Card }) {
     <article
       // min-height applied at md+ only so mobile cards size to content
       // (3 stacked at 360px each = excessive scroll on small phones).
-      className="bg-surface flex flex-col rounded-3xl p-8 shadow-sm md:row-span-5 md:grid md:min-h-[clamp(280px,32vh,360px)] md:grid-rows-subgrid md:p-10"
+      className="border-line-strong flex flex-col rounded-3xl border bg-[rgba(255,255,255,0.03)] p-8 md:row-span-5 md:grid md:min-h-[clamp(280px,32vh,360px)] md:grid-rows-subgrid md:p-10"
     >
-      <h3 className="font-display text-fg text-xl font-bold leading-tight tracking-tight md:text-2xl">
+      <h3 className="font-display text-fg text-xl font-medium leading-tight tracking-tight md:text-2xl">
         {card.title}
       </h3>
       <p className="text-fg-mid mt-5 text-[15px] leading-relaxed md:text-base">
