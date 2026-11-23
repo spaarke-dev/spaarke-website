@@ -1,7 +1,7 @@
 # Task 004: Counsel review
 
 **Phase:** 0 (Decisions and setup)
-**Status:** not-started
+**Status:** completed
 **Estimated:** external (owner and counsel)
 **Dependencies:** none
 **Tags:** content, compliance
@@ -39,10 +39,17 @@ the TCPA, the FCC revocation rules, and state mini-TCPA laws. Going live
 
 ## Acceptance Criteria
 
-- [ ] Every "For counsel" item ticked with the answer
-- [ ] Any wording change made in `messages.ts` and the submission
+- [x] Every "For counsel" item ticked with the answer
+- [x] Any wording change made in `messages.ts` and the submission (none asked)
 
 ## Notes
 
 Counsel's review is not legal advice from this project; the spec only
 drafts. Keep counsel's notes out of the public repo beyond the outcome.
+
+### Done (2026-11-23)
+
+The owner reported counsel's approval of the Compliance section as drafted.
+No wording changed. The proposed retention (12 months from last activity,
+opt-out flags kept while Twilio holds the number) stands, so task 043 adds
+the cleanup job.

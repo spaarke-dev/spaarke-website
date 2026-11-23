@@ -1,7 +1,7 @@
 # Task 003: Secrets and app settings
 
 **Phase:** 0 (Decisions and setup)
-**Status:** not-started
+**Status:** in-progress (auth token waits on the owner)
 **Estimated:** 1 hour
 **Dependencies:** none (the Twilio values need 002)
 **Tags:** azure, keyvault, swa, config
@@ -52,3 +52,20 @@ Decide the webhook host once: `https://spaarke.com` or
 does not follow redirects on a webhook POST, so the setting and the Twilio
 webhook URL must both name the host that answers directly. Check with
 `curl -I` before setting it.
+
+### Progress (2026-11-23)
+
+- Step 1: `sms-link-secret` and `sms-phone-hash-secret` generated straight
+  into Key Vault `sprk-demo-kv` (64 characters each, never printed).
+- Step 3: set on `swa-spaarke-website`: `TWILIO_ACCOUNT_SID`,
+  `SMS_WEBHOOK_URL` (the `www` host, as `docs/text-to-meet.md` settles),
+  `SMS_REPLY_HOURLY_CAP=30`, `SMS_REPLY_DAILY_CAP=150`, `SMS_LINK_SECRET`,
+  and `SMS_PHONE_HASH_SECRET`, copied from Key Vault. The app had 37
+  settings before and 43 after; none was removed.
+- Step 4: `SMS_MODE` is absent. Production rechecked after the restart:
+  the inbound route answers 404, /meet has no text line, and /meet
+  availability answers.
+- Step 5: the guide already lists the setting and secret names.
+- Left: step 2. The owner puts the Twilio auth token in Key Vault as
+  `twilio-auth-token` at a hidden prompt; then it is copied to the
+  `TWILIO_AUTH_TOKEN` app setting without printing it.

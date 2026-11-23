@@ -7,12 +7,21 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 040, Pull request and preview checks (in progress) |
-| **Branch** | `feature/text-to-meet` (worktree `spaarke-website-wt-text-to-meet`, draft PR #178) |
-| **Status** | Phases 1 to 3 complete 2026-11-22; task 001 waits on the owner |
-| **Next Action** | Task 040 step 4: check the PR #178 preview once its deploy finishes |
+| **Task** | 041, Go live (blocked) |
+| **Branch** | Code merged to `main` (PR #178, `da3dc77`); task 041 needs no code change |
+| **Status** | Shipped dark 2026-11-22: `SMS_MODE` unset in production |
+| **Next Action** | Owner: Twilio auth token into Key Vault (003). Then task 041 once the number is Verified and the account is paid (002). Task 043 can be built any time |
 
 ## Last completed
+
+2026-11-23: counsel approved the Compliance section as drafted (task 004).
+Task 003 done except the Twilio auth token: the two site secrets are in Key
+Vault and six SMS settings are on the static web app, `SMS_MODE` still
+unset. Task 043 (retention cleanup) added.
+
+Task 040: PR #178 merged and deployed. On spaarke.com the inbound route
+answers 404, `/meet` shows no text line, a junk `c` renders the normal page,
+and `/sms` is unchanged.
 
 Task 032: the "Prefer to text?" line on /meet (shown only with a full SMS
 configuration), `docs/text-to-meet.md`, and the SMS settings in
@@ -54,7 +63,7 @@ over MEET (FR-08), flagged for counsel.
 |---|---|
 | Toll-Free Verification | Resubmitted 2026-11-19 after error 30513; in review |
 | Twilio account | Trial; must be upgraded to paid (task 002) |
-| Counsel review of the Compliance section | Not started (task 004) |
+| Counsel review of the Compliance section | Approved as drafted, 2026-11-23 (task 004) |
 
 ## Standing rules
 
