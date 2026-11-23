@@ -1,6 +1,7 @@
 import sgMail from "@sendgrid/mail";
 import type { ContactFormData } from "@/lib/contact";
 import type { DesignPartnerApplication } from "@/lib/design-partners";
+import { devMockEnabled } from "@/lib/meet/dev-mock";
 
 let initialized = false;
 
@@ -354,6 +355,48 @@ export async function sendDailyReport(data: {
 }
 
 /**
+ * Text MEET reached a site-wide reply cap (spec FR-12). Sent once per window.
+ * Carries the cap and the window only: no number, no hash, no message text.
+ */
+export async function sendSmsCapAlert(data: {
+  kind: "hour" | "day";
+  cap: number;
+  at: Date;
+}): Promise<{ sent: true } | { sent: false; error: string }> {
+  if (!ensureInit()) return { sent: false, error: "SendGrid not configured." };
+  const to = process.env.CONTACT_EMAIL_TO;
+  const from = process.env.SENDGRID_FROM_EMAIL;
+  if (!to || !from) {
+    console.warn("[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set - skipping.");
+    return { sent: false, error: "Email recipients not configured." };
+  }
+
+  const period = data.kind === "hour" ? "hour" : "day";
+  const window =
+    data.kind === "hour"
+      ? `the hour starting ${data.at.toISOString().slice(0, 13)}:00 UTC`
+      : `${data.at.toISOString().slice(0, 10)} (UTC)`;
+  const setting = data.kind === "hour" ? "SMS_REPLY_HOURLY_CAP" : "SMS_REPLY_DAILY_CAP";
+  const text = [
+    `Text MEET reached its cap of ${data.cap} replies for ${window}.`,
+    "",
+    `Until the next ${period} starts, texts to the number get no reply. STOP, START, and HELP still work, because Twilio answers those itself.`,
+    "",
+    `If this is real demand, raise ${setting} in the app settings. If it looks like abuse, the sms.received events in App Insights show the mix of texts.`,
+  ].join("\n");
+  const subject = `[Spaarke] Text MEET: ${data.kind === "hour" ? "hourly" : "daily"} reply cap reached`;
+
+  try {
+    await sgMail.send({ to, from, subject, text });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send the SMS cap alert:", message);
+    return { sent: false, error: message };
+  }
+}
+
+/**
  * A meeting booked, moved, or cancelled through the Graph flow on /meet. The
  * calendar event is on the host's calendar already; this mail is what puts it
  * in front of the team (CONTACT_EMAIL_TO) and the host (MEET_HOST), alongside
@@ -374,7 +417,7 @@ export async function sendMeetingNotification(
   }
 }
 
-type MeetingNotification = {
+export type MeetingNotification = {
   kind: "booked" | "rescheduled" | "cancelled";
   bookingId: string;
   stored: boolean;
@@ -390,9 +433,17 @@ type MeetingNotification = {
   note?: string;
   guests?: string[];
   attribution?: Record<string, string>;
+  /** "Came from a text (...)" when the booking came through a Text MEET link. */
+  sourceLine?: string;
 };
 
 async function sendMeetingNotificationUnsafe(data: MeetingNotification): Promise<{ sent: true } | { sent: false; error: string }> {
+  // As the visitor emails do in mock mode: logged, never sent.
+  if (devMockEnabled()) {
+    const { heading } = meetingNotificationText(data);
+    console.info(`[meet] (dev mock) team notice: ${heading}; ${data.sourceLine ?? "no text link"}`);
+    return { sent: true };
+  }
   if (!ensureInit()) {
     return { sent: false, error: "SendGrid not configured." };
   }
@@ -407,7 +458,26 @@ async function sendMeetingNotificationUnsafe(data: MeetingNotification): Promise
   // so without it a booking reaches the host only as a calendar entry.
   const host = process.env.MEET_HOST?.trim();
   const to = host && host.toLowerCase() !== team.toLowerCase() ? [team, host] : team;
+  const { heading, text } = meetingNotificationText(data);
 
+  try {
+    await sgMail.send({
+      to,
+      from,
+      replyTo: data.email,
+      subject: `[Spaarke] ${heading} - ${data.organization}`,
+      text,
+    });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send meeting notification:", message);
+    return { sent: false, error: message };
+  }
+}
+
+/** The team notice's heading and plain-text body. Exported for the check scripts. */
+export function meetingNotificationText(data: MeetingNotification): { heading: string; text: string } {
   // Explicit fields: Intl refuses dateStyle or timeStyle combined with
   // timeZoneName, and the zone name is the part the team needs.
   const when = (ms: number, tz: string) =>
@@ -437,6 +507,7 @@ async function sendMeetingNotificationUnsafe(data: MeetingNotification): Promise
     data.stored
       ? `Saved in Table Storage, MeetingBookings, row ${data.bookingId}.`
       : `NOT SAVED to Table Storage (booking ${data.bookingId}). The calendar event and this mail are the record.`,
+    ...(data.sourceLine ? [`${data.sourceLine}.`] : []),
     "",
     `When:          ${when(data.start, data.hostTimeZone)}`,
     ...(data.previousStart !== undefined
@@ -456,18 +527,5 @@ async function sendMeetingNotificationUnsafe(data: MeetingNotification): Promise
     ...(attribution.length ? ["", "Attribution:", ...attribution] : []),
   ].join("\n");
 
-  try {
-    await sgMail.send({
-      to,
-      from,
-      replyTo: data.email,
-      subject: `[Spaarke] ${heading} - ${data.organization}`,
-      text,
-    });
-    return { sent: true };
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error("[email] Failed to send meeting notification:", message);
-    return { sent: false, error: message };
-  }
+  return { heading, text };
 }

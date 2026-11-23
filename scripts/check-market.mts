@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 and 031).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040, 053 and 060).
 //
 //   npm run market:check
 //
@@ -228,6 +228,365 @@ console.log("Pure checks");
   assert.equal(sameSite(h({ origin: "https://spaarke.com", host: "spaarke.com" })), true);
   assert.equal(sameSite(h({ origin: "https://evil.test", host: "spaarke.com" })), false);
   ok("contact edits accept only known fields; admin changes refuse cross-site requests (task 031)");
+}
+
+{
+  const results = await import("@/lib/market/results");
+  const t = (iso: string) => `${iso}T12:00:00.000Z`;
+  const act = (type: string, day: string, campaignSlug?: string) =>
+    ({ id: day + type, contactId: "c", type, source: "check", sourceId: day + type, occurredAt: t(day), recordedAt: t(day), visibility: "general", campaignSlug }) as never;
+  const campaign = { slug: "spring", startDate: "2026-03-01", endDate: "2026-03-31" };
+  const member = { contactId: "c", createdAt: "2026-04-15T00:00:00.000Z" };
+
+  const acts = [
+    act("email.sent", "2026-02-20"), // before the window
+    act("email.sent", "2026-03-02"),
+    act("brief.read", "2026-03-03"), // untagged brief read: not this campaign's
+    act("brief.read", "2026-03-04", "spring"),
+    act("email.received", "2026-03-05", "other"), // another campaign's reply
+    act("note", "2026-03-06"),
+    act("email.received", "2026-05-20"), // inside 60 days after the end
+    act("meeting.booked", "2026-06-15"), // after the window
+  ];
+  const counted = results.memberActivities(campaign, member, acts);
+  assert.deepEqual(
+    counted.map((a: { type: string }) => a.type),
+    ["email.sent", "brief.read", "email.received"],
+  );
+  const d = results.deriveMemberStatus(member, counted);
+  assert.equal(d.status, "replied", "the furthest stage reached");
+  assert.deepEqual(d.reached, ["sent", "engaged", "replied"]);
+  assert.equal(d.lastActivityAt, t("2026-05-20"));
+  assert.equal(results.deriveMemberStatus(member, []).status, "planned");
+  assert.equal(
+    results.deriveMemberStatus(member, [act("email.sent", "2026-03-02"), act("email.bounced", "2026-03-02")]).status,
+    "bounced",
+  );
+  // No start date: the window opens when the member was added.
+  assert.equal(results.campaignWindow({}, member).from, member.createdAt);
+
+  const f = results.funnelOf([
+    { status: "replied", reached: ["sent", "engaged", "replied"] },
+    { status: "bounced", reached: ["sent", "bounced"] },
+    { status: "bounced", statusOverride: "meeting", reached: ["sent", "bounced"] },
+    { status: "planned", statusOverride: "done", reached: [] },
+    { status: "planned", reached: [] },
+  ] as never);
+  assert.deepEqual(f, { members: 5, sent: 4, delivered: 3, engaged: 1, replied: 1, meeting: 1 });
+
+  const admin = await import("@/lib/market/campaign-admin");
+  assert.deepEqual(admin.parseCampaign({ slug: "tltf-2026", name: " TLTF  2026 ", startDate: "2026-11-01", notes: "" }), {
+    slug: "tltf-2026",
+    name: "TLTF 2026",
+    startDate: "2026-11-01",
+    notes: null,
+  });
+  for (const bad of [{ slug: "code" }, { slug: "Bad Slug" }, { startDate: "11/01/2026" }, { kind: "ad" }, { name: "" }, { owner: "x" }]) {
+    assert.throws(() => admin.parseCampaign(bad), admin.CampaignError, JSON.stringify(bad));
+  }
+  assert.equal(admin.parseOverride({ status: null }), null);
+  assert.equal(admin.parseOverride({ status: "meeting" }), "meeting");
+  assert.throws(() => admin.parseOverride({ status: "won" }), admin.CampaignError);
+  assert.deepEqual(admin.parseAddMembers({ contacts: "a@x.test\n b@x.test, a@x.test" }).contacts, ["a@x.test", "b@x.test"]);
+  ok("member status is the furthest stage in the campaign's window; the funnel counts what the log shows (task 033)");
+}
+
+{
+  const csvLib = await import("@/lib/market/csv");
+  const lead = await import("@/lib/market/linkedin-import");
+  const { readFileSync } = await import("node:fs");
+
+  // Quoting, doubled quotes, a line break inside quotes, CRLF and a byte order mark.
+  const p = csvLib.parseCsv('﻿a,b,c\r\n"x, y","say ""hi""","two\r\nlines"\r\n\r\n 1 ,2,3\r\n');
+  assert.deepEqual(p.headers, ["a", "b", "c"]);
+  assert.deepEqual(p.rows, [["x, y", 'say "hi"', "two\r\nlines"], ["1", "2", "3"]]);
+  assert.deepEqual(p.lines, [2, 5]);
+  assert.deepEqual(csvLib.parseCsv("a\tb\n1\t2").rows, [["1", "2"]], "tab-separated");
+  assert.deepEqual(csvLib.parseCsv("a;b\n1;2").rows, [["1", "2"]], "semicolon-separated");
+  assert.throws(() => csvLib.parseCsv('a,b\n"open,2'), csvLib.CsvError);
+  assert.throws(() => csvLib.parseCsv("  \n\n"), csvLib.CsvError);
+  assert.throws(() => csvLib.parseCsv("a\n1\n2\n3", { maxRows: 2 }), csvLib.CsvError);
+
+  // Times: Campaign Manager's export has no zone and is read as UTC.
+  const t = csvLib.parseLeadTime;
+  assert.equal(t("2026-12-19 15:02:11"), "2026-12-19T15:02:11.000Z");
+  assert.equal(t("2026-12-19T15:02:11Z"), "2026-12-19T15:02:11.000Z");
+  assert.equal(t("2026-12-19T10:02:11-05:00"), "2026-12-19T15:02:11.000Z");
+  assert.equal(t("2026-12-19"), "2026-12-19T00:00:00.000Z");
+  assert.equal(t("12/20/2026 9:15 AM"), "2026-12-20T09:15:00.000Z");
+  assert.equal(t("12/20/2026 12:05 AM"), "2026-12-20T00:05:00.000Z");
+  assert.equal(t("12/20/2026, 21:15"), "2026-12-20T21:15:00.000Z");
+  assert.equal(t("Dec 20, 2026 2:03 PM"), "2026-12-20T14:03:00.000Z");
+  assert.equal(t("1797800000"), new Date(1797800000 * 1000).toISOString());
+  for (const bad of ["sometime next week", "2026-02-30", "13/01/2026", "12/20/2026 13:00 PM", ""]) {
+    assert.equal(t(bad), null, `should not read ${bad}`);
+  }
+
+  // Default mapping from LinkedIn's headers; extra columns are left alone.
+  const fixture = readFileSync("scripts/market/fixtures/linkedin-leads-sample.csv", "utf8");
+  const parsed = csvLib.parseCsv(fixture);
+  const map = csvLib.defaultMapping(parsed.headers);
+  assert.deepEqual(map, {
+    email: "Email Address",
+    firstName: "First Name",
+    lastName: "Last Name",
+    company: "Company Name",
+    title: "Job Title",
+    linkedinUrl: "LinkedIn Profile URL",
+    phone: "Phone Number",
+    submittedAt: "Submitted At",
+    leadId: "Lead ID",
+    formName: "Form Name",
+  });
+  assert.deepEqual(csvLib.defaultMapping(["E-mail", "Email"]), { email: "E-mail" }, "punctuation and case are ignored; the first match wins");
+  assert.throws(() => csvLib.checkMapping({ email: "Nope" }, parsed.headers), csvLib.CsvError);
+  assert.throws(() => csvLib.checkMapping({ firstName: "First Name" }, parsed.headers), csvLib.CsvError, "email is required");
+  assert.throws(() => csvLib.checkMapping({ email: "Email Address", country: "Country" }, parsed.headers), csvLib.CsvError);
+
+  const leads = lead.checkLeads(csvLib.mapRows(parsed, map));
+  assert.equal(leads.length, 8);
+  assert.deepEqual(
+    leads.filter((l) => l.skip).map((l) => [l.line, l.skip]),
+    [
+      [6, "No email"],
+      [7, "Not an email address"],
+      [8, "Repeats an earlier row"],
+      [10, "Submitted time not understood"],
+    ],
+  );
+  const riley = leads.find((l) => l.leadId === "FAKE-0003")!;
+  assert.equal(riley.name, 'Riley O"Test');
+  assert.equal(riley.title, "Head of Legal Ops (EMEA)");
+  assert.equal(riley.submittedAt, "2026-12-20T09:15:00.000Z");
+  // Without a Lead ID, the email and time are the key, so a re-import still matches.
+  const noId = lead.checkLeads(csvLib.mapRows(parsed, { ...map, leadId: undefined }));
+  assert.equal(noId[1].sourceId, lead.checkLeads(csvLib.mapRows(parsed, { ...map, leadId: undefined }))[1].sourceId);
+  assert.match(noId[1].sourceId!, /^h:[0-9a-f]{64}$/);
+  assert.ok(!noId[1].sourceId!.includes("@"));
+
+  assert.throws(() => lead.parseImportRequest({ csv: "a" , extra: 1 }), csvLib.CsvError);
+  assert.throws(() => lead.parseImportRequest({ csv: "" }), csvLib.CsvError);
+  assert.throws(() => lead.parseImportRequest({ csv: "x".repeat(lead.MAX_CSV_CHARS + 1) }), csvLib.CsvError);
+  assert.equal(lead.parseImportRequest({ csv: "a" }).confirm, false);
+  ok("the CSV reader handles quotes, line breaks and delimiters; LinkedIn headers map by default; bad rows are named (task 053)");
+}
+
+{
+  const fu = await import("@/lib/market/followups");
+  const fa = await import("@/lib/market/followup-admin");
+  const sel = await import("@/lib/market/followup-select");
+
+  const id = "a".repeat(64);
+  assert.equal(fu.bulkFollowUpId("tltf-2026", "Thank-you after the Summit", id), fu.bulkFollowUpId("tltf-2026", "  thank-you  after the summit ", id));
+  assert.notEqual(fu.bulkFollowUpId("tltf-2026", "Thank-you", id), fu.bulkFollowUpId("other", "Thank-you", id));
+  assert.match(fu.bulkFollowUpId("x", "y", id), /^[0-9a-f]{32}$/);
+  assert.match(fu.newFollowUpId(), /^[0-9a-f]{32}$/);
+  assert.match(fu.todayKey(), /^\d{4}-\d{2}-\d{2}$/);
+  // 03:00 UTC is still the previous day in New York.
+  const prevTz = process.env.MEET_HOST_TIME_ZONE;
+  process.env.MEET_HOST_TIME_ZONE = "America/New_York";
+  assert.equal(fu.todayKey(new Date("2026-12-02T03:00:00Z")), "2026-12-01");
+  if (prevTz === undefined) delete process.env.MEET_HOST_TIME_ZONE;
+  else process.env.MEET_HOST_TIME_ZONE = prevTz;
+
+  assert.deepEqual(fa.parseNewFollowUp({ title: "  Thank-you ", dueDate: "2026-12-01", notes: "", campaignSlug: "" }), {
+    title: "Thank-you",
+    dueDate: "2026-12-01",
+    notes: undefined,
+    campaignSlug: undefined,
+  });
+  for (const bad of [{ dueDate: "2026-12-01" }, { title: "x" }, { title: "x", dueDate: "12/01/2026" }, { title: "x", dueDate: "2026-12-01", owner: "y" }]) {
+    assert.throws(() => fa.parseNewFollowUp(bad), fa.FollowUpError);
+  }
+  assert.deepEqual(fa.parseFollowUpPatch({ status: "sent" }), { status: "sent" });
+  assert.deepEqual(fa.parseFollowUpPatch({ notes: "" }), { notes: null });
+  assert.throws(() => fa.parseFollowUpPatch({ status: "done" }), fa.FollowUpError);
+  assert.throws(() => fa.parseFollowUpPatch({}), fa.FollowUpError);
+  assert.throws(() => fa.parseBulk({ title: "x", dueDate: "2026-12-01", statuses: ["nope"] }), fa.FollowUpError);
+  assert.deepEqual(fa.parseBulk({ title: "x", dueDate: "2026-12-01", statuses: ["sent", "sent"] }).statuses, ["sent"]);
+
+  const m = { status: "meeting" as const, group: "A", tags: ["Summit", "GC"] };
+  assert.ok(sel.matchesSelection(m, { statuses: [] }));
+  assert.ok(sel.matchesSelection(m, { statuses: ["meeting", "replied"], group: "A", tag: "summit" }));
+  assert.ok(!sel.matchesSelection(m, { statuses: ["sent"] }));
+  assert.ok(!sel.matchesSelection(m, { statuses: [], group: "B" }));
+  assert.ok(!sel.matchesSelection(m, { statuses: [], tag: "press" }));
+  ok("follow-up input is checked; bulk IDs are stable per campaign, title and contact; selection by status, group and tag (task 034)");
+}
+
+{
+  const oa = await import("@/lib/market/org-admin");
+  for (const [raw, want] of [
+    ["Acme.com", "acme.com"],
+    ["@acme.com", "acme.com"],
+    ["https://www.acme.com/about", "acme.com"],
+    ["jane@sub.acme.co.uk", "sub.acme.co.uk"],
+  ] as const) {
+    assert.equal(oa.parseDomain(raw), want, raw);
+  }
+  for (const bad of ["", "acme", "gmail.com", "Outlook.com", "a b.com", "-x.com", 7, null]) {
+    assert.throws(() => oa.parseDomain(bad), oa.OrgError, String(bad));
+  }
+  assert.deepEqual(oa.parseOrgPatch({ name: "  Acme   Widgets ", website: "", kind: "customer", notes: " Met at TLTF " }), {
+    name: "Acme Widgets",
+    website: null,
+    kind: "customer",
+    notes: "Met at TLTF",
+  });
+  for (const bad of [{ name: "" }, { domain: "x.test" }, { kind: "boss" }, { website: "javascript:alert(1)" }, { visibility: "all" }, []]) {
+    assert.throws(() => oa.parseOrgPatch(bad), oa.OrgError, JSON.stringify(bad));
+  }
+  const base = { visibility: "general" as const, createdAt: "", updatedAt: "", contactCount: 0 };
+  const rows = [
+    { ...base, id: "acme.test", name: "Acme Widgets", domain: "acme.test", otherDomains: ["acme-mail.test"] },
+    { ...base, id: "other.test", name: "Other Co", domain: "other.test", otherDomains: [], website: "https://other.test" },
+  ];
+  const ids = (r: { rows: { id: string }[] }) => r.rows.map((x) => x.id);
+  assert.deepEqual(ids(oa.filterOrganizations(rows, { q: "widg" })), ["acme.test"], "part of a name");
+  assert.deepEqual(ids(oa.filterOrganizations(rows, { q: "acme-mail" })), ["acme.test"], "an override domain");
+  assert.deepEqual(ids(oa.filterOrganizations(rows, {})), ["acme.test", "other.test"]);
+  assert.equal(oa.filterOrganizations(rows, { pageSize: 1, page: 9 }).page, 2);
+  ok("organization domains are read from what people type; edits are checked; search covers names and domains (task 032)");
+}
+
+{
+  // Task 040: the Graph mail client, against canned responses (no network).
+  const mail = await import("@/lib/market/graph-mail");
+  const box = "Owner@Example.test";
+  const settings = { tenantId: "t", clientId: "c", clientSecret: "s" };
+  const graph = "https://graph.microsoft.com/v1.0";
+
+  const msg = (id: string, at: string, extra: Record<string, unknown> = {}) => ({
+    id,
+    internetMessageId: `<${id}@mail.example.test>`,
+    from: { emailAddress: { address: "Jane.Doe@Acme.test", name: "Jane Doe" } },
+    toRecipients: [{ emailAddress: { address: "owner@example.test", name: "owner@example.test" } }],
+    ccRecipients: [{ emailAddress: { address: "/O=EXCHANGELABS/OU=X/CN=RECIPIENTS/CN=ABC" } }],
+    subject: "  Hello  ",
+    receivedDateTime: at,
+    sentDateTime: at,
+    webLink: "https://outlook.office365.com/owa/?ItemID=x",
+    ...extra,
+  });
+
+  const calls: { url: string; headers: Record<string, string> }[] = [];
+  const pages: Record<string, unknown> = {};
+  const fake = (async (input: string | URL | Request, init?: RequestInit) => {
+    const url = String(input);
+    calls.push({ url, headers: (init?.headers ?? {}) as Record<string, string> });
+    const body = Object.entries(pages).find(([k]) => url.includes(k))?.[1];
+    if (body === undefined) return new Response(JSON.stringify({ error: { code: "ErrorItemNotFound" } }), { status: 404 });
+    if (body instanceof Response) return body;
+    return new Response(JSON.stringify(body), { status: 200 });
+  }) as typeof fetch;
+  const deps = { fetch: fake, token: async () => "token" };
+
+  pages["/mailFolders/inbox/messages?$filter"] = {
+    value: [msg("m1", "2026-11-22T10:00:00Z"), { id: "bad" }],
+    "@odata.nextLink": `${graph}/users/owner%40example.test/mailFolders/inbox/messages?$skiptoken=p2`,
+  };
+  pages["$skiptoken=p2"] = { value: [msg("m2", "2026-11-22T11:00:00.0000000")] };
+
+  const got = [];
+  for await (const m of mail.listMessagesSince(settings, box, "inbox", "2026-11-22T00:00:00Z", deps)) got.push(m);
+  assert.deepEqual(
+    got.map((m) => [m.id, m.receivedAt]),
+    [
+      ["m1", "2026-11-22T10:00:00.000Z"],
+      ["m2", "2026-11-22T11:00:00.000Z"],
+    ],
+    "follows the next link; a message without a time is skipped; Graph's zone-less times read as UTC",
+  );
+  assert.deepEqual(got[0].from, { address: "jane.doe@acme.test", name: "Jane Doe" });
+  assert.deepEqual(got[0].to, [{ address: "owner@example.test" }], "a name that only repeats the address is dropped");
+  assert.deepEqual(got[0].cc, [], "an Exchange-internal address is left out");
+  assert.equal(got[0].subject, "Hello");
+  const first = decodeURIComponent(calls[0].url);
+  assert.ok(first.startsWith(`${graph}/users/owner@example.test/mailFolders/inbox/messages?`), first);
+  assert.ok(first.includes("$filter=receivedDateTime ge 2026-11-22T00:00:00.000Z"));
+  assert.ok(first.includes("$orderby=receivedDateTime asc"));
+  assert.ok(!calls[0].url.includes("+"), "spaces are sent as %20");
+  const select = /\$select=([^&]+)/.exec(first)![1].split(",");
+  assert.ok(!select.includes("body") && !select.includes("bodyPreview") && !select.includes("uniqueBody"), "no body is asked for");
+
+  // A link to anywhere but Graph is not followed.
+  calls.length = 0;
+  pages["/mailFolders/sentitems/messages?$filter"] = { value: [msg("s1", "2026-11-22T09:00:00Z")], "@odata.nextLink": "https://evil.test/next" };
+  let n = 0;
+  for await (const _ of mail.listMessagesSince(settings, box, "sentitems", "2026-11-22T00:00:00Z", deps)) n++;
+  assert.equal(n, 1);
+  assert.equal(calls.length, 1);
+
+  // The cap stops a run early.
+  n = 0;
+  for await (const _ of mail.listMessagesSince(settings, box, "inbox", "2026-11-22T00:00:00Z", { ...deps, max: 1 })) n++;
+  assert.equal(n, 1);
+
+  // A mailbox outside the scope is NoMailboxAccess; other failures keep their status.
+  const denied = (async () =>
+    new Response(JSON.stringify({ error: { code: "ErrorAccessDenied", message: "Access is denied." } }), { status: 403 })) as typeof fetch;
+  await assert.rejects(
+    (async () => {
+      for await (const _ of mail.listMessagesSince(settings, "other@example.test", "inbox", "2026-11-22T00:00:00Z", { fetch: denied, token: deps.token })) void _;
+    })(),
+    (err: unknown) => err instanceof mail.NoMailboxAccess && err.mailbox === "other@example.test",
+  );
+  const missing = mail.graphErrorFor(404, "ErrorInvalidUser", "x", box);
+  assert.ok(!(missing instanceof mail.NoMailboxAccess));
+  assert.match(missing.message, /No mailbox with this address/);
+  const notFound = (async () => new Response(JSON.stringify({ error: { code: "ErrorItemNotFound" } }), { status: 404 })) as typeof fetch;
+  await assert.rejects(mail.bounceRecipient(settings, box, "gone", { fetch: notFound, token: deps.token }), (err: unknown) => {
+    const m = (err as Error).message;
+    return m.includes("/users/{mailbox}/messages/{id}") && !m.includes("example.test");
+  });
+  assert.equal(mail.graphErrorFor(500, undefined, "x", box).status, 500);
+
+  // One throttled answer is waited out.
+  let tries = 0;
+  const throttled = (async () => {
+    tries++;
+    return tries === 1
+      ? new Response("", { status: 429, headers: { "Retry-After": "1" } })
+      : new Response(JSON.stringify({ value: [msg("t1", "2026-11-22T08:00:00Z")] }), { status: 200 });
+  }) as typeof fetch;
+  n = 0;
+  for await (const _ of mail.listMessagesSince(settings, box, "inbox", "2026-11-22T00:00:00Z", { fetch: throttled, token: deps.token })) n++;
+  assert.equal(n, 1);
+  assert.equal(tries, 2);
+
+  // Non-delivery reports.
+  const inbox = (from: string, subject: string) => ({ folder: "inbox" as const, from: { address: from }, subject });
+  assert.ok(mail.isBounce(inbox("postmaster@example.onmicrosoft.com", "Undeliverable: Hello")));
+  assert.ok(mail.isBounce(inbox("mailer-daemon@googlemail.com", "Delivery Status Notification (Failure)")));
+  assert.ok(mail.isBounce(inbox("someone@acme.test", "Mail delivery failed: returning message to sender")));
+  assert.ok(!mail.isBounce(inbox("mailer-daemon@googlemail.com", "Delivery Status Notification (Delay)")), "a delay is not a failure");
+  assert.ok(!mail.isBounce(inbox("jane@acme.test", "Re: Undeliverable items in our warehouse")));
+  assert.ok(!mail.isBounce({ folder: "sentitems", from: { address: "postmaster@example.test" }, subject: "Undeliverable: x" }));
+
+  const own = "owner@example.test";
+  const exchange =
+    "Your message to jane.doe@acme.test couldn't be delivered.\n jane.doe wasn't found at acme.test.\n owner Office 365 jane.doe\n Action Required\n postmaster@example.onmicrosoft.com";
+  assert.equal(mail.bounceRecipientFromText(exchange, own), "jane.doe@acme.test");
+  const gmail = "Address not found\nYour message wasn't delivered to Sam.Lee@Other.test because the address couldn't be found.";
+  assert.equal(mail.bounceRecipientFromText(gmail, own), "sam.lee@other.test");
+  const postfix = "This is the mail system at host mx.example.test.\n\n<pat@gone.test>: host mx.gone.test[1.2.3.4] said: 550 5.1.1 User unknown";
+  assert.equal(mail.bounceRecipientFromText(postfix, own), "pat@gone.test");
+  const dsn = "Reporting-MTA: dns; mx.example.test\nFinal-Recipient: rfc822; lee@far.test\nAction: failed";
+  assert.equal(mail.bounceRecipientFromText(dsn, own), "lee@far.test");
+  assert.equal(
+    mail.bounceRecipientFromText("Delivery failed. Contact owner@example.test or postmaster@example.test.", own),
+    null,
+    "only the mailbox and the reporting system: nothing to report",
+  );
+  assert.equal(mail.bounceRecipientFromText("Failed for a@one.test and b@two.test", own), null, "two candidates: not sure, so none");
+
+  // The body is fetched as text for a bounce only, and only the address comes back.
+  calls.length = 0;
+  pages["/messages/nd1?$select=body"] = { body: { contentType: "text", content: exchange } };
+  assert.equal(await mail.bounceRecipient(settings, box, "nd1", deps), "jane.doe@acme.test");
+  assert.match(calls[0].headers.Prefer, /outlook\.body-content-type="text"/);
+
+  ok("the Graph mail client reads metadata only, pages, waits out throttling, names out-of-scope mailboxes and reads failed addresses from bounces (task 040)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -716,6 +1075,460 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.ok(del);
   assert.ok(!JSON.stringify(del.changes).includes("@"), "no email in the audit");
   ok("a delete removes the contact, activities, memberships and lookups, and nothing brings it back (FR-17, task 031)");
+}
+
+{
+  const results = await import("@/lib/market/results");
+  const admin = await import("@/lib/market/campaign-admin");
+  const who = "admin@example.test";
+  const roles = ["admin", "investor"];
+  const slug = `results-${run}`;
+  const day = (d: string) => `${d}T15:00:00.000Z`;
+
+  const created = await admin.createCampaign(
+    admin.parseCampaign({ slug, name: "Results check", startDate: "2026-10-01", endDate: "2026-10-31" }),
+    who,
+  );
+  assert.equal(created.visibility, "general", "the admin form defaults to all admins");
+  await assert.rejects(admin.createCampaign({ slug, name: "Again" }, who), admin.CampaignError);
+
+  const people = ["ann", "bob", "cat", "dan", "eve"].map((n) => addr(`res-${n}`));
+  for (const email of people) await contacts.resolveContact({ email }, { source: "check" });
+  const added = await admin.addMembers(
+    slug,
+    admin.parseAddMembers({ contacts: [...people, addr("nobody")].join("\n"), group: "Wave 1" }),
+    roles,
+    who,
+  );
+  assert.deepEqual(added, { added: 5, updated: 0, notFound: [addr("nobody")] }, "a typo never creates a contact");
+  await camp.addMember({ campaignSlug: slug, contactId: (await contacts.findContactByEmail(people[2]))!.id, code: `rc${run}` });
+
+  const rec = (type: string, email: string, when: string, extra: Record<string, unknown> = {}) =>
+    activity.recordActivity({ type: type as never, source: "check", sourceId: `${run}-${type}-${email}-${when}`, occurredAt: day(when), email, ...extra });
+  // Hand count: ann sent and replied; bob sent and bounced; cat sent and read the brief; dan met; eve nothing in window.
+  await rec("email.sent", people[0], "2026-10-02");
+  await rec("email.received", people[0], "2026-10-04");
+  await rec("email.sent", people[1], "2026-10-02");
+  await rec("email.bounced", people[1], "2026-10-02");
+  await rec("email.sent", people[2], "2026-10-02");
+  await rec("brief.read", people[2], "2026-10-03", { email: undefined, memberCode: `rc${run}` });
+  await rec("meeting.booked", people[3], "2026-11-10");
+  await rec("email.sent", people[4], "2026-09-15"); // before the start
+  await rec("email.received", people[4], "2026-10-05", { campaignSlug: "another" }); // another campaign's
+
+  const first = await results.campaignResults(slug, roles, { now: new Date(day("2026-11-21")) });
+  assert.ok(first);
+  assert.deepEqual(first.funnel, { members: 5, sent: 3, delivered: 2, engaged: 1, replied: 1, meeting: 1 });
+  const status = (email: string) => first.rows.find((r) => r.contactEmail === email)?.effective;
+  assert.deepEqual(people.map(status), ["replied", "bounced", "engaged", "meeting", "planned"]);
+  assert.equal(first.groups.join(), "Wave 1");
+  ok("a made-up campaign's funnel matches the hand-counted activities (task 033)");
+
+  // Override: kept through a recompute and shown; audited; clearing goes back to the derived status.
+  const bob = (await contacts.findContactByEmail(people[1]))!.id;
+  await admin.overrideStatus(slug, bob, "replied", who);
+  await results.recomputeCampaign(slug);
+  await rec("email.sent", people[1], "2026-10-09"); // new activity, then another recompute
+  await results.recomputeCampaign(slug);
+  const second = (await results.campaignResults(slug, roles, { recompute: false }))!;
+  const bobRow = second.rows.find((r) => r.contactId === bob)!;
+  assert.equal(bobRow.statusOverride, "replied");
+  assert.equal(bobRow.effective, "replied");
+  assert.equal(bobRow.status, "bounced", "the derived status is kept beside the override");
+  assert.equal(second.funnel.replied, 2);
+  assert.equal(second.funnel.delivered, 3, "an override past bounced counts as delivered");
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.entityId === `${slug}/${bob}`);
+  assert.equal(audits.length, 1);
+  assert.equal(audits[0].action, "member.status_override");
+  assert.deepEqual(audits[0].changes, [{ field: "statusOverride", to: "replied" }]);
+  await admin.overrideStatus(slug, bob, null, who);
+  assert.equal((await camp.getMember(slug, bob))?.statusOverride, undefined);
+  ok("a manual override is kept through recomputes, shown beside the derived status, and audited (task 033)");
+
+  // Edit: dates change the window and force a recompute.
+  const edited = await admin.updateCampaign(slug, admin.parseCampaign({ startDate: "2026-09-01", notes: "Moved" }), who);
+  assert.equal(edited?.resultsAt, undefined);
+  await assert.rejects(admin.updateCampaign(slug, { endDate: "2026-08-01" }, who), admin.CampaignError);
+  const third = (await results.campaignResults(slug, roles))!;
+  assert.equal(third.rows.find((r) => r.contactEmail === people[4])?.effective, "sent", "an earlier start takes in eve's email");
+  // Members of a general campaign whose contact is investor stay hidden without the role.
+  const hidden = await contacts.resolveContact({ email: addr("res-lp", `fund-${run}.example.test`) }, { visibility: "investor", source: "check" });
+  assert.ok(hidden.status === "created");
+  await camp.addMember({ campaignSlug: slug, contactId: hidden.contact.id });
+  const general = (await results.campaignResults(slug, ["admin"]))!;
+  assert.equal(general.funnel.members, 5);
+  assert.equal((await results.campaignResults(slug, roles))!.funnel.members, 6);
+  ok("campaign edits are checked and audited; hidden contacts are not counted without the investor role (task 033)");
+}
+
+{
+  // NFR-04: a campaign of 500 members loads in under 2 seconds.
+  const results = await import("@/lib/market/results");
+  const slug = `big-${run}`;
+  await camp.upsertCampaign({ slug, name: "Big", visibility: "general", startDate: "2026-10-01" });
+  const emails = Array.from({ length: 500 }, (_, i) => addr(`big-${i}`));
+  await results.mapLimit(emails, 16, async (email) => {
+    const r = await activity.recordActivity({ type: "email.sent", source: "check", sourceId: `big-${run}-${email}`, occurredAt: "2026-10-02T15:00:00Z", email });
+    assert.ok(r.status === "recorded");
+    await camp.addMember({ campaignSlug: slug, contactId: r.contactId, group: `G${email.length % 3}` });
+  });
+  let t0 = performance.now();
+  const cold = await results.campaignResults(slug, ["admin"]);
+  const coldMs = performance.now() - t0;
+  t0 = performance.now();
+  const warm = await results.campaignResults(slug, ["admin"]);
+  const warmMs = performance.now() - t0;
+  assert.equal(cold?.funnel.sent, 500);
+  assert.equal(warm?.rows.length, 500);
+  assert.ok(coldMs < 2000, `with a recompute: ${coldMs.toFixed(0)} ms`);
+  assert.ok(warmMs < 2000, `stored statuses: ${warmMs.toFixed(0)} ms`);
+  ok(`a 500-member campaign loads in ${warmMs.toFixed(0)} ms, ${coldMs.toFixed(0)} ms when it derives statuses first (NFR-04, task 033)`);
+}
+
+{
+  // FR-14 and success criterion 5: a lead export imports cleanly, and a second import adds nothing.
+  const lead = await import("@/lib/market/linkedin-import");
+  const results = await import("@/lib/market/results");
+  const { readFileSync } = await import("node:fs");
+  const csv = readFileSync("scripts/market/fixtures/linkedin-leads-sample.csv", "utf8")
+    .replaceAll(".example.test", `-${run}.example.test`)
+    .replaceAll("FAKE-", `FAKE-${run}-`);
+  const slug = `li-${run}`;
+  const campaign = (await camp.upsertCampaign({ slug, name: "LinkedIn leads", kind: "linkedin", visibility: "general", utmCampaign: "dpp" }))!;
+  const roles = ["admin"];
+  const who = "check@example.test";
+
+  const before = await lead.previewImport(lead.parseImportRequest({ csv }));
+  assert.deepEqual(
+    { total: before.total, ready: before.ready, alreadyImported: before.alreadyImported, skipped: before.skipped },
+    { total: 8, ready: 4, alreadyImported: 0, skipped: 4 },
+  );
+  assert.equal(before.sample.length, 8);
+
+  const first = await lead.runImport(lead.parseImportRequest({ csv, campaign: slug, confirm: true }), campaign, roles, who);
+  assert.deepEqual(
+    { imported: first.imported, newContacts: first.newContacts, alreadyImported: first.alreadyImported, skipped: first.skipped, membersAdded: first.membersAdded },
+    { imported: 4, newContacts: 3, alreadyImported: 0, skipped: 4, membersAdded: 3 },
+  );
+  assert.deepEqual(first.skippedRows.map((r) => r.line), [6, 7, 8, 10]);
+
+  const jordan = (await contacts.findContactByEmail(`jordan.placeholder@contoso-${run}.example.test`))!;
+  assert.equal(jordan.name, "Jordan Placeholder");
+  assert.equal(jordan.title, "Director, Legal Operations");
+  assert.equal(jordan.kind, "prospect");
+  assert.equal(jordan.source, "linkedin.lead");
+  assert.equal((await orgs.getOrganization(jordan.organizationId!))?.name, "Contoso");
+  const avery = (await contacts.findContactByEmail(`avery.sample@northwind-${run}.example.test`))!;
+  const averyLog = await activity.listContactActivities(avery.id);
+  assert.equal(averyLog.length, 2, "two submissions, one contact");
+  assert.ok(averyLog.every((a) => a.type === "linkedin.lead" && a.campaignSlug === slug && a.source === "linkedin-csv"));
+  assert.deepEqual(averyLog[0].utm, { source: "linkedin", medium: "paid", campaign: "dpp", term: undefined, content: undefined });
+  assert.equal(averyLog[1].occurredAt, "2026-12-19T15:02:11.000Z");
+  assert.equal(averyLog[1].summary, "LinkedIn lead form: Design Partner Program");
+
+  const res = (await results.campaignResults(slug, roles))!;
+  assert.equal(res.funnel.members, 3);
+  assert.equal(res.funnel.engaged, 3);
+
+  // Second run: nothing new.
+  const again = await lead.previewImport(lead.parseImportRequest({ csv }));
+  assert.equal(again.ready, 0);
+  assert.equal(again.alreadyImported, 4);
+  const second = await lead.runImport(lead.parseImportRequest({ csv, campaign: slug, confirm: true }), campaign, roles, who);
+  assert.deepEqual(
+    { imported: second.imported, newContacts: second.newContacts, alreadyImported: second.alreadyImported, membersAdded: second.membersAdded },
+    { imported: 0, newContacts: 0, alreadyImported: 4, membersAdded: 0 },
+  );
+  assert.equal((await activity.listContactActivities(avery.id)).length, 2);
+  assert.equal((await camp.listMembers(slug)).length, 3);
+
+  // Nothing from the file is stored beyond the mapped fields: an unmapped column's value appears in no table.
+  for (const name of ["contacts", "organizations", "activities", "activityByMonth", "members", "campaigns", "audit"] as const) {
+    const table = await getTable(name);
+    for await (const e of table!.listEntities()) {
+      assert.ok(!JSON.stringify(e).includes("Made-up Country"), `${name} holds an unmapped value`);
+    }
+  }
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.action === "import.linkedin" && e.entityId === slug);
+  assert.equal(audits.length, 2);
+  assert.ok(!JSON.stringify(audits).includes(`-${run}.example.test`), "the audit holds counts, not lead addresses");
+  ok("a LinkedIn lead export imports contacts, activities and members, and a second import adds nothing (FR-14, task 053)");
+}
+
+{
+  // Timing: 500 leads in one import, as a ceiling for the request time on the live site.
+  const lead = await import("@/lib/market/linkedin-import");
+  const slug = `li-big-${run}`;
+  const campaign = (await camp.upsertCampaign({ slug, name: "Many leads", kind: "linkedin", visibility: "general" }))!;
+  const lines = ["Lead ID,Submitted At,First Name,Last Name,Email Address,Company Name"];
+  for (let i = 0; i < 500; i++) lines.push(`BIG-${run}-${i},2026-12-2${i % 9} 10:00:00,Lead,${i},lead${i}@big${i % 40}-${run}.example.test,Big ${i % 40}`);
+  const t0 = performance.now();
+  const r = await lead.runImport(lead.parseImportRequest({ csv: lines.join("\n"), campaign: slug, confirm: true }), campaign, ["admin"], "check@example.test");
+  const ms = performance.now() - t0;
+  assert.equal(r.imported, 500);
+  assert.equal(r.membersAdded, 500);
+  ok(`500 leads import in ${(ms / 1000).toFixed(1)} s against the emulator (task 053)`);
+}
+
+{
+  // FR-11: one follow-up on a contact through its statuses, and the due list on /admin.
+  const fu = await import("@/lib/market/followups");
+  const fa = await import("@/lib/market/followup-admin");
+  const who = "admin@example.test";
+  const roles = ["admin"];
+  const today = fu.todayKey();
+  const r = await contacts.resolveContact({ email: addr("fu-one"), name: "Finn Followup" }, { source: "check" });
+  assert.ok(r.status === "created");
+  const c = r.contact;
+
+  const past = "2026-01-05";
+  const f = await fa.addFollowUp(c, fa.parseNewFollowUp({ title: "Send the deck", dueDate: past, notes: "Line one\nLine two" }), roles, who);
+  assert.equal(f.status, "todo");
+  assert.equal(f.notes, "Line one\nLine two");
+  const later = await fa.addFollowUp(c, fa.parseNewFollowUp({ title: "Check in", dueDate: "2099-01-01" }), roles, who);
+  let due = (await fa.dueForHome(roles)).filter((d) => d.contactId === c.id);
+  assert.deepEqual(due.map((d) => [d.title, d.overdue]), [["Send the deck", past < today]], "only what is due by today");
+  assert.equal(due[0].contactName, "Finn Followup");
+
+  // Moving the due date moves the index row to the new month.
+  await fa.changeFollowUp(c.id, f.id, { dueDate: today }, who);
+  due = (await fa.dueForHome(roles)).filter((d) => d.contactId === c.id);
+  assert.deepEqual(due.map((d) => [d.dueDate, d.overdue]), [[today, false]]);
+  const table = (await getTable("followUps"))!;
+  await assert.rejects(table.getEntity(`due:${past.slice(0, 7)}`, f.id), "the old index row is gone");
+
+  // Sent closes it: off the due list, closed time set, one timeline entry.
+  const sent = await fa.changeFollowUp(c.id, f.id, fa.parseFollowUpPatch({ status: "sent" }), who);
+  assert.ok(sent?.closedAt);
+  assert.equal((await fa.dueForHome(roles)).filter((d) => d.contactId === c.id).length, 0);
+  await fa.changeFollowUp(c.id, f.id, { status: "drafted" }, who);
+  assert.equal((await fa.dueForHome(roles)).filter((d) => d.contactId === c.id).length, 1, "reopened, it is due again");
+  await fa.changeFollowUp(c.id, f.id, { status: "sent" }, who);
+  const done = (await activity.listContactActivities(c.id)).filter((a) => a.type === "followup.done");
+  assert.equal(done.length, 1, "sent twice, logged once");
+  assert.equal(done[0].summary, "Send the deck (sent)");
+
+  const list = await fu.listContactFollowUps(c.id);
+  assert.deepEqual(list.map((x) => x.title), ["Check in", "Send the deck"], "open first");
+  assert.ok(await fa.removeFollowUp(c.id, later.id, who));
+  assert.equal(await fu.getFollowUp(c.id, later.id), null);
+  await assert.rejects(table.getEntity("due:2099-01", later.id));
+
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.entityId.startsWith(`${c.id}/`));
+  assert.deepEqual(
+    [...new Set(audits.map((e) => e.action))].sort(),
+    ["followup.create", "followup.delete", "followup.edit", "followup.status"],
+  );
+
+  // Investor contacts' follow-ups stay off the list without the role.
+  const lp = await contacts.resolveContact({ email: addr("fu-lp", `fund-${run}.example.test`) }, { visibility: "investor", source: "check" });
+  assert.ok(lp.status === "created");
+  await fa.addFollowUp(lp.contact, fa.parseNewFollowUp({ title: "LP update", dueDate: past }), ["admin", "investor"], who);
+  assert.equal((await fa.dueForHome(roles)).filter((d) => d.contactId === lp.contact.id).length, 0);
+  assert.equal((await fa.dueForHome(["admin", "investor"])).filter((d) => d.contactId === lp.contact.id).length, 1);
+  ok("a follow-up moves through its statuses, shows on the due list until closed, and every change is audited (task 034)");
+}
+
+{
+  // FR-11 acceptance: bulk create adds exactly one per selected member, and a second run adds none.
+  const fu = await import("@/lib/market/followups");
+  const fa = await import("@/lib/market/followup-admin");
+  const cadmin = await import("@/lib/market/contact-admin");
+  const who = "admin@example.test";
+  const roles = ["admin"];
+  const slug = `fu-${run}`;
+  await camp.upsertCampaign({ slug, name: "Follow-up check", visibility: "general", startDate: "2026-11-01" });
+  const people = ["met-a", "met-b", "met-c", "quiet-d"].map((p) => addr(p));
+  const ids: string[] = [];
+  for (const [i, email] of people.entries()) {
+    const rec = await activity.recordActivity({
+      type: i < 3 ? "meeting.in_person" : "email.sent",
+      source: "check",
+      sourceId: `fu-${run}-${i}`,
+      occurredAt: "2026-11-12T15:00:00Z",
+      email,
+      campaignSlug: slug,
+    });
+    assert.ok(rec.status === "recorded");
+    ids.push(rec.contactId);
+    await camp.addMember({ campaignSlug: slug, contactId: rec.contactId, group: i === 2 ? "Speakers" : "Attendees" });
+  }
+  await cadmin.editContact(ids[0], cadmin.parsePatch({ tags: ["Summit"] }), who);
+  const { clearQueryCache } = await import("@/lib/market/queries");
+  clearQueryCache();
+
+  const input = fa.parseBulk({ title: "Thank-you after the Summit", dueDate: "2026-11-25", statuses: ["meeting"] });
+  const first = await fa.bulkCreate(slug, input, roles, who);
+  assert.deepEqual(first, { matched: 3, created: 3, existing: 0 });
+  const second = await fa.bulkCreate(slug, fa.parseBulk({ title: "thank-you after the summit", dueDate: "2026-11-26", statuses: ["meeting"] }), roles, who);
+  assert.deepEqual(second, { matched: 3, created: 0, existing: 3 });
+  for (const id of ids.slice(0, 3)) assert.equal((await fu.listContactFollowUps(id)).length, 1, "exactly one each");
+  assert.equal((await fu.listContactFollowUps(ids[3])).length, 0, "a member not selected gets none");
+  assert.equal((await fu.listContactFollowUps(ids[0]))[0].dueDate, "2026-11-25", "the second run changed nothing");
+
+  assert.deepEqual(await fa.bulkCreate(slug, fa.parseBulk({ title: "Speaker note", dueDate: "2026-11-25", group: "Speakers" }), roles, who), { matched: 1, created: 1, existing: 0 });
+  assert.deepEqual(await fa.bulkCreate(slug, fa.parseBulk({ title: "Tagged", dueDate: "2026-11-25", tag: "summit" }), roles, who), { matched: 1, created: 1, existing: 0 });
+  const bulkAudit = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.action === "followup.bulk_create" && e.entityId === slug);
+  assert.equal(bulkAudit.length, 4);
+
+  // A merge carries follow-ups and their due rows to the survivor; a delete removes them.
+  const thanks = fu.bulkFollowUpId(slug, "Thank-you after the Summit", ids[1]);
+  await cadmin.mergeContacts(ids[0], ids[1], who);
+  assert.ok(await fu.getFollowUp(ids[0], thanks), "moved to the survivor");
+  const due = await fu.dueFollowUps("2026-11-30");
+  assert.equal(due.find((d) => d.id === thanks)?.contactId, ids[0], "the due row follows");
+  await cadmin.deleteContact(ids[2], who);
+  assert.equal((await fu.dueFollowUps("2026-11-30")).filter((d) => d.contactId === ids[2]).length, 0);
+  ok("bulk follow-ups: one per selected member, none added on a second run; merge and delete keep them consistent (FR-11, task 034)");
+}
+
+{
+  // FR-16: the morning report lists follow-ups due and new contacts, and names no investor record.
+  const fa = await import("@/lib/market/followup-admin");
+  const daily = await import("@/lib/reports/daily");
+  const { clearQueryCache } = await import("@/lib/market/queries");
+  const who = "admin@example.test";
+  const both = ["admin", "investor"];
+
+  const g = await contacts.resolveContact({ email: addr("rep-gen"), name: "Gale General" }, { source: "form.contact" });
+  const i = await contacts.resolveContact(
+    { email: addr("rep-lp", `fund-${run}.example.test`), name: "Ivy Investor" },
+    { visibility: "investor", source: "form.investor_overview" },
+  );
+  assert.ok(g.status === "created" && i.status === "created");
+  await fa.addFollowUp(g.contact, fa.parseNewFollowUp({ title: "Report check overdue", dueDate: "2026-01-02" }), both, who);
+  await fa.addFollowUp(i.contact, fa.parseNewFollowUp({ title: "Report check LP", dueDate: "2026-01-02" }), both, who);
+  clearQueryCache();
+
+  const fus = await daily.followUpsSection();
+  assert.equal(fus.problem, undefined);
+  const fuText = fus.lines.join("\n");
+  assert.match(fuText, /\[overdue, due Jan 2\] Report check overdue: Gale General </);
+  assert.match(fuText, /investor follow-ups? \(hidden\)/);
+  assert.ok(!fuText.includes("Report check LP"), "an investor follow-up's title is not shown");
+
+  const nc = await daily.newContactsSection(1);
+  assert.equal(nc.problem, undefined);
+  const ncText = nc.lines.join("\n");
+  assert.match(ncText, new RegExp(`Gale General <rep-gen@co-${run}\\.example\\.test>, [^\\n]* \\(Contact form\\)`));
+  assert.match(ncText, /investor contacts? \(hidden\)/);
+
+  const text = daily.renderDailyReport({ date: "2026-11-22", sections: [fus, nc], quiet: false }, 1);
+  for (const secret of ["Ivy Investor", `rep-lp@fund-${run}`, `fund-${run}`, "Report check LP"]) {
+    assert.ok(!text.includes(secret), `the report must not show ${secret}`);
+  }
+  ok("the morning report lists due follow-ups and new contacts, and counts investor records without naming them (FR-16, task 060)");
+}
+
+{
+  // FR-04 and task 032: organizations by domain, counts, edits and domain overrides.
+  const oa = await import("@/lib/market/org-admin");
+  const { clearQueryCache } = await import("@/lib/market/queries");
+  const who = "admin@example.test";
+  const both = ["admin", "investor"];
+  const main = `org-${run}.example.test`;
+  const alt = `orgalt-${run}.example.test`;
+
+  const a = await contacts.resolveContact(
+    { email: addr("ann", main), name: "Ann Main", organizationName: "Main Co" },
+    { source: "form.contact" },
+  );
+  const b = await contacts.resolveContact({ email: addr("bo", main), name: "Bo Main" }, { source: "form.demo" });
+  const c = await contacts.resolveContact({ email: addr("cy", alt), name: "Cy Alt" }, { source: "form.contact" });
+  const lp = await contacts.resolveContact(
+    { email: addr("lp", alt), name: "Lee Partner" },
+    { visibility: "investor", source: "form.investor_overview" },
+  );
+  assert.ok(a.status === "created" && b.status === "created" && c.status === "created" && lp.status === "created");
+  assert.equal(a.contact.organizationId, main);
+  assert.equal(b.contact.organizationId, main);
+  for (const x of [a, b, c, lp]) {
+    await activity.recordActivity({
+      type: "note",
+      source: "check",
+      sourceId: `org-${run}-${x.contact.id.slice(0, 8)}`,
+      occurredAt: new Date(),
+      contactId: x.contact.id,
+      summary: "Org check note",
+    });
+  }
+  clearQueryCache();
+
+  let list = await oa.loadOrganizations(both);
+  assert.equal(list.find((o) => o.id === main)?.contactCount, 2, "two contacts at one domain list under one organization");
+  assert.equal(list.find((o) => o.id === main)?.name, "Main Co");
+  assert.equal(list.find((o) => o.id === alt)?.contactCount, 2);
+  const general = await oa.loadOrganizations(["admin"]);
+  assert.equal(general.find((o) => o.id === alt)?.contactCount, 1, "an investor contact is not counted without the role");
+
+  const edited = await oa.editOrganization(
+    main,
+    oa.parseOrgPatch({ website: "https://main.example.test", notes: "Met at TLTF" }),
+    who,
+  );
+  assert.equal(edited?.website, "https://main.example.test");
+  assert.equal((await orgs.getOrganization(main))?.notes, "Met at TLTF");
+  await oa.editOrganization(alt, oa.parseOrgPatch({ kind: "customer" }), who);
+
+  // Point the alternate domain at Main Co: its contacts move and its own organization folds in.
+  const added = await oa.addDomain(main, `@${alt.toUpperCase()}`, both, who);
+  assert.equal(added.domain, alt);
+  assert.equal(added.moved, 2);
+  assert.ok(added.removedOrganization);
+  assert.equal(await orgs.getOrganization(alt), null, "the emptied organization is removed");
+  assert.equal((await contacts.getContact(c.contact.id))?.organizationId, main);
+  assert.equal((await contacts.getContact(lp.contact.id))?.organizationId, main);
+  assert.equal((await orgs.getOrganization(main))?.kind, "customer", "an empty field is filled from the folded organization");
+  const later = await contacts.resolveContact({ email: addr("di", alt), name: "Di Alt" }, { source: "form.contact" });
+  assert.equal(later.contact.organizationId, main, "a new contact at the domain joins the chosen organization");
+  await assert.rejects(oa.addDomain(main, alt, both, who), oa.OrgError, "adding it again is refused");
+  await assert.rejects(oa.addDomain(main, main, both, who), oa.OrgError, "its own domain is refused");
+  clearQueryCache();
+  list = await oa.loadOrganizations(both);
+  const row = list.find((o) => o.id === main);
+  assert.equal(row?.contactCount, 5);
+  assert.deepEqual(row?.otherDomains, [alt]);
+  const detail = await oa.organizationDetail(main, both);
+  assert.equal(detail?.contacts.length, 5);
+  assert.ok(detail!.activity.length >= 4, "recent activity spans the organization's contacts");
+  assert.equal(
+    (await oa.organizationDetail(main, ["admin"]))?.contacts.length,
+    4,
+    "the investor contact is left out without the role",
+  );
+
+  // Removing the override sends the domain's contacts back to an organization of their own.
+  const removed = await oa.removeDomain(main, alt, both, who);
+  assert.equal(removed.moved, 3);
+  for (const id of [c.contact.id, lp.contact.id, later.contact.id]) {
+    assert.equal((await contacts.getContact(id))?.organizationId, alt);
+  }
+  assert.equal((await contacts.getContact(a.contact.id))?.organizationId, main, "the main domain's contacts stay");
+  assert.equal(
+    (await orgs.getOrganization(alt))?.visibility,
+    "general",
+    "the recreated organization is general once a general contact joins",
+  );
+  await assert.rejects(oa.removeDomain(main, alt, both, who), oa.OrgError);
+
+  // An investor organization is hidden, and an admin without the role cannot move its domain.
+  const fund = `vc-${run}.example.test`;
+  await contacts.resolveContact(
+    { email: addr("gp", fund), name: "Gil Fund" },
+    { visibility: "investor", source: "form.investor_overview" },
+  );
+  assert.ok(await oa.visibleOrganization(fund, both));
+  assert.equal(await oa.visibleOrganization(fund, ["admin"]), null);
+  await assert.rejects(oa.addDomain(main, fund, ["admin"], who), oa.OrgError);
+  await assert.rejects(oa.addDomain(fund, alt, ["admin"], who), oa.OrgError, "an organization the user cannot see");
+
+  const log = await auditLog.listAudit(keys.monthKey(Date.now()), 10_000);
+  const actions = log.filter((e) => e.entityId === main || e.entityId === alt).map((e) => e.action);
+  for (const want of ["organization.edit", "organization.domain_add", "organization.merged_into", "organization.domain_remove"]) {
+    assert.ok(actions.includes(want), `audited: ${want}`);
+  }
+  assert.ok(!log.some((e) => JSON.stringify(e).includes(`ann@${main}`)), "the audit holds no email address");
+  ok("contacts at one domain list under one organization; an override moves a domain's contacts and can be undone, audited (FR-04, task 032)");
 }
 
 {

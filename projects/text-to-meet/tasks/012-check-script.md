@@ -1,0 +1,87 @@
+# Task 012: Check script, offline cases
+
+**Phase:** 1 (Core library)
+**Status:** completed (2026-11-22)
+**Estimated:** 2 hours
+**Dependencies:** 010, 011
+**Tags:** testing, typescript
+
+## Goal
+
+`npm run sms:check` runs every offline case and exits non-zero on a failure.
+Task 022 adds the route cases behind a `--server` flag.
+
+## Context
+
+The repo has no test framework; checks are `tsx` scripts
+(`scripts/check-meet-slots.mts`, `scripts/check-market.mts`). Spec FR-03,
+FR-04, FR-07, FR-15 and success criterion 8 name this script.
+
+## Steps
+
+1. `scripts/check-sms.mts`, loading `.env.local` the way
+   `scripts/check-meet-graph.mts` does, with a small `check(name, ok)`
+   helper and a summary line.
+2. Signature cases: Twilio's documented example (copy the URL, parameters,
+   token and expected signature from
+   https://www.twilio.com/docs/usage/webhooks/webhooks-security) passes; a
+   changed parameter, a changed URL, and a wrong token fail; the previous
+   token is accepted when passed.
+3. Keyword cases: each word list in task 010, punctuation and case, codes,
+   free-text stop phrases, `OptOutType` precedence.
+4. Token cases: the five in task 011.
+5. Reply cases: `meetReply()` with a real token on `SITE_URL` is at most 306
+   characters and pure GSM-7; the nudge and `HELP_REPLY` are GSM-7. Write
+   the GSM-7 basic set and extension table check in the script.
+6. Add `"sms:check": "tsx scripts/check-sms.mts"` to `package.json`.
+7. Run it; all pass.
+8. Update TASK-INDEX.md: mark this task complete.
+
+## Expected Outputs
+
+- `scripts/check-sms.mts`
+- `package.json`: `sms:check` script
+
+## Acceptance Criteria
+
+- [x] All offline cases pass
+- [x] A deliberately broken reply (an em dash or a curly quote in
+      `meetReply`) fails the GSM-7 case
+- [x] The script prints no secret values
+
+## Notes
+
+A curly apostrophe is not GSM-7 and would turn the whole message into UCS-2
+(70 characters a segment). This check is what keeps the reply at two
+segments.
+
+Signature vector (from task 010). Twilio's page shows the example URL
+`https://mycompany.com/myapp` and parameters `CallSid=CA1234567890ABCDE`,
+`Caller=+12349013030`, `Digits=1234`, `From=+12349013030`,
+`To=+18005551212`, but no auth token. With the token `12345`, Twilio's own
+library (`twilio@5.4.0`, `getExpectedTwilioSignature`) gives
+`3KI2uRuYyAdhZIJXcpU0izDUzWI=`, and `computeSignature` matches it. Use that as
+the fixed vector.
+
+### Done (2026-11-22)
+
+- `scripts/check-sms.mts` and `npm run sms:check`: 99 cases, all pass.
+  Sections: signature (docs vector, order, changed parameter, added
+  parameter, changed URL, internal host URL, wrong token, previous token,
+  missing and overlong header, form body round trip, repeated names);
+  keywords (every word list, punctuation, case, codes, free-text stops,
+  full-width letters, `OptOutType` precedence, placement codes); SMS token
+  (the task 011 cases); phone hash; settings (off when unset, on when
+  complete, previous token, short secret, plain http URL); reply texts.
+- Reply texts: the MEET reply is 220 characters on `https://www.spaarke.com`
+  (the default `SITE_URL`) and 216 on `https://spaarke.com`, both two
+  segments; HELP is 162 (two segments); the nudge is 103 (one segment). The
+  script carries its own GSM-7 basic set and extension table and names any
+  character outside them by code point.
+- Broken reply proof: an em dash, then a curly apostrophe, put into
+  `meetReply` each made the run fail (exit 1) on the GSM-7 case; the file was
+  restored after each.
+- Moved forward from task 021: `NUDGE_REPLY` added to `messages.ts` now,
+  with the spec's FR-12 wording, so this check covers it. Task 021 uses it.
+- The script uses fixed test keys only, prints names and lengths, never a
+  setting's value, and puts back every SMS setting it changes.

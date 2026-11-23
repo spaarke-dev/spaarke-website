@@ -10,6 +10,8 @@ import { ContactEditForm } from "@/components/admin/ContactEditForm";
 import { LogActivityForm } from "@/components/admin/LogActivityForm";
 import { MergeContact } from "@/components/admin/MergeContact";
 import { DeleteContact } from "@/components/admin/DeleteContact";
+import { ContactFollowUps } from "@/components/admin/ContactFollowUps";
+import { listContactFollowUps, todayKey } from "@/lib/market/followups";
 import { ArrowLeft20Regular } from "@/components/admin/icons";
 import { activityLabel, formatDay, formatWhen, label } from "@/components/admin/format";
 
@@ -87,10 +89,12 @@ export default async function ContactPage({
 
   const sp = await searchParams;
   const after = typeof sp.after === "string" ? sp.after : undefined;
-  const [timeline, memberships] = await Promise.all([
+  const [timeline, memberships, followUps] = await Promise.all([
     contactTimeline(contact.id, roles, { after }),
     contactMemberships(contact.id, roles),
+    listContactFollowUps(contact.id),
   ]);
+  const campaignNames = new Map(memberships.map((m) => [m.campaignSlug, m.campaignName]));
   const title = contact.name || contact.email;
 
   return (
@@ -153,7 +157,13 @@ export default async function ContactPage({
             <dl className="space-y-2">
               <Field name="Email">{contact.email}</Field>
               <Field name="Title">{contact.title}</Field>
-              <Field name="Organization">{contact.organizationName}</Field>
+              <Field name="Organization">
+                {contact.organizationName && contact.organizationId ? (
+                  <Link href={`/admin/organizations/${encodeURIComponent(contact.organizationId)}`} className="hover:underline">
+                    {contact.organizationName}
+                  </Link>
+                ) : null}
+              </Field>
               <Field name="LinkedIn">
                 {contact.linkedinUrl ? (
                   <a href={contact.linkedinUrl} target="_blank" rel="noreferrer noopener" className="hover:underline">
@@ -216,7 +226,21 @@ export default async function ContactPage({
             <h2 id="followups" className="text-lg font-semibold">
               Follow-ups
             </h2>
-            <p className="text-sm text-fg-mid">Follow-ups for this contact will show here.</p>
+            <ContactFollowUps
+              contactId={contact.id}
+              today={todayKey()}
+              campaigns={memberships.map((m) => ({ slug: m.campaignSlug, name: m.campaignName }))}
+              followUps={followUps.map((f) => ({
+                id: f.id,
+                title: f.title,
+                dueDate: f.dueDate,
+                status: f.status,
+                notes: f.notes,
+                campaignSlug: f.campaignSlug,
+                campaignName: f.campaignSlug ? campaignNames.get(f.campaignSlug) : undefined,
+                closedAt: f.closedAt,
+              }))}
+            />
           </section>
 
           <section aria-labelledby="manage" className="space-y-4 border-t border-line pt-6">

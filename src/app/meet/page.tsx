@@ -3,14 +3,18 @@ import Link from "next/link";
 import { Button, PageHeader, Shell, Slab } from "@/components/primitives";
 import { BookingsNewTabLink } from "@/components/BookingsNewTabLink";
 import { MeetBookingFlow } from "@/components/meet/MeetBookingFlow";
+import { SmsLinkOpened } from "@/components/meet/SmsLinkOpened";
 import { getBookingsPageUrl } from "@/lib/bookings";
-import { trackException } from "@/lib/logger";
+import { flushTelemetry, trackException } from "@/lib/logger";
 import { getMeetConfig, wantsGraphMode } from "@/lib/meet/config";
 import { getOpenSlots } from "@/lib/meet/service";
 import { isStorageConfigured } from "@/lib/meet/store";
+import { getSmsConfig } from "@/lib/sms/config";
+import { openSmsLink } from "@/lib/sms/link-open";
+import { displayNumber, meetPageLine } from "@/lib/sms/messages";
 
-// Dynamic because the booking mode, the Bookings URL, and the open slots are
-// all read at request time.
+// Dynamic because the booking mode, the Bookings URL, the open slots, and the
+// text link token (`c`) are all read at request time.
 export const dynamic = "force-dynamic";
 
 const TITLE = "Meet the Spaarke Team";
@@ -66,10 +70,35 @@ const CONTACT_LINE = (
   </p>
 );
 
-export default async function Meet() {
-  const graph = await loadGraphFlow();
+/**
+ * "Prefer to text?" (spec Placement). Shown only while the Text MEET program
+ * is on and fully configured, so the page never offers a number that would
+ * not answer.
+ */
+function TextLine() {
+  const number = getSmsConfig()?.publicNumber;
+  if (!number) return null;
+  return (
+    <p>
+      {meetPageLine(displayNumber(number))}{" "}
+      <Link href="/sms" className="text-cta-blue underline">
+        Text message terms
+      </Link>
+      .
+    </p>
+  );
+}
+
+// Spec FR-16: plain text in the page flow, not an alert (NFR-06).
+const SMS_WELCOME = "Thanks for texting. Choose a time below.";
+
+export default async function Meet({ searchParams }: { searchParams: Promise<{ c?: string | string[] }> }) {
+  const { c } = await searchParams;
+  const [graph, smsLink] = await Promise.all([loadGraphFlow(), openSmsLink(c)]);
+  if (c !== undefined) await flushTelemetry();
   const bookingsUrl = graph ? null : getBookingsPageUrl();
   const canBook = Boolean(graph || bookingsUrl);
+  const welcome = smsLink && canBook ? <p className="text-fg mt-10 text-lg">{SMS_WELCOME}</p> : null;
 
   return (
     <Slab tone="light">
@@ -85,17 +114,25 @@ export default async function Meet() {
             }
           />
 
+          {c !== undefined && <SmsLinkOpened verified={smsLink !== null} code={smsLink?.code} />}
+
           {graph ? (
             <>
+              {welcome}
               <MeetBookingFlow
                 initialSlots={graph.slots}
                 durationMinutes={graph.durationMinutes}
                 recaptchaSiteKey={process.env.RECAPTCHA_SITE_KEY ?? ""}
+                smsToken={smsLink?.token}
               />
-              <div className="text-fg-low mt-10 space-y-3 text-sm">{CONTACT_LINE}</div>
+              <div className="text-fg-low mt-10 space-y-3 text-sm">
+                {CONTACT_LINE}
+                <TextLine />
+              </div>
             </>
           ) : bookingsUrl ? (
             <>
+              {welcome}
               <div className="border-line mt-12 overflow-hidden rounded-xl border bg-white">
                 <iframe
                   src={bookingsUrl}
@@ -113,6 +150,7 @@ export default async function Meet() {
                   <BookingsNewTabLink href={bookingsUrl} />.
                 </p>
                 {CONTACT_LINE}
+                <TextLine />
               </div>
             </>
           ) : (

@@ -28,7 +28,9 @@
     "report:daily": "tsx scripts/daily-report.mts",
     "meet:check": "tsx scripts/check-meet-slots.mts",
     "meet:graph": "tsx scripts/check-meet-graph.mts",
-    "market:check": "tsx scripts/check-market.mts"
+    "market:check": "tsx scripts/check-market.mts",
+    "market:mail": "tsx scripts/check-market-mail.mts",
+    "sms:check": "tsx scripts/check-sms.mts"
   },
   "dependencies": {
     "@anthropic-ai/foundry-sdk": "^0.4.9",

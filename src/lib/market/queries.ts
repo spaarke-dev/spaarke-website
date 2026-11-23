@@ -32,7 +32,11 @@ export type ContactRow = Contact & { organizationName?: string; organizationDoma
 const CACHE_MS = 30_000;
 
 type Snapshot = { at: number; contacts: ContactRow[] };
-const snapshots = new Map<string, Snapshot>();
+// Next.js loads this module separately for pages and for API routes, so a
+// plain module-level map would let a route clear its own copy while the page
+// kept serving the old list. One map per process, on globalThis, is shared.
+const store = globalThis as typeof globalThis & { __maContactSnapshots?: Map<string, Snapshot> };
+const snapshots = (store.__maContactSnapshots ??= new Map<string, Snapshot>());
 
 function scopeKey(roles: readonly string[]): string {
   return canSeeInvestor(roles) ? "investor" : "general";
@@ -82,7 +86,7 @@ function contactFromEntity(e: ContactEntity): Contact {
   };
 }
 
-async function scanOrganizations(roles: readonly string[]): Promise<Map<string, Organization>> {
+export async function scanOrganizations(roles: readonly string[]): Promise<Map<string, Organization>> {
   const table = await getTable("organizations");
   const out = new Map<string, Organization>();
   if (!table) return out;

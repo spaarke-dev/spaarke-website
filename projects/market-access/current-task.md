@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 031: Contact detail and edits |
+| **Task** | 040: Graph mail client |
 | **Step** | PR open |
 | **Status** | done; PR pending Ralph's go-ahead to merge |
-| **Next action** | After merge: task 033 (campaigns), then 053 (LinkedIn import, before 2026-12-19) |
+| **Next action** | After merge: 041 (mailbox registry), then 042 (sync engine) and 043 (triage); confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
@@ -47,3 +47,9 @@
 - 2026-11-20: PR #174 merged (tasks 021, 022) and live. Task 020 built: the five forms record after their own save; 26 checks pass.
 - 2026-11-20: PR #175 merged (task 020) and live. Task 030 built: admin home and contacts list on `queries.ts`; 28 checks pass; a 10,000-contact scan takes about 200 ms in the emulator.
 - 2026-11-20: PR #176 merged (task 030) and live. Task 031 built: contact page with edit, log, merge and delete, all audited; deleted contacts are tombstoned; 32 checks pass.
+- 2026-11-21: PR #177 merged (task 031) and live. Task 033 built: campaign list and page with funnel, member table, add members and status overrides, all audited; 37 checks pass; 500 members load in about 100 ms in the emulator.
+- 2026-11-22: PR #180 merged (task 033) and live. Task 053 built: `/admin/import` previews and imports a Lead Gen Form CSV into a campaign; a second import adds nothing; 40 checks pass.
+- 2026-11-22: PR #181 merged (task 053). Task 034 built: follow-ups on contacts, bulk follow-ups on campaigns, due and overdue on `/admin`, all audited; 43 checks pass.
+- 2026-11-22: PR #182 merged (task 034) and live. Task 060 built: the morning report lists follow-ups due and new contacts, investor records as counts only; 44 checks pass.
+- 2026-11-22: PR #183 merged (task 060) and live. Task 032 built: organization list and page with edits and domain overrides, all audited; the contacts cache is now shared between pages and API routes; 46 checks pass.
+- 2026-11-22: PR #184 merged (task 032) and live. Task 040 built: Graph mail client and `npm run market:mail`; read both synced mailboxes live (counts only); 47 checks pass.
