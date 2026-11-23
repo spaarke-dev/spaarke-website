@@ -278,6 +278,11 @@ Visual: the band is a cool tint between the dark network band and the black clos
 
 Open: "Designed in weeks" holds for later members; the first firm's foundations are about three months (owner's flag). "Member" still appears in the network section (title, "Next member", MEMBER labels), the estimate's "Member equity" step and the MSO structure text; the change list says "partner" on the public site. Owner decision 2026-11-22: standardize on "member" for firms and departments in the network, overriding the change list's "partner, never member". "Partner" now means only the firm's own (equity) partners, plus vendor and business partners. Changed: the network eyebrow ("MLO member network"), the equity card title and formula ("Member equity value") and the Operate equity step.
 
+## Spaarke Method modal and the closing disclaimers (2026-11-22)
+
+- "Read the Spaarke Method" under the phases opens the article in a modal over /services. It's an intercepting route, `src/app/services/@modal/(..)why-spaarke/the-spaarke-method`, built like the estimate modal (`ArticleModal`). Esc, the close button or the backdrop return to /services, and "Open as a page" reloads the full article. A reload or a direct link still shows the normal article page. The header's "Back to Why Spaarke" link is hidden in the modal (`ArticleHeader backLink={false}`). Other article links on the site still navigate.
+- The "Important information" block under the closing is removed at the owner's request (`SHOW_DISCLAIMERS = false` in sections.tsx). The text stays in `disclaimers` in content.ts. The estimate keeps its own disclaimer. Before launch, counsel to confirm where the general, securities and practice-of-law statements should live (for example the footer or the terms page).
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.

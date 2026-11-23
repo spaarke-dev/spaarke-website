@@ -54,6 +54,12 @@ const GLOW =
  */
 const SHOW_BENEFITS = false;
 const SHOW_FAQ = false;
+/**
+ * Owner, 2026-11-22: the "Important information" block under the closing is
+ * removed from the page. The text stays in content.ts (disclaimers) for
+ * counsel to place elsewhere; the estimate keeps its own disclaimer.
+ */
+const SHOW_DISCLAIMERS = false;
 /** Approach: a cool tint so the raised phase cards read as lifted. */
 const TINT: CSSProperties = {
   backgroundColor: "#f3f5fa",
@@ -522,7 +528,7 @@ function Closing() {
     <section
       data-tone="dark"
       className="relative overflow-hidden"
-      style={{ backgroundColor: "#000000", paddingTop: "clamp(80px, 10vh, 120px)", paddingBottom: "clamp(56px, 8vh, 96px)" }}
+      style={{ backgroundColor: "#000000", paddingTop: "clamp(80px, 10vh, 120px)", paddingBottom: "clamp(80px, 10vh, 120px)" }}
     >
       <div
         aria-hidden="true"
@@ -553,14 +559,16 @@ function Closing() {
           </div>
         </div>
 
-        <div className="border-line mx-auto mt-24 max-w-5xl border-t pt-8">
-          <p className="font-mono-display text-fg-low text-[11px] uppercase tracking-[0.16em]">Important information</p>
-          <ul className="text-fg-low mt-4 grid grid-cols-1 gap-x-10 gap-y-2 text-[12px] leading-relaxed md:grid-cols-2">
-            {disclaimers.map((d) => (
-              <li key={d}>{d}</li>
-            ))}
-          </ul>
-        </div>
+        {SHOW_DISCLAIMERS ? (
+          <div className="border-line mx-auto mt-24 max-w-5xl border-t pt-8">
+            <p className="font-mono-display text-fg-low text-[11px] uppercase tracking-[0.16em]">Important information</p>
+            <ul className="text-fg-low mt-4 grid grid-cols-1 gap-x-10 gap-y-2 text-[12px] leading-relaxed md:grid-cols-2">
+              {disclaimers.map((d) => (
+                <li key={d}>{d}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </Shell>
     </section>
   );
