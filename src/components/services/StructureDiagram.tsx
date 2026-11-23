@@ -322,7 +322,9 @@ export function StructureDiagram({
     Object.entries(structure.flows).map(([k, v]) => [k, v.join(" ").toLowerCase()]),
   ) as Record<keyof typeof structure.flows, string>;
   const firm = audience === "firm";
-  const show: Show = { input: firm, share: firm && SHOW_NETWORK_VALUE };
+  // Owner, 2026-11-22: the department view matches the firm's, except the
+  // network value arrow (a department has no ownership element).
+  const show: Show = { input: true, share: firm && SHOW_NETWORK_VALUE };
 
   return (
     <div

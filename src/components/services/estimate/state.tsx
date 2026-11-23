@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { DEFAULT_INPUTS, type EstimateInputs } from "./model";
-import { DEPT_PRESETS, type DeptInputs } from "./dept-model";
+import { DEPT_DEFAULT_INPUTS, type DeptInputs } from "./dept-model";
 
 /**
  * One set of estimate inputs per audience for the /services segment. The
@@ -23,7 +23,7 @@ const EstimateContext = createContext<Ctx | null>(null);
 
 export function EstimateProvider({ children }: { children: ReactNode }) {
   const [firm, setFirm] = useState<EstimateInputs>(DEFAULT_INPUTS);
-  const [dept, setDept] = useState<DeptInputs>(DEPT_PRESETS.mid);
+  const [dept, setDept] = useState<DeptInputs>(DEPT_DEFAULT_INPUTS);
   return <EstimateContext.Provider value={{ firm, setFirm, dept, setDept }}>{children}</EstimateContext.Provider>;
 }
 

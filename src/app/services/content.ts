@@ -200,7 +200,7 @@ export const structure = {
     services: ["Operations and", "technology"],
     /** Operator to MSO, both views. */
     owns: ["Owns and runs"],
-    /** Law firm view only: firm to MSO, under the fee. */
+    /** Client to MSO, under the fee (both views since 2026-11-22). */
     input: ["Input on staff,", "culture and standards"],
     /** Law firm view only, behind SHOW_NETWORK_VALUE: operator to firm, dashed, centered on the operator. */
     share: ["Share in", "network value"],
@@ -267,16 +267,36 @@ export const structure = {
       },
     },
     corporate: {
+      /**
+       * Owner, 2026-11-22: match the law firm box. DECIDES and HAS A SAY as
+       * for the firm; no SHARES IN, as a department has no ownership element
+       * (see definitions), so the network value arrow stays law firm only.
+       */
       client: {
         eyebrow: "Legal department · in-house",
         title: "Your legal department",
-        sub: "Keeps legal judgment",
-        items: [
-          "In-house lawyers",
-          "Legal strategy and advice",
-          "Outside counsel choices",
-          "Company data and privilege",
-          "Decisions and sign-off",
+        sub: "Your lawyers and legal professionals. Keeps legal judgment.",
+        groups: [
+          {
+            id: "decides",
+            label: "Decides",
+            items: [
+              "Legal strategy and advice",
+              "Outside counsel choices and spend",
+              "Supervision of all legal work and AI output",
+              "Company data, confidences and privilege",
+              "Priorities, budget and sign-off",
+            ],
+          },
+          {
+            id: "say",
+            label: "Has a say",
+            items: [
+              "Input on MSO staff, culture and standards",
+              "Which services it uses from the menu",
+              "Service levels reviewed with the MSO",
+            ],
+          },
         ],
       },
       mso: {
@@ -888,7 +908,7 @@ export const estimate = {
 
 /**
  * The legal department equivalent (task 071, 2026-11-22). Same structure as
- * the law firm estimate. No equity, ownership or profit share anywhere: the
+ * the law firm estimate, reworked to its pattern the same day. No equity, ownership or profit share anywhere: the
  * department contracts with an MSO that Spaarke runs (design.md section 9).
  * Figures come from src/components/services/estimate/dept-model.ts.
  */
@@ -906,28 +926,72 @@ export const deptEstimate = {
     staff: "Legal operations and support staff",
     budget: "Annual legal budget, including outside counsel",
   },
+  /**
+   * Owner, 2026-11-22: the department estimate follows the law firm's
+   * reworked pattern. The base case is the lower fee alone; the capacity
+   * upside is off by default and labeled as an assumption.
+   */
+  upside: {
+    label: "Capacity upside",
+    note: "An assumption, not a result: routine outside counsel work brought back in-house with freed lawyer time, plus routine matters handled by the MSO.",
+  },
+  assumptionsToggle: { open: "Edit the assumptions", close: "Hide the assumptions", reset: "Reset" },
+  adjustable: {
+    feeDiscount: "MSO fee below today’s cost",
+    efficiency: "MSO efficiency gain",
+    redeploy: "Freed time used on outside counsel work",
+    glide: "Fee reduction each year",
+  },
+  capNote: "The fee discount is capped at what the MSO’s efficiency gain pays for.",
   objectives: [
     { title: "Lower cost of legal", question: "Run the department for less" },
     { title: "Technology edge", question: "Give a lean team the tools of a large firm" },
     { title: "Lasting value", question: "Lock in the savings without spending capital" },
   ],
+  /** Card 3: no equity for departments (design.md section 9). */
+  lasting: {
+    bullets: [
+      "No capital invested by the department",
+      "A fixed or per-unit fee agreed in advance, so the budget is predictable",
+      "The fee is re-benchmarked to fair market value every three years",
+    ],
+  },
+  summary: {
+    base: "in lower cost of legal, plus a technology and capacity advantage, with no capital from the department.",
+    /** Shown when the capacity upside is on: "With the capacity upside ... about $X a year in all." */
+    upside: ["With the capacity upside, which is an assumption, about", "a year in all."],
+  },
   detailsCta: "See the details",
   disclaimer:
     "Illustrative estimate using representative assumptions for US corporate legal departments, not a forecast or an offer. Actual results depend on the department, its outside counsel mix, the scope of the services agreement and the MSO fee as benchmarked to fair market value.",
+  /** Next to each numeric section, as on the law firm estimate. */
+  note: "Illustrative estimate based on representative assumptions, not a forecast or an offer.",
+  /** Right after the calculator, as on the law firm estimate. */
+  structure: {
+    title: "The structure",
+    caption:
+      "The department keeps every legal decision and all privileged work. Spaarke owns and runs the MSO, which handles legal operations and technology under a services agreement. The department owns no part of it.",
+  },
   details: {
     title: "How the estimate works",
     bridgeTitle: "Where the savings come from",
+    feeTitle: "The fee over five years",
     tableTitle: "Today vs with the MSO",
-    tableCaption: "Annual figures for the whole department.",
+    tableCaption: {
+      base: "Annual figures for the whole department, base case: the lower fee alone.",
+      upside: "Annual figures for the whole department, with the capacity upside on.",
+    },
     stepsTitle: "How it works",
-    stepsCaption: "Three changes, no capital from the department.",
+    stepsCaption: "Three changes, no upfront investment.",
     steps: ["Run legal operations for less", "Bring routine work back in-house", "Send routine matters to the MSO"],
-    structureTitle: "The structure",
-    structureCaption:
-      "The department keeps every legal decision and all privileged work. The MSO runs operations and technology under a services agreement. The department owns no part of it.",
     assumptionsTitle: "Our assumptions",
     assumptionsCaption:
       "Representative figures for US corporate legal departments. Your own numbers come from an assessment of your spend.",
+  },
+  closing: {
+    title: "Your department’s own numbers",
+    body: "We build the estimate from your department’s actual spend, in a confidential conversation.",
+    primary: { label: "Get an estimate for your department", href: "/contact?reason=mlo" },
   },
 };
 
@@ -1081,6 +1145,12 @@ export const closing = {
   } satisfies ByAudience<string>,
 };
 
+/**
+ * Hidden on /services since 2026-11-22 (SHOW_DISCLAIMERS in sections.tsx).
+ * The same statements, reworded for the context, are section 18 of the
+ * terms page (src/app/terms/page.tsx, #managed-legal-operations); keep the
+ * two in step.
+ */
 export const disclaimers = [
   "This page is general information about a service. It is not legal, tax or financial advice.",
   "Nothing on this page is an offer to sell, or a solicitation of an offer to buy, any security or interest in any entity.",

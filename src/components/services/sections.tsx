@@ -480,11 +480,7 @@ function Approach() {
             </Button>
           </div>
         </div>
-        <div className="mt-10">
-          <Button variant="primary" href={ctas.assessment.href} arrow>
-            {ctas.assessment.label}
-          </Button>
-        </div>
+        {/* Owner, 2026-11-22: no assessment button here; the closing section carries the calls to action. */}
       </Shell>
     </Band>
   );

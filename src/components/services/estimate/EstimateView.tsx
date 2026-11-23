@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { estimate as copy } from "@/app/services/content";
+import { deptEstimate, estimate as copy } from "@/app/services/content";
 import { StructureDiagram } from "../StructureDiagram";
 import { ClosingCta, MUTED } from "./parts";
 import type { EstimateInputs } from "./model";
@@ -55,37 +55,52 @@ function useSynced<T>(initial: T | null, value: T, set: (v: T) => void, query: (
   return current;
 }
 
+/** The structure diagram on the light estimate page, between the calculator and the details. */
+function StructureSection({ audience }: { audience: EstimateAudience }) {
+  const c = audience === "corporate" ? deptEstimate.structure : copy.structure;
+  return (
+    <section aria-labelledby="estimate-structure-title">
+      <h2
+        id="estimate-structure-title"
+        className="font-display text-fg text-[clamp(28px,3.4vw,40px)] font-medium tracking-[-0.02em]"
+      >
+        {c.title}
+      </h2>
+      <p className={`${MUTED} mt-3 max-w-3xl text-[16px] leading-relaxed`}>{c.caption}</p>
+      <div className="mt-6">
+        {audience === "corporate" ? (
+          <StructureDiagram audience="corporate" tone="light" />
+        ) : (
+          <StructureDiagram audience="firm" tone="light" sharesHref={`#${copy.details.equityCard.id}`} />
+        )}
+      </div>
+    </section>
+  );
+}
+
 function FirmView({ initial }: { initial: EstimateInputs | null }) {
   const { firm, setFirm } = useEstimateInputs();
   const current = useSynced(initial, firm, setFirm, toQuery);
   return (
     <div className="space-y-16 md:space-y-20">
       <EstimateCalculator inputs={current} onChange={setFirm} detailsHref={`#${DETAILS_ANCHOR}`} />
-      <section aria-labelledby="estimate-structure-title">
-        <h2
-          id="estimate-structure-title"
-          className="font-display text-fg text-[clamp(28px,3.4vw,40px)] font-medium tracking-[-0.02em]"
-        >
-          {copy.structure.title}
-        </h2>
-        <p className={`${MUTED} mt-3 max-w-3xl text-[16px] leading-relaxed`}>{copy.structure.caption}</p>
-        <div className="mt-6">
-          <StructureDiagram audience="firm" tone="light" sharesHref={`#${copy.details.equityCard.id}`} />
-        </div>
-      </section>
+      <StructureSection audience="firm" />
       <EstimateDetails inputs={current} />
       <ClosingCta {...copy.closing} />
     </div>
   );
 }
 
+/** Same order as the law firm view (owner, 2026-11-22). */
 function DeptView({ initial }: { initial: DeptInputs | null }) {
   const { dept, setDept } = useEstimateInputs();
   const current = useSynced(initial, dept, setDept, toDeptQuery);
   return (
     <div className="space-y-16 md:space-y-20">
       <DeptCalculator inputs={current} onChange={setDept} detailsHref={`#${DETAILS_ANCHOR}`} />
+      <StructureSection audience="corporate" />
       <DeptDetails inputs={current} />
+      <ClosingCta {...deptEstimate.closing} />
     </div>
   );
 }

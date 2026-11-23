@@ -283,6 +283,18 @@ Open: "Designed in weeks" holds for later members; the first firm's foundations 
 - "Read the Spaarke Method" under the phases opens the article in a modal over /services. It's an intercepting route, `src/app/services/@modal/(..)why-spaarke/the-spaarke-method`, built like the estimate modal (`ArticleModal`). Esc, the close button or the backdrop return to /services, and "Open as a page" reloads the full article. A reload or a direct link still shows the normal article page. The header's "Back to Why Spaarke" link is hidden in the modal (`ArticleHeader backLink={false}`). Other article links on the site still navigate.
 - The "Important information" block under the closing is removed at the owner's request (`SHOW_DISCLAIMERS = false` in sections.tsx). The text stays in `disclaimers` in content.ts. The estimate keeps its own disclaimer. Before launch, counsel to confirm where the general, securities and practice-of-law statements should live (for example the footer or the terms page).
 
+## Terms, process button, and the legal department view (2026-11-22)
+
+1. **Terms page.** The /services disclaimers are now section 18 of /terms, "Managed Legal Operations information" (`#managed-legal-operations`), worded for that page; Contact becomes 19 and "Last updated" is 2026-11-22. The `disclaimers` array in content.ts stays as the source and is still hidden on /services. Counsel to review the section, as the terms page is otherwise about the platform subscription.
+2. **Process section.** The "Request a confidential assessment" button is gone from the process section. The closing section keeps its "Request a confidential assessment" text link next to "Start a conversation".
+3. **What is MLO, legal department.** The department box now matches the law firm box: DECIDES (strategy and advice, outside counsel choices and spend, supervision of legal work and AI output, company data and privilege, priorities, budget and sign-off) and HAS A SAY (same three items as the firm), with icons, and the "Input on staff, culture and standards" connector. No SHARES IN group and no network value arrow, as a department has no ownership element.
+4. **Financial opportunity, legal department.** Reworked to the law firm pattern:
+   - The model's base case is the lower fee alone ($258k a year for the mid-size preset). Work brought in-house with freed time and routine matters sent to the MSO are the capacity upside, off by default ($1.21M a year more for the mid-size preset, $1.47M in all).
+   - The same four editable assumptions and ranges as the law firm estimate (the efficiency gain caps the fee discount), and the same five-year fee view. Both go into the URL.
+   - Cards: lower cost of legal (fee saving, % below cost, five-year saving); technology edge (hours freed, funded by Spaarke, kept current, upside when on); lasting value (no capital, a predictable fee, fair market value re-benchmarking). No deployment figure and no equity.
+   - Details: the structure diagram (light), a bridge from $0 (base case, then the hatched upside), the fee over five years, today vs with the MSO (base or upside), how it works, and the assumptions with the same basis text as the firm. Then a closing card, "Get an estimate for your department". The old three-box structure card is gone.
+   - The department horizon is now five years (was three), to match the fee view.
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.
