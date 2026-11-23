@@ -123,7 +123,7 @@ These fill gaps the spec leaves to implementation. Each is reversible.
 | # | Question | Raised at | Recommendation |
 |---|---|---|---|
 | 1 | Reuse the `/meet` Graph app for mail read, or register a separate one? | Task 003 | **Answered 2026-11-19: reuse the `/meet` app.** The plan had recommended a separate app; Ralph chose one app and one secret to manage. Mail read gets its own Exchange scope, and the sync reads the `MEET_GRAPH_*` settings. |
-| 2 | Should Summit `meeting.in_person` entries come from the calendar import only, or should Ralph confirm which took place? | Task 050 | Import them as `planned`, then let Ralph confirm in one pass on the campaign page. |
+| 2 | Should Summit `meeting.in_person` entries come from the calendar import only, or should Ralph confirm which took place? | Task 050 | **Answered 2026-11-23: import, confirm later.** Every Summit meeting in the calendar export becomes a `meeting.in_person` activity; Ralph corrects the ones that did not happen in one pass on the campaign page, with the member status override. |
 | 3 | Default visibility for form-submitted investors? | Task 020 | **Answered 2026-11-20:** `general` for every form except the investor overview form, which starts as `investor`, as recommended. |
 
 ## Risks

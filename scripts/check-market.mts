@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 053 and 060).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050, 053 and 060).
 //
 //   npm run market:check
 //
@@ -664,6 +664,95 @@ console.log("Pure checks");
   assert.equal(groups[0].domain, "acme.test");
   assert.equal(groups[0].messages[0].key, "2", "newest message first");
   ok("triage groups queued mail by sender, newest first; a sender from an investor mailbox is investor-only (task 043)");
+}
+
+{
+  // Task 050: the TLTF import plan, from made-up files.
+  const tltf = await import("@/lib/market/tltf-import");
+  const { parseCsv } = await import("@/lib/market/csv");
+
+  assert.equal(tltf.zonedToIso("2026-11-17T10:00:00.0000000", "Eastern Standard Time"), "2026-11-17T15:00:00.000Z");
+  assert.equal(tltf.zonedToIso("2026-07-01T10:00:00", "Eastern Standard Time"), "2026-07-01T14:00:00.000Z");
+  assert.equal(tltf.zonedToIso("2026-11-17T10:00:00", "UTC"), "2026-11-17T10:00:00.000Z");
+  assert.throws(() => tltf.ianaZone("Nowhere Standard Time"));
+  assert.equal(tltf.localDate("2026-11-14T02:00:00.000Z"), "2026-11-13");
+
+  const outreachCsv = parseCsv(
+    [
+      "file,group,template,to,email source,check before sending,status,result,reply",
+      '"Z1-01 Pat Example (Fund One).eml",1,A,pat@fund-one.example.test,pattern,,sent 2026-11-13,,"Interested, call next week"',
+      '"Z1-02 Fund Two.eml",1,B,info@fund-two.example.test,general inbox,,sent 2026-11-13,bounced: address not found,',
+      '"Z2-03 Lee Example (Fund Three).eml",2,C,Lee@Fund-Three.example.test,data provider,,sent 2026-11-13,auto-reply,',
+      '"Z2-04 Sam Example (Fund Four).eml",2,D,sam@fund-four.example.test,pattern,,not sent (decided not to send),,',
+      '"no code here",2,D,x@fund-five.example.test,pattern,,sent 2026-11-13,,',
+    ].join("\n"),
+  );
+  const keysCsv = parseCsv("code,key\nZ1-01,key-one\nZ1-02,key-two\nTEST,key-test\n");
+  const people = tltf.parsePeople([
+    { match: ["lee@"], name: "Lee Example", title: "Partner", org: "Fund Three", linkedin: "https://www.linkedin.example.test/in/lee", context: "Met at a dinner." },
+    { match: ["Robin"], name: "Robin Example", org: "Fund Six", context: "Seed investor." },
+  ]);
+  const calendar = tltf.parseCalendar([
+    { subject: "Coffee with Lee", start: { dateTime: "2026-11-17T10:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["ralph@spaarke.com", "lee@fund-three.example.test"], isCancelled: false },
+    { subject: "Robin and team", start: { dateTime: "2026-11-18T11:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["ralph@spaarke.com", "rk@fund-six.example.test"], isCancelled: false },
+    { subject: "Internal prep", start: { dateTime: "2026-11-16T08:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["ralph@spaarke.com"], isCancelled: false },
+    { subject: "Dropped", start: { dateTime: "2026-11-19T08:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["x@fund-seven.example.test"], isCancelled: true },
+  ]);
+  assert.equal(calendar.meetings.length, 2);
+  assert.equal(calendar.internalOnly, 1);
+  assert.equal(calendar.cancelled, 1);
+  assert.equal(calendar.meetings[0].start, "2026-11-17T15:00:00.000Z");
+
+  const briefKeys = tltf.parseBriefKeys(keysCsv);
+  const outreach = tltf.parseOutreach(outreachCsv, briefKeys, people);
+  assert.equal(outreach.entries.length, 3);
+  assert.equal(outreach.notSent, 1);
+  assert.equal(outreach.autoReplies, 1);
+  // The bad file name and the missing brief key for Z2-03.
+  assert.equal(outreach.issues.length, 2);
+  const [pat, inbox, lee] = outreach.entries;
+  assert.equal(pat.hints.name, "Pat Example");
+  assert.equal(pat.hints.organizationName, "Fund One");
+  assert.equal(inbox.hints.name, undefined, "a general inbox has no person's name");
+  assert.equal(inbox.hints.organizationName, "Fund Two");
+  assert.equal(lee.email, "lee@fund-three.example.test");
+  assert.equal(lee.hints.title, "Partner");
+  assert.equal(pat.group, "G1");
+  assert.equal(pat.sentAt, "2026-11-14T02:00:00.000Z");
+
+  const plan = tltf.buildPlan(outreach, calendar, people, outreachCsv.rows.length);
+  assert.equal(plan.counts.sent, 3);
+  assert.equal(plan.counts.bounced, 1);
+  assert.equal(plan.counts.replies, 1);
+  assert.equal(plan.counts.summitOnly, 1);
+  assert.equal(plan.counts.summitAlsoOutreach, 1);
+  // Lee by address; Robin by the subject of a one-guest meeting.
+  assert.equal(plan.counts.peopleMatched, 2);
+  assert.equal(plan.counts.contextNotes, 2);
+  assert.deepEqual(plan.window, { startDate: "2026-11-13", endDate: "2026-11-18" });
+  assert.equal(plan.members.length, 4);
+  const m = new Map(plan.members.map((x) => [x.email, x]));
+  assert.equal(m.get("pat@fund-one.example.test")!.code, "tltf-Z1-01");
+  assert.equal(m.get("pat@fund-one.example.test")!.briefLabel, "tltf-2026:Z1-01");
+  assert.equal(m.get("pat@fund-one.example.test")!.briefKey, "key-one");
+  assert.equal(m.get("pat@fund-one.example.test")!.templateLabel, "Template A");
+  assert.equal(m.get("lee@fund-three.example.test")!.group, "G2", "the outreach group wins over Summit");
+  assert.equal(m.get("rk@fund-six.example.test")!.group, "Summit");
+  assert.equal(m.get("rk@fund-six.example.test")!.hints.name, "Robin Example");
+
+  const ids = plan.activities.map((a) => `${a.source}:${a.sourceId}`);
+  assert.equal(new Set(ids).size, ids.length, "source IDs are unique");
+  assert.ok(plan.activities.every((a) => a.source === "tltf-import" && a.campaignSlug === "tltf-2026" && a.visibility === "investor"));
+  assert.deepEqual(
+    plan.activities.map((a) => a.type).sort(),
+    ["email.bounced", "email.received", "email.sent", "email.sent", "email.sent", "meeting.in_person", "meeting.in_person", "note", "note"],
+  );
+  // Ids hold codes and hashes, never an address.
+  assert.ok(ids.every((id) => !id.includes("@")));
+  const again = tltf.buildPlan(outreach, calendar, people, outreachCsv.rows.length);
+  assert.deepEqual(again.activities.map((a) => a.sourceId), plan.activities.map((a) => a.sourceId), "a second plan has the same IDs");
+  assert.throws(() => tltf.columnMapping(["file", "to"], tltf.OUTREACH_FIELDS), /Missing columns: group/);
+  ok("TLTF import: column mapping, file names, sent, bounces, replies, Summit meetings and stable IDs (task 050)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -1875,6 +1964,79 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
 
   for (const m of [team, lp]) await mb.removeMailbox(m.id, who);
   ok("triage accepts a sender into one contact with their mail, links one to an existing contact, dismisses a sender or a domain for good, and deletes dismissed entries after 30 days (task 043)");
+}
+
+{
+  // Task 050: run a made-up TLTF import twice. The campaign slug is fixed, so
+  // codes and addresses carry the run tag and the counts are this run's members.
+  const tltf = await import("@/lib/market/tltf-import");
+  const { runTltfImport } = await import("@/lib/market/tltf-run");
+  const { parseCsv } = await import("@/lib/market/csv");
+  const results = await import("@/lib/market/results");
+  const contactsLib = await import("@/lib/market/contacts");
+  const activity = await import("@/lib/market/activity");
+
+  const c = (n: string) => `K${run}-${n}`;
+  const dom = `tltf-${run}.example.test`;
+  const outreachCsv = parseCsv(
+    [
+      "file,group,template,to,email source,check before sending,status,result,reply",
+      `"${c("01")} Pat Example (Fund One).eml",1,A,pat@${dom},pattern,,sent 2026-11-13,,"Interested"`,
+      `"${c("02")} Fund Two.eml",1,B,info@${dom},general inbox,,sent 2026-11-13,bounced: address not found,`,
+      `"${c("03")} Lee Example (Fund Three).eml",2,C,lee@${dom},pattern,,sent 2026-11-13,,`,
+    ].join("\n"),
+  );
+  const keysCsv = parseCsv(`code,key\n${c("01")},key-${run}-1\n${c("02")},key-${run}-2\n${c("03")},key-${run}-3\n`);
+  const people = tltf.parsePeople([{ match: [`lee@${dom}`], title: "Partner", context: "Met at a dinner." }]);
+  const calendar = tltf.parseCalendar([
+    { subject: "Coffee", start: { dateTime: "2026-11-17T10:00:00", timeZone: "Eastern Standard Time" }, attendees: ["ralph@spaarke.com", `lee@${dom}`, `robin@${dom}`], isCancelled: false },
+  ]);
+  const plan = tltf.buildPlan(tltf.parseOutreach(outreachCsv, tltf.parseBriefKeys(keysCsv), people), calendar, people, 3);
+
+  const first = await runTltfImport(plan, "check");
+  assert.ok(["created", "kept", "dates set"].includes(first.campaign));
+  assert.deepEqual(first.contacts, { created: 4, found: 0, skipped: 0 });
+  assert.deepEqual(first.members, { added: 4, updated: 0, failed: 0 });
+  assert.deepEqual(first.activities, { recorded: plan.activities.length, duplicate: 0, skipped: 0 });
+
+  const campaign = await camp.getCampaign("tltf-2026");
+  assert.equal(campaign!.visibility, "investor");
+  assert.ok(campaign!.startDate, "the campaign has dates, so the imported history counts");
+
+  const ids = new Set(["pat", "info", "lee", "robin"].map((l) => keys.emailHash(`${l}@${dom}`)));
+  const mine = async () => (await camp.listMembers("tltf-2026")).filter((m) => ids.has(m.contactId));
+  const f1 = results.funnelOf(await mine());
+  assert.deepEqual(f1, { members: 4, sent: 3, delivered: 2, engaged: 0, replied: 1, meeting: 2 });
+
+  const lee = await camp.getMember("tltf-2026", keys.emailHash(`lee@${dom}`));
+  assert.equal(lee!.group, "G2", "the Summit pass keeps the outreach group");
+  assert.equal(lee!.code, `tltf-${c("03")}`);
+  assert.equal(lee!.briefKeyHash, keys.sha256(`key-${run}-3`));
+  assert.equal(lee!.status, "meeting");
+  const robin = await camp.getMember("tltf-2026", keys.emailHash(`robin@${dom}`));
+  assert.equal(robin!.group, "Summit");
+  assert.deepEqual(await camp.findMemberByCode(`tltf-${c("01")}`), { campaignSlug: "tltf-2026", contactId: keys.emailHash(`pat@${dom}`) });
+  assert.equal((await camp.findMemberByBriefLabel(`tltf-2026:${c("02")}`))!.contactId, keys.emailHash(`info@${dom}`));
+
+  const leeContact = await contactsLib.getContact(keys.emailHash(`lee@${dom}`));
+  assert.equal(leeContact!.visibility, "investor");
+  assert.equal(leeContact!.kind, "investor");
+  assert.equal(leeContact!.title, "Partner");
+  const timeline = await activity.listContactActivities(leeContact!.id);
+  assert.deepEqual(timeline.map((a) => a.type).sort(), ["email.sent", "meeting.in_person", "note"]);
+  assert.ok(timeline.every((a) => a.campaignSlug === "tltf-2026" && a.memberId === leeContact!.id && a.visibility === "investor"));
+
+  // A status override (a meeting that did not happen) survives a second run.
+  await camp.setStatusOverride("tltf-2026", keys.emailHash(`robin@${dom}`), "planned");
+  const second = await runTltfImport(plan, "check");
+  assert.deepEqual(second.contacts, { created: 0, found: 4, skipped: 0 });
+  assert.deepEqual(second.members, { added: 0, updated: 4, failed: 0 });
+  assert.deepEqual(second.activities, { recorded: 0, duplicate: plan.activities.length, skipped: 0 });
+  const after = await mine();
+  assert.equal(after.find((m) => m.contactId === keys.emailHash(`robin@${dom}`))!.statusOverride, "planned");
+  assert.equal(results.funnelOf(after).sent, 3, "a second run changes no counts");
+  assert.equal(results.funnelOf(after).replied, 1);
+  ok("TLTF import writes contacts, members and history once, and a second run changes nothing (task 050)");
 }
 
 {
