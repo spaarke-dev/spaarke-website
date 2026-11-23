@@ -10,9 +10,13 @@
 | **Task** | 041, Go live (blocked) |
 | **Branch** | Code merged to `main` (PR #178, `da3dc77`); task 041 needs no code change |
 | **Status** | Shipped dark 2026-11-22: `SMS_MODE` unset in production |
-| **Next Action** | Owner: Twilio auth token into Key Vault (003). Then task 041 once the number is Verified and the account is paid (002). Task 043 can be built any time |
+| **Next Action** | Owner: Twilio auth token into Key Vault (003). Then task 041 once the number is Verified and the account is paid (002). |
 
 ## Last completed
+
+Task 043: the daily retention purge, run from the reminder schedule
+(branch `feat/text-to-meet-retention`). 193 offline cases pass, and 11
+against Azurite.
 
 2026-11-23: counsel approved the Compliance section as drafted (task 004).
 Task 003 done except the Twilio auth token: the two site secrets are in Key

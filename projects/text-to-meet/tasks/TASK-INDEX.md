@@ -22,7 +22,7 @@
 | 032 | [Footer line, setup guide, env example](032-footer-and-setup-guide.md) | 3 | 021 | 2h | complete |
 | 040 | [Pull request and preview checks](040-pull-request.md) | 4 | 022, 031, 032 | 2h | completed |
 | 041 | [Go live](041-go-live.md) | 4 | 040, 002, 003, 004 | 2h | blocked (Verified number, paid account) |
-| 043 | [Retention cleanup](043-retention-cleanup.md) | 4 | 004 | 3h | not-started |
+| 043 | [Retention cleanup](043-retention-cleanup.md) | 4 | 004 | 3h | completed |
 | 042 | [Next card placement](042-next-card-placement.md) | 4 | 041 | 0.5h | deferred (print date) |
 | 090 | [Project wrap-up](090-project-wrap-up.md) | 4 | 041 | 2h | not-started |
 

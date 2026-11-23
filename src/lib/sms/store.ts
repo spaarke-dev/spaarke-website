@@ -1,5 +1,13 @@
-import { TableClient } from "@azure/data-tables";
-import { devMockEnabled, mockInsert, mockMerge, mockMergeIf, mockRead } from "@/lib/meet/dev-mock";
+import { odata, TableClient } from "@azure/data-tables";
+import {
+  devMockEnabled,
+  mockDelete,
+  mockEntries,
+  mockInsert,
+  mockMerge,
+  mockMergeIf,
+  mockRead,
+} from "@/lib/meet/dev-mock";
 
 /**
  * Text MEET records in Table Storage (spec FR-05, FR-12, FR-14).
@@ -385,5 +393,148 @@ export async function incrementCounter(kind: CounterKind, now: Date, cap: number
     result = { allowed: false, count, alert: false };
     return null;
   });
+  return result;
+}
+
+// ---------------------------------------------------------------------------
+// Retention (task 043): rows go 12 months after their last activity
+// ---------------------------------------------------------------------------
+
+/** Counsel approved 12 months from last activity (task 004). */
+export const RETENTION_DAYS = 365;
+/** Counter windows are only read in the hour or day they name. */
+const COUNTER_KEEP_DAYS = 2;
+/** Deletes per run at most; anything left goes the next day. */
+const PURGE_LIMIT = 500;
+const PURGE_PARTITION = "purge";
+const LIST_TIMEOUT_MS = 30_000;
+const DAY_MS = 86_400_000;
+
+type Listed<T> = { pk: string; rk: string; etag: string; row: T };
+
+/**
+ * Rows that `keep` rejects, at most `limit`. In Azure the filter narrows the
+ * listing on the server; `keep` is checked on every row either way, so the
+ * filter can be loose but never wider than the rule.
+ */
+async function listRows<T>(
+  kind: TableKind,
+  filter: string,
+  purge: (pk: string, rk: string, row: T) => boolean,
+  limit: number,
+): Promise<Listed<T>[]> {
+  const found: Listed<T>[] = [];
+  if (limit <= 0) return found;
+  if (devMockEnabled()) {
+    for (const [key, row] of mockEntries<Row<T>>(tableName(kind))) {
+      const cut = key.indexOf("|");
+      const pk = key.slice(0, cut);
+      const rk = key.slice(cut + 1);
+      if (purge(pk, rk, row)) found.push({ pk, rk, etag: row.etag, row });
+      if (found.length >= limit) break;
+    }
+    return found;
+  }
+  const c = await client(kind);
+  const entities = c.listEntities<Record<string, unknown>>({
+    queryOptions: { filter },
+    abortSignal: AbortSignal.timeout(LIST_TIMEOUT_MS),
+  });
+  for await (const e of entities) {
+    const row = e as unknown as T;
+    if (purge(e.partitionKey ?? "", e.rowKey ?? "", row)) {
+      found.push({ pk: e.partitionKey ?? "", rk: e.rowKey ?? "", etag: e.etag, row });
+    }
+    if (found.length >= limit) break;
+  }
+  return found;
+}
+
+/** Deletes a row only if it is unchanged since it was listed; false when it changed or is gone. */
+async function deleteRowIf(kind: TableKind, pk: string, rk: string, etag: string): Promise<boolean> {
+  if (devMockEnabled()) {
+    const key = mockKey(pk, rk);
+    if (mockRead<Row<Fields>>(tableName(kind), key)?.etag !== etag) return false;
+    mockDelete(tableName(kind), key);
+    return true;
+  }
+  const c = await client(kind);
+  try {
+    await c.deleteEntity(pk, rk, { etag, ...signal() });
+    return true;
+  } catch (err) {
+    const status = statusOf(err);
+    if (status === 404 || status === 412) return false;
+    throw err;
+  }
+}
+
+/** Claims today's purge (UTC); false when another run already has. */
+export async function claimDailyPurge(now: Date): Promise<boolean> {
+  return insertRow("counters", PURGE_PARTITION, dayKey(now), { startedAt: now.toISOString() });
+}
+
+export type PurgeResult = {
+  conversations: number;
+  senders: number;
+  inbound: number;
+  counters: number;
+  /** True when the run stopped at its limit with rows possibly left. */
+  capped: boolean;
+};
+
+/**
+ * Deletes rows past retention:
+ * - conversations whose latest activity (created, opened, booked) is over 12
+ *   months old. A booking row keeps its own `smsConversationId`; the booking
+ *   itself is kept on the /meet terms.
+ * - senders not seen for 12 months, unless they opted out: an opted-out row is
+ *   kept so a MEET after STOP still gets nothing.
+ * - inbound rows from UTC days over 12 months old.
+ * - counter windows, and past purge claims, over 2 days old.
+ * A row changed since it was listed is left for the next run.
+ */
+export async function purgeSmsRows(now: Date): Promise<PurgeResult> {
+  const cutoff = new Date(now.getTime() - RETENTION_DAYS * DAY_MS).toISOString();
+  const inboundCutoff = cutoff.slice(0, 10);
+  const counterCutoff = dayKey(new Date(now.getTime() - COUNTER_KEEP_DAYS * DAY_MS));
+  const result: PurgeResult = { conversations: 0, senders: 0, inbound: 0, counters: 0, capped: false };
+  let budget = PURGE_LIMIT;
+
+  const sweep = async <T>(
+    kind: TableKind,
+    filter: string,
+    purge: (pk: string, rk: string, row: T) => boolean,
+  ): Promise<number> => {
+    const rows = await listRows<T>(kind, filter, purge, budget);
+    if (rows.length >= budget) result.capped = true;
+    budget -= rows.length;
+    let deleted = 0;
+    for (const r of rows) if (await deleteRowIf(kind, r.pk, r.rk, r.etag)) deleted++;
+    return deleted;
+  };
+
+  const latest = (...times: (string | undefined)[]) => times.reduce<string>((a, t) => (t && t > a ? t : a), "");
+
+  result.conversations = await sweep<ConversationRecord>(
+    "conversations",
+    odata`PartitionKey eq ${CONVERSATION_PARTITION} and createdAt lt ${cutoff}`,
+    (pk, _rk, c) => pk === CONVERSATION_PARTITION && latest(c.createdAt, c.linkOpenedAt, c.bookedAt) < cutoff,
+  );
+  result.senders = await sweep<SenderRecord>(
+    "senders",
+    odata`PartitionKey eq ${SENDER_PARTITION} and lastSeenAt lt ${cutoff} and optedOut eq ${false}`,
+    (pk, _rk, s) => pk === SENDER_PARTITION && !s.optedOut && Boolean(s.lastSeenAt) && s.lastSeenAt < cutoff,
+  );
+  result.inbound = await sweep<Fields>(
+    "inbound",
+    odata`PartitionKey lt ${inboundCutoff}`,
+    (pk) => pk < inboundCutoff,
+  );
+  result.counters = await sweep<Fields>(
+    "counters",
+    odata`RowKey lt ${counterCutoff}`,
+    (_pk, rk) => rk < counterCutoff,
+  );
   return result;
 }

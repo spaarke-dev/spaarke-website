@@ -95,6 +95,11 @@ export function mockList<T>(name: string): T[] {
   return [...table(name).values()].map((r) => ({ ...r }) as T);
 }
 
+/** Rows with their keys, for callers that delete what they list. */
+export function mockEntries<T>(name: string): [string, T][] {
+  return [...table(name).entries()].map(([k, r]) => [k, { ...r } as T]);
+}
+
 /** Merges only when the row's ETag still matches; returns the new ETag or null. */
 export function mockMergeIf(name: string, key: string, etag: string, patch: Record<string, unknown>): string | null {
   const t = table(name);
