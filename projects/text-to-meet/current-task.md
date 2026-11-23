@@ -10,9 +10,14 @@
 | **Task** | 041, Go live (blocked) |
 | **Branch** | Code merged to `main` (PR #178, `da3dc77`); task 041 needs no code change |
 | **Status** | Shipped dark 2026-11-22: `SMS_MODE` unset in production |
-| **Next Action** | Task 041 once the number is Verified, the Twilio account is paid (002), and counsel has signed off (004) |
+| **Next Action** | Owner: Twilio auth token into Key Vault (003). Then task 041 once the number is Verified and the account is paid (002). Task 043 can be built any time |
 
 ## Last completed
+
+2026-11-23: counsel approved the Compliance section as drafted (task 004).
+Task 003 done except the Twilio auth token: the two site secrets are in Key
+Vault and six SMS settings are on the static web app, `SMS_MODE` still
+unset. Task 043 (retention cleanup) added.
 
 Task 040: PR #178 merged and deployed. On spaarke.com the inbound route
 answers 404, `/meet` shows no text line, a junk `c` renders the normal page,
@@ -58,7 +63,7 @@ over MEET (FR-08), flagged for counsel.
 |---|---|
 | Toll-Free Verification | Resubmitted 2026-11-19 after error 30513; in review |
 | Twilio account | Trial; must be upgraded to paid (task 002) |
-| Counsel review of the Compliance section | Not started (task 004) |
+| Counsel review of the Compliance section | Approved as drafted, 2026-11-23 (task 004) |
 
 ## Standing rules
 

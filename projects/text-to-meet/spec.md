@@ -470,23 +470,28 @@ wording was written for a sharing section; where it sits is a question for
 counsel.
 
 ### For counsel
-- [ ] Whether a person texting a keyword, answered once, is adequate consent
+
+Approved by counsel as drafted (owner, 2026-11-23). No wording changed, so
+`src/lib/sms/messages.ts`, /sms, and the verification submission stand as
+they are. Retention is 12 months from last activity (task 043).
+
+- [x] Whether a person texting a keyword, answered once, is adequate consent
       for the reply under the TCPA and the FCC's consent revocation rules, and
       whether the "stop texting" handling in FR-08 is enough for revocation
       "by any reasonable means".
-- [ ] The call to action, the consent statement, the /sms terms, the HELP
+- [x] The call to action, the consent statement, the /sms terms, the HELP
       text, and the frequency wording ("One reply per text" in place of
       "Message frequency varies"). These are live on spaarke.com/sms and in
       the verification submission, so a change counsel asks for means an
       edit to both.
-- [ ] The privacy paragraph, where the required Twilio clause sits, and
+- [x] The privacy paragraph, where the required Twilio clause sits, and
       whether Twilio's message logs need their own retention statement.
-- [ ] Whether Twilio needs a data processing agreement or a service
+- [x] Whether Twilio needs a data processing agreement or a service
       provider listing in the privacy policy's processor section.
-- [ ] State laws with their own text message rules (for example Florida and
+- [x] State laws with their own text message rules (for example Florida and
       Oklahoma "mini-TCPA" statutes), which mostly target marketing texts but
       should be confirmed as not reaching a one-time reply.
-- [ ] Retention: how long sender and conversation rows are kept (proposed:
+- [x] Retention: how long sender and conversation rows are kept (proposed:
       12 months from last activity, with opt-out flags kept while Twilio
       holds the number).
 
@@ -539,7 +544,7 @@ it carries the same never-404 rule.
 
 ## Success Criteria
 1. [ ] Spec signed off by the owner. Verify by: sign-off on this branch.
-2. [ ] Counsel has approved the Compliance section. Verify by: the counsel
+2. [x] Counsel has approved the Compliance section. Verify by: the counsel
        checklist ticked.
 3. [ ] The toll-free number is Verified. Verify by: Twilio console status.
 4. [ ] A MEET text from a test phone returns one reply, worded as in FR-07,
@@ -601,7 +606,8 @@ it carries the same never-404 rule.
       acceptable on print? Blocks: the card copy and FR-17.
 - [x] What the verification submission says. Answered: FR-02 records the
       2026-11-19 resubmission, and the texts in FR-07 and FR-11 match it.
-- [ ] Counsel review of the Compliance section. Blocks: going live.
+- [x] Counsel review of the Compliance section. Answered: approved as
+      drafted, 2026-11-23.
 
 ---
 

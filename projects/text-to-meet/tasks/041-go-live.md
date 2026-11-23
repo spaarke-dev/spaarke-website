@@ -1,7 +1,7 @@
 # Task 041: Go live
 
 **Phase:** 4 (Ship and go live)
-**Status:** blocked (Verified number, counsel approval)
+**Status:** blocked (Verified number, paid account; counsel approved 2026-11-23)
 **Estimated:** 2 hours (with the owner's phone)
 **Dependencies:** 040, 002, 003, 004
 **Tags:** deploy, azure, swa, testing
