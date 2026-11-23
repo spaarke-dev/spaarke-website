@@ -295,6 +295,18 @@ Open: "Designed in weeks" holds for later members; the first firm's foundations 
    - Details: the structure diagram (light), a bridge from $0 (base case, then the hatched upside), the fee over five years, today vs with the MSO (base or upside), how it works, and the assumptions with the same basis text as the firm. Then a closing card, "Get an estimate for your department". The old three-box structure card is gone.
    - The department horizon is now five years (was three), to match the fee view.
 
+## Licensed hero videos (2026-11-22)
+
+The owner licensed five Stocksy clips: 3047935, 4621290, 5947223, 5947230 and 7533577. All are 1280x720, 20 to 27 seconds, with no audio. The originals sit in `projects/website-services-page/hero-images` in the main checkout (about 107 MB).
+
+- **Encoded with ffmpeg** (from the `imageio-ffmpeg` pip package) into `public/services/`:
+  - `hero-N.mp4`: 1280x720, H.264, CRF 25 (28 for the two grainier clips 1 and 2), no audio, fast start. 2.0 to 3.6 MB each.
+  - `hero-N-sm.mp4`: 640x360 for phones, 0.4 to 1.2 MB. Picked with `<source media="(max-width: 767px)">`.
+  - `hero-N.jpg`: the first frame, used as the poster.
+- **In the hero:** one clip is picked at random on each load, with a crop set per clip so faces clear the headline (clip 2 at 10%, clip 3 at 35%). The "unlicensed comp" label is gone. The interim label shows only on the fallback photo, which still appears when the clips are missing.
+- **Not committed:** the files are gitignored (`/public/services/hero-[0-9]*`) because this repository is public and stock licenses generally forbid making the files themselves available. A deployed build shows the fallback photo until the owner chooses a host, for example the Azure blob storage already used for the investor PDF, or committing them if the license allows it. The originals in the main checkout's `hero-images` folder must not be committed either.
+- The 720p sources are a little soft on Retina and large monitors, where the clip is enlarged 1.4x to 2.3x. The right side of the hero shows the video at near full brightness.
+
 ## Known gaps in the draft
 
 - Fixed 2026-11-21: Sankey labels were scaled down to about 8 px and sat on the flows. The diagram now draws at the container's real width with label gutters, and below 560 px it shows a labeled list under the diagram instead.

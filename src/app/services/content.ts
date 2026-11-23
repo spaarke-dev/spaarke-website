@@ -51,21 +51,29 @@ export const hero = {
     /**
      * Background video behind the hero, like the Platform hero. Review round 3
      * (2026-11-21): one clip is picked at random on each page load, for some
-     * variation. The clips are unlicensed, watermarked Stocksy comps on trial
-     * (5947230 and 5947223): they live only in the local worktree at
-     * public/services/hero-comp-*.mp4, are gitignored, and must never be
-     * committed. Where a file is missing (any deployed build) the hero shows
-     * the fallback photo instead. License the clips, or pick others, before
-     * launch; `interim: true` shows a small label.
+     * variation.
+     *
+     * 2026-11-22: the owner licensed five Stocksy clips (3047935, 4621290,
+     * 5947223, 5947230, 7533577; originals in
+     * projects/website-services-page/hero-images in the main checkout, 720p).
+     * Each is encoded for the web as hero-N.mp4 (1280x720), hero-N-sm.mp4
+     * (640x360, for phones, where the video sits under a dark wash) and
+     * hero-N.jpg (first frame, the poster). They are gitignored until the
+     * owner decides where to host them, as this repository is public. Where a
+     * file is missing (any deployed build) the hero shows the fallback photo.
      */
     videos: [
-      // `focus` is the CSS object-position that keeps the subject in the visible right side.
-      { src: "/services/hero-comp-1.mp4", focus: "60% 50%" },
-      { src: "/services/hero-comp-2.mp4", focus: "60% 50%" },
-    ] as { src: string; focus: string }[],
-    // Interim: Unsplash XjJmfN7QJj4, Vitaly Gariev, Unsplash License. Replace before launch.
+      // `focus` is the CSS object-position that keeps the subjects in the visible right side.
+      { src: "/services/hero-1.mp4", small: "/services/hero-1-sm.mp4", poster: "/services/hero-1.jpg", focus: "60% 50%" },
+      { src: "/services/hero-2.mp4", small: "/services/hero-2-sm.mp4", poster: "/services/hero-2.jpg", focus: "10% 50%" },
+      { src: "/services/hero-3.mp4", small: "/services/hero-3-sm.mp4", poster: "/services/hero-3.jpg", focus: "35% 50%" },
+      { src: "/services/hero-4.mp4", small: "/services/hero-4-sm.mp4", poster: "/services/hero-4.jpg", focus: "35% 50%" },
+      { src: "/services/hero-5.mp4", small: "/services/hero-5-sm.mp4", poster: "/services/hero-5.jpg", focus: "60% 50%" },
+    ] as { src: string; small: string; poster: string; focus: string }[],
+    // Interim: Unsplash XjJmfN7QJj4, Vitaly Gariev, Unsplash License. Shown only when the videos are missing.
     fallbackImage: "/services/hero-interim.jpg",
     fallbackFocus: "70% 50%",
+    /** Labels the fallback photo as interim. The licensed videos carry no label. */
     interim: true,
   },
 };

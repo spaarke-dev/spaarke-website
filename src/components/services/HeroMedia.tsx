@@ -13,9 +13,11 @@ import { hero } from "@/app/services/content";
  * happens after mount so the server and client render the same markup; until
  * then the backdrop is plain dark page.
  *
- * The trial clips are gitignored, so on any deployed build the files are
- * missing; the component then shows the fallback photo. Under reduced motion
- * the video stays paused on its first frame.
+ * Phones get a 640x360 copy (the video sits under a dark wash there); wider
+ * screens get the 1280x720 file. The poster is the clip's first frame. The
+ * clips are gitignored until the owner decides where to host them, so on a
+ * deployed build without them the component shows the fallback photo. Under
+ * reduced motion the video stays paused on its first frame.
  */
 export function HeroMedia() {
   const { videos, fallbackImage, fallbackFocus, interim } = hero.media;
@@ -60,19 +62,22 @@ export function HeroMedia() {
         <video
           key={video.src}
           ref={ref}
-          src={video.src}
+          poster={video.poster}
           muted
           loop
           playsInline
           preload="auto"
-          onError={() => setFailed(true)}
           className="h-full w-full object-cover"
           style={{ objectPosition: video.focus }}
-        />
+        >
+          <source src={video.small} type="video/mp4" media="(max-width: 767px)" />
+          {/* The last source's error means no source could play. */}
+          <source src={video.src} type="video/mp4" onError={() => setFailed(true)} />
+        </video>
       ) : null}
-      {interim && (failed || video) ? (
+      {interim && failed ? (
         <span className="font-mono-display absolute bottom-4 right-4 rounded-full bg-[rgba(10,10,10,0.7)] px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-[rgba(255,255,255,0.8)]">
-          {failed ? "Interim image" : `Interim video ${(pick ?? 0) + 1} of ${videos.length}: unlicensed comp`}
+          Interim image
         </span>
       ) : null}
     </div>
