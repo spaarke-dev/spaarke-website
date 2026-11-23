@@ -639,7 +639,7 @@ export const howItWorks = {
 };
 
 /* ------------------------------------------------------------------ */
-/* 5. The operating company and the MLO partner network                */
+/* 5. The operating company and the MLO member network                 */
 /* ------------------------------------------------------------------ */
 
 export type NetworkClient = "firm" | "department";
@@ -647,7 +647,7 @@ export type NetworkSize = 1 | 3 | 8;
 
 export const network = {
   id: "network",
-  eyebrow: "The operating company and the MLO partner network",
+  eyebrow: "The operating company and the MLO member network",
   title: "One operator. A network that gets stronger with every member.",
   /** Handoff 2026-11-22 (notes/mso-operator-network). No equity in either view (owner, 2026-11-22). */
   intro: {
@@ -852,9 +852,9 @@ export const estimate = {
      */
     equityCard: {
       id: "how-equity-value-is-calculated",
-      title: "How partner equity value is calculated",
+      title: "How member equity value is calculated",
       caption: "A framework, not a forecast. No dollar figure is promised or implied.",
-      formula: "Partner equity value = vested awards × (Spaarke’s value per share at exit − award price)",
+      formula: "Member equity value = vested awards × (Spaarke’s value per share at exit − award price)",
       drivers: [
         {
           title: "Awards.",
@@ -1020,7 +1020,7 @@ export const approach = {
           "Fee re-benchmarked to fair market value every three years",
           "Technology upgrades included",
           // Process change list row 10 (optional): qualitative only; counsel to review before publishing.
-          ...(SHOW_NETWORK_VALUE ? ["Partner equity awards accrue and vest as you use services"] : []),
+          ...(SHOW_NETWORK_VALUE ? ["Member equity awards accrue and vest as you use services"] : []),
         ],
         corporate: [
           "Service levels and regular reporting to the general counsel",

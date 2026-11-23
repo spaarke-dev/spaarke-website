@@ -251,7 +251,7 @@ Source: the owner's `spaarke-value-page-round2-change-list.md` (Downloads). It s
 | 1 to 3 | Card 3: no link; third bullet "Its value can grow as the network grows"; the formula line "Value = vested awards × (Spaarke's value per share at exit − award price)" at the card's foot |
 | 4 | SHARES IN keeps "Share in network value". On the estimate page it links to the new card (mouse only, as the diagram is hidden from assistive tech; the step 3 link is the keyboard route). On /services it is plain text, as the card is not on that page |
 | 5, 6 | How it works: "Three changes, no upfront investment."; step 3 keeps its text and adds "How equity value is calculated", which scrolls to the card (also inside the modal) |
-| 7, 8 | New card "How partner equity value is calculated", after "How it works" and before "Our assumptions": the formula, the two drivers, the footer and the linked Attorney at Work source. No dollar figure, example stake or multiple above 10x |
+| 7, 8 | New card "How member equity value is calculated" (was "partner"; see the terminology decision below), after "How it works" and before "Our assumptions": the formula, the two drivers, the footer and the linked Attorney at Work source. No dollar figure, example stake or multiple above 10x |
 | 9 | The "To validate in pilot" tags are gone; each assumption keeps its text and basis, and the disclaimers stay |
 
 Before launch: securities counsel on the card, rows 3, 4 and 6; re-verify the 4x to 10x EBITDA range and the link against the Attorney at Work article.
@@ -268,7 +268,7 @@ Source: the owner's `spaarke-process-section-change-list.md` (Downloads), for "D
 | 5 | Design outcome: "An agreed design, ready to sign: services, service levels, fee method and governance." |
 | 6, 7 | Implement: four steps (set up, staff transition plan, migrate data and legacy systems, run side by side); outcome "with a cutover planned to avoid any break in client service". The legal department outcome uses the same "planned to avoid" wording, per the flag on row 7 |
 | 8, 9 | Operate adds "Fee re-benchmarked to fair market value every three years" and "Technology upgrades included"; outcome "A lower unit cost and technology that keeps pace, year after year." |
-| 10 | Applied, law firm view only and behind `SHOW_NETWORK_VALUE`: "Partner equity awards accrue and vest as you use services". Counsel to review before publishing |
+| 10 | Applied, law firm view only and behind `SHOW_NETWORK_VALUE`: "Member equity awards accrue and vest as you use services". Counsel to review before publishing |
 | 11 | The Spaarke Method sentence ends "Your attorneys review all AI output." (both audiences) |
 | 12 | `ctas.assessment` is now "Request a confidential assessment", so the closing section's text link changes too |
 | 13 | Legal department steps unchanged, copy to follow |
@@ -276,7 +276,7 @@ Source: the owner's `spaarke-process-section-change-list.md` (Downloads), for "D
 
 Visual: the band is a cool tint between the dark network band and the black closing (a dark band here would put three dark sections in a row). The phases are raised white cards; the selected one lifts, gets a blue border and top rule. Its steps and outcome open in a dark panel with the site's blue glow and a pointer under the selected card (desktop). Kept: headline, three-stage layout, outcome box.
 
-Open: "Designed in weeks" holds for later partners; the first firm's foundations are about three months (owner's flag). "Member" still appears in the network section (title, "Next member", MEMBER labels), the estimate's "Member equity" step and the MSO structure text; the change list says "partner" on the public site. Owner decision 2026-11-22: keep "member" for now ("partner" also names the firm's equity partners).
+Open: "Designed in weeks" holds for later members; the first firm's foundations are about three months (owner's flag). "Member" still appears in the network section (title, "Next member", MEMBER labels), the estimate's "Member equity" step and the MSO structure text; the change list says "partner" on the public site. Owner decision 2026-11-22: standardize on "member" for firms and departments in the network, overriding the change list's "partner, never member". "Partner" now means only the firm's own (equity) partners, plus vendor and business partners. Changed: the network eyebrow ("MLO member network"), the equity card title and formula ("Member equity value") and the Operate equity step.
 
 ## Known gaps in the draft
 

@@ -397,7 +397,7 @@ export function Assumptions({ items }: { items: [string, string][] }) {
 }
 
 /**
- * How partner equity value is calculated (round 2, row 7): the formula, the
+ * How member equity value is calculated (round 2, row 7; "member" per the owner, 2026-11-22): the formula, the
  * two drivers, the footer and the source. A framework with no figures.
  */
 export function EquityCard({

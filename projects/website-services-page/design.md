@@ -84,7 +84,7 @@ This section records how the design maps onto the existing Spaarke site, so the 
 2. What is Managed Legal Operations
 3. Why MLO, why now
 4. How MLO works: the functional structure
-5. The operating company and the MLO partner network
+5. The operating company and the MLO member network
 6. The financial opportunity
 7. Designing, implementing and operating MLO
 8. Closing CTA, short FAQ, disclaimers footer
@@ -170,7 +170,7 @@ Sticky page bar (under the site header): section anchors, the audience switch, p
 - "Every MSO is operated by Spaarke." Link to section 5.
 - Restate the boundary in one line: the MLO does not practice law or direct legal judgment, and its fee is never tied to legal fees.
 
-### 4.5 The operating company and the MLO partner network
+### 4.5 The operating company and the MLO member network
 **Goal.** Show Spaarke as the central center of excellence serving many MSOs.
 
 **Diagram** (based on the network sketch supplied).
