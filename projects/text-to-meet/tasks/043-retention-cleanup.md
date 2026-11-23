@@ -1,7 +1,7 @@
 # Task 043: Retention cleanup
 
 **Phase:** 4 (Ship and go live)
-**Status:** not-started
+**Status:** completed
 **Estimated:** 3 hours
 **Dependencies:** 004 (retention approved); no need to wait for 041
 **Tags:** api, storage, azure
@@ -54,12 +54,34 @@ but it should exist before the first rows age out.
 
 ## Acceptance Criteria
 
-- [ ] Rows older than 12 months are deleted, opted-out senders excepted
-- [ ] The purge runs at most once a day and never fails the reminder run
-- [ ] `sms:check`, typecheck, and build pass
+- [x] Rows older than 12 months are deleted, opted-out senders excepted
+- [x] The purge runs at most once a day and never fails the reminder run
+- [x] `sms:check`, typecheck, and build pass
 
 ## Notes
 
 The reminder route runs only when `MEET_CRON_SECRET` is set, which it is in
 production. If the /meet Graph flow is ever switched off, the purge needs
 its own schedule.
+
+### Done (2026-11-23)
+
+- `src/lib/sms/store.ts`: `claimDailyPurge` and `purgeSmsRows`, with
+  `listRows` and `deleteRowIf`. Each table has a server-side OData filter,
+  and the same rule is checked again in code. A delete carries the ETag
+  from the listing, so a row that changed in between stays. At most 500
+  deletes a run.
+- `src/lib/sms/retention.ts`: `runDailySmsPurge` claims the UTC day with a
+  row in `SmsCounters`, logs `sms.purged`, and on failure logs `sms.purge`
+  and returns null.
+- `/api/meet/reminders` starts the purge alongside the reminders, before
+  the /meet settings check, and waits for it before answering.
+- `src/lib/meet/dev-mock.ts`: `mockEntries`, rows with their keys.
+- Step 5: the retention section is in `docs/text-to-meet.md`. The privacy
+  paragraph is unchanged: the approved wording does not state a period.
+
+Checks: `sms:check` 193 pass (16 new, in tables of their own); the same
+purge against Azurite, 11 pass, so the OData filters work on real tables;
+`meet:check` 30 pass; typecheck, build, and ESLint on the changed files
+pass. On `next dev`, the reminder route answers 401 without the secret and
+200 twice with it, with no purge error logged.

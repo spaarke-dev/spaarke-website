@@ -199,10 +199,32 @@ the number ("MEET CARD2"). The codes and their labels are in
 Add one per event or print run before it goes out; codes are not secret. An
 unknown code is recorded as `none`, not refused.
 
-## 10. Local checks
+## 10. Retention
+
+Counsel approved keeping rows for 12 months from their last activity. A
+purge deletes what is past that once a day:
+
+- conversations whose latest of created, opened, and booked is over 12
+  months old (the booking itself stays, on the /meet terms)
+- senders not seen for 12 months, except those who opted out: their row is
+  kept, so a MEET after STOP still gets nothing
+- inbound rows from days over 12 months old
+- counter windows over 2 days old
+
+The purge runs from the five-minute call to `/api/meet/reminders`, so it
+needs `MEET_CRON_SECRET` and the reminder Logic App, nothing new. The first
+call each UTC day claims the day with a row in `SmsCounters` and does the
+work; the others stop there. It deletes at most 500 rows a run and leaves the
+rest for the next day. It runs with `SMS_MODE` unset too, since a paused
+program still holds rows, and its first run creates the SMS tables if they
+are missing. If the reminder schedule is ever turned off, the purge needs a
+schedule of its own.
+
+## 11. Local checks
 
 `npm run sms:check` runs the offline cases: signature, keywords, tokens,
-phone hash, reply lengths, the store, the route, and the /meet link. With
+phone hash, reply lengths, the store, the route, the /meet link, and the
+retention purge. With
 `--server` it also drives a running `next start` against Azurite, the local
 storage emulator; the setup is in
 [`projects/text-to-meet/notes/route-checks.md`](../projects/text-to-meet/notes/route-checks.md).
@@ -226,10 +248,12 @@ App Insights custom events. None carries a phone number or its hash.
 | `sms.token_invalid`, `sms.token_expired` | A link that did not verify; /meet showed the normal page |
 | `sms.booking_linked` | A booking was tied to its text |
 | `sms.booking_unlinked` | A booking carried a link that could not be tied; `reason` says why. The booking itself went through |
+| `sms.purged` | The day's retention purge ran; rows deleted per table, and `capped` when it stopped at 500 |
 
 Exceptions carry `step`: `sms.inbound` (the route failed after the
 signature check and sent nothing), `sms.link_open`, `sms.booking_source`,
-`sms.booking_link`, and `sms.cap_alert`.
+`sms.booking_link`, `sms.cap_alert`, and `sms.purge` (the retention purge
+failed; it tries again the next day, and the reminders were not affected).
 
 In the Twilio console, watch the Messaging logs for error 11200 (the
 webhook did not answer) and for delivery errors in the 30000 range.

@@ -778,6 +778,112 @@ try {
 }
 
 // ---------------------------------------------------------------------------
+section("Retention purge (dev mock store)");
+
+// Tables of their own, so the purge cannot touch rows the sections above wrote.
+const PURGE_ENV = [
+  "NODE_ENV",
+  "MEET_DEV_MOCK",
+  "STORAGE_ACCOUNT_CONNECTION",
+  "SMS_SENDERS_TABLE",
+  "SMS_CONVERSATIONS_TABLE",
+  "SMS_INBOUND_TABLE",
+  "SMS_COUNTERS_TABLE",
+];
+const savedPurge = Object.fromEntries(PURGE_ENV.map((k) => [k, process.env[k]]));
+const purgeError = console.error;
+console.error = () => {};
+try {
+  Object.assign(process.env, {
+    NODE_ENV: "development",
+    MEET_DEV_MOCK: "1",
+    SMS_SENDERS_TABLE: "PurgeSenders",
+    SMS_CONVERSATIONS_TABLE: "PurgeConversations",
+    SMS_INBOUND_TABLE: "PurgeInbound",
+    SMS_COUNTERS_TABLE: "PurgeCounters",
+  });
+  const store = await import("@/lib/sms/store");
+  const { runDailySmsPurge } = await import("@/lib/sms/retention");
+  const nowP = new Date(Date.UTC(2028, 0, 15, 3, 0));
+  const ago = (days: number) => new Date(nowP.getTime() - days * day);
+  const hashOf = (n: number) => phoneHash(`+1202555${String(n).padStart(4, "0")}`, HASH_SECRET);
+
+  // Senders: old, recent, and old but opted out.
+  const oldSender = hashOf(1);
+  const recentSender = hashOf(2);
+  const optedOutSender = hashOf(3);
+  await store.updateSender(oldSender, () => store.newSender(ago(400)));
+  await store.updateSender(recentSender, () => store.newSender(ago(30)));
+  await store.updateSender(optedOutSender, () => ({ ...store.newSender(ago(400)), optedOut: true, optedOutAt: ago(400).toISOString() }));
+
+  // Conversations: old, recent, and created long ago but booked within the year.
+  const convo = async (created: Date) => {
+    const cid = newConversationId();
+    await store.createConversation(cid, {
+      phoneHash: oldSender,
+      keyword: "MEET",
+      placement: "none",
+      createdAt: created.toISOString(),
+      linkExpiresAt: new Date(created.getTime() + 30 * day).toISOString(),
+    });
+    return cid;
+  };
+  const oldConv = await convo(ago(400));
+  const recentConv = await convo(ago(10));
+  const bookedConv = await convo(ago(380));
+  await store.markConversationBooked(bookedConv, "booking-1", ago(300));
+
+  // Inbound rows and counters.
+  const oldSid = `SM${"0".repeat(31)}7`;
+  const recentSid = `SM${"0".repeat(31)}8`;
+  await store.claimInbound(oldSid, ago(400));
+  await store.claimInbound(recentSid, ago(1));
+  await store.incrementCounter("hour", ago(5), 30);
+  await store.incrementCounter("day", ago(5), 150);
+  await store.incrementCounter("hour", nowP, 30);
+  await store.incrementCounter("day", nowP, 150);
+
+  const first = await runDailySmsPurge(nowP);
+  check(
+    "purge: the first run of the day deletes what is past retention",
+    first?.conversations === 1 && first.senders === 1 && first.inbound === 1 && first.counters === 2 && !first.capped,
+    JSON.stringify(first),
+  );
+  check("purge: an old sender is gone", (await store.getSender(oldSender)) === null);
+  check("purge: a recent sender stays", (await store.getSender(recentSender)) !== null);
+  check("purge: an opted-out sender stays however old", (await store.getSender(optedOutSender))?.optedOut === true);
+  check("purge: an old conversation is gone", (await store.getConversation(oldConv)) === null);
+  check("purge: a recent conversation stays", (await store.getConversation(recentConv)) !== null);
+  check("purge: an old conversation booked within the year stays", (await store.getConversation(bookedConv))?.status === "booked");
+  check("purge: an old inbound row is gone, so its SID could be claimed again", await store.claimInbound(oldSid, ago(400)));
+  check("purge: a recent inbound row stays", !(await store.claimInbound(recentSid, ago(1))));
+  check("purge: today's counters stay", (await store.incrementCounter("hour", nowP, 30)).count === 2);
+
+  await store.updateSender(hashOf(4), () => store.newSender(ago(400)));
+  check("purge: a second run the same day does nothing", (await runDailySmsPurge(nowP)) === null);
+  check("purge: so the row it would delete is still there", (await store.getSender(hashOf(4))) !== null);
+  const nextDay = await runDailySmsPurge(new Date(nowP.getTime() + day));
+  check("purge: the next day runs again", nextDay?.senders === 1, JSON.stringify(nextDay));
+
+  delete process.env.MEET_DEV_MOCK;
+  delete process.env.STORAGE_ACCOUNT_CONNECTION;
+  check("purge: no storage, no run", (await runDailySmsPurge(nowP)) === null);
+  process.env.STORAGE_ACCOUNT_CONNECTION =
+    "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=" +
+    Buffer.from("not-a-real-key").toString("base64") +
+    ";TableEndpoint=http://127.0.0.1:9/devstoreaccount1;";
+  const tP = Date.now();
+  check("purge: storage that throws returns null, not an error", (await runDailySmsPurge(nowP)) === null);
+  check("purge: storage that throws gives up within 20 seconds", Date.now() - tP < 20_000, `${Date.now() - tP} ms`);
+} finally {
+  console.error = purgeError;
+  for (const [k, v] of Object.entries(savedPurge)) {
+    if (v === undefined) delete process.env[k];
+    else Object.assign(process.env, { [k]: v });
+  }
+}
+
+// ---------------------------------------------------------------------------
 if (SERVER) await serverChecks(SERVER);
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
