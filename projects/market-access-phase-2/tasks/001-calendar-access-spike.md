@@ -1,7 +1,7 @@
 # Task 001: Calendar access spike and Exchange step
 
 **Phase:** 0 (Calendar access)
-**Status:** not-started
+**Status:** in-progress (contactus@ retest waits on Ralph's Exchange step)
 **Estimated:** 3 hours
 **Dependencies:** none
 **Tags:** azure, graph, config, docs

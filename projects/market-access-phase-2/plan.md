@@ -96,7 +96,7 @@ These fill gaps the spec leaves to implementation. Each can be reversed.
 - **Brief keys.** Members already carry `briefKeyHash` from phase 1. Task 021 keeps that: the member row stores the hash, and the export reads the keys from `PrivateBriefs` by the campaign's brief labels. So a key lives only where the brief text lives.
 - **Brief rows for one campaign.** `PrivateBriefs` rows keep PartitionKey `brief` so `getPrivateBrief` stays a point read. Saving or switching off a campaign's briefs walks its members and updates each row by key; with at most a few hundred members a campaign, that stays well inside a request.
 - **Code numbers.** The next number comes from a counter row on the campaign, claimed with an ETag check, so two runs at once never hand out the same code. The phase 1 code index stays the final guard against a clash across campaigns.
-- **Calendar checkpoint.** Calendar state lives in `MaSyncState` next to the mail folders, keyed by mailbox and `calendar`, so "Read again" and the checkpoint rules apply to it unchanged.
+- **Calendar read (settled by task 001).** Each run reads the whole window with `calendarView` and `$select`, not the delta, which returns event bodies. A new table, `MaCalendarEvents`, keeps one row per logged event (no subject) to spot moves and cancellations. See `notes/calendar-spike.md`.
 - **Calendar entry IDs.** Source `graph-calendar`, source ID built from the event's `iCalUId` and the entry type (plus the new start time for a move), so re-reads and both mailboxes seeing the same meeting add nothing.
 - **Held entries.** The sync logs `calendar.held` for events whose end has passed on any run, not only on the run that sees a change, so a meeting with no edits still gets its held entry.
 - **Step follow-up IDs.** `MaStepRuns` keys a run by campaign, step and member, and the follow-up ID comes from the same three, so a second job run finds what the first made.
@@ -108,7 +108,7 @@ These fill gaps the spec leaves to implementation. Each can be reversed.
 | # | Item | Raised at | Recommendation |
 |---|---|---|---|
 | 1 | Ralph runs the `Application Calendars.Read` command for contactus@. | Task 001 | Run it as soon as task 001 merges; it can take two hours to apply. |
-| 2 | Is the delta window workable for a rolling 30-back, 90-ahead range? | Task 001 | If not, fall back to reading `calendarView` for the window on each run and keeping a hash of each event's state. The spike decides. |
+| 2 | Is the delta window workable for a rolling 30-back, 90-ahead range? | Task 001 | **Settled 2026-11-24:** no; read `calendarView` for the window on each run and keep a state row per event (`notes/calendar-spike.md`). |
 | 3 | Set `MEET_GRAPH_SECRET_EXPIRES` to 2027-11-13. | Task 051 | The task sets it with `az staticwebapp appsettings set`, with Ralph's go-ahead at that task. |
 
 The spec's seven assumptions stand as written, since Ralph accepted the spec on 2026-11-24.
