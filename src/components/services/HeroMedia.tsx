@@ -9,9 +9,11 @@ import { hero } from "@/app/services/content";
  * side of the hero, like the Platform hero's backdrop. The hero adds the dark
  * wash and glow on top.
  *
- * One clip is picked at random on each page load (review round 3). The pick
- * happens after mount so the server and client render the same markup; until
- * then the backdrop is plain dark page.
+ * One clip is picked at random on each page load (review round 3). The page
+ * picks it on the server and passes `clip`, so the video and poster are in the
+ * first HTML and start downloading before the scripts load (2026-11-23; the
+ * pick used to happen after mount, which held the download back until the
+ * scripts arrived). Playback starts once the page is interactive.
  *
  * Phones get a 640x360 copy (the video sits under a dark wash there); wider
  * screens get the 1280x720 file. The poster is the clip's first frame. The
@@ -19,21 +21,24 @@ import { hero } from "@/app/services/content";
  * load, the component shows the fallback photo. Under reduced motion the
  * video stays paused on its first frame.
  */
-export function HeroMedia() {
+export function HeroMedia({ clip }: { clip: number | null }) {
   const { videos, fallbackImage, fallbackFocus, interim } = hero.media;
   const ref = useRef<HTMLVideoElement | null>(null);
-  const [pick, setPick] = useState<number | null>(null);
-  const [failed, setFailed] = useState(videos.length === 0);
-
-  useEffect(() => {
-    if (videos.length === 0) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setPick(Math.floor(Math.random() * videos.length));
-  }, [videos.length]);
+  const video = clip == null ? null : (videos[clip] ?? null);
+  const [failed, setFailed] = useState(video == null);
 
   useEffect(() => {
     const v = ref.current;
-    if (pick == null || !v) return;
+    if (!v) return;
+    // A source can fail before the page is interactive, when no onError
+    // handler is attached yet: NETWORK_NO_SOURCE means none could play.
+    if (v.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFailed(true);
+      return;
+    }
+    // Server-rendered markup may lack the muted attribute; autoplay needs it.
+    v.muted = true;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const apply = () => {
       if (mq.matches) v.pause();
@@ -42,9 +47,7 @@ export function HeroMedia() {
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
-  }, [pick]);
-
-  const video = pick == null ? null : videos[pick];
+  }, [video]);
 
   return (
     <div className="absolute inset-0 lg:left-auto lg:w-[68%]">
