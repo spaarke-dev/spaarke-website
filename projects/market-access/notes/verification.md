@@ -35,7 +35,7 @@ How each success criterion in `spec.md` was checked, on 2026-11-24, with what is
 
 - The sync engine turns a `todo` or `drafted` follow-up into `sent` when it sees an outgoing email to the contact. The storage checks cover this (task 042).
 - The mail sync ran 44 times between 2026-11-23 15:47 and 2026-11-24 12:38 UTC, every run a success.
-- **Finding:** GitHub starts the scheduled job late at times. The gap between runs had a median of 28 minutes and a maximum of 44; 4 of 43 gaps were over 35 minutes. So a follow-up can take up to about 45 minutes to show `sent`, not 30. Running the job every 15 minutes would keep it under 30.
+- **Finding:** GitHub starts the scheduled job late at times. The gap between runs had a median of 28 minutes and a maximum of 44; 4 of 43 gaps were over 35 minutes. So a follow-up can take up to about 45 minutes to show `sent`, not 30. The schedule moved to every 15 minutes on 2026-11-24 to keep it under 30.
 - **Left for Ralph:** on `/admin/campaigns/tltf-2026`, bulk-create "Thank-you after the Summit" follow-ups for the people he met, send them from Outlook, and check each shows `sent`.
 
 ### 4. Contact form writer

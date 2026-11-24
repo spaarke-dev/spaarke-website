@@ -16,7 +16,7 @@ A signed-in admin area on the website that brings Spaarke's contacts, organizati
 - SWA authentication with Microsoft Entra ID; roles `admin` and `investor`.
 - Azure Table Storage through `@azure/data-tables` and `STORAGE_ACCOUNT_CONNECTION`. New tables use the `Ma` prefix.
 - Microsoft Graph over `fetch` with app-only credentials, limited by Exchange RBAC for Applications (the `/meet` pattern).
-- GitHub Actions for the 30-minute mail sync, the same shape as `daily-report.yml`.
+- GitHub Actions for the 15-minute mail sync, the same shape as `daily-report.yml`.
 - Tailwind v4 with the v2 tokens, and `@fluentui/react-icons`.
 
 ## Code map

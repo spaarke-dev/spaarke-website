@@ -69,7 +69,7 @@ contactus@spaarke.com is a normal user mailbox with only an Exchange license. It
 
 **Graph:** none to add. The sync reads the settings `/meet` already has: `MEET_GRAPH_TENANT_ID`, `MEET_GRAPH_CLIENT_ID` and `MEET_GRAPH_CLIENT_SECRET`.
 
-**Sync token:** a GitHub Actions schedule calls `POST /api/market/sync` every 30 minutes with a bearer token, the same way the daily report works. Create it once, give it to the site and to GitHub:
+**Sync token:** a GitHub Actions schedule calls `POST /api/market/sync` every 15 minutes with a bearer token, the same way the daily report works. Create it once, give it to the site and to GitHub:
 
 ```bash
 az keyvault secret set --vault-name <vault> --name market-sync-token --output none \

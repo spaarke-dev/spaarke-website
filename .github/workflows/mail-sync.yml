@@ -1,17 +1,18 @@
 # The market access mail sync (projects/market-access, task 042).
 #
-# Every 30 minutes this asks the site to read new message metadata from the
+# Every 15 minutes this asks the site to read new message metadata from the
 # mailboxes registered at /admin/mailboxes and log mail with known contacts.
 # The work happens in the site's own route, which already holds the Graph and
 # storage settings; this workflow holds one shared secret, the same shape as
-# daily-report.yml. GitHub's scheduler is best effort and can run late, which
-# the sync's checkpoints absorb.
+# daily-report.yml. GitHub's scheduler is best effort and can run late (a
+# 30-minute schedule ran up to 44 minutes apart), so 15 minutes keeps mail on
+# the timeline within 30. The sync's checkpoints absorb late runs.
 
 name: Mail sync
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:

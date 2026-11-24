@@ -6,7 +6,7 @@ import { syncAll } from "@/lib/market/sync";
 import { trackEvent } from "@/lib/logger";
 
 /**
- * The mail sync (task 042), called every 30 minutes by
+ * The mail sync (task 042), called every 15 minutes by
  * .github/workflows/mail-sync.yml with the MA_SYNC_TOKEN bearer token, the
  * same shape as /api/reports/daily. It answers with counts only: no
  * addresses, subjects or message IDs.
