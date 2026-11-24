@@ -62,7 +62,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 |---|---|---|---|
 | [060](060-morning-report.md) | Morning report sections | 034 | done |
 | [061](061-privacy-page.md) | Privacy page | 031 | done |
-| [090](090-project-wrap-up.md) | Project wrap-up | all | not-started |
+| [090](090-project-wrap-up.md) | Project wrap-up | all | in-progress (waiting on Ralph's final checks) |
 
 ## Dated constraints
 

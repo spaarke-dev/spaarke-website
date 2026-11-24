@@ -1,6 +1,6 @@
 # Market access
 
-> **Status**: In progress. Plan awaiting owner review (2026-11-19).
+> **Status**: Built and live (2026-11-24). Open for the owner's final checks; see [`notes/verification.md`](notes/verification.md).
 
 A signed-in admin area on the website that brings Spaarke's contacts, organizations, activity, outreach projects and follow-ups into one place. Every site form and engagement writer feeds one activity log, the synced mailboxes add email, and campaigns (outreach projects) report their results from that log. Phase 1 makes the TLTF Summit 2026 outreach pattern repeatable and measurable.
 
