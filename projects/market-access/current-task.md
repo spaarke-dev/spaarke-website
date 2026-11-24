@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 051: Engagement filter |
+| **Task** | 061: Privacy page |
 | **Step** | PR open |
-| **Status** | done; PR pending Ralph's go-ahead to merge |
-| **Next action** | After merge: 061 (privacy page), then 052 (backfill, before 2027-02-11; it brings the TLTF brief reads and clicks in, so engaged fills). Ralph corrects Summit meetings that did not happen on `/admin/campaigns/tltf-2026` (status override); Ralph works through the waiting senders at `/admin/triage`; then 051, 061; confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
+| **Status** | done; wording approved 2026-11-23 |
+| **Next action** | 052 (backfill, before 2027-02-11; it brings the TLTF brief reads and clicks in, so engaged fills). Ralph corrects Summit meetings that did not happen on `/admin/campaigns/tltf-2026` (status override); Ralph works through the waiting senders at `/admin/triage`; then 051, 061; confirm `NoMailboxAccess` against a real mailbox outside the scope; 052 (backfill) before 2027-02-11; try the LinkedIn import with the first real export after 2026-12-19 |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
@@ -59,3 +59,4 @@
 - 2026-11-23: PR #192 merged (task 043). Open question 2 answered: import every Summit meeting, confirm later. Task 050 built: `npm run market:import-tltf`; the dry run matches `index.csv` (81 sent, 10 bounced, 11 replies); 55 checks pass.
 - 2026-11-23: PR #193 merged (task 050) and live. Import run against live storage: 95 contacts, 95 members, 134 activities; sent 81, bounced 10, replied 11, matching `index.csv`; a second run added nothing.
 - 2026-11-23: PR #195 merged (task 050 run records). Task 051 built: the `track.py` scanner filter in `engagement.ts`, applied to member statuses; the TLTF engaged list matches `track.py` (6 and 6, same set); 57 checks pass.
+- 2026-11-23: PR #198 merged (task 051) and live. Task 061 built: the privacy page section on contact and activity records, wording approved by Ralph.

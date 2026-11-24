@@ -18,7 +18,7 @@ export default function Privacy() {
         />
 
         <div className="text-fg-mid mt-12 max-w-2xl space-y-6 text-base leading-relaxed">
-          <p className="text-fg-low text-sm">Last updated: 2026-11-15</p>
+          <p className="text-fg-low text-sm">Last updated: 2026-11-23</p>
 
           <p>
             This policy covers two related but distinct contexts: (1) the
@@ -373,6 +373,77 @@ export default function Privacy() {
             members who respond to requests.
           </p>
 
+          <h3
+            id="contact-records"
+            className="text-fg font-display scroll-mt-32 text-lg font-medium"
+          >
+            Contact and activity records
+          </h3>
+          <p>
+            To keep track of our business relationships, we keep a record for
+            each person we deal with: who you are, what we have discussed, and
+            what we have agreed to follow up on. The record holds your name,
+            work email, organization, and, where you gave them to us or they
+            appear on your public profile, your title, LinkedIn profile, and
+            phone number. A list of dated entries sits alongside it, each with a
+            short summary.
+          </p>
+          <p>The entries come from these sources:</p>
+          <ul className="list-disc space-y-2 pl-6">
+            <li>
+              The forms and meeting bookings on this site, and LinkedIn lead
+              forms, as described above.
+            </li>
+            <li>
+              Email between you and the Spaarke team mailboxes we connect to the
+              record. For each message we keep the subject, the sender and
+              recipients, the time, and a link to the message in our own
+              mailbox. We never copy the body of an email or its attachments.
+              Mail to a shared team inbox from someone we have no record of
+              waits for a team member to accept it before a record is created.
+            </li>
+            <li>
+              Meetings, whether booked through this site or held in person, for
+              example at an event.
+            </li>
+            <li>
+              Links in emails we send you. Some of our emails carry a personal
+              link to a private brief or to an &ldquo;Ask your AI&rdquo; button.
+              When you open one, we note that it was opened and when. Mail
+              security systems often open every link in an email as it arrives,
+              so we leave those automated visits out.
+            </li>
+            <li>
+              Notes our team adds, such as the context of a conversation or a
+              follow-up to do.
+            </li>
+          </ul>
+          <p>
+            The records are stored in Azure Table Storage in our tenant, in a
+            United States region, and only Spaarke team members with
+            administrative access can see them. We use them to manage our
+            relationship with you. We do not sell them, use them for
+            advertising, or use them to make automated decisions about you.
+          </p>
+          <p>
+            We keep a contact record until you ask us to delete it, or until we
+            no longer need it. We keep the dated entries for no more than three
+            years.
+          </p>
+          <p>
+            To have your record deleted, email{" "}
+            <a
+              href="mailto:privacy@spaarke.com"
+              className="text-cta-blue underline"
+            >
+              privacy@spaarke.com
+            </a>
+            . We delete the record, every entry on it, its place in any
+            outreach list, and any follow-ups. We keep only a one-way hash of
+            your email address, which cannot be turned back into the address.
+            It exists only to stop a later email or list from adding you back.
+          </p>
+
           <h3 className="text-fg font-display text-lg font-medium">
             Azure Application Insights
           </h3>
@@ -588,8 +659,11 @@ export default function Privacy() {
               >
                 privacy@spaarke.com
               </a>{" "}
-              for data deletion requests, DPA requests, or any privacy
-              questions, or use our{" "}
+              for data deletion requests (see{" "}
+              <a href="#contact-records" className="text-cta-blue underline">
+                Contact and activity records
+              </a>
+              ), DPA requests, or any privacy questions, or use our{" "}
               <a href="/contact" className="text-cta-blue underline">
                 contact form
               </a>
