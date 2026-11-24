@@ -12,7 +12,7 @@ import { MergeContact } from "@/components/admin/MergeContact";
 import { DeleteContact } from "@/components/admin/DeleteContact";
 import { ContactFollowUps } from "@/components/admin/ContactFollowUps";
 import { listContactFollowUps, todayKey } from "@/lib/market/followups";
-import { ArrowLeft20Regular } from "@/components/admin/icons";
+import { ActivityIcon, ArrowLeft20Regular } from "@/components/admin/icons";
 import { activityLabel, formatDay, formatWhen, label } from "@/components/admin/format";
 
 export const dynamic = "force-dynamic";
@@ -39,23 +39,27 @@ function TimelineItem({ a }: { a: Activity }) {
   const link = outlookLink(a.webLink);
   const summary = a.summary && a.summary !== activityLabel(a.type) ? a.summary : null;
   return (
-    <li className="border-t border-line py-3 first:border-t-0">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <span className="font-medium">{activityLabel(a.type)}</span>
-        <span className="text-xs text-fg-mid">{formatWhen(a.occurredAt)}</span>
-      </div>
-      {a.subject ? <div className="mt-1 text-sm [overflow-wrap:anywhere]">{a.subject}</div> : null}
-      {summary ? <div className="mt-1 text-sm text-fg-mid [overflow-wrap:anywhere]">{summary}</div> : null}
-      <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-fg-low">
-        {a.campaignSlug ? <span>Campaign: {a.campaignSlug}</span> : null}
-        {a.utm?.campaign ? <span>UTM: {a.utm.campaign}</span> : null}
-        {a.mailbox ? <span>Mailbox: {a.mailbox}</span> : null}
-        {a.visibility === "investor" ? <span>Investor only</span> : null}
-        {link ? (
-          <a href={link} target="_blank" rel="noreferrer noopener" className="text-spaarke-blue hover:underline">
-            Open in Outlook
-          </a>
-        ) : null}
+    <li className="flex gap-3 border-t border-line py-3 first:border-t-0">
+      <ActivityIcon type={a.type} />
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <span className="font-medium">{activityLabel(a.type)}</span>
+          <span className="text-xs text-fg-mid">{formatWhen(a.occurredAt)}</span>
+        </div>
+        {a.subject ? <div className="mt-1 text-sm [overflow-wrap:anywhere]">{a.subject}</div> : null}
+        {summary ? <div className="mt-1 text-sm text-fg-mid [overflow-wrap:anywhere]">{summary}</div> : null}
+        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-fg-low">
+          {a.source === "admin" && a.type !== "note" ? <span>Logged by hand</span> : null}
+          {a.campaignSlug ? <span>Campaign: {a.campaignSlug}</span> : null}
+          {a.utm?.campaign ? <span>UTM: {a.utm.campaign}</span> : null}
+          {a.mailbox ? <span>Mailbox: {a.mailbox}</span> : null}
+          {a.visibility === "investor" ? <span>Investor only</span> : null}
+          {link ? (
+            <a href={link} target="_blank" rel="noreferrer noopener" className="text-spaarke-blue hover:underline">
+              Open in Outlook
+            </a>
+          ) : null}
+        </div>
       </div>
     </li>
   );
@@ -155,7 +159,13 @@ export default async function ContactPage({
               Profile
             </h2>
             <dl className="space-y-2">
-              <Field name="Email">{contact.email}</Field>
+              <Field name="Email">
+                {contact.email ? (
+                  <a href={`mailto:${contact.email}`} className="underline underline-offset-2">
+                    {contact.email}
+                  </a>
+                ) : null}
+              </Field>
               <Field name="Title">{contact.title}</Field>
               <Field name="Organization">
                 {contact.organizationName && contact.organizationId ? (
@@ -171,7 +181,13 @@ export default async function ContactPage({
                   </a>
                 ) : null}
               </Field>
-              <Field name="Phone">{contact.phone}</Field>
+              <Field name="Phone">
+                {contact.phone ? (
+                  <a href={`tel:${contact.phone.replace(/[^\d+]/g, "")}`} className="underline underline-offset-2">
+                    {contact.phone}
+                  </a>
+                ) : null}
+              </Field>
               <Field name="Owner">{contact.owner}</Field>
               <Field name="First activity">{contact.source ? activityLabel(contact.source) : null}</Field>
               <Field name="Added">{formatDay(contact.createdAt)}</Field>

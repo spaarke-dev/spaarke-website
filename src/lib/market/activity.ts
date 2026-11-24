@@ -225,6 +225,87 @@ export async function recordActivity(input: ActivityInput): Promise<RecordResult
   return { status: "recorded", contactId, activityId };
 }
 
+// ---- Outlook links for imported email ----
+
+/** Sources whose email entries were written from saved files, without an Outlook link. */
+export const LINKABLE_EMAIL_SOURCES: ReadonlySet<string> = new Set(["tltf-import"]);
+
+const DAY_MS = 86_400_000;
+
+type EmailCandidate = Pick<Activity, "id" | "type" | "source" | "occurredAt" | "webLink">;
+
+/**
+ * The imported entry a synced message stands for, if any: same type, from an
+ * import without a link, and close in time. A send or bounce is within two
+ * days of the imported one. A reply can come later than the import's date for
+ * it (often the send day, when the reply date was not recorded), so it is
+ * from two days before to three weeks after. The closest wins. Pure.
+ */
+export function pickImportedEmail(rows: readonly EmailCandidate[], type: ActivityType, atMs: number): EmailCandidate | null {
+  let best: EmailCandidate | null = null;
+  let bestGap = Infinity;
+  for (const r of rows) {
+    if (r.type !== type || r.webLink || !LINKABLE_EMAIL_SOURCES.has(r.source)) continue;
+    const occ = Date.parse(r.occurredAt);
+    if (!Number.isFinite(occ)) continue;
+    const fits = type === "email.received" ? atMs >= occ - 2 * DAY_MS && atMs <= occ + 21 * DAY_MS : Math.abs(atMs - occ) <= 2 * DAY_MS;
+    const gap = Math.abs(atMs - occ);
+    if (fits && gap < bestGap) {
+      best = r;
+      bestGap = gap;
+    }
+  }
+  return best;
+}
+
+/**
+ * When the sync reads a message an import already logged for this contact,
+ * add the message's Outlook link, subject and mailbox to that entry instead
+ * of logging the email again. The sync's own marker is written too, so the
+ * next read of the message is a duplicate. Returns the entry's ID, or null
+ * when no imported entry matches.
+ */
+export async function attachEmailLink(input: {
+  contactId: string;
+  type: "email.sent" | "email.received" | "email.bounced";
+  source: string;
+  sourceId: string;
+  occurredAt: string;
+  webLink?: string;
+  subject?: string;
+  mailbox?: string;
+}): Promise<string | null> {
+  const activities = await getTable("activities");
+  const byMonth = await getTable("activityByMonth");
+  if (!activities || !byMonth) return null;
+  const rows: EmailCandidate[] = [];
+  const filter = `PartitionKey eq '${input.contactId.replace(/'/g, "''")}'`;
+  for await (const e of activities.listEntities<ActivityEntity>({ queryOptions: { filter } })) {
+    if (!e.type || !String(e.type).startsWith("email.")) continue;
+    rows.push({ id: e.rowKey, type: e.type, source: e.source, occurredAt: e.occurredAt, webLink: e.webLink });
+  }
+  const match = pickImportedEmail(rows, input.type, Date.parse(input.occurredAt));
+  if (!match) return null;
+
+  const fields = stripUndefined({
+    webLink: trimTo(input.webLink, 2000),
+    subject: trimTo(input.subject, SUBJECT_MAX),
+    mailbox: trimTo(input.mailbox, 200),
+  });
+  // An entry with no link and no subject from Graph still counts as matched, so it is not logged twice.
+  if (Object.keys(fields).length) {
+    await activities.updateEntity({ partitionKey: input.contactId, rowKey: match.id, ...fields }, "Merge");
+    try {
+      await byMonth.updateEntity({ partitionKey: monthKey(Date.parse(match.occurredAt)), rowKey: match.id, ...fields }, "Merge");
+    } catch (err) {
+      if (statusOf(err) !== 404) throw err;
+    }
+  }
+  const mk = markerKeys(idempotencyKey(input.source, input.sourceId));
+  await activities.upsertEntity<MarkerEntity>({ ...mk, contactId: input.contactId, activityId: match.id }, "Replace");
+  return match.id;
+}
+
 const DEFAULT_TIMEOUT_MS = 1500;
 
 function timeoutMs(): number {

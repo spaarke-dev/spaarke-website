@@ -5,13 +5,19 @@ import { BUTTON, FIELD, useAdminRequest } from "@/components/admin/useAdminReque
 
 const TYPES = [
   { value: "note", label: "Note" },
+  { value: "call", label: "Phone call" },
+  { value: "email.sent", label: "Email I sent" },
+  { value: "email.received", label: "Email I received" },
   { value: "meeting.in_person", label: "In-person meeting" },
   { value: "linkedin.message", label: "LinkedIn message" },
 ];
 
 const MAX = 280;
 
-/** Add a note, or log an in-person meeting or LinkedIn message, on the timeline. */
+/**
+ * Add a note, or log a phone call, an email the sync cannot see, an in-person
+ * meeting or a LinkedIn message, on the timeline.
+ */
 export function LogActivityForm({ contactId }: { contactId: string }) {
   const form = useRef<HTMLFormElement>(null);
   const [length, setLength] = useState(0);

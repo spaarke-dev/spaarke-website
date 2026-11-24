@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 import { changed, contactRequest, fail, json } from "@/lib/market/admin-api";
 import { isLoggableType, logActivity, PatchError } from "@/lib/market/contact-admin";
 import { SUMMARY_MAX } from "@/lib/market/activity";
+import { closeFollowUps } from "@/lib/market/sync";
 
 export const dynamic = "force-dynamic";
 
 /**
- * Log a note, in-person meeting or LinkedIn message by hand (FR-15).
- * Body: { type, summary, occurredAt? }.
+ * Log a note, phone call, email, in-person meeting or LinkedIn message by
+ * hand (FR-15). An email logged here closes follow-ups the way a synced one
+ * does. Body: { type, summary, occurredAt? }.
  */
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const ctx = await contactRequest(request, (await params).id, { body: true });
@@ -23,6 +25,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       summary: body.summary,
       occurredAt: body.occurredAt || undefined,
     });
+    if (result.status === "recorded" && (body.type === "email.sent" || body.type === "email.received")) {
+      const at = body.occurredAt ? new Date(body.occurredAt).toISOString() : new Date().toISOString();
+      await closeFollowUps(ctx.contact.id, body.type, at);
+    }
     changed();
     return result.status === "recorded" ? json({ ok: true, activityId: result.activityId }) : fail(409, "Not recorded");
   } catch (err) {

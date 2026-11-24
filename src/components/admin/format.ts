@@ -60,6 +60,7 @@ const ACTIVITY_LABELS: Record<ActivityType, string> = {
   "email.bounced": "Email bounced",
   "linkedin.lead": "LinkedIn lead",
   "linkedin.message": "LinkedIn message",
+  call: "Phone call",
   note: "Note",
   "followup.done": "Follow-up done",
 };
