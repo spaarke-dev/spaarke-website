@@ -50,6 +50,7 @@ const ICONS: Record<string, [FluentIcon, keyof typeof TINT]> = {
   note: [Note16Regular, "touch"],
   call: [Call16Regular, "touch"],
   "followup.done": [CheckmarkCircle16Regular, "done"],
+  "list.import": [PersonAdd16Regular, "touch"],
 };
 
 /** A small tinted circle for a timeline entry. Decorative: the entry's label says the same. */

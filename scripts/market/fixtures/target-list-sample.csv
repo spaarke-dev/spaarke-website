@@ -1,0 +1,7 @@
+Email,First Name,Last Name,Company,Title,LinkedIn,Segment,Template,Notes,Country
+jordan.target@contoso.example.test,Jordan,Target,Contoso,General Counsel,https://www.linkedin.com/in/jordan-target-fake,Tier A,v1,"Met on a panel; asked about matter intake",Made-up Country
+riley.sample@fabrikam.example.test,Riley,Sample,"Fabrikam Legal, LLP",Head of Legal Operations,,Tier B,v2,,Made-up Country
+RILEY.SAMPLE@Fabrikam.example.test,Riley,Sample,Fabrikam,,,Tier B,v2,,Made-up Country
+not-an-email,Morgan,Broken,Contoso,,,Tier A,v1,,Made-up Country
+,Pat,Missing,Contoso,,,Tier A,v1,,Made-up Country
+casey.known@northwind.example.test,Casey,Known,Northwind,New Title From The List,,Tier A,v1,Second note,Made-up Country

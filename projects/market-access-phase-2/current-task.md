@@ -6,8 +6,8 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 001: Calendar access spike and Exchange step |
-| **Step** | Spike done and written up; Exchange command in the setup guide |
+| **Task** | 010: Target list import (done); 001 waits on the Exchange step |
+| **Step** | 010 built and verified; PR open |
 | **Status** | in progress; waiting on Ralph's Exchange step for the contactus@ retest |
 | **Next action** | Once Ralph has run section 7 of `docs/market-access-mailboxes.md`, retest the contactus@ calendar read and record it in `notes/calendar-spike.md`. Meanwhile tasks 010, 011, 050 and 051 can start |
 
@@ -28,3 +28,4 @@
 - 2026-11-24: design, spec, plan and tasks written on `docs/market-access-phase-2-design` (PR 206).
 - 2026-11-24: plan approved by Ralph; PR 206 merged.
 - 2026-11-24: task 001 spike run against Ralph's calendar; decision recorded in `notes/calendar-spike.md`. contactus@ answers 403 until the Exchange step.
+- 2026-11-24: task 010 built (target list import); 63 checks pass with fresh tables.

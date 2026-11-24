@@ -50,6 +50,7 @@ export const ACTIVITY_TYPES = [
   "call",
   "note",
   "followup.done",
+  "list.import",
 ] as const;
 export type ActivityType = (typeof ACTIVITY_TYPES)[number];
 

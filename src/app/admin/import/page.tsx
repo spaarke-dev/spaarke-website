@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { requireAdmin } from "@/lib/market/auth";
+import { canSeeInvestor, requireAdmin } from "@/lib/market/auth";
 import { isMarketConfigured } from "@/lib/market/tables";
 import { visibleCampaigns } from "@/lib/market/queries";
 import { EmptyState } from "@/components/admin/EmptyState";
-import { LinkedInImport } from "@/components/admin/LinkedInImport";
+import { ImportChooser } from "@/components/admin/ImportChooser";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = { title: "Import" };
 
-/** LinkedIn Lead Gen Form import (FR-14, task 053). */
+/** Target list import (phase 2 FR-01) and LinkedIn Lead Gen Form import (FR-14). */
 export default async function ImportPage() {
   const access = await requireAdmin("/admin/import");
   if (access.status !== "ok") return null;
@@ -33,13 +33,13 @@ export default async function ImportPage() {
   return (
     <section className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Import LinkedIn leads</h1>
+        <h1 className="text-2xl font-semibold">Import</h1>
         <p className="mt-1 text-sm text-fg-mid">
-          In Campaign Manager, download the leads from the Lead Gen Form as a CSV, then choose it here. Each lead becomes a
-          contact with a LinkedIn lead activity, and joins the campaign.
+          Choose a CSV file, check how its columns map and what it will add, then import. Nothing is saved before you press
+          Import.
         </p>
       </div>
-      <LinkedInImport campaigns={campaigns} />
+      <ImportChooser campaigns={campaigns} canInvestor={canSeeInvestor(access.principal)} />
     </section>
   );
 }

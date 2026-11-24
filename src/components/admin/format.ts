@@ -63,6 +63,7 @@ const ACTIVITY_LABELS: Record<ActivityType, string> = {
   call: "Phone call",
   note: "Note",
   "followup.done": "Follow-up done",
+  "list.import": "Added from a list",
 };
 
 export function activityLabel(type: string): string {
