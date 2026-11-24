@@ -694,9 +694,9 @@ console.log("Pure checks");
     { match: ["Robin"], name: "Robin Example", org: "Fund Six", context: "Seed investor." },
   ]);
   const calendar = tltf.parseCalendar([
-    { subject: "Coffee with Lee", start: { dateTime: "2026-11-17T10:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["ralph@spaarke.com", "lee@fund-three.example.test"], isCancelled: false },
-    { subject: "Robin and team", start: { dateTime: "2026-11-18T11:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["ralph@spaarke.com", "rk@fund-six.example.test"], isCancelled: false },
-    { subject: "Internal prep", start: { dateTime: "2026-11-16T08:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["ralph@spaarke.com"], isCancelled: false },
+    { subject: "Coffee with Lee", start: { dateTime: "2026-11-17T10:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["host@spaarke.com", "lee@fund-three.example.test"], isCancelled: false },
+    { subject: "Robin and team", start: { dateTime: "2026-11-18T11:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["host@spaarke.com", "rk@fund-six.example.test"], isCancelled: false },
+    { subject: "Internal prep", start: { dateTime: "2026-11-16T08:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["host@spaarke.com"], isCancelled: false },
     { subject: "Dropped", start: { dateTime: "2026-11-19T08:00:00.0000000", timeZone: "Eastern Standard Time" }, attendees: ["x@fund-seven.example.test"], isCancelled: true },
   ]);
   assert.equal(calendar.meetings.length, 2);
@@ -2023,7 +2023,7 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   await q(`someone-${run}@gmail.com`, "m6", 1);
   await q(addr("fund", dom), "m7", 1, lp);
 
-  let list = await tri.listTriage(both);
+  const list = await tri.listTriage(both);
   const mine = (l: typeof list) => l.filter((s) => [dom, other].includes(s.domain) || s.sender.endsWith(`-${run}@gmail.com`));
   assert.equal(mine(list).length, 6);
   assert.ok(!mine(await tri.listTriage(general)).some((s) => s.sender === addr("fund", dom)), "an investor mailbox's sender is hidden without the role");
@@ -2118,7 +2118,7 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   const keysCsv = parseCsv(`code,key\n${c("01")},key-${run}-1\n${c("02")},key-${run}-2\n${c("03")},key-${run}-3\n`);
   const people = tltf.parsePeople([{ match: [`lee@${dom}`], title: "Partner", context: "Met at a dinner." }]);
   const calendar = tltf.parseCalendar([
-    { subject: "Coffee", start: { dateTime: "2026-11-17T10:00:00", timeZone: "Eastern Standard Time" }, attendees: ["ralph@spaarke.com", `lee@${dom}`, `robin@${dom}`], isCancelled: false },
+    { subject: "Coffee", start: { dateTime: "2026-11-17T10:00:00", timeZone: "Eastern Standard Time" }, attendees: ["host@spaarke.com", `lee@${dom}`, `robin@${dom}`], isCancelled: false },
   ]);
   const plan = tltf.buildPlan(tltf.parseOutreach(outreachCsv, tltf.parseBriefKeys(keysCsv), people), calendar, people, 3);
 

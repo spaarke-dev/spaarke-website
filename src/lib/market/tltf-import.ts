@@ -28,7 +28,7 @@ export const TLTF_CAMPAIGN = {
   utmCampaign: "tltf-2026",
   visibility: "investor" as const,
 };
-/** The outreach code prefix on tracked links (`src=tltf-G1-01`) and the brief label prefix. */
+/** The outreach code prefix on tracked links (`src=tltf-<code>`) and the brief label prefix. */
 const CODE_PREFIX = "tltf-";
 const LABEL_PREFIX = "tltf-2026:";
 /** Addresses at this domain are Spaarke people, never contacts. */
