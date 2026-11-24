@@ -47,6 +47,7 @@ export const ACTIVITY_TYPES = [
   "email.bounced",
   "linkedin.lead",
   "linkedin.message",
+  "call",
   "note",
   "followup.done",
 ] as const;

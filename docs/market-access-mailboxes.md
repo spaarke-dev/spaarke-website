@@ -100,6 +100,15 @@ For a local test, put the same three `MEET_GRAPH_*` values in `.env.local`. Then
 
 If you register it before the change applies, the registry shows "This mailbox is not in the Exchange access scope yet," and the sync skips it without affecting the other mailboxes. It picks up on the next run once access applies.
 
+### Reading a mailbox again
+
+The sync reads only mail newer than its last run. Mail with people who became contacts later, for example through an import, is not on their timelines until the mailbox is read again. At `/admin/mailboxes`, pick a date under **Read again from** (up to 90 days back) and press **Read again**. The next sync runs then:
+
+- read that mailbox from the date again;
+- skip mail already logged;
+- log mail with people who are contacts now;
+- add the Outlook link to email an import logged without one (the TLTF history), instead of logging it twice.
+
 ## 5. Removing a mailbox
 
 Activities already logged from the mailbox stay on their contacts; removing it only stops new ones.

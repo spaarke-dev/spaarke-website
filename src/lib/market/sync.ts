@@ -1,7 +1,7 @@
 import { getTable, statusOf } from "@/lib/market/tables";
 import { emailDomain } from "@/lib/market/keys";
 import { findContactByEmail, isTombstoned } from "@/lib/market/contacts";
-import { hasActivity, recordActivity } from "@/lib/market/activity";
+import { attachEmailLink, hasActivity, recordActivity } from "@/lib/market/activity";
 import { enabledMailboxes, recordSync, type Mailbox } from "@/lib/market/mailboxes";
 import {
   bounceRecipient,
@@ -63,6 +63,8 @@ export type MailboxSummary = {
   bouncesUnmatched: number;
   triaged: number;
   duplicates: number;
+  /** Messages an import had already logged, whose entries gained the Outlook link. */
+  linked: number;
   followUpsClosed: number;
   /** False when the deadline stopped it; the next run continues. */
   complete: boolean;
@@ -110,6 +112,42 @@ async function saveCheckpoint(mailboxId: string, folder: MailFolder, checkpoint:
   );
 }
 
+/** How far back "Read again" may go. Graph's search stays quick well past this. */
+export const REREAD_MAX_DAYS = 90;
+
+/**
+ * A "Read again from" date: a `yyyy-mm-dd` day, not in the future and no
+ * more than REREAD_MAX_DAYS back. Returns the start of that day in UTC, or an
+ * error message. Pure.
+ */
+export function parseRereadFrom(value: unknown, now: Date): Date | string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return "Pick a date";
+  const ms = Date.parse(`${value}T00:00:00Z`);
+  if (!Number.isFinite(ms)) return "Pick a date";
+  if (ms > now.getTime()) return "The date is in the future";
+  if (ms < now.getTime() - REREAD_MAX_DAYS * 86_400_000) return `Pick a date within the last ${REREAD_MAX_DAYS} days`;
+  return new Date(ms);
+}
+
+/**
+ * Move a mailbox's checkpoints back, so the next runs read its mail again
+ * from `from`. Mail already logged is skipped as a duplicate; mail with people
+ * who became contacts since is logged now, and imported entries gain their
+ * Outlook links. A checkpoint already earlier than `from` is left alone.
+ * Returns the folders moved.
+ */
+export async function rereadFrom(mailboxId: string, from: Date): Promise<MailFolder[]> {
+  const target = new Date(from.getTime() + OVERLAP_MS).toISOString();
+  const moved: MailFolder[] = [];
+  for (const folder of SENT_BEFORE_INBOX) {
+    const current = await getCheckpoint(mailboxId, folder);
+    if (current && current <= target) continue;
+    await saveCheckpoint(mailboxId, folder, target);
+    moved.push(folder);
+  }
+  return moved;
+}
+
 /** Where a folder's next run starts: a little before the checkpoint, or FIRST_LOOKBACK_DAYS back. Pure. */
 export function startFrom(checkpoint: string | null, now: Date): string {
   const ms = checkpoint ? Date.parse(checkpoint) - OVERLAP_MS : now.getTime() - FIRST_LOOKBACK_DAYS * 86_400_000;
@@ -145,7 +183,7 @@ export { emailSourceId, SYNC_SOURCE };
  * compared with that; the audit entry and the `followup.done` activity carry
  * the same time, with `system` as who.
  */
-async function closeFollowUps(contactId: string, type: "email.sent" | "email.received", at: string): Promise<number> {
+export async function closeFollowUps(contactId: string, type: "email.sent" | "email.received", at: string): Promise<number> {
   const when = new Date(at);
   let closed = 0;
   for (const f of await listContactFollowUps(contactId)) {
@@ -183,6 +221,20 @@ async function handleMessage(m: MessageMeta, mailbox: Mailbox, s: MailboxSummary
       s.bouncesUnmatched++;
       return;
     }
+    const linked = await attachEmailLink({
+      contactId: contact.id,
+      type: "email.bounced",
+      source: SYNC_SOURCE,
+      sourceId,
+      occurredAt: m.receivedAt,
+      webLink: m.webLink,
+      subject: m.subject,
+      mailbox: mailbox.address,
+    });
+    if (linked) {
+      s.linked++;
+      return;
+    }
     const r = await recordActivity({
       type: "email.bounced",
       source: SYNC_SOURCE,
@@ -215,10 +267,30 @@ async function handleMessage(m: MessageMeta, mailbox: Mailbox, s: MailboxSummary
       }
       continue;
     }
+    const sourceId = emailSourceId(type, key, address);
+    if (await hasActivity(SYNC_SOURCE, sourceId)) {
+      s.duplicates++;
+      continue;
+    }
+    // Mail an import logged without a link (TLTF): add the link, do not log it twice.
+    const linked = await attachEmailLink({
+      contactId: contact.id,
+      type,
+      source: SYNC_SOURCE,
+      sourceId,
+      occurredAt: new Date(at).toISOString(),
+      webLink: m.webLink,
+      subject: m.subject,
+      mailbox: mailbox.address,
+    });
+    if (linked) {
+      s.linked++;
+      continue;
+    }
     const r = await recordActivity({
       type,
       source: SYNC_SOURCE,
-      sourceId: emailSourceId(type, key, address),
+      sourceId,
       occurredAt: at,
       contactId: contact.id,
       subject: m.subject,
@@ -254,6 +326,7 @@ export async function syncMailbox(mailbox: Mailbox, opts: SyncOptions): Promise<
     bouncesUnmatched: 0,
     triaged: 0,
     duplicates: 0,
+    linked: 0,
     followUpsClosed: 0,
     complete: true,
   };
@@ -322,6 +395,7 @@ export async function syncAll(opts: SyncOptions): Promise<SyncSummary> {
         bouncesUnmatched: 0,
         triaged: 0,
         duplicates: 0,
+        linked: 0,
         followUpsClosed: 0,
         complete: false,
       });
