@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { logo, navCta, navLinks } from "@/content/nav";
-import { Button } from "@/components/primitives";
+import { logo, navLinks } from "@/content/nav";
+import { AudienceSwitch } from "@/components/services/audience";
 
 /**
  * Match the current pathname against a nav-link href.
@@ -68,8 +68,10 @@ export default function SiteHeader() {
           </ul>
         </div>
 
-        {/* Right group: action links + Get access pill */}
-        <div className="hidden items-center gap-6 md:flex">
+        {/* Right group: page links + the site-wide Law Firm | Corporate
+            switch (2026-11-23: replaces the Get access pill). From lg up: below
+            1024px the links and switch do not fit, so they move to the menu. */}
+        <div className="hidden items-center gap-6 lg:flex">
           <ul className="flex items-center gap-6">
             {navLinks.right.map((link) => {
               const active = isActive(pathname, link.href);
@@ -89,22 +91,13 @@ export default function SiteHeader() {
               );
             })}
           </ul>
-          {/* Compact Button — Button primitive's primary variant gives
-              the rounded pill in cta-blue. Slightly tighter padding so
-              it doesn't dominate the nav row vertically. */}
-          <Button
-            variant="primary"
-            href={navCta.href}
-            className="!px-5 !py-2 !text-[14px]"
-          >
-            {navCta.label}
-          </Button>
+          <AudienceSwitch size="sm" label="View the site as" />
         </div>
 
         {/* Mobile hamburger */}
         <button
           type="button"
-          className="text-fg focus-visible:ring-spaarke-blue inline-flex h-10 w-10 items-center justify-center rounded-md transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 md:hidden"
+          className="text-fg focus-visible:ring-spaarke-blue inline-flex h-10 w-10 items-center justify-center rounded-md transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 lg:hidden"
           aria-expanded={mobileOpen}
           aria-label="Toggle navigation menu"
           onClick={() => setMobileOpen((v) => !v)}
@@ -123,7 +116,7 @@ export default function SiteHeader() {
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="border-line border-t md:hidden">
+        <div className="border-line border-t lg:hidden">
           <ul className="px-[var(--spacing-shell-x)] flex flex-col gap-1 py-3">
             {[...navLinks.left, ...navLinks.right].map((link) => {
               const active = isActive(pathname, link.href);
@@ -146,13 +139,7 @@ export default function SiteHeader() {
             })}
           </ul>
           <div className="px-[var(--spacing-shell-x)] pb-4">
-            <Button
-              variant="primary"
-              href={navCta.href}
-              onClick={() => setMobileOpen(false)}
-            >
-              {navCta.label}
-            </Button>
+            <AudienceSwitch label="View the site as" />
           </div>
         </div>
       )}
