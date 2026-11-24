@@ -31,6 +31,7 @@
     "market:check": "tsx scripts/check-market.mts",
     "market:mail": "tsx scripts/check-market-mail.mts",
     "market:import-tltf": "tsx scripts/market/import-tltf.mts",
+    "market:backfill": "tsx scripts/market/backfill.mts",
     "sms:check": "tsx scripts/check-sms.mts"
   },
   "dependencies": {

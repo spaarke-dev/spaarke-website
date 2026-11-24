@@ -137,15 +137,21 @@ function secondOf(ms: number): string {
  * is put in the source ID in the clear.
  */
 export async function recordBriefRead(label: string, now = Date.now()): Promise<SafeResult | null> {
+  const input = briefReadActivity(label, now);
+  return input ? recordActivitySafe(input) : null;
+}
+
+/** The activity for a brief read; shared with the backfill (task 052) so both write the same IDs. */
+export function briefReadActivity(label: string, now: number): ActivityInput | null {
   if (!label || label === "unlabeled") return null;
-  return recordActivitySafe({
+  return {
     type: "brief.read",
     source: "brief",
     sourceId: `${secondOf(now)}:${sha256(`brief:${label}`).slice(0, 16)}`,
     occurredAt: now,
     briefLabel: label,
     summary: "Read the private brief",
-  });
+  };
 }
 
 /** Values of `src` that name a place on the site rather than a recipient. */
@@ -162,17 +168,37 @@ export async function recordAskClick(
   briefLabel: string | undefined,
   now = Date.now(),
 ): Promise<SafeResult | null> {
+  const input = askClickActivity(provider, src, briefLabel, now);
+  return input ? recordActivitySafe(input) : null;
+}
+
+/**
+ * The activity for an Ask AI click; shared with the backfill (task 052). The
+ * source ID starts with the provider and the second, which the backfill uses
+ * with the time to find a click already logged live (App Insights does not keep the label).
+ */
+export function askClickActivity(
+  provider: string,
+  src: string,
+  briefLabel: string | undefined,
+  now: number,
+): ActivityInput | null {
   const code = PLACE_SOURCES.has(src.toLowerCase()) ? undefined : src;
   if (!code && !briefLabel) return null;
-  return recordActivitySafe({
+  return {
     type: "ask_ai.click",
     source: "ask",
-    sourceId: `${provider}:${secondOf(now)}:${sha256(`ask:${code ?? ""}:${briefLabel ?? ""}`).slice(0, 16)}`,
+    sourceId: `${askClickPrefix(provider, now)}${sha256(`ask:${code ?? ""}:${briefLabel ?? ""}`).slice(0, 16)}`,
     occurredAt: now,
     memberCode: code,
     briefLabel,
     summary: `Opened Ask AI in ${provider}`,
-  });
+  };
+}
+
+/** The start of an Ask AI click's source ID: the same for every click on one provider in one second. */
+export function askClickPrefix(provider: string, now: number): string {
+  return `${provider}:${secondOf(now)}:`;
 }
 
 // ---------------------------------------------------------------------------
