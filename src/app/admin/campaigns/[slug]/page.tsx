@@ -202,8 +202,8 @@ export default async function CampaignPage({
         </div>
         <FunnelTiles funnel={funnel} />
         <p className="text-xs text-fg-mid">
-          Engaged counts every brief read and Ask AI click for now. Filtering out link scanners (the first 15 minutes after
-          a first hit, bursts and rewritten links) comes with a later release.
+          Engaged leaves out mail gateway link scanners: hits in the first 15 minutes after the first one, bursts of clicks,
+          and links whose code a gateway rewrote.
         </p>
       </section>
 

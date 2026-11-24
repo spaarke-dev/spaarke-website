@@ -78,6 +78,7 @@ type ActivityEntity = {
   subject?: string;
   webLink?: string;
   mailbox?: string;
+  codeRewritten?: boolean;
 };
 
 type MarkerEntity = { partitionKey: string; rowKey: string; contactId: string; activityId: string };
@@ -151,6 +152,8 @@ export async function recordActivity(input: ActivityInput): Promise<RecordResult
   // Brief reads and Ask AI clicks carry no email: the code or label finds the member.
   let member: MemberRef | null = null;
   if (input.memberCode) member = await findMemberByCode(input.memberCode);
+  // A code that matches nobody while the brief key finds the member: a mail gateway rewrote the link (task 051).
+  const codeRewritten = Boolean(input.memberCode && !member && input.briefLabel);
   if (!member && input.briefLabel) member = await findMemberByBriefLabel(input.briefLabel);
 
   let contactId = input.contactId ?? (input.email ? undefined : member?.contactId);
@@ -205,6 +208,7 @@ export async function recordActivity(input: ActivityInput): Promise<RecordResult
     subject: trimTo(input.subject, SUBJECT_MAX),
     webLink: trimTo(input.webLink, 2000),
     mailbox: trimTo(input.mailbox, 200),
+    codeRewritten: codeRewritten && member ? true : undefined,
   };
   const row = stripUndefined(entity);
 
@@ -288,6 +292,7 @@ export function activityFromEntity(e: ActivityEntity): Activity {
     subject: e.subject,
     webLink: e.webLink,
     mailbox: e.mailbox,
+    codeRewritten: e.codeRewritten === true ? true : undefined,
   };
 }
 

@@ -52,7 +52,7 @@ Status values: `not-started`, `in-progress`, `blocked`, `done`. Medium granulari
 | Task | Title | Depends on | Status |
 |---|---|---|---|
 | [050](050-tltf-import-cli.md) | TLTF import CLI | 013, 033, open question 2 | done |
-| [051](051-engagement-filter.md) | Engagement filter | 033 | not-started |
+| [051](051-engagement-filter.md) | Engagement filter | 033 | done |
 | [052](052-backfill-cli.md) | Backfill CLI (before 2027-02-11) | 020, 021, 022, 004 | not-started |
 | [053](053-linkedin-csv-import.md) | LinkedIn Lead Gen CSV import (before 2026-12-19) | 033, 002 | done |
 

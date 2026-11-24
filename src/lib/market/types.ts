@@ -130,4 +130,9 @@ export type Activity = {
   subject?: string;
   webLink?: string;
   mailbox?: string;
+  /**
+   * An Ask AI click whose recipient code matched no member while its brief key
+   * did: a mail gateway rewrote the link. A link scanner, never a person (task 051).
+   */
+  codeRewritten?: boolean;
 };
