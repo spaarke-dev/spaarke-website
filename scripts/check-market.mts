@@ -1997,6 +1997,114 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
 }
 
 {
+  // Phase 2 quick fixes: imported email gains its Outlook link instead of a second entry; read again from a date.
+  const mb = await import("@/lib/market/mailboxes");
+  const sync = await import("@/lib/market/sync");
+  const ca = await import("@/lib/market/contact-admin");
+  const who = "admin@example.test";
+  const dom = `link-${run}.example.test`;
+  const own = `ralph@own4-${run}.example.test`;
+  const DAY = 86_400_000;
+
+  // The matching rule, pure.
+  const t0 = Date.parse("2026-11-14T02:00:00Z");
+  const rows = [
+    { id: "a", type: "email.sent" as const, source: "tltf-import", occurredAt: new Date(t0).toISOString() },
+    { id: "b", type: "email.received" as const, source: "tltf-import", occurredAt: new Date(t0 + 3_600_000).toISOString() },
+    { id: "c", type: "email.sent" as const, source: "graph", occurredAt: new Date(t0).toISOString() },
+    { id: "d", type: "email.sent" as const, source: "tltf-import", occurredAt: new Date(t0).toISOString(), webLink: "https://outlook.office365.com/x" },
+  ];
+  assert.equal(activity.pickImportedEmail(rows, "email.sent", t0 + 5 * 3_600_000)?.id, "a", "a send within two days matches the import");
+  assert.equal(activity.pickImportedEmail(rows, "email.sent", t0 + 3 * DAY), null, "a send three days off does not");
+  assert.equal(activity.pickImportedEmail(rows, "email.received", t0 + 10 * DAY)?.id, "b", "a reply up to three weeks later matches");
+  assert.equal(activity.pickImportedEmail(rows, "email.received", t0 + 30 * DAY), null);
+  assert.equal(activity.pickImportedEmail(rows, "email.bounced", t0), null, "no imported bounce, no match");
+
+  // The read-again date, pure.
+  const now = new Date("2026-11-24T12:00:00Z");
+  assert.equal((sync.parseRereadFrom("2026-11-10", now) as Date).toISOString(), "2026-11-10T00:00:00.000Z");
+  assert.equal(sync.parseRereadFrom("2026-11-25", now), "The date is in the future");
+  assert.equal(sync.parseRereadFrom("2026-08-01", now), "Pick a date within the last 90 days");
+  assert.equal(sync.parseRereadFrom("10 Nov", now), "Pick a date");
+
+  // One imported send and reply; the mailbox then holds the real messages and one later reply.
+  const c = await contacts.resolveContact({ email: addr("imported", dom), name: "Imported Person" }, { source: "email.sent" });
+  assert.ok(c.status === "created");
+  const cid = c.contact.id;
+  const sentAt = Date.now() - 6 * DAY;
+  await activity.recordActivity({ type: "email.sent", source: "tltf-import", sourceId: `sent:${run}`, occurredAt: sentAt, contactId: cid, summary: "Outreach email sent" });
+  await activity.recordActivity({ type: "email.received", source: "tltf-import", sourceId: `reply:${run}`, occurredAt: sentAt + 3_600_000, contactId: cid, summary: "Reply, from the outreach list" });
+
+  const box = await mb.addMailbox(mb.parseNewMailbox({ address: own, kind: "personal" }), who);
+  const iso = (ms: number) => new Date(ms).toISOString();
+  const msg = (id: string, at: number, from: string, to: string[], subject: string) => ({
+    id,
+    internetMessageId: `<${id}-${run}@mail.example.test>`,
+    from: { emailAddress: { address: from } },
+    toRecipients: to.map((a) => ({ emailAddress: { address: a } })),
+    ccRecipients: [],
+    subject,
+    receivedDateTime: iso(at),
+    sentDateTime: iso(at),
+    webLink: `https://outlook.office365.com/owa/?ItemID=${id}`,
+  });
+  const pages: Record<string, unknown[]> = {
+    [`${own}/mailFolders/sentitems`]: [msg("ls1", sentAt + 4 * 3_600_000, own, [addr("imported", dom)], "Summit")],
+    [`${own}/mailFolders/inbox`]: [
+      msg("lr1", sentAt + 2 * DAY, addr("imported", dom), [own], "Re: Summit"),
+      msg("lr2", sentAt + 3 * DAY, addr("imported", dom), [own], "Re: Summit, one more thing"),
+    ],
+  };
+  const fake = (async (input: string | URL | Request) => {
+    const url = decodeURIComponent(String(input));
+    const key = Object.keys(pages).find((k) => url.includes(k));
+    return new Response(JSON.stringify({ value: key ? pages[key] : [] }), { status: 200 });
+  }) as typeof fetch;
+  const opts = { settings: { tenantId: "t", clientId: "c", clientSecret: "s" }, fetch: fake, token: async () => "token", deadline: Date.now() + 60_000 };
+
+  const first = await sync.syncAll(opts);
+  const p = first.mailboxes.find((m) => m.id === box.id)!;
+  assert.deepEqual([p.linked, p.sent, p.received], [2, 0, 1], JSON.stringify(p));
+  const tl = await activity.listContactActivities(cid);
+  const sent = tl.filter((a) => a.type === "email.sent");
+  assert.equal(sent.length, 1, "the send is not logged twice");
+  assert.equal(sent[0].source, "tltf-import");
+  assert.ok(sent[0].webLink?.includes("ls1"), "the imported send gained the Outlook link");
+  assert.equal(sent[0].subject, "Summit");
+  const received = tl.filter((a) => a.type === "email.received");
+  assert.equal(received.length, 2, "the imported reply gained a link; the second reply is a new entry");
+  assert.ok(received.every((a) => a.webLink), "both replies link to Outlook");
+
+  const again = await sync.syncAll({ ...opts, deadline: Date.now() + 60_000 });
+  const p2 = again.mailboxes.find((m) => m.id === box.id)!;
+  assert.deepEqual([p2.linked, p2.sent, p2.received], [0, 0, 0], "a second read changes nothing");
+  assert.equal((await activity.listContactActivities(cid)).length, tl.length);
+
+  // Read again: only ever moves a checkpoint back.
+  const cp = await sync.getCheckpoint(box.id, "inbox");
+  assert.ok(cp);
+  assert.deepEqual(await sync.rereadFrom(box.id, new Date(Date.parse(cp!) + DAY)), [], "a later date leaves the checkpoints alone");
+  assert.deepEqual(await sync.rereadFrom(box.id, new Date(sentAt - DAY)), ["sentitems", "inbox"]);
+  assert.ok((await sync.getCheckpoint(box.id, "inbox"))! < cp!);
+  const third = await sync.syncAll({ ...opts, deadline: Date.now() + 60_000 });
+  const p3 = third.mailboxes.find((m) => m.id === box.id)!;
+  assert.equal(p3.messages, 3, "the messages are read again");
+  assert.deepEqual([p3.linked, p3.sent, p3.received], [0, 0, 0], "and found already logged");
+
+  // Phone calls and emails can be logged by hand.
+  for (const type of ["call", "email.sent", "email.received"] as const) {
+    assert.ok(ca.isLoggableType(type));
+    const r = await ca.logActivity(cid, { type, summary: `Logged ${type}` });
+    assert.equal(r.status, "recorded");
+  }
+  const byHand = (await activity.listContactActivities(cid)).filter((a) => a.source === "admin");
+  assert.deepEqual(byHand.map((a) => a.type).sort(), ["call", "email.received", "email.sent"]);
+
+  await mb.removeMailbox(box.id, who);
+  ok("the sync adds Outlook links to imported email instead of logging it twice; read again moves checkpoints back only; calls and emails can be logged by hand (phase 2 quick fixes)");
+}
+
+{
   // Task 043: accept, link, dismiss and clean up the triage queue.
   const mb = await import("@/lib/market/mailboxes");
   const tri = await import("@/lib/market/triage");

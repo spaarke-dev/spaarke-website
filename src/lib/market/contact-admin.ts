@@ -192,14 +192,14 @@ export async function editContact(
 
 // ----- Notes and logged touches -----
 
-export const LOGGABLE_TYPES = ["note", "meeting.in_person", "linkedin.message"] as const satisfies readonly ActivityType[];
+export const LOGGABLE_TYPES = ["note", "call", "email.sent", "email.received", "meeting.in_person", "linkedin.message"] as const satisfies readonly ActivityType[];
 export type LoggableType = (typeof LOGGABLE_TYPES)[number];
 
 export function isLoggableType(value: unknown): value is LoggableType {
   return typeof value === "string" && (LOGGABLE_TYPES as readonly string[]).includes(value);
 }
 
-/** A note, in-person meeting or LinkedIn message entered by hand. */
+/** A note, phone call, email, in-person meeting or LinkedIn message entered by hand. */
 export async function logActivity(
   contactId: string,
   input: { type: LoggableType; summary: string; occurredAt?: string },
