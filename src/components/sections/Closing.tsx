@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { Shell } from "@/components/primitives";
 import { closingContent } from "@/content/home/closing";
 import { TakeTourCTAs } from "@/components/TakeTourCTAs";
+import { ClosingWordmark } from "@/components/ClosingWordmark";
 
 // Solid black background — the fade transition was distracting and
 // taller than necessary. The hard boundary against the section above
@@ -31,20 +32,20 @@ export function Closing({ recaptchaSiteKey }: { recaptchaSiteKey: string }) {
           className="relative mx-auto max-w-5xl text-center"
           style={DARK_ZONE_STYLE}
         >
-          <h2
-            className="font-display text-fg font-medium leading-[1.02] tracking-[-0.035em] text-balance"
-            style={{ fontSize: "clamp(36px, 6vw, 80px)" }}
-          >
-            {headline}
-          </h2>
+          <ClosingWordmark />
 
+          {/* The headline and tagline sit under the wordmark at the
+              Platform closing's statement size; each sentence keeps to one
+              line from md up and wraps on phones. */}
           <p
-            className="font-display text-fg mx-auto mt-8 max-w-3xl font-medium leading-tight tracking-tight"
+            className="font-display text-fg mx-auto mt-8 max-w-5xl font-medium leading-tight tracking-tight"
             style={{ fontSize: "clamp(22px, 3vw, 40px)" }}
           >
-            {tagline.line1}
-            <br />
-            {tagline.line2}
+            <span className="block text-balance md:inline md:whitespace-nowrap">{headline}</span>
+            <br className="hidden md:inline" />
+            <span className="block text-balance md:inline md:whitespace-nowrap">{tagline.line1}</span>
+            <br className="hidden md:inline" />
+            <span className="block text-balance md:inline md:whitespace-nowrap">{tagline.line2}</span>
           </p>
 
           <TakeTourCTAs

@@ -21,6 +21,7 @@ import {
 } from "@/app/services/content";
 import { AudienceProvider, AudienceSwitch, Flip, useAudience, type Audience } from "./audience";
 import { HeroMedia } from "./HeroMedia";
+import { ClosingWordmark } from "@/components/ClosingWordmark";
 import { StatTile } from "./StatTile";
 import { StructureDiagram } from "./StructureDiagram";
 import { OperatorNetwork } from "./OperatorNetwork";
@@ -516,13 +517,10 @@ function Closing() {
       />
       <Shell className="relative">
         <div className="mx-auto max-w-4xl text-center">
-          <h2
-            className="font-display text-fg font-medium tracking-[-0.03em] text-balance"
-            style={{ fontSize: "clamp(36px, 5.4vw, 76px)", lineHeight: 1.02 }}
-          >
-            {closing.title}
-          </h2>
-          <Flip className="mt-6">
+          {/* The wordmark, as on Home and Platform. closing.title repeated the
+              hero headline, so the band no longer shows it. */}
+          <ClosingWordmark />
+          <Flip className="mt-8">
             <Lede>{closing.body[audience]}</Lede>
           </Flip>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">

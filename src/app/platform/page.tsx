@@ -4,6 +4,7 @@ import { IsometricScroller } from "@/components/IsometricScroller";
 import { TakeTourCTAs } from "@/components/TakeTourCTAs";
 import { Button, SectionHead } from "@/components/primitives";
 import { InlineSvg } from "@/components/InlineSvg";
+import { ClosingWordmark } from "@/components/ClosingWordmark";
 import {
   Pillars,
   Capabilities,
@@ -233,20 +234,8 @@ function PlatformClosing() {
         className="relative mx-auto max-w-5xl px-[var(--spacing-shell-x)] text-center"
         style={PLATFORM_CLOSING_DARK_TOKENS}
       >
-        {/* Word-only Spaarke logo replaces the textual headline. The
-            SVG is white-on-transparent so it sits cleanly on the
-            #000 backdrop. h-auto + width clamp keeps the logo
-            proportional and roughly headline-scaled. */}
-        <h2 className="m-0 flex justify-center">
-          <span className="sr-only">Spaarke</span>
-          <img
-            src="/brand/logos/spaarke-white-word-logo.svg"
-            alt=""
-            aria-hidden="true"
-            className="h-auto"
-            style={{ width: "clamp(220px, 32vw, 440px)" }}
-          />
-        </h2>
+        {/* Word-only Spaarke logo in place of a text headline. */}
+        <ClosingWordmark />
         <p
           className="font-display text-fg mx-auto mt-8 max-w-5xl font-medium leading-tight tracking-tight"
           style={{ fontSize: "clamp(22px, 3vw, 40px)" }}
