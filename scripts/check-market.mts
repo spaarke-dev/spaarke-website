@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050, 051, 053 and 060).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060).
 //
 //   npm run market:check
 //
@@ -800,6 +800,79 @@ console.log("Pure checks");
   // A LinkedIn lead is not a link scanner's doing.
   assert.equal(results.deriveMemberStatus({ contactId: "c" }, [act("linkedin.lead", 0)]).status, "engaged");
   ok("engagement leaves out link scanners: the quiet window, bursts, rewritten codes and tests (FR-10, task 051)");
+}
+
+{
+  // Task 052: the backfill maps each site table row exactly as its live writer would.
+  const bf = await import("@/lib/market/backfill");
+  const writers2 = await import("@/lib/market/writers");
+  const at = "2026-10-02T15:04:05.000Z";
+  const ms = Date.parse(at);
+  const utm = { utm_source: "linkedin", utm_medium: "paid", utm_campaign: "fall" };
+
+  const contact = bf.formRowActivity("contact", { rowKey: "1759417445000-ab", name: "Pat Example", email: "pat@example.test", company: "Acme", reason: "demo", createdAt: at, ...utm })!;
+  assert.deepEqual(
+    contact,
+    writers2.formActivity("contact", { rowKey: "1759417445000-ab", email: "pat@example.test", name: "Pat Example", organization: "Acme", detail: "demo", occurredAt: ms, attribution: utm }),
+  );
+  assert.equal(contact.source, "ContactSubmissions");
+  assert.deepEqual(contact.utm, { source: "linkedin", medium: "paid", campaign: "fall" });
+  const demo = bf.formRowActivity("demo", { rowKey: "r1", firstName: "Lee", lastName: "Example", email: "lee@example.test", jobTitle: "GC", organization: "Fund", phone: "555", useCase: "Matters", createdAt: at })!;
+  assert.equal(demo.contactHints?.name, "Lee Example");
+  assert.equal(demo.contactHints?.title, "GC");
+  assert.equal(demo.summary, "Demo request (Matters)");
+  const early = bf.formRowActivity("early_release", { rowKey: "1759417445000-cd", email: "e@example.test", source: "home", signedUpAt: at })!;
+  assert.equal(early.occurredAt, ms);
+  const investor = bf.formRowActivity("investor_overview", { partitionKey: "tltf-2026", rowKey: "req1", email: "i@example.test", createdAt: at })!;
+  assert.equal(investor.visibility, "investor");
+  assert.equal(investor.summary, "Requested the investor overview (tltf-2026)");
+  // No time field: the row key's leading milliseconds date it.
+  assert.equal(bf.formRowActivity("contact", { rowKey: `${ms}-ef`, email: "x@example.test" })!.occurredAt, ms);
+  assert.equal(bf.formRowActivity("contact", { rowKey: "no-time", email: "x@example.test" }), null);
+
+  const booking = {
+    rowKey: "bk1",
+    status: "cancelled",
+    start: "2026-10-09T14:00:00.000Z",
+    name: "Morgan Example",
+    email: "morgan@example.test",
+    organization: "Org",
+    role: "CFO",
+    guests: JSON.stringify(["guest@example.test", "Morgan@Example.test"]),
+    createdAt: at,
+    updatedAt: "2026-10-05T10:00:00.000Z",
+    movedAt: "2026-10-04T10:00:00.000Z",
+    ...utm,
+  };
+  const b = bf.bookingRowActivities(booking, "America/New_York")!;
+  assert.deepEqual(
+    b.activities.map((a) => [a.type, a.sourceId.replace(/:[0-9a-f]{12}$/, ":guest")]),
+    [
+      ["meeting.booked", "bk1:booked"],
+      ["meeting.booked", "bk1:booked:guest"],
+      ["meeting.cancelled", "bk1:cancelled"],
+      ["meeting.cancelled", "bk1:cancelled:guest"],
+    ],
+    "the booker and the one real guest; the booker listed as a guest is not doubled",
+  );
+  assert.equal(b.activities[0].occurredAt, ms);
+  assert.equal(b.moves[0].sourceId, `bk1:rescheduled:${Date.parse(booking.movedAt)}`);
+  assert.equal(bf.bookingRowActivities({ ...booking, status: "failed" }, "UTC"), null);
+  assert.equal(bf.bookingRowActivities({ ...booking, status: "booked", movedAt: undefined }, "UTC")!.moves.length, 0);
+
+  const events = bf.parseEvents([
+    { timestamp: "2026-11-14T04:00:00.123Z", name: "brief.read", customDimensions: JSON.stringify({ label: "spring:A-01" }) },
+    { timestamp: "2026-11-14T04:00:00.123Z", name: "brief.read", customDimensions: { label: "spring:A-01" } }, // the same event from the other source
+    { timestamp: "2026-11-14T03:59:00Z", name: "ask_ai.click", customDimensions: { provider: "claude", src: "rc-01" } },
+    { timestamp: "2026-11-14T03:59:30Z", name: "ask_ai.click", customDimensions: { provider: "chatgpt", src: "article" } },
+    { timestamp: "2026-11-14T03:59:40Z", name: "page.view", customDimensions: {} },
+    { timestamp: "not a time", name: "brief.read", customDimensions: {} },
+  ]);
+  assert.deepEqual(events.map((e) => e.name), ["ask_ai.click", "ask_ai.click", "brief.read"], "sorted, deduplicated, other events dropped");
+  assert.deepEqual(bf.eventActivity(events[2]), writers2.briefReadActivity("spring:A-01", Date.parse("2026-11-14T04:00:00.123Z")));
+  assert.equal(bf.eventActivity(events[0])!.memberCode, "rc-01");
+  assert.equal(bf.eventActivity(events[1]), null, "a site click names no recipient");
+  ok("backfill maps form rows, bookings and App Insights events as the live writers do (FR-13, task 052)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -2093,6 +2166,88 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.equal(results.funnelOf(after).sent, 3, "a second run changes no counts");
   assert.equal(results.funnelOf(after).replied, 1);
   ok("TLTF import writes contacts, members and history once, and a second run changes nothing (task 050)");
+}
+
+{
+  // Task 052: backfill made-up rows twice, beside writes the live writers already made.
+  const bf = await import("@/lib/market/backfill");
+  const contactAdmin = await import("@/lib/market/contact-admin");
+  const at = (iso: string) => ({ createdAt: iso });
+  const who = (n: string) => addr(`bf-${n}`);
+
+  // A form the live writer already logged, and a person since deleted.
+  await writers.recordForm("contact", { rowKey: `live-${run}`, email: who("live"), occurredAt: Date.parse("2026-11-21T10:00:00Z") });
+  const gone = await contacts.resolveContact({ email: who("gone") });
+  assert.ok(gone.status === "created");
+  await contactAdmin.deleteContact(gone.contact.id, "check");
+
+  // A member whose click was logged live, with the label the export lacks.
+  const slug = `bf-${run}`;
+  await camp.upsertCampaign({ slug, name: "Backfill check", startDate: "2026-11-01" });
+  const reader = await contacts.resolveContact({ email: who("reader") });
+  assert.ok(reader.status === "created");
+  await camp.addMember({ campaignSlug: slug, contactId: reader.contact.id, code: `bf${run}`, briefLabel: `${slug}:R-01` });
+  const liveClick = Date.parse("2026-11-21T12:00:00.400Z");
+  await writers.recordAskClick("claude", `bf${run}`, `${slug}:R-01`, liveClick);
+
+  const input = {
+    forms: {
+      contact: [
+        { rowKey: `c1-${run}`, name: "Pat", email: who("pat"), reason: "demo", ...at("2026-10-01T10:00:00Z"), utm_source: "linkedin" },
+        { rowKey: `live-${run}`, email: who("live"), ...at("2026-11-21T10:00:00Z") },
+        { rowKey: `c3-${run}`, email: who("gone"), ...at("2026-10-03T10:00:00Z") },
+        { rowKey: `c4-${run}`, email: `tester-${run}@spaarke.com`, ...at("2026-10-03T11:00:00Z") },
+      ],
+      early_release: [{ rowKey: `e1-${run}`, email: who("early"), source: "home", signedUpAt: "2026-10-04T10:00:00Z" }],
+    },
+    bookings: [
+      { rowKey: `bkf-${run}`, status: "rescheduled", start: "2026-10-20T14:00:00Z", name: "M", email: who("meet"), guests: JSON.stringify([who("guest")]), ...at("2026-10-05T10:00:00Z"), movedAt: "2026-10-06T10:00:00Z" },
+      { rowKey: `bkf2-${run}`, status: "failed", start: "2026-10-20T14:00:00Z", email: who("failed"), ...at("2026-10-05T10:00:00Z") },
+    ],
+    events: bf.parseEvents([
+      { timestamp: "2026-11-14T04:00:00Z", name: "brief.read", customDimensions: { label: `${slug}:R-01` } },
+      // The live click, a second later in App Insights: already logged.
+      { timestamp: "2026-11-21T12:00:01.100Z", name: "ask_ai.click", customDimensions: { provider: "claude", src: `bf${run}` } },
+      { timestamp: "2026-11-14T05:00:00Z", name: "ask_ai.click", customDimensions: { provider: "chatgpt", src: `bf${run}` } },
+      { timestamp: "2026-11-14T05:00:00Z", name: "ask_ai.click", customDimensions: { provider: "claude", src: `gyga-${run}` } },
+      { timestamp: "2026-11-14T05:00:00Z", name: "ask_ai.click", customDimensions: { provider: "claude", src: "article" } },
+    ]),
+    hostTimeZone: "America/New_York",
+  };
+
+  const dry = await bf.runBackfill(input, { write: false });
+  assert.deepEqual(dry.ContactSubmissions, { rows: 4, activities: 4, added: 1, already: 1, skipped: { "deleted contact": 1, "a Spaarke address": 1 } });
+  const first = await bf.runBackfill(input, { write: true, who: "check" });
+  assert.deepEqual(first.ContactSubmissions, dry.ContactSubmissions, "the dry run counts what the run does");
+  assert.deepEqual(first.EarlyReleaseSignups, { rows: 1, activities: 1, added: 1, already: 0, skipped: {} });
+  assert.deepEqual(first.MeetingBookings, { rows: 2, activities: 4, added: 4, already: 0, skipped: { "not a held booking": 1 } });
+  assert.deepEqual(first["brief.read"], { rows: 1, activities: 1, added: 1, already: 0, skipped: {} });
+  assert.deepEqual(first["ask_ai.click"], {
+    rows: 4,
+    activities: 3,
+    added: 1,
+    already: 1,
+    skipped: { "no member for the code or label": 1, "a site click, not a recipient": 1 },
+  });
+
+  const pat = (await contacts.findContactByEmail(who("pat")))!;
+  const [form] = await activity.listContactActivities(pat.id);
+  assert.equal(form.occurredAt, "2026-10-01T10:00:00.000Z", "the original time");
+  assert.equal(form.utm?.source, "linkedin");
+  assert.equal(form.source, "ContactSubmissions");
+  assert.equal(await contacts.findContactByEmail(who("gone")), null, "a deleted contact stays deleted");
+  assert.equal(await contacts.findContactByEmail(`tester-${run}@spaarke.com`), null, "the team's own tests make no contact");
+  const readerLog = await activity.listContactActivities(reader.contact.id);
+  assert.equal(readerLog.filter((a) => a.type === "ask_ai.click").length, 2, "the live click plus the earlier one, not three");
+  assert.ok(readerLog.every((a) => a.campaignSlug === slug));
+  const meetLog = await activity.listContactActivities((await contacts.findContactByEmail(who("meet")))!.id);
+  assert.deepEqual(meetLog.map((a) => a.type).sort(), ["meeting.booked", "meeting.rescheduled"]);
+
+  const second = await bf.runBackfill(input, { write: true, who: "check" });
+  for (const [source, c] of Object.entries(second)) {
+    assert.equal(c.added, 0, `${source}: a second run adds nothing`);
+  }
+  ok("backfill keeps times and UTM, skips what the live writers logged, deleted contacts and Spaarke addresses, and a second run adds nothing (FR-13, task 052)");
 }
 
 {
