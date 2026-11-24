@@ -1,7 +1,7 @@
 # Task 061: Privacy page
 
 **Phase:** 6 (Reporting and privacy)
-**Status:** built; wording waits for Ralph's approval on the PR
+**Status:** done (wording approved by Ralph 2026-11-23)
 **Estimated:** 1 hour
 **Dependencies:** 031
 **Tags:** content, nextjs
@@ -26,7 +26,7 @@ FR-17 and the retention assumption (contacts until deleted, activities three yea
 
 ## Acceptance criteria
 
-- [ ] Ralph approves the wording.
+- [x] Ralph approves the wording.
 - [x] The deletion route on the page matches the delete action in task 031.
 
 ## Notes
