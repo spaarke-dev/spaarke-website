@@ -1,7 +1,7 @@
 # Task 052: Backfill CLI
 
 **Phase:** 5 (Imports and backfill)
-**Status:** built; the live run waits for Ralph
+**Status:** done (run live 2026-11-24)
 **Estimated:** 3 hours
 **Dependencies:** 020, 021, 022, 004
 **Tags:** typescript, azure, storage
@@ -26,9 +26,9 @@ FR-13. Using the same source and source ID scheme as the live writers (tasks 020
 
 ## Acceptance criteria
 
-- [ ] Counts per source match the source tables (FR-13 acceptance).
-- [ ] A second run adds nothing.
-- [ ] Run date recorded in `current-task.md`, before 2027-02-11.
+- [x] Counts per source match the source tables (FR-13 acceptance).
+- [x] A second run adds nothing.
+- [x] Run date recorded in `current-task.md`, before 2027-02-11.
 
 ## Notes
 
@@ -55,3 +55,10 @@ FR-13. Using the same source and source ID scheme as the live writers (tasks 020
   - ask_ai.click: 382 events, 231 to add, 52 with no member (rewritten or unknown codes), 99 site clicks.
 - The source rows hold 18 distinct addresses, one of them at spaarke.com. 4 contact form rows look like tests and will become contacts that Ralph can delete.
 - Checks: one pure check (row and event mapping against the live builders) and one storage check (original time and UTM, a row already logged live, a click logged live a second apart, a deleted contact, a Spaarke address, a move, a dry run equal to the run, a second run adding nothing). 59 pass.
+- Live run, 2026-11-24, from `main` after PR #202 merged. Events came from the export plus a live query (408 events, 2026-11-13 21:47 to 2026-11-24 01:10 UTC). Every source row is accounted for:
+  - Form tables: 42 entries added. ContactSubmissions gave 8, with 3 from a Spaarke address skipped; DemoRequests 1; EarlyReleaseSignups 33. InvestorOverviewRequests' 1 row was from a Spaarke address.
+  - MeetingBookings: 4 meeting entries added, 3 from a Spaarke address skipped.
+  - brief.read: 20 added, 6 with no member.
+  - ask_ai.click: 187 added. 44 more shared an ID with another click (same member, provider and second; a scanner pressing a button twice, which the live writer also logs once). 52 had no member and 99 were site clicks.
+- TLTF after the run: 95 members, 81 sent, 71 delivered, 6 engaged, 11 replied, 19 with a meeting. The 6 engaged members are the same 6 recipients `track.py` lists (FR-10 acceptance, with the data in the log).
+- A second run the same day added nothing in any source. No file under the repo changed.
