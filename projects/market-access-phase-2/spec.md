@@ -1,6 +1,6 @@
 # Market Access Phase 2 (Target Lists, Codes, Calendar, Follow-up Steps): AI Implementation Specification
 
-> **Status**: Draft for owner review
+> **Status**: Accepted by the owner (2026-11-24)
 > **Created**: 2026-11-24
 > **Source**: `design.md` (2026-11-24) and the owner's answers recorded below
 > **Builds on**: `projects/market-access/spec.md` (phase 1, live 2026-11-24). FR numbers here are new; phase 1 numbers are written as "phase 1 FR-nn".
