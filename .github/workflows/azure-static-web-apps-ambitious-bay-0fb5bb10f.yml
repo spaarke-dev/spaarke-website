@@ -14,8 +14,17 @@ on:
 # "Deployment Failure Reason: Deployment Canceled" and left main built but not
 # published. Queue them here instead, and do not cancel the one already running,
 # because the one already running may be the one that matters.
+#
+# Pull request runs get their own group, one per PR number. A merge starts two
+# runs at once, the push to main and the PR's "closed" run, and for a merged PR
+# github.ref is the base branch, so both landed in swa-refs/heads/main. A group
+# holds one pending run and a newer one cancels it, so whenever a deploy was
+# already running, the closed run knocked the production deploy out of the
+# queue (2026-11-23, PRs 194 and 199; both needed a manual re-run). Pushes to
+# main still queue behind each other, and the newest pending push deploys
+# everything before it.
 concurrency:
-  group: swa-${{ github.ref }}
+  group: ${{ github.event_name == 'pull_request' && format('swa-pr-{0}', github.event.pull_request.number) || format('swa-{0}', github.ref) }}
   cancel-in-progress: false
 
 jobs:
