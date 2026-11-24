@@ -130,6 +130,35 @@ Get-ManagementRoleAssignment -RoleAssignee <APP_ID> |
   Remove-ManagementRoleAssignment -Confirm:$false
 ```
 
+## 7. Calendar read
+
+Phase 2 adds meetings to contact timelines from two calendars: your mailbox and contactus@spaarke.com. Your mailbox needs nothing new, because the app's `Application Calendars.ReadWrite` assignment on the "Spaarke meet hosts" scope already covers it. contactus@spaarke.com needs calendar read on the "Market access sync" scope:
+
+```powershell
+Connect-ExchangeOnline -DisableWAM
+
+New-ManagementRoleAssignment -App <APP_ID> -Role "Application Calendars.Read" -CustomResourceScope "Market access sync"
+
+# Application Calendars.Read: InScope True for both synced mailboxes.
+Test-ServicePrincipalAuthorization -Identity <APP_ID> -Resource contactus@spaarke.com
+Test-ServicePrincipalAuthorization -Identity <APP_ID> -Resource <your mailbox address>
+
+# Application Calendars.Read: InScope False for anyone outside the group.
+Test-ServicePrincipalAuthorization -Identity <APP_ID> -Resource <any other mailbox>
+```
+
+As with mail, the assignment can take up to two hours to apply, and Graph answers 403 until it does.
+
+The role is read-only and covers every mailbox in the "Market access sync" group, so a mailbox added to the group later can also have its calendar read. The sync reads a calendar only when its "Read calendar" setting is on at `/admin/mailboxes`, and that setting is off by default. It reads the time, subject, attendees, the online flag and the Outlook link of each event, never the body, notes or attachments.
+
+To turn calendar read off entirely, remove only this role. `/meet` keeps its own calendar assignment:
+
+```powershell
+Get-ManagementRoleAssignment -RoleAssignee <APP_ID> |
+  Where-Object Role -eq "Application Calendars.Read" |
+  Remove-ManagementRoleAssignment -Confirm:$false
+```
+
 ## Troubleshooting
 
 | Symptom | Likely cause |

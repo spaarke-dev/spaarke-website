@@ -6,7 +6,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [001](001-calendar-access-spike.md) | Calendar access spike and Exchange step | none | not-started |
+| [001](001-calendar-access-spike.md) | Calendar access spike and Exchange step | none | in-progress (spike done; contactus@ retest after Ralph's Exchange step) |
 
 ## Phase 1: Target lists
 

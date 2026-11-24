@@ -6,17 +6,17 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | none yet |
-| **Step** | Plan approved and merged (PR 206) |
-| **Status** | not-started |
-| **Next action** | Begin task 001 (calendar access spike and Exchange step) |
+| **Task** | 001: Calendar access spike and Exchange step |
+| **Step** | Spike done and written up; Exchange command in the setup guide |
+| **Status** | in progress; waiting on Ralph's Exchange step for the contactus@ retest |
+| **Next action** | Once Ralph has run section 7 of `docs/market-access-mailboxes.md`, retest the contactus@ calendar read and record it in `notes/calendar-spike.md`. Meanwhile tasks 010, 011, 050 and 051 can start |
 
 ## Open items
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Ralph runs `Application Calendars.Read` for contactus@ | Waiting on task 001 |
-| 2 | Delta window for a rolling calendar range | Task 001 decides |
+| 1 | Ralph runs `Application Calendars.Read` for contactus@ | Command ready (setup guide, section 7) |
+| 2 | Delta window for a rolling calendar range | Settled: no delta; `calendarView` each run (`notes/calendar-spike.md`) |
 | 3 | `MEET_GRAPH_SECRET_EXPIRES` set | Task 051 |
 
 ## Decisions made
@@ -27,3 +27,4 @@
 
 - 2026-11-24: design, spec, plan and tasks written on `docs/market-access-phase-2-design` (PR 206).
 - 2026-11-24: plan approved by Ralph; PR 206 merged.
+- 2026-11-24: task 001 spike run against Ralph's calendar; decision recorded in `notes/calendar-spike.md`. contactus@ answers 403 until the Exchange step.
