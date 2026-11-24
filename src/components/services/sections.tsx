@@ -114,10 +114,19 @@ function BoundaryLine({ dark }: { dark?: boolean }) {
 
 /* ------------------------------------------------------------------ */
 
-export function ServicesPage({ initialAudience, fromUrl }: { initialAudience: Audience; fromUrl: boolean }) {
+export function ServicesPage({
+  initialAudience,
+  fromUrl,
+  heroClip,
+}: {
+  initialAudience: Audience;
+  fromUrl: boolean;
+  /** Index into hero.media.videos, picked on the server; null when there are no clips. */
+  heroClip: number | null;
+}) {
   return (
     <AudienceProvider initial={initialAudience} fromUrl={fromUrl}>
-      <Hero />
+      <Hero clip={heroClip} />
       <WhyNow />
       <Definitions />
       <WhatIsMlo />
@@ -132,7 +141,7 @@ export function ServicesPage({ initialAudience, fromUrl }: { initialAudience: Au
 
 /* 1. Hero ------------------------------------------------------------ */
 
-function Hero() {
+function Hero({ clip }: { clip: number | null }) {
   const { audience } = useAudience();
   return (
     <section
@@ -143,7 +152,7 @@ function Hero() {
       {/* Backdrop: video on the right, washed into the dark page with the
           site's blue glow, like the Platform hero's backdrop. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
-        <HeroMedia />
+        <HeroMedia clip={clip} />
         {/* Phones and tablets: the video sits behind the text, so dim it evenly. */}
         <div className="absolute inset-0 bg-[rgba(10,10,10,0.72)] lg:hidden" />
         {/* Desktop: dissolve the video's left edge into the page. */}

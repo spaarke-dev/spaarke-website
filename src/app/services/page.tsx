@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { preconnect, preload } from "react-dom";
+import { hero } from "./content";
 import { ServicesPage } from "@/components/services/sections";
 import { isAudience } from "@/components/services/audience-types";
 
@@ -23,6 +25,11 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", images: ["/images/og-default.png"] },
 };
 
+/** A random hero clip for this request (review round 3: a different clip on each load). */
+function pickHeroClip(count: number): number | null {
+  return count ? Math.floor(Math.random() * count) : null;
+}
+
 type Props = { searchParams: Promise<{ audience?: string | string[] }> };
 
 /**
@@ -34,5 +41,14 @@ export default async function Services({ searchParams }: Props) {
   const raw = (await searchParams).audience;
   const value = Array.isArray(raw) ? raw[0] : raw;
   const fromUrl = isAudience(value);
-  return <ServicesPage initialAudience={fromUrl ? value : "firm"} fromUrl={fromUrl} />;
+  // Pick the hero clip on the server (the page renders per request), so the
+  // video and its poster are in the first HTML and start downloading before
+  // the page's scripts load. Open the connection to blob storage early too.
+  const { videos } = hero.media;
+  const heroClip = pickHeroClip(videos.length);
+  if (heroClip != null) {
+    preconnect(new URL(videos[heroClip].src).origin);
+    preload(videos[heroClip].poster, { as: "image", fetchPriority: "high" });
+  }
+  return <ServicesPage initialAudience={fromUrl ? value : "firm"} fromUrl={fromUrl} heroClip={heroClip} />;
 }
