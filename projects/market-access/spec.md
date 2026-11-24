@@ -142,7 +142,7 @@ Every site writer feeds the log, and so does Ralph's mailbox through Microsoft G
     - An email activity is written when a counterpart address matches a known contact, and records which mailbox it came from.
     - In `known-only` mode, all other mail is ignored and never stored.
     - Bounces (non-delivery reports) are detected and logged as `email.bounced` against the original recipient.
-    - A scheduled GitHub Action runs it every 30 minutes, calling a bearer-token route like `/api/reports/daily`. Mailboxes are synced one at a time, and a failure in one does not stop the others.
+    - A scheduled GitHub Action runs it every 15 minutes (30 at first; changed 2026-11-24 because GitHub starts scheduled runs late), calling a bearer-token route like `/api/reports/daily`. Mailboxes are synced one at a time, and a failure in one does not stop the others.
     - Acceptance: a sent email to a known contact appears on their timeline within 30 minutes. Mail to an unknown address from a `known-only` mailbox creates nothing.
 8. **FR-08 Mailbox registry.** `/admin/mailboxes` lists the synced mailboxes and adds, pauses or removes them. The list is kept in `MaMailboxes`, not in code or app settings.
     - Each mailbox has:
@@ -312,7 +312,7 @@ Every site writer feeds the log, and so does Ralph's mailbox through Microsoft G
 
 - **SWA route auth with Next.js hybrid:** assuming `staticwebapp.config.json` route rules protect hybrid Next.js routes. Task 1 confirms this. If they don't, middleware checks `x-ms-client-principal` on its own.
 - **contactus@spaarke.com mode:** assuming `capture-new` with triage, since most of its mail comes from people not yet in the system. Ralph's mailbox stays `known-only`, so personal mail is never queued.
-- **Sync interval:** 30 minutes is close enough to real time for follow-ups.
+- **Sync interval:** results within 30 minutes are close enough to real time for follow-ups. The schedule runs every 15 minutes, because GitHub starts scheduled runs up to about 15 minutes late.
 - **Email storage:** subject, participants, time and Outlook link only. No bodies or attachments.
 - **Retention:** contacts are kept until deleted, and activities for 3 years. Can be changed in the privacy text.
 - **TLTF quiet window:** 15 minutes, as in `track.py`.
