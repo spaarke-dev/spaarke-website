@@ -34,18 +34,20 @@ These are small and need no decisions beyond the labels. They can ship before th
    - LinkedIn;
    - notes and calls;
    - follow-ups done.
-3. **A link to each email.** The timeline already shows "Open in Outlook" when an entry has an Outlook link. None does today, because:
-   - all 102 email entries came from the TLTF import, which read saved `.eml` files that carry no Outlook link;
-   - when the mail sync later read the same messages, it found them already logged and skipped them, link included.
+3. **A link to each email.** The timeline already shows "Open in Outlook" when an entry has an Outlook link, and the sync saves one for every email it logs. The TLTF email has none because:
+   - all 102 TLTF email entries came from the import, which read saved `.eml` files that carry no Outlook link;
+   - the sync's first run (2026-11-23) came before the import created those contacts, so it skipped their mail as unknown, and later runs read only newer mail.
 
-   The fix is for the sync to add the Outlook link to an entry it finds already logged. For the entries already there, a one-time run reads each mailbox's sent and received mail again from before the TLTF sends and adds the links. One limit: a link to a contactus@ message opens only for someone with access to that mailbox in Outlook.
+   The fix: a "Read again from" date on `/admin/mailboxes` makes the next sync runs read a mailbox's older mail again. Mail with people who are contacts now is logged, and a message that matches an imported entry adds its Outlook link to that entry instead of logging the email twice. One limit: a link to a contactus@ message opens only for someone with access to that mailbox in Outlook.
+
+   Items 1 to 4 shipped first, in PR 207.
 4. **Clickable email address in the profile.** Make the address a `mailto:` link, which opens a new message in Outlook (or whatever mail app the computer uses) with the address filled in. Make the phone number a `tel:` link at the same time.
 
 ## Calendar entries (item 5)
 
 The sync reads mail only, so a meeting sent from Outlook never reaches the timeline. The only meeting entries today come from `/meet` bookings and the Summit calendar import.
 
-**Proposal:** the sync also reads the calendar of each synced mailbox that allows it. For each event with at least one attendee who is a contact, it logs a `meeting.calendar` entry with:
+**Proposal:** the sync also reads the calendars of Ralph's mailbox and contactus@ (decision 4). For each event with at least one attendee who is a contact, it logs a "Meeting booked" entry, then a "Meeting held" entry once it has taken place (decision 3). Each has:
 - the subject and time;
 - whether it was online (Teams) or in person;
 - the attendees who are contacts;
@@ -53,10 +55,10 @@ The sync reads mail only, so a meeting sent from Outlook never reaches the timel
 
 Details:
 
-- **Permission.** The Graph app already holds `Application Calendars.ReadWrite` on Ralph's mailbox, because he is a `/meet` host. His calendar needs no tenant change. Any other mailbox would need `Application Calendars.Read` added on the "Market access sync" scope, which Ralph runs in Exchange.
+- **Permission.** The Graph app already holds `Application Calendars.ReadWrite` on Ralph's mailbox, because he is a `/meet` host, so his calendar needs no tenant change. contactus@ needs `Application Calendars.Read` added on the "Market access sync" scope, which Ralph runs in Exchange.
 - **No doubles with `/meet`.** A `/meet` booking also lands on the calendar. The sync matches it to the booking's own entry by the event ID and skips it.
 - **Changes.** A moved event updates its entry, and a canceled one is marked canceled, the same way `/meet` bookings work.
-- **When it counts.** Log the entry when the event is created, dated at its start time, so upcoming meetings show on the contact. A meeting with a campaign member counts as "met" for the campaign only once its start time has passed.
+- **When it counts.** A meeting with a campaign member counts as "met" for the campaign only once it is held.
 - **What is kept.** Subject, time, attendees who are contacts, and the link. No body, notes or attachments, the same rule as email.
 
 ## Follow-ups and follow-up rules (item 6)
@@ -83,7 +85,7 @@ A daily job turns each step into follow-ups, one per member who matches on that 
 
 The job runs on a GitHub Actions schedule, the same way the mail sync and morning report do.
 
-Phase 2 queues the follow-ups; Ralph still writes and sends them from Outlook. Writing and sending from the admin area was planned for phase 2 in the original design. Whether it stays in phase 2 is a decision below.
+Phase 2 queues the follow-ups; Ralph still writes and sends them from Outlook (decision 1).
 
 ## Target list import
 
@@ -108,9 +110,8 @@ On the campaign page, a **Codes and links** section:
 
 - **Codes:** "Give everyone a code" assigns each member without one a short code, unique across campaigns. The format follows TLTF: a campaign prefix and a number.
 - **Private brief (optional):**
-  - Ralph writes the campaign's brief text in the admin area. It is stored in `PrivateBriefs`, never in git.
+  - Ralph writes the campaign's brief text in the admin area, one text per campaign (decision 2). It is stored in `PrivateBriefs`, never in git.
   - Each member gets their own brief key pointing to that text, so a read counts for that member.
-  - A group can have its own text, for example a version for each kind of firm.
   - "Turn the briefs off" disables every key in the campaign at once.
 - **Links for each member:**
   - the brief link;
@@ -136,11 +137,16 @@ The same scheduler can take on small jobs that keep the module healthy:
 - **LinkedIn reminder:** while a Lead Gen campaign is running, a weekly line in the morning report to upload the latest CSV.
 - **Campaign to content calendar:** an optional link from a campaign to its issue on the GitHub Project used for the content calendar, so a LinkedIn or email push shows its results next to its plan.
 
-## Decisions for Ralph
+## Decisions
 
-1. **Sending from the admin area:** keep it out of phase 2, so follow-ups are queued and sent from Outlook? Or bring it in?
-2. **Briefs:** one brief text per campaign with optional group versions, as above? Or a separate text for each person, as TLTF had?
-3. **Calendar:** log meetings when they are created, so upcoming ones show (proposed)? Or only after they happen?
-4. **Calendar mailboxes:** Ralph's mailbox only? Or also others, which means adding the calendar role in Exchange?
-5. **Follow-up steps:** do the "who" choices cover what you need? They are: no reply, engaged but no meeting, met, and everyone.
-6. **The GitHub jobs above:** which belong in phase 2?
+Answered by Ralph on 2026-11-24:
+
+1. **Sending:** stays out of phase 2. Each follow-up links to Outlook, opening a new message to the contact; Ralph writes and sends it there, and the sync closes the follow-up.
+2. **Briefs:** one brief text per campaign. Group versions are not needed now.
+3. **Calendar:** two entries per meeting. One when it is booked ("Meeting booked", dated when it was set up, showing the meeting time), and one when it has taken place ("Meeting held", dated at its start). A canceled meeting gets a canceled entry and no "held" one.
+4. **Calendar mailboxes:** Ralph's and contactus@. Ralph's needs no Exchange change. contactus@ needs `Application Calendars.Read` added for the Graph app on the "Market access sync" scope, which Ralph runs in Exchange; the runbook gets the command.
+5. **Follow-up steps:** the "who" choices (no reply, engaged but no meeting, met, everyone) cover what is needed.
+
+Still open:
+
+6. **The scheduled jobs above:** which belong in phase 2. Ralph asked what this means; explained in the session, answer pending.
