@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 052: Backfill CLI |
-| **Step** | PR open |
-| **Status** | done; run live 2026-11-24 |
-| **Next action** | 090 (wrap-up). Ralph: correct Summit meetings that did not happen on `/admin/campaigns/tltf-2026`; delete the 4 test-looking contacts from the backfill; work through `/admin/triage`; confirm `NoMailboxAccess` against a real mailbox outside the scope; try the LinkedIn import with the first real export after 2026-12-19 |
+| **Task** | 090: Project wrap-up |
+| **Step** | Steps 1 to 4 done; closing waits on Ralph |
+| **Status** | in progress; the project stays open for Ralph's final checks |
+| **Next action** | Ralph's final checks, listed in `notes/verification.md`: a second account without the admin role, the thank-you follow-ups, a mailbox outside the scope, and optionally a contact form on a preview. Also his own steps: correct Summit meetings that did not happen, delete the 4 test-looking contacts, work through `/admin/triage`, try the LinkedIn import after 2026-12-19. Then close: README to Complete, plan milestones, delete this file |
 
 - **Spike:** done; findings and decision in `notes/auth-spike.md`. Draft PR #163 closed without merging.
 - **Store:** tasks 010 to 012 merged (PR #164).
@@ -62,3 +62,4 @@
 - 2026-11-23: PR #198 merged (task 051) and live. Task 061 built: the privacy page section on contact and activity records, wording approved by Ralph.
 - 2026-11-24: PR #201 merged (task 061, wording approved). Task 052 built: `npm run market:backfill`; dry run against live data reads 50 form rows, 4 bookings and 408 events, nothing yet logged; 59 checks pass.
 - 2026-11-24: PR #202 merged (task 052). Backfill run against live storage (deadline 2027-02-11 met): 46 form and meeting entries, 20 brief reads and 187 clicks added; TLTF now shows 6 engaged, the same 6 as `track.py`; a second run added nothing.
+- 2026-11-24: PR #203 merged (052 run records). Task 090 steps 1 to 4: criteria 2, 4, 5, 6 and 8 verified, 1, 3 and 7 wait on Ralph (`notes/verification.md`); privacy grep clean after two placeholders; admin pages pass at phone width, one site-wide contrast issue; lessons in `notes/lessons.md`. Project kept open at Ralph's request.
