@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono";
 import ThemeProvider from "@/components/ThemeProvider";
 import NotificationBar from "@/components/NotificationBar";
 import SiteHeader from "@/components/SiteHeader";
+import { SiteAudienceProvider } from "@/components/services/audience";
 import SiteFooter from "@/components/SiteFooter";
 import { PlausibleScript } from "@/components/analytics/PlausibleScript";
 import { ClarityScript } from "@/components/analytics/ClarityScript";
@@ -115,6 +116,7 @@ export default function RootLayout({
         <ClarityScript />
         <AttributionBootstrap />
         <ThemeProvider>
+          <SiteAudienceProvider>
           {/* Skip link — first focusable element, hidden until focused */}
           <a
             href="#main-content"
@@ -132,6 +134,7 @@ export default function RootLayout({
             {children}
           </main>
           <SiteFooter />
+          </SiteAudienceProvider>
         </ThemeProvider>
       </body>
     </html>
