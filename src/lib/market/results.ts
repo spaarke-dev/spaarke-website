@@ -17,6 +17,7 @@ import {
   type MemberStatus,
 } from "@/lib/market/campaigns";
 import type { Activity, ActivityType } from "@/lib/market/types";
+import { engagedHits, type Hit } from "@/lib/market/engagement";
 
 /**
  * Campaign results (FR-09, FR-10).
@@ -35,8 +36,9 @@ import type { Activity, ActivityType } from "@/lib/market/types";
  *    window is how a sent email or a reply finds its campaign.
  * An activity tagged with a different campaign never counts.
  *
- * Engagement: until the scanner filter lands (task 051), every brief read or
- * Ask AI click counts as engaged, and the page says so.
+ * Engagement: brief reads and Ask AI clicks pass the link scanner filter
+ * (engagement.ts, task 051) first; only the hits a person made count. A
+ * LinkedIn lead tagged with the campaign counts without it.
  *
  * Statuses are stored on the member rows, so a page view reads one partition.
  * They are derived again after each mail sync (task 042 calls
@@ -110,7 +112,7 @@ export function memberActivities(
 export function deriveMemberStatus(_member: Pick<Member, "contactId">, activities: readonly Activity[]): Derived {
   const reached = new Set<MemberStage>();
   let last: string | undefined;
-  for (const a of activities) {
+  for (const a of withoutScanners(activities)) {
     const stage = STAGE_OF[a.type];
     if (stage) reached.add(stage);
     if (!last || a.occurredAt > last) last = a.occurredAt;
@@ -118,6 +120,26 @@ export function deriveMemberStatus(_member: Pick<Member, "contactId">, activitie
   let status: MemberStatus = "planned";
   for (const s of reached) if (status === "planned" || RANK[s] > RANK[status as MemberStage]) status = s;
   return { status, reached: MEMBER_STAGES.filter((s) => reached.has(s)), lastActivityAt: last };
+}
+
+const HIT_KIND: Partial<Record<ActivityType, Hit["kind"]>> = { "brief.read": "read", "ask_ai.click": "click" };
+
+/**
+ * The activities without the brief reads and Ask AI clicks the scanner filter
+ * gives to machines. Hits before the member's first sent email are tests.
+ */
+export function withoutScanners(activities: readonly Activity[]): Activity[] {
+  const hits: (Hit & { a: Activity })[] = [];
+  let since: number | undefined;
+  for (const a of activities) {
+    const at = Date.parse(a.occurredAt);
+    const kind = HIT_KIND[a.type];
+    if (kind) hits.push({ kind, at, rewritten: a.codeRewritten, a });
+    else if (a.type === "email.sent" && (since === undefined || at < since)) since = at;
+  }
+  if (!hits.length) return [...activities];
+  const kept = new Set(engagedHits(hits, { since }).map((h) => (h as Hit & { a: Activity }).a));
+  return activities.filter((a) => !HIT_KIND[a.type] || kept.has(a));
 }
 
 export function effectiveStatus(member: Pick<Member, "status" | "statusOverride">): MemberStatus {

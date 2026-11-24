@@ -1,5 +1,5 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050, 053 and 060).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050, 051, 053 and 060).
 //
 //   npm run market:check
 //
@@ -242,6 +242,7 @@ console.log("Pure checks");
     act("email.sent", "2026-02-20"), // before the window
     act("email.sent", "2026-03-02"),
     act("brief.read", "2026-03-03"), // untagged brief read: not this campaign's
+    act("ask_ai.click", "2026-03-03", "spring"), // the first hit marks delivery: a scanner
     act("brief.read", "2026-03-04", "spring"),
     act("email.received", "2026-03-05", "other"), // another campaign's reply
     act("note", "2026-03-06"),
@@ -251,7 +252,7 @@ console.log("Pure checks");
   const counted = results.memberActivities(campaign, member, acts);
   assert.deepEqual(
     counted.map((a: { type: string }) => a.type),
-    ["email.sent", "brief.read", "email.received"],
+    ["email.sent", "ask_ai.click", "brief.read", "email.received"],
   );
   const d = results.deriveMemberStatus(member, counted);
   assert.equal(d.status, "replied", "the furthest stage reached");
@@ -755,6 +756,52 @@ console.log("Pure checks");
   ok("TLTF import: column mapping, file names, sent, bounces, replies, Summit meetings and stable IDs (task 050)");
 }
 
+{
+  // Task 051: the link scanner filter, ported from track.py. Times in seconds after delivery.
+  const eng = await import("@/lib/market/engagement");
+  const results = await import("@/lib/market/results");
+  const T = Date.parse("2026-11-14T03:00:00Z");
+  const s = (sec: number) => T + sec * 1000;
+  const click = (sec: number, rewritten?: boolean) => ({ kind: "click" as const, at: s(sec), rewritten });
+  const read = (sec: number) => ({ kind: "read" as const, at: s(sec) });
+  const at = (hits: { at: number }[]) => hits.map((h) => (h.at - T) / 1000);
+
+  // Delivery: both buttons at once, then the gateway's brief read; nothing counts.
+  assert.deepEqual(eng.engagedHits([click(0), click(1), read(3)]), []);
+  // A slower gateway's second pass inside the quiet window does not count either.
+  assert.deepEqual(eng.engagedHits([click(0), click(1), click(180), read(200)]), []);
+  // A person, an hour later: one click, then the brief read their AI made.
+  assert.deepEqual(at(eng.engagedHits([click(0), click(1), click(3600), read(3640)])), [3600, 3640]);
+  // A burst an hour later is a scanner, and the read 10 seconds after it came from it.
+  assert.deepEqual(eng.engagedHits([click(0), click(3600), click(3603), read(3610)]), []);
+  // A read alone after the quiet window counts; the first hit never does.
+  assert.deepEqual(at(eng.engagedHits([read(0), read(1200)])), [1200]);
+  // A click within a second of a rewritten-code click is the same gateway.
+  assert.deepEqual(eng.engagedHits([click(0), click(3600.5), click(3600, true)]), []);
+  assert.deepEqual(eng.engagedHits([click(0), click(3600)], { rewrittenAt: [s(3601)] }), []);
+  // A rewritten click is never the anchor: the next hit is.
+  assert.deepEqual(eng.engagedHits([click(-10, true), click(0)]), []);
+  // Hits before the email went out are tests.
+  assert.deepEqual(at(eng.engagedHits([click(-7200), click(0), read(1800)], { since: s(-60) })), [1800]);
+  assert.equal(eng.QUIET_MS, 15 * 60_000);
+
+  // In results: a scanner-only member is sent, not engaged; a person's read makes them engaged.
+  const act = (type: string, sec: number, extra: Record<string, unknown> = {}) =>
+    ({ id: `${type}${sec}`, contactId: "c", type, source: "check", sourceId: `${type}${sec}`, occurredAt: new Date(s(sec)).toISOString(), recordedAt: "", visibility: "general", campaignSlug: "x", ...extra }) as never;
+  const sent = act("email.sent", -60);
+  const bot = results.deriveMemberStatus({ contactId: "c" }, [sent, act("ask_ai.click", 0), act("ask_ai.click", 1), act("brief.read", 4)]);
+  assert.equal(bot.status, "sent");
+  assert.deepEqual(bot.reached, ["sent"]);
+  assert.equal(bot.lastActivityAt, new Date(s(-60)).toISOString(), "scanner hits do not move the last activity");
+  const person = results.deriveMemberStatus({ contactId: "c" }, [sent, act("ask_ai.click", 0), act("brief.read", 5000)]);
+  assert.equal(person.status, "engaged");
+  const rewritten = results.deriveMemberStatus({ contactId: "c" }, [sent, act("brief.read", 0), act("ask_ai.click", 5000, { codeRewritten: true })]);
+  assert.equal(rewritten.status, "sent");
+  // A LinkedIn lead is not a link scanner's doing.
+  assert.equal(results.deriveMemberStatus({ contactId: "c" }, [act("linkedin.lead", 0)]).status, "engaged");
+  ok("engagement leaves out link scanners: the quiet window, bursts, rewritten codes and tests (FR-10, task 051)");
+}
+
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
 const suffix = process.env.MA_TABLE_SUFFIX?.trim();
 
@@ -1019,6 +1066,14 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.ok(!JSON.stringify(log).includes(code) && !JSON.stringify(log).includes(label), "neither code nor label is stored");
   ok("brief reads and Ask AI clicks land on the member; unknown codes write nothing (FR-06)");
 
+  // A gateway rewrote the code, but the brief key still finds the member: the click is flagged (task 051).
+  const rewritten = await writers.recordAskClick("claude", `gyga-${run}`, label, t + 9000);
+  assert.equal(rewritten?.status, "recorded");
+  const flagged = (await activity.listContactActivities(person.contact.id)).filter((a) => a.type === "ask_ai.click");
+  assert.equal(flagged.filter((a) => a.codeRewritten).length, 1);
+  assert.ok(flagged.every((a) => a.codeRewritten || a.occurredAt !== new Date(t + 9000).toISOString()));
+  ok("an Ask AI click whose code a gateway rewrote is kept on the member and flagged (task 051)");
+
   const meeting = {
     bookingId: `bk-${run}`,
     name: "Morgan Meet",
@@ -1277,6 +1332,7 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   await rec("email.sent", people[1], "2026-10-02");
   await rec("email.bounced", people[1], "2026-10-02");
   await rec("email.sent", people[2], "2026-10-02");
+  await rec("ask_ai.click", people[2], "2026-10-02", { email: undefined, memberCode: `rc${run}` }); // a gateway on delivery
   await rec("brief.read", people[2], "2026-10-03", { email: undefined, memberCode: `rc${run}` });
   await rec("meeting.booked", people[3], "2026-11-10");
   await rec("email.sent", people[4], "2026-09-15"); // before the start
