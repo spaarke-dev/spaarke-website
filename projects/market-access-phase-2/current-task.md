@@ -7,9 +7,9 @@
 | Field | Value |
 |-------|-------|
 | **Task** | none yet |
-| **Step** | Plan and tasks written; waiting for Ralph's review |
+| **Step** | Plan approved and merged (PR 206) |
 | **Status** | not-started |
-| **Next action** | After Ralph approves the plan and PR 206 merges, begin task 001 (calendar access spike and Exchange step) |
+| **Next action** | Begin task 001 (calendar access spike and Exchange step) |
 
 ## Open items
 
@@ -21,8 +21,9 @@
 
 ## Decisions made
 
-- Spec accepted as written on 2026-11-24, with its seven assumptions.
+- Spec accepted as written on 2026-11-24, with its seven assumptions. Plan approved the same day.
 
 ## Log
 
 - 2026-11-24: design, spec, plan and tasks written on `docs/market-access-phase-2-design` (PR 206).
+- 2026-11-24: plan approved by Ralph; PR 206 merged.

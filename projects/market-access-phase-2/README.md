@@ -1,6 +1,6 @@
 # Market access phase 2
 
-> **Status**: Planned (2026-11-24). Plan waiting for the owner's review.
+> **Status**: Plan approved (2026-11-24). Building starts with task 001.
 
 Phase 2 lets the second outreach campaign run end to end from `/admin`. It adds a target list import and an "Add contact" form, personal codes with private brief links and a links export, calendar entries for meetings with known contacts, and follow-up steps that a daily job turns into follow-ups. Emails are still written and sent in Outlook. Three small checks keep it healthy: the daily job itself, a sync health line with an alert, and a secret expiry warning.
 

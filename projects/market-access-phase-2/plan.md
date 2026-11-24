@@ -1,6 +1,6 @@
 # Market access phase 2: implementation plan
 
-> **Status**: Draft for owner review (2026-11-24). No code until Ralph approves it.
+> **Status**: Approved by the owner (2026-11-24).
 > **Spec**: [`spec.md`](spec.md) · **Design**: [`design.md`](design.md) · **Tasks**: [`tasks/TASK-INDEX.md`](tasks/TASK-INDEX.md)
 > **Builds on**: [`../market-access/plan.md`](../market-access/plan.md). Phase 1 stays open for Ralph's final checks; nothing here closes it.
 
