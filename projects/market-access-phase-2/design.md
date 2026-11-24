@@ -147,6 +147,6 @@ Answered by Ralph on 2026-11-24:
 4. **Calendar mailboxes:** Ralph's and contactus@. Ralph's needs no Exchange change. contactus@ needs `Application Calendars.Read` added for the Graph app on the "Market access sync" scope, which Ralph runs in Exchange; the runbook gets the command.
 5. **Follow-up steps:** the "who" choices (no reply, engaged but no meeting, met, everyone) cover what is needed.
 
-Still open:
+6. **Scheduled jobs:** the daily follow-up job, the sync health alert and the secret expiry warning are in phase 2. The three-year purge, the LinkedIn reminder and the content calendar link wait.
 
-6. **The scheduled jobs above:** which belong in phase 2. Ralph asked what this means; explained in the session, answer pending.
+`spec.md` turns these decisions and the proposals above into requirements for phase 2, with the assumptions it makes listed for review.
