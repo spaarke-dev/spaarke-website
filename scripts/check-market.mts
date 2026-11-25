@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 030, 040, 050, 051).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 030, 031, 040, 050, 051).
 //
 //   npm run market:check
 //
@@ -1139,6 +1139,35 @@ console.log("Pure checks");
   assert.deepEqual(mb.parseMailboxPatch({ readCalendar: true }), { readCalendar: true });
   assert.throws(() => mb.parseMailboxPatch({ readCalendar: "yes" }), /true or false/);
   ok("calendar events keep only the sync's fields, a private one keeps no subject, and the window is 30 days back to 90 ahead (phase 2 FR-06, task 030)");
+}
+
+{
+  // Phase 2 FR-07 (task 031): which entries an event needs, the series key, and who counts.
+  const sy = await import("@/lib/market/calendar-sync");
+  const now = new Date("2026-11-24T12:00:00Z");
+  const base = { iCalUId: "U1", id: "e1", start: "2026-11-20T15:00:00.000Z", end: "2026-11-20T15:30:00.000Z", timeZone: "UTC", isCancelled: false, isPrivate: false, isOnline: true, attendees: [], createdAt: "2026-11-01T10:00:00.000Z" };
+  const kinds = (e: Parameters<typeof sy.entriesFor>[0], st?: { start: string; logged: string[] }) => sy.entriesFor(e, st, now).map((x) => (x.silent ? `${x.kind}(silent)` : x.kind));
+  assert.deepEqual(kinds(base), ["booked", "held"], "a past meeting seen first: booked and held");
+  assert.deepEqual(kinds({ ...base, start: "2026-12-01T15:00:00.000Z", end: "2026-12-01T15:30:00.000Z" }), ["booked"]);
+  assert.deepEqual(kinds(base, { start: base.start, logged: ["booked", "held"] }), [], "nothing new");
+  assert.deepEqual(kinds({ ...base, start: "2026-12-02T15:00:00.000Z", end: "2026-12-02T15:30:00.000Z" }, { start: "2026-12-01T15:00:00.000Z", logged: ["booked"] }), ["moved"]);
+  assert.deepEqual(kinds({ ...base, isCancelled: true }, { start: base.start, logged: ["booked"] }), ["cancelled"], "canceled: no held");
+  assert.deepEqual(kinds({ ...base, isCancelled: true }), ["cancelled(silent)"], "never seen booked: nothing on the timeline");
+  assert.deepEqual(kinds({ ...base, isCancelled: true }, { start: base.start, logged: ["cancelled"] }), [], "and nothing on later runs");
+  const booked = sy.entriesFor(base, undefined, now)[0];
+  assert.deepEqual([booked.sourceId, booked.occurredAt], ["booked:U1", "2026-11-01T10:00:00.000Z"], "booked is dated when the event was created");
+  assert.equal(sy.entriesFor(base, undefined, now)[1].occurredAt, base.start, "held is dated at the start");
+
+  const occ = (date: string) => `040000008200E00074C5B7101A82E008${date}0000000000000000000000000000000010000000ABCDEF`;
+  assert.equal(sy.seriesKey({ iCalUId: occ("07EA0B18"), seriesMasterId: "m1" }), occ("00000000"));
+  assert.equal(sy.seriesKey({ iCalUId: occ("07EA0C01"), seriesMasterId: "m2" }), occ("00000000"), "two occurrences share the key, whatever mailbox");
+  assert.equal(sy.seriesKey({ iCalUId: "google-uid", seriesMasterId: "m1" }), "series:m1");
+  assert.equal(sy.seriesKey({ iCalUId: occ("07EA0B18") }), undefined);
+  assert.deepEqual(sy.eventCounterparts({ organizer: "ralph@spaarke.test", attendees: ["pat@client.test", "team@spaarke.test", "pat@client.test"] }, "ralph@spaarke.test"), ["pat@client.test"], "never the mailbox's own domain");
+  process.env.MEET_HOST_TIME_ZONE = "America/New_York";
+  assert.equal(sy.meetingSummary({ start: "2026-12-01T15:00:00.000Z", isOnline: true }), "Meeting on Tue, Dec 1, 2026, 10:00 AM EST, online");
+  assert.equal(sy.meetingSummary({ start: "2026-12-01T15:00:00.000Z" }, "Canceled the meeting on"), "Canceled the meeting on Tue, Dec 1, 2026, 10:00 AM EST");
+  ok("a calendar event needs booked once, moved per change, canceled without held, held once past; a series shares one key across calendars (phase 2 FR-07, task 031)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -2447,6 +2476,107 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   await mb.removeMailbox(own.id, who);
   await mb.removeMailbox(denied.id, who);
   ok("the calendar client pages the window with metadata only, maps 403 and 404, state rows go after 30 days, and a calendar without access fails apart from the mail (phase 2 FR-06, task 030)");
+}
+
+{
+  // Phase 2 FR-07 (task 031): canned calendars through the sync, against the activity log.
+  const sy = await import("@/lib/market/calendar-sync");
+  const act = await import("@/lib/market/activity");
+  const settings = { tenantId: "t", clientId: "c", clientSecret: "s" };
+  const ownDomain = `own-${run}.example.test`;
+  const box = (local: string) => ({ id: keys.sha256(`${local}@${ownDomain}`), address: `${local}@${ownDomain}`, label: local, kind: "personal", mode: "known-only", visibility: "general", enabled: true, readCalendar: true, createdAt: "", updatedAt: "" }) as never;
+  const ralph = box("ralph");
+  const team = box("contactus");
+  const person = async (local: string, visibility: "general" | "investor" = "general") => {
+    const r = await contacts.resolveContact({ email: addr(local, `cal-${run}.example.test`), name: local }, { source: "form.contact", visibility });
+    assert.ok(r.status === "created");
+    return r.contact;
+  };
+  const pat = await person("pat");
+  const lp = await person("lp", "investor");
+  const occ = (date: string) => `040000008200E00074C5B7101A82E008${date}00000000000000000000000000000000100000${run.toUpperCase()}`;
+
+  type Ev = Record<string, unknown>;
+  const ev = (id: string, uid: string, start: string, hours: number, over: Ev = {}): Ev => ({
+    id,
+    iCalUId: uid,
+    subject: `Meeting ${id}`,
+    start: { dateTime: start, timeZone: "UTC" },
+    end: { dateTime: new Date(Date.parse(`${start}Z`) + hours * 3_600_000).toISOString().replace("Z", ""), timeZone: "UTC" },
+    isOnlineMeeting: true,
+    webLink: `https://outlook.office365.com/owa/?itemid=${id}`,
+    organizer: { emailAddress: { address: `ralph@${ownDomain}` } },
+    attendees: [{ emailAddress: { address: pat.email } }],
+    createdDateTime: "2026-11-01T09:00:00Z",
+    lastModifiedDateTime: "2026-11-02T09:00:00Z",
+    ...over,
+  });
+  let calendars: Record<string, Ev[]> = {};
+  const byId: Record<string, Ev | null> = {};
+  const fake = (async (input: string | URL | Request) => {
+    const url = decodeURIComponent(String(input));
+    const m = /\/users\/([^/]+)\/(calendarView|events\/([^?]+))/.exec(url)!;
+    if (m[2] === "calendarView") return new Response(JSON.stringify({ value: calendars[m[1]] ?? [] }), { status: 200 });
+    const found = byId[m[3]];
+    return found ? new Response(JSON.stringify(found), { status: 200 }) : new Response(JSON.stringify({ error: { code: "ErrorItemNotFound" } }), { status: 404 });
+  }) as typeof fetch;
+  const meet = { ids: new Set(["meet-host-id"]), uids: new Set([`meet-uid-${run}`]) };
+  const sync = (mb: never, now: string) => sy.syncCalendar(mb, { settings, fetch: fake, token: async () => "token", deadline: Date.now() + 60_000, now: new Date(now), meet });
+  const counts = (s: Awaited<ReturnType<typeof sy.syncCalendar>>) => ({ booked: s.booked, moved: s.moved, cancelled: s.cancelled, held: s.held, skippedMeet: s.skippedMeet });
+
+  const R = `ralph@${ownDomain}`;
+  calendars = {
+    [R]: [
+      ev("a", `uid-a-${run}`, "2026-12-01T15:00:00", 1),
+      ev("b", `uid-b-${run}`, "2026-11-20T15:00:00", 1, { attendees: [{ emailAddress: { address: pat.email } }, { emailAddress: { address: lp.email } }] }),
+      ev("p", `uid-p-${run}`, "2026-12-03T15:00:00", 1, { sensitivity: "private", subject: "Board matters" }),
+      ev("meet-host-id", `meet-uid-${run}`, "2026-12-04T15:00:00", 1),
+      ev("x", `uid-x-${run}`, "2026-12-05T15:00:00", 1, { isCancelled: true }),
+      ev("own", `uid-own-${run}`, "2026-12-06T15:00:00", 1, { attendees: [{ emailAddress: { address: `team@${ownDomain}` } }] }),
+      ev("s1", occ("07EA0B10"), "2026-11-16T15:00:00", 1, { seriesMasterId: "m", type: "occurrence" }),
+      ev("s2", occ("07EA0B17"), "2026-11-23T15:00:00", 1, { seriesMasterId: "m", type: "occurrence" }),
+      ev("s3", occ("07EA0B1E"), "2026-11-30T15:00:00", 1, { seriesMasterId: "m", type: "occurrence" }),
+    ],
+  };
+  const first = await sync(ralph, "2026-11-24T12:00:00Z");
+  assert.deepEqual(counts(first), { booked: 5, moved: 0, cancelled: 0, held: 4, skippedMeet: 1 }, "a, b x2, p, series once; held for b x2 and two past occurrences");
+  assert.deepEqual(counts(await sync(ralph, "2026-11-24T12:05:00Z")), { booked: 0, moved: 0, cancelled: 0, held: 0, skippedMeet: 1 }, "a re-read changes nothing");
+
+  // contactus@ sees meeting a under its own ID, and the /meet meeting by its iCalUId.
+  const T = `contactus@${ownDomain}`;
+  calendars[T] = [ev("a-in-team", `uid-a-${run}`, "2026-12-01T15:00:00", 1), ev("meet-team-id", `meet-uid-${run}`, "2026-12-04T15:00:00", 1)];
+  const other = await sync(team, "2026-11-24T12:10:00Z");
+  assert.deepEqual(counts(other), { booked: 0, moved: 0, cancelled: 0, held: 0, skippedMeet: 1 }, "one meeting in two calendars logs once");
+  assert.equal(other.duplicates, 1);
+
+  // a moves, p is deleted by its organizer, and the third occurrence is canceled.
+  calendars[R] = calendars[R].map((e) =>
+    e.id === "a" ? ev("a", `uid-a-${run}`, "2026-12-02T16:00:00", 1, { lastModifiedDateTime: "2026-11-25T08:00:00Z" }) : e.id === "s3" ? { ...e, isCancelled: true } : e,
+  ).filter((e) => e.id !== "p");
+  byId.p = null;
+  assert.deepEqual(counts(await sync(ralph, "2026-11-25T12:00:00Z")), { booked: 0, moved: 1, cancelled: 2, held: 0, skippedMeet: 1 });
+  // After its new time a is held; s3 never is.
+  assert.deepEqual(counts(await sync(ralph, "2026-12-05T12:00:00Z")), { booked: 0, moved: 0, cancelled: 0, held: 1, skippedMeet: 1 });
+
+  const timeline = (await act.listContactActivities(pat.id, 200)).filter((a) => a.source === sy.CALENDAR_SOURCE);
+  const types = (subject: string) => timeline.filter((a) => a.subject === subject).map((a) => a.type).sort();
+  assert.deepEqual(types("Meeting a"), ["calendar.booked", "calendar.held", "calendar.moved"]);
+  assert.deepEqual(types("Meeting b"), ["calendar.booked", "calendar.held"]);
+  assert.deepEqual(types("Private meeting"), ["calendar.booked"], "a private event keeps no subject");
+  assert.ok(!timeline.some((a) => a.subject === "Board matters"));
+  assert.equal(timeline.filter((a) => a.type === "calendar.booked" && a.subject === "Meeting s1").length, 1, "a series is booked once");
+  assert.deepEqual(timeline.filter((a) => a.subject?.startsWith("Meeting s")).map((a) => a.type).sort(), ["calendar.booked", "calendar.cancelled", "calendar.held", "calendar.held"]);
+  assert.ok(!timeline.some((a) => a.subject === "Meeting x" || a.subject === "Meeting meet-host-id" || a.subject === "Meeting own"));
+  const deleted = timeline.find((a) => a.type === "calendar.cancelled" && !a.subject)!;
+  assert.match(deleted.summary ?? "", /^Canceled the meeting on Thu, Dec 3, 2026/);
+  const moved = timeline.find((a) => a.type === "calendar.moved")!;
+  assert.match(moved.summary ?? "", /^Moved to Wed, Dec 2, 2026, 11:00 AM EST, online$/);
+  assert.equal(moved.webLink, "https://outlook.office365.com/owa/?itemid=a");
+  const held = timeline.find((a) => a.type === "calendar.held" && a.subject === "Meeting b")!;
+  assert.equal(held.occurredAt, "2026-11-20T15:00:00.000Z");
+  const lpEntries = (await act.listContactActivities(lp.id, 50)).filter((a) => a.source === sy.CALENDAR_SOURCE);
+  assert.deepEqual(lpEntries.map((a) => a.visibility), ["investor", "investor"], "an investor contact's entries take its visibility");
+  ok("calendar events with known contacts log booked, moved, canceled and held once each, across two calendars, with /meet skipped and private subjects dropped (phase 2 FR-07, task 031)");
 }
 
 {

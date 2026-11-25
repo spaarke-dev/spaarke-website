@@ -3,7 +3,7 @@ import { emailDomain } from "@/lib/market/keys";
 import { findContactByEmail, isTombstoned } from "@/lib/market/contacts";
 import { attachEmailLink, hasActivity, recordActivity } from "@/lib/market/activity";
 import { enabledMailboxes, recordCalendar, recordSync, type Mailbox } from "@/lib/market/mailboxes";
-import { syncCalendar, type CalendarSummary } from "@/lib/market/calendar-sync";
+import { emptyCalendarSummary, syncCalendar, type CalendarSummary } from "@/lib/market/calendar-sync";
 import { sendSyncAlert } from "@/lib/email";
 import {
   bounceRecipient,
@@ -374,7 +374,7 @@ function errorText(err: unknown): string {
  * access keeps its mail status. Skipped when the deadline has passed.
  */
 async function calendarPart(mailbox: Mailbox, opts: SyncOptions): Promise<CalendarSummary> {
-  if (Date.now() >= opts.deadline) return { ok: true, events: 0, pruned: 0, complete: false };
+  if (Date.now() >= opts.deadline) return emptyCalendarSummary({ complete: false });
   try {
     const c = await syncCalendar(mailbox, opts);
     await recordCalendar(mailbox.id, {});
@@ -383,7 +383,7 @@ async function calendarPart(mailbox: Mailbox, opts: SyncOptions): Promise<Calend
     const error = errorText(err);
     if (!(err instanceof MailGraphError)) console.error("[sync] calendar failed:", (err as Error).message);
     await recordCalendar(mailbox.id, { error });
-    return { ok: false, error, events: 0, pruned: 0, complete: false };
+    return emptyCalendarSummary({ ok: false, error, complete: false });
   }
 }
 
@@ -434,7 +434,8 @@ export async function syncAll(opts: SyncOptions): Promise<SyncSummary> {
       });
     }
   }
-  if (out.mailboxes.some((m) => m.sent + m.received + m.bounced > 0)) {
+  const calendarLogged = (m: MailboxSummary) => (m.calendar ? m.calendar.booked + m.calendar.moved + m.calendar.cancelled + m.calendar.held : 0);
+  if (out.mailboxes.some((m) => m.sent + m.received + m.bounced + calendarLogged(m) > 0)) {
     out.recomputed = await recomputeAllCampaigns(opts.now);
   }
   try {
