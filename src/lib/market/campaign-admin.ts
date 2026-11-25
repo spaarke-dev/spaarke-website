@@ -18,6 +18,7 @@ import {
   type Member,
   type MemberStatus,
 } from "@/lib/market/campaigns";
+import { checkPrefixChange, isCodePrefix } from "@/lib/market/codes";
 import { recomputeCampaign } from "@/lib/market/results";
 import { VISIBILITIES, type Visibility } from "@/lib/market/types";
 
@@ -35,7 +36,7 @@ export class CampaignError extends Error {
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const TEXT_FIELDS = ["name", "utmCampaign", "startDate", "endDate", "notes"] as const;
-const FIELDS = new Set<string>([...TEXT_FIELDS, "slug", "kind", "visibility"]);
+const FIELDS = new Set<string>([...TEXT_FIELDS, "slug", "kind", "visibility", "codePrefix"]);
 const MAX: Record<(typeof TEXT_FIELDS)[number], number> = {
   name: 200,
   utmCampaign: 100,
@@ -80,6 +81,12 @@ export function parseCampaign(body: unknown): CampaignPatch & { slug?: string } 
   if ("visibility" in input) {
     if (!(VISIBILITIES as readonly unknown[]).includes(input.visibility)) throw new CampaignError("Unknown visibility");
     out.visibility = input.visibility as Visibility;
+  }
+  if ("codePrefix" in input) {
+    const v = input.codePrefix;
+    if (v === null || v === "") out.codePrefix = null;
+    else if (isCodePrefix(v)) out.codePrefix = v;
+    else throw new CampaignError("The code prefix takes letters, digits, - and _, up to 24 characters, and cannot end in -");
   }
   return out;
 }
@@ -137,6 +144,10 @@ export async function updateCampaign(
   if (!current) return null;
   const pick = <K extends "startDate" | "endDate">(k: K) => (k in rest ? (rest[k] ?? undefined) : current[k]);
   dateOrder({ startDate: pick("startDate"), endDate: pick("endDate") });
+  if ("codePrefix" in rest) {
+    const problem = await checkPrefixChange(current, rest.codePrefix ?? null);
+    if (problem) throw new CampaignError(problem, 409);
+  }
   const r = await editCampaign(slug, rest, now);
   if (!r) return null;
   const before = auditFields(r.before);

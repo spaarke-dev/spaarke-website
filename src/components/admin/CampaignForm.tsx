@@ -13,6 +13,10 @@ export type EditableCampaign = {
   endDate?: string;
   notes?: string;
   visibility: string;
+  /** The prefix codes use now; set only when editing. */
+  codePrefix?: string;
+  /** True once codes exist, so the prefix can no longer change. */
+  codePrefixFixed?: boolean;
 };
 
 const KINDS = [
@@ -60,6 +64,7 @@ export function CampaignForm({
       notes: text("notes"),
     };
     if (canSetVisibility) next.visibility = text("visibility");
+    if (campaign && !campaign.codePrefixFixed) next.codePrefix = text("codePrefix");
 
     if (!campaign) {
       const body = { slug: text("slug"), ...next };
@@ -127,6 +132,27 @@ export function CampaignForm({
             <option value="investor">Investor role only</option>
           </select>
         </label>
+      ) : null}
+      {campaign ? (
+        campaign.codePrefixFixed ? (
+          <p className={row}>
+            Code prefix
+            <span className="flex h-9 items-center font-mono text-sm text-fg">{campaign.codePrefix}</span>
+            <span>Fixed once codes exist.</span>
+          </p>
+        ) : (
+          <label className={row}>
+            Code prefix (letters, digits, dashes)
+            <input
+              name="codePrefix"
+              defaultValue={campaign.codePrefix}
+              pattern="[A-Za-z0-9][A-Za-z0-9_\-]{0,23}"
+              maxLength={24}
+              autoComplete="off"
+              className={`${FIELD} font-mono`}
+            />
+          </label>
+        )
       ) : null}
       <label className={`${row} sm:col-span-2`}>
         Notes

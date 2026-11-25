@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020).
 //
 //   npm run market:check
 //
@@ -954,6 +954,24 @@ console.log("Pure checks");
   ok("the Add contact form needs an email and checks every field (phase 2 FR-02, task 011)");
 }
 
+{
+  // Phase 2 FR-03 (task 020): code format and the prefix field.
+  const codes = await import("@/lib/market/codes");
+  const cadmin2 = await import("@/lib/market/campaign-admin");
+  assert.equal(codes.defaultCodePrefix("q1-outreach-east"), "q1-outreach");
+  assert.equal(codes.defaultCodePrefix("short"), "short");
+  assert.equal(codes.codePrefixOf({ slug: "q1-outreach-east", codePrefix: "QE" }), "QE");
+  assert.deepEqual([codes.formatCode("QE", 7), codes.formatCode("QE", 1234)], ["QE-007", "QE-1234"]);
+  assert.equal(codes.briefLabelFor("q1-east", "QE-007"), "q1-east:QE-007");
+  for (const good of ["QE", "a", "Q1_east-2", "x".repeat(24)]) assert.ok(codes.isCodePrefix(good), good);
+  for (const bad of ["", "-QE", "QE-", "Q E", "Q/E", "x".repeat(25), 5]) assert.ok(!codes.isCodePrefix(bad), String(bad));
+  assert.ok(camp.isMemberCode(codes.formatCode("x".repeat(24), 9_999_999)), "the longest code is still a safe code");
+  assert.deepEqual(cadmin2.parseCampaign({ codePrefix: "QE" }), { codePrefix: "QE" });
+  assert.deepEqual(cadmin2.parseCampaign({ codePrefix: "" }), { codePrefix: null });
+  assert.throws(() => cadmin2.parseCampaign({ codePrefix: "Q E" }), cadmin2.CampaignError);
+  ok("member codes are <prefix>-NNN, and a code prefix is checked (phase 2 FR-03, task 020)");
+}
+
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
 const suffix = process.env.MA_TABLE_SUFFIX?.trim();
 
@@ -1800,6 +1818,90 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.ok(!text.includes("hand.added") && !text.includes("Hana"), "no address or name in the audit");
   assert.ok(text.includes("linkedinUrl"));
   ok("a contact added by hand gets an 'Added by hand' entry and protected fields; a known address creates nothing (phase 2 FR-02, task 011)");
+}
+
+{
+  // Phase 2 FR-03 (task 020): codes for members without one, once each, unique across campaigns.
+  const codes = await import("@/lib/market/codes");
+  const cadmin2 = await import("@/lib/market/campaign-admin");
+  const who = "check@example.test";
+  const roles = ["admin", "investor"];
+  const person = async (local: string, visibility: "general" | "investor" = "general") => {
+    const r = await contacts.resolveContact({ email: addr(local, `codes-${run}.example.test`) }, { source: "form.contact", visibility });
+    assert.ok(r.status === "created");
+    return r.contact.id;
+  };
+  const join = async (slug: string, id: string, at: string, extra: { code?: string; briefLabel?: string } = {}) =>
+    camp.addMember({ campaignSlug: slug, contactId: id, ...extra }, new Date(at));
+
+  const slug = `codes-${run}`;
+  const campaign = (await camp.upsertCampaign({ slug, name: "Codes check", kind: "outreach", visibility: "general" }))!;
+  const prefix = codes.codePrefixOf(campaign);
+  assert.equal(prefix, slug.slice(0, 12));
+  const [a, b, t] = [await person("code.a"), await person("code.b"), await person("code.tltf")];
+  await join(slug, b, "2026-11-02T00:00:00Z");
+  await join(slug, a, "2026-11-01T00:00:00Z");
+  // A member coded before (as the TLTF import did) keeps its code and label.
+  await join(slug, t, "2026-11-03T00:00:00Z", { code: `tltf-X${run}`, briefLabel: `tltf-2026:X${run}` });
+
+  const first = await codes.assignCodes(campaign, roles, who);
+  assert.deepEqual(first, { status: "ok", coded: 2, clashes: 0, more: false });
+  const memberOf = async (id: string) => (await camp.getMember(slug, id))!;
+  assert.deepEqual([(await memberOf(a)).code, (await memberOf(b)).code], [`${prefix}-001`, `${prefix}-002`], "earliest member first");
+  assert.equal((await memberOf(a)).briefLabel, `${slug}:${prefix}-001`);
+  assert.deepEqual([(await memberOf(t)).code, (await memberOf(t)).briefLabel], [`tltf-X${run}`, `tltf-2026:X${run}`]);
+  assert.deepEqual(await camp.findMemberByCode(`${prefix}-002`), { campaignSlug: slug, contactId: b });
+  assert.deepEqual(await camp.findMemberByBriefLabel(`${slug}:${prefix}-001`), { campaignSlug: slug, contactId: a });
+
+  // Running it again gives nobody a second code; a member added later gets the next number.
+  assert.deepEqual(await codes.assignCodes(campaign, roles, who), { status: "ok", coded: 0, clashes: 0, more: false });
+  assert.equal((await memberOf(a)).code, `${prefix}-001`);
+  const later = await person("code.later");
+  await join(slug, later, "2026-11-20T00:00:00Z");
+  assert.equal((await codes.assignCodes(campaign, roles, who)).status, "ok");
+  assert.equal((await memberOf(later)).code, `${prefix}-003`);
+  assert.equal(await codes.codesIssued(slug), 3);
+
+  // The prefix is fixed once codes exist; another campaign cannot take a prefix in use.
+  assert.equal(await codes.checkPrefixChange(campaign, "NEW"), "The code prefix is fixed once codes exist");
+  await assert.rejects(cadmin2.updateCampaign(slug, { codePrefix: "NEW" }, who), (e: unknown) => e instanceof cadmin2.CampaignError && e.status === 409);
+  const twinSlug = `${slug}-twin`;
+  const twin = (await camp.upsertCampaign({ slug: twinSlug, name: "Same prefix", kind: "outreach", visibility: "general" }))!;
+  assert.equal(codes.codePrefixOf(twin), prefix, "the slug cut short gives the same prefix");
+  await join(twinSlug, await person("code.twin"), "2026-11-05T00:00:00Z");
+  assert.deepEqual(await codes.assignCodes(twin, roles, who), { status: "prefix-in-use" });
+  assert.equal(await codes.checkPrefixChange(twin, prefix.toUpperCase()), "Another campaign uses this code prefix");
+  const twinPrefix = `T${run}`;
+  assert.equal(await codes.checkPrefixChange(twin, twinPrefix), null);
+  const twinAfter = (await cadmin2.updateCampaign(twinSlug, { codePrefix: twinPrefix }, who))!;
+  assert.equal(twinAfter.codePrefix, twinPrefix);
+
+  // A number another campaign's member already holds is skipped. An investor member is coded but not counted for an admin without the role.
+  await join(slug, await person("code.squatter"), "2026-11-21T00:00:00Z", { code: `${twinPrefix}-001` });
+  const lp = await person("code.lp", "investor");
+  await join(twinSlug, lp, "2026-11-06T00:00:00Z");
+  const twinRun = await codes.assignCodes(twinAfter, ["admin"], who);
+  assert.deepEqual(twinRun, { status: "ok", coded: 1, clashes: 1, more: false });
+  const twinCodes = (await camp.listMembers(twinSlug)).map((m) => m.code).sort();
+  assert.deepEqual(twinCodes, [`${twinPrefix}-002`, `${twinPrefix}-003`]);
+  assert.ok((await camp.getMember(twinSlug, lp))!.code);
+
+  // Two runs at once never give out the same number, and each member ends with one code.
+  const busySlug = `codes-busy-${run}`;
+  await camp.upsertCampaign({ slug: busySlug, name: "Busy", kind: "outreach", visibility: "general" });
+  await camp.editCampaign(busySlug, { codePrefix: `B${run}` });
+  const busy = (await camp.getCampaign(busySlug))!;
+  for (let i = 0; i < 12; i++) await join(busySlug, await person(`code.busy${i}`), `2026-11-0${(i % 9) + 1}T00:00:00Z`);
+  await Promise.all([codes.assignCodes(busy, roles, who), codes.assignCodes(busy, roles, who)]);
+  const busyCodes = (await camp.listMembers(busySlug)).map((m) => m.code);
+  assert.ok(busyCodes.every(Boolean));
+  assert.equal(new Set(busyCodes).size, 12, "no two members share a code");
+
+  // The audit holds counts and the prefix only.
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.action === "campaign.codes" && e.entityId === slug);
+  assert.equal(audits.length, 2);
+  assert.ok(!JSON.stringify(audits).includes(`codes-${run}.example.test`));
+  ok("codes go once to each member without one, in order, unique across campaigns; TLTF codes are left alone (phase 2 FR-03, task 020)");
 }
 
 {
