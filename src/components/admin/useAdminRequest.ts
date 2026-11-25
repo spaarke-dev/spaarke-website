@@ -11,7 +11,7 @@ export function useAdminRequest() {
 
   async function send<T = Record<string, unknown>>(
     url: string,
-    method: "POST" | "PATCH" | "DELETE",
+    method: "POST" | "PUT" | "PATCH" | "DELETE",
     body?: unknown,
     opts: { refresh?: boolean } = {},
   ): Promise<T | null> {

@@ -12,6 +12,8 @@ import { todayKey } from "@/lib/market/followups";
 import { loadContacts } from "@/lib/market/queries";
 import { CampaignForm } from "@/components/admin/CampaignForm";
 import { CodesButton } from "@/components/admin/CodesButton";
+import { CampaignBrief } from "@/components/admin/CampaignBrief";
+import { audienceOf, campaignBriefState } from "@/lib/market/campaign-brief";
 import { codePrefixOf, codesExist } from "@/lib/market/codes";
 import { DataTable, type Column } from "@/components/admin/DataTable";
 import { EmptyState } from "@/components/admin/EmptyState";
@@ -155,6 +157,10 @@ export default async function CampaignPage({
   const uncoded = rows.filter((r) => !r.code).length;
   const codePrefix = codePrefixOf(campaign);
   const codePrefixFixed = await codesExist(campaign.slug);
+  // The brief (phase 2 FR-04): counts follow the visibility filter too.
+  const brief = await campaignBriefState(campaign.slug);
+  const codedRows = rows.filter((r) => r.code);
+  const briefLinks = codedRows.filter((r) => r.briefLabel && brief.labels.has(r.briefLabel)).length;
 
   const sp = await searchParams;
   const q = one(sp, "q", 200);
@@ -220,6 +226,20 @@ export default async function CampaignPage({
           Engaged leaves out mail gateway link scanners: hits in the first 15 minutes after the first one, bursts of clicks,
           and links whose code a gateway rewrote.
         </p>
+      </section>
+
+      <section aria-labelledby="brief" className="space-y-3">
+        <h2 id="brief" className="text-lg font-semibold">
+          Brief
+        </h2>
+        <CampaignBrief
+          slug={campaign.slug}
+          text={brief.text}
+          active={brief.active}
+          links={briefLinks}
+          coded={codedRows.length}
+          audience={audienceOf(campaign)}
+        />
       </section>
 
       <section aria-labelledby="members" className="space-y-4">

@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021).
 //
 //   npm run market:check
 //
@@ -972,6 +972,33 @@ console.log("Pure checks");
   ok("member codes are <prefix>-NNN, and a code prefix is checked (phase 2 FR-03, task 020)");
 }
 
+{
+  // Phase 2 FR-04 (task 021): brief input checks, keys, and the general framing.
+  const cb = await import("@/lib/market/campaign-brief");
+  const askAi = await import("@/lib/ask-ai");
+  const { llmsFullText } = await import("@/lib/llms-full");
+  assert.equal(cb.parseBriefText({ text: "  Made-up brief\r\nline two  " }), "Made-up brief\nline two");
+  for (const bad of [null, {}, { text: "   " }, { text: 5 }, { text: "x".repeat(cb.BRIEF_MAX + 1) }]) {
+    assert.throws(() => cb.parseBriefText(bad), cb.BriefError, JSON.stringify(bad)?.slice(0, 40));
+  }
+  assert.equal(cb.parseBriefActive({ active: false }), false);
+  assert.throws(() => cb.parseBriefActive({ active: "no" }), cb.BriefError);
+  const k1 = cb.newBriefKey();
+  assert.ok(askAi.isBriefKey(k1) && k1.length === 32 && k1 !== cb.newBriefKey());
+  assert.equal(cb.audienceOf({ visibility: "investor" }), "investor");
+  assert.equal(cb.audienceOf({ visibility: "general" }), "general");
+
+  const general = llmsFullText({ brief: "Made-up campaign note" });
+  assert.ok(general.includes("# A note from the Spaarke team") && general.includes("Made-up campaign note"));
+  assert.ok(!general.includes("investor"), "a general brief never mentions investors");
+  const investor = llmsFullText({ investorOverview: "Made-up overview" });
+  assert.ok(investor.includes("# Investor overview") && investor.includes("shared privately with investors"));
+  assert.ok(askAi.askPrompt(k1).includes("The founder and where Spaarke is today"), "a key alone keeps the investor headings");
+  assert.ok(!askAi.askPrompt(k1, "general").includes("founder"));
+  assert.ok(askAi.askPrompt(k1, "general").includes(`/brief/${k1}`));
+  ok("a campaign brief is checked, its keys are 32 random characters, and a general brief is framed for any reader (phase 2 FR-04, task 021)");
+}
+
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
 const suffix = process.env.MA_TABLE_SUFFIX?.trim();
 
@@ -1902,6 +1929,101 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.equal(audits.length, 2);
   assert.ok(!JSON.stringify(audits).includes(`codes-${run}.example.test`));
   ok("codes go once to each member without one, in order, unique across campaigns; TLTF codes are left alone (phase 2 FR-03, task 020)");
+}
+
+{
+  // Phase 2 FR-04 (task 021): one brief text, a link for each coded member, off and on together.
+  const codes = await import("@/lib/market/codes");
+  const cb = await import("@/lib/market/campaign-brief");
+  const pb = await import("@/lib/private-brief");
+  const askAi = await import("@/lib/ask-ai");
+  const who = "check@example.test";
+  const roles = ["admin", "investor"];
+  const person = async (local: string) => {
+    const r = await contacts.resolveContact({ email: addr(local, `brief-${run}.example.test`) }, { source: "form.contact" });
+    assert.ok(r.status === "created");
+    return r.contact.id;
+  };
+  const slug = `brief-${run}`;
+  await camp.upsertCampaign({ slug, name: "Brief check", kind: "outreach", visibility: "general" });
+  await camp.editCampaign(slug, { codePrefix: `BR${run}` });
+  const campaign = (await camp.getCampaign(slug))!;
+  const [a, b] = [await person("brief.a"), await person("brief.b")];
+  await camp.addMember({ campaignSlug: slug, contactId: a }, new Date("2026-11-01T00:00:00Z"));
+  await camp.addMember({ campaignSlug: slug, contactId: b }, new Date("2026-11-02T00:00:00Z"));
+
+  // No codes yet: nothing to link.
+  await assert.rejects(cb.saveCampaignBrief(campaign, "Made-up text", who), (e: unknown) => e instanceof cb.BriefError && e.status === 409);
+  await codes.assignCodes(campaign, roles, who);
+  assert.equal(await cb.fillBriefRows(campaign), 0, "no rows before the first save");
+
+  const text1 = `Made-up brief text ${run}, version one.`;
+  const saved = await cb.saveCampaignBrief(campaign, text1, who);
+  assert.deepEqual(saved, { created: 2, updated: 0, links: 2 });
+  const rows = await pb.listCampaignBriefRows(slug);
+  assert.equal(rows.length, 2);
+  for (const r of rows) {
+    assert.ok(askAi.isBriefKey(r.key));
+    assert.equal(r.audience, "general");
+    const ref = (await camp.findMemberByBriefLabel(r.label))!;
+    const m = (await camp.getMember(slug, ref.contactId!))!;
+    assert.equal(m.briefKeyHash, keys.sha256(r.key), "the member keeps the key's hash only");
+    assert.deepEqual(await pb.getPrivateBrief(r.key), { label: r.label, text: text1, audience: "general" });
+  }
+
+  // A read through a member's link counts for that member.
+  const aLabel = (await camp.getMember(slug, a))!.briefLabel;
+  const aRow = rows.find((r) => r.label === aLabel)!;
+  await writers.recordBriefRead(aRow.label);
+  assert.ok((await activity.listContactActivities(a)).some((x) => x.type === "brief.read" && x.campaignSlug === slug));
+
+  // A changed text reaches every row; saving the same text again changes nothing.
+  const text2 = `Made-up brief text ${run}, version two.`;
+  assert.deepEqual(await cb.saveCampaignBrief(campaign, text2, who), { created: 0, updated: 2, links: 2 });
+  for (const r of await pb.listCampaignBriefRows(slug)) assert.equal((await pb.getPrivateBrief(r.key))!.text, text2);
+  assert.deepEqual(await cb.saveCampaignBrief(campaign, text2, who), { created: 0, updated: 0, links: 2 });
+
+  // Off: every link answers nothing. On: back again.
+  assert.deepEqual(await cb.setCampaignBriefsActive(campaign, false, who), { links: 2, changed: 2 });
+  for (const r of rows) assert.equal(await pb.getPrivateBrief(r.key), null);
+  assert.equal((await cb.campaignBriefState(slug)).active, false);
+
+  // A member coded while the briefs are off gets a link that is off too.
+  const later = await person("brief.later");
+  await camp.addMember({ campaignSlug: slug, contactId: later }, new Date("2026-11-03T00:00:00Z"));
+  await codes.assignCodes(campaign, roles, who);
+  assert.equal(await cb.fillBriefRows(campaign), 1);
+  const laterLabel = (await camp.getMember(slug, later))!.briefLabel;
+  const laterRow = (await pb.listCampaignBriefRows(slug)).find((r) => r.label === laterLabel)!;
+  assert.deepEqual([laterRow.text, laterRow.active], [text2, false]);
+
+  assert.deepEqual(await cb.setCampaignBriefsActive(campaign, true, who), { links: 3, changed: 3 });
+  assert.equal((await pb.getPrivateBrief(laterRow.key))!.text, text2);
+
+  // An investor campaign's rows keep the investor framing, and a row written elsewhere (as the TLTF script did) is never listed or changed.
+  const islug = `brief-inv-${run}`;
+  await camp.upsertCampaign({ slug: islug, name: "Investor brief", kind: "outreach", visibility: "investor" });
+  await camp.editCampaign(islug, { codePrefix: `BI${run}` });
+  const icamp = (await camp.getCampaign(islug))!;
+  await camp.addMember({ campaignSlug: islug, contactId: await person("brief.lp") });
+  await codes.assignCodes(icamp, roles, who);
+  await cb.saveCampaignBrief(icamp, "Made-up investor note", who);
+  assert.equal((await pb.listCampaignBriefRows(islug))[0].audience, "investor");
+  const { TableClient } = await import("@azure/data-tables");
+  const raw = TableClient.fromConnectionString(cs!, "PrivateBriefs", { allowInsecureConnection: true });
+  const scriptKey = cb.newBriefKey();
+  await raw.createEntity({ partitionKey: "brief", rowKey: scriptKey, label: `script-${run}`, text: "Made-up script row", active: true });
+  assert.equal((await pb.getPrivateBrief(scriptKey))!.audience, "investor", "a row without an audience stays investor");
+  assert.ok(!(await pb.listCampaignBriefRows(islug)).some((r) => r.key === scriptKey));
+
+  // The audit holds counts only: no text, no keys.
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter(
+    (e) => (e.action === "campaign.brief" || e.action === "campaign.brief_active") && e.entityId === slug,
+  );
+  assert.equal(audits.length, 5);
+  const audited = JSON.stringify(audits);
+  assert.ok(!audited.includes("Made-up") && !rows.some((r) => audited.includes(r.key)));
+  ok("a campaign brief gives each coded member a link, a saved change reaches every link, and the links go off and on together (phase 2 FR-04, task 021)");
 }
 
 {
