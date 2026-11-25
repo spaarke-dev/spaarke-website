@@ -56,7 +56,8 @@ Phase 2 went live on 2026-11-25: Ralph approved the merge, PRs 210 to 220 were m
 ### 6. Morning report health
 
 - The checks with canned times: the last successful sync, a warning after an hour without one, one alert on the third failure in a row and none on the fourth the same day; the secret warning 20 days ahead, nothing at 60 days, a past date, and a missing or malformed setting.
-- **Left for Ralph:** the go-ahead to set `MEET_GRAPH_SECRET_EXPIRES` on the site (until then the report says the date is unknown); one live report; and a mailbox outside the Exchange scope to see the alert (task 050).
+- `MEET_GRAPH_SECRET_EXPIRES` set on the site on 2026-11-25, with Ralph's go-ahead.
+- **Left for Ralph:** one live report; and a mailbox outside the Exchange scope to see the alert (task 050).
 
 ### 7. Privacy
 
@@ -115,7 +116,7 @@ Phase 2 went live on 2026-11-25: Ralph approved the merge, PRs 210 to 220 were m
 4. A test meeting with a known contact in his own calendar after turning on "Read calendar", and one in contactus@ after the Exchange step (criterion 3).
 5. ~~Run the "Follow-up steps" workflow by hand once.~~ Done 2026-11-25; check the first scheduled run after a campaign has a step (criterion 4).
 6. Click "Write in Outlook" on one follow-up (criterion 5).
-7. The go-ahead to set `MEET_GRAPH_SECRET_EXPIRES=2027-11-13`, then read one live morning report (criterion 6).
+7. ~~The go-ahead to set `MEET_GRAPH_SECRET_EXPIRES=2027-11-13`.~~ Set 2026-11-25. Read one live morning report (criterion 6).
 8. The phase 1 final checks still open in `projects/market-access/notes/verification.md`.
 
 The project stays open until these are done: the README is not marked Complete, the plan's milestones are not ticked, and `current-task.md` stays.

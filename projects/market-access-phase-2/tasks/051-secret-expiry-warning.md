@@ -1,7 +1,7 @@
 # Task 051: Secret expiry warning
 
 **Phase:** 5 (Health)
-**Status:** done (setting the date on the site waits for Ralph)
+**Status:** done
 **Estimated:** 1 hour
 **Dependencies:** none
 **Tags:** config, azure
@@ -45,4 +45,4 @@ FR-14. The `/meet` booking and the mail sync share one secret (expires 2027-11-1
 - `src/lib/reports/daily.ts`: `secretSection` reads `MEET_GRAPH_SECRET_EXPIRES`. Within 30 days: "Warning: the secret expires on <date>, in N days. Rotate it before then." Past: "Warning: the secret expired on <date>. The /meet booking and the mail sync have stopped." Further out: "Expires <date>." Missing or malformed: "Secret expiry date unknown. Set MEET_GRAPH_SECRET_EXPIRES (yyyy-mm-dd) on the site." It is the last section of the report, whether or not storage is set.
 - `docs/meet-graph-booking.md`: the setting in the table, at secret creation, and in the rotation steps; `docs/market-access-mailboxes.md` points to it.
 - Checks with canned dates: 20 days ahead, 60 days ahead, past, missing and malformed.
-- Open: step 3, setting the date on the site, waits for Ralph's go-ahead. Until then the report says the date is unknown.
+- Step 3, 2026-11-25: set on the site with Ralph's go-ahead, matching the secret's end date on the app registration.

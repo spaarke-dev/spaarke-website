@@ -51,7 +51,7 @@ Every event had `iCalUId`, `webLink`, `isOnlineMeeting`, `start`, `end`, `sensit
 
 ### 6. contactus@
 
-A read of the contactus@ calendar answers 403 `ErrorAccessDenied`, as expected before the Exchange step. To retest once Ralph has run the command in `docs/market-access-mailboxes.md`, section 7.
+A read of the contactus@ calendar answers 403 `ErrorAccessDenied`, as expected before the Exchange step. Retested on 2026-11-25: still 403. To retest once Ralph has run the command in `docs/market-access-mailboxes.md`, section 7.
 
 ## Volume
 
