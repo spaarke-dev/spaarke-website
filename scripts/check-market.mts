@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 030, 031, 032, 040, 041, 050, 051).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 030, 031, 032, 040, 041, 042, 050, 051).
 //
 //   npm run market:check
 //
@@ -1218,6 +1218,15 @@ console.log("Pure checks");
   assert.equal(sr.stepFollowUpId("c", "s", "x"), sr.stepFollowUpId("c", "s", "x"));
   assert.notEqual(sr.stepFollowUpId("c", "s", "x"), sr.stepFollowUpId("c", "s2", "x"));
   ok("a step's due day is its anchor plus its days, the first meeting is a held or in-person one, and who it applies to follows the effective status (phase 2 FR-10, task 041)");
+}
+
+{
+  // Phase 2 FR-11 (task 042): Write in Outlook opens a new message to the contact with the title as subject.
+  const { mailtoHref } = await import("@/lib/market/mailto");
+  assert.equal(mailtoHref("pat@client.example.test", "Second note"), "mailto:pat@client.example.test?subject=Second%20note");
+  assert.equal(mailtoHref(" o'neil+x@client.example.test ", " Q&A  #2 "), "mailto:o'neil%2Bx@client.example.test?subject=Q%26A%20%232", "& and # stay in the subject");
+  assert.equal(mailtoHref("pat@client.example.test", " "), "mailto:pat@client.example.test");
+  ok("Write in Outlook links open a new message to the contact with the follow-up title as the subject (phase 2 FR-11, task 042)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -2702,6 +2711,21 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.deepEqual(await made("d"), ["Second note@2026-11-24"]);
   void thanks;
   ok("the daily job makes one follow-up per due member once, catches up 7 days, skips older ones once, and honors stops, groups and the meeting anchor (phase 2 FR-10, task 041)");
+}
+
+{
+  // Phase 2 FR-11 (task 042): the campaign page lists its open follow-ups, investor ones for the investor role only.
+  const fa = await import("@/lib/market/followup-admin");
+  const slug = `steprun-${run}`;
+  const now = new Date("2026-11-25T16:00:00Z");
+  const general = await fa.campaignFollowUpRows(slug, ["admin"], now);
+  const all = await fa.campaignFollowUpRows(slug, ["admin", "investor"], now);
+  assert.equal(all.length - general.length, 1, "the investor member's follow-up shows for the investor role only");
+  assert.equal(all.length, 6, "a, d, g, h, i and k from the step run");
+  assert.ok(all.every((r) => r.contactEmail.endsWith(`steprun-${run}.example.test`) && r.title));
+  assert.deepEqual(all.map((r) => r.dueDate), [...all.map((r) => r.dueDate)].sort(), "oldest first");
+  assert.equal(all.filter((r) => r.overdue).length, all.filter((r) => r.dueDate < "2026-11-25").length);
+  ok("the campaign page lists its open follow-ups with the contact's address for Write in Outlook, investor ones for the investor role only (phase 2 FR-11, task 042)");
 }
 
 {

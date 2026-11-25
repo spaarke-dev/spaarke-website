@@ -280,6 +280,28 @@ export async function deleteFollowUp(contactId: string, id: string): Promise<Fol
 export type DueFollowUp = Pick<FollowUp, "id" | "contactId" | "title" | "dueDate" | "status" | "campaignSlug" | "visibility">;
 
 /** Open follow-ups due on or before a day, oldest first, from the due index. */
+/** A campaign's open follow-ups, whatever their due day, oldest first (phase 2 FR-11). */
+export async function campaignOpenFollowUps(campaignSlug: string, max = 500): Promise<DueFollowUp[]> {
+  const table = await getTable("followUps");
+  if (!table) return [];
+  const out: DueFollowUp[] = [];
+  const filter = `PartitionKey ge 'due:' and PartitionKey lt 'due;' and campaignSlug eq '${campaignSlug.replace(/'/g, "''")}'`;
+  for await (const e of table.listEntities<IndexEntity>({ queryOptions: { filter } })) {
+    if (!isFollowUpStatus(e.status) || !isOpen(e.status)) continue;
+    out.push({
+      id: e.rowKey,
+      contactId: e.contactId,
+      title: e.title,
+      dueDate: e.dueDate,
+      status: e.status,
+      campaignSlug: e.campaignSlug || undefined,
+      visibility: e.visibility === "investor" ? "investor" : "general",
+    });
+    if (out.length >= max) break;
+  }
+  return out.sort((a, b) => a.dueDate.localeCompare(b.dueDate) || a.title.localeCompare(b.title));
+}
+
 export async function dueFollowUps(throughDate: string): Promise<DueFollowUp[]> {
   const table = await getTable("followUps");
   if (!table || !isDueDate(throughDate)) return [];

@@ -1,0 +1,57 @@
+# The market access daily follow-up job (projects/market-access-phase-2, tasks 041 and 042).
+#
+# Once a day this asks the site to turn each campaign's follow-up steps into
+# follow-ups for the members due that day. It runs at 11:00 UTC, before the
+# morning report, so the new follow-ups are in it. The work happens in the
+# site's own route, which holds the storage settings; this workflow holds one
+# shared secret, the same one as mail-sync.yml.
+#
+# GitHub's scheduler is best effort and can start a run late, or skip one.
+# The job catches up any step due in the last 7 days, so a late or missed run
+# loses nothing, and a second run the same day creates nothing more.
+
+name: Follow-up steps
+
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: followup-steps
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ask the site to run the follow-up steps
+        env:
+          TOKEN: ${{ secrets.MA_SYNC_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${TOKEN}" ]; then
+            echo "::error::MA_SYNC_TOKEN is not set in repository secrets."
+            exit 1
+          fi
+
+          code=$(curl -sS -o response.json -w "%{http_code}" \
+            -X POST \
+            -H "Authorization: Bearer ${TOKEN}" \
+            --max-time 120 \
+            "https://spaarke.com/api/market/followups/run")
+
+          # Counts only: the route never returns names, addresses or titles.
+          echo "HTTP ${code}"
+          cat response.json || true
+          echo ""
+
+          if [ "${code}" != "200" ]; then
+            echo "::error::The follow-up steps did not run. HTTP ${code}."
+            exit 1
+          fi

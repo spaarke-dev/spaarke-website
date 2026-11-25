@@ -24,6 +24,9 @@ import { StatusOverride } from "@/components/admin/StatusOverride";
 import { StopSteps } from "@/components/admin/StopSteps";
 import { CampaignSteps } from "@/components/admin/CampaignSteps";
 import { listSteps } from "@/lib/market/steps";
+import { campaignFollowUpRows, type DueRow } from "@/lib/market/followup-admin";
+import { FollowUpStatus } from "@/components/admin/FollowUpStatus";
+import { WriteInOutlook } from "@/components/admin/WriteInOutlook";
 import { formatDay, formatWhen, label } from "@/components/admin/format";
 import { ArrowLeft20Regular } from "@/components/admin/icons";
 
@@ -134,6 +137,41 @@ function columns(slug: string): Column<ResultRow>[] {
   ];
 }
 
+const FOLLOWUP_COLUMNS: Column<DueRow>[] = [
+  {
+    key: "due",
+    header: "Due",
+    cell: (f) => (
+      <span className="flex flex-wrap items-center gap-1 whitespace-nowrap">
+        {formatDay(`${f.dueDate}T12:00:00Z`)}
+        {f.overdue ? <Badge tone="amber">Overdue</Badge> : null}
+      </span>
+    ),
+  },
+  {
+    key: "what",
+    header: "Follow-up",
+    cell: (f) => (
+      <div className="min-w-0 [overflow-wrap:anywhere]">
+        <div className="font-medium">{f.title}</div>
+        <div className="text-xs text-fg-mid">
+          <Link href={`/admin/contacts/${f.contactId}`} className="hover:underline">
+            {f.contactName || f.contactEmail}
+          </Link>
+        </div>
+        <div className="mt-1">
+          <WriteInOutlook email={f.contactEmail} title={f.title} who={f.contactName || f.contactEmail} />
+        </div>
+      </div>
+    ),
+  },
+  {
+    key: "status",
+    header: "Status",
+    cell: (f) => <FollowUpStatus key={f.status} contactId={f.contactId} id={f.id} status={f.status} title={f.title} />,
+  },
+];
+
 function dates(start?: string, end?: string): string {
   const day = (d?: string) => (d ? formatDay(`${d}T12:00:00Z`) : "");
   if (start && end) return `${day(start)} to ${day(end)}`;
@@ -173,6 +211,8 @@ export default async function CampaignPage({
   const briefLinks = codedRows.filter((r) => r.briefLabel && brief.labels.has(r.briefLabel)).length;
   // Follow-up steps (phase 2 FR-09).
   const steps = await listSteps(campaign.slug);
+  // Open follow-ups (phase 2 FR-11), for contacts this user may see.
+  const followUps = await campaignFollowUpRows(campaign.slug, principal.roles);
 
   const sp = await searchParams;
   const q = one(sp, "q", 200);
@@ -285,6 +325,20 @@ export default async function CampaignPage({
             enabled: s.enabled,
           }))}
         />
+      </section>
+
+      <section aria-labelledby="open-followups" className="space-y-3">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 id="open-followups" className="text-lg font-semibold">
+            Open follow-ups
+          </h2>
+          <p className="text-sm text-fg-mid">{followUps.length}</p>
+        </div>
+        {followUps.length ? (
+          <DataTable rows={followUps} columns={FOLLOWUP_COLUMNS} rowKey={(f) => `${f.contactId}-${f.id}`} caption="Open follow-ups" />
+        ) : (
+          <p className="text-sm text-fg-mid">None open. Steps and bulk follow-ups for this campaign show here.</p>
+        )}
       </section>
 
       <section aria-labelledby="members" className="space-y-4">

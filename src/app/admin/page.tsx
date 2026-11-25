@@ -7,6 +7,7 @@ import { DataTable, type Column } from "@/components/admin/DataTable";
 import { EmptyState } from "@/components/admin/EmptyState";
 import { activityLabel, formatDay, formatWhen, label } from "@/components/admin/format";
 import { FollowUpStatus } from "@/components/admin/FollowUpStatus";
+import { WriteInOutlook } from "@/components/admin/WriteInOutlook";
 import { dueForHome, type DueRow } from "@/lib/market/followup-admin";
 import { listTriage } from "@/lib/market/triage";
 
@@ -82,6 +83,9 @@ const FOLLOWUP_COLUMNS: Column<DueRow>[] = [
             {f.contactName || f.contactEmail}
           </Link>
           {f.campaignSlug ? <span className="md:hidden"> · {f.campaignSlug}</span> : null}
+        </div>
+        <div className="mt-1">
+          <WriteInOutlook email={f.contactEmail} title={f.title} who={f.contactName || f.contactEmail} />
         </div>
       </div>
     ),

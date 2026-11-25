@@ -5,6 +5,7 @@ import { getCampaign, isCampaignSlug, isMemberStatus } from "@/lib/market/campai
 import {
   bulkFollowUpId,
   createFollowUp,
+  campaignOpenFollowUps,
   deleteFollowUp,
   dueFollowUps,
   FOLLOWUP_STATUSES,
@@ -270,6 +271,28 @@ export type DueRow = {
   campaignSlug?: string;
   overdue: boolean;
 };
+
+/** A campaign's open follow-ups for contacts the user may see, with Write in Outlook on the page (phase 2 FR-11). */
+export async function campaignFollowUpRows(slug: string, roles: readonly string[], now = new Date()): Promise<DueRow[]> {
+  const today = todayKey(now);
+  const open = (await campaignOpenFollowUps(slug)).filter((f) => isVisibleTo(f, roles));
+  const rows = await mapLimit(open, 16, async (f): Promise<DueRow | null> => {
+    const c = await getContact(f.contactId);
+    if (!c || !isVisibleTo(c, roles)) return null;
+    return {
+      id: f.id,
+      contactId: f.contactId,
+      contactName: c.name,
+      contactEmail: c.email,
+      title: f.title,
+      dueDate: f.dueDate,
+      status: f.status,
+      campaignSlug: f.campaignSlug,
+      overdue: f.dueDate < today,
+    };
+  });
+  return rows.filter((r): r is DueRow => r !== null);
+}
 
 /** Open follow-ups due today or earlier, oldest first, for contacts the user may see. */
 export async function dueForHome(roles: readonly string[], now = new Date()): Promise<DueRow[]> {
