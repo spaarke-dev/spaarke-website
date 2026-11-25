@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { Search20Regular } from "@/components/admin/icons";
 
@@ -20,11 +21,14 @@ export function FilterBar({
   q,
   searchLabel,
   selects,
+  actions,
 }: {
   action: string;
   q?: string;
   searchLabel: string;
   selects: readonly FilterSelect[];
+  /** Buttons to the right of Apply, such as acting on selected rows. */
+  actions?: ReactNode;
 }) {
   const active = Boolean(q) || selects.some((s) => s.value);
   return (
@@ -63,6 +67,7 @@ export function FilterBar({
             Clear
           </Link>
         ) : null}
+        {actions}
       </div>
     </form>
   );

@@ -13,6 +13,13 @@ import {
 import { CONTACT_KINDS, CONTACT_STAGES } from "@/lib/market/types";
 import { AddContactForm } from "@/components/admin/AddContactForm";
 import { Badge } from "@/components/admin/Badge";
+import {
+  BulkDeleteButton,
+  BulkDeletePanel,
+  RowCheckbox,
+  SelectAllCheckbox,
+  SelectionProvider,
+} from "@/components/admin/ContactSelection";
 import { DataTable, type Column } from "@/components/admin/DataTable";
 import { EmptyState } from "@/components/admin/EmptyState";
 import { FilterBar } from "@/components/admin/FilterBar";
@@ -37,10 +44,17 @@ function oneOf<T extends string>(value: string | undefined, allowed: readonly T[
 
 const COLUMNS: Column<ContactRow>[] = [
   {
+    key: "select",
+    header: <SelectAllCheckbox />,
+    className: "w-8",
+    cell: (c) => <RowCheckbox id={c.id} label={c.name || c.email} />,
+  },
+  {
     key: "contact",
     header: "Contact",
     cell: (c) => (
-      <div className="min-w-0">
+      // A long address with no spaces (a calendar resource, say) wraps instead of widening the table.
+      <div className="min-w-0 [overflow-wrap:anywhere]">
         <div className="flex flex-wrap items-center gap-2">
           <Link href={`/admin/contacts/${c.id}`} className="font-medium hover:underline">
             {c.name || c.email}
@@ -138,35 +152,40 @@ export default async function ContactsPage({ searchParams }: { searchParams: Pro
 
       <AddContactForm canInvestor={canSeeInvestor(access.principal)} />
 
-      <FilterBar
-        action="/admin/contacts"
-        q={q}
-        searchLabel="Name, email or organization"
-        selects={[
-          { name: "kind", label: "Kind", value: kind, options: CONTACT_KINDS.map((k) => ({ value: k, label: label(k) })) },
-          {
-            name: "stage",
-            label: "Stage",
-            value: stage,
-            options: CONTACT_STAGES.map((s) => ({ value: s, label: label(s) })),
-          },
-          { name: "tag", label: "Tag", value: tag, options: tagsInUse(all).map((t) => ({ value: t, label: t })) },
-          {
-            name: "campaign",
-            label: "Campaign",
-            value: campaign,
-            options: campaigns.map((c) => ({ value: c.slug, label: c.name })),
-          },
-        ]}
-      />
+      <SelectionProvider rowIds={result.rows.map((c) => c.id)}>
+        <FilterBar
+          action="/admin/contacts"
+          actions={result.rows.length ? <BulkDeleteButton /> : null}
+          q={q}
+          searchLabel="Name, email or organization"
+          selects={[
+            { name: "kind", label: "Kind", value: kind, options: CONTACT_KINDS.map((k) => ({ value: k, label: label(k) })) },
+            {
+              name: "stage",
+              label: "Stage",
+              value: stage,
+              options: CONTACT_STAGES.map((s) => ({ value: s, label: label(s) })),
+            },
+            { name: "tag", label: "Tag", value: tag, options: tagsInUse(all).map((t) => ({ value: t, label: t })) },
+            {
+              name: "campaign",
+              label: "Campaign",
+              value: campaign,
+              options: campaigns.map((c) => ({ value: c.slug, label: c.name })),
+            },
+          ]}
+        />
 
-      {result.rows.length ? (
-        <DataTable rows={result.rows} columns={COLUMNS} rowKey={(c) => c.id} caption="Contacts" />
-      ) : (
-        <EmptyState title={filtered ? "No contacts match" : "No contacts yet"}>
-          {filtered ? "Try fewer words or clear a filter." : "Contacts appear as forms, meetings and imports come in."}
-        </EmptyState>
-      )}
+        <BulkDeletePanel />
+
+        {result.rows.length ? (
+          <DataTable rows={result.rows} columns={COLUMNS} rowKey={(c) => c.id} caption="Contacts" />
+        ) : (
+          <EmptyState title={filtered ? "No contacts match" : "No contacts yet"}>
+            {filtered ? "Try fewer words or clear a filter." : "Contacts appear as forms, meetings and imports come in."}
+          </EmptyState>
+        )}
+      </SelectionProvider>
 
       <Pager page={result.page} pageCount={result.pageCount} hrefFor={hrefFor} />
     </section>
