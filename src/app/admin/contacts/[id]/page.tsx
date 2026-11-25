@@ -274,7 +274,7 @@ export default async function ContactPage({
               Merge or delete
             </h2>
             <MergeContact contactId={contact.id} label={title} />
-            <DeleteContact contactId={contact.id} email={contact.email} />
+            <DeleteContact contactId={contact.id} />
           </section>
         </aside>
       </div>

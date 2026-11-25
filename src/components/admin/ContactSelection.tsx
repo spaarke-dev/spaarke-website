@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
-import { DANGER, FIELD, QUIET } from "@/components/admin/useAdminRequest";
+import { DANGER, QUIET } from "@/components/admin/useAdminRequest";
 
 /**
  * Row selection on the contacts list, and deleting the selected contacts for
@@ -105,7 +105,6 @@ export function BulkDeleteButton() {
 export function BulkDeletePanel() {
   const s = useSelection();
   const router = useRouter();
-  const [typed, setTyped] = useState("");
   const [progress, setProgress] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   if (!s.confirming) return null;
@@ -113,7 +112,6 @@ export function BulkDeletePanel() {
   const ids = [...s.selected];
   const n = ids.length;
   const busy = progress !== null;
-  const matches = typed.trim().toLowerCase() === "delete";
 
   async function onDelete() {
     setError(null);
@@ -135,7 +133,6 @@ export function BulkDeletePanel() {
       done++;
     }
     setProgress(null);
-    setTyped("");
     if (done === n) {
       s.setAll(false);
       s.setConfirming(false);
@@ -152,13 +149,9 @@ export function BulkDeletePanel() {
         {n === 1 ? "it" : "them"}, their campaign memberships and follow-ups. A hash of each email is kept so forms,
         mail sync and imports never add them again. This cannot be undone.
       </p>
-      <label className="flex max-w-xs flex-col gap-1 text-xs text-fg-mid">
-        Type delete to confirm
-        <input value={typed} onChange={(e) => setTyped(e.target.value)} autoComplete="off" className={FIELD} />
-      </label>
       <div className="flex gap-2">
-        <button type="button" className={DANGER} onClick={onDelete} disabled={!matches || busy}>
-          {busy ? `Deleting ${progress} of ${n}` : `Delete ${n} for good`}
+        <button type="button" className={DANGER} onClick={onDelete} disabled={busy}>
+          {busy ? `Deleting ${progress} of ${n}` : "Confirm delete"}
         </button>
         <button type="button" className={QUIET} onClick={() => s.setConfirming(false)} disabled={busy}>
           Cancel
