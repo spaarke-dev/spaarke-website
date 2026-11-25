@@ -1,7 +1,7 @@
 # Task 041: Daily follow-up job
 
 **Phase:** 4 (Follow-up steps)
-**Status:** not-started
+**Status:** done
 **Estimated:** 4 hours
 **Dependencies:** 040, 031 (for the "first meeting held" anchor)
 **Tags:** api, storage
@@ -39,11 +39,20 @@ FR-10. The follow-ups it creates are ordinary phase 1 follow-ups: they show in t
 
 ## Acceptance criteria
 
-- [ ] A step "7 days after first email, no reply" creates follow-ups on day 7 for exactly the members still at `sent`.
-- [ ] Running the job twice that day creates nothing more.
-- [ ] A missed day up to 7 days late is caught up; older ones are skipped and counted.
+- [x] A step "7 days after first email, no reply" creates follow-ups on day 7 for exactly the members still at `sent`.
+- [x] Running the job twice that day creates nothing more.
+- [x] A missed day up to 7 days late is caught up; older ones are skipped and counted.
 
 ## Notes
 
 - If task 031 is not merged yet, ship with the `first-email` anchor and add `first-meeting` when it lands.
 - Spec references: FR-10, NFR-02, NFR-03.
+
+## As built
+
+- `src/lib/market/step-run.ts`, `runSteps(now)`: for each campaign with steps on, statuses are derived again when stale, then each member's counted activities give the anchor: the first `email.sent`, or the first `calendar.held`, `meeting.booked` or `meeting.in_person`. A booked calendar meeting is not an anchor until it is held. The due day is the anchor's day in `MEET_HOST_TIME_ZONE` plus the step's days.
+- Who, from the effective status: `no-reply` is `sent`; `engaged-no-meeting` is `engaged` without a meeting; `met` has reached `meeting`; `everyone` is any status past `planned`. Stops: `bounced`, `done`, `replied` for the first two, Stop steps, and a deleted contact. Members outside a step's group are left out.
+- `MaStepRuns` (partition campaign slug, row `<step ID>|<contact ID>`): `created` or `late`. The follow-up ID is a hash of the campaign, step and contact, so a run cut off between the follow-up and the row still makes nothing twice. A step more than 7 days past is recorded as late once and counted once. Stopped members are not recorded, so a stop lifted within the 7 days gets its follow-up on the next run.
+- The follow-up is an ordinary phase 1 follow-up: the step name as title, due on its due day, linked to the campaign, with the contact's visibility.
+- `POST /api/market/followups/run` behind `MA_SYNC_TOKEN`, answering with counts only: `campaigns`, `steps`, `created`, `already`, `late`, `stopped`, `notMatched`, `recomputed`. Telemetry event `market.steps` with the same counts.
+- Checks: due days, anchors and who; then made-up members: day 7 for exactly the member at `sent`, replied, bounced and Stop steps stopped, not due yet, 8 days late skipped, 5 days late caught up on its own due day, a group filter, the meeting anchor, an investor member's follow-up, a second run creating nothing, and a lifted stop. 84 pass with fresh tables.

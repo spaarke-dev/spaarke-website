@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Badge } from "@/components/admin/Badge";
 import { FollowUpStatus } from "@/components/admin/FollowUpStatus";
+import { WriteInOutlook } from "@/components/admin/WriteInOutlook";
 import { BUTTON, DANGER, FIELD, QUIET, useAdminRequest } from "@/components/admin/useAdminRequest";
 
 export type FollowUpView = {
@@ -25,11 +26,14 @@ function day(d: string): string {
 /** A contact's follow-ups, with add, edit, status and delete (FR-11). */
 export function ContactFollowUps({
   contactId,
+  email,
   followUps,
   campaigns,
   today,
 }: {
   contactId: string;
+  /** The contact's address, for Write in Outlook on open follow-ups (phase 2 FR-11). */
+  email?: string;
   followUps: FollowUpView[];
   /** The contact's campaigns, to link a new follow-up to one. */
   campaigns: { slug: string; name: string }[];
@@ -105,7 +109,7 @@ export function ContactFollowUps({
       {followUps.length ? (
         <ul className="space-y-2">
           {followUps.map((f) => (
-            <Item key={`${f.id}-${f.status}-${f.dueDate}-${f.title}`} contactId={contactId} f={f} today={today} />
+            <Item key={`${f.id}-${f.status}-${f.dueDate}-${f.title}`} contactId={contactId} email={email} f={f} today={today} />
           ))}
         </ul>
       ) : (
@@ -115,7 +119,7 @@ export function ContactFollowUps({
   );
 }
 
-function Item({ contactId, f, today }: { contactId: string; f: FollowUpView; today: string }) {
+function Item({ contactId, email, f, today }: { contactId: string; email?: string; f: FollowUpView; today: string }) {
   const [editing, setEditing] = useState(false);
   const { send, busy, error } = useAdminRequest();
   const open = OPEN.has(f.status);
@@ -148,6 +152,11 @@ function Item({ contactId, f, today }: { contactId: string; f: FollowUpView; tod
             {overdue ? <Badge tone="amber">Overdue</Badge> : null}
             {f.campaignName || f.campaignSlug ? <span>{f.campaignName ?? f.campaignSlug}</span> : null}
           </div>
+          {open && email ? (
+            <div className="mt-1">
+              <WriteInOutlook email={email} title={f.title} />
+            </div>
+          ) : null}
         </div>
         <FollowUpStatus contactId={contactId} id={f.id} status={f.status} title={f.title} />
       </div>

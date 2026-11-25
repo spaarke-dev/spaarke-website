@@ -253,6 +253,7 @@ export default async function ContactPage({
             </h2>
             <ContactFollowUps
               contactId={contact.id}
+              email={contact.email}
               today={todayKey()}
               campaigns={memberships.map((m) => ({ slug: m.campaignSlug, name: m.campaignName }))}
               followUps={followUps.map((f) => ({

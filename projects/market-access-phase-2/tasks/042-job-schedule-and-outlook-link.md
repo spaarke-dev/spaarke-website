@@ -1,7 +1,7 @@
 # Task 042: Job schedule and Write in Outlook
 
 **Phase:** 4 (Follow-up steps)
-**Status:** not-started
+**Status:** done (first run by hand after merge)
 **Estimated:** 2 hours
 **Dependencies:** 041
 **Tags:** ci-cd, deploy, react
@@ -29,11 +29,19 @@ FR-11, FR-12 and owner decision 1 (no sending from the admin area for now).
 
 ## Acceptance criteria
 
-- [ ] A failed call fails the workflow run, so GitHub's failure email reaches Ralph.
-- [ ] "Write in Outlook" opens a new message to the contact with the subject filled in.
-- [ ] The workflow log shows counts only.
+- [x] A failed call fails the workflow run, so GitHub's failure email reaches Ralph.
+- [x] "Write in Outlook" opens a new message to the contact with the subject filled in.
+- [x] The workflow log shows counts only.
 
 ## Notes
 
 - `MA_SYNC_TOKEN` is already a repository secret (phase 1 task 042).
 - Spec references: FR-11, FR-12.
+
+## As built
+
+- `.github/workflows/followup-steps.yml`: 11:00 UTC and `workflow_dispatch`, one run at a time, a POST with `MA_SYNC_TOKEN`. Any answer but 200 fails the run, so GitHub's failure email goes out. The route returns counts only, so the log does too.
+- `src/lib/market/mailto.ts` and `WriteInOutlook.tsx`: `mailto:<address>?subject=<title>`, the subject encoded so `&` and `#` stay in it. Underlined, default text color.
+- Shown on each open follow-up on `/admin`, on the contact page, and in a new "Open follow-ups" section on the campaign page (`campaignFollowUpRows`, from the due index, for contacts the user may see).
+- Checks: the link's address and subject, and the campaign list with its investor filter. Browser: the link on all three pages with the right address and subject, the route answering 401 without the token and counts with it, no sideways scroll at 375 px, axe clean apart from the header contrast that predates this work.
+- Open: step 3, the first run by hand, after merge and deploy.

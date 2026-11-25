@@ -24,6 +24,7 @@ export const TABLES = {
   tombstones: "MaTombstones",
   steps: "MaSteps",
   calendarEvents: "MaCalendarEvents",
+  stepRuns: "MaStepRuns",
 } as const;
 
 export type TableKey = keyof typeof TABLES;
