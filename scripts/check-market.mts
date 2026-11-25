@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 030, 031, 040, 050, 051).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 030, 031, 032, 040, 050, 051).
 //
 //   npm run market:check
 //
@@ -1168,6 +1168,28 @@ console.log("Pure checks");
   assert.equal(sy.meetingSummary({ start: "2026-12-01T15:00:00.000Z", isOnline: true }), "Meeting on Tue, Dec 1, 2026, 10:00 AM EST, online");
   assert.equal(sy.meetingSummary({ start: "2026-12-01T15:00:00.000Z" }, "Canceled the meeting on"), "Canceled the meeting on Tue, Dec 1, 2026, 10:00 AM EST");
   ok("a calendar event needs booked once, moved per change, canceled without held, held once past; a series shares one key across calendars (phase 2 FR-07, task 031)");
+}
+
+{
+  // Phase 2 FR-08 (task 032): a held calendar meeting counts toward the meeting stage; booked, moved and canceled do not.
+  const results = await import("@/lib/market/results");
+  const t = (iso: string) => `${iso}T12:00:00.000Z`;
+  const act = (type: string, day: string) =>
+    ({ id: day + type, contactId: "c", type, source: "check", sourceId: day + type, occurredAt: t(day), recordedAt: t(day), visibility: "general" }) as never;
+  const campaign = { slug: "cal", startDate: "2026-11-01", endDate: "2026-11-30" };
+  const member = { contactId: "c", createdAt: "2026-11-01T00:00:00.000Z" };
+  const status = (acts: never[]) => results.deriveMemberStatus(member, results.memberActivities(campaign, member, acts));
+  const sent = act("email.sent", "2026-11-02");
+  const booked = status([sent, act("calendar.booked", "2026-11-03"), act("calendar.moved", "2026-11-04")]);
+  assert.deepEqual([booked.status, booked.reached], ["sent", ["sent"]], "a booked calendar meeting leaves the funnel alone");
+  assert.equal(booked.lastActivityAt, t("2026-11-02"));
+  assert.equal(status([sent, act("calendar.booked", "2026-11-03"), act("calendar.cancelled", "2026-11-05")]).status, "sent");
+  const held = status([sent, act("calendar.booked", "2026-11-03"), act("calendar.held", "2026-11-10")]);
+  assert.deepEqual([held.status, held.reached, held.lastActivityAt], ["meeting", ["sent", "meeting"], t("2026-11-10")]);
+  assert.equal(status([sent, act("calendar.held", "2027-03-10")]).status, "sent", "a held meeting outside the window does not count");
+  assert.equal(status([sent, act("meeting.booked", "2026-11-03")]).status, "meeting", "/meet bookings count as before");
+  assert.equal(status([sent, act("meeting.in_person", "2026-11-03")]).status, "meeting", "in-person meetings count as before");
+  ok("a calendar meeting moves a member to meeting once held; booked, moved and canceled leave the funnel alone (phase 2 FR-08, task 032)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
