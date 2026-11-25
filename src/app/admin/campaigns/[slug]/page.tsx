@@ -11,6 +11,8 @@ import { BulkFollowUpForm } from "@/components/admin/BulkFollowUpForm";
 import { todayKey } from "@/lib/market/followups";
 import { loadContacts } from "@/lib/market/queries";
 import { CampaignForm } from "@/components/admin/CampaignForm";
+import { CodesButton } from "@/components/admin/CodesButton";
+import { codePrefixOf, codesExist } from "@/lib/market/codes";
 import { DataTable, type Column } from "@/components/admin/DataTable";
 import { EmptyState } from "@/components/admin/EmptyState";
 import { FilterBar } from "@/components/admin/FilterBar";
@@ -68,10 +70,17 @@ function columns(slug: string): Column<ResultRow>[] {
             {r.contactVisibility === "investor" ? <Badge tone="amber">Investor only</Badge> : null}
           </div>
           {r.contactName ? <div className="text-xs text-fg-mid">{r.contactEmail}</div> : null}
+          {r.code ? <div className="font-mono text-xs text-fg-mid sm:hidden">{r.code}</div> : null}
           {r.group ? <div className="text-xs text-fg-mid sm:hidden">{r.group}</div> : null}
           <div className="text-xs text-fg-mid md:hidden">{formatDay(r.lastActivityAt)}</div>
         </div>
       ),
+    },
+    {
+      key: "code",
+      header: "Code",
+      className: "hidden sm:table-cell",
+      cell: (r) => <span className="whitespace-nowrap font-mono text-xs">{r.code ?? ""}</span>,
     },
     {
       key: "group",
@@ -142,6 +151,10 @@ export default async function CampaignPage({
   const tagsOf = new Map((await loadContacts(principal.roles)).map((c) => [c.id, c.tags]));
   const bulkMembers = rows.map((r) => ({ status: r.effective, group: r.group, tags: tagsOf.get(r.contactId) ?? [] }));
   const memberTags = [...new Set(bulkMembers.flatMap((m) => m.tags))].sort((a, b) => a.localeCompare(b));
+  // Codes (phase 2 FR-03): the count follows the visibility filter, like the rows.
+  const uncoded = rows.filter((r) => !r.code).length;
+  const codePrefix = codePrefixOf(campaign);
+  const codePrefixFixed = await codesExist(campaign.slug);
 
   const sp = await searchParams;
   const q = one(sp, "q", 200);
@@ -185,6 +198,8 @@ export default async function CampaignPage({
               endDate: campaign.endDate,
               notes: campaign.notes,
               visibility: campaign.visibility,
+              codePrefix,
+              codePrefixFixed,
             }}
           />
         </div>
@@ -218,6 +233,7 @@ export default async function CampaignPage({
           <div>
             <AddMembersForm slug={campaign.slug} />
           </div>
+          {rows.length ? <CodesButton slug={campaign.slug} uncoded={uncoded} prefix={codePrefix} /> : null}
           {rows.length ? (
             <div>
               <BulkFollowUpForm slug={campaign.slug} members={bulkMembers} groups={groups} tags={memberTags} today={todayKey()} />

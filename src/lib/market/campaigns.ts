@@ -36,6 +36,8 @@ export type Campaign = {
   owner?: string;
   visibility: Visibility;
   notes?: string;
+  /** The start of the codes this campaign gives out (phase 2 task 020); unset means the slug, cut short. */
+  codePrefix?: string;
   createdAt: string;
   updatedAt: string;
   /** When member statuses were last derived from the log (task 033). */
@@ -126,6 +128,7 @@ function campaignFromEntity(e: CampaignEntity): Campaign {
     owner: e.owner,
     visibility: e.visibility === "general" ? "general" : "investor",
     notes: e.notes,
+    codePrefix: e.codePrefix || undefined,
     createdAt: e.createdAt,
     updatedAt: e.updatedAt,
     resultsAt: e.resultsAt,
@@ -193,6 +196,7 @@ export async function upsertCampaign(input: CampaignInput, now = new Date()): Pr
     // Unset means investor-only, so a campaign is never exposed by omission (FR-02).
     visibility: input.visibility ?? existing?.visibility ?? "investor",
     notes: clean(input.notes, 2000) ?? existing?.notes,
+    codePrefix: existing?.codePrefix,
     createdAt: existing?.createdAt ?? at,
     updatedAt: at,
   });
@@ -214,6 +218,8 @@ const CAMPAIGN_TEXT_MAX: Record<CampaignText, number> = {
 export type CampaignPatch = Partial<Record<CampaignText, string | null>> & {
   kind?: CampaignKind;
   visibility?: Visibility;
+  /** Checked by the caller (codes.ts); null goes back to the default. */
+  codePrefix?: string | null;
 };
 
 /**
@@ -245,6 +251,7 @@ export async function editCampaign(
   }
   if (patch.kind) next.kind = patch.kind;
   if (patch.visibility) next.visibility = patch.visibility;
+  if ("codePrefix" in patch) next.codePrefix = patch.codePrefix ?? undefined;
   if (next.startDate !== before.startDate || next.endDate !== before.endDate) next.resultsAt = undefined;
 
   const { slug: _slug, ...fields } = next;

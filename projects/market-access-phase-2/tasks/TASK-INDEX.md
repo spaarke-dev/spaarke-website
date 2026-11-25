@@ -19,7 +19,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [020](020-member-codes.md) | Member codes | 010 | not-started |
+| [020](020-member-codes.md) | Member codes | 010 | done |
 | [021](021-campaign-brief.md) | Campaign brief | 020 | not-started |
 | [022](022-links-and-export.md) | Links and export | 021 | not-started |
 

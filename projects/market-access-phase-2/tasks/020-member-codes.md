@@ -1,7 +1,7 @@
 # Task 020: Member codes
 
 **Phase:** 2 (Codes, briefs and links)
-**Status:** not-started
+**Status:** done
 **Estimated:** 3 hours
 **Dependencies:** 010
 **Tags:** nextjs, api, storage
@@ -36,11 +36,23 @@ FR-03. Codes are how a brief read, an Ask AI click and a tagged site visit find 
 
 ## Acceptance criteria
 
-- [ ] Running it twice gives no member a second code.
-- [ ] A member added later gets the next number.
-- [ ] Codes are unique across campaigns, and existing TLTF codes keep their format.
+- [x] Running it twice gives no member a second code.
+- [x] A member added later gets the next number.
+- [x] Codes are unique across campaigns, and existing TLTF codes keep their format.
 
 ## Notes
 
 - Investor members are coded like others, but the count and table follow the phase 1 visibility filter.
 - Spec references: FR-03, NFR-02, NFR-03.
+
+## As built
+
+- `src/lib/market/codes.ts`: codes are `<prefix>-NNN` (three digits, more when needed). The prefix defaults to the slug cut to 12 characters without a trailing dash; it takes letters, digits, `-` and `_`, up to 24 characters.
+- The counter is a row in `MaCampaigns` (partition `counter`, row key the slug). Each run claims a block of numbers with an ETag check, so two runs at once never share a number.
+- `assignCodes` codes up to 200 members per request, earliest member first, and writes each code with the brief label `<slug>:<code>` through `addMember`. A number another member already holds (in any campaign) is skipped and counted as a clash. Members with a code, the TLTF codes among them, are left alone.
+- The prefix is fixed once any member has a code or the counter has given out a number. A prefix another campaign uses is refused, without naming that campaign.
+- `POST /api/admin/campaigns/[slug]/codes` answers `coded` (members the user may see), `clashes` and `more`; the button calls it until `more` is false.
+- The campaign page shows "Give everyone a code (N without one)", the prefix, and a Code column. Edit details has the prefix field until codes exist.
+- Audit `campaign.codes` holds the counts and the prefix.
+- Checks: 67 pass with fresh tables, including two runs at once on 12 members. Browser: prefix set, three codes given, a second run gives none, the prefix is then fixed; axe at desktop (only the header button contrast that predates this work) and at 375 px (none), no sideways scroll.
+- Members added in one request share a time, so their order among themselves follows the contact ID.
