@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireAdmin } from "@/lib/market/auth";
+import { canSeeInvestor, requireAdmin } from "@/lib/market/auth";
 import { isMarketConfigured } from "@/lib/market/tables";
 import {
   campaignMemberIds,
@@ -11,6 +11,7 @@ import {
   type ContactRow,
 } from "@/lib/market/queries";
 import { CONTACT_KINDS, CONTACT_STAGES } from "@/lib/market/types";
+import { AddContactForm } from "@/components/admin/AddContactForm";
 import { Badge } from "@/components/admin/Badge";
 import { DataTable, type Column } from "@/components/admin/DataTable";
 import { EmptyState } from "@/components/admin/EmptyState";
@@ -134,6 +135,8 @@ export default async function ContactsPage({ searchParams }: { searchParams: Pro
           {filtered ? `${result.total} of ${all.length}` : `${all.length}`} {all.length === 1 ? "contact" : "contacts"}
         </p>
       </div>
+
+      <AddContactForm canInvestor={canSeeInvestor(access.principal)} />
 
       <FilterBar
         action="/admin/contacts"

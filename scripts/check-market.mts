@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011).
 //
 //   npm run market:check
 //
@@ -928,6 +928,32 @@ console.log("Pure checks");
   ok("target list columns map by common names, and broken rows are named with a reason (phase 2 FR-01, task 010)");
 }
 
+{
+  // Phase 2 FR-02 (task 011): the Add contact form's input checks.
+  const add = await import("@/lib/market/contact-add");
+  const cadmin = await import("@/lib/market/contact-admin");
+  assert.deepEqual(add.parseNewContact({ email: " Sam.New@Example.TEST ", name: "  Sam   New ", visibility: "general" }), {
+    email: "sam.new@example.test",
+    name: "Sam New",
+    kind: "prospect",
+    visibility: "general",
+  });
+  assert.equal(add.parseNewContact({ email: "a@b.example.test", kind: "partner" }).kind, "partner");
+  for (const bad of [
+    {},
+    { email: "not-an-email" },
+    { email: "a@b.example.test", linkedinUrl: "https://example.test/in/x" },
+    { email: "a@b.example.test", kind: "friend" },
+    { email: "a@b.example.test", visibility: "public" },
+    { email: "a@b.example.test", phone: "1".repeat(41) },
+    { email: "a@b.example.test", tags: ["x"] },
+    { email: "a@b.example.test", name: 5 },
+  ]) {
+    assert.throws(() => add.parseNewContact(bad), cadmin.PatchError, JSON.stringify(bad));
+  }
+  ok("the Add contact form needs an email and checks every field (phase 2 FR-02, task 011)");
+}
+
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
 const suffix = process.env.MA_TABLE_SUFFIX?.trim();
 
@@ -1713,6 +1739,67 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   const ms = performance.now() - t0;
   assert.equal((await camp.listMembers(mslug)).length, tf.RUN_CHUNK + 7);
   ok(`a ${tf.RUN_CHUNK + 7}-row list imports in two parts in ${(ms / 1000).toFixed(1)} s against the emulator (task 010)`);
+}
+
+{
+  // Phase 2 FR-02 (task 011): one contact added by hand; a known address creates nothing.
+  const add = await import("@/lib/market/contact-add");
+  const cadmin = await import("@/lib/market/contact-admin");
+  const who = "check@example.test";
+  const roles = ["admin"];
+  const email = addr("Hand.Added", `handmade-${run}.example.test`);
+
+  const r = await add.addContactByHand(
+    add.parseNewContact({ email, name: "Hana Added", title: "Deputy GC", organization: "Handmade Co", linkedinUrl: "https://www.linkedin.com/in/hana-fake" }),
+    roles,
+    who,
+  );
+  assert.equal(r.status, "created");
+  const c = (await contacts.findContactByEmail(email))!;
+  assert.equal(c.id, (r as { contactId: string }).contactId);
+  assert.deepEqual([c.name, c.title, c.kind, c.visibility, c.source], ["Hana Added", "Deputy GC", "prospect", "general", "contact.added"]);
+  assert.equal((await orgs.getOrganization(c.organizationId!))?.name, "Handmade Co");
+  assert.deepEqual([...c.editedFields].sort(), ["kind", "linkedinUrl", "name", "title"]);
+  const log = await activity.listContactActivities(c.id);
+  assert.deepEqual(log.map((a) => [a.type, a.summary, a.source]), [["contact.added", "Added by hand", add.ADDED_SOURCE]]);
+
+  // What was typed is protected from a later form.
+  await activity.recordActivity({
+    type: "form.contact",
+    source: "check",
+    sourceId: `hand-${run}`,
+    occurredAt: new Date(),
+    email,
+    contactHints: { name: "Someone Else", title: "Other Title", phone: "+1 555 0101" },
+  });
+  const after = (await contacts.getContact(c.id))!;
+  assert.deepEqual([after.name, after.title, after.phone], ["Hana Added", "Deputy GC", "+1 555 0101"], "typed fields kept; an empty one filled");
+
+  // The same address again, in any case, creates nothing and points to the contact.
+  const again = await add.addContactByHand(add.parseNewContact({ email: email.toUpperCase(), name: "Twice" }), roles, who);
+  assert.deepEqual(again, { status: "exists", contactId: c.id });
+  assert.equal((await activity.listContactActivities(c.id)).filter((a) => a.type === "contact.added").length, 1);
+
+  // An investor contact is reported as existing, without its ID, to an admin without the role.
+  const lpEmail = addr("hidden-lp", `fund-${run}.example.test`);
+  const lp = await add.addContactByHand(add.parseNewContact({ email: lpEmail, visibility: "investor" }), ["admin", "investor"], who);
+  assert.equal(lp.status, "created");
+  assert.equal((await contacts.findContactByEmail(lpEmail))!.visibility, "investor");
+  assert.deepEqual(await add.addContactByHand(add.parseNewContact({ email: lpEmail }), roles, who), { status: "exists", contactId: undefined });
+
+  // A deleted contact is not brought back.
+  const goneEmail = addr("hand-gone");
+  const gone = await add.addContactByHand(add.parseNewContact({ email: goneEmail }), roles, who);
+  await cadmin.deleteContact((gone as { contactId: string }).contactId, who);
+  assert.deepEqual(await add.addContactByHand(add.parseNewContact({ email: goneEmail }), roles, who), { status: "deleted" });
+
+  // The audit names the fields set, never the address or the values.
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.action === "contact.create" && e.entityId === c.id);
+  assert.equal(audits.length, 1);
+  const text = JSON.stringify(audits);
+  assert.ok(!text.includes("hand.added") && !text.includes("Hana"), "no address or name in the audit");
+  assert.ok(text.includes("linkedinUrl"));
+  ok("a contact added by hand gets an 'Added by hand' entry and protected fields; a known address creates nothing (phase 2 FR-02, task 011)");
 }
 
 {
