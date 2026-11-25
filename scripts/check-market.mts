@@ -2635,7 +2635,17 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.equal(held.occurredAt, "2026-11-20T15:00:00.000Z");
   const lpEntries = (await act.listContactActivities(lp.id, 50)).filter((a) => a.source === sy.CALENDAR_SOURCE);
   assert.deepEqual(lpEntries.map((a) => a.visibility), ["investor", "investor"], "an investor contact's entries take its visibility");
-  ok("calendar events with known contacts log booked, moved, canceled and held once each, across two calendars, with /meet skipped and private subjects dropped (phase 2 FR-07, task 031)");
+
+  // A meeting the TLTF import logged in person is not logged again from the calendar.
+  const met = await person("met");
+  await act.recordActivity({ type: "meeting.in_person", source: "tltf-import", sourceId: `meeting:k-${run}:${met.id.slice(0, 16)}`, occurredAt: "2026-11-17T14:00:00Z", contactId: met.id, subject: "Summit" });
+  calendars[R] = [ev("sum", `uid-sum-${run}`, "2026-11-17T14:00:00", 1, { attendees: [{ emailAddress: { address: met.email } }, { emailAddress: { address: pat.email } }] })];
+  const summit = await sync(ralph, "2026-12-05T13:00:00Z");
+  assert.equal(summit.alreadyMet, 2, "booked and held left out for the contact met in person");
+  assert.deepEqual(counts(summit), { booked: 1, moved: 0, cancelled: 0, held: 1, skippedMeet: 0 }, "the other attendee still gets both");
+  assert.deepEqual((await act.listContactActivities(met.id, 20)).map((a) => a.type), ["meeting.in_person"]);
+  assert.equal((await sync(ralph, "2026-12-05T13:05:00Z")).alreadyMet, 0, "a re-read does not look again");
+  ok("calendar events with known contacts log booked, moved, canceled and held once each, across two calendars, with /meet skipped, private subjects dropped and TLTF in-person meetings not repeated (phase 2 FR-07, task 031)");
 }
 
 {

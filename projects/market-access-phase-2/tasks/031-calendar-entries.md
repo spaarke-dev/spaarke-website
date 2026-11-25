@@ -67,3 +67,10 @@ FR-07 and owner decision 3 (log when booked and when completed). Phase 1 logs `/
 - Investor contacts' entries take the contact's visibility through `recordActivity`.
 - Checks: entry rules, the series key, counterparts and summaries; then canned calendars through the sync: booked then held, a move, a deletion, a canceled occurrence, a private event, `/meet` skipped by ID and by `iCalUId`, one meeting in two calendars logged once, and a re-read changing nothing. 79 pass with fresh tables.
 - Open: step 8, the live run, needs the deploy. Then Ralph's mailbox first, contactus@ after the Exchange step.
+
+## Follow-up, 2026-11-25: Summit meetings logged twice
+
+- Turning on "Read calendar" for Ralph's mailbox read the Summit week (Nov 16 to 19). The TLTF import had already logged those meetings as "Met in person" from an export of the same calendar, so 17 contacts got a second "Meeting held", most with a "Meeting booked".
+- Fix: the sync leaves out an event's entries for a contact who has a `meeting.in_person` entry within two hours of the event's start (`hasInPersonMeetingNear`), counted as `alreadyMet` in the summary and the `market.sync` telemetry. The event is still marked logged, so later runs do not look again.
+- Cleanup: `npm run market:calendar-dedupe` counts the repeated entries; `-- --delete` removes them from the timeline and the month index, keeping the markers and state so nothing writes them again. A recurring series' booked entry stays. Dry run on live data: 31 entries (17 held, 14 booked) for 17 contacts.
+- Check: a contact met in person gets no calendar entries for that meeting, another attendee of the same event still gets booked and held, and a re-read does not look again. 84 pass with fresh tables.

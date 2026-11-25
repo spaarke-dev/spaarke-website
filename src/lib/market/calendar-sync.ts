@@ -12,7 +12,7 @@ import {
   saveCalendarState,
   type CalendarState,
 } from "@/lib/market/calendar-state";
-import { recordActivity } from "@/lib/market/activity";
+import { hasInPersonMeetingNear, recordActivity } from "@/lib/market/activity";
 import { findContactByEmail } from "@/lib/market/contacts";
 import { emailDomain, sha256 } from "@/lib/market/keys";
 import { getTable, statusOf } from "@/lib/market/tables";
@@ -56,6 +56,8 @@ export type CalendarSummary = {
   skippedMeet: number;
   /** Entries another mailbox or an earlier run had already logged. */
   duplicates: number;
+  /** Entries left out because the contact already has an in-person entry for that meeting (the TLTF import). */
+  alreadyMet: number;
   /** State rows for events that ended more than 30 days ago, removed this run. */
   pruned: number;
   /** False when the deadline stopped it; the next run reads the whole window again. */
@@ -63,7 +65,7 @@ export type CalendarSummary = {
 };
 
 export function emptyCalendarSummary(over: Partial<CalendarSummary> = {}): CalendarSummary {
-  return { ok: true, events: 0, booked: 0, moved: 0, cancelled: 0, held: 0, skippedMeet: 0, duplicates: 0, pruned: 0, complete: true, ...over };
+  return { ok: true, events: 0, booked: 0, moved: 0, cancelled: 0, held: 0, skippedMeet: 0, duplicates: 0, alreadyMet: 0, pruned: 0, complete: true, ...over };
 }
 
 /** `/meet` events to skip: their IDs in the host's calendar and their iCalUIds anywhere. */
@@ -271,8 +273,18 @@ async function logEvent(
   now: Date,
 ): Promise<CalendarState> {
   const logged = new Set(state?.logged ?? []);
+  // A meeting another source logged as in person (the TLTF import) stays as that one entry.
+  const met = new Map<string, boolean>();
+  const alreadyMet = async (contactId: string) => {
+    if (!met.has(contactId)) met.set(contactId, await hasInPersonMeetingNear(contactId, e.start));
+    return met.get(contactId)!;
+  };
   for (const entry of entriesFor(e, state, now)) {
     for (const contactId of entry.silent ? [] : contactIds) {
+      if (await alreadyMet(contactId)) {
+        s.alreadyMet++;
+        continue;
+      }
       const r = await recordActivity({
         type: TYPE[entry.kind],
         source: CALENDAR_SOURCE,
