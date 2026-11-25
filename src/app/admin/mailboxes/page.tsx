@@ -33,6 +33,7 @@ function Status({ m }: { m: Mailbox }) {
           <dd className="text-[#c42b1c] [overflow-wrap:anywhere]">
             {m.lastError}
             {m.lastErrorAt ? <span className="text-fg-mid"> ({formatWhen(m.lastErrorAt)})</span> : null}
+            {(m.failStreak ?? 0) > 1 ? <span className="text-fg-mid"> Failed {m.failStreak} runs in a row.</span> : null}
           </dd>
         </div>
       ) : null}

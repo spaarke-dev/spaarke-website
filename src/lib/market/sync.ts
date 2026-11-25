@@ -3,6 +3,7 @@ import { emailDomain } from "@/lib/market/keys";
 import { findContactByEmail, isTombstoned } from "@/lib/market/contacts";
 import { attachEmailLink, hasActivity, recordActivity } from "@/lib/market/activity";
 import { enabledMailboxes, recordSync, type Mailbox } from "@/lib/market/mailboxes";
+import { sendSyncAlert } from "@/lib/email";
 import {
   bounceRecipient,
   isBounce,
@@ -86,6 +87,8 @@ export type SyncOptions = MailDeps & {
   now?: Date;
   /** Per folder per run (default 2,000). */
   max?: number;
+  /** Sends the failure alert (phase 2 FR-13); the checks pass their own. */
+  alert?: (a: { label: string; address: string; error: string; streak: number }) => Promise<unknown>;
 };
 
 // ---- Checkpoints ----
@@ -383,7 +386,15 @@ export async function syncAll(opts: SyncOptions): Promise<SyncSummary> {
     } catch (err) {
       const error = errorText(err);
       if (!(err instanceof MailGraphError)) console.error("[sync] mailbox failed:", (err as Error).message);
-      await recordSync(mailbox.id, { error });
+      const record = await recordSync(mailbox.id, { error });
+      if (record.alert) {
+        try {
+          await (opts.alert ?? sendSyncAlert)({ label: mailbox.label, address: mailbox.address, error, streak: record.streak });
+        } catch (alertErr) {
+          // The alert never fails the run; the morning report lists the mailbox too.
+          console.error("[sync] alert failed:", (alertErr as Error).message);
+        }
+      }
       out.mailboxes.push({
         id: mailbox.id,
         ok: false,

@@ -38,6 +38,7 @@ the static web app's settings, and your own `.env.local`.
 | `MEET_GRAPH_TENANT_ID` | yes | | Directory (tenant) ID |
 | `MEET_GRAPH_CLIENT_ID` | yes | | Application (client) ID of the app registration |
 | `MEET_GRAPH_CLIENT_SECRET` | yes | | From Key Vault, see below |
+| `MEET_GRAPH_SECRET_EXPIRES` | | | The secret's expiry date, `yyyy-mm-dd`. The morning report warns 30 days before it, and says the date is unknown when unset. Change it at each rotation |
 | `MEET_HOST` | yes | | The host mailbox address; the meeting organizer |
 | `MEET_LINK_SECRET` | yes | | At least 32 characters; signs the manage links |
 | `MEET_SIGNATURE_NAME` | | | Name in the sign-off of the visitor emails. Unset: "The Spaarke team" |
@@ -90,7 +91,8 @@ az keyvault secret set --vault-name <vault> --name meet-link-secret --output non
   --value "$(openssl rand -base64 48)"
 ```
 
-Note the secret's expiry date (one year) and put a rotation reminder on the
+Note the secret's expiry date (one year), set it as `MEET_GRAPH_SECRET_EXPIRES`
+(the morning report warns 30 days before it), and put a rotation reminder on the
 calendar for two weeks before it.
 
 ## 3. Exchange RBAC for Applications
@@ -289,6 +291,15 @@ az staticwebapp appsettings set -n <static-web-app> --setting-names \
 ```
 
 The market access mail sync uses the same app and secret (see [`market-access-mailboxes.md`](market-access-mailboxes.md)), so this rotation covers it too.
+
+Then set the new expiry date, which `credential reset` prints as `endDateTime`
+(also shown by `az ad app credential list --id <APP_ID>`), so the morning report
+counts down to the right day:
+
+```bash
+az staticwebapp appsettings set -n <static-web-app> --setting-names \
+  MEET_GRAPH_SECRET_EXPIRES=<yyyy-mm-dd> --output none
+```
 
 `--append` keeps the old secret valid until you remove it, so there is no gap.
 Once /meet shows slots again, remove the old credential with

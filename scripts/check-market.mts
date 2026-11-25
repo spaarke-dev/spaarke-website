@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 050, 051).
 //
 //   npm run market:check
 //
@@ -1033,6 +1033,39 @@ console.log("Pure checks");
   assert.equal(lines.length, 2);
   assert.equal(lines[1], 'pat@example.test,"Pat, Example",,,,QE-001,,https://s.test/ask/claude?src=QE-001,c,g,');
   ok("the links export takes only spaarke.com pages, tags them, and writes a CSV Excel opens safely (phase 2 FR-05, task 022)");
+}
+
+{
+  // Phase 2 FR-13 and FR-14 (tasks 050, 051): the morning report's health sections, with canned times.
+  const daily = await import("@/lib/reports/daily");
+  const now = new Date("2026-11-24T12:00:00Z");
+  const box = (over: Record<string, unknown>) =>
+    ({ id: "x", address: "box@example.test", label: "Box", kind: "personal", mode: "known-only", visibility: "general", enabled: true, failStreak: 0, createdAt: "", updatedAt: "", ...over }) as never;
+
+  const fresh = await daily.mailSyncSection(now, [
+    box({ lastSyncAt: "2026-11-24T11:50:00Z" }),
+    box({ label: "Team", address: "team@example.test", lastSyncAt: "2026-11-24T08:00:00Z", failStreak: 3, lastError: "Mailbox not in the Exchange access scope" }),
+    box({ label: "Paused", address: "paused@example.test", enabled: false, failStreak: 9 }),
+  ]);
+  assert.equal(fresh.health, true);
+  assert.deepEqual(fresh.lines, [
+    "Last successful sync 2026-11-24 11:50 UTC.",
+    "  Team <team@example.test>: failed 3 runs in a row. Mailbox not in the Exchange access scope",
+    "",
+    "Check them at https://spaarke.com/admin/mailboxes",
+  ]);
+  const stale = await daily.mailSyncSection(now, [box({ lastSyncAt: "2026-11-24T10:30:00Z", failStreak: 2 })]);
+  assert.deepEqual(stale.lines, ["Warning: the last successful sync was 2026-11-24 10:30 UTC, more than an hour ago."]);
+  assert.deepEqual((await daily.mailSyncSection(now, [box({})])).lines, ["Warning: no mailbox has synced yet."]);
+  assert.deepEqual((await daily.mailSyncSection(now, [])).lines, ["No mailboxes registered."]);
+
+  const secret = (v: string | undefined) => daily.secretSection(v, now).lines[0];
+  assert.equal(secret("2026-12-14"), "Warning: the secret expires on 2026-12-14, in 20 days. Rotate it before then.");
+  assert.equal(secret("2027-01-23"), "Expires 2027-01-23.");
+  assert.equal(secret("2026-11-01"), "Warning: the secret expired on 2026-11-01. The /meet booking and the mail sync have stopped.");
+  for (const v of [undefined, "", "13/11/2027", "2027-11-xx"]) assert.match(secret(v), /^Secret expiry date unknown/);
+  assert.equal(daily.secretSection("2027-11-13", now).health, true);
+  ok("the morning report says when the mail sync last worked, lists mailboxes failing 3 runs in a row, and warns 30 days before the secret expires (phase 2 FR-13, FR-14, tasks 050, 051)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -2132,6 +2165,61 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   const audited = JSON.stringify(audits);
   assert.ok(!audited.includes(key) && !audited.includes(`links-${run}.example.test`) && audited.includes('{"field":"links","to":"3"}'));
   ok("the links export gives each coded member the user may see their brief, Ask AI and page links, and a click counts for them (phase 2 FR-05, task 022)");
+}
+
+{
+  // Phase 2 FR-13 (task 050): a failure streak per mailbox, one alert on the third failure a day, reset by a good run.
+  const mb = await import("@/lib/market/mailboxes");
+  const sync = await import("@/lib/market/sync");
+  const who = "admin@example.test";
+  const at = (iso: string) => new Date(iso);
+
+  const m = await mb.addMailbox(mb.parseNewMailbox({ address: `health@own-${run}.example.test`, kind: "personal" }), who);
+  const steps = [
+    ["2026-11-24T10:00:00Z", 1, false],
+    ["2026-11-24T10:15:00Z", 2, false],
+    ["2026-11-24T10:30:00Z", 3, true],
+    ["2026-11-24T10:45:00Z", 4, false],
+    ["2026-11-25T09:00:00Z", 5, true],
+  ] as const;
+  for (const [when, streak, alert] of steps) {
+    assert.deepEqual(await mb.recordSync(m.id, { error: "Mailbox not in the Exchange access scope" }, at(when)), { streak, alert }, when);
+  }
+  const failing = (await mb.getMailbox(m.id))!;
+  assert.deepEqual([failing.failStreak, failing.alertedOn], [5, "2026-11-25"]);
+  assert.deepEqual(await mb.recordSync(m.id, {}, at("2026-11-25T09:15:00Z")), { streak: 0, alert: false });
+  const good = (await mb.getMailbox(m.id))!;
+  assert.deepEqual([good.failStreak, good.lastError, good.lastSyncAt], [0, undefined, "2026-11-25T09:15:00.000Z"]);
+  assert.deepEqual(await mb.recordSync(m.id, { error: "again" }, at("2026-11-25T09:30:00Z")), { streak: 1, alert: false }, "a good run starts the count again");
+
+  // Through the sync: a mailbox outside the scope alerts once on its third failed run, with no message content.
+  const outside = `outside@own-${run}.example.test`;
+  const o = await mb.addMailbox(mb.parseNewMailbox({ address: outside, kind: "shared", label: "Outside" }), who);
+  const fake = (async (input: string | URL | Request) => {
+    const url = decodeURIComponent(String(input));
+    if (url.includes(outside)) return new Response(JSON.stringify({ error: { code: "ErrorAccessDenied" } }), { status: 403 });
+    return new Response(JSON.stringify({ value: [] }), { status: 200 });
+  }) as typeof fetch;
+  const sent: { label: string; address: string; error: string; streak: number }[] = [];
+  const opts = {
+    settings: { tenantId: "t", clientId: "c", clientSecret: "s" },
+    fetch: fake,
+    token: async () => "token",
+    deadline: Date.now() + 60_000,
+    alert: async (a: { label: string; address: string; error: string; streak: number }) => {
+      sent.push(a);
+    },
+  };
+  for (let i = 0; i < 4; i++) await sync.syncAll(opts);
+  const mine = sent.filter((a) => a.address === outside);
+  assert.equal(mine.length, 1, "one alert, on the third failure, none on the fourth the same day");
+  assert.deepEqual(Object.keys(mine[0]).sort(), ["address", "error", "label", "streak"]);
+  assert.deepEqual([mine[0].label, mine[0].streak], ["Outside", 3]);
+  assert.match(mine[0].error, /Exchange|access|denied/i);
+  assert.equal((await mb.getMailbox(o.id))!.failStreak, 4);
+  await mb.removeMailbox(o.id, who);
+  await mb.removeMailbox(m.id, who);
+  ok("a mailbox failing three sync runs in a row sends one alert that day with its error only, and a good run resets the count (phase 2 FR-13, task 050)");
 }
 
 {
