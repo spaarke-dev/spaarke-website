@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 050, 051).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 040, 050, 051).
 //
 //   npm run market:check
 //
@@ -1066,6 +1066,31 @@ console.log("Pure checks");
   for (const v of [undefined, "", "13/11/2027", "2027-11-xx"]) assert.match(secret(v), /^Secret expiry date unknown/);
   assert.equal(daily.secretSection("2027-11-13", now).health, true);
   ok("the morning report says when the mail sync last worked, lists mailboxes failing 3 runs in a row, and warns 30 days before the secret expires (phase 2 FR-13, FR-14, tasks 050, 051)");
+}
+
+{
+  // Phase 2 FR-09 (task 040): a step's sentence and its input checks.
+  const st = await import("@/lib/market/steps");
+  assert.equal(st.describeStep({ days: 7, anchor: "first-email", audience: "no-reply", group: "Tier A" }), "7 days after first email, no reply, group Tier A");
+  assert.equal(st.describeStep({ days: 1, anchor: "first-meeting", audience: "met" }), "1 day after first meeting, met");
+  assert.equal(st.describeStep({ days: 0, anchor: "first-email", audience: "engaged-no-meeting" }), "0 days after first email, engaged, no meeting");
+
+  const good = { name: "  Second   note ", days: "14", anchor: "first-email", audience: "everyone", group: "" };
+  assert.deepEqual(st.parseStep(good), { name: "Second note", days: 14, anchor: "first-email", audience: "everyone", group: undefined });
+  const refused = (body: unknown, re: RegExp, partial = false) =>
+    assert.throws(() => (partial ? st.parseStep(body, { partial: true }) : st.parseStep(body)), (e: Error) => e instanceof st.StepError && re.test(e.message));
+  refused({ ...good, days: 366 }, /0 to 365/);
+  refused({ ...good, days: -1 }, /0 to 365/);
+  refused({ ...good, days: 2.5 }, /whole number/);
+  refused({ ...good, anchor: "last-email" }, /anchor/);
+  refused({ ...good, audience: "partners" }, /audience/);
+  refused({ ...good, name: " " }, /needs a name/);
+  refused({ ...good, enabled: false }, /new step/);
+  refused({ ...good, order: 3 }, /order cannot be set/);
+  refused({ enabled: "no" }, /true or false/, true);
+  assert.deepEqual(st.parseStep({ enabled: false }, { partial: true }), { enabled: false });
+  assert.deepEqual(st.parseStep({ group: "" }, { partial: true }), { group: null }, "an empty group clears it");
+  ok("a follow-up step reads as a sentence, and bad days, anchors, audiences and fields are refused (phase 2 FR-09, task 040)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -2220,6 +2245,65 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   await mb.removeMailbox(o.id, who);
   await mb.removeMailbox(m.id, who);
   ok("a mailbox failing three sync runs in a row sends one alert that day with its error only, and a good run resets the count (phase 2 FR-13, task 050)");
+}
+
+{
+  // Phase 2 FR-09 (task 040): steps save, edit, switch, reorder and go, each audited; Stop steps on a member.
+  const st = await import("@/lib/market/steps");
+  const ca = await import("@/lib/market/campaign-admin");
+  const who = "check@example.test";
+  const slug = `steps-${run}`;
+  await camp.upsertCampaign({ slug, name: "Steps check", kind: "outreach", visibility: "general" });
+  const made = await contacts.resolveContact({ email: addr("steps.a", `steps-${run}.example.test`), name: "Sam Steps" }, { source: "form.contact" });
+  assert.ok(made.status === "created");
+  const member = made.contact.id;
+  await camp.addMember({ campaignSlug: slug, contactId: member, group: "Tier A" }, new Date("2026-11-01T00:00:00Z"));
+
+  const first = await st.createStep(slug, st.parseStep({ name: "Nudge", days: 7, anchor: "first-email", audience: "no-reply", group: "Tier A" }), who);
+  const second = await st.createStep(slug, st.parseStep({ name: "Thank you", days: 1, anchor: "first-meeting", audience: "met" }), who);
+  await assert.rejects(
+    st.createStep(slug, st.parseStep({ name: "Lost", days: 3, anchor: "first-email", audience: "everyone", group: "Tier Z" }), who),
+    /No member of this campaign has that group/,
+  );
+  assert.deepEqual((await st.listSteps(slug)).map((s) => [s.name, s.order, s.enabled]), [["Nudge", 0, true], ["Thank you", 1, true]]);
+  assert.deepEqual(await st.campaignGroups(slug), ["Tier A"]);
+
+  const edited = (await st.editStep(slug, first.id, st.parseStep({ days: 10, group: "" }, { partial: true }), who))!;
+  assert.deepEqual([edited.days, edited.group], [10, undefined]);
+  assert.equal(st.describeStep(edited), "10 days after first email, no reply");
+  const off = (await st.editStep(slug, second.id, { enabled: false }, who))!;
+  assert.equal(off.enabled, false);
+  assert.equal(await st.editStep(slug, "0123456789ab", { enabled: false }, who), null, "no such step");
+
+  await assert.rejects(st.reorderSteps(slug, [second.id], who), /every step once/);
+  await assert.rejects(st.reorderSteps(slug, [second.id, second.id], who), /every step once/);
+  await st.reorderSteps(slug, [second.id, first.id], who);
+  assert.deepEqual((await st.listSteps(slug)).map((s) => [s.name, s.order, s.enabled]), [["Thank you", 0, false], ["Nudge", 1, true]]);
+
+  assert.equal(await st.deleteStep(slug, second.id, who), true);
+  assert.equal(await st.deleteStep(slug, second.id, who), false);
+  assert.deepEqual((await st.listSteps(slug)).map((s) => s.name), ["Nudge"]);
+
+  // Stop steps: set, kept when the member is added again, cleared; audited only on a change.
+  assert.equal((await ca.stopMemberSteps(slug, member, true, who))!.stopSteps, true);
+  await ca.stopMemberSteps(slug, member, true, who);
+  await camp.addMember({ campaignSlug: slug, contactId: member, group: "Tier A" }, new Date("2026-11-05T00:00:00Z"));
+  assert.equal((await camp.getMember(slug, member))!.stopSteps, true, "adding the member again keeps Stop steps");
+  assert.equal((await ca.stopMemberSteps(slug, member, false, who))!.stopSteps, undefined);
+  assert.equal((await camp.getMember(slug, member))!.stopSteps, undefined);
+  assert.equal(await ca.stopMemberSteps(slug, "f".repeat(64), true, who), null, "no such member");
+
+  const log = await auditLog.listAudit(keys.monthKey(Date.now()), 5000);
+  const mine = log.filter((e) => e.entityId.startsWith(`${slug}/`) || e.entityId === slug);
+  const actions = (a: string) => mine.filter((e) => e.action === a);
+  assert.equal(actions("step.create").length, 2);
+  assert.equal(actions("step.edit").length, 1);
+  assert.equal(actions("step.switch").length, 1);
+  assert.equal(actions("step.order").length, 1);
+  assert.equal(actions("step.delete").length, 1);
+  assert.equal(actions("member.stop_steps").length, 2, "one row per change, none for a repeat");
+  assert.deepEqual(actions("step.switch")[0].changes.map((c) => [c.field, c.to]), [["enabled", "false"]]);
+  ok("follow-up steps save, edit, switch off, reorder and go, a step's group must exist, and Stop steps holds on a member, each change audited (phase 2 FR-09, task 040)");
 }
 
 {

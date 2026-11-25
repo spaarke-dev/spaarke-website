@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { canSeeInvestor, requireAdmin } from "@/lib/market/auth";
 import { contactMemberships, contactTimeline, visibleContact } from "@/lib/market/queries";
 import type { Activity } from "@/lib/market/types";
+import { StopSteps } from "@/components/admin/StopSteps";
 import { Badge } from "@/components/admin/Badge";
 import { EmptyState } from "@/components/admin/EmptyState";
 import { ContactEditForm } from "@/components/admin/ContactEditForm";
@@ -229,6 +230,14 @@ export default async function ContactPage({
                       {[m.group, m.lastActivityAt ? `Last activity ${formatDay(m.lastActivityAt)}` : null]
                         .filter(Boolean)
                         .join(" · ")}
+                    </div>
+                    <div className="mt-2">
+                      <StopSteps
+                        slug={m.campaignSlug}
+                        contactId={contact.id}
+                        stopped={Boolean(m.stopSteps)}
+                        who={m.campaignName}
+                      />
                     </div>
                   </li>
                 ))}

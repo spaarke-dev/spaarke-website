@@ -367,7 +367,7 @@ export async function mergeContacts(
       }
       if (existing) {
         const fill: Row = { partitionKey: campaign, rowKey: survivorId };
-        for (const f of ["code", "briefKeyHash", "briefLabel", "group", "templateLabel", "statusOverride"]) {
+        for (const f of ["code", "briefKeyHash", "briefLabel", "group", "templateLabel", "statusOverride", "stopSteps"]) {
           if (!existing[f] && m[f]) fill[f] = m[f];
         }
         if (Object.keys(fill).length > 2) await members.table.updateEntity(fill, "Merge");
