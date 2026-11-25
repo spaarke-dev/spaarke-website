@@ -195,7 +195,7 @@ export async function mapLimit<T, R>(items: readonly T[], limit: number, fn: (it
 type ActivityEntity = Parameters<typeof activityFromEntity>[0];
 
 /** A contact's activities from `fromIso` on (row keys are inverted time, so this is a range). */
-async function activitiesSince(contactId: string, fromIso: string): Promise<Activity[]> {
+export async function activitiesSince(contactId: string, fromIso: string): Promise<Activity[]> {
   const table = await getTable("activities");
   if (!table) return [];
   const fromMs = Date.parse(fromIso);

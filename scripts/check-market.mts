@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 030, 031, 032, 040, 050, 051).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 030, 031, 032, 040, 041, 050, 051).
 //
 //   npm run market:check
 //
@@ -1190,6 +1190,34 @@ console.log("Pure checks");
   assert.equal(status([sent, act("meeting.booked", "2026-11-03")]).status, "meeting", "/meet bookings count as before");
   assert.equal(status([sent, act("meeting.in_person", "2026-11-03")]).status, "meeting", "in-person meetings count as before");
   ok("a calendar meeting moves a member to meeting once held; booked, moved and canceled leave the funnel alone (phase 2 FR-08, task 032)");
+}
+
+{
+  // Phase 2 FR-10 (task 041): due days, anchors and who a step applies to.
+  const sr = await import("@/lib/market/step-run");
+  assert.equal(sr.addDays("2026-11-17", 7), "2026-11-24");
+  assert.equal(sr.addDays("2026-12-28", 7), "2027-01-04");
+  assert.equal(sr.daysBetween("2026-11-16", "2026-11-24"), 8);
+  const acts = [
+    { type: "email.sent", occurredAt: "2026-11-18T10:00:00.000Z" },
+    { type: "email.sent", occurredAt: "2026-11-17T10:00:00.000Z" },
+    { type: "calendar.booked", occurredAt: "2026-11-15T10:00:00.000Z" },
+    { type: "calendar.held", occurredAt: "2026-11-21T10:00:00.000Z" },
+    { type: "meeting.in_person", occurredAt: "2026-11-20T10:00:00.000Z" },
+  ] as never[];
+  assert.equal(sr.anchorTime("first-email", acts), "2026-11-17T10:00:00.000Z");
+  assert.equal(sr.anchorTime("first-meeting", acts), "2026-11-20T10:00:00.000Z", "a booked calendar meeting is not a meeting yet");
+  const m = (status: string, over: Record<string, unknown> = {}) => ({ status, reached: [], ...over }) as never;
+  assert.deepEqual(["planned", "sent", "engaged", "replied", "meeting", "bounced", "done"].map((s) => sr.audienceVerdict("no-reply", m(s))), ["no", "match", "no", "stop", "no", "stop", "stop"]);
+  assert.deepEqual(["sent", "engaged", "replied", "meeting"].map((s) => sr.audienceVerdict("engaged-no-meeting", m(s))), ["no", "match", "stop", "no"]);
+  assert.deepEqual(["engaged", "replied", "meeting"].map((s) => sr.audienceVerdict("met", m(s))), ["no", "no", "match"]);
+  assert.equal(sr.audienceVerdict("met", m("replied", { reached: ["sent", "meeting"], statusOverride: "replied" })), "match", "met once, whatever the override says");
+  assert.deepEqual(["planned", "sent", "replied", "meeting"].map((s) => sr.audienceVerdict("everyone", m(s))), ["no", "match", "match", "match"]);
+  assert.equal(sr.audienceVerdict("everyone", m("sent", { stopSteps: true })), "stop");
+  assert.equal(sr.audienceVerdict("no-reply", m("replied", { statusOverride: "sent" })), "match", "the effective status decides");
+  assert.equal(sr.stepFollowUpId("c", "s", "x"), sr.stepFollowUpId("c", "s", "x"));
+  assert.notEqual(sr.stepFollowUpId("c", "s", "x"), sr.stepFollowUpId("c", "s2", "x"));
+  ok("a step's due day is its anchor plus its days, the first meeting is a held or in-person one, and who it applies to follows the effective status (phase 2 FR-10, task 041)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -2599,6 +2627,81 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   const lpEntries = (await act.listContactActivities(lp.id, 50)).filter((a) => a.source === sy.CALENDAR_SOURCE);
   assert.deepEqual(lpEntries.map((a) => a.visibility), ["investor", "investor"], "an investor contact's entries take its visibility");
   ok("calendar events with known contacts log booked, moved, canceled and held once each, across two calendars, with /meet skipped and private subjects dropped (phase 2 FR-07, task 031)");
+}
+
+{
+  // Phase 2 FR-10 (task 041): the daily job against made-up members and dates.
+  process.env.MEET_HOST_TIME_ZONE = "America/New_York";
+  const sr = await import("@/lib/market/step-run");
+  const st = await import("@/lib/market/steps");
+  const ca = await import("@/lib/market/campaign-admin");
+  const fu = await import("@/lib/market/followups");
+  const act = await import("@/lib/market/activity");
+  const who = "check@example.test";
+  const slug = `steprun-${run}`;
+  await camp.upsertCampaign({ slug, name: "Step run check", kind: "outreach", visibility: "general", startDate: "2026-11-01" });
+  const ids: Record<string, string> = {};
+  const member = async (key: string, group?: string, visibility: "general" | "investor" = "general") => {
+    const r = await contacts.resolveContact({ email: addr(`run.${key}`, `steprun-${run}.example.test`), name: `Run ${key}` }, { source: "form.contact", visibility });
+    assert.ok(r.status === "created");
+    ids[key] = r.contact.id;
+    await camp.addMember({ campaignSlug: slug, contactId: r.contact.id, group }, new Date("2026-11-02T00:00:00Z"));
+  };
+  const log = async (key: string, type: string, at: string) => {
+    const r = await act.recordActivity({ type: type as never, source: "check", sourceId: `${slug}:${key}:${type}:${at}`, occurredAt: at, contactId: ids[key] });
+    assert.equal(r.status, "recorded");
+  };
+  for (const k of ["a", "b", "c", "d", "e", "f", "g", "h"]) await member(k, k === "h" ? "B" : undefined);
+  await member("i", "A");
+  await member("j", "B");
+  await member("k", undefined, "investor");
+  for (const k of ["a", "b", "c", "d", "h", "k"]) await log(k, "email.sent", "2026-11-17T15:00:00Z");
+  await log("b", "email.received", "2026-11-18T15:00:00Z");
+  await log("c", "email.bounced", "2026-11-17T15:05:00Z");
+  await ca.stopMemberSteps(slug, ids.d, true, who);
+  await log("e", "email.sent", "2026-11-20T15:00:00Z");
+  await log("f", "email.sent", "2026-11-09T15:00:00Z");
+  await log("g", "email.sent", "2026-11-12T15:00:00Z");
+  await log("i", "calendar.held", "2026-11-22T15:00:00Z");
+  await log("j", "calendar.held", "2026-11-22T15:00:00Z");
+  await log("i", "calendar.booked", "2026-11-10T15:00:00Z");
+
+  const nudge = await st.createStep(slug, st.parseStep({ name: "Second note", days: 7, anchor: "first-email", audience: "no-reply" }), who);
+  const thanks = await st.createStep(slug, st.parseStep({ name: "Thank you", days: 1, anchor: "first-meeting", audience: "met", group: "A" }), who);
+  const off = await st.createStep(slug, st.parseStep({ name: "Switched off", days: 0, anchor: "first-email", audience: "everyone" }), who);
+  await st.editStep(slug, off.id, { enabled: false }, who);
+
+  const now = new Date("2026-11-24T16:00:00Z");
+  const first = await sr.runSteps(now);
+  const open = async (key: string) => (await fu.listContactFollowUps(ids[key])).filter((f) => f.campaignSlug === slug);
+  const made = async (key: string) => (await open(key)).map((f) => `${f.title}@${f.dueDate}`);
+  assert.deepEqual(await made("a"), ["Second note@2026-11-24"], "day 7 for a member still at sent");
+  assert.deepEqual(await made("b"), [], "replied: stopped");
+  assert.deepEqual(await made("c"), [], "bounced: stopped");
+  assert.deepEqual(await made("d"), [], "Stop steps: stopped");
+  assert.deepEqual(await made("e"), [], "not due until 2026-11-27");
+  assert.deepEqual(await made("f"), [], "8 days late: skipped");
+  assert.deepEqual(await made("g"), ["Second note@2026-11-19"], "5 days late: caught up, due on its own day");
+  assert.deepEqual(await made("h"), ["Second note@2026-11-24"], "a step without a group applies to every group");
+  assert.deepEqual(await made("i"), ["Thank you@2026-11-23"], "the meeting anchor is the held meeting");
+  assert.deepEqual(await made("j"), [], "group B is not group A");
+  const lp = await open("k");
+  assert.deepEqual([lp.length, lp[0]?.visibility], [1, "investor"], "an investor member's follow-up is investor only");
+  const mine = { created: 5, already: 0, late: 1, stopped: 3, notMatched: 0 };
+  assert.deepEqual({ created: first.created, already: first.already, late: first.late, stopped: first.stopped, notMatched: first.notMatched }, mine);
+  assert.equal((await fu.getFollowUp(ids.a, sr.stepFollowUpId(slug, nudge.id, ids.a)))?.title, "Second note");
+
+  const second = await sr.runSteps(new Date("2026-11-24T20:00:00Z"));
+  assert.deepEqual([second.created, second.already, second.late, second.stopped], [0, 5, 0, 3], "a second run that day creates nothing and counts the late one once");
+  assert.equal((await open("a")).length, 1);
+
+  // A stop lifted inside the 7 days: made on the next run.
+  await ca.stopMemberSteps(slug, ids.d, false, who);
+  const third = await sr.runSteps(new Date("2026-11-25T16:00:00Z"));
+  assert.equal(third.created, 1);
+  assert.deepEqual(await made("d"), ["Second note@2026-11-24"]);
+  void thanks;
+  ok("the daily job makes one follow-up per due member once, catches up 7 days, skips older ones once, and honors stops, groups and the meeting anchor (phase 2 FR-10, task 041)");
 }
 
 {
