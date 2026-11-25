@@ -35,7 +35,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [040](040-follow-up-steps.md) | Follow-up steps | 020 | not-started |
+| [040](040-follow-up-steps.md) | Follow-up steps | 020 | done |
 | [041](041-daily-follow-up-job.md) | Daily follow-up job | 040, 031 | not-started |
 | [042](042-job-schedule-and-outlook-link.md) | Job schedule and Write in Outlook | 041 | not-started |
 

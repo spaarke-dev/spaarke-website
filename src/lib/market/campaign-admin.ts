@@ -11,6 +11,7 @@ import {
   isCampaignSlug,
   isMemberStatus,
   setStatusOverride,
+  setStopSteps,
   upsertCampaign,
   type Campaign,
   type CampaignKind,
@@ -227,6 +228,32 @@ export async function addMembers(
     );
   }
   return result;
+}
+
+/** Stop or restart step follow-ups for a member, audited (phase 2 FR-09). */
+export async function stopMemberSteps(
+  slug: string,
+  contactId: string,
+  stop: boolean,
+  who: string,
+  now = new Date(),
+): Promise<Member | null> {
+  const r = await setStopSteps(slug, contactId, stop, now);
+  if (!r) return null;
+  if (Boolean(r.before.stopSteps) !== stop) {
+    await audit(
+      {
+        who,
+        action: "member.stop_steps",
+        entity: "member",
+        entityId: `${slug}/${contactId}`,
+        before: { stopSteps: Boolean(r.before.stopSteps) },
+        after: { stopSteps: stop },
+      },
+      now,
+    );
+  }
+  return r.after;
 }
 
 /** Check an override body: `{ status: <status> | null }`. */

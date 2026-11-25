@@ -22,6 +22,7 @@ export const TABLES = {
   syncState: "MaSyncState",
   audit: "MaAudit",
   tombstones: "MaTombstones",
+  steps: "MaSteps",
 } as const;
 
 export type TableKey = keyof typeof TABLES;

@@ -56,6 +56,8 @@ export type Member = {
   status: MemberStatus;
   /** Set by hand; shown and kept over the derived status. */
   statusOverride?: MemberStatus;
+  /** Set by hand: the daily job makes no step follow-ups for this member (phase 2 FR-09). */
+  stopSteps?: boolean;
   /** Every stage the log shows, for the funnel (task 033). */
   reached: MemberStage[];
   lastActivityAt?: string;
@@ -152,6 +154,7 @@ function memberFromEntity(e: MemberEntity): Member {
     templateLabel: e.templateLabel,
     status: isMemberStatus(e.status) ? e.status : "planned",
     statusOverride: isMemberStatus(e.statusOverride) ? e.statusOverride : undefined,
+    stopSteps: e.stopSteps === true ? true : undefined,
     reached: parseStages(e.reached),
     lastActivityAt: e.lastActivityAt || undefined,
     createdAt: e.createdAt,
@@ -290,6 +293,20 @@ export async function saveDerived(
   );
 }
 
+/** Stop or restart step follow-ups for one member. Returns the member before and after, or null. */
+export async function setStopSteps(
+  slug: string,
+  contactId: string,
+  stop: boolean,
+  now = new Date(),
+): Promise<{ before: Member; after: Member } | null> {
+  const table = await getTable("members");
+  const before = await getMember(slug, contactId);
+  if (!table || !before) return null;
+  await table.updateEntity({ partitionKey: slug, rowKey: contactId, stopSteps: stop, updatedAt: now.toISOString() }, "Merge");
+  return { before, after: { ...before, stopSteps: stop || undefined, updatedAt: now.toISOString() } };
+}
+
 /** Set or clear a member's status override. Returns the member before and after, or null. */
 export async function setStatusOverride(
   slug: string,
@@ -406,6 +423,7 @@ export async function addMember(input: MemberInput, now = new Date()): Promise<M
     templateLabel: clean(input.templateLabel, 100) ?? existing?.templateLabel,
     status: existing?.status ?? input.status ?? "planned",
     statusOverride: existing?.statusOverride,
+    stopSteps: existing?.stopSteps,
     reached: existing?.reached.length ? existing.reached.join(",") : undefined,
     lastActivityAt: existing?.lastActivityAt,
     createdAt: existing?.createdAt ?? at,

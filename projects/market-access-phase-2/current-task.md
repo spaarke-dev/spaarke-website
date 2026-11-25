@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 050 and 051: health (done); 001 waits on the Exchange step |
-| **Step** | 050 and 051 built and verified; PRs stacked, merged together after all tasks (Ralph, 2026-11-24) |
+| **Task** | 040: follow-up steps (done); 001 waits on the Exchange step |
+| **Step** | 040 built and verified; PRs stacked, merged together after all tasks (Ralph, 2026-11-24) |
 | **Status** | in progress; waiting on Ralph's Exchange step for the contactus@ retest |
-| **Next action** | Once Ralph has run section 7 of `docs/market-access-mailboxes.md`, retest the contactus@ calendar read and record it in `notes/calendar-spike.md`. Phase 3 (calendar) needs that step; phase 4 needs task 031 |
+| **Next action** | Once Ralph has run section 7 of `docs/market-access-mailboxes.md`, retest the contactus@ calendar read and record it in `notes/calendar-spike.md`. Phase 3 (calendar) needs that step; task 041 needs tasks 040 and 031 |
 
 ## Open items
 
@@ -34,3 +34,4 @@
 - 2026-11-24: task 020 in PR 211. Task 021 built (campaign brief); 69 checks pass with fresh tables. A general campaign's brief is framed for any reader, not for investors.
 - 2026-11-24: task 021 in PR 212. Task 022 built (links and export); 71 checks pass with fresh tables.
 - 2026-11-24: task 022 in PR 213. Tasks 050 and 051 built (sync health, alert, secret expiry); 73 checks pass with fresh tables.
+- 2026-11-24: tasks 050 and 051 in PR 214. Task 040 built (follow-up steps, Stop steps); 75 checks pass with fresh tables.

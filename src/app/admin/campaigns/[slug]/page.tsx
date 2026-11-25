@@ -21,6 +21,9 @@ import { EmptyState } from "@/components/admin/EmptyState";
 import { FilterBar } from "@/components/admin/FilterBar";
 import { RecomputeButton } from "@/components/admin/RecomputeButton";
 import { StatusOverride } from "@/components/admin/StatusOverride";
+import { StopSteps } from "@/components/admin/StopSteps";
+import { CampaignSteps } from "@/components/admin/CampaignSteps";
+import { listSteps } from "@/lib/market/steps";
 import { formatDay, formatWhen, label } from "@/components/admin/format";
 import { ArrowLeft20Regular } from "@/components/admin/icons";
 
@@ -119,6 +122,12 @@ function columns(slug: string): Column<ResultRow>[] {
             override={r.statusOverride}
             who={r.contactName || r.contactEmail}
           />
+          <StopSteps
+            slug={slug}
+            contactId={r.contactId}
+            stopped={Boolean(r.stopSteps)}
+            who={r.contactName || r.contactEmail}
+          />
         </div>
       ),
     },
@@ -162,6 +171,8 @@ export default async function CampaignPage({
   const brief = await campaignBriefState(campaign.slug);
   const codedRows = rows.filter((r) => r.code);
   const briefLinks = codedRows.filter((r) => r.briefLabel && brief.labels.has(r.briefLabel)).length;
+  // Follow-up steps (phase 2 FR-09).
+  const steps = await listSteps(campaign.slug);
 
   const sp = await searchParams;
   const q = one(sp, "q", 200);
@@ -252,6 +263,28 @@ export default async function CampaignPage({
           into each email, or export them all.
         </p>
         <CampaignLinks slug={campaign.slug} coded={codedRows.length} />
+      </section>
+
+      <section aria-labelledby="steps" className="space-y-3">
+        <h2 id="steps" className="text-lg font-semibold">
+          Follow-up steps
+        </h2>
+        <p className="text-sm text-fg-mid">
+          Each step makes a follow-up when it falls due. Tick Stop steps on a member to leave them out.
+        </p>
+        <CampaignSteps
+          slug={campaign.slug}
+          groups={groups}
+          steps={steps.map((s) => ({
+            id: s.id,
+            name: s.name,
+            days: s.days,
+            anchor: s.anchor,
+            audience: s.audience,
+            group: s.group,
+            enabled: s.enabled,
+          }))}
+        />
       </section>
 
       <section aria-labelledby="members" className="space-y-4">
