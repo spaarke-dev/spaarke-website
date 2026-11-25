@@ -1,7 +1,7 @@
 # Task 042: Job schedule and Write in Outlook
 
 **Phase:** 4 (Follow-up steps)
-**Status:** done (first run by hand after merge)
+**Status:** done
 **Estimated:** 2 hours
 **Dependencies:** 041
 **Tags:** ci-cd, deploy, react
@@ -44,4 +44,4 @@ FR-11, FR-12 and owner decision 1 (no sending from the admin area for now).
 - `src/lib/market/mailto.ts` and `WriteInOutlook.tsx`: `mailto:<address>?subject=<title>`, the subject encoded so `&` and `#` stay in it. Underlined, default text color.
 - Shown on each open follow-up on `/admin`, on the contact page, and in a new "Open follow-ups" section on the campaign page (`campaignFollowUpRows`, from the due index, for contacts the user may see).
 - Checks: the link's address and subject, and the campaign list with its investor filter. Browser: the link on all three pages with the right address and subject, the route answering 401 without the token and counts with it, no sideways scroll at 375 px, axe clean apart from the header contrast that predates this work.
-- Open: step 3, the first run by hand, after merge and deploy.
+- Step 3, 2026-11-25: run by hand after deploy; HTTP 200 with counts only (no campaign had steps yet).

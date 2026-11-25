@@ -4,7 +4,7 @@ How each success criterion in `spec.md` was checked, on 2026-11-24, and what is 
 
 "Local production build" below means `next build` and `next start` against the Azurite emulator, signed in by sending the principal header the way SWA does. "The checks" means `npm run market:check` against Azurite with fresh tables.
 
-Phase 2 is not deployed yet. Its pull requests are stacked (210 to 219, then this one) and go live together once Ralph merges them, so every live check below waits on that deploy.
+Phase 2 went live on 2026-11-25: Ralph approved the merge, PRs 210 to 220 were merged in order, and the production deploy of the last merge succeeded. The live smoke tests are under "After deploy" below.
 
 ## Success criteria
 
@@ -44,7 +44,8 @@ Phase 2 is not deployed yet. Its pull requests are stacked (210 to 219, then thi
 
 - The checks run the job on made-up members with canned times: day 7 makes a follow-up for exactly the member at `sent`; replied, bounced and Stop steps members get none; a step not yet due waits; one 8 days late is skipped and counted, one 5 days late is caught up; the group filter and the first-meeting anchor work; and a second run the same day creates nothing.
 - The run route answered 401 without the token and counts with it, on the local production build.
-- **Left for Ralph:** after deploy, run the "Follow-up steps" workflow by hand once and check the log shows counts.
+- Live, 2026-11-25: the "Follow-up steps" workflow, run by hand once, got HTTP 200 and logged counts only (0 campaigns with steps, 0 created), as expected before any campaign has steps.
+- **Left for Ralph:** the first scheduled run after a real campaign has a step.
 
 ### 5. Write in Outlook
 
@@ -98,13 +99,21 @@ Phase 2 is not deployed yet. Its pull requests are stacked (210 to 219, then thi
 
 - `/brief/<key>` needs a live brief, which needs the deploy. Run Lighthouse (mobile) on one link from the real campaign after deploy, with the phase 1 numbers for `/tltf-2026` as the comparison.
 
+## After deploy (2026-11-25)
+
+- `/` and `/meet` answer 200; `/admin` and `/admin/import` redirect signed-out visitors to sign-in (302).
+- Signed out, `POST /api/admin/campaigns` and the links route answer 401.
+- `POST /api/market/followups/run` answers 401 with no token and with a wrong one.
+- An unknown brief key answers 404.
+- The mail sync's first run on the new code (05:12 UTC) succeeded. No mailbox reads its calendar yet, so the calendar part has nothing to do until "Read calendar" is turned on.
+
 ## Ralph's final checks
 
-1. Merge and deploy PRs 210 to 219, then this one, in order.
+1. ~~Merge and deploy PRs 210 to 220 in order.~~ Done 2026-11-25.
 2. One real campaign from `/admin`: import the list, give codes, save the brief, export the links (criterion 1).
 3. Open two links from that export and check the campaign results (criterion 2).
 4. A test meeting with a known contact in his own calendar after turning on "Read calendar", and one in contactus@ after the Exchange step (criterion 3).
-5. Run the "Follow-up steps" workflow by hand once (criterion 4).
+5. ~~Run the "Follow-up steps" workflow by hand once.~~ Done 2026-11-25; check the first scheduled run after a campaign has a step (criterion 4).
 6. Click "Write in Outlook" on one follow-up (criterion 5).
 7. The go-ahead to set `MEET_GRAPH_SECRET_EXPIRES=2027-11-13`, then read one live morning report (criterion 6).
 8. The phase 1 final checks still open in `projects/market-access/notes/verification.md`.
