@@ -45,7 +45,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 |---|---|---|---|
 | [050](050-sync-health-and-alert.md) | Sync health and alert | none | done (live test after deploy) |
 | [051](051-secret-expiry-warning.md) | Secret expiry warning | none | done (app setting waits for Ralph) |
-| [090](090-project-wrap-up.md) | Project wrap-up | all | not-started |
+| [090](090-project-wrap-up.md) | Project wrap-up | all | in-progress (written up; waits on Ralph's final checks) |
 
 ## Dated constraints
 
