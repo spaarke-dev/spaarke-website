@@ -27,7 +27,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [030](030-graph-calendar-client.md) | Graph calendar client and registry setting | 001 | not-started |
+| [030](030-graph-calendar-client.md) | Graph calendar client and registry setting | 001 | done (contactus@ waits on the Exchange step) |
 | [031](031-calendar-entries.md) | Calendar entries in the sync | 030 | not-started |
 | [032](032-meetings-in-results.md) | Meetings in results | 031 | not-started |
 

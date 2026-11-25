@@ -5,16 +5,29 @@ import { DANGER, FIELD, QUIET, useAdminRequest } from "@/components/admin/useAdm
 
 const SMALL = "h-8 px-3 text-xs";
 
-/** Pause or resume, check access, read again from a date, and remove one mailbox. */
-export function MailboxActions({ id, address, enabled }: { id: string; address: string; enabled: boolean }) {
+/** Pause or resume, read the calendar, check access, read again from a date, and remove one mailbox. */
+export function MailboxActions({
+  id,
+  address,
+  enabled,
+  readCalendar,
+}: {
+  id: string;
+  address: string;
+  enabled: boolean;
+  readCalendar: boolean;
+}) {
   const { send, busy, error } = useAdminRequest();
   const [result, setResult] = useState<string | null>(null);
   const url = `/api/admin/mailboxes/${id}`;
 
   async function onCheck() {
     setResult(null);
-    const r = await send<{ ok: boolean; error?: string }>(`${url}/check`, "POST");
-    if (r) setResult(r.ok ? "Graph can read this mailbox." : r.error ?? "Graph cannot read this mailbox.");
+    const r = await send<{ ok: boolean; error?: string; calendarError?: string }>(`${url}/check`, "POST");
+    if (!r) return;
+    const mail = r.ok ? "Graph can read this mailbox." : r.error ?? "Graph cannot read this mailbox.";
+    const calendar = readCalendar ? ` Calendar: ${r.calendarError ?? "Graph can read it."}` : "";
+    setResult(mail + calendar);
   }
 
   async function onReread(e: React.FormEvent<HTMLFormElement>) {
@@ -54,6 +67,16 @@ export function MailboxActions({ id, address, enabled }: { id: string; address: 
           Remove
         </button>
       </div>
+      <label className="inline-flex items-center gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={readCalendar}
+          disabled={busy}
+          onChange={(e) => void send(url, "PATCH", { readCalendar: e.target.checked })}
+          className="h-4 w-4"
+        />
+        Read calendar
+      </label>
       <form onSubmit={onReread} className="flex flex-wrap items-end gap-2">
         <label className="flex flex-col gap-1 text-xs text-fg-mid">
           Read again from

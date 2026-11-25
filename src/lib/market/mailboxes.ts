@@ -3,6 +3,7 @@ import { emailHash, normalizeEmail } from "@/lib/market/keys";
 import { audit } from "@/lib/market/audit";
 import { VISIBILITIES, type Visibility } from "@/lib/market/types";
 import { getMailSettings, listMessagesSince, MailGraphError, type MailDeps, type MailSettings } from "@/lib/market/graph-mail";
+import { listCalendarView } from "@/lib/market/graph-calendar";
 
 /**
  * The mailbox registry (FR-08): which mailboxes the mail sync reads.
@@ -45,6 +46,14 @@ export type Mailbox = {
   /** The last "Check access" from the page, and its error if it failed. */
   checkedAt?: string;
   checkError?: string;
+  /** Read this mailbox's calendar too (phase 2 FR-06); off until set. */
+  readCalendar: boolean;
+  /** The last calendar read that worked, and the last one's error, kept apart from the mail's. */
+  lastCalendarAt?: string;
+  lastCalendarError?: string;
+  lastCalendarErrorAt?: string;
+  /** The calendar part of the last "Check access", when Read calendar was on. */
+  checkCalendarError?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -84,6 +93,11 @@ type Entity = {
   alertedOn?: string;
   checkedAt?: string;
   checkError?: string;
+  readCalendar?: boolean;
+  lastCalendarAt?: string;
+  lastCalendarError?: string;
+  lastCalendarErrorAt?: string;
+  checkCalendarError?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -108,6 +122,11 @@ function fromEntity(e: Entity): Mailbox {
     alertedOn: e.alertedOn || undefined,
     checkedAt: e.checkedAt || undefined,
     checkError: e.checkError || undefined,
+    readCalendar: e.readCalendar === true,
+    lastCalendarAt: e.lastCalendarAt || undefined,
+    lastCalendarError: e.lastCalendarError || undefined,
+    lastCalendarErrorAt: e.lastCalendarErrorAt || undefined,
+    checkCalendarError: e.checkCalendarError || undefined,
     createdAt: e.createdAt,
     updatedAt: e.updatedAt,
   };
@@ -135,9 +154,9 @@ export type NewMailbox = {
   visibility: Visibility;
 };
 
-export type MailboxPatch = Partial<Omit<NewMailbox, "address">> & { enabled?: boolean };
+export type MailboxPatch = Partial<Omit<NewMailbox, "address">> & { enabled?: boolean; readCalendar?: boolean };
 
-const EDITABLE = new Set(["label", "kind", "mode", "visibility", "enabled"]);
+const EDITABLE = new Set(["label", "kind", "mode", "visibility", "enabled", "readCalendar"]);
 
 function oneOf<T extends string>(list: readonly T[], value: unknown, field: string): T {
   if (typeof value !== "string" || !(list as readonly string[]).includes(value)) {
@@ -182,6 +201,10 @@ export function parseMailboxPatch(body: unknown): MailboxPatch {
   if ("enabled" in b) {
     if (typeof b.enabled !== "boolean") throw new MailboxError(400, "enabled must be true or false");
     patch.enabled = b.enabled;
+  }
+  if ("readCalendar" in b) {
+    if (typeof b.readCalendar !== "boolean") throw new MailboxError(400, "readCalendar must be true or false");
+    patch.readCalendar = b.readCalendar;
   }
   if (Object.keys(patch).length === 0) throw new MailboxError(400, "Nothing to change");
   return patch;
@@ -228,6 +251,7 @@ function auditable(m: Mailbox | NewMailbox | MailboxPatch): Record<string, unkno
   const out: Record<string, unknown> = { label, kind, mode, visibility };
   if ("address" in m) out.address = m.address;
   if ("enabled" in m) out.enabled = m.enabled;
+  if ("readCalendar" in m) out.readCalendar = m.readCalendar;
   return out;
 }
 
@@ -243,6 +267,7 @@ export async function addMailbox(input: NewMailbox, who: string, now = new Date(
     mode: input.mode,
     visibility: input.visibility,
     enabled: true,
+    readCalendar: false,
     createdAt: at,
     updatedAt: at,
   };
@@ -271,7 +296,17 @@ export async function editMailbox(id: string, patch: MailboxPatch, who: string, 
   const update = { partitionKey: PARTITION, rowKey: id, ...changes, updatedAt: now.toISOString() };
   await t.updateEntity(update, "Merge");
   const after = { ...before, ...changes, updatedAt: update.updatedAt } as Mailbox;
-  const action = "enabled" in changes && Object.keys(changes).length === 1 ? (changes.enabled ? "mailbox.resume" : "mailbox.pause") : "mailbox.edit";
+  const only = Object.keys(changes).length === 1;
+  const action =
+    only && "enabled" in changes
+      ? changes.enabled
+        ? "mailbox.resume"
+        : "mailbox.pause"
+      : only && "readCalendar" in changes
+        ? changes.readCalendar
+          ? "mailbox.calendar_on"
+          : "mailbox.calendar_off"
+        : "mailbox.edit";
   await audit({ who, action, entity: "mailbox", entityId: id, before: auditable(before), after: auditable(after) }, now);
   return after;
 }
@@ -335,11 +370,18 @@ export async function recordSync(id: string, outcome: { error?: string }, now = 
   }
 }
 
-/** Record a "Check access" outcome from the page. */
-export async function recordCheck(id: string, outcome: { error?: string }, now = new Date()): Promise<void> {
+/**
+ * Record a calendar read's outcome (phase 2 FR-06), apart from the mail's, so
+ * a mailbox without calendar access keeps its mail sync status.
+ */
+export async function recordCalendar(id: string, outcome: { error?: string }, now = new Date()): Promise<void> {
   const t = await getTable("mailboxes");
   if (!t || !isMailboxId(id)) return;
-  const fields = { checkedAt: now.toISOString(), checkError: outcome.error === undefined ? "" : shortError(outcome.error) };
+  const at = now.toISOString();
+  const fields =
+    outcome.error === undefined
+      ? { lastCalendarAt: at, lastCalendarError: "", lastCalendarErrorAt: "" }
+      : { lastCalendarError: shortError(outcome.error), lastCalendarErrorAt: at };
   try {
     await t.updateEntity({ partitionKey: PARTITION, rowKey: id, ...fields }, "Merge");
   } catch (err) {
@@ -347,16 +389,43 @@ export async function recordCheck(id: string, outcome: { error?: string }, now =
   }
 }
 
+/** Record a "Check access" outcome from the page. */
+export async function recordCheck(
+  id: string,
+  outcome: { error?: string; calendarError?: string },
+  now = new Date(),
+): Promise<void> {
+  const t = await getTable("mailboxes");
+  if (!t || !isMailboxId(id)) return;
+  const fields = {
+    checkedAt: now.toISOString(),
+    checkError: outcome.error === undefined ? "" : shortError(outcome.error),
+    checkCalendarError: outcome.calendarError === undefined ? "" : shortError(outcome.calendarError),
+  };
+  try {
+    await t.updateEntity({ partitionKey: PARTITION, rowKey: id, ...fields }, "Merge");
+  } catch (err) {
+    if (statusOf(err) !== 404) throw err;
+  }
+}
+
+function graphFailure(err: unknown, what: string): string {
+  if (err instanceof MailGraphError) return err.message;
+  console.error(`[mailboxes] ${what} check failed:`, (err as Error).message);
+  return "Microsoft Graph did not answer. Try again in a minute.";
+}
+
 /**
  * Ask Graph for one Inbox message from the last day, to show whether the
- * mailbox is inside the Exchange scope before the first sync. Records and
+ * mailbox is inside the Exchange scope before the first sync. With Read
+ * calendar on, it also asks for one event in the next day. Records and
  * returns the outcome. Reads metadata only, like the sync.
  */
 export async function checkAccess(
   mailbox: Mailbox,
   opts: MailDeps & { settings?: MailSettings | null } = {},
   now = new Date(),
-): Promise<{ ok: true } | { ok: false; error: string }> {
+): Promise<{ ok: true; calendarError?: string } | { ok: false; error: string; calendarError?: string }> {
   const settings = opts.settings === undefined ? getMailSettings() : opts.settings;
   if (!settings) throw new MailboxError(503, "The Graph settings are not configured");
   const since = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
@@ -366,9 +435,20 @@ export async function checkAccess(
       void _;
     }
   } catch (err) {
-    error = err instanceof MailGraphError ? err.message : "Microsoft Graph did not answer. Try again in a minute.";
-    if (!(err instanceof MailGraphError)) console.error("[mailboxes] access check failed:", (err as Error).message);
+    error = graphFailure(err, "access");
   }
-  await recordCheck(mailbox.id, { error }, now);
-  return error === undefined ? { ok: true } : { ok: false, error };
+  let calendarError: string | undefined;
+  if (mailbox.readCalendar) {
+    const window = { start: now.toISOString(), end: new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString() };
+    try {
+      for await (const _ of listCalendarView(settings, mailbox.address, window, { fetch: opts.fetch, token: opts.token, max: 1 })) {
+        void _;
+      }
+    } catch (err) {
+      calendarError = graphFailure(err, "calendar");
+    }
+  }
+  await recordCheck(mailbox.id, { error, calendarError }, now);
+  const cal = calendarError === undefined ? {} : { calendarError };
+  return error === undefined ? { ok: true, ...cal } : { ok: false, error, ...cal };
 }

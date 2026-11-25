@@ -2,7 +2,8 @@ import { getTable, statusOf } from "@/lib/market/tables";
 import { emailDomain } from "@/lib/market/keys";
 import { findContactByEmail, isTombstoned } from "@/lib/market/contacts";
 import { attachEmailLink, hasActivity, recordActivity } from "@/lib/market/activity";
-import { enabledMailboxes, recordSync, type Mailbox } from "@/lib/market/mailboxes";
+import { enabledMailboxes, recordCalendar, recordSync, type Mailbox } from "@/lib/market/mailboxes";
+import { syncCalendar, type CalendarSummary } from "@/lib/market/calendar-sync";
 import { sendSyncAlert } from "@/lib/email";
 import {
   bounceRecipient,
@@ -69,6 +70,8 @@ export type MailboxSummary = {
   followUpsClosed: number;
   /** False when the deadline stopped it; the next run continues. */
   complete: boolean;
+  /** With Read calendar on (phase 2 FR-06); its failure leaves `ok` alone. */
+  calendar?: CalendarSummary;
 };
 
 export type SyncSummary = {
@@ -367,6 +370,24 @@ function errorText(err: unknown): string {
 }
 
 /**
+ * The calendar after the mail, recorded apart: a mailbox without calendar
+ * access keeps its mail status. Skipped when the deadline has passed.
+ */
+async function calendarPart(mailbox: Mailbox, opts: SyncOptions): Promise<CalendarSummary> {
+  if (Date.now() >= opts.deadline) return { ok: true, events: 0, pruned: 0, complete: false };
+  try {
+    const c = await syncCalendar(mailbox, opts);
+    await recordCalendar(mailbox.id, {});
+    return c;
+  } catch (err) {
+    const error = errorText(err);
+    if (!(err instanceof MailGraphError)) console.error("[sync] calendar failed:", (err as Error).message);
+    await recordCalendar(mailbox.id, { error });
+    return { ok: false, error, events: 0, pruned: 0, complete: false };
+  }
+}
+
+/**
  * Every enabled mailbox, one at a time, the longest unsynced first. A failure
  * in one is recorded on it and the others carry on. Campaign statuses are
  * derived again when any email was logged.
@@ -382,6 +403,7 @@ export async function syncAll(opts: SyncOptions): Promise<SyncSummary> {
     try {
       const s = await syncMailbox(mailbox, opts);
       await recordSync(mailbox.id, {});
+      if (mailbox.readCalendar) s.calendar = await calendarPart(mailbox, opts);
       out.mailboxes.push(s);
     } catch (err) {
       const error = errorText(err);

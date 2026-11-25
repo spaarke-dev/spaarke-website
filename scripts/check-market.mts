@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 040, 050, 051).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022, 030, 040, 050, 051).
 //
 //   npm run market:check
 //
@@ -1091,6 +1091,54 @@ console.log("Pure checks");
   assert.deepEqual(st.parseStep({ enabled: false }, { partial: true }), { enabled: false });
   assert.deepEqual(st.parseStep({ group: "" }, { partial: true }), { group: null }, "an empty group clears it");
   ok("a follow-up step reads as a sentence, and bad days, anchors, audiences and fields are refused (phase 2 FR-09, task 040)");
+}
+
+{
+  // Phase 2 FR-06 (task 030): calendar events as the fields the sync keeps, and the window.
+  const gc = await import("@/lib/market/graph-calendar");
+  const ev = gc.toCalendarEvent({
+    id: "AAMk1",
+    iCalUId: "040000008200E001",
+    subject: "  Intro call ",
+    start: { dateTime: "2026-12-01T15:00:00.0000000", timeZone: "UTC" },
+    end: { dateTime: "2026-12-01T15:30:00.0000000", timeZone: "UTC" },
+    isCancelled: false,
+    sensitivity: "normal",
+    isOnlineMeeting: true,
+    webLink: "https://outlook.office365.com/owa/?itemid=x",
+    attendees: [{ emailAddress: { address: "Pat@Example.TEST" } }, { emailAddress: { address: "pat@example.test" } }, { emailAddress: { address: "/O=EXCHANGELABS/OU=X" } }],
+    organizer: { emailAddress: { address: "Owner@Example.test" } },
+    createdDateTime: "2026-11-20T09:00:00Z",
+    lastModifiedDateTime: "2026-11-21T09:00:00Z",
+    type: "singleInstance",
+  });
+  assert.deepEqual(ev, {
+    iCalUId: "040000008200E001",
+    id: "AAMk1",
+    start: "2026-12-01T15:00:00.000Z",
+    end: "2026-12-01T15:30:00.000Z",
+    timeZone: "UTC",
+    isCancelled: false,
+    isPrivate: false,
+    isOnline: true,
+    webLink: "https://outlook.office365.com/owa/?itemid=x",
+    subject: "Intro call",
+    organizer: "owner@example.test",
+    attendees: ["pat@example.test"],
+    createdAt: "2026-11-20T09:00:00.000Z",
+    modifiedAt: "2026-11-21T09:00:00.000Z",
+    type: "singleInstance",
+    seriesMasterId: undefined,
+  });
+  const priv = gc.toCalendarEvent({ id: "p", iCalUId: "u", subject: "Board", sensitivity: "private", start: { dateTime: "2026-12-01T15:00:00" } })!;
+  assert.deepEqual([priv.isPrivate, priv.subject, priv.end], [true, undefined, "2026-12-01T15:00:00.000Z"], "a private event keeps no subject");
+  assert.equal(gc.toCalendarEvent({ id: "x", start: { dateTime: "2026-12-01T15:00:00" } }), null, "no iCalUId, no event");
+  assert.deepEqual(gc.calendarWindow(new Date("2026-11-24T17:45:00Z")), { start: "2026-10-25T00:00:00.000Z", end: "2027-02-23T00:00:00.000Z" });
+  assert.ok(!/body|bodyPreview|attachments/i.test(gc.CALENDAR_SELECT), "no body, notes or attachments are requested");
+  const mb = await import("@/lib/market/mailboxes");
+  assert.deepEqual(mb.parseMailboxPatch({ readCalendar: true }), { readCalendar: true });
+  assert.throws(() => mb.parseMailboxPatch({ readCalendar: "yes" }), /true or false/);
+  ok("calendar events keep only the sync's fields, a private one keeps no subject, and the window is 30 days back to 90 ahead (phase 2 FR-06, task 030)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -2304,6 +2352,101 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.equal(actions("member.stop_steps").length, 2, "one row per change, none for a repeat");
   assert.deepEqual(actions("step.switch")[0].changes.map((c) => [c.field, c.to]), [["enabled", "false"]]);
   ok("follow-up steps save, edit, switch off, reorder and go, a step's group must exist, and Stop steps holds on a member, each change audited (phase 2 FR-09, task 040)");
+}
+
+{
+  // Phase 2 FR-06 (task 030): the calendar client against canned Graph answers, the state rows, and the setting.
+  const gc = await import("@/lib/market/graph-calendar");
+  const cs = await import("@/lib/market/calendar-state");
+  const mb = await import("@/lib/market/mailboxes");
+  const sync = await import("@/lib/market/sync");
+  const graphRoot = "https://graph.microsoft.com/v1.0";
+  const settings = { tenantId: "t", clientId: "c", clientSecret: "s" };
+  const who = "admin@example.test";
+  const event = (n: number, start: string) => ({
+    id: `ev${n}`,
+    iCalUId: `uid-${run}-${n}`,
+    subject: `Meeting ${n}`,
+    start: { dateTime: start, timeZone: "UTC" },
+    end: { dateTime: start.replace(/T(\d\d)/, (_, h) => `T${String(Number(h) + 1).padStart(2, "0")}`), timeZone: "UTC" },
+    attendees: [{ emailAddress: { address: `guest${n}@example.test` } }],
+  });
+
+  // Paging, the window and the $select.
+  const urls: string[] = [];
+  const fake = (async (input: string | URL | Request) => {
+    const url = decodeURIComponent(String(input));
+    urls.push(url);
+    if (url.includes("deny@")) return new Response(JSON.stringify({ error: { code: "ErrorAccessDenied" } }), { status: 403 });
+    if (url.includes("/events/gone")) return new Response(JSON.stringify({ error: { code: "ErrorItemNotFound" } }), { status: 404 });
+    if (url.includes("/events/moved")) return new Response(JSON.stringify(event(9, "2027-03-01T10:00:00")), { status: 200 });
+    if (url.includes("$skiptoken=p2")) return new Response(JSON.stringify({ value: [event(3, "2026-12-03T10:00:00")] }), { status: 200 });
+    if (url.includes("/calendarView")) {
+      return new Response(
+        JSON.stringify({
+          value: [event(1, "2026-12-01T10:00:00"), { id: "broken" }, event(2, "2026-12-02T10:00:00")],
+          "@odata.nextLink": `${graphRoot}/users/own%40example.test/calendarView?$skiptoken=p2`,
+        }),
+        { status: 200 },
+      );
+    }
+    return new Response(JSON.stringify({ value: [] }), { status: 200 });
+  }) as typeof fetch;
+  const deps = { fetch: fake, token: async () => "token" };
+  const window = gc.calendarWindow(new Date("2026-11-24T12:00:00Z"));
+  const got = [];
+  for await (const e of gc.listCalendarView(settings, "own@example.test", window, deps)) got.push(e.id);
+  assert.deepEqual(got, ["ev1", "ev2", "ev3"], "follows the next link; an event without an iCalUId is skipped");
+  assert.ok(urls[0].includes(`startDateTime=${window.start}`) && urls[0].includes(`endDateTime=${window.end}`));
+  assert.ok(urls[0].includes(`$select=${gc.CALENDAR_SELECT}`));
+  await assert.rejects(
+    (async () => {
+      for await (const _ of gc.listCalendarView(settings, "deny@example.test", window, deps)) void _;
+    })(),
+    (e: Error) => e instanceof gc.NoCalendarAccess && /calendar is not in the Exchange access scope/.test(e.message),
+  );
+  assert.equal(await gc.getCalendarEvent(settings, "own@example.test", "gone", deps), null, "404 by ID means deleted");
+  assert.equal((await gc.getCalendarEvent(settings, "own@example.test", "moved", deps))!.start, "2027-03-01T10:00:00.000Z");
+
+  // State rows: saved whole, read back, and removed 30 days after the event ended.
+  const box = keys.sha256(`cal-state-${run}`);
+  const now = new Date("2026-11-24T12:00:00Z");
+  await cs.saveCalendarState({ mailboxId: box, iCalUId: "old/one#1", eventId: "e1", start: "2026-10-01T10:00:00.000Z", end: "2026-10-01T11:00:00.000Z", contactIds: ["b", "a", "a"], logged: ["booked", "held"] }, now);
+  await cs.saveCalendarState({ mailboxId: box, iCalUId: "recent", eventId: "e2", start: "2026-11-01T10:00:00.000Z", end: "2026-11-01T11:00:00.000Z", contactIds: ["a"], logged: ["booked"] }, now);
+  const states = await cs.loadCalendarStates(box);
+  assert.deepEqual(states.get("old/one#1")!.contactIds, ["a", "b"], "an iCalUId with any characters keys a row");
+  assert.equal(await cs.pruneCalendarStates(box, now), 1);
+  assert.deepEqual([...(await cs.loadCalendarStates(box)).keys()], ["recent"]);
+
+  // The setting: off by default, audited; a calendar without access shows its own error and the mail keeps syncing.
+  const own = await mb.addMailbox(mb.parseNewMailbox({ address: `cal-ok@own-${run}.example.test`, label: "Cal ok" }), who);
+  assert.equal(own.readCalendar, false, "off by default");
+  const denied = await mb.addMailbox(mb.parseNewMailbox({ address: `deny@own-${run}.example.test`, label: "Cal denied" }), who);
+  await mb.editMailbox(own.id, { readCalendar: true }, who);
+  await mb.editMailbox(denied.id, { readCalendar: true }, who);
+  const mailOk = (async (input: string | URL | Request) => {
+    const url = decodeURIComponent(String(input));
+    if (url.includes("/calendarView") && url.includes("deny@")) return new Response(JSON.stringify({ error: { code: "ErrorAccessDenied" } }), { status: 403 });
+    if (url.includes("/calendarView")) return new Response(JSON.stringify({ value: [event(1, "2026-12-01T10:00:00")] }), { status: 200 });
+    return new Response(JSON.stringify({ value: [] }), { status: 200 });
+  }) as typeof fetch;
+  const summary = await sync.syncAll({ settings, fetch: mailOk, token: async () => "token", deadline: Date.now() + 60_000, alert: async () => undefined });
+  const mine = (id: string) => summary.mailboxes.find((m) => m.id === id)!;
+  assert.deepEqual([mine(own.id).ok, mine(own.id).calendar?.ok, mine(own.id).calendar?.events], [true, true, 1]);
+  assert.deepEqual([mine(denied.id).ok, mine(denied.id).calendar?.ok], [true, false], "mail keeps syncing");
+  const after = (await mb.getMailbox(denied.id))!;
+  assert.match(after.lastCalendarError ?? "", /calendar is not in the Exchange access scope/);
+  assert.equal(after.lastError, undefined, "the mail status stays clean");
+  assert.ok((await mb.getMailbox(own.id))!.lastCalendarAt);
+  const check = await mb.checkAccess(after, { settings, fetch: mailOk, token: async () => "token" });
+  assert.equal(check.ok, true);
+  assert.match(check.calendarError ?? "", /calendar is not in the Exchange access scope/);
+  assert.match((await mb.getMailbox(denied.id))!.checkCalendarError ?? "", /calendar/);
+  const log = await auditLog.listAudit(keys.monthKey(Date.now()), 5000);
+  assert.equal(log.filter((e) => e.entityId === own.id && e.action === "mailbox.calendar_on").length, 1);
+  await mb.removeMailbox(own.id, who);
+  await mb.removeMailbox(denied.id, who);
+  ok("the calendar client pages the window with metadata only, maps 403 and 404, state rows go after 30 days, and a calendar without access fails apart from the mail (phase 2 FR-06, task 030)");
 }
 
 {

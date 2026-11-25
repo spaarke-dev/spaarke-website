@@ -62,8 +62,10 @@ export async function POST(request: Request) {
       triaged: t.triaged + m.triaged,
       linked: t.linked + m.linked,
       followUpsClosed: t.followUpsClosed + m.followUpsClosed,
+      calendarEvents: t.calendarEvents + (m.calendar?.events ?? 0),
+      calendarFailed: t.calendarFailed + (m.calendar && !m.calendar.ok ? 1 : 0),
     }),
-    { messages: 0, sent: 0, received: 0, bounced: 0, triaged: 0, linked: 0, followUpsClosed: 0 },
+    { messages: 0, sent: 0, received: 0, bounced: 0, triaged: 0, linked: 0, followUpsClosed: 0, calendarEvents: 0, calendarFailed: 0 },
   );
   try {
     trackEvent("market.sync", {
