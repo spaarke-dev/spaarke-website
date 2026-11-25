@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 041 and 042: daily follow-up job (done); 001 waits on the Exchange step |
-| **Step** | 041 and 042 built and verified; PRs stacked, merged together after all tasks (Ralph, 2026-11-24) |
-| **Status** | in progress; waiting on Ralph's Exchange step for the contactus@ retest |
-| **Next action** | Once Ralph has run section 7 of `docs/market-access-mailboxes.md`, retest the contactus@ calendar read and record it in `notes/calendar-spike.md`. Phase 3 (calendar) needs that step; task 041 needs tasks 040 and 031 |
+| **Task** | 090: project wrap-up (written up); waits on deploy and Ralph's final checks |
+| **Step** | All tasks built; PRs 210 to 219 plus the wrap-up PR stacked, merged together in order (Ralph, 2026-11-24) |
+| **Status** | in progress; waiting on the merge and deploy, then Ralph's final checks and the Exchange step |
+| **Next action** | After deploy: run the live checks in `notes/verification.md` (050 alert, 031 live run, 032 recompute, 042 first workflow run, Lighthouse on a brief). After Ralph's Exchange step: retest the contactus@ calendar read and record it in `notes/calendar-spike.md` |
 
 ## Open items
 
@@ -39,3 +39,4 @@
 - 2026-11-24: task 030 in PR 216. Task 031 built (calendar entries); 79 checks pass with fresh tables.
 - 2026-11-24: task 031 in PR 217. Task 032 built (held meetings count toward the meeting stage); 80 checks pass with fresh tables.
 - 2026-11-24: task 032 in PR 218. Tasks 041 and 042 built (daily follow-up job, schedule, Write in Outlook); 84 checks pass with fresh tables.
+- 2026-11-24: tasks 041 and 042 in PR 219. Task 090 written up: `notes/verification.md` and `notes/lessons.md`; privacy searches clean; 84 checks pass. The project stays open until Ralph's final checks (listed at the end of `notes/verification.md`).

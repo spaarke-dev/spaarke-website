@@ -1,7 +1,7 @@
 # Task 090: Project wrap-up
 
 **Phase:** 5 (Health)
-**Status:** not-started
+**Status:** in-progress (written up; waits on Ralph's final checks)
 **Estimated:** 3 hours
 **Dependencies:** all
 **Tags:** testing, accessibility, performance
@@ -27,6 +27,15 @@ Every phase 2 success criterion is verified and written up, and the project is r
 
 ## Acceptance criteria
 
-- [ ] Every success criterion has a status and a method.
-- [ ] No contact data, codes, keys or brief text in the repo.
+- [x] Every success criterion has a status and a method.
+- [x] No contact data, codes, keys or brief text in the repo.
 - [ ] The project stays open until Ralph has done his final checks.
+
+## As built
+
+- `notes/verification.md`: each of the 7 success criteria with its status, method and what is left for Ralph; the privacy searches (counts only); axe per page from the task browser tests; Ralph's final checks in order.
+- Privacy: the pattern search over the 91 files phase 2 changed found only made-up fixtures; the private-value search over 1,641 tracked files found no address, key, code or phone number, and one name in a research note from 2026-09 that phase 2 did not add.
+- `npm run market:check`: 84 pass with fresh tables on this branch.
+- Lighthouse on `/brief/<key>` needs a live brief, so it moves to after deploy.
+- `notes/lessons.md` written.
+- Step 7 (README Complete, milestones, deleting `current-task.md`) waits on Ralph's final checks.
