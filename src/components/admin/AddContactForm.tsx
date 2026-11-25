@@ -95,12 +95,20 @@ export function AddContactForm({ canInvestor }: { canInvestor: boolean }) {
       ) : null}
       {existing ? (
         <p role="status" className="text-sm">
-          This address already belongs to a contact, so nothing was added.{" "}
           {existing.contactId ? (
-            <Link href={`/admin/contacts/${existing.contactId}`} className="font-medium underline underline-offset-2">
-              Open the contact
-            </Link>
-          ) : null}
+            <>
+              This address already belongs to a contact, so nothing was added.{" "}
+              <Link href={`/admin/contacts/${existing.contactId}`} className="font-medium underline underline-offset-2">
+                Open the contact
+              </Link>
+            </>
+          ) : (
+            // The match is investor-only: say why it is not in the list, without naming it.
+            <>
+              This address belongs to a contact only the investor role can see, so nothing was added and it is not in
+              your list. Ask an admin with that role to open it.
+            </>
+          )}
         </p>
       ) : null}
       <div className="flex flex-wrap gap-2">

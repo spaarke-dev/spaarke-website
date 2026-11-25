@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 export type Column<T> = {
   key: string;
-  header: string;
+  header: ReactNode;
   cell: (row: T) => ReactNode;
   /** Extra classes for both header and cell, for example `hidden md:table-cell`. */
   className?: string;
