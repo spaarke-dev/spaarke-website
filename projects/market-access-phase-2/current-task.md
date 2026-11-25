@@ -17,7 +17,7 @@
 |---|---|---|
 | 1 | Ralph runs `Application Calendars.Read` for contactus@ | Command ready (setup guide, section 7) |
 | 2 | Delta window for a rolling calendar range | Settled: no delta; `calendarView` each run (`notes/calendar-spike.md`) |
-| 3 | `MEET_GRAPH_SECRET_EXPIRES` set | Code done (task 051); the app setting waits for Ralph's go-ahead |
+| 3 | `MEET_GRAPH_SECRET_EXPIRES` set | Done 2026-11-25 (Ralph's go-ahead), matching the secret's end date on the app registration |
 
 ## Decisions made
 
@@ -41,3 +41,4 @@
 - 2026-11-24: task 032 in PR 218. Tasks 041 and 042 built (daily follow-up job, schedule, Write in Outlook); 84 checks pass with fresh tables.
 - 2026-11-24: tasks 041 and 042 in PR 219. Task 090 written up: `notes/verification.md` and `notes/lessons.md`; privacy searches clean; 84 checks pass. The project stays open until Ralph's final checks (listed at the end of `notes/verification.md`).
 - 2026-11-25: Ralph approved the merge; PRs 210 to 220 merged in order and deployed. Live smoke tests pass, and the follow-up workflow's first run by hand answered with counts (nothing to do yet).
+- 2026-11-25: `MEET_GRAPH_SECRET_EXPIRES` set on the site; only that setting changed. contactus@ calendar retested: still 403 `ErrorAccessDenied`, so the Exchange step (setup guide, section 7) is still to run or still applying.
