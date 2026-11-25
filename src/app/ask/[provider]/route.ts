@@ -27,9 +27,9 @@ export async function GET(
   trackEvent("ask_ai.click", { provider, src: src || "direct", brief: briefKey ? "yes" : "no" });
   // The market access log (FR-06): a recipient code in `src`, or the brief
   // behind `k`, ties the click to a campaign member. Neither is logged.
-  const label = briefKey ? (await getPrivateBrief(briefKey))?.label : undefined;
-  await recordAskClick(provider, src, label);
-  return NextResponse.redirect(providerUrl(provider, briefKey), {
+  const brief = briefKey ? await getPrivateBrief(briefKey) : null;
+  await recordAskClick(provider, src, brief?.label);
+  return NextResponse.redirect(providerUrl(provider, briefKey, brief?.audience), {
     status: 302,
     headers: { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" },
   });

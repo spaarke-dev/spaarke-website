@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { campaignRequest, changed, fail, json, who } from "@/lib/market/admin-api";
+import { fillBriefRows } from "@/lib/market/campaign-brief";
 import { assignCodes } from "@/lib/market/codes";
 
 export const dynamic = "force-dynamic";
@@ -18,6 +19,8 @@ export async function POST(request: Request, { params }: Ctx) {
     if (r.status === "prefix-in-use") {
       return fail(409, "Another campaign uses this code prefix. Set a different one under Edit details.");
     }
+    // Newly coded members get a brief link once the campaign has a brief (FR-04).
+    if (!r.more) await fillBriefRows(ctx.campaign);
     changed();
     return json({ ok: true, coded: r.coded, clashes: r.clashes, more: r.more });
   } catch (err) {

@@ -31,7 +31,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ key
   trackEvent("brief.read", { label: brief.label });
   // The market access log (FR-06): only when the label belongs to a campaign member.
   await recordBriefRead(brief.label);
-  return new Response(llmsFullText({ investorOverview: brief.text }), {
+  const material = brief.audience === "general" ? { brief: brief.text } : { investorOverview: brief.text };
+  return new Response(llmsFullText(material), {
     headers: { "Content-Type": "text/plain; charset=utf-8", ...PRIVATE_HEADERS },
   });
 }

@@ -92,9 +92,10 @@ export function materialUrl(briefKey?: string): string {
  * material for gaps and inconsistencies. What is not covered is now handled
  * by sending the reader to the team.
  */
-export function askPrompt(briefKey?: string): string {
+export function askPrompt(briefKey?: string, audience: "investor" | "general" = "investor"): string {
   const site = siteUrl();
-  const investor = isBriefKey(briefKey);
+  // A general brief (phase 2 FR-04) keeps the published headings; only the material differs.
+  const investor = isBriefKey(briefKey) && audience === "investor";
   const sections = investor ? INVESTOR_BRIEFING_SECTIONS : BRIEFING_SECTIONS;
   const followUps = investor ? INVESTOR_FOLLOW_UPS : FOLLOW_UPS;
   return [
@@ -107,8 +108,8 @@ export function askPrompt(briefKey?: string): string {
 }
 
 /** Where /ask/<provider> sends the reader. */
-export function providerUrl(provider: AskProvider, briefKey?: string): string {
-  const q = encodeURIComponent(askPrompt(briefKey));
+export function providerUrl(provider: AskProvider, briefKey?: string, audience?: "investor" | "general"): string {
+  const q = encodeURIComponent(askPrompt(briefKey, audience));
   switch (provider) {
     case "claude":
       return `https://claude.ai/new?q=${q}`;

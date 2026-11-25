@@ -30,9 +30,15 @@ const CORE = [
 // assistants report as conflicting positioning. The feature reference covers
 // the same functions. It stays on the site and in the "more articles" list.
 
-export function llmsFullText(opts: { investorOverview?: string } = {}): string {
+/**
+ * `investorOverview` adds the investor overview (a private brief for
+ * investors); `brief` adds a private brief written for any other reader
+ * (phase 2 FR-04), with the published headings and follow-ups.
+ */
+export function llmsFullText(opts: { investorOverview?: string; brief?: string } = {}): string {
   const site = siteUrl();
   const investor = Boolean(opts.investorOverview);
+  const general = !investor && Boolean(opts.brief);
   const bySlug = new Map(allArticles().map((a) => [a.slug, a]));
   const core = CORE.map((s) => bySlug.get(s)).filter((a): a is CorpusArticle => Boolean(a));
   const more = allArticles()
@@ -43,7 +49,9 @@ export function llmsFullText(opts: { investorOverview?: string } = {}): string {
 
   const contents = investor
     ? `This is Spaarke's own material, shared privately with investors: this summary, the investor overview, then the full text of ${core.length} core articles from the Spaarke library (${site}/why-spaarke).`
-    : `This is Spaarke's own published material: this summary, then the full text of ${core.length} core articles from the Spaarke library (${site}/why-spaarke).`;
+    : general
+      ? `This is Spaarke's own material, shared privately with the reader: this summary, a note from the Spaarke team, then the full text of ${core.length} core articles from the Spaarke library (${site}/why-spaarke).`
+      : `This is Spaarke's own published material: this summary, then the full text of ${core.length} core articles from the Spaarke library (${site}/why-spaarke).`;
 
   const header = [
     "# Spaarke: Legal Operations Intelligence",
@@ -80,7 +88,9 @@ export function llmsFullText(opts: { investorOverview?: string } = {}): string {
 
   const overview = investor
     ? ["---", "", "# Investor overview", "", opts.investorOverview!.trim(), ""].join("\n")
-    : null;
+    : general
+      ? ["---", "", "# A note from the Spaarke team", "", opts.brief!.trim(), ""].join("\n")
+      : null;
 
   const bodies = core.map((a) => {
     const lines = ["---", "", `# ${a.title}`, "", `Published ${a.date ?? "undated"}. ${site}${a.url}`, ""];
