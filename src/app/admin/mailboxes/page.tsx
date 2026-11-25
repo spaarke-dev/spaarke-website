@@ -46,6 +46,28 @@ function Status({ m }: { m: Mailbox }) {
           </dd>
         </div>
       ) : null}
+      {m.checkedAt && m.checkCalendarError ? (
+        <div className={line}>
+          <dt className="text-fg-mid">Calendar check</dt>
+          <dd className="text-[#c42b1c] [overflow-wrap:anywhere]">{m.checkCalendarError}</dd>
+        </div>
+      ) : null}
+      {m.readCalendar ? (
+        <div className={line}>
+          <dt className="text-fg-mid">Calendar</dt>
+          <dd>{m.lastCalendarAt ? `Last read ${formatWhen(m.lastCalendarAt)}` : "Not read yet"}</dd>
+        </div>
+      ) : null}
+      {m.readCalendar && m.lastCalendarError ? (
+        <div className={line}>
+          <dt className="text-fg-mid">Calendar error</dt>
+          <dd className="text-[#c42b1c] [overflow-wrap:anywhere]">
+            {m.lastCalendarError}
+            {m.lastCalendarErrorAt ? <span className="text-fg-mid"> ({formatWhen(m.lastCalendarErrorAt)})</span> : null}
+            <span className="text-fg-mid"> Mail keeps syncing.</span>
+          </dd>
+        </div>
+      ) : null}
     </dl>
   );
 }
@@ -116,7 +138,7 @@ export default async function MailboxesPage() {
               </div>
               <div className="mt-3 grid gap-3 sm:grid-cols-2 sm:items-start">
                 <Status m={m} />
-                <MailboxActions id={m.id} address={m.address} enabled={m.enabled} />
+                <MailboxActions id={m.id} address={m.address} enabled={m.enabled} readCalendar={m.readCalendar} />
               </div>
             </li>
           ))}

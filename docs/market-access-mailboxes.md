@@ -151,6 +151,8 @@ As with mail, the assignment can take up to two hours to apply, and Graph answer
 
 The role is read-only and covers every mailbox in the "Market access sync" group, so a mailbox added to the group later can also have its calendar read. The sync reads a calendar only when its "Read calendar" setting is on at `/admin/mailboxes`, and that setting is off by default. It reads the time, subject, attendees, the online flag and the Outlook link of each event, never the body, notes or attachments.
 
+To start reading a calendar, tick "Read calendar" on its mailbox at `/admin/mailboxes`, then press "Check access": the result says whether Graph can read the mail and the calendar. Each sync run then reads the calendar from 30 days back to 90 days ahead, after the mail. A calendar error shows on its own line, "Calendar error", and the mailbox's mail keeps syncing.
+
 To turn calendar read off entirely, remove only this role. `/meet` keeps its own calendar assignment:
 
 ```powershell
@@ -168,5 +170,6 @@ Get-ManagementRoleAssignment -RoleAssignee <APP_ID> |
 | An email "Mail sync failing: <mailbox>" | That mailbox failed three runs in a row (about 45 minutes). It goes once a day while the failures go on, and the morning report's "Mail sync" section lists the mailbox with its error. A good run resets the count |
 | The sync run fails with 401 | `MA_SYNC_TOKEN` differs between the app settings and the GitHub secret |
 | The sync run fails with 503 | `MA_SYNC_TOKEN` is not set in the app settings, or the Graph or storage settings are missing |
+| A mailbox shows "calendar is not in the Exchange access scope yet" | Read calendar is on but the `Application Calendars.Read` assignment in section 7 is missing or has not applied. Mail keeps syncing; untick Read calendar until the role is in place |
 | The run warns that a mailbox failed | The mailbox shows its error on `/admin/mailboxes`; the other mailboxes synced |
 | A mailbox outside the group can be read | The app has an Entra Graph permission; check step 1 |

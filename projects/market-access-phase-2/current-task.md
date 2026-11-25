@@ -6,8 +6,8 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 040: follow-up steps (done); 001 waits on the Exchange step |
-| **Step** | 040 built and verified; PRs stacked, merged together after all tasks (Ralph, 2026-11-24) |
+| **Task** | 030: calendar client (done); 001 waits on the Exchange step |
+| **Step** | 030 built and verified; PRs stacked, merged together after all tasks (Ralph, 2026-11-24) |
 | **Status** | in progress; waiting on Ralph's Exchange step for the contactus@ retest |
 | **Next action** | Once Ralph has run section 7 of `docs/market-access-mailboxes.md`, retest the contactus@ calendar read and record it in `notes/calendar-spike.md`. Phase 3 (calendar) needs that step; task 041 needs tasks 040 and 031 |
 
@@ -35,3 +35,4 @@
 - 2026-11-24: task 021 in PR 212. Task 022 built (links and export); 71 checks pass with fresh tables.
 - 2026-11-24: task 022 in PR 213. Tasks 050 and 051 built (sync health, alert, secret expiry); 73 checks pass with fresh tables.
 - 2026-11-24: tasks 050 and 051 in PR 214. Task 040 built (follow-up steps, Stop steps); 75 checks pass with fresh tables.
+- 2026-11-24: task 040 in PR 215. Task 030 built (calendar client, state table, Read calendar setting); 77 checks pass with fresh tables.

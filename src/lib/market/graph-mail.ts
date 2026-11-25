@@ -83,7 +83,8 @@ function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-async function graphGet<T>(
+/** One Graph GET with the sync's token, throttling waits and error mapping. Also used by the calendar client. */
+export async function graphGet<T>(
   s: MailSettings,
   mailbox: string,
   url: string,
@@ -121,7 +122,8 @@ async function graphGet<T>(
         .replace(GRAPH, "")
         .split("?")[0]
         .replace(/^\/users\/[^/]+/, "/users/{mailbox}")
-        .replace(/\/messages\/[^/]+$/, "/messages/{id}");
+        .replace(/\/messages\/[^/]+$/, "/messages/{id}")
+        .replace(/\/events\/[^/]+$/, "/events/{id}");
       throw graphErrorFor(
         res.status,
         err?.code,
