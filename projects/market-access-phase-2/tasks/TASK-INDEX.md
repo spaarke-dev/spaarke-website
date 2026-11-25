@@ -37,7 +37,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 |---|---|---|---|
 | [040](040-follow-up-steps.md) | Follow-up steps | 020 | done |
 | [041](041-daily-follow-up-job.md) | Daily follow-up job | 040, 031 | done |
-| [042](042-job-schedule-and-outlook-link.md) | Job schedule and Write in Outlook | 041 | done (first run after merge) |
+| [042](042-job-schedule-and-outlook-link.md) | Job schedule and Write in Outlook | 041 | done |
 
 ## Phase 5: Health
 
