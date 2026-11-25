@@ -62,6 +62,8 @@ const STAGE_OF: Partial<Record<ActivityType, MemberStage>> = {
   "meeting.booked": "meeting",
   "meeting.rescheduled": "meeting",
   "meeting.in_person": "meeting",
+  // A calendar meeting counts once it has taken place (phase 2 FR-08); booked, moved and canceled do not.
+  "calendar.held": "meeting",
 };
 
 /** Untagged activities of these kinds count inside the campaign's window. */
@@ -72,6 +74,7 @@ const WINDOWED = new Set<ActivityType>([
   "meeting.booked",
   "meeting.rescheduled",
   "meeting.in_person",
+  "calendar.held",
 ]);
 
 const RANK: Record<MemberStage, number> = { sent: 1, bounced: 2, engaged: 3, replied: 4, meeting: 5 };
