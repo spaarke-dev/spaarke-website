@@ -13,7 +13,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 | Task | Title | Depends on | Status |
 |---|---|---|---|
 | [010](010-target-list-import.md) | Target list import | none | done |
-| [011](011-add-contact.md) | Add contact | none | not-started |
+| [011](011-add-contact.md) | Add contact | none | done |
 
 ## Phase 2: Codes, briefs and links
 

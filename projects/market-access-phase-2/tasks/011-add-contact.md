@@ -1,7 +1,7 @@
 # Task 011: Add contact
 
 **Phase:** 1 (Target lists)
-**Status:** not-started
+**Status:** done
 **Estimated:** 2 hours
 **Dependencies:** none
 **Tags:** nextjs, react, api, forms
@@ -33,10 +33,21 @@ FR-02. Today a person met in passing can only enter through a form, an import or
 
 ## Acceptance criteria
 
-- [ ] A new person appears in the list with "Added by hand" as the first timeline entry.
-- [ ] An email already known creates nothing and links to the contact.
-- [ ] The form passes axe and works at 375 px.
+- [x] A new person appears in the list with "Added by hand" as the first timeline entry.
+- [x] An email already known creates nothing and links to the contact.
+- [x] The form passes axe and works at 375 px.
 
 ## Notes
 
 - Spec references: FR-02, NFR-02, NFR-05.
+
+## As built
+
+- `src/lib/market/contact-add.ts`: `parseNewContact` checks the body (email required; LinkedIn must be a linkedin.com address; kind defaults to prospect, visibility to general). `addContactByHand` answers created, exists, deleted or unavailable. Typed name, title, LinkedIn, phone and kind are marked as edited by hand, so a later form or import does not overwrite them.
+- An existing address (in any case) creates nothing. The answer carries the contact's ID only when the admin can see that contact; an investor contact stays hidden from an admin without the role.
+- A deleted contact is not brought back (409).
+- The activity is `contact.added` with source `admin-add`, shown as "Added by hand".
+- The audit entry `contact.create` lists the kind, the visibility and the names of the fields set, never the address or the values.
+- `POST /api/admin/contacts`: 201 created, 200 exists, 409 deleted, 503 unavailable, 403 for investor visibility without the role.
+- `AddContactForm` sits under the Contacts header. Success goes to the new contact; a known address shows "Open the contact".
+- Checks: 65 pass with fresh tables. Browser: the form, the known-address link, the 403, axe at desktop (only the header button contrast that predates this work) and at 375 px (none), no sideways scroll.
