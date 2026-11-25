@@ -6,10 +6,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Task** | 022: Links and export (done); 001 waits on the Exchange step |
-| **Step** | 022 built and verified; PRs stacked, merged together after all tasks (Ralph, 2026-11-24) |
+| **Task** | 050 and 051: health (done); 001 waits on the Exchange step |
+| **Step** | 050 and 051 built and verified; PRs stacked, merged together after all tasks (Ralph, 2026-11-24) |
 | **Status** | in progress; waiting on Ralph's Exchange step for the contactus@ retest |
-| **Next action** | Once Ralph has run section 7 of `docs/market-access-mailboxes.md`, retest the contactus@ calendar read and record it in `notes/calendar-spike.md`. Meanwhile tasks 050 and 051 go on |
+| **Next action** | Once Ralph has run section 7 of `docs/market-access-mailboxes.md`, retest the contactus@ calendar read and record it in `notes/calendar-spike.md`. Phase 3 (calendar) needs that step; phase 4 needs task 031 |
 
 ## Open items
 
@@ -17,7 +17,7 @@
 |---|---|---|
 | 1 | Ralph runs `Application Calendars.Read` for contactus@ | Command ready (setup guide, section 7) |
 | 2 | Delta window for a rolling calendar range | Settled: no delta; `calendarView` each run (`notes/calendar-spike.md`) |
-| 3 | `MEET_GRAPH_SECRET_EXPIRES` set | Task 051 |
+| 3 | `MEET_GRAPH_SECRET_EXPIRES` set | Code done (task 051); the app setting waits for Ralph's go-ahead |
 
 ## Decisions made
 
@@ -33,3 +33,4 @@
 - 2026-11-24: Ralph: keep working through the tasks and deploy once they are done, so the PRs stack (011 is PR 210). Task 020 built (member codes); 67 checks pass with fresh tables.
 - 2026-11-24: task 020 in PR 211. Task 021 built (campaign brief); 69 checks pass with fresh tables. A general campaign's brief is framed for any reader, not for investors.
 - 2026-11-24: task 021 in PR 212. Task 022 built (links and export); 71 checks pass with fresh tables.
+- 2026-11-24: task 022 in PR 213. Tasks 050 and 051 built (sync health, alert, secret expiry); 73 checks pass with fresh tables.

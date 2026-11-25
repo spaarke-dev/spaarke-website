@@ -1,5 +1,6 @@
 import { TableClient, odata } from "@azure/data-tables";
 import { dueForReport } from "@/lib/market/followup-admin";
+import { FAIL_ALERT_STREAK, listMailboxes, type Mailbox } from "@/lib/market/mailboxes";
 import { newContacts } from "@/lib/market/queries";
 import { INVESTOR_ROLE } from "@/lib/market/visibility";
 import { activityLabel, formatDay } from "@/components/admin/format";
@@ -27,6 +28,8 @@ export type ReportSection = {
   lines: string[];
   /** Set when the section could not be built. The mail still goes. */
   problem?: string;
+  /** A health section (mail sync, secret): it says nothing about engagement, so it does not count toward a quiet day. */
+  health?: boolean;
 };
 
 export type DailyReport = {
@@ -455,13 +458,72 @@ async function claritySection(token: string | undefined, days: number): Promise<
   }
 }
 
-// ---------------------------------------------------------------------------
-
+// ---------------------------------------------------------------------------
+// Health: the mail sync and the Graph secret (phase 2 FR-13, FR-14)
+// ---------------------------------------------------------------------------
+
+/** A sync older than this is worth a warning: runs are every 15 minutes, and GitHub can run them late. */
+const SYNC_STALE_MS = 60 * 60_000;
+
+function whenUtc(iso: string): string {
+  return `${iso.slice(0, 16).replace("T", " ")} UTC`;
+}
+
+/**
+ * When the mail sync last worked, and each mailbox that has failed three
+ * runs in a row with its error. Mailbox addresses are the team's own.
+ */
+export async function mailSyncSection(now = new Date(), mailboxes?: readonly Mailbox[]): Promise<ReportSection> {
+  try {
+    const enabled = (mailboxes ?? (await listMailboxes())).filter((m) => m.enabled);
+    if (!enabled.length) return { title: "Mail sync", health: true, lines: ["No mailboxes registered."] };
+    const last = enabled.map((m) => m.lastSyncAt ?? "").sort().pop();
+    const lines: string[] = [];
+    if (!last) lines.push("Warning: no mailbox has synced yet.");
+    else if (now.getTime() - Date.parse(last) > SYNC_STALE_MS) {
+      lines.push(`Warning: the last successful sync was ${whenUtc(last)}, more than an hour ago.`);
+    } else lines.push(`Last successful sync ${whenUtc(last)}.`);
+    const failing = enabled.filter((m) => (m.failStreak ?? 0) >= FAIL_ALERT_STREAK);
+    for (const m of failing) {
+      lines.push(`  ${m.label || m.address} <${m.address}>: failed ${m.failStreak} runs in a row. ${m.lastError ?? ""}`.trimEnd());
+    }
+    if (failing.length) lines.push("", "Check them at https://spaarke.com/admin/mailboxes");
+    return { title: "Mail sync", health: true, lines };
+  } catch (err) {
+    return { title: "Mail sync", health: true, lines: [], problem: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+const SECRET_WARN_DAYS = 30;
+
+/**
+ * The Graph app secret that /meet and the mail sync share. Its expiry date is
+ * set by hand at each rotation, because the site does not read it from Entra.
+ */
+export function secretSection(value: string | undefined, now = new Date()): ReportSection {
+  const title = "Graph secret";
+  const v = value?.trim() ?? "";
+  const ms = /^\d{4}-\d{2}-\d{2}$/.test(v) ? Date.parse(`${v}T00:00:00Z`) : Number.NaN;
+  if (Number.isNaN(ms)) {
+    return { title, health: true, lines: ["Secret expiry date unknown. Set MEET_GRAPH_SECRET_EXPIRES (yyyy-mm-dd) on the site."] };
+  }
+  const days = Math.ceil((ms - now.getTime()) / 86_400_000);
+  if (days < 0) return { title, health: true, lines: [`Warning: the secret expired on ${v}. The /meet booking and the mail sync have stopped.`] };
+  if (days <= SECRET_WARN_DAYS) {
+    return { title, health: true, lines: [`Warning: the secret expires on ${v}, in ${plural(days, "day")}. Rotate it before then.`] };
+  }
+  return { title, health: true, lines: [`Expires ${v}.`] };
+}
+
+// ---------------------------------------------------------------------------
+
 export async function buildDailyReport(options: {
   connectionString?: string;
   clarityToken?: string;
   /** Whole days back. Clarity allows at most 3. */
   days?: number;
+  /** MEET_GRAPH_SECRET_EXPIRES, for the checks; read from the settings otherwise. */
+  secretExpires?: string;
 }): Promise<DailyReport> {
   const days = Math.min(Math.max(options.days ?? 1, 1), 3);
   const since = new Date(Date.now() - days * 86_400_000).toISOString();
@@ -480,15 +542,17 @@ export async function buildDailyReport(options: {
     sections.push(await leadsSection(options.connectionString, since));
     sections.push(await followUpsSection());
     sections.push(await newContactsSection(days));
+    sections.push(await mailSyncSection());
   }
 
   sections.push(await claritySection(options.clarityToken, days));
+  sections.push(secretSection(options.secretExpires ?? process.env.MEET_GRAPH_SECRET_EXPIRES));
 
   // A day with nothing in it is a real result for a feature that is a bet on
   // engagement, so it is said in the subject line rather than left to be
   // inferred from an empty mail.
   const quiet = sections.every(
-    (s) => s.problem !== undefined || s.lines.length === 0 || /^No |^No questions/.test(s.lines[0] ?? ""),
+    (s) => s.health || s.problem !== undefined || s.lines.length === 0 || /^No |^No questions/.test(s.lines[0] ?? ""),
   );
 
   return { date, sections, quiet };
@@ -516,6 +580,7 @@ export function renderDailyReport(report: DailyReport, days: number): string {
   out.push("---");
   out.push("Questions come from the conversation record, leads from Table Storage,");
   out.push("follow-ups and contacts from the admin records, traffic from Microsoft");
-  out.push("Clarity. Investor records are counted, never named. Alerts cover failures separately.");
+  out.push("Clarity, mail sync health from the mailbox registry. Investor records are counted,");
+  out.push("never named. Alerts cover failures separately.");
   return out.join("\n");
 }

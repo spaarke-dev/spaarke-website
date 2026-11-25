@@ -355,6 +355,44 @@ export async function sendDailyReport(data: {
 }
 
 /**
+ * A mailbox failed several mail sync runs in a row (market access phase 2
+ * FR-13). Sent at most once a day per mailbox. Carries the mailbox and its
+ * error only: no message content, subject or sender.
+ */
+export async function sendSyncAlert(data: {
+  label: string;
+  address: string;
+  error: string;
+  streak: number;
+}): Promise<{ sent: true } | { sent: false; error: string }> {
+  if (!ensureInit()) return { sent: false, error: "SendGrid not configured." };
+  const to = process.env.CONTACT_EMAIL_TO;
+  const from = process.env.SENDGRID_FROM_EMAIL;
+  if (!to || !from) {
+    console.warn("[email] CONTACT_EMAIL_TO or SENDGRID_FROM_EMAIL not set - skipping.");
+    return { sent: false, error: "Email recipients not configured." };
+  }
+  const text = [
+    `The mail sync has failed ${data.streak} runs in a row for ${data.label} <${data.address}>.`,
+    "",
+    `The last error: ${data.error}`,
+    "",
+    "Mail with contacts in this mailbox is not reaching the timelines. Check it at https://spaarke.com/admin/mailboxes",
+    "",
+    "This alert goes once a day while the mailbox keeps failing.",
+  ].join("\n");
+  const subject = `[Spaarke] Mail sync failing: ${data.label}`;
+  try {
+    await sgMail.send({ to, from, subject, text });
+    return { sent: true };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[email] Failed to send the sync alert:", message);
+    return { sent: false, error: message };
+  }
+}
+
+/**
  * Text MEET reached a site-wide reply cap (spec FR-12). Sent once per window.
  * Carries the cap and the window only: no number, no hash, no message text.
  */

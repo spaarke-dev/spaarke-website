@@ -38,6 +38,10 @@ export type Mailbox = {
   /** The last sync's error, cleared by a sync that succeeds. */
   lastError?: string;
   lastErrorAt?: string;
+  /** Failed runs in a row; a good run sets it back to 0 (phase 2 FR-13). */
+  failStreak?: number;
+  /** The UTC day (yyyy-mm-dd) of the last failure alert, so it goes at most once a day. */
+  alertedOn?: string;
   /** The last "Check access" from the page, and its error if it failed. */
   checkedAt?: string;
   checkError?: string;
@@ -76,6 +80,8 @@ type Entity = {
   lastSyncAt?: string;
   lastError?: string;
   lastErrorAt?: string;
+  failStreak?: number;
+  alertedOn?: string;
   checkedAt?: string;
   checkError?: string;
   createdAt: string;
@@ -98,12 +104,20 @@ function fromEntity(e: Entity): Mailbox {
     lastSyncAt: e.lastSyncAt || undefined,
     lastError: e.lastError || undefined,
     lastErrorAt: e.lastErrorAt || undefined,
+    failStreak: Number(e.failStreak) || 0,
+    alertedOn: e.alertedOn || undefined,
     checkedAt: e.checkedAt || undefined,
     checkError: e.checkError || undefined,
     createdAt: e.createdAt,
     updatedAt: e.updatedAt,
   };
 }
+
+/** Failed runs in a row before the sync sends an alert and the morning report lists the mailbox (FR-13). */
+export const FAIL_ALERT_STREAK = 3;
+
+/** What recordSync saw: the streak after this run, and whether to send the alert now. */
+export type SyncRecord = { streak: number; alert: boolean };
 
 /** One line, at most ERROR_MAX characters. Errors from the Graph client never carry message content. */
 function shortError(message: string): string {
@@ -286,18 +300,38 @@ export async function removeMailbox(id: string, who: string, now = new Date()): 
  * A merge, so an admin edit made during the run is kept. A mailbox removed
  * during the run is left removed.
  */
-export async function recordSync(id: string, outcome: { error?: string }, now = new Date()): Promise<void> {
+export async function recordSync(id: string, outcome: { error?: string }, now = new Date()): Promise<SyncRecord> {
   const t = await getTable("mailboxes");
-  if (!t || !isMailboxId(id)) return;
+  if (!t || !isMailboxId(id)) return { streak: 0, alert: false };
   const at = now.toISOString();
-  const fields =
-    outcome.error === undefined
-      ? { lastSyncAt: at, lastError: "", lastErrorAt: "" }
-      : { lastError: shortError(outcome.error), lastErrorAt: at };
   try {
-    await t.updateEntity({ partitionKey: PARTITION, rowKey: id, ...fields }, "Merge");
+    if (outcome.error === undefined) {
+      await t.updateEntity(
+        { partitionKey: PARTITION, rowKey: id, lastSyncAt: at, lastError: "", lastErrorAt: "", failStreak: 0 },
+        "Merge",
+      );
+      return { streak: 0, alert: false };
+    }
+    // One sync runs at a time (the workflow's concurrency group), so a read then a merge is enough.
+    const current = await t.getEntity<Entity>(PARTITION, id);
+    const streak = (Number(current.failStreak) || 0) + 1;
+    const today = at.slice(0, 10);
+    const alert = streak >= FAIL_ALERT_STREAK && current.alertedOn !== today;
+    await t.updateEntity(
+      {
+        partitionKey: PARTITION,
+        rowKey: id,
+        lastError: shortError(outcome.error),
+        lastErrorAt: at,
+        failStreak: streak,
+        ...(alert ? { alertedOn: today } : {}),
+      },
+      "Merge",
+    );
+    return { streak, alert };
   } catch (err) {
     if (statusOf(err) !== 404) throw err;
+    return { streak: 0, alert: false };
   }
 }
 

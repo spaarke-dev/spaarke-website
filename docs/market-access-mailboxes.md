@@ -12,7 +12,7 @@ The market access admin area (`/admin`) logs email with known contacts by readin
 - **Why no tenant-wide permission:** an Entra application permission such as `Mail.Read` applies to every mailbox in the tenant, and Exchange adds it to whatever the RBAC scope allows rather than narrowing it. The app must keep having no Microsoft Graph API permissions in Entra and no admin consent. Access comes only from Exchange.
 - **What the sync reads:** sender, recipients, subject, time, message ID and the Outlook link. It never stores a body or attachment. The one exception is a non-delivery report, whose body is read only long enough to find the failed address.
 
-The trade-off of reusing the app: the `/meet` client secret now opens mail read on the synced mailboxes as well as calendars, so a leak of that secret exposes both. Rotate it on the schedule in [`meet-graph-booking.md`](meet-graph-booking.md) section 7, and rotate it at once if it may have leaked.
+The trade-off of reusing the app: the `/meet` client secret now opens mail read on the synced mailboxes as well as calendars, so a leak of that secret exposes both. Rotate it on the schedule in [`meet-graph-booking.md`](meet-graph-booking.md) section 7, and rotate it at once if it may have leaked. Each rotation also sets `MEET_GRAPH_SECRET_EXPIRES` to the new expiry date, which the morning report counts down from (it warns 30 days before).
 
 ## 1. Find the app and confirm it has no Graph permissions
 
@@ -165,6 +165,7 @@ Get-ManagementRoleAssignment -RoleAssignee <APP_ID> |
 |---|---|
 | A mailbox shows "not in the Exchange access scope yet" | It is not in the group, or the change has not applied (up to two hours for a new assignment, about an hour for a group change) |
 | Graph 401 for every mailbox | The `/meet` client secret expired or was rotated without updating `MEET_GRAPH_CLIENT_SECRET`; `/meet` would show the fallback too |
+| An email "Mail sync failing: <mailbox>" | That mailbox failed three runs in a row (about 45 minutes). It goes once a day while the failures go on, and the morning report's "Mail sync" section lists the mailbox with its error. A good run resets the count |
 | The sync run fails with 401 | `MA_SYNC_TOKEN` differs between the app settings and the GitHub secret |
 | The sync run fails with 503 | `MA_SYNC_TOKEN` is not set in the app settings, or the Graph or storage settings are missing |
 | The run warns that a mailbox failed | The mailbox shows its error on `/admin/mailboxes`; the other mailboxes synced |
