@@ -69,6 +69,7 @@ export async function POST(request: Request) {
       calendarCancelled: t.calendarCancelled + (m.calendar?.cancelled ?? 0),
       calendarHeld: t.calendarHeld + (m.calendar?.held ?? 0),
       calendarSkippedMeet: t.calendarSkippedMeet + (m.calendar?.skippedMeet ?? 0),
+      calendarAlreadyMet: t.calendarAlreadyMet + (m.calendar?.alreadyMet ?? 0),
     }),
     {
       messages: 0,
@@ -85,6 +86,7 @@ export async function POST(request: Request) {
       calendarCancelled: 0,
       calendarHeld: 0,
       calendarSkippedMeet: 0,
+      calendarAlreadyMet: 0,
     },
   );
   try {

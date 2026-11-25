@@ -392,6 +392,30 @@ export async function listContactActivities(contactId: string, max = 100): Promi
   return out;
 }
 
+/** How close an in-person meeting entry must be to a calendar event's start to be the same meeting. */
+export const SAME_MEETING_MS = 2 * 3_600_000;
+
+/**
+ * Whether the contact already has an in-person meeting entry (the TLTF import
+ * logs these from a calendar export) within two hours of `atIso`. The calendar
+ * sync leaves such a meeting alone, so it is not on the timeline twice.
+ */
+export async function hasInPersonMeetingNear(contactId: string, atIso: string): Promise<boolean> {
+  const table = await getTable("activities");
+  const at = Date.parse(atIso);
+  if (!table || !/^[0-9a-f]{64}$/.test(contactId) || !Number.isFinite(at)) return false;
+  const from = new Date(at - SAME_MEETING_MS).toISOString();
+  const to = new Date(at + SAME_MEETING_MS).toISOString();
+  const pages = table.listEntities<ActivityEntity>({
+    queryOptions: {
+      filter: `PartitionKey eq '${contactId}' and type eq 'meeting.in_person' and occurredAt ge '${from}' and occurredAt le '${to}'`,
+      select: ["type"],
+    },
+  });
+  for await (const _ of pages) return true;
+  return false;
+}
+
 /** Activities recorded in one month, newest first (the recent-activity views). */
 export async function listActivitiesInMonth(month: string, max = 200): Promise<Activity[]> {
   const table = await getTable("activityByMonth");
