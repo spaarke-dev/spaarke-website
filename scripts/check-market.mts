@@ -1,6 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
 // tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
-// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021).
+// phase 2 tasks in projects/market-access-phase-2: 010, 011, 020, 021, 022).
 //
 //   npm run market:check
 //
@@ -997,6 +997,42 @@ console.log("Pure checks");
   assert.ok(!askAi.askPrompt(k1, "general").includes("founder"));
   assert.ok(askAi.askPrompt(k1, "general").includes(`/brief/${k1}`));
   ok("a campaign brief is checked, its keys are 32 random characters, and a general brief is framed for any reader (phase 2 FR-04, task 021)");
+}
+
+{
+  // Phase 2 FR-05 (task 022): the page field, tagged links and the CSV.
+  const cl = await import("@/lib/market/campaign-links");
+  const lc = await import("@/lib/market/links-csv");
+  assert.equal(cl.parsePagePath("/platform"), "/platform");
+  assert.equal(cl.parsePagePath(" https://www.spaarke.com/why-spaarke?x=1&utm_source=old&src=old "), "/why-spaarke?x=1");
+  assert.equal(cl.parsePagePath("https://spaarke.com/"), "/");
+  assert.equal(cl.parsePagePath(""), null);
+  assert.equal(cl.parsePagePath(null), null);
+  for (const bad of ["https://example.test/x", "http://www.spaarke.com/x", "//example.test/x", "javascript:alert(1)", "https://www.spaarke.com.example.test/", "https://user@www.spaarke.com/", 5]) {
+    assert.throws(() => cl.parsePagePath(bad), cl.LinksError, String(bad));
+  }
+  const tagged = new URL(cl.taggedPageUrl("/platform?x=1", "q1-east", "QE-007"));
+  assert.equal(tagged.pathname, "/platform");
+  assert.deepEqual(Object.fromEntries(tagged.searchParams), { x: "1", utm_source: "email", utm_medium: "outreach", utm_campaign: "q1-east", src: "QE-007" });
+
+  assert.equal(lc.csvCell('Say "hi", then go'), '"Say ""hi"", then go"');
+  assert.equal(lc.csvCell("=HYPERLINK(1)"), "'=HYPERLINK(1)");
+  assert.equal(lc.csvCell("-5"), "'-5");
+  assert.equal(lc.csvCell(undefined), "");
+  const file = lc.linksCsv([
+    {
+      contactId: "c1",
+      email: "pat@example.test",
+      name: "Pat, Example",
+      code: "QE-001",
+      ask: { claude: "https://s.test/ask/claude?src=QE-001", chatgpt: "c", gemini: "g" },
+    },
+  ]);
+  assert.ok(file.startsWith("﻿Email,Name,"), "a byte order mark first, for Excel");
+  const lines = file.slice(1).trimEnd().split("\r\n");
+  assert.equal(lines.length, 2);
+  assert.equal(lines[1], 'pat@example.test,"Pat, Example",,,,QE-001,,https://s.test/ask/claude?src=QE-001,c,g,');
+  ok("the links export takes only spaarke.com pages, tags them, and writes a CSV Excel opens safely (phase 2 FR-05, task 022)");
 }
 
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
@@ -2024,6 +2060,78 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   const audited = JSON.stringify(audits);
   assert.ok(!audited.includes("Made-up") && !rows.some((r) => audited.includes(r.key)));
   ok("a campaign brief gives each coded member a link, a saved change reaches every link, and the links go off and on together (phase 2 FR-04, task 021)");
+}
+
+{
+  // Phase 2 FR-05 (task 022): each coded member's links, and a click on one counts for that member.
+  const codes = await import("@/lib/market/codes");
+  const cb = await import("@/lib/market/campaign-brief");
+  const cl = await import("@/lib/market/campaign-links");
+  const { clearQueryCache } = await import("@/lib/market/queries");
+  const who = "check@example.test";
+  const all = ["admin", "investor"];
+  const person = async (local: string, name: string, visibility: "general" | "investor" = "general") => {
+    const r = await contacts.resolveContact({ email: addr(local, `links-${run}.example.test`), name }, { source: "form.contact", visibility });
+    assert.ok(r.status === "created");
+    return r.contact.id;
+  };
+  const slug = `links-${run}`;
+  await camp.upsertCampaign({ slug, name: "Links check", kind: "outreach", visibility: "general" });
+  await camp.editCampaign(slug, { codePrefix: `LK${run}` });
+  const campaign = (await camp.getCampaign(slug))!;
+  const [a, lp, uncoded] = [await person("links.a", "Avery Links"), await person("links.lp", "Lee Investor", "investor"), await person("links.none", "Noa Uncoded")];
+  await camp.addMember({ campaignSlug: slug, contactId: a, group: "Tier A" }, new Date("2026-11-01T00:00:00Z"));
+  await camp.addMember({ campaignSlug: slug, contactId: lp }, new Date("2026-11-02T00:00:00Z"));
+  await codes.assignCodes(campaign, all, who);
+  await cb.saveCampaignBrief(campaign, "Made-up links brief", who);
+  // Coded after the save, without the fill: no brief link yet.
+  const late = await person("links.late", "Kai Late");
+  await camp.addMember({ campaignSlug: slug, contactId: late }, new Date("2026-11-03T00:00:00Z"));
+  await codes.assignCodes(campaign, all, who);
+  // Added after the codes: no code, so no links.
+  await camp.addMember({ campaignSlug: slug, contactId: uncoded }, new Date("2026-11-04T00:00:00Z"));
+  clearQueryCache();
+
+  const links = await cl.campaignLinks(campaign, all, "/platform", who);
+  assert.deepEqual(links.map((l) => l.name), ["Avery Links", "Kai Late", "Lee Investor"], "coded members only, by name");
+  const avery = links[0];
+  const am = (await camp.getMember(slug, a))!;
+  assert.equal(avery.code, am.code);
+  assert.equal(avery.group, "Tier A");
+  assert.equal(avery.organization, (await (await import("@/lib/market/queries")).loadContacts(all)).find((c) => c.id === a)!.organizationName);
+  const key = new URL(avery.briefUrl!).pathname.split("/").pop()!;
+  assert.equal(keys.sha256(key), am.briefKeyHash, "the brief link is the member's own key");
+  const claude = new URL(avery.ask.claude);
+  assert.deepEqual([claude.pathname, claude.searchParams.get("src"), claude.searchParams.get("k")], ["/ask/claude", am.code, key]);
+  const page = new URL(avery.pageUrl!);
+  assert.deepEqual([page.pathname, page.searchParams.get("utm_campaign"), page.searchParams.get("src")], ["/platform", slug, am.code]);
+  const kai = links[1];
+  assert.equal(kai.briefUrl, undefined, "a member without a brief row has no brief link");
+  assert.equal(new URL(kai.ask.gemini).searchParams.get("k"), null);
+
+  // An admin without the investor role never sees the investor member's links.
+  clearQueryCache();
+  const general = await cl.campaignLinks(campaign, ["admin"], null, who);
+  assert.deepEqual(general.map((l) => l.name), ["Avery Links", "Kai Late"]);
+  assert.ok(general.every((l) => l.pageUrl === undefined));
+
+  // With the briefs off, the export carries no brief links.
+  await cb.setCampaignBriefsActive(campaign, false, who);
+  assert.ok((await cl.campaignLinks(campaign, all, null, who)).every((l) => !l.briefUrl));
+  await cb.setCampaignBriefsActive(campaign, true, who);
+
+  // A click on the exported Ask AI link counts for that member (as /ask does: code in src, label behind k).
+  const pb = await import("@/lib/private-brief");
+  const label = (await pb.getPrivateBrief(key))!.label;
+  await writers.recordAskClick("claude", claude.searchParams.get("src")!, label);
+  assert.ok((await activity.listContactActivities(a)).some((x) => x.type === "ask_ai.click" && x.campaignSlug === slug));
+
+  // The audit holds the count only.
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.action === "campaign.export" && e.entityId === slug);
+  assert.equal(audits.length, 3);
+  const audited = JSON.stringify(audits);
+  assert.ok(!audited.includes(key) && !audited.includes(`links-${run}.example.test`) && audited.includes('{"field":"links","to":"3"}'));
+  ok("the links export gives each coded member the user may see their brief, Ask AI and page links, and a click counts for them (phase 2 FR-05, task 022)");
 }
 
 {

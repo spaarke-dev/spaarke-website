@@ -13,6 +13,7 @@ import { loadContacts } from "@/lib/market/queries";
 import { CampaignForm } from "@/components/admin/CampaignForm";
 import { CodesButton } from "@/components/admin/CodesButton";
 import { CampaignBrief } from "@/components/admin/CampaignBrief";
+import { CampaignLinks } from "@/components/admin/CampaignLinks";
 import { audienceOf, campaignBriefState } from "@/lib/market/campaign-brief";
 import { codePrefixOf, codesExist } from "@/lib/market/codes";
 import { DataTable, type Column } from "@/components/admin/DataTable";
@@ -240,6 +241,17 @@ export default async function CampaignPage({
           coded={codedRows.length}
           audience={audienceOf(campaign)}
         />
+      </section>
+
+      <section aria-labelledby="links" className="space-y-3">
+        <h2 id="links" className="text-lg font-semibold">
+          Links
+        </h2>
+        <p className="text-sm text-fg-mid">
+          Each member&apos;s brief, Ask AI and page links carry their code, so a read or a click counts for them. Paste them
+          into each email, or export them all.
+        </p>
+        <CampaignLinks slug={campaign.slug} coded={codedRows.length} />
       </section>
 
       <section aria-labelledby="members" className="space-y-4">

@@ -21,7 +21,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 |---|---|---|---|
 | [020](020-member-codes.md) | Member codes | 010 | done |
 | [021](021-campaign-brief.md) | Campaign brief | 020 | done |
-| [022](022-links-and-export.md) | Links and export | 021 | not-started |
+| [022](022-links-and-export.md) | Links and export | 021 | done |
 
 ## Phase 3: Calendar
 
