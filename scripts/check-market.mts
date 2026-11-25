@@ -1,5 +1,6 @@
 // Checks for the market access store and admin guard (projects/market-access,
-// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060).
+// tasks 002, 010 to 013, 020 to 022, 030 to 034, 040 to 043, 050 to 053 and 060;
+// phase 2 tasks in projects/market-access-phase-2: 010).
 //
 //   npm run market:check
 //
@@ -875,6 +876,58 @@ console.log("Pure checks");
   ok("backfill maps form rows, bookings and App Insights events as the live writers do (FR-13, task 052)");
 }
 
+{
+  // Phase 2 FR-01 (task 010): target list mapping and row checks.
+  const tf = await import("@/lib/market/target-fields");
+  const ti = await import("@/lib/market/target-import");
+  const csvLib = await import("@/lib/market/csv");
+  const { readFileSync } = await import("node:fs");
+  const text = readFileSync("scripts/market/fixtures/target-list-sample.csv", "utf8");
+  const csv = csvLib.parseCsv(text);
+  const mapping = tf.defaultTargetMapping(csv.headers);
+  assert.deepEqual(mapping, {
+    email: "Email",
+    firstName: "First Name",
+    lastName: "Last Name",
+    title: "Title",
+    organization: "Company",
+    linkedinUrl: "LinkedIn",
+    group: "Segment",
+    template: "Template",
+    note: "Notes",
+  });
+  const rows = ti.checkTargets(tf.mapTargetRows(csv, mapping));
+  assert.deepEqual(
+    rows.map((r) => [r.line, r.skip ?? "ready"]),
+    [[2, "ready"], [3, "ready"], [4, "Repeats an earlier row"], [5, "Not an email address"], [6, "No email"], [7, "ready"]],
+  );
+  assert.equal(rows[0].name, "Jordan Target");
+  assert.equal(rows[1].organization, "Fabrikam Legal, LLP");
+  assert.equal(rows[0].note, "Met on a panel; asked about matter intake");
+
+  // A full name column wins; a field over the limit skips the row; a header that is not in the file is refused.
+  const named = csvLib.parseCsv(`Name,First,E-mail,Title\nAlex Whole,Alex,alex@x.example.test,${"t".repeat(401)}\n`);
+  const nm = tf.defaultTargetMapping(named.headers);
+  assert.equal(nm.fullName, "Name");
+  assert.equal(nm.email, "E-mail");
+  const [alex] = ti.checkTargets(tf.mapTargetRows(named, nm));
+  assert.equal(alex.name, "Alex Whole");
+  assert.equal(alex.skip, "Job title is longer than 400 characters");
+  assert.throws(() => tf.checkTargetMapping({ email: "Nope" }, csv.headers), csvLib.CsvError);
+  assert.throws(() => tf.checkTargetMapping({ title: "Title" }, csv.headers), /email/);
+  assert.throws(() => tf.checkTargetMapping(undefined, ["Name", "Phone"]), /email/);
+
+  // Request checks.
+  assert.equal(ti.parseTargetRequest({ csv: text }).visibility, "general");
+  for (const bad of [{ csv: text, extra: 1 }, { csv: text, visibility: "public" }, { csv: text, from: -1 }, { csv: text, from: 1.5 }, { csv: "" }]) {
+    assert.throws(() => ti.parseTargetRequest(bad), csvLib.CsvError, JSON.stringify(Object.keys(bad)));
+  }
+  assert.throws(() => ti.parseTargetRequest({ csv: "x".repeat(tf.MAX_TARGET_CHARS + 1) }), /2 MB/);
+  const big = ["email", ...Array.from({ length: tf.MAX_TARGET_ROWS + 1 }, (_, i) => `p${i}@x.example.test`)].join("\n");
+  await assert.rejects(ti.previewTargets(ti.parseTargetRequest({ csv: big })), /more than 2000 rows/);
+  ok("target list columns map by common names, and broken rows are named with a reason (phase 2 FR-01, task 010)");
+}
+
 const cs = process.env.STORAGE_ACCOUNT_CONNECTION?.trim();
 const suffix = process.env.MA_TABLE_SUFFIX?.trim();
 
@@ -1563,6 +1616,103 @@ const addr = (local: string, domain = `co-${run}.example.test`) => `${local}@${d
   assert.equal(r.imported, 500);
   assert.equal(r.membersAdded, 500);
   ok(`500 leads import in ${(ms / 1000).toFixed(1)} s against the emulator (task 053)`);
+}
+
+{
+  // Phase 2 FR-01 (task 010): a target list imports into a campaign, existing contacts keep hand edits, and a second import adds nothing.
+  const ti = await import("@/lib/market/target-import");
+  const cadmin = await import("@/lib/market/contact-admin");
+  const { readFileSync } = await import("node:fs");
+  const csv = readFileSync("scripts/market/fixtures/target-list-sample.csv", "utf8").replaceAll(".example.test", `-${run}.example.test`);
+  const slug = `tl-${run}`;
+  const campaign = (await camp.upsertCampaign({ slug, name: "Target list check", kind: "outreach", visibility: "general" }))!;
+  const who = "check@example.test";
+
+  // Casey is known already, with a title edited by hand.
+  const casey = await contacts.resolveContact({ email: `casey.known@northwind-${run}.example.test` }, { source: "form.contact" });
+  assert.ok(casey.status === "created");
+  await cadmin.editContact(casey.contact.id, { title: "Title Set By Hand" }, who);
+
+  const preview = await ti.previewTargets(ti.parseTargetRequest({ csv, campaign: slug }));
+  assert.deepEqual(
+    { total: preview.total, newContacts: preview.newContacts, existing: preview.existingContacts, members: preview.alreadyMembers, skipped: preview.skipped },
+    { total: 6, newContacts: 2, existing: 1, members: 0, skipped: 3 },
+  );
+  assert.deepEqual(preview.sample.map((r) => r.state), ["new", "new", "skipped", "skipped", "skipped", "existing"]);
+  assert.equal((await camp.listMembers(slug)).length, 0, "a preview writes nothing");
+  assert.equal(await contacts.findContactByEmail(`jordan.target@contoso-${run}.example.test`), null);
+
+  const first = await ti.runTargets(ti.parseTargetRequest({ csv, campaign: slug, confirm: true }), campaign, who);
+  assert.deepEqual(
+    { newContacts: first.newContacts, existing: first.existingContacts, added: first.membersAdded, already: first.alreadyMembers, notes: first.notesAdded, skipped: first.skipped, next: first.next },
+    { newContacts: 2, existing: 1, added: 3, already: 0, notes: 2, skipped: 3, next: null },
+  );
+  assert.deepEqual(first.skippedRows.map((r) => [r.line, r.reason]), [[4, "Repeats an earlier row"], [5, "Not an email address"], [6, "No email"]]);
+
+  const jordan = (await contacts.findContactByEmail(`jordan.target@contoso-${run}.example.test`))!;
+  assert.equal(jordan.name, "Jordan Target");
+  assert.equal(jordan.title, "General Counsel");
+  assert.equal(jordan.kind, "prospect");
+  assert.equal(jordan.source, "list.import");
+  assert.equal(jordan.visibility, "general");
+  assert.equal((await orgs.getOrganization(jordan.organizationId!))?.name, "Contoso");
+  const jm = (await camp.getMember(slug, jordan.id))!;
+  assert.deepEqual([jm.group, jm.templateLabel, jm.status], ["Tier A", "v1", "planned"]);
+  const jlog = await activity.listContactActivities(jordan.id);
+  assert.deepEqual(jlog.map((a) => a.type).sort(), ["list.import", "note"]);
+  assert.equal(jlog.find((a) => a.type === "note")!.summary, "Met on a panel; asked about matter intake");
+  assert.ok(jlog.every((a) => a.source === ti.TARGET_SOURCE && a.campaignSlug === slug));
+
+  const caseyAfter = (await contacts.getContact(casey.contact.id))!;
+  assert.equal(caseyAfter.title, "Title Set By Hand", "a hand edit is never replaced");
+  assert.equal(caseyAfter.name, "Casey Known", "an empty field is filled");
+
+  // The second import adds nothing; the preview says everyone is already in the campaign.
+  const again = await ti.previewTargets(ti.parseTargetRequest({ csv, campaign: slug }));
+  assert.deepEqual([again.newContacts, again.existingContacts, again.alreadyMembers], [0, 0, 3]);
+  const second = await ti.runTargets(ti.parseTargetRequest({ csv, campaign: slug, confirm: true }), campaign, who);
+  assert.deepEqual([second.newContacts, second.membersAdded, second.alreadyMembers, second.notesAdded], [0, 0, 3, 0]);
+  assert.equal((await activity.listContactActivities(jordan.id)).length, 2);
+  assert.equal((await camp.listMembers(slug)).length, 3);
+
+  // A later import fills a member's missing label but never replaces one.
+  const relabel = csv.replace("Tier A,v1,\"Met", "Tier Z,v1,\"Met");
+  await ti.runTargets(ti.parseTargetRequest({ csv: relabel, campaign: slug, confirm: true }), campaign, who);
+  assert.equal((await camp.getMember(slug, jordan.id))!.group, "Tier A");
+
+  // Investor visibility: new contacts are investor-only.
+  const islug = `tl-inv-${run}`;
+  const icamp = (await camp.upsertCampaign({ slug: islug, name: "Investor list", kind: "outreach", visibility: "investor" }))!;
+  const icsv = `Email,Name\nlp-${run}@fund-${run}.example.test,Lee Partner\n`;
+  await ti.runTargets(ti.parseTargetRequest({ csv: icsv, campaign: islug, visibility: "investor", confirm: true }), icamp, who);
+  assert.equal((await contacts.findContactByEmail(`lp-${run}@fund-${run}.example.test`))!.visibility, "investor");
+
+  // Unmapped columns are never stored; the audit holds counts, not addresses.
+  for (const name of ["contacts", "organizations", "activities", "members", "campaigns", "audit"] as const) {
+    const table = await getTable(name);
+    for await (const e of table!.listEntities()) {
+      const j = JSON.stringify(e);
+      if (j.includes(run)) assert.ok(!j.includes("Made-up Country"), `${name} holds an unmapped value`);
+    }
+  }
+  const audits = (await auditLog.listAudit(keys.monthKey(Date.now()), 5000)).filter((e) => e.action === "import.targets" && e.entityId === slug);
+  assert.equal(audits.length, 3);
+  assert.ok(!JSON.stringify(audits).includes(`-${run}.example.test`));
+  ok("a target list imports contacts and members, keeps hand edits, adds notes once, and a second import adds nothing (phase 2 FR-01, task 010)");
+
+  // Chunks: a list longer than one run is imported in parts, each answering with the next row.
+  const tf = await import("@/lib/market/target-fields");
+  const many = ["Email,Group", ...Array.from({ length: tf.RUN_CHUNK + 7 }, (_, i) => `m${i}@many-${run}.example.test,G${i % 3}`)].join("\n");
+  const mslug = `tl-many-${run}`;
+  const mcamp = (await camp.upsertCampaign({ slug: mslug, name: "Many", kind: "outreach", visibility: "general" }))!;
+  const t0 = performance.now();
+  const p1 = await ti.runTargets(ti.parseTargetRequest({ csv: many, campaign: mslug, confirm: true }), mcamp, who);
+  assert.deepEqual([p1.from, p1.to, p1.next, p1.membersAdded], [0, tf.RUN_CHUNK, tf.RUN_CHUNK, tf.RUN_CHUNK]);
+  const p2 = await ti.runTargets(ti.parseTargetRequest({ csv: many, campaign: mslug, confirm: true, from: p1.next! }), mcamp, who);
+  assert.deepEqual([p2.from, p2.to, p2.next, p2.membersAdded], [tf.RUN_CHUNK, tf.RUN_CHUNK + 7, null, 7]);
+  const ms = performance.now() - t0;
+  assert.equal((await camp.listMembers(mslug)).length, tf.RUN_CHUNK + 7);
+  ok(`a ${tf.RUN_CHUNK + 7}-row list imports in two parts in ${(ms / 1000).toFixed(1)} s against the emulator (task 010)`);
 }
 
 {

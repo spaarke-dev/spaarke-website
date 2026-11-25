@@ -1,7 +1,7 @@
 # Task 010: Target list import
 
 **Phase:** 1 (Target lists)
-**Status:** not-started
+**Status:** done
 **Estimated:** 4 hours
 **Dependencies:** none
 **Tags:** nextjs, react, api, forms, storage
@@ -44,14 +44,30 @@ FR-01. Today a target list needs a private script. The LinkedIn import (phase 1 
 
 ## Acceptance criteria
 
-- [ ] The preview names each broken row and why.
-- [ ] Nothing is saved until Ralph confirms.
-- [ ] A second import of the same file adds no contact, member or note.
-- [ ] An admin without `investor` cannot import as investor.
-- [ ] The page has no sideways scroll at 375 px.
+- [x] The preview names each broken row and why.
+- [x] Nothing is saved until Ralph confirms.
+- [x] A second import of the same file adds no contact, member or note.
+- [x] An admin without `investor` cannot import as investor.
+- [x] The page has no sideways scroll at 375 px.
 
 ## Notes
 
 - Parse in memory only; never write the file to disk or storage.
 - The fixture uses `.test` addresses and made-up names.
 - Spec references: FR-01, NFR-01 to NFR-03, NFR-05.
+
+## As built
+
+- `src/lib/market/target-fields.ts` (pure, used by the form too): the 11 target fields with labels and common header names, `defaultTargetMapping`, `checkTargetMapping`, `mapTargetRows` (a full name column wins over first and last name), and the limits: 2,000 rows, 2 MB, and 250 rows a run.
+- `src/lib/market/target-import.ts`: request checks, `checkTargets` (no email, not an email, a field over 400 characters, a group or template over 100, a repeated email), `previewTargets` (new contacts, existing contacts, already in the campaign, skipped) and `runTargets`.
+  - Contacts go through `resolveContact` with kind `prospect`, so existing contacts gain only empty fields and hand edits stay.
+  - Members go through `addMember`. An existing member gains a missing group or template label but never loses one.
+  - Each person gets one `list.import` entry ("Added from a list") on the campaign, and a note becomes one `note` entry, keyed by campaign, email and note text.
+  - A run handles 250 rows from `from` and answers with the next row; the form sends a large file in parts. Every write is keyed, so a repeated part adds nothing.
+  - The audit holds counts only (`import.targets`).
+- `POST /api/admin/import/targets`: preview without `confirm`, import with it. Investor visibility needs the `investor` role (403).
+- `/admin/import`: a "Target list" or "LinkedIn leads" choice (`ImportChooser`), with the target form in `TargetImport.tsx`: campaign (existing or new outreach campaign), file, visibility, column picker, preview and the result.
+- New activity type `list.import`, with its label and icon.
+- Checks: one pure (mapping, row checks, request checks, the 2,000-row limit) and two storage (preview writes nothing; import; hand edits kept; second import adds nothing; labels filled, not replaced; investor visibility; no unmapped value stored; audit counts only; a 257-row list in two parts). 63 pass with fresh tables.
+- In headless Chrome against the local production build: a made-up list previewed with its 3 broken rows named, imported into a new campaign (3 people, 2 notes), and a second import added nothing. Investor import without the role answered 403. No sideways scroll at 375 px; axe finds only the site header button's contrast, as before.
+- Note: the check for a 500-member campaign's load time fails against an emulator that has held every check run of the day; with fresh tables it passes.
