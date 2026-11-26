@@ -6,7 +6,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [001](001-calendar-access-spike.md) | Calendar access spike and Exchange step | none | in-progress (spike done; contactus@ retest after Ralph's Exchange step) |
+| [001](001-calendar-access-spike.md) | Calendar access spike and Exchange step | none | done (Exchange step run 2026-11-25; contactus@ reads) |
 
 ## Phase 1: Target lists
 
@@ -27,7 +27,7 @@ Status values are `not-started`, `in-progress`, `blocked` and `done`, and each t
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [030](030-graph-calendar-client.md) | Graph calendar client and registry setting | 001 | done (contactus@ waits on the Exchange step) |
+| [030](030-graph-calendar-client.md) | Graph calendar client and registry setting | 001 | done |
 | [031](031-calendar-entries.md) | Calendar entries in the sync | 030 | done (live run after deploy) |
 | [032](032-meetings-in-results.md) | Meetings in results | 031 | done (live recompute after deploy) |
 
