@@ -48,6 +48,8 @@ New-ManagementRoleAssignment -App <APP_ID> -Role "Application Mail.Read" -Custom
 
 Run from a script or a background shell, `Connect-ExchangeOnline` can fail with "A window handle must be configured"; add `-DisableWAM` so it signs in through the browser. Device code sign-in (`-Device`) may be blocked by the tenant's sign-in policy.
 
+If the sign-in page shows "We can't connect you" with HTTP 400, even with `-DisableWAM`, use Azure Cloud Shell instead: open `https://shell.azure.com`, sign in as the admin, choose PowerShell, and run `Connect-ExchangeOnline` with no parameters. It uses the Cloud Shell sign-in, and it does not accept `-UserPrincipalName`. The other commands run as shown.
+
 Then check the result. `Test-ServicePrincipalAuthorization` lists every role the app holds, with `InScope` for the mailbox you name:
 
 ```powershell

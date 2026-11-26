@@ -1,7 +1,7 @@
 # Task 001: Calendar access spike and Exchange step
 
 **Phase:** 0 (Calendar access)
-**Status:** in-progress (contactus@ retest waits on Ralph's Exchange step)
+**Status:** done (2026-11-25: Ralph ran the Exchange step; contactus@ reads)
 **Estimated:** 3 hours
 **Dependencies:** none
 **Tags:** azure, graph, config, docs
@@ -35,10 +35,10 @@ FR-06. The `/meet` app already has `Application Calendars.ReadWrite` on Ralph's 
 
 ## Acceptance criteria
 
-- [ ] Each question in step 2 has an answer from a real call, not from documentation alone.
-- [ ] The read design for task 030 is decided.
-- [ ] Ralph has the command, and its result for contactus@ is recorded.
-- [ ] No tenant ID, mailbox ID, event ID or subject in the repo.
+- [x] Each question in step 2 has an answer from a real call, not from documentation alone.
+- [x] The read design for task 030 is decided.
+- [x] Ralph has the command, and its result for contactus@ is recorded.
+- [x] No tenant ID, mailbox ID, event ID or subject in the repo.
 
 ## Notes
 

@@ -36,9 +36,9 @@ Phase 2 went live on 2026-11-25: Ralph approved the merge, PRs 210 to 220 were m
 
 ### 3. Calendar meetings
 
-- Task 001 read Ralph's own calendar through Graph (app-only) on 2026-11-24. contactus@ answers 403 until Ralph runs the Exchange step (setup guide, section 7).
+- Task 001 read Ralph's own calendar through Graph (app-only) on 2026-11-24. contactus@ answered 403 until Ralph ran the Exchange step (setup guide, section 7) on 2026-11-25; it now answers 200, and the 01:40 UTC sync on 2026-11-26 read both calendars with no failures.
 - The checks cover booked, moved, canceled and held entries from made-up Graph events, including a recurring series, a meeting first seen already canceled, a deleted event, a /meet booking (left to the booking writer, not logged twice) and a second sync that adds nothing. Held meetings count toward the meeting stage in results (task 032).
-- **Left for Ralph:** after deploy, turn on "Read calendar" for his mailbox, book a test meeting with a known contact, and check it shows booked and then held. The same for contactus@ after the Exchange step.
+- **Left for Ralph:** after deploy, turn on "Read calendar" for his mailbox, book a test meeting with a known contact, and check it shows booked and then held. The same for contactus@ (the Exchange step is done).
 
 ### 4. Follow-up steps
 
@@ -113,7 +113,7 @@ Phase 2 went live on 2026-11-25: Ralph approved the merge, PRs 210 to 220 were m
 1. ~~Merge and deploy PRs 210 to 220 in order.~~ Done 2026-11-25.
 2. One real campaign from `/admin`: import the list, give codes, save the brief, export the links (criterion 1).
 3. Open two links from that export and check the campaign results (criterion 2).
-4. A test meeting with a known contact in his own calendar after turning on "Read calendar", and one in contactus@ after the Exchange step (criterion 3).
+4. A test meeting with a known contact in his own calendar after turning on "Read calendar", and one in contactus@; the Exchange step is done (criterion 3).
 5. ~~Run the "Follow-up steps" workflow by hand once.~~ Done 2026-11-25; check the first scheduled run after a campaign has a step (criterion 4).
 6. Click "Write in Outlook" on one follow-up (criterion 5).
 7. ~~The go-ahead to set `MEET_GRAPH_SECRET_EXPIRES=2027-11-13`.~~ Set 2026-11-25. Read one live morning report (criterion 6).

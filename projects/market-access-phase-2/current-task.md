@@ -8,14 +8,14 @@
 |-------|-------|
 | **Task** | 090: project wrap-up (deployed 2026-11-25); waits on Ralph's final checks |
 | **Step** | All tasks built; PRs 210 to 220 merged in order and deployed on 2026-11-25; live smoke tests pass |
-| **Status** | in progress; waiting on Ralph's final checks and the Exchange step |
-| **Next action** | Ralph's final checks (end of `notes/verification.md`). Once a real campaign has a brief: Lighthouse on one brief link. Once "Read calendar" is on: check the 031 entries and 032 recompute live. After the Exchange step: retest contactus@ and record it in `notes/calendar-spike.md` |
+| **Status** | in progress; waiting on Ralph's final checks |
+| **Next action** | Ralph's final checks (end of `notes/verification.md`). Once a real campaign has a brief: Lighthouse on one brief link. Once a test meeting is booked: check the 031 entries and 032 recompute live, in Ralph's calendar and in contactus@ |
 
 ## Open items
 
 | # | Item | Status |
 |---|---|---|
-| 1 | Ralph runs `Application Calendars.Read` for contactus@ | Command ready (setup guide, section 7) |
+| 1 | Ralph runs `Application Calendars.Read` for contactus@ | Done 2026-11-25 (Azure Cloud Shell); contactus@ reads, task 001 done |
 | 2 | Delta window for a rolling calendar range | Settled: no delta; `calendarView` each run (`notes/calendar-spike.md`) |
 | 3 | `MEET_GRAPH_SECRET_EXPIRES` set | Done 2026-11-25 (Ralph's go-ahead), matching the secret's end date on the app registration |
 
@@ -42,3 +42,5 @@
 - 2026-11-24: tasks 041 and 042 in PR 219. Task 090 written up: `notes/verification.md` and `notes/lessons.md`; privacy searches clean; 84 checks pass. The project stays open until Ralph's final checks (listed at the end of `notes/verification.md`).
 - 2026-11-25: Ralph approved the merge; PRs 210 to 220 merged in order and deployed. Live smoke tests pass, and the follow-up workflow's first run by hand answered with counts (nothing to do yet).
 - 2026-11-25: `MEET_GRAPH_SECRET_EXPIRES` set on the site; only that setting changed. contactus@ calendar retested: still 403 `ErrorAccessDenied`, so the Exchange step (setup guide, section 7) is still to run or still applying.
+- 2026-11-25: Summit meetings logged twice by the calendar sync: fixed (PR 223, `calendarAlreadyMet`) and 31 duplicates removed with `market:calendar-dedupe`. Contacts list: grid fits the page, row select and delete, hidden-match message (PRs 224, 225). Ralph's site account given the investor role.
+- 2026-11-25: Ralph ran the Exchange step from Azure Cloud Shell (local sign-in failed with HTTP 400). contactus@ calendar retested: 200. The 01:40 UTC sync on 2026-11-26 read both calendars (3 events from contactus@, 96 from Ralph's) with no failures. Task 001 done.
